@@ -108,7 +108,13 @@ public class Denigen : MonoBehaviour {
 
             // check for crit
             num = Random.RandomRange(0.0f, 1.0f);
-            if (num <= crit) { damage *= 1.5f; }
+
+            // use luck to increase crit chance
+            float chance = Mathf.Pow((float)(luck), 2.0f / 3.0f); // luck ^ 2/3
+            chance /= 100; // make percentage
+
+            // add chance to crit to increase the probability of num being the smaller one
+            if (num <= (crit + chance)) { damage *= 1.5f; }
 
             // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
 
