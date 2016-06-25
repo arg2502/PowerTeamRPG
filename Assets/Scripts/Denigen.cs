@@ -14,6 +14,8 @@ public class Denigen : MonoBehaviour {
     // in-battle/temporary stats
     protected int atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
 
+    //List of passives, useful for enemies and heroes -- ADD LATER
+
     // ratings/leveling up
     protected int stars;
     protected int level;
