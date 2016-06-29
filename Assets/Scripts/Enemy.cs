@@ -11,8 +11,8 @@ public class Enemy : Denigen {
     int areaLevel;
 
     //States dependant on health, to influence the enemy decision making. This should make them appear smarter
-    enum Health { high, average, low, dangerous};
-    Health healthState = Health.high;
+    protected enum Health { high, average, low, dangerous};
+    protected Health healthState = Health.high;
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +42,14 @@ public class Enemy : Denigen {
         else if (hp < hpMax * 0.5f && hp >= hpMax * 0.2f) { healthState = Health.low; }
         else { healthState = Health.dangerous; }
     }
+
+    // The brain of the enemy
+    // Every enemy will have this method, but the code for each will be tailored to it's species
+    protected virtual string ChooseAttack()
+    {
+        return null;
+    }
+
 	// Update is called once per frame
 	void Update () {
 	  

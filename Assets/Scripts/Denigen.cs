@@ -16,6 +16,9 @@ public class Denigen : MonoBehaviour {
 
     //List of passives, useful for enemies and heroes -- ADD LATER
 
+    //List for storing targets of Denigen's attacks and spells
+    protected List<Denigen> targets;
+
     // ratings/leveling up
     protected int stars;
     protected int level;
@@ -125,7 +128,8 @@ public class Denigen : MonoBehaviour {
         }
     }
 
-    protected void TakeDamage(float damage, bool isMagic)
+    //Made public to allow other denigens to deal damage
+    public void TakeDamage(float damage, bool isMagic)
     {
         // use stat based on if magic or physical
         int defStat;
