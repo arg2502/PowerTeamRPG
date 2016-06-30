@@ -16,6 +16,9 @@ public class BattleMenu : Menu {
     public Denigen[] denigenArray;
     public Denigen currentDenigen;
 
+    // array of the heroes, mainly useful for enemy targeting, but everyone can use it
+    public List<Denigen> heroList = new List<Denigen>() { };
+
 	// Use this for initialization
 	void Start () {
         base.Start();
@@ -30,6 +33,12 @@ public class BattleMenu : Menu {
         for(int i = 0; i < denigenGOArray.Length; i++)
         {
             denigenArray[i] = denigenGOArray[i].GetComponent<Denigen>();
+
+            //add the denigen to the list of heroes if it has a hero component
+            if(denigenArray[i].GetComponent<Hero>() != null)
+            {
+                heroList.Add(denigenArray[i]);
+            }
         }
 
         // temporary denigen for sorting

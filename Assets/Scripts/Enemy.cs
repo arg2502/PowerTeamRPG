@@ -15,7 +15,7 @@ public class Enemy : Denigen {
     protected Health healthState = Health.high;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
         //set the base stats for the enemy
         base.Start();
 
@@ -23,12 +23,13 @@ public class Enemy : Denigen {
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
         level = Random.Range((areaLevel - 2), (areaLevel + 2));
-
+        print("Level: " + level);
         //level up until desired level is hit
         for (int i = 0; i < level; i++)
         {
-            base.LevelUp();
+            base.LevelUp(i + 1);
         }
+
 	}
 
     protected void TakeDamage(float damage, bool isMagic)
@@ -45,6 +46,7 @@ public class Enemy : Denigen {
 
     // The brain of the enemy
     // Every enemy will have this method, but the code for each will be tailored to it's species
+    // Since every attack will be different, choosing a target should be handled in specific attack methods.
     protected virtual string ChooseAttack()
     {
         return null;

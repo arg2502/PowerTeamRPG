@@ -6,13 +6,13 @@ public class Denigen : MonoBehaviour {
 
     // attributes
     // stats
-    protected int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
+    protected int hpMax, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
 
     // stat percentages
     protected float hpPer, pmPer, atkPer, defPer, mgkAtkPer, mgkDefPer, luckPer, evasionPer, spdPer;
 
-    // in-battle/temporary stats
-    protected int atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
+    // in-battle/temporary stats -- made public so combatants can view and alter in battle stats
+    public int hp, pm, atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
 
     //List of passives, useful for enemies and heroes -- ADD LATER
 
@@ -25,6 +25,9 @@ public class Denigen : MonoBehaviour {
     protected int baseTotal;
     protected float multiplier;
     protected float boostTotal;
+
+    //Battle menu object
+    protected BattleMenu battleMenu;
 
     // arrays of techniques
     protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
@@ -45,7 +48,6 @@ public class Denigen : MonoBehaviour {
     // Use this for initialization
 	protected void Start () {
         baseTotal = 24 + (12 * stars);
-        multiplier = (level / 10.0f) + 1.0f;
 
         // setting up stats
         hp = (int)(baseTotal * hpPer);        
@@ -60,9 +62,12 @@ public class Denigen : MonoBehaviour {
         hpMax = hp;
         pmMax = pm;
 
+        //get a reference to the battleMenu object in the scene
+        battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
 	}
-    protected void LevelUp()
+    protected void LevelUp(int lvl)
     {
+        multiplier = (lvl / 10.0f) + 1.0f;
         boostTotal = stars * 9 * multiplier; // 9 = number of stats
     
         // increase stats
@@ -77,6 +82,15 @@ public class Denigen : MonoBehaviour {
         luck += (int)(boostTotal * luckPer);
         evasion += (int)(boostTotal * evasionPer);
         spd += (int)(boostTotal * spdPer);
+
+        //just in case we're in battle when we level up, let's also increase the bsttle stats
+        atkBat += (int)(boostTotal * atkPer);
+        defBat += (int)(boostTotal * defPer);
+        mgkAtkBat += (int)(boostTotal * mgkAtkPer);
+        mgkDefBat += (int)(boostTotal * mgkDefPer);
+        luckBat += (int)(boostTotal * luckPer);
+        evasionBat += (int)(boostTotal * evasionPer);
+        spdBat += (int)(boostTotal * spdPer);
         
     }
 

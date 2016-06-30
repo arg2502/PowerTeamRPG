@@ -27,7 +27,7 @@ public class Hero: Denigen {
 
     protected void LevelUp()
     {
-        base.LevelUp();
+        base.LevelUp(level);
 
         // allocate stats
         levelUpPts = (int)(stars * multiplier); // 3 * (level/10 + 1)

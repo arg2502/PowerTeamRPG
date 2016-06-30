@@ -6,6 +6,8 @@ public class E_Mudpuppy : Enemy {
 
 	// Use this for initialization
 	void Start () {
+        stars = 1;
+
         //Skills and spells will probably be static for enemies
         skillsList = new List<string>() { "Bite" };
         skillsDescription = new List<string>() { "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95" };
@@ -32,13 +34,25 @@ public class E_Mudpuppy : Enemy {
         //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
         float damage = CalcDamage(0.9f, 0.2f, 0.95f, false);
 
+        // code for choosing the target of this attack
+        // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
+        targets.Clear();
+        Denigen tempTarget = battleMenu.heroList[0];
+        for (int i = 0; i < battleMenu.heroList.Count; i++)
+        {
+            if (battleMenu.heroList[i].hp > tempTarget.hp)
+            {
+                tempTarget = battleMenu.heroList[i];
+            }
+        }
+        targets.Add(tempTarget);
+
+        //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(damage, false);
     }
 
     protected override string ChooseAttack()
     {
-        //Not sure if picking a target needs its own method, or if it can be done here -- decide later
-
         // Use rng to provide variety to decision making
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated
 
