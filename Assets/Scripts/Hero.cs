@@ -53,6 +53,13 @@ public class Hero: Denigen {
         spellsDescription.Add(descrip);
     }
 
+    //select the target for your attack
+    public void SelectTarget(string attack)
+    {
+        //this will use a switch statement to determine the type of
+        //targeting required, and then pass off to a more specific method
+    }
+
 	// Update is called once per frame
 	void Update () {
 	    

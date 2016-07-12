@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class BattleMenu : Menu {
 
     // enumeration to determine what menu is shown
-    enum MenuReader { main, techniques, skills, spells, summons, items, flee };
+    enum MenuReader { main, techniques, skills, spells, summons, items, flee, battle };
     MenuReader state = MenuReader.main;
 
     // previous state for back button
@@ -15,9 +15,14 @@ public class BattleMenu : Menu {
     public GameObject[] denigenGOArray;
     public Denigen[] denigenArray;
     public Denigen currentDenigen;
+    public int currentDenigenIndex = 0;
 
     // array of the heroes, mainly useful for enemy targeting, but everyone can use it
     public List<Denigen> heroList = new List<Denigen>() { };
+
+    // The names of attacks to be executed during the battle phase
+    // their index in this list will correspond to the denigens' index in the denigen array
+    public List<string> commands = new List<string>() { };
 
 	// Use this for initialization
 	void Start () {
@@ -41,22 +46,11 @@ public class BattleMenu : Menu {
             }
         }
 
-        // temporary denigen for sorting
-        Denigen temp;
-		for(int i = 0; i < denigenArray.Length - 1; i++){
-            for (int j = 1; j < denigenArray.Length - i; j++)
-            {
-                if (denigenArray[j - 1].Spd > denigenArray[j].Spd)
-                {
-                    temp = denigenArray[j - 1];
-                    denigenArray[j - 1] = denigenArray[j];
-                    denigenArray[j] = temp;
-                }
-            }
-		}
+        //sort denigens by speed
+        SortDenigens();
 
         // set the current denigen
-        currentDenigen = denigenArray[0];
+        currentDenigen = denigenArray[currentDenigenIndex];
 
         for (int i = 0; i < numOfRow; i++)
         {
@@ -126,7 +120,12 @@ public class BattleMenu : Menu {
         {
                 // main battle menu
             case "Strike":
-                // nothing right now
+                // select your target for the attack
+                currentDenigen.GetComponent<Hero>().SelectTarget(label);
+                //Queue up the command to be executed later
+                commands.Add(label);
+                //End of the turn for current denigen, pass to the next one
+                ChangeCurrentDenigen();
                 break;
             case "Techniques":
                 // change state to techniques menu
@@ -155,11 +154,63 @@ public class BattleMenu : Menu {
             case "<==":
                 state = prevState;
                 break;
+
+                //if the case is none of the above, then the button selected must be an attack or an item
             default:
+                if(state == MenuReader.spells || state == MenuReader.skills)
+                {
+                    //Passes the name of the attack to the denigen
+                    currentDenigen.GetComponent<Hero>().SelectTarget(label);
+                    //Put this into the queue of commands
+                    commands.Add(label);
+                    //Giving an attack command marks the end of current denigen's turn
+                    ChangeCurrentDenigen();
+                }
+                else if (state == MenuReader.items)
+                {
+                    //do the item related stuff here
+                }
                 break;
         }
         ChangeContentArray();
         StateChangeText();   
+    }
+
+    void ChangeCurrentDenigen()
+    {
+        currentDenigenIndex++;
+        if (currentDenigenIndex >= denigenArray.Length)
+        {
+            //Begin the battle phase
+            //reset the counter for right now
+            currentDenigenIndex = 0;
+            currentDenigen = denigenArray[currentDenigenIndex];
+        }
+        else
+        {
+            currentDenigen = denigenArray[currentDenigenIndex];
+            //reset the menu state for the next denigen
+            state = MenuReader.main;
+        }
+    }
+
+    void SortDenigens()
+    {
+        // temporary denigen for sorting
+        Denigen temp;
+        //This code does not seem operational right now. I think it is because the denigens all have stats of 0 at this point
+        for (int i = 0; i < denigenArray.Length - 1; i++)
+        {
+            for (int j = 1; j < denigenArray.Length - i; j++)
+            {
+                if (denigenArray[j - 1].Spd > denigenArray[j].Spd)
+                {
+                    temp = denigenArray[j - 1];
+                    denigenArray[j - 1] = denigenArray[j];
+                    denigenArray[j] = temp;
+                }
+            }
+        }
     }
 
     void Update()
@@ -176,6 +227,22 @@ public class BattleMenu : Menu {
 
        
     }
+
+    void UpdateBattle()
+    {
+        //This is where we step through the issued commands and execute them one at a time
+        //This should be done by calling the attack method for each denigen in order, and passing
+        //the strings we previously recorded for them
+        for (int i = 0; i < denigenArray.Length; i++)
+        {
+            denigenArray[i].Attack(commands[i]);
+        }
+        //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
+        commands.Clear();
+        SortDenigens();
+        
+    }
+
 	void UpdateMain () {
 
         // check for selected button

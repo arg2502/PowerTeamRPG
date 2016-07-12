@@ -62,7 +62,7 @@ public class E_Mudpuppy : Enemy {
             if (rng < 0.5f) { return "Frenzy"; } //boost atk
             else { return "Bite"; } //attack
         }
-        if (healthState == Health.average)
+        else if (healthState == Health.average)
         {
             if (rng < 0.25f) { return "Frenzy"; } //boost atk
             else { return "Bite"; } //attack

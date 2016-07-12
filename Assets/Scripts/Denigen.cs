@@ -94,7 +94,7 @@ public class Denigen : MonoBehaviour {
         
     }
 
-    void Attack(string atkChoice)
+    public void Attack(string atkChoice)
     {
         // specific denigens will pick attack methods based off of user choice
     }
