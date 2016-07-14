@@ -17,6 +17,9 @@ public class Hero: Denigen {
     // points for unlocking techniques
     protected int techPts;
 
+    // used for finding the player's intended target
+    protected int targetIndex = 0;
+
 	// Use this for initialization
 	protected void Start () {
         // all heroes have 3 stars
@@ -56,8 +59,52 @@ public class Hero: Denigen {
     //select the target for your attack
     public void SelectTarget(string attack)
     {
+        //clear any previously selected targets from other turns
+        if (targets != null)
+        {
+            targets.Clear();
+        }
+
+
         //this will use a switch statement to determine the type of
         //targeting required, and then pass off to a more specific method
+        SelectSingleTarget();
+    }
+
+    //a generic, single target selecting method
+    //any of this code can of course be changed later, this is just for testing purposes
+    public void SelectSingleTarget()
+    {
+        //Activate the first cursor for targeting
+        if(battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled == false)
+        {
+            battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = true;
+        }
+
+        //handle input
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+            print("Target Index: " + targetIndex);
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            targetIndex++;
+            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+            print("Target Index: " + targetIndex);
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            print("Added target " + targetIndex);
+            targets.Add(battleMenu.enemyList[targetIndex]);
+            //deactivate the cursor
+            battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = false;
+        }
+        //move the cursor to the correct position
+        battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
+
+        //print("Target Index: " + targetIndex);
     }
 
 	// Update is called once per frame

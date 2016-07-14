@@ -8,7 +8,7 @@ public class Enemy : Denigen {
 
     //Median level for enemies in this region, dependant on player's team's highest level when they first entered this region.
     //Will probably be pulled from an array
-    int areaLevel;
+    int areaLevel = 3;
 
     //States dependant on health, to influence the enemy decision making. This should make them appear smarter
     protected enum Health { high, average, low, dangerous};
@@ -47,7 +47,7 @@ public class Enemy : Denigen {
     // The brain of the enemy
     // Every enemy will have this method, but the code for each will be tailored to it's species
     // Since every attack will be different, choosing a target should be handled in specific attack methods.
-    protected virtual string ChooseAttack()
+    public virtual string ChooseAttack()
     {
         return null;
     }

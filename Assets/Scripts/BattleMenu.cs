@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class BattleMenu : Menu {
 
     // enumeration to determine what menu is shown
-    enum MenuReader { main, techniques, skills, spells, summons, items, flee, battle };
+    enum MenuReader { main, techniques, skills, spells, summons, items, flee, targeting, battle };
     MenuReader state = MenuReader.main;
 
     // previous state for back button
@@ -19,10 +19,19 @@ public class BattleMenu : Menu {
 
     // array of the heroes, mainly useful for enemy targeting, but everyone can use it
     public List<Denigen> heroList = new List<Denigen>() { };
+    public List<Denigen> enemyList = new List<Denigen>() { };
+
+    //The HUD to display stats, for now just text prefabs
+    public List<GameObject> heroCards = new List<GameObject>() { };
+    public List<GameObject> enemyCards = new List<GameObject>() { };
 
     // The names of attacks to be executed during the battle phase
     // their index in this list will correspond to the denigens' index in the denigen array
     public List<string> commands = new List<string>() { };
+    string command;
+
+    //Cursors for targeting attacks
+    public GameObject[] cursors;
 
 	// Use this for initialization
 	void Start () {
@@ -44,13 +53,17 @@ public class BattleMenu : Menu {
             {
                 heroList.Add(denigenArray[i]);
             }
+            else
+            {
+                enemyList.Add(denigenArray[i]);
+            }
         }
 
         //sort denigens by speed
         SortDenigens();
 
         // set the current denigen
-        currentDenigen = denigenArray[currentDenigenIndex];
+        currentDenigen = heroList[currentDenigenIndex];
 
         for (int i = 0; i < numOfRow; i++)
         {
@@ -77,6 +90,37 @@ public class BattleMenu : Menu {
 
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+
+        //display the stats of the heroes
+        for (int i = 0; i < heroList.Count; i++)
+        {
+            //Create a text prefab for now, we'll figure out the HUD later
+            heroCards.Add((GameObject)Instantiate(Resources.Load("Prefabs/textPrefab")));
+            heroCards[i].transform.position = new Vector2(-((250/heroList.Count) * (i*3) + 250), (camera.transform.position.y - 250));
+            heroCards[i].GetComponent<TextMesh>().text = heroList[i].name + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
+                + "\nPM: " + heroList[i].pm + " / " + heroList[i].pmMax;
+
+        }
+
+        //display the stats of the enemies
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            //Create a text prefab for now, we'll figure out the HUD later
+            enemyCards.Add((GameObject)Instantiate(Resources.Load("Prefabs/textPrefab")));
+            enemyCards[i].transform.position = new Vector2(((250 / enemyList.Count) * (i * 3) + 250), (camera.transform.position.y - 250));
+            enemyCards[i].GetComponent<TextMesh>().text = enemyList[i].name + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
+                + "\nPM: " + enemyList[i].pm + " / " + enemyList[i].pmMax;
+
+        }
+
+        //create cursors for the targeting of attacks
+        cursors = new GameObject[enemyList.Count];
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            cursors[i] = (GameObject)Instantiate(Resources.Load("Prefabs/cursorPrefab"));
+            //Shut the cursors' renderers off until they are needed
+            cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+        }
         
 	}
     // change content array and other variables depending on the menu state
@@ -121,11 +165,15 @@ public class BattleMenu : Menu {
                 // main battle menu
             case "Strike":
                 // select your target for the attack
-                currentDenigen.GetComponent<Hero>().SelectTarget(label);
+                //currentDenigen.GetComponent<Hero>().SelectTarget(label);
                 //Queue up the command to be executed later
-                commands.Add(label);
+                //commands.Add(label);
                 //End of the turn for current denigen, pass to the next one
-                ChangeCurrentDenigen();
+                //ChangecurrentDenigen();
+
+                //store the name of the command you wish to issue
+                command = label;
+                state = MenuReader.targeting;
                 break;
             case "Techniques":
                 // change state to techniques menu
@@ -164,7 +212,7 @@ public class BattleMenu : Menu {
                     //Put this into the queue of commands
                     commands.Add(label);
                     //Giving an attack command marks the end of current denigen's turn
-                    ChangeCurrentDenigen();
+                    ChangecurrentDenigen();
                 }
                 else if (state == MenuReader.items)
                 {
@@ -176,12 +224,13 @@ public class BattleMenu : Menu {
         StateChangeText();   
     }
 
-    void ChangeCurrentDenigen()
+    void ChangecurrentDenigen()
     {
         currentDenigenIndex++;
         if (currentDenigenIndex >= denigenArray.Length)
         {
             //Begin the battle phase
+            state = MenuReader.battle;
             //reset the counter for right now
             currentDenigenIndex = 0;
             currentDenigen = denigenArray[currentDenigenIndex];
@@ -189,8 +238,12 @@ public class BattleMenu : Menu {
         else
         {
             currentDenigen = denigenArray[currentDenigenIndex];
-            //reset the menu state for the next denigen
-            state = MenuReader.main;
+            if (currentDenigen.GetComponent<Hero>() != null)
+            {
+                //reset the menu state for the next denigen
+                print("Set to main for " + currentDenigen.name);
+                state = MenuReader.main;
+            }
         }
     }
 
@@ -215,16 +268,51 @@ public class BattleMenu : Menu {
 
     void Update()
     {
-        base.Update();
-
-        // if back button is pressed, set state to previous state
-        if (Input.GetKeyDown(KeyCode.Backspace))
+        if (state == MenuReader.battle)
         {
-            state = prevState;
-            ChangeContentArray();
-            StateChangeText();
-        }   
+            UpdateBattle();
+        }
+        //Targeting means that our WASD will not be navigating buttons
+        if (state == MenuReader.targeting)
+        {
+            if (currentDenigen.GetComponent<Hero>() != null)
+            {
+                currentDenigen.GetComponent<Hero>().SelectTarget(command);
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    //Add the issued command to the queue
+                    commands.Add(command);
+                    //The current denigen's turn is over, move on
+                    ChangecurrentDenigen();
+                    //Change state back to the default state
+                    //state = MenuReader.main;
+                    ChangeContentArray();
+                    StateChangeText();
+                }
+            }
+            else
+            {
+                //Add the enemy's chosen attack to the queue
+                commands.Add(currentDenigen.GetComponent<Enemy>().ChooseAttack());
+                //The current denigen's turn is over, move on
+                ChangecurrentDenigen();
+            }
+            
+        }
+        else
+        {
+            base.Update();
 
+            // if back button is pressed, set state to previous state
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                state = prevState;
+                ChangeContentArray();
+                StateChangeText();
+            }   
+
+        }
+        
        
     }
 
@@ -235,12 +323,13 @@ public class BattleMenu : Menu {
         //the strings we previously recorded for them
         for (int i = 0; i < denigenArray.Length; i++)
         {
-            denigenArray[i].Attack(commands[i]);
+            //denigenArray[i].Attack(commands[i]);
+            print(denigenArray[i].name + " used " + commands[i]);
         }
         //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
         commands.Clear();
         SortDenigens();
-        
+        state = MenuReader.main;
     }
 
 	void UpdateMain () {

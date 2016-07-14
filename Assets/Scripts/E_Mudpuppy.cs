@@ -15,13 +15,13 @@ public class E_Mudpuppy : Enemy {
         spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
 
         // stats - should total to 1.00f
-        hpPer = 0.06f;
+        hpPer = 0.07f;
         pmPer = 0.05f;
-        atkPer = 0.33f;
-        defPer = 0.11f;
+        atkPer = 0.35f;
+        defPer = 0.12f;
         mgkAtkPer = 0.02f;
-        mgkDefPer = 0.08f;
-        luckPer = 0.17f;
+        mgkDefPer = 0.09f;
+        luckPer = 0.11f;
         evasionPer = 0.12f;
         spdPer = 0.06f;
 
@@ -51,7 +51,7 @@ public class E_Mudpuppy : Enemy {
         targets[0].TakeDamage(damage, false);
     }
 
-    protected override string ChooseAttack()
+    public override string ChooseAttack()
     {
         // Use rng to provide variety to decision making
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated

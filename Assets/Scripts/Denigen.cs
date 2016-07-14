@@ -6,18 +6,18 @@ public class Denigen : MonoBehaviour {
 
     // attributes
     // stats
-    protected int hpMax, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
+    protected int atk, def, mgkAtk, mgkDef, luck, evasion, spd;
 
     // stat percentages
     protected float hpPer, pmPer, atkPer, defPer, mgkAtkPer, mgkDefPer, luckPer, evasionPer, spdPer;
 
     // in-battle/temporary stats -- made public so combatants can view and alter in battle stats
-    public int hp, pm, atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
+    public int hp, pm, hpMax, pmMax, atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
 
     //List of passives, useful for enemies and heroes -- ADD LATER
 
     //List for storing targets of Denigen's attacks and spells
-    protected List<Denigen> targets;
+    protected List<Denigen> targets = new List<Denigen>() { };
 
     // ratings/leveling up
     protected int stars;
