@@ -107,6 +107,38 @@ public class Hero: Denigen {
         //print("Target Index: " + targetIndex);
     }
 
+    //Strike is standard attack with 50% power
+    //It uses no mana, and its magic properties are determined by the stat breakdown
+    protected void Strike()
+    {
+        float damage;
+        bool isMagic;
+        if(atkPer > mgkAtkPer)
+        {
+            isMagic = false;
+        }
+        else
+        {
+            isMagic = true;
+        }
+        damage = CalcDamage(0.5f, 0.1f, 0.95f, isMagic);
+        targets[0].TakeDamage(damage, isMagic);
+    }
+
+    public void Attack(string atkChoice)
+    {
+        // specific denigens will pick attack methods based off of user choice
+        //print(name + " Attacks");
+        switch (atkChoice)
+        {
+            case "Strike":
+                Strike();
+                break;
+            default:
+                break;
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 	    

@@ -97,7 +97,7 @@ public class BattleMenu : Menu {
             //Create a text prefab for now, we'll figure out the HUD later
             heroCards.Add((GameObject)Instantiate(Resources.Load("Prefabs/textPrefab")));
             heroCards[i].transform.position = new Vector2(-((250/heroList.Count) * (i*3) + 250), (camera.transform.position.y - 250));
-            heroCards[i].GetComponent<TextMesh>().text = heroList[i].name + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
+            heroCards[i].GetComponent<TextMesh>().text = heroList[i].name + "\nLvl: " + heroList[i].Level + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
                 + "\nPM: " + heroList[i].pm + " / " + heroList[i].pmMax;
 
         }
@@ -108,7 +108,7 @@ public class BattleMenu : Menu {
             //Create a text prefab for now, we'll figure out the HUD later
             enemyCards.Add((GameObject)Instantiate(Resources.Load("Prefabs/textPrefab")));
             enemyCards[i].transform.position = new Vector2(((250 / enemyList.Count) * (i * 3) + 250), (camera.transform.position.y - 250));
-            enemyCards[i].GetComponent<TextMesh>().text = enemyList[i].name + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
+            enemyCards[i].GetComponent<TextMesh>().text = enemyList[i].name + "\nLvl: " + enemyList[i].Level + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
                 + "\nPM: " + enemyList[i].pm + " / " + enemyList[i].pmMax;
 
         }
@@ -252,7 +252,7 @@ public class BattleMenu : Menu {
         // temporary denigen for sorting
         Denigen temp;
         //This code does not seem operational right now. I think it is because the denigens all have stats of 0 at this point
-        for (int i = 0; i < denigenArray.Length - 1; i++)
+        /*for (int i = 0; i < denigenArray.Length - 1; i++)
         {
             for (int j = 1; j < denigenArray.Length - i; j++)
             {
@@ -263,6 +263,23 @@ public class BattleMenu : Menu {
                     denigenArray[j] = temp;
                 }
             }
+        }*/
+        for (int j = 0; j < denigenArray.Length; j++)
+        {
+            for (int i = 0; i < denigenArray.Length - 1; i++)
+            {
+                if (denigenArray[i].spdBat < denigenArray[i + 1].spdBat)
+                {
+                    temp = denigenArray[i + 1];
+                    denigenArray[i + 1] = denigenArray[i];
+                    denigenArray[i] = temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < denigenArray.Length; i++)
+        {
+            print(i + " denigen spd: " + denigenArray[i].spdBat);
         }
     }
 
@@ -325,6 +342,14 @@ public class BattleMenu : Menu {
         {
             //denigenArray[i].Attack(commands[i]);
             print(denigenArray[i].name + " used " + commands[i]);
+            if(denigenArray[i].GetComponent<Hero>() != null)
+            {
+                denigenArray[i].GetComponent<Hero>().Attack(commands[i]);
+            }
+            else
+            {
+                denigenArray[i].GetComponent<Enemy>().Attack(commands[i]);
+            }
         }
         //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
         commands.Clear();

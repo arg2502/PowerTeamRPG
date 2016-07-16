@@ -73,6 +73,22 @@ public class E_Mudpuppy : Enemy {
         }
     }
 
+    public override void Attack(string atkChoice)
+    {
+        switch (atkChoice)
+        {
+            case "Bite":
+                Bite();
+                break;
+            case "Frenzy":
+                print(name + " used frenzy");
+                break;
+            default:
+                Bite();
+                break;
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
 	

@@ -22,6 +22,7 @@ public class Denigen : MonoBehaviour {
     // ratings/leveling up
     protected int stars;
     protected int level;
+    public int Level { get { return level; } }
     protected int baseTotal;
     protected float multiplier;
     protected float boostTotal;
@@ -94,9 +95,10 @@ public class Denigen : MonoBehaviour {
         
     }
 
-    public void Attack(string atkChoice)
+    public virtual void Attack(string atkChoice)
     {
         // specific denigens will pick attack methods based off of user choice
+        print(name + " Attacks");
     }
 
     // NEEDED for crits
@@ -114,12 +116,12 @@ public class Denigen : MonoBehaviour {
             // if its a magic attack, use magic variables
             if (isMagic)
             {
-                atkStat = atk;
+                atkStat = atkBat;
             }
             // if not magic, use physical variables
             else
             {
-                atkStat = mgkAtk;
+                atkStat = mgkAtkBat;
             }
 
             // calculate damage
@@ -129,11 +131,11 @@ public class Denigen : MonoBehaviour {
             num = Random.RandomRange(0.0f, 1.0f);
 
             // use luck to increase crit chance
-            float chance = Mathf.Pow((float)(luck), 2.0f / 3.0f); // luck ^ 2/3
+            float chance = Mathf.Pow((float)(luckBat), 2.0f / 3.0f); // luck ^ 2/3
             chance /= 100; // make percentage
 
             // add chance to crit to increase the probability of num being the smaller one
-            if (num <= (crit + chance)) { damage *= 1.5f; }
+            if (num <= (crit + chance)) { damage *= 1.5f; print(name + " lands a crit"); }
 
             // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
 
@@ -149,15 +151,18 @@ public class Denigen : MonoBehaviour {
         int defStat;
         if (isMagic)
         {
-            defStat = mgkDef;
+            defStat = mgkDefBat;
         }
         else
         {
-            defStat = def;
+            defStat = defBat;
         }
 
         // divide damage by the defensive stat
-        damage /= defStat;
+        //damage /= defStat;
+
+        // reduce damage by half the defensive stat
+        damage -= (defStat/2);
 
         // if negative damage, set it to zero -- just in case
         if (damage < 0) { damage = 0; }
@@ -166,6 +171,7 @@ public class Denigen : MonoBehaviour {
 
         // decrease hp based off of damage
         hp -= (int)damage;
+        print(name + " took " + damage + " damage");
 
         // check for dead
         if (hp <= 0) { statusState = Status.dead; }
