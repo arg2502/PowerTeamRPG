@@ -20,6 +20,12 @@ public class Hero: Denigen {
     // used for finding the player's intended target
     protected int targetIndex = 0;
 
+    //properties
+    public int Exp { get { return exp; } set { exp = value; } }
+    public int LevelUpPts { get { return levelUpPts; } set { levelUpPts = value; } }
+    public int TechPts { get { return techPts; } set { techPts = value; } }
+    //property for items and equipment -- ADD LATER
+
 	// Use this for initialization
 	protected void Start () {
         // all heroes have 3 stars

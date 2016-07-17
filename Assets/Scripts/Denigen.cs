@@ -22,7 +22,7 @@ public class Denigen : MonoBehaviour {
     // ratings/leveling up
     protected int stars;
     protected int level;
-    public int Level { get { return level; } }
+   // public int Level { get { return level; } }
     protected int baseTotal;
     protected float multiplier;
     protected float boostTotal;
@@ -34,7 +34,15 @@ public class Denigen : MonoBehaviour {
     protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
 	
     // properties
-    public int Spd { get { return spd; } }
+    public int Level { get { return level; } set { level = value; } }
+    public int Atk { get { return atk; } set { atk = value; } }
+    public int Def { get { return def; } set { def = value; } }
+    public int MgkAtk { get { return mgkAtk; } set { mgkAtk = value; } }
+    public int MgkDef { get { return mgkDef; } set { mgkDef = value; } }
+    public int Luck { get {return luck; } set { luck = value; } }
+    public int Evasion { get { return evasion; } set { evasion = value; } }
+    public int Spd { get { return spd; } set { spd = value; } }
+    //property for passives -- ADD LATER
 
     public List<string> SkillsList { get { return skillsList; } }
     public List<string> SkillsDescription { get { return skillsDescription; } }
