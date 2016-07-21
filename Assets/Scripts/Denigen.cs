@@ -18,6 +18,7 @@ public class Denigen : MonoBehaviour {
 
     //List for storing targets of Denigen's attacks and spells
     protected List<Denigen> targets = new List<Denigen>() { };
+    public List<Denigen> Targets { get { return targets; } }
 
     // ratings/leveling up
     protected int stars;
@@ -29,6 +30,10 @@ public class Denigen : MonoBehaviour {
 
     //Battle menu object
     protected BattleMenu battleMenu;
+    protected string takeDamageText, calcDamageText;
+
+    public string TakeDamageText { get { return takeDamageText; } }
+    public string CalcDamageText { get { return calcDamageText; } }
 
     // arrays of techniques
     protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
@@ -53,6 +58,9 @@ public class Denigen : MonoBehaviour {
     enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     Status statusState = Status.normal;
 
+    protected GameObject card;
+    public GameObject Card { get { return card; } set { card = value; } }
+
 
     // Use this for initialization
 	protected void Start () {
@@ -72,7 +80,12 @@ public class Denigen : MonoBehaviour {
         pmMax = pm;
 
         //get a reference to the battleMenu object in the scene
-        battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
+        if (GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>())
+        {
+            battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
+        }
+        
+        //card = (GameObject)Instantiate(Resources.Load("Prefabs/textPrefab"));
 	}
     protected void LevelUp(int lvl)
     {
@@ -113,37 +126,38 @@ public class Denigen : MonoBehaviour {
     // CalcDamage
     // TakeDamage
 
-    protected float CalcDamage(float power, float crit, float accuracy, bool isMagic) // all floats are percentages
+    protected float CalcDamage(string atkChoice, float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
+        calcDamageText = name + " uses " + atkChoice + "!";
         // if attack misses, exit early
-        float num = Random.RandomRange(0.0f, 1.0f);
-        if (num > accuracy){ return 0.0f; }
+        float num = Random.Range(0.0f, 1.0f);
+        if (num > accuracy) { calcDamageText += " The attack misses..."; return 0.0f; }
         else
         {
             int atkStat;
             // if its a magic attack, use magic variables
             if (isMagic)
             {
-                atkStat = atkBat;
+                atkStat = mgkAtkBat;
             }
             // if not magic, use physical variables
             else
             {
-                atkStat = mgkAtkBat;
+                atkStat = atkBat;
             }
 
             // calculate damage
             float damage = power * atkStat;
 
             // check for crit
-            num = Random.RandomRange(0.0f, 1.0f);
+            num = Random.Range(0.0f, 1.0f);
 
             // use luck to increase crit chance
             float chance = Mathf.Pow((float)(luckBat), 2.0f / 3.0f); // luck ^ 2/3
             chance /= 100; // make percentage
 
             // add chance to crit to increase the probability of num being the smaller one
-            if (num <= (crit + chance)) { damage *= 1.5f; print(name + " lands a crit"); }
+            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText += name + " strikes a weak spot!"; }
 
             // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
 
@@ -179,10 +193,10 @@ public class Denigen : MonoBehaviour {
 
         // decrease hp based off of damage
         hp -= (int)damage;
-        print(name + " took " + damage + " damage");
+        takeDamageText = name + " takes " + damage + " damage!";
 
         // check for dead
-        if (hp <= 0) { statusState = Status.dead; }
+        if (hp <= 0) { takeDamageText += " " + name + " falls!";  statusState = Status.dead; }
     }
 
 	// Update is called once per frame

@@ -21,7 +21,12 @@ public class Jethro : Hero {
         evasionPer = 0.09f;
         spdPer = 0.10f;
 
-        base.Start();	
+        base.Start();
+        /*for (int i = 0; i < 3; i++)
+        {
+            level = i + 1;
+            base.LevelUp();
+        }*/
 	}
 	
 	// Update is called once per frame

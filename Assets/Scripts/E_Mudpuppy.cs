@@ -25,6 +25,8 @@ public class E_Mudpuppy : Enemy {
         evasionPer = 0.12f;
         spdPer = 0.06f;
 
+        name = "Mudpuppy";
+
         base.Start();	
 	}
 
@@ -32,8 +34,7 @@ public class E_Mudpuppy : Enemy {
     void Bite()
     {
         //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage(0.9f, 0.2f, 0.95f, false);
-
+        float damage = CalcDamage("Bite", 0.9f, 0.2f, 0.95f, false);
         // code for choosing the target of this attack
         // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
         targets.Clear();
@@ -81,7 +82,7 @@ public class E_Mudpuppy : Enemy {
                 Bite();
                 break;
             case "Frenzy":
-                print(name + " used frenzy");
+                calcDamageText = name + " used frenzy";
                 break;
             default:
                 Bite();
