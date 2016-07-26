@@ -88,29 +88,31 @@ public class Hero: Denigen {
         }
 
         //handle input
-        if (Input.GetKeyUp(KeyCode.W))
-        {
-            targetIndex--;
-            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
-            print("Target Index: " + targetIndex);
-        }
         if (Input.GetKeyUp(KeyCode.S))
         {
+            //reset previous target's color
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            //reset previous target's color
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+
             targetIndex++;
             if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
-            print("Target Index: " + targetIndex);
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            print("Added target " + targetIndex);
             targets.Add(battleMenu.enemyList[targetIndex]);
             //deactivate the cursor
             battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = false;
         }
         //move the cursor to the correct position
         battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
-
-        //print("Target Index: " + targetIndex);
+        battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
     }
 
     //Strike is standard attack with 50% power
@@ -134,7 +136,6 @@ public class Hero: Denigen {
     public void Attack(string atkChoice)
     {
         // specific denigens will pick attack methods based off of user choice
-        //print(name + " Attacks");
         switch (atkChoice)
         {
             case "Strike":

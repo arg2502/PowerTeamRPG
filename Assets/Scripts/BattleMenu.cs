@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class BattleMenu : Menu {
 
     // enumeration to determine what menu is shown
-    enum MenuReader { main, techniques, skills, spells, summons, items, flee, targeting, battle };
+    enum MenuReader { main, techniques, skills, spells, summons, items, flee, targeting, battle, victory, failure };
     MenuReader state = MenuReader.main;
 
     // previous state for back button
@@ -20,6 +20,8 @@ public class BattleMenu : Menu {
     // array of the heroes, mainly useful for enemy targeting, but everyone can use it
     public List<Denigen> heroList = new List<Denigen>() { };
     public List<Denigen> enemyList = new List<Denigen>() { };
+    public List<Vector2> enemyPositions = new List<Vector2>() {new Vector2(480.0f, -90.0f), new Vector2(702.0f, 33.0f),
+                                    new Vector2(361.0f, 104.0f), new Vector2(580.0f, 231.0f), new Vector2(262.0f, 286.0f)};
 
     //The HUD to display stats, for now just text prefabs
     public List<GameObject> heroCards = new List<GameObject>() { };
@@ -34,12 +36,12 @@ public class BattleMenu : Menu {
     public GameObject[] cursors;
 
     //Int for tracking which denigen should act in a battle phase
-    int commandIndex = 0;
+    public int commandIndex = 0;
 
     //Holds what is written on the screen during battle
     public GameObject battleText;
     //holds a queue of the text for the battleText obj
-    List<string> battleTextList = new List<string>() { };
+    public List<string> battleTextList = new List<string>() { };
     int textIndex;
 
 	// Use this for initialization
@@ -50,7 +52,7 @@ public class BattleMenu : Menu {
         buttonArray = new GameObject[numOfRow];
 
         // set currentDenigen - temp
-        denigenGOArray = GameObject.FindGameObjectsWithTag("Denigen");
+        //denigenGOArray = GameObject.FindGameObjectsWithTag("Denigen");
         denigenArray = new List<Denigen>() { };
         // fill Denigen array -- check for existing heroes
         if (GameControl.control.heroList != null)
@@ -116,7 +118,7 @@ public class BattleMenu : Menu {
         }*/
         //create enemies -- sample code
         // to do - pull array of possible enemies for the area, and num of enemies
-        int numOfEnemies = 2;//Random.Range(1, 5);
+        int numOfEnemies = Random.Range(1, 5);
         for (int i = 0; i < numOfEnemies; i++)
         {
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/tempMudpuppy"));
@@ -136,11 +138,14 @@ public class BattleMenu : Menu {
             }
         }
 
+        //sort the enemy denigens into position
+        for (int i = enemyList.Count - 1; i > -1; i--)
+        {
+            enemyList[i].transform.position = enemyPositions[i];
+        }
+
         //sort denigens by speed
         SortDenigens();
-
-        // set the current denigen
-        currentDenigen = heroList[currentDenigenIndex];
 
         for (int i = 0; i < numOfRow; i++)
         {
@@ -201,7 +206,13 @@ public class BattleMenu : Menu {
         
         //Create the text object for the battle phase
         battleText = (GameObject)Instantiate(Resources.Load("Prefabs/TextPrefab"));
-        battleText.GetComponent<TextMesh>().fontSize = 200;
+        battleText.GetComponent<TextMesh>().fontSize = 250;
+        battleText.GetComponent<TextMesh>().alignment = TextAlignment.Left;
+        
+        //highlight the current denigen
+        // set the current denigen
+        currentDenigen = denigenArray[currentDenigenIndex];
+        currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
 	}
     // change content array and other variables depending on the menu state
     void ChangeContentArray()
@@ -306,6 +317,7 @@ public class BattleMenu : Menu {
 
     void ChangecurrentDenigen()
     {
+        currentDenigen.Card.GetComponent<TextMesh>().color = Color.white;
         currentDenigenIndex++;
         if (currentDenigenIndex >= denigenArray.Count)
         {
@@ -325,10 +337,11 @@ public class BattleMenu : Menu {
         else
         {
             currentDenigen = denigenArray[currentDenigenIndex];
+            currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
             if (currentDenigen.GetComponent<Hero>() != null)
             {
                 //reset the menu state for the next denigen
-                print("Set to main for " + currentDenigen.name);
+                //print("Set to main for " + currentDenigen.name);
                 state = MenuReader.main;
             }
         }
@@ -364,10 +377,35 @@ public class BattleMenu : Menu {
             }
         }
 
-        for (int i = 0; i < denigenArray.Count; i++)
+        //for (int i = 0; i < denigenArray.Count; i++)
+        //{
+        //    print(i + " denigen spd: " + denigenArray[i].spdBat);
+        //}
+    }
+
+    string FormatText(string str)
+    {
+        string formattedString = null;
+        int desiredLength = 30;
+        string[] wordArray = str.Split(' ');
+        int lineLength = 0;
+        foreach (string s in wordArray)
         {
-            print(i + " denigen spd: " + denigenArray[i].spdBat);
+            //if the current line plus the length of the next word and SPACE is greater than the desired line length
+            if (s.Length + 1 + lineLength > desiredLength)
+            {
+                //go to new line
+                formattedString += "\n" + s;
+                //starting a new line
+                lineLength = s.Length;
+            }
+            else
+            {
+                formattedString += " " + s;
+                lineLength += s.Length + 1;
+            }
         }
+        return formattedString;
     }
 
     void UpdateCard(Denigen d)
@@ -383,7 +421,7 @@ public class BattleMenu : Menu {
             UpdateBattle();
         }
         //Targeting means that our WASD will not be navigating buttons
-        else if (state == MenuReader.targeting)
+        else if (state == MenuReader.targeting && currentDenigen.StatusState != Denigen.Status.dead)
         {
             if (currentDenigen.GetComponent<Hero>() != null)
             {
@@ -394,6 +432,11 @@ public class BattleMenu : Menu {
                     commands.Add(command);
                     //The current denigen's turn is over, move on
                     ChangecurrentDenigen();
+                    //Change the cards back to their default color
+                    foreach (Denigen d in enemyList)
+                    {
+                        d.Card.GetComponent<TextMesh>().color = Color.white;
+                    }
                     //Change state back to the default state
                     ChangeContentArray();
                     StateChangeText();
@@ -408,6 +451,7 @@ public class BattleMenu : Menu {
             }
             
         }
+        else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { print(currentDenigen.name + " cannot attack"); commands.Add(null); ChangecurrentDenigen(); }
         else
         {
             foreach (Denigen d in denigenArray)
@@ -435,36 +479,108 @@ public class BattleMenu : Menu {
         //This is where we step through the issued commands and execute them one at a time
         //This should be done by calling the attack method for each denigen in order, and passing
         //the strings we previously recorded for them
-
-        //press space to advance the battle phase
-        if(commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) || (commandIndex == 0 && textIndex == 0)))
+        //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
+        if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
         {
-            if (battleTextList.Count == 0)
+            //check if all heroes have fallen
+            int fallenHeroes = 0;
+            foreach (Denigen d in heroList)
             {
-                if (denigenArray[commandIndex].GetComponent<Hero>() != null)
-                {
-                    denigenArray[commandIndex].GetComponent<Hero>().Attack(commands[commandIndex]);
-                }
-                else
-                {
-                    denigenArray[commandIndex].GetComponent<Enemy>().Attack(commands[commandIndex]);
-                }
-
-                //record the appropriate text to display
-                battleTextList.Add(denigenArray[commandIndex].CalcDamageText);
-                foreach (Denigen d in denigenArray[commandIndex].Targets)
-                {
-                    battleTextList.Add(d.TakeDamageText);
-                }
+                if (d.StatusState == Denigen.Status.dead) { fallenHeroes++; }
             }
-            
-            battleText.GetComponent<TextMesh>().text = battleTextList[textIndex];
-
-            if (battleText.GetComponent<TextMesh>().text.Contains("damage!")) //this hopefully only updates the HUD when damage is dealt
+            if (heroList.Count == fallenHeroes)
             {
-                foreach (Denigen d in denigenArray)
+                //go to a gameover state
+                state = MenuReader.failure;
+                print("All heroes have fallen");
+                return;
+            }
+
+            //check if all enemies have fallen
+            int fallenEnemies = 0;
+            foreach (Denigen d in enemyList)
+            {
+                if (d.StatusState == Denigen.Status.dead) { fallenEnemies++; }
+            }
+            if (enemyList.Count == fallenEnemies)
+            {
+                //go to a victory state
+                state = MenuReader.victory;
+                print("All enemies have fallen");
+                return;
+            }
+
+            commandIndex = 0;
+            commands.Clear();
+            SortDenigens();
+            state = MenuReader.main;
+            battleText.GetComponent<TextMesh>().text = null;
+            battleText.GetComponent<Renderer>().enabled = false;
+            battleTextList.Clear();
+            textIndex = 0;
+            foreach (Denigen d in denigenArray)
+            {
+                d.CalcDamageText = null;
+                d.TakeDamageText = null;
+            }
+            foreach (GameObject b in buttonArray)
+            {
+                //show the buttons
+                b.GetComponent<Renderer>().enabled = true;
+                b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
+            }
+        }
+       
+        //press space to advance the battle phase
+        if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) || (commandIndex == 0 && textIndex == 0)))
+        {
+            //this while loop bypasses any denigens who have passed away
+            while (commandIndex < denigenArray.Count - 1 && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
+            {
+                //print(denigenArray[commandIndex].name + " is dead");
+                commandIndex++;
+                battleTextList = new List<string>() { };
+            }
+            //if the turn hasn't already been calculated, and the denigen is not dead
+            if (denigenArray[commandIndex].StatusState != Denigen.Status.dead)
+            {
+                if (battleTextList.Count == 0)
                 {
-                    UpdateCard(d);
+                    if (denigenArray[commandIndex].GetComponent<Hero>() != null)
+                    {
+                        denigenArray[commandIndex].GetComponent<Hero>().Attack(commands[commandIndex]);
+                    }
+                    else
+                    {
+                        denigenArray[commandIndex].GetComponent<Enemy>().Attack(commands[commandIndex]);
+                    }
+
+                    //record the appropriate text to display
+                    battleTextList.Add(denigenArray[commandIndex].CalcDamageText);
+                    foreach (Denigen d in denigenArray[commandIndex].Targets)
+                    {
+                        //this causes an error when the target is dead. hopefully ending the battle when all heroes are dead will avoid this
+                        if (d.TakeDamageText != null)
+                        {
+                            battleTextList.Add(d.TakeDamageText);
+                        }
+                    }
+                }
+
+                //print(denigenArray[commandIndex]);
+                //make sure there is text to display
+                if (battleTextList[textIndex] != null)
+                {
+                    battleText.GetComponent<TextMesh>().text = FormatText(battleTextList[textIndex]);
+                }
+                else { textIndex++; }
+
+                if (battleText.GetComponent<TextMesh>().text.Contains("damage!")) //this hopefully only updates the HUD when damage is dealt
+                {
+                    foreach (Denigen d in denigenArray)
+                    {
+                        UpdateCard(d);
+                    }
                 }
             }
             if (textIndex < (battleTextList.Count - 1))
@@ -474,26 +590,13 @@ public class BattleMenu : Menu {
             else
             {
                 textIndex = 0;
+                print("Move on to the next denigen");
                 commandIndex++;
                 battleTextList = new List<string>() { };
             }
         }
         
-        //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
-        else if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
-        {
-            commandIndex = 0;
-            commands.Clear();
-            SortDenigens();
-            state = MenuReader.main;
-            battleText.GetComponent<Renderer>().enabled = false;
-            foreach (GameObject b in buttonArray)
-            {
-                //show the buttons
-                b.GetComponent<Renderer>().enabled = true;
-                b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
-            }
-        }
+        
         
     }
 

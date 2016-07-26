@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Cole : Hero {
 
@@ -17,7 +18,6 @@ public class Cole : Hero {
         spdPer = 0.09f;
 
         base.Start();
-	
 	}
 	
 	// Update is called once per frame

@@ -49,6 +49,26 @@ public class GameControl : MonoBehaviour {
             heroList[0].luck = 7;
             heroList[0].evasion = 5;
             heroList[0].spd = 6;
+
+            //test code for creating Cole -- based on level 2 stats
+            //We will have these stats stored in HeroData objs for consistency between rooms
+            //heroList.Add(new HeroData());
+            //heroList[1].name = "Cole";
+            //heroList[1].level = 2;
+            //heroList[1].exp = 0;
+            //heroList[1].levelUpPts = 0;
+            //heroList[1].techPts = 0;
+            //heroList[1].hp = 10;
+            //heroList[1].hpMax = 10;
+            //heroList[1].pm = 17;
+            //heroList[1].pmMax = 17;
+            //heroList[1].atk = 9;
+            //heroList[1].def = 6;
+            //heroList[1].mgkAtk = 18;
+            //heroList[1].mgkDef = 13;
+            //heroList[1].luck = 10;
+            //heroList[1].evasion = 8;
+            //heroList[1].spd = 9;
         }
         else if (control != this)
         {
@@ -103,7 +123,8 @@ public class GameControl : MonoBehaviour {
             FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
             PlayerData data = (PlayerData)bf.Deserialize(file);
             file.Close();
-
+            //clear any current data
+            heroList = new List<HeroData>() { };
             //sets local data to the stored data
             //health = data.health;
             //load all of the heroes

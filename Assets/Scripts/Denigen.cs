@@ -32,8 +32,8 @@ public class Denigen : MonoBehaviour {
     protected BattleMenu battleMenu;
     protected string takeDamageText, calcDamageText;
 
-    public string TakeDamageText { get { return takeDamageText; } }
-    public string CalcDamageText { get { return calcDamageText; } }
+    public string TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
+    public string CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
 
     // arrays of techniques
     protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
@@ -55,8 +55,10 @@ public class Denigen : MonoBehaviour {
     public List<string> SpellsDescription { get { return spellsDescription; } }
 
     // status effect
-    enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     Status statusState = Status.normal;
+
+    public Status StatusState { get { return statusState; } }
 
     protected GameObject card;
     public GameObject Card { get { return card; } set { card = value; } }
@@ -67,25 +69,29 @@ public class Denigen : MonoBehaviour {
         baseTotal = 24 + (12 * stars);
 
         // setting up stats
-        hp = (int)(baseTotal * hpPer);        
-        pm = (int)(baseTotal * pmPer);        
-        atkBat = atk = (int)(baseTotal * atkPer);
-        defBat = def = (int)(baseTotal * defPer);
-        mgkAtkBat = mgkAtk = (int)(baseTotal * mgkAtkPer);
-        mgkDefBat = mgkDef = (int)(baseTotal * mgkDefPer);
-        luckBat = luck = (int)(baseTotal * luckPer);
-        evasionBat = evasion = (int)(baseTotal * evasionPer);
-        spdBat = spd = (int)(baseTotal * spdPer);
-        hpMax = hp;
-        pmMax = pm;
+        if (hpMax == 0)// checking if they already exist, so they're not overwritten
+        {
+            hp = (int)(baseTotal * hpPer);
+            pm = (int)(baseTotal * pmPer);
+            atkBat = atk = (int)(baseTotal * atkPer);
+            defBat = def = (int)(baseTotal * defPer);
+            mgkAtkBat = mgkAtk = (int)(baseTotal * mgkAtkPer);
+            mgkDefBat = mgkDef = (int)(baseTotal * mgkDefPer);
+            luckBat = luck = (int)(baseTotal * luckPer);
+            evasionBat = evasion = (int)(baseTotal * evasionPer);
+            spdBat = spd = (int)(baseTotal * spdPer);
+            hpMax = hp;
+            pmMax = pm;
+        }
+        
 
         //get a reference to the battleMenu object in the scene
         if (GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>())
         {
             battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
         }
-        
-        //card = (GameObject)Instantiate(Resources.Load("Prefabs/textPrefab"));
+
+        statusState = Status.normal;
 	}
     protected void LevelUp(int lvl)
     {
@@ -157,7 +163,7 @@ public class Denigen : MonoBehaviour {
             chance /= 100; // make percentage
 
             // add chance to crit to increase the probability of num being the smaller one
-            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText += name + " strikes a weak spot!"; }
+            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText += " " + name + " strikes a weak spot!"; }
 
             // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
 
@@ -193,10 +199,10 @@ public class Denigen : MonoBehaviour {
 
         // decrease hp based off of damage
         hp -= (int)damage;
-        takeDamageText = name + " takes " + damage + " damage!";
+        takeDamageText = name + " takes " + (int)damage + " damage!";
 
         // check for dead
-        if (hp <= 0) { takeDamageText += " " + name + " falls!";  statusState = Status.dead; }
+        if (hp <= 0) { hp = 0; takeDamageText += " " + name + " falls!"; statusState = Status.dead; }
     }
 
 	// Update is called once per frame

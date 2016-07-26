@@ -23,7 +23,6 @@ public class Enemy : Denigen {
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
         level = Random.Range((areaLevel - 2), (areaLevel + 2));
-        print("Level: " + level);
         //level up until desired level is hit
         for (int i = 0; i < level; i++)
         {
