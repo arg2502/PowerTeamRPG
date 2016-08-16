@@ -7,6 +7,7 @@ public class E_Mudpuppy : Enemy {
 	// Use this for initialization
 	void Start () {
         stars = 1;
+        expMultiplier = 1; 
 
         //Skills and spells will probably be static for enemies
         skillsList = new List<string>() { "Bite" };
@@ -15,13 +16,13 @@ public class E_Mudpuppy : Enemy {
         spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
 
         // stats - should total to 1.00f
-        hpPer = 0.07f;
-        pmPer = 0.05f;
-        atkPer = 0.35f;
+        hpPer = 0.08f;
+        pmPer = 0.06f;
+        atkPer = 0.30f;
         defPer = 0.12f;
         mgkAtkPer = 0.02f;
         mgkDefPer = 0.09f;
-        luckPer = 0.11f;
+        luckPer = 0.14f;
         evasionPer = 0.12f;
         spdPer = 0.06f;
 

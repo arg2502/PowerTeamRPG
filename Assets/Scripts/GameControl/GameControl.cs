@@ -12,15 +12,16 @@ public class GameControl : MonoBehaviour {
 
     //attributes
     public static GameControl control;
-    /*public Hero JethroPrefab;
-    public Hero ColePrefab;
-    public Hero EleanorPrefab;
-    public Hero JuliettePrefab;
-    public Hero SelenePrefab;*/
 
-    //float health;
-    //string currentScene;
-    //public List<Denigen> heroList = new List<Denigen>() { };
+    //Info to be saved and used throughout the game
+    public int totalGold; // the player's total gold
+    //items -- add later
+    public string currentScene; // the place where the currently is (outside of battle)
+    public string savedScene; // the room where the player last saved
+    public Transform savedStatue; // the position of where the player last saved -- dungeon entrance as default
+
+    public Transform currentPosition; // the exact spot the player is in a room before a battle
+
     public List<HeroData> heroList = new List<HeroData>() { };
 
     //awake gets called before start
@@ -30,6 +31,8 @@ public class GameControl : MonoBehaviour {
             //this keeps the game object from being destroyed between scenes
             DontDestroyOnLoad(gameObject);
             control = this;
+
+            totalGold = 0;
             //test code for creating Jethro -- based on level 1 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
             heroList.Add(new HeroData());
@@ -90,22 +93,6 @@ public class GameControl : MonoBehaviour {
         for (int i = 0; i < heroList.Count; i++)
         {
             data.heroList.Add(heroList[i]);
-            /*data.heroList[i].name = heroList[i].name;
-            data.heroList[i].level = heroList[i].Level;
-            data.heroList[i].exp = heroList[i].Exp;
-            data.heroList[i].levelUpPts = heroList[i].LevelUpPts;
-            data.heroList[i].techPts = heroList[i].TechPts;
-            data.heroList[i].hp = heroList[i].hp;
-            data.heroList[i].hpMax = heroList[i].hpMax;
-            data.heroList[i].pm = heroList[i].pm;
-            data.heroList[i].pmMax = heroList[i].pmMax;
-            data.heroList[i].atk = heroList[i].Atk;
-            data.heroList[i].def = heroList[i].Def;
-            data.heroList[i].mgkAtk = heroList[i].MgkAtk;
-            data.heroList[i].mgkDef = heroList[i].MgkDef;
-            data.heroList[i].luck = heroList[i].Luck;
-            data.heroList[i].evasion = heroList[i].Evasion;
-            data.heroList[i].spd = heroList[i].Spd;*/
         }
         //Save which scene the player is in
         data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
@@ -131,44 +118,6 @@ public class GameControl : MonoBehaviour {
             for (int i = 0; i < data.heroList.Count; i++)
             {
                 heroList.Add(data.heroList[i]);
-                /*switch (data.heroList[i].name)
-                {
-                    case "Jethro":
-                        heroList.Add(GameObject.Instantiate(JethroPrefab));
-                        break;
-                    case "Cole":
-                        heroList.Add(GameObject.Instantiate(ColePrefab));
-                        break;
-                    case "Eleanor":
-                        heroList.Add(GameObject.Instantiate(EleanorPrefab));
-                        break;
-                    case "Juliette":
-                        heroList.Add(GameObject.Instantiate(JuliettePrefab));
-                        break;
-                    case "Selene":
-                        heroList.Add(GameObject.Instantiate(SelenePrefab));
-                        break;
-                    default:
-                        heroList.Add(GameObject.Instantiate(JethroPrefab));
-                        break;
-
-                }
-                heroList[i].name = data.heroList[i].name;
-                heroList[i].Level = data.heroList[i].level;
-                heroList[i].Exp = data.heroList[i].exp;
-                heroList[i].LevelUpPts = data.heroList[i].levelUpPts;
-                heroList[i].TechPts = data.heroList[i].techPts;
-                heroList[i].hp = data.heroList[i].hp;
-                heroList[i].hpMax = data.heroList[i].hpMax;
-                heroList[i].pm = data.heroList[i].pm;
-                heroList[i].pmMax = data.heroList[i].pmMax;
-                heroList[i].Atk = data.heroList[i].atk;
-                heroList[i].Def = data.heroList[i].def;
-                heroList[i].MgkAtk = data.heroList[i].mgkAtk;
-                heroList[i].MgkDef = data.heroList[i].mgkDef;
-                heroList[i].Luck = data.heroList[i].luck;
-                heroList[i].Evasion = data.heroList[i].evasion;
-                heroList[i].Spd = data.heroList[i].spd;*/
             }
             //put the player back where they were
             UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
@@ -181,8 +130,11 @@ public class GameControl : MonoBehaviour {
 [Serializable]
 class PlayerData
 {
-    public float health;
-    public string currentScene;
+    public int totalGold; // the player's total gold
+    //items -- add later
+    public string currentScene; // the place where the currently is (outside of battle)
+    public string savedScene; // the room where the player last saved
+    public Transform savedStatue; // the position of where the player last saved -- dungeon entrance as default
     public List<HeroData> heroList = new List<HeroData>() { };
 }
 

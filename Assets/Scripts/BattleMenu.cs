@@ -451,7 +451,14 @@ public class BattleMenu : Menu {
             }
             
         }
-        else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { print(currentDenigen.name + " cannot attack"); commands.Add(null); ChangecurrentDenigen(); }
+        else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { 
+            //print(currentDenigen.name + " cannot attack");
+            commands.Add(null);
+            ChangecurrentDenigen(); }
+        else if (state == MenuReader.failure)
+        {
+            UpdateFailure();
+        }
         else
         {
             foreach (Denigen d in denigenArray)
@@ -482,6 +489,7 @@ public class BattleMenu : Menu {
         //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
         if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
         {
+            textIndex = 0;
             //check if all heroes have fallen
             int fallenHeroes = 0;
             foreach (Denigen d in heroList)
@@ -517,7 +525,7 @@ public class BattleMenu : Menu {
             battleText.GetComponent<TextMesh>().text = null;
             battleText.GetComponent<Renderer>().enabled = false;
             battleTextList.Clear();
-            textIndex = 0;
+            //textIndex = 0;
             foreach (Denigen d in denigenArray)
             {
                 d.CalcDamageText = null;
@@ -595,9 +603,29 @@ public class BattleMenu : Menu {
                 battleTextList = new List<string>() { };
             }
         }
-        
-        
-        
+    }
+
+    void UpdateFailure()
+    {
+        //players lose 1/10th of their money for falling in battle
+        int loss = (int)(GameControl.control.totalGold * 0.1f);
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (textIndex == 0) { battleText.GetComponent<TextMesh>().text = "Jethro's entire team has fallen!"; }
+            if (textIndex == 1) { battleText.GetComponent<TextMesh>().text = "The team loses " + loss + " gold!"; }
+            if (textIndex == 2) { 
+                //take the player's gold
+                GameControl.control.totalGold -= loss;
+                //move the player back to where they last saved, restoring health and pm
+                foreach (HeroData h in GameControl.control.heroList)
+                {
+                    h.hp = h.hpMax;
+                    h.pm = h.pmMax;
+                }
+                //Go to the last saved location of the dungeon -- ADD LATER
+            }
+            textIndex++;
+        }
     }
 
 	void UpdateMain () {

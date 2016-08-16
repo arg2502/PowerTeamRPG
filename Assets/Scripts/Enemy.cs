@@ -5,10 +5,12 @@ public class Enemy : Denigen {
 
     //Amount of experience awarded for defeating this enemy
     int exp;
+    // A number for tweaking the amount of experience rewarded, based on species
+    protected int expMultiplier;
 
     //Median level for enemies in this region, dependant on player's team's highest level when they first entered this region.
     //Will probably be pulled from an array
-    int areaLevel = 3;
+    int areaLevel;
 
     //States dependant on health, to influence the enemy decision making. This should make them appear smarter
     protected enum Health { high, average, low, dangerous};
@@ -20,6 +22,7 @@ public class Enemy : Denigen {
         base.Start();
 
         //get the areaLevel -- ADD LATER
+        areaLevel = 3;
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
         level = Random.Range((areaLevel - 2), (areaLevel + 2));
@@ -29,6 +32,8 @@ public class Enemy : Denigen {
             base.LevelUp(i + 1);
         }
 
+        // Calculate the experience this enemy should award
+        exp = stars * expMultiplier * level;
 	}
 
     protected void TakeDamage(float damage, bool isMagic)
