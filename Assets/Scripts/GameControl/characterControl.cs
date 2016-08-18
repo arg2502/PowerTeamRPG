@@ -5,10 +5,14 @@ public class characterControl : OverworldObject {
     float moveSpeed = 0;
     float walkSpeed = 200;
     float runSpeed = 300;
-    Vector2 speed;
-    public Vector3 lastPos;
+    public Vector2 speed;
+    //public Vector3 lastPos;
+
+    Animator anim;
+
 	// Use this for initialization
 	void Start () {
+        anim = GetComponent<Animator>();
         base.Start();
 	}
 	
@@ -23,40 +27,33 @@ public class characterControl : OverworldObject {
 
         if (Input.GetKey(KeyCode.W))
         {
-            speed += new Vector2(0, moveSpeed) * Time.deltaTime;
-            //transform.Translate( speed );
+            speed = new Vector2(0, moveSpeed) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
-            //transform.Translate(speed);
+            speed = new Vector2(0, -moveSpeed) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
-           // transform.Translate(new Vector2(-moveSpeed, 0) * Time.deltaTime);
+            speed = new Vector2(-moveSpeed, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
-            //transform.Translate(new Vector2(moveSpeed, 0) * Time.deltaTime);
+            speed = new Vector2(moveSpeed, 0) * Time.deltaTime;
         }
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, speed, 30.0f);
-        if (hit.collider == null)
+        RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y + 5.0f, transform.position.z), speed, 30.0f);
+        RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 10.0f, transform.position.z), speed, 30.0f);
+        if (topHit.collider == null && bottomHit.collider == null)
         {
             transform.Translate(speed);
         }
+
+        //flip the horizontal walking sprite based on speed
+        if (speed.x < 0 && transform.localScale.x < 0) { transform.localScale = new Vector3(1, 1, 1); }
+        else if (speed.x > 0 && transform.localScale.x > 0) { transform.localScale = new Vector3(-1, 1, 1); }
+
+        anim.SetFloat("vSpeed", speed.y);
+        anim.SetFloat("hSpeed", Mathf.Abs(speed.x));
     }
 
-    //void OnCollisionEnter2D(Collision2D col)
-    //{
-    //    lastPos = transform.position - new Vector3(2* speed.x, 2* speed.y, 0f);
-    //}
-
-    //void OnCollisionStay2D(Collision2D col)
-    //{
-    //    print("Collision");
-    //    //transform.Translate(new Vector2(0, -moveSpeed) * Time.deltaTime);
-    //    transform.position = lastPos;
-    //}
 }
