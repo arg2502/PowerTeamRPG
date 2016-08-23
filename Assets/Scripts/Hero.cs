@@ -94,7 +94,16 @@ public class Hero: Denigen {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
 
             targetIndex--;
-            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+			if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+
+			// if enemy is dead, skip to next
+			if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
+				battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+				targetIndex--;
+				if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+			}
+
+            
         }
         if (Input.GetKeyUp(KeyCode.W))
         {
@@ -102,7 +111,16 @@ public class Hero: Denigen {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
 
             targetIndex++;
-            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+			if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+
+			// if enemy is dead, skip to next
+			if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
+				battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+				targetIndex++;
+				if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+			}
+
+            
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -112,7 +130,16 @@ public class Hero: Denigen {
         }
         //move the cursor to the correct position
         battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
-        battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
+
+		// if enemy is dead, skip to next
+		if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
+			battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+			targetIndex++;
+			if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+		}
+
+
+		battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
     }
 
     //Strike is standard attack with 50% power
@@ -139,7 +166,7 @@ public class Hero: Denigen {
         switch (atkChoice)
         {
             case "Strike":
-                Strike();
+			if(targets[0].StatusState != Status.dead) Strike();
                 break;
             default:
                 break;

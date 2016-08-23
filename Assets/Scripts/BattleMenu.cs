@@ -260,7 +260,7 @@ public class BattleMenu : Menu {
                 //Queue up the command to be executed later
                 //commands.Add(label);
                 //End of the turn for current denigen, pass to the next one
-                //ChangecurrentDenigen();
+                //ChangeCurrentDenigen();
 
                 //store the name of the command you wish to issue
                 command = label;
@@ -303,7 +303,7 @@ public class BattleMenu : Menu {
                     //Put this into the queue of commands
                     commands.Add(label);
                     //Giving an attack command marks the end of current denigen's turn
-                    ChangecurrentDenigen();
+                    ChangeCurrentDenigen();
                 }
                 else if (state == MenuReader.items)
                 {
@@ -315,7 +315,7 @@ public class BattleMenu : Menu {
         StateChangeText();   
     }
 
-    void ChangecurrentDenigen()
+    void ChangeCurrentDenigen()
     {
         currentDenigen.Card.GetComponent<TextMesh>().color = Color.white;
         currentDenigenIndex++;
@@ -431,7 +431,7 @@ public class BattleMenu : Menu {
                     //Add the issued command to the queue
                     commands.Add(command);
                     //The current denigen's turn is over, move on
-                    ChangecurrentDenigen();
+                    ChangeCurrentDenigen();
                     //Change the cards back to their default color
                     foreach (Denigen d in enemyList)
                     {
@@ -447,14 +447,14 @@ public class BattleMenu : Menu {
                 //Add the enemy's chosen attack to the queue
                 commands.Add(currentDenigen.GetComponent<Enemy>().ChooseAttack());
                 //The current denigen's turn is over, move on
-                ChangecurrentDenigen();
+                ChangeCurrentDenigen();
             }
             
         }
         else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { 
             //print(currentDenigen.name + " cannot attack");
             commands.Add(null);
-            ChangecurrentDenigen(); }
+            ChangeCurrentDenigen(); }
         else if (state == MenuReader.failure)
         {
             UpdateFailure();
@@ -550,7 +550,7 @@ public class BattleMenu : Menu {
                 battleTextList = new List<string>() { };
             }
             //if the turn hasn't already been calculated, and the denigen is not dead
-            if (denigenArray[commandIndex].StatusState != Denigen.Status.dead)
+			if (denigenArray[commandIndex].StatusState != Denigen.Status.dead)
             {
                 if (battleTextList.Count == 0)
                 {
@@ -568,7 +568,7 @@ public class BattleMenu : Menu {
                     foreach (Denigen d in denigenArray[commandIndex].Targets)
                     {
                         //this causes an error when the target is dead. hopefully ending the battle when all heroes are dead will avoid this
-                        if (d.TakeDamageText != null)
+						if (d.TakeDamageText != null)
                         {
                             battleTextList.Add(d.TakeDamageText);
                         }
