@@ -8,6 +8,15 @@ public class Enemy : Denigen {
     // A number for tweaking the amount of experience rewarded, based on species
     protected int expMultiplier;
 
+    public int Exp { get { return gold; } }
+
+    //amount of gold awarded for defeating this enemy
+    int gold;
+    //a number for tweaking the amount of gold awarded, based on species
+    protected int goldMultiplier;
+
+    public int Gold { get { return gold; } }
+
     //Median level for enemies in this region, dependant on player's team's highest level when they first entered this region.
     //Will probably be pulled from an array
     int areaLevel;
@@ -21,7 +30,7 @@ public class Enemy : Denigen {
         //set the base stats for the enemy
         base.Start();
 
-        //get the areaLevel -- ADD LATER
+        //get the areaLevel from the gameControl obj -- ADD LATER
         areaLevel = 3;
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
@@ -32,8 +41,9 @@ public class Enemy : Denigen {
             base.LevelUp(i + 1);
         }
 
-        // Calculate the experience this enemy should award
+        // Calculate the experience and gold this enemy should award
         exp = stars * expMultiplier * level;
+        gold = stars * goldMultiplier;
 	}
 
     protected void TakeDamage(float damage, bool isMagic)

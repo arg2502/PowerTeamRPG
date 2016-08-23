@@ -13,14 +13,17 @@ public class GameControl : MonoBehaviour {
     //attributes
     public static GameControl control;
 
+    //the player's name (Jethro)
+    public string playerName = "Jethro";
+
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
     //items -- add later
-    public string currentScene; // the place where the currently is (outside of battle)
+    public string currentScene; // the place where the player currently is (outside of battle)
+    public string previousScene; // the place where the player is coming from (outside of battle)
     public string savedScene; // the room where the player last saved
-    public Transform savedStatue; // the position of where the player last saved -- dungeon entrance as default
-
-    public Transform currentPosition; // the exact spot the player is in a room before a battle
+    public Vector3 savedStatue; // the position of where the player last saved -- dungeon entrance as default
+    public Vector3 currentPosition; // the exact spot the player is in a room before a battle
 
     public List<HeroData> heroList = new List<HeroData>() { };
 
@@ -97,6 +100,7 @@ public class GameControl : MonoBehaviour {
         //Save which scene the player is in
         data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
+
         //Writes our player class to a file
         bf.Serialize(file, data);
         file.Close();
@@ -134,7 +138,8 @@ class PlayerData
     //items -- add later
     public string currentScene; // the place where the currently is (outside of battle)
     public string savedScene; // the room where the player last saved
-    public Transform savedStatue; // the position of where the player last saved -- dungeon entrance as default
+    public float statuePosX, statuePosY, statuePosZ; // the position of where the player last saved -- dungeon entrance as default
+    public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
     public List<HeroData> heroList = new List<HeroData>() { };
 }
 

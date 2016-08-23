@@ -13,6 +13,7 @@ public class characterControl : OverworldObject {
 	// Use this for initialization
 	void Start () {
         anim = GetComponent<Animator>();
+        transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
         base.Start();
 	}
 	
@@ -46,6 +47,7 @@ public class characterControl : OverworldObject {
         if (topHit.collider == null && bottomHit.collider == null)
         {
             transform.Translate(speed);
+            GameControl.control.currentPosition = transform.position; //perhaps this can be done upon colliding with an enemy, rather than every frame
         }
 
         //flip the horizontal walking sprite based on speed

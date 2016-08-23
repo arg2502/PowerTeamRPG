@@ -7,7 +7,8 @@ public class E_Mudpuppy : Enemy {
 	// Use this for initialization
 	void Start () {
         stars = 1;
-        expMultiplier = 1; 
+        expMultiplier = 1;
+        goldMultiplier = 1;
 
         //Skills and spells will probably be static for enemies
         skillsList = new List<string>() { "Bite" };

@@ -13,6 +13,7 @@ public class testSceneChanger : MonoBehaviour {
 	void OnGUI () {
         if (GUI.Button(new Rect(10, 10, 150, 100), "Go to battle"))
         {
+            GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu");
         }
         if (GUI.Button(new Rect(10, 120, 150, 100), "Add Cole"))

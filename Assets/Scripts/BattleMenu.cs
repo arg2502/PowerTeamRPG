@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class BattleMenu : Menu {
 
+    //numbers for the end of the battle
+    int loss; // the amount of gold the player will lose for failing
+    int gold; // the amount of gold awarded for victory
+    int exp; // the amount of experience awarded for victory
+
     // enumeration to determine what menu is shown
     enum MenuReader { main, techniques, skills, spells, summons, items, flee, targeting, battle, victory, failure };
     MenuReader state = MenuReader.main;
@@ -109,6 +114,8 @@ public class BattleMenu : Menu {
                 denigenArray[i].Evasion = tempHeroes[i].evasion;
                 denigenArray[i].spdBat = tempHeroes[i].spd;
                 denigenArray[i].Spd = tempHeroes[i].spd;
+                denigenArray[i].GetComponent<Hero>().Exp = tempHeroes[i].exp;
+                denigenArray[i].GetComponent<Hero>().LevelUpPts = tempHeroes[i].levelUpPts;
             }
         }
         //This code may be depricated or altered later
@@ -459,6 +466,10 @@ public class BattleMenu : Menu {
         {
             UpdateFailure();
         }
+        else if (state == MenuReader.victory)
+        {
+            UpdateVictory();
+        }
         else
         {
             foreach (Denigen d in denigenArray)
@@ -607,12 +618,18 @@ public class BattleMenu : Menu {
 
     void UpdateFailure()
     {
-        //players lose 1/10th of their money for falling in battle
-        int loss = (int)(GameControl.control.totalGold * 0.1f);
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            if (textIndex == 0) { battleText.GetComponent<TextMesh>().text = "Jethro's entire team has fallen!"; }
-            if (textIndex == 1) { battleText.GetComponent<TextMesh>().text = "The team loses " + loss + " gold!"; }
+            if (textIndex == 0)
+            { 
+                //players lose 1/10th of their money for falling in battle
+                loss = (int)(GameControl.control.totalGold * 0.1f); 
+                battleText.GetComponent<TextMesh>().text = GameControl.control.playerName + "'s entire team has fallen!";
+            }
+            if (textIndex == 1) 
+            { 
+                battleText.GetComponent<TextMesh>().text = "The team loses " + loss + " gold!";
+            }
             if (textIndex == 2) { 
                 //take the player's gold
                 GameControl.control.totalGold -= loss;
@@ -624,8 +641,72 @@ public class BattleMenu : Menu {
                 }
                 //Go to the last saved location of the dungeon -- ADD LATER
             }
+            if (textIndex < 2)
+            {
+                battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
+            }
             textIndex++;
         }
+    }
+
+    void UpdateVictory()
+    {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (textIndex == 0)
+            {
+                //the gold to award to the player
+                gold = 0;
+                exp = 0;
+                foreach (Enemy e in enemyList) { gold += e.Gold; exp += e.Exp; }
+                battleText.GetComponent<TextMesh>().text = "All of the enemies have fallen!";
+            }
+            if (textIndex == 1)
+            {
+                battleText.GetComponent<TextMesh>().text = GameControl.control.playerName + "'s team gains " + gold + " gold!";
+                GameControl.control.totalGold += gold; // add to the player's total gold
+            }
+            if (textIndex == 2)
+            {
+                battleText.GetComponent<TextMesh>().text = "Each teammate receives " + exp + " experience points!";
+                foreach (Hero h in heroList) { if (h.StatusState != Denigen.Status.dead) { h.Exp += exp; } }
+            }
+            if (textIndex == 3)
+            {
+                // set all of the heroData stats equal to in battle stats
+                foreach (Hero h in heroList)
+                {
+                    foreach (HeroData hd in GameControl.control.heroList)
+                    {
+                        if (h.name == hd.name)
+                        {
+                            hd.level = h.Level;
+                            hd.levelUpPts = h.LevelUpPts;
+                            hd.exp = h.Exp;
+                            hd.hp = h.hp;
+                            hd.hpMax = h.hpMax;
+                            hd.pm = h.pm;
+                            hd.pmMax = h.pmMax;
+                            hd.atk = h.Atk;
+                            hd.def = h.Def;
+                            hd.mgkAtk = h.MgkAtk;
+                            hd.mgkDef = h.MgkDef;
+                            hd.evasion = h.Evasion;
+                            hd.luck = h.Luck;
+                            hd.spd = h.Spd;
+                        }
+                    }
+                }
+                // exit the battle
+                UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
+            }
+            if (textIndex < 3)
+            {
+                battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
+            }
+            textIndex++;
+        }
+
     }
 
 	void UpdateMain () {
