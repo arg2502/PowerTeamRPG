@@ -125,10 +125,9 @@ public class BattleMenu : Menu {
         }*/
         //create enemies -- sample code
         // to do - pull array of possible enemies for the area, and num of enemies
-        int numOfEnemies = Random.Range(1, 5);
-        for (int i = 0; i < numOfEnemies; i++)
+        for (int i = 0; i < GameControl.control.numOfEnemies; i++)
         {
-            GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/tempMudpuppy"));
+            GameObject temp = (GameObject)Instantiate(GameControl.control.enemies[i].gameObject);
             denigenArray.Add(temp.GetComponent<Denigen>());
         }
 
