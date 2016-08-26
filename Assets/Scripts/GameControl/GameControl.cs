@@ -25,7 +25,11 @@ public class GameControl : MonoBehaviour {
     public Vector3 savedStatue; // the position of where the player last saved -- dungeon entrance as default
     public Vector3 currentPosition; // the exact spot the player is in a room before a battle
 
-    public List<HeroData> heroList = new List<HeroData>() { };
+    public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
+
+    public int areaLevel; // mean level of enemies, determined by an enemyControl obj
+    public int numOfEnemies; // number of enemies in battle, determined by an enemyControl obj
+    public List<Enemy> enemies; // the type of enemies in battle, determined by an enemyControl obj
 
     //awake gets called before start
     void Awake () {

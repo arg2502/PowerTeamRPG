@@ -17,11 +17,16 @@ public class enemyControl : OverworldObject {
     //These are useful for contolling the enemy's movement
     float waitTimer;
     float walkTimer;
+    float pursueTimer;
     float timer;
     List<Vector2> directions = new List<Vector2>() { new Vector2(1.0f, 0.0f), new Vector2(-1.0f, 0.0f), new Vector2(0.0f, 1.0f), new Vector2(0.0f, -1.0f) };
 
     enum State { wait, walk, pursue };
     State state;
+
+    roomControl rc; // a reference to the roomControl object, which will dictate enemy specifics
+    int numOfEnemies; // number of enemies this object carries
+    List<Enemy> enemies; // the enemies this object carries
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +34,23 @@ public class enemyControl : OverworldObject {
         state = State.wait;
         walkTimer = 3.0f;
         waitTimer = 2.0f;
+        pursueTimer = 5.0f;
         safeDistance = 500.0f;
+
+        rc = GameObject.FindObjectOfType<roomControl>();
+
+        //check player's distance from enemy
+        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+            + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+        if (dist <= safeDistance + 100.0f) { Destroy(this.gameObject); }
+
+        numOfEnemies = Random.Range(1, 5);
+        enemies = new List<Enemy>();
+        for (int i = 0; i < numOfEnemies; i++)
+        {
+            enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
+        }
+
         base.Start();
 	}
 	
@@ -41,7 +62,8 @@ public class enemyControl : OverworldObject {
         //check player's distance from enemy
         dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-        if(dist <= safeDistance) { state = State.pursue; }
+        if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
+        
 
         if (state == State.wait)
         {
@@ -57,7 +79,8 @@ public class enemyControl : OverworldObject {
         }
         else if (state == State.walk)
         {
-            transform.Translate(speed);
+            checkCollision();
+
             if (timer >= walkTimer)
             {
                 state = State.wait;
@@ -73,15 +96,33 @@ public class enemyControl : OverworldObject {
             if (player.position.y < transform.position.y - 5.0f) { speed += directions[3] * runSpeed * Time.deltaTime; }
             else if (player.position.y > transform.position.y + 5.0f) { speed += directions[2] * runSpeed * Time.deltaTime; }
 
-            transform.Translate(speed);
+            checkCollision();
 
             if (dist <= 15.0f)
             {
                 GameControl.control.currentPosition = player.position; //record the player's position before entering battle
                 GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
-                // Recieve the battle info from the enemy, such as enemy types and # of enemies -- ADD LATER
+                // Recieve the battle info from the enemy, such as enemy types and # of enemies
+                GameControl.control.numOfEnemies = numOfEnemies;
+                GameControl.control.enemies = enemies;
                 UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
+            }
+
+            if (timer >= pursueTimer)
+            {
+                state = State.walk;
+                timer = 0.0f;
             }
         }
 	}
+
+    void checkCollision()
+    {
+        RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y + 5.0f, transform.position.z), speed, 30.0f);
+        RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 10.0f, transform.position.z), speed, 30.0f);
+        if (topHit.collider == null && bottomHit.collider == null)
+        {
+            transform.Translate(speed);
+        }
+    }
 }
