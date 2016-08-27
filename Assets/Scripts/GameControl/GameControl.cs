@@ -19,11 +19,14 @@ public class GameControl : MonoBehaviour {
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
     //items -- add later
+
+    //room information
     public string currentScene; // the place where the player currently is (outside of battle)
     public string previousScene; // the place where the player is coming from (outside of battle)
     public string savedScene; // the room where the player last saved
-    public Vector3 savedStatue; // the position of where the player last saved -- dungeon entrance as default
-    public Vector3 currentPosition; // the exact spot the player is in a room before a battle
+    public Transform savedStatue; // the position of where the player last saved -- dungeon entrance as default
+    public Vector2 currentPosition; // the exact spot the player is in a room before a battle
+    public Vector2 areaEntrance; // where the player will be kicked back to if they die
 
     public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
 

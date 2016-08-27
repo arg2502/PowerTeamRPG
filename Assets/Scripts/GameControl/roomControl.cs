@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public class roomControl : MonoBehaviour {
 
+    // store the default entrance of the room
+    // this is where the player will be sent when they die if no statue has been tagged
+    public Vector2 entrance;
+
     // Attributes dealing with enemies
     public int areaLevel; // the locked level of enemies in the area
     public int numOfEnemies; //number of enemies walking around
@@ -13,6 +17,10 @@ public class roomControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //tell the gameControl object what it needs to know
+        GameControl.control.areaEntrance = entrance;
+
+        //create the appropriate amount of enemies
         for (int i = 0; i < numOfEnemies; i++)
         {
             GameObject temp = GameObject.Instantiate(enemyControlPrefab);

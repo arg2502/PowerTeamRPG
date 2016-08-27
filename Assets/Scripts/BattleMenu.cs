@@ -651,7 +651,17 @@ public class BattleMenu : Menu {
                     h.hp = h.hpMax;
                     h.pm = h.pmMax;
                 }
-                //Go to the last saved location of the dungeon -- ADD LATER
+                // Go to the last saved location of the dungeon
+                if (GameControl.control.savedStatue != null)
+                {
+                    GameControl.control.currentPosition = GameControl.control.savedStatue.position;
+                }
+                else // if no statue is tagged, go to the entrance
+                {
+                    GameControl.control.currentPosition = GameControl.control.areaEntrance;
+                }
+                // load the scene
+                UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
             }
             if (textIndex < 2)
             {
