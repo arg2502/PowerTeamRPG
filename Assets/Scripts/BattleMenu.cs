@@ -652,9 +652,9 @@ public class BattleMenu : Menu {
                     h.pm = h.pmMax;
                 }
                 // Go to the last saved location of the dungeon
-                if (GameControl.control.savedStatue != null)
+                if (GameControl.control.taggedStatue)
                 {
-                    GameControl.control.currentPosition = GameControl.control.savedStatue.position;
+                    GameControl.control.currentPosition = GameControl.control.savedStatue;
                 }
                 else // if no statue is tagged, go to the entrance
                 {

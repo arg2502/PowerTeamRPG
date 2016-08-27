@@ -22,7 +22,8 @@ public class MorttimerStatue : NPCObject {
                 //get rid of status effects -- add later
             }
             // set this as the saved statue
-            GameControl.control.savedStatue = this.gameObject.transform;
+            GameControl.control.taggedStatue = true;
+            GameControl.control.savedStatue = player.transform.position;
             GameControl.control.currentPosition = player.transform.position;
             // Save the game
             GameControl.control.Save();
