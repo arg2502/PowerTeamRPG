@@ -471,6 +471,10 @@ public class BattleMenu : Menu {
         }
         else
         {
+            // if it is an enemy's turn, go straight to targeting
+            // This avoids the player gaining control of the enemy
+            if (currentDenigen.GetComponent<Enemy>() != null) { state = MenuReader.targeting; } 
+
             foreach (Denigen d in denigenArray)
             {
                 UpdateCard(d);
@@ -531,6 +535,7 @@ public class BattleMenu : Menu {
             commandIndex = 0;
             commands.Clear();
             SortDenigens();
+            currentDenigen = denigenArray[0];
             state = MenuReader.main;
             battleText.GetComponent<TextMesh>().text = null;
             battleText.GetComponent<Renderer>().enabled = false;
