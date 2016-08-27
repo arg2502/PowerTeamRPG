@@ -107,6 +107,9 @@ public class GameControl : MonoBehaviour {
         //Save which scene the player is in
         data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
+        // record the player's position
+        data.posX = currentPosition.x;
+        data.posY = currentPosition.y;
 
         //Writes our player class to a file
         bf.Serialize(file, data);
@@ -133,6 +136,7 @@ public class GameControl : MonoBehaviour {
             //put the player back where they were
             UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
             // Put their position vector here if we choose
+            currentPosition = new Vector2(data.posX, data.posY);
         }
     }
 }

@@ -6,14 +6,14 @@ public class NPCObject : OverworldObject {
 
 	// variables to keep track of the player's
 	// position relative to npc
-	Transform player;
-	float distFromPlayer;
+	protected Transform player;
+	protected float distFromPlayer;
 
 	// enable dialogue box when player interacts with npc
 	public DialogueBox dBox;
-	GameObject dBoxGO;
+	protected GameObject dBoxGO;
 
-	NPCDialogue npcDialogue;
+	protected NPCDialogue npcDialogue;
 
 	// variable to determine whether the player
 	// can talk to the npc
@@ -21,7 +21,7 @@ public class NPCObject : OverworldObject {
 	// one already exists
 	public bool canTalk;
 	public Sprite charImage;
-	void Start(){
+	protected void Start(){
 		player = GameObject.FindObjectOfType<characterControl>().transform;
 		canTalk = true;
 		npcDialogue = GetComponent<NPCDialogue> ();
