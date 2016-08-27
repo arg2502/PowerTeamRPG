@@ -28,7 +28,7 @@ public class NPCObject : OverworldObject {
 	}
 
 	// begin conversation when player collides and presses space
-	void Update(){
+	protected void Update(){
 		if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk) {
 			canTalk = false;
 			// if first time, set equal to existing box
@@ -50,7 +50,7 @@ public class NPCObject : OverworldObject {
 		}
 	}
 
-	void FixedUpdate(){
+	protected void FixedUpdate(){
 		distFromPlayer = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
 			+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 	}

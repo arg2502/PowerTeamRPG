@@ -29,6 +29,8 @@ public class DialogueBox : MonoBehaviour {
 
 	// camera obj
 	GameObject mainCamera;
+	Vector2 dialogueOffset;
+	Vector2 titleOffset;
 
 	characterControl hero;
 
@@ -36,6 +38,10 @@ public class DialogueBox : MonoBehaviour {
 	SpriteRenderer sr;
 	SpriteRenderer portraitSr;
 
+	// scroll typing lines
+	bool isTyping;
+	bool cancelTyping;
+	int desiredLength = 30;
 	// Use this for initialization
 	void Start () {
 
@@ -75,27 +81,59 @@ public class DialogueBox : MonoBehaviour {
 
 
 		// display at correct location - initially
-		textPosition = new Vector3(mainCamera.transform.position.x - 600, mainCamera.transform.position.y - 350, -100);
+		dialogueOffset = new Vector2(-760, -250);
+		titleOffset = new Vector2 (-286, 70);
+		textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
 		spokenTextGO.transform.position = textPosition;
 
-		titlePosition = new Vector3 (textPosition.x - 200, textPosition.y + 100, -100);
+		titlePosition = new Vector3 (textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
 		titleTextGO.transform.position = titlePosition;
 
+
 		transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+
+		isTyping = false;
+		cancelTyping = false;
+
+		StartCoroutine (ScrollText (dialogueNode.dialogueList [listPosition]));
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (enabled) {
+
+			if (Input.GetKeyUp (KeyCode.Space)) {
+				if (!isTyping) {
+					// continue list if space is pressed
+					if (listPosition < dialogueNode.dialogueList.Count - 1) {
+						listPosition++;
+						StartCoroutine (ScrollText (dialogueNode.dialogueList [listPosition]));
+					} 
+				// disable text and box when list is done
+					else {
+						npc.canTalk = true;
+						npc = null;
+						spokenText.GetComponent<Renderer> ().enabled = false;
+						titleText.GetComponent<Renderer> ().enabled = false;
+						sr.enabled = false;
+						portraitSr.enabled = false;
+						hero.canMove = true;
+						enabled = false;
+
+					}
+				} else if (isTyping && !cancelTyping) {
+					cancelTyping = true;
+				}
+			}
 			// display text
 			titleText.text = dialogueNode.title;
-			spokenText.text = dialogueNode.dialogueList [listPosition];
+			//spokenText.text = dialogueNode.dialogueList [listPosition];
 
 			// display at correct location
-			textPosition = new Vector3(mainCamera.transform.position.x - 600, mainCamera.transform.position.y - 350, -100);
+			textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
 			spokenTextGO.transform.position = textPosition;
 
-			titlePosition = new Vector3 (textPosition.x - 200, textPosition.y + 100, -100);
+			titlePosition = new Vector3 (textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
 			titleTextGO.transform.position = titlePosition;
 
 			transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
@@ -109,40 +147,74 @@ public class DialogueBox : MonoBehaviour {
 			sr.sortingOrder = 899;
 			portraitSr.sortingOrder = 899;
 
-			if (Input.GetKeyUp (KeyCode.Space)) {
-				// continue list if space is pressed
-				if (listPosition < dialogueNode.dialogueList.Count - 1) {
-					listPosition++;
-				} 
-			// disable text and box when list is done
-			else {
-					npc.canTalk = true;
-					npc = null;
-					spokenText.GetComponent<Renderer> ().enabled = false;
-					titleText.GetComponent<Renderer> ().enabled = false;
-					sr.enabled = false;
-					portraitSr.enabled = false;
-					hero.canMove = true;
-					enabled = false;
 
-				}
-			}
 		}
 	
+	}
+	string FormatText(string str)
+	{
+		string formattedString = null;
+		string[] wordArray = str.Split(' ');
+		int lineLength = 0;
+		foreach (string s in wordArray)
+		{
+			//if the current line plus the length of the next word and SPACE is greater than the desired line length
+			if (s.Length + 1 + lineLength > desiredLength)
+			{
+				//go to new line
+				formattedString += "\n" + s;
+				//starting a new line
+				lineLength = s.Length;
+			}
+			else
+			{
+				// first in array, no space
+				if (s == wordArray [0]) {
+					formattedString += "" + s;
+				} else {
+					formattedString += " " + s;
+				}
+				lineLength += s.Length + 1;
+			}
+		}
+		return formattedString;
+	}
+	//Coroutine to type out lines
+	IEnumerator ScrollText(string line)
+	{
+		int letter = 0;
+		spokenText.text = "";
+		int lineLength = spokenText.text.Length;
+		isTyping = true;
+		cancelTyping = false;
+		while (isTyping && !cancelTyping && letter < line.Length - 1) {
+			if (lineLength > desiredLength) {
+				spokenText.text += "\n";
+				lineLength = 0;
+			}
+			spokenText.text += line [letter];
+			letter++;
+			yield return new WaitForSeconds (dialogueNode.typingSpeed);
+		}
+		spokenText.text = FormatText(line);
+		isTyping = false;
+		cancelTyping = false;
 	}
 
 	// turn box on when player wants to talk
 	public void EnableBox(){
+		enabled = true;
 		listPosition = 0;
 		spokenText.GetComponent<Renderer> ().enabled = true;
 		titleText.GetComponent<Renderer> ().enabled = true;
 		sr.enabled = true;
 		portraitSr.enabled = true;
-		enabled = true;
+
 		hero.canMove = false;
 
 		// set the dialogue node to the one inside the npc inspector
 		dialogueNode = npc.GetComponent<NPCDialogue>();
+		StartCoroutine (ScrollText (dialogueNode.dialogueList [listPosition]));
 
 	}
 }
