@@ -156,7 +156,7 @@ public class BattleMenu : Menu {
         for (int i = 0; i < numOfRow; i++)
         {
             // create a button
-            buttonArray[i] = GameObject.Instantiate(buttonPrefab); ;
+			buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
             MyButton b = buttonArray[i].GetComponent<MyButton>();
             buttonArray[i].transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y - (250 - b.height) + (i * -(b.height + b.height / 2)));
 

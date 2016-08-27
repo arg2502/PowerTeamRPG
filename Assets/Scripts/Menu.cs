@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class Menu : MonoBehaviour {
 
-    public GameObject buttonPrefab;
-    public GameObject camera;
+    //public GameObject buttonPrefab;
+    protected GameObject camera;
     protected int numOfRow;
     protected List<string> contentArray;
     protected GameObject[] buttonArray;
@@ -69,7 +69,33 @@ public class Menu : MonoBehaviour {
             }
         }
     }
+	// if they are disabled, show the buttons
+	public void EnableMenu()
+	{
+		foreach (GameObject b in buttonArray)
+		{			
+			if(!b.GetComponent<Renderer>().enabled){ 
+				b.GetComponent<Renderer>().enabled = true;
+			}
+			if (!b.GetComponent<MyButton> ().textObject.GetComponent<Renderer> ().enabled) {
+				b.GetComponent<MyButton> ().textObject.GetComponent<Renderer> ().enabled = true;
+			}
+		}
+	}
 
+	// if they are enabled, hide the buttons
+	public void DisableMenu()
+	{
+		foreach (GameObject b in buttonArray)
+		{
+			if(b.GetComponent<Renderer>().enabled){ 
+				b.GetComponent<Renderer>().enabled = false;
+			}
+			if (b.GetComponent<MyButton> ().textObject.GetComponent<Renderer> ().enabled) {
+				b.GetComponent<MyButton> ().textObject.GetComponent<Renderer> ().enabled = false;
+			}
+		}
+	}
 	// Update is called once per frame
 	protected void Update () {
         // scroll through menu options

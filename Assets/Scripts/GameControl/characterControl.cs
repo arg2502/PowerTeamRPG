@@ -28,19 +28,19 @@ public class characterControl : OverworldObject {
 
         if (Input.GetKey(KeyCode.W))
         {
-            speed = new Vector2(0, moveSpeed) * Time.deltaTime;
+            speed += new Vector2(0, moveSpeed) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            speed = new Vector2(0, -moveSpeed) * Time.deltaTime;
+            speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            speed = new Vector2(-moveSpeed, 0) * Time.deltaTime;
+            speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            speed = new Vector2(moveSpeed, 0) * Time.deltaTime;
+            speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
         }
         RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y + 5.0f, transform.position.z), speed, 30.0f);
         RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 10.0f, transform.position.z), speed, 30.0f);
