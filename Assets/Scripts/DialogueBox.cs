@@ -123,6 +123,7 @@ public class DialogueBox : MonoBehaviour {
 					}
 				} else if (isTyping && !cancelTyping) {
 					cancelTyping = true;
+					spokenText.text = FormatText (dialogueNode.dialogueList [listPosition]);
 				}
 			}
 			// display text
@@ -159,22 +160,25 @@ public class DialogueBox : MonoBehaviour {
 		foreach (string s in wordArray)
 		{
 			//if the current line plus the length of the next word and SPACE is greater than the desired line length
-			if (s.Length + 1 + lineLength > desiredLength)
+			if (lineLength > desiredLength)
 			{
+				print (1 + lineLength);
 				//go to new line
-				formattedString += "\n" + s;
+				formattedString += s + "\n";
 				//starting a new line
-				lineLength = s.Length;
+				//lineLength = s.Length;
+				lineLength = 0;
 			}
 			else
 			{
 				// first in array, no space
-				if (s == wordArray [0]) {
-					formattedString += "" + s;
-				} else {
-					formattedString += " " + s;
-				}
+				//if (lineLength == 0) {
+				//	formattedString += s + "";
+				//} else {
+					formattedString += s + " ";
+				//}
 				lineLength += s.Length + 1;
+				//lineLength++;
 			}
 		}
 		return formattedString;
@@ -187,16 +191,18 @@ public class DialogueBox : MonoBehaviour {
 		int lineLength = spokenText.text.Length;
 		isTyping = true;
 		cancelTyping = false;
-		while (isTyping && !cancelTyping && letter < line.Length - 1) {
-			if (lineLength > desiredLength) {
+		while (isTyping && !cancelTyping && letter < line.Length) {
+			if (lineLength > desiredLength && line[letter-1] == ' ') {
+				print ("cur char: " + line[letter] + "\nnext char: " + line [letter + 1]);
 				spokenText.text += "\n";
 				lineLength = 0;
 			}
 			spokenText.text += line [letter];
 			letter++;
+			lineLength++;
+			//spokenText.text = FormatText (spokenText.text);
 			yield return new WaitForSeconds (dialogueNode.typingSpeed);
 		}
-		spokenText.text = FormatText(line);
 		isTyping = false;
 		cancelTyping = false;
 	}
