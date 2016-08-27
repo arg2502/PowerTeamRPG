@@ -6,6 +6,7 @@ public class NPCDialogue : MonoBehaviour {
 
 	// title of the person speaking
 	public string title;
+	public float typingSpeed;
 
 	// list of phrases a character will say when you talk to them
 	public List<string> dialogueList;
