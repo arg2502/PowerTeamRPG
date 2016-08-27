@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class NPCDialogue : MonoBehaviour {
 
+	// title of the person speaking
+	public string title;
+
 	// list of phrases a character will say when you talk to them
 	public List<string> dialogueList;
 

@@ -161,7 +161,7 @@ public class BattleMenu : Menu {
             buttonArray[i].transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y - (250 - b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
-            b.textObject = GameObject.Instantiate(b.textPrefab);
+			b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
@@ -183,7 +183,7 @@ public class BattleMenu : Menu {
         for (int i = 0; i < heroList.Count; i++)
         {
             //Create a text prefab for now, we'll figure out the HUD later
-            heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/textPrefab"));
+            heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
             heroList[i].Card.transform.position = new Vector2(-((250/heroList.Count) * (i*3) + 250), (camera.transform.position.y - 250));
             heroList[i].Card.GetComponent<TextMesh>().text = heroList[i].name + "\nLvl: " + heroList[i].Level + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
                 + "\nPM: " + heroList[i].pm + " / " + heroList[i].pmMax;
@@ -194,7 +194,7 @@ public class BattleMenu : Menu {
         for (int i = 0; i < enemyList.Count; i++)
         {
             //Create a text prefab for now, we'll figure out the HUD later
-            enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/textPrefab"));
+            enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
             enemyList[i].Card.transform.position = new Vector2(((250 / enemyList.Count) * (i * 3) + 250), (camera.transform.position.y - 250));
             enemyList[i].Card.GetComponent<TextMesh>().text = enemyList[i].name + "\nLvl: " + enemyList[i].Level + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
                 + "\nPM: " + enemyList[i].pm + " / " + enemyList[i].pmMax;
@@ -211,7 +211,7 @@ public class BattleMenu : Menu {
         }
         
         //Create the text object for the battle phase
-        battleText = (GameObject)Instantiate(Resources.Load("Prefabs/TextPrefab"));
+        battleText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
         battleText.GetComponent<TextMesh>().fontSize = 250;
         battleText.GetComponent<TextMesh>().alignment = TextAlignment.Left;
         
