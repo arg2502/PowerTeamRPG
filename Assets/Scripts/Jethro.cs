@@ -31,6 +31,6 @@ public class Jethro : Hero {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        base.Update();
 	}
 }

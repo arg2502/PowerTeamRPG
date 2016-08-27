@@ -87,6 +87,6 @@ public class E_Goikko : Enemy {
 
 	// Update is called once per frame
 	void Update () {
-	
+        base.Update();
 	}
 }

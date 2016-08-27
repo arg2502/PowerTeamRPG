@@ -22,6 +22,6 @@ public class Cole : Hero {
 	
 	// Update is called once per frame
 	void Update () {
-	
+        base.Update();
 	}
 }

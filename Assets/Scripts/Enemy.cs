@@ -67,7 +67,7 @@ public class Enemy : Denigen {
     }
 
 	// Update is called once per frame
-	void Update () {
-	  
+	protected void Update () {
+        base.Update();
 	}
 }

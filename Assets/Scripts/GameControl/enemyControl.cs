@@ -56,6 +56,7 @@ public class enemyControl : OverworldObject {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        sr.sortingOrder = (int)-transform.position.y;
         //iterate timer
         timer += Time.deltaTime;
 

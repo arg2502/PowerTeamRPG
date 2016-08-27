@@ -27,6 +27,8 @@ public class BattleMenu : Menu {
     public List<Denigen> enemyList = new List<Denigen>() { };
     public List<Vector2> enemyPositions = new List<Vector2>() {new Vector2(480.0f, -90.0f), new Vector2(702.0f, 33.0f),
                                     new Vector2(361.0f, 104.0f), new Vector2(580.0f, 231.0f), new Vector2(262.0f, 286.0f)};
+    public List<Vector2> heroPositions = new List<Vector2>() {new Vector2(-480.0f, -90.0f), new Vector2(-702.0f, 33.0f),
+                                    new Vector2(-361.0f, 104.0f), new Vector2(-580.0f, 231.0f), new Vector2(-262.0f, 286.0f)};
 
     //The HUD to display stats, for now just text prefabs
     public List<GameObject> heroCards = new List<GameObject>() { };
@@ -148,6 +150,12 @@ public class BattleMenu : Menu {
         for (int i = enemyList.Count - 1; i > -1; i--)
         {
             enemyList[i].transform.position = enemyPositions[i];
+        }
+
+        //sort the hero denigens into position
+        for (int i = heroList.Count - 1; i > -1; i--)
+        {
+            heroList[i].transform.position = heroPositions[i];
         }
 
         //sort denigens by speed

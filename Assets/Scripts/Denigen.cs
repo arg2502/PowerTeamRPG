@@ -206,7 +206,7 @@ public class Denigen : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
-	
+	protected void Update () {
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
 	}
 }
