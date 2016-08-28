@@ -520,7 +520,7 @@ public class BattleMenu : Menu {
             //this while loop bypasses any denigens who have passed away
             while (commandIndex < denigenArray.Count && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
             {
-                //print(denigenArray[commandIndex].name + " is dead");
+                print(denigenArray[commandIndex].name + " is dead up top");
                 
                 battleTextList = new List<string>() { };
 
@@ -607,6 +607,22 @@ public class BattleMenu : Menu {
             }
             else
             {
+				//this while loop bypasses any denigens who have passed away
+				while (commandIndex < denigenArray.Count - 1 && denigenArray[commandIndex + 1].StatusState == Denigen.Status.dead)
+				{
+					print(denigenArray[commandIndex + 1].name + " is dead");
+
+					battleTextList = new List<string>() { };
+
+
+					commandIndex++;
+					// if the command index is at the end, there are no more live denigens in the list
+					// so exit out of UpdateBattle
+					if (commandIndex >= denigenArray.Count) {
+						return;
+					}
+				}
+
                 textIndex = 0;
                 //print("Move on to the next denigen");
                 commandIndex++;
@@ -615,7 +631,7 @@ public class BattleMenu : Menu {
             }
         }
 
-		if (/*Input.GetKeyUp(KeyCode.Space) && */commandIndex >= commands.Count)
+		else if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
 		{			
 			textIndex = 0;
 			//check if all heroes have fallen
