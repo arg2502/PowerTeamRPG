@@ -179,7 +179,7 @@ public class BattleMenu : Menu {
             // if we had multiple columns
             //for (int j = 0; j < numOfCol; j++)
             //{
-            //buttonArray[i] = GUILayout.Button(contentArray[j + (i * numOfCol)]); // print out buttons in one row based on number of columns
+            //buttonArray[i] = GUILayout.Button(contentArray[j + (i * numOfCol)]); // //print out buttons in one row based on number of columns
 
             //}
         }
@@ -263,7 +263,7 @@ public class BattleMenu : Menu {
     public override void ButtonAction(string label)
     {
         //base.ButtonAction(label);
-        //print("Inside BattleMenu ButtonAction");
+        ////print("Inside BattleMenu ButtonAction");
         // perform action based on passed in string
         switch (label)
         {
@@ -355,7 +355,7 @@ public class BattleMenu : Menu {
             if (currentDenigen.GetComponent<Hero>() != null)
             {
                 //reset the menu state for the next denigen
-                //print("Set to main for " + currentDenigen.name);
+                ////print("Set to main for " + currentDenigen.name);
                 state = MenuReader.main;
             }
         }
@@ -393,7 +393,7 @@ public class BattleMenu : Menu {
 
         //for (int i = 0; i < denigenArray.Count; i++)
         //{
-        //    print(i + " denigen spd: " + denigenArray[i].spdBat);
+        //    //print(i + " denigen spd: " + denigenArray[i].spdBat);
         //}
     }
 
@@ -466,7 +466,7 @@ public class BattleMenu : Menu {
             
         }
         else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { 
-            //print(currentDenigen.name + " cannot attack");
+            ////print(currentDenigen.name + " cannot attack");
             commands.Add(null);
             ChangeCurrentDenigen(); }
         else if (state == MenuReader.failure)
@@ -509,68 +509,28 @@ public class BattleMenu : Menu {
         //This should be done by calling the attack method for each denigen in order, and passing
         //the strings we previously recorded for them
         //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
-        if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
-        {
-            textIndex = 0;
-            //check if all heroes have fallen
-            int fallenHeroes = 0;
-            foreach (Denigen d in heroList)
-            {
-                if (d.StatusState == Denigen.Status.dead) { fallenHeroes++; }
-            }
-            if (heroList.Count == fallenHeroes)
-            {
-                //go to a gameover state
-                state = MenuReader.failure;
-                print("All heroes have fallen");
-                return;
-            }
 
-            //check if all enemies have fallen
-            int fallenEnemies = 0;
-            foreach (Denigen d in enemyList)
-            {
-                if (d.StatusState == Denigen.Status.dead) { fallenEnemies++; }
-            }
-            if (enemyList.Count == fallenEnemies)
-            {
-                //go to a victory state
-                state = MenuReader.victory;
-                print("All enemies have fallen");
-                return;
-            }
-
-            commandIndex = 0;
-            commands.Clear();
-            SortDenigens();
-            currentDenigen = denigenArray[0];
-            state = MenuReader.main;
-            battleText.GetComponent<TextMesh>().text = null;
-            battleText.GetComponent<Renderer>().enabled = false;
-            battleTextList.Clear();
-            //textIndex = 0;
-            foreach (Denigen d in denigenArray)
-            {
-                d.CalcDamageText = null;
-                d.TakeDamageText = null;
-            }
-            foreach (GameObject b in buttonArray)
-            {
-                //show the buttons
-                b.GetComponent<Renderer>().enabled = true;
-                b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
-            }
-        }
+		int fallenHeroes = 0;
+		int fallenEnemies = 0;
+       
        
         //press space to advance the battle phase
-        if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) || (commandIndex == 0 && textIndex == 0)))
+		if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
         {
             //this while loop bypasses any denigens who have passed away
-            while (commandIndex < denigenArray.Count - 1 && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
+            while (commandIndex < denigenArray.Count && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
             {
                 //print(denigenArray[commandIndex].name + " is dead");
-                commandIndex++;
+                
                 battleTextList = new List<string>() { };
+
+
+				commandIndex++;
+				// if the command index is at the end, there are no more live denigens in the list
+				// so exit out of UpdateBattle
+				if (commandIndex >= denigenArray.Count) {
+					return;
+				}
             }
             //if the turn hasn't already been calculated, and the denigen is not dead
 			if (denigenArray[commandIndex].StatusState != Denigen.Status.dead)
@@ -598,39 +558,131 @@ public class BattleMenu : Menu {
                     }
                 }
 
-                //print(denigenArray[commandIndex]);
+                ////print(denigenArray[commandIndex]);
                 //make sure there is text to display
                 if (battleTextList[textIndex] != null)
                 {
                     battleText.GetComponent<TextMesh>().text = FormatText(battleTextList[textIndex]);
+					print (battleText.GetComponent<TextMesh> ().text);
                 }
                 else { textIndex++; }
 
                 if (battleText.GetComponent<TextMesh>().text.Contains("damage!")) //this hopefully only updates the HUD when damage is dealt
                 {
+					// check if heroes/enemies are dead
+					// checks after attack to break out as soon as all enemies are dead
+					fallenHeroes = 0;
+					fallenEnemies = 0;
+
                     foreach (Denigen d in denigenArray)
                     {
                         UpdateCard(d);
+						if (d is Hero && d.StatusState == Denigen.Status.dead) {
+							fallenHeroes++;
+						} else if ( d is Enemy && d.StatusState == Denigen.Status.dead) {
+							fallenEnemies++;
+						}
+
+						// set to appropriate state
+						if (fallenHeroes >= heroList.Count) {
+							textIndex = 0;
+							state = MenuReader.failure;
+							return;
+							//PostBattle ();
+						} if (fallenEnemies >= enemyList.Count) {
+							textIndex = 0;
+							state = MenuReader.victory;
+							return;
+							//PostBattle ();
+						}
                     }
-                }
+				}
+
+
             }
             if (textIndex < (battleTextList.Count - 1))
             {
                 textIndex++;
+				//print ("inside if");
             }
             else
             {
                 textIndex = 0;
-                print("Move on to the next denigen");
+                //print("Move on to the next denigen");
                 commandIndex++;
                 battleTextList = new List<string>() { };
+
             }
         }
+
+		if (/*Input.GetKeyUp(KeyCode.Space) && */commandIndex >= commands.Count)
+		{			
+			textIndex = 0;
+			//check if all heroes have fallen
+			fallenHeroes = 0;
+			foreach (Denigen d in heroList)
+			{
+				if (d.StatusState == Denigen.Status.dead) { fallenHeroes++; }
+			}
+			if (heroList.Count == fallenHeroes)
+			{
+				//go to a gameover state
+				//PostBattle ();
+				textIndex = 0;
+				state = MenuReader.failure;
+				//print("All heroes have fallen");
+
+				return;
+			}
+
+			//check if all enemies have fallen
+			fallenEnemies = 0;
+			foreach (Denigen d in enemyList)
+			{
+				if (d.StatusState == Denigen.Status.dead) { fallenEnemies++; }
+			}
+			if (enemyList.Count == fallenEnemies)
+			{
+				//go to a victory state
+				textIndex = 0;
+				//PostBattle ();
+				state = MenuReader.victory;
+
+				//print("All enemies have fallen");
+				return;
+			}
+
+
+			PostBattle ();
+		}
     }
 
+	void PostBattle(){
+		commandIndex = 0;
+		commands.Clear();
+		SortDenigens();
+		currentDenigen = denigenArray[0];
+		state = MenuReader.main;
+		battleText.GetComponent<TextMesh>().text = null;
+		battleText.GetComponent<Renderer>().enabled = false;
+		battleTextList.Clear();
+		//textIndex = 0;
+		foreach (Denigen d in denigenArray)
+		{
+			d.CalcDamageText = null;
+			d.TakeDamageText = null;
+		}
+		foreach (GameObject b in buttonArray)
+		{
+			//show the buttons
+			b.GetComponent<Renderer>().enabled = true;
+			b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
+		}
+
+	}
     void UpdateFailure()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+		if (Input.GetKeyUp(KeyCode.Space))
         {
             if (textIndex == 0)
             { 
@@ -666,6 +718,7 @@ public class BattleMenu : Menu {
             if (textIndex < 2)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
+				print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
@@ -673,7 +726,7 @@ public class BattleMenu : Menu {
 
     void UpdateVictory()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+		if (Input.GetKeyUp(KeyCode.Space))
         {
             if (textIndex == 0)
             {
@@ -725,6 +778,7 @@ public class BattleMenu : Menu {
             if (textIndex < 3)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
+				print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
@@ -736,7 +790,7 @@ public class BattleMenu : Menu {
         // check for selected button
         /*if (buttonArray[0])
         {
-            //print("Strike");
+            ////print("Strike");
         }
         else if (buttonArray[1])
         {
@@ -744,11 +798,11 @@ public class BattleMenu : Menu {
         }
         else if (buttonArray[2])
         {
-            //print("ITEMS!!!!@#rJ123IO4J2IO3RIAOSFDJ");
+            ////print("ITEMS!!!!@#rJ123IO4J2IO3RIAOSFDJ");
         }
         else if (buttonArray[3])
         {
-            //print("Flee");
+            ////print("Flee");
         }*/
 	}
     void UpdateTechniques()
