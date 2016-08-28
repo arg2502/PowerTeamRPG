@@ -4,14 +4,21 @@ using System.Collections.Generic;
 
 public class MorttimerStatue : NPCObject {
 
+    //Used to change the statue's orientation
+    public bool flip = false;
+    public bool side = false;
+    float mult = 1.0f;
+
 	// Use this for initialization
 	void Start () {
+        if (flip) { mult *= -1; }
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
         base.Start();
 	}
 
     void Update()
     {
+        if (flip) { mult = -1.0f; }
         if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk)
         {
             // heal the heroes
@@ -23,8 +30,17 @@ public class MorttimerStatue : NPCObject {
             }
             // set this as the saved statue
             GameControl.control.taggedStatue = true;
-            GameControl.control.savedStatue = player.transform.position;
-            GameControl.control.currentPosition = player.transform.position;
+            if (!side)
+            {
+                GameControl.control.savedStatue = new Vector2(this.transform.position.x, this.transform.position.y - 100.0f);
+                GameControl.control.currentPosition = new Vector2(this.transform.position.x, this.transform.position.y - 100.0f);
+            }
+            if (side)
+            {
+                GameControl.control.savedStatue = new Vector2(this.transform.position.x - (100.0f * mult), this.transform.position.y);
+                GameControl.control.currentPosition = new Vector2(this.transform.position.x - (100.0f * mult), this.transform.position.y);
+            }
+            
             // Save the game
             GameControl.control.Save();
         }
