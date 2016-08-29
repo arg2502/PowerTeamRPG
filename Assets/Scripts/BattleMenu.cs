@@ -548,13 +548,17 @@ public class BattleMenu : Menu {
                     }
 
                     //record the appropriate text to display
-                    battleTextList.Add(denigenArray[commandIndex].CalcDamageText);
+                    for (int i = 0; i < denigenArray[commandIndex].CalcDamageText.Count; i++)
+                    {
+                        battleTextList.Add(denigenArray[commandIndex].CalcDamageText[i]);
+                    }
                     foreach (Denigen d in denigenArray[commandIndex].Targets)
                     {
                         //this causes an error when the target is dead. hopefully ending the battle when all heroes are dead will avoid this
-						if (d.TakeDamageText != null)
+						//if (d.TakeDamageText != null)
+                        for (int i = 0; i < d.TakeDamageText.Count; i ++ )
                         {
-                            battleTextList.Add(d.TakeDamageText);
+                            battleTextList.Add(d.TakeDamageText[i]);
                         }
                     }
                 }
@@ -686,8 +690,10 @@ public class BattleMenu : Menu {
 		//textIndex = 0;
 		foreach (Denigen d in denigenArray)
 		{
-			d.CalcDamageText = null;
-			d.TakeDamageText = null;
+			//d.CalcDamageText = null;
+			//d.TakeDamageText = null;
+            d.CalcDamageText.Clear();
+            d.TakeDamageText.Clear();
 		}
 		foreach (GameObject b in buttonArray)
 		{
@@ -719,6 +725,7 @@ public class BattleMenu : Menu {
                 {
                     h.hp = h.hpMax;
                     h.pm = h.pmMax;
+                    h.statusState = HeroData.Status.normal;
                 }
                 // Go to the last saved location of the dungeon
                 if (GameControl.control.taggedStatue)

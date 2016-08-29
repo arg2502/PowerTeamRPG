@@ -77,7 +77,7 @@ public class E_Goikko : Enemy {
                 Tackle();
                 break;
             case "Frenzy":
-                calcDamageText = name + " used frenzy";
+                calcDamageText.Add(name + " used frenzy");
                 break;
             default:
                 Tackle();

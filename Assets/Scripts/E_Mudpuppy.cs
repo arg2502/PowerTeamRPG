@@ -84,7 +84,7 @@ public class E_Mudpuppy : Enemy {
                 Bite();
                 break;
             case "Frenzy":
-                calcDamageText = name + " used frenzy";
+                calcDamageText.Add(name + " used frenzy");
                 break;
             default:
                 Bite();

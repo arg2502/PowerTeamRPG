@@ -30,10 +30,10 @@ public class Denigen : MonoBehaviour {
 
     //Battle menu object
     protected BattleMenu battleMenu;
-    protected string takeDamageText, calcDamageText;
+    protected List<string> takeDamageText, calcDamageText;
 
-    public string TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
-    public string CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
+    public List<string> TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
+    public List<string> CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
 
     // arrays of techniques
     protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
@@ -66,6 +66,9 @@ public class Denigen : MonoBehaviour {
 
     // Use this for initialization
 	protected void Start () {
+        takeDamageText = new List<string>();
+        calcDamageText = new List<string>();
+
         baseTotal = 24 + (12 * stars);
 
         // setting up stats
@@ -134,10 +137,10 @@ public class Denigen : MonoBehaviour {
 
     protected float CalcDamage(string atkChoice, float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
-        calcDamageText = name + " uses " + atkChoice + "!";
+        calcDamageText.Add(name + " uses " + atkChoice + "!");
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
-        if (num > accuracy) { calcDamageText += " The attack misses..."; return 0.0f; }
+        if (num > accuracy) { calcDamageText.Add("The attack misses..."); return 0.0f; }
         else
         {
             int atkStat;
@@ -163,7 +166,7 @@ public class Denigen : MonoBehaviour {
             chance /= 100; // make percentage
 
             // add chance to crit to increase the probability of num being the smaller one
-            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText += " " + name + " strikes a weak spot!"; }
+            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); }
 
             // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
 
@@ -199,10 +202,10 @@ public class Denigen : MonoBehaviour {
 
         // decrease hp based off of damage
         hp -= (int)damage;
-        takeDamageText = name + " takes " + (int)damage + " damage!";
+        takeDamageText.Add(name + " takes " + (int)damage + " damage!");
 
         // check for dead
-        if (hp <= 0) { hp = 0; takeDamageText += " " + name + " falls!"; statusState = Status.dead; }
+        if (hp <= 0) { hp = 0; takeDamageText.Add( name + " falls!"); statusState = Status.dead; }
     }
 
 	// Update is called once per frame
