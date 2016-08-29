@@ -116,6 +116,7 @@ public class BattleMenu : Menu {
                 denigenArray[i].Evasion = tempHeroes[i].evasion;
                 denigenArray[i].spdBat = tempHeroes[i].spd;
                 denigenArray[i].Spd = tempHeroes[i].spd;
+                denigenArray[i].StatusState = (Denigen.Status)tempHeroes[i].statusState;
                 denigenArray[i].GetComponent<Hero>().Exp = tempHeroes[i].exp;
                 denigenArray[i].GetComponent<Hero>().LevelUpPts = tempHeroes[i].levelUpPts;
             }
@@ -785,6 +786,7 @@ public class BattleMenu : Menu {
                             hd.evasion = h.Evasion;
                             hd.luck = h.Luck;
                             hd.spd = h.Spd;
+                            hd.statusState = (HeroData.Status)h.StatusState;
                         }
                     }
                 }

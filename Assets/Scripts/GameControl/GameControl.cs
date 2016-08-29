@@ -166,5 +166,8 @@ public class HeroData
     public int level, exp, levelUpPts, techPts;
     public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
     public List<string> skillsList, skillsDescription, spellsList, spellsDescription;
+    // status effect
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
+    public Status statusState;
     //Also need passives, equipment
 }

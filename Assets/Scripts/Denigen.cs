@@ -56,9 +56,9 @@ public class Denigen : MonoBehaviour {
 
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
-    Status statusState = Status.normal;
+    public Status statusState;// = Status.normal;
 
-    public Status StatusState { get { return statusState; } }
+    public Status StatusState { get { return statusState; } set { statusState = value; } }
 
     protected GameObject card;
     public GameObject Card { get { return card; } set { card = value; } }
@@ -91,7 +91,7 @@ public class Denigen : MonoBehaviour {
             battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
         }
 
-        statusState = Status.normal;
+        //statusState = Status.normal;
 	}
     protected void LevelUp(int lvl)
     {

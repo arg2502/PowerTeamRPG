@@ -27,6 +27,7 @@ public class MorttimerStatue : NPCObject {
                 hd.hp = hd.hpMax;
                 hd.pm = hd.pmMax;
                 //get rid of status effects -- add later
+                hd.statusState = HeroData.Status.normal;
             }
             // set this as the saved statue
             GameControl.control.taggedStatue = true;
