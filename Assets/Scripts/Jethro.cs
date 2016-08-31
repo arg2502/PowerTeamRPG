@@ -7,7 +7,7 @@ public class Jethro : Hero {
 	// Use this for initialization
 	void Start () {
         // TEMPORARY LISTS
-        skillsList = new List<string>() { "Good", "God", "Really Good", "SuperGod"};
+        skillsList = new List<string>() { "Helmsplitter"};
         spellsList = new List<string>() { "Godspell", "Firepuff", "Wimsy Ass", "Ecpliseddd", "You're goddamn right" };
 
         // stats - should total to 1.00f
@@ -32,5 +32,28 @@ public class Jethro : Hero {
 	// Update is called once per frame
 	void Update () {
         base.Update();
+	}
+
+	public override void Attack (string atkChoice)
+	{
+		base.Attack (atkChoice);
+
+
+		// attacks specific to the character
+		switch (atkChoice) {
+			case "Helmsplitter":
+				if (targets [0].StatusState != Status.dead)
+					Helmsplitter ();
+				break;
+			default:
+				break;
+
+		}
+	}
+	public void Helmsplitter()
+	{
+		float damage;
+		damage = CalcDamage("Helmsplitter", 0.75f, 0.03f, 0.9f, false);
+		targets[0].TakeDamage(damage, false);
 	}
 }

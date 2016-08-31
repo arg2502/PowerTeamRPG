@@ -160,7 +160,7 @@ public class Hero: Denigen {
         targets[0].TakeDamage(damage, isMagic);
     }
 
-    public void Attack(string atkChoice)
+    public virtual void Attack(string atkChoice)
     {
         // specific denigens will pick attack methods based off of user choice
         switch (atkChoice)

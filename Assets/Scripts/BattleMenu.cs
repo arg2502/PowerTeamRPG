@@ -10,7 +10,7 @@ public class BattleMenu : Menu {
     int exp; // the amount of experience awarded for victory
 
     // enumeration to determine what menu is shown
-    enum MenuReader { main, techniques, skills, spells, summons, items, flee, targeting, battle, victory, failure };
+    enum MenuReader { main, attack, skills, spells, summons, items, flee, targeting, battle, victory, failure };
     MenuReader state = MenuReader.main;
 
     // previous state for back button
@@ -55,7 +55,7 @@ public class BattleMenu : Menu {
 	void Start () {
         base.Start();
         numOfRow = 4;
-        contentArray = new List<string> { "Strike", "Techniques", "Items", "Flee" };
+        contentArray = new List<string> { "Attack", "Block", "Items", "Flee" };
         buttonArray = new GameObject[numOfRow];
 
         // set currentDenigen - temp
@@ -180,7 +180,7 @@ public class BattleMenu : Menu {
             // if we had multiple columns
             //for (int j = 0; j < numOfCol; j++)
             //{
-            //buttonArray[i] = GUILayout.Button(contentArray[j + (i * numOfCol)]); // //print out buttons in one row based on number of columns
+            //buttonArray[i] = GUILayout.Button(contentArray[j + (i * numOfCol)]); // ////print out buttons in one row based on number of columns
 
             //}
         }
@@ -235,26 +235,26 @@ public class BattleMenu : Menu {
         switch (state)
         {
             case MenuReader.main:
-               contentArray = new List<string>{ "Strike", "Techniques", "Items", "Flee" };
+               contentArray = new List<string>{ "Attack", "Block", "Items", "Flee" };
                prevState = MenuReader.main; // default
                break;
-            case MenuReader.techniques:
-               contentArray = new List<string> { "<==", "Skills", "Spells", "Summons"};
+            case MenuReader.attack:
+               contentArray = new List<string> { "Strike", "Skills", "Spells", "Summons"};
                prevState = MenuReader.main;
                break;
             case MenuReader.skills:
                contentArray = currentDenigen.SkillsList;
-               prevState = MenuReader.techniques;
+               prevState = MenuReader.attack;
                break;
             case MenuReader.spells:
                contentArray = currentDenigen.SpellsList;
-               prevState = MenuReader.techniques;
+               prevState = MenuReader.attack;
                break;
             case MenuReader.summons:
                break;
             case MenuReader.items:
                break;
-            default:
+			default:
                break;
         }
 
@@ -281,9 +281,9 @@ public class BattleMenu : Menu {
                 command = label;
                 state = MenuReader.targeting;
                 break;
-            case "Techniques":
-                // change state to techniques menu
-                state = MenuReader.techniques;                           
+            case "Attack":
+                // change state to attack menu
+                state = MenuReader.attack;                           
                 break;
             case "Items":
                 // change state to items menu
@@ -293,7 +293,7 @@ public class BattleMenu : Menu {
                 // nothing right now
                 break;
             
-                // techniques menu
+                // attack menu
             case "Skills":
                 state = MenuReader.skills;
                 break;
@@ -314,11 +314,13 @@ public class BattleMenu : Menu {
                 if(state == MenuReader.spells || state == MenuReader.skills)
                 {
                     //Passes the name of the attack to the denigen
-                    currentDenigen.GetComponent<Hero>().SelectTarget(label);
+                    //currentDenigen.GetComponent<Hero>().SelectTarget(label);
                     //Put this into the queue of commands
-                    commands.Add(label);
+                    //commands.Add(label);
                     //Giving an attack command marks the end of current denigen's turn
-                    ChangeCurrentDenigen();
+                    //ChangeCurrentDenigen();
+					command = label;
+					state = MenuReader.targeting;
                 }
                 else if (state == MenuReader.items)
                 {
@@ -356,7 +358,7 @@ public class BattleMenu : Menu {
             if (currentDenigen.GetComponent<Hero>() != null)
             {
                 //reset the menu state for the next denigen
-                ////print("Set to main for " + currentDenigen.name);
+                //////print("Set to main for " + currentDenigen.name);
                 state = MenuReader.main;
             }
         }
@@ -394,7 +396,7 @@ public class BattleMenu : Menu {
 
         //for (int i = 0; i < denigenArray.Count; i++)
         //{
-        //    //print(i + " denigen spd: " + denigenArray[i].spdBat);
+        //    ////print(i + " denigen spd: " + denigenArray[i].spdBat);
         //}
     }
 
@@ -467,7 +469,7 @@ public class BattleMenu : Menu {
             
         }
         else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { 
-            ////print(currentDenigen.name + " cannot attack");
+            //////print(currentDenigen.name + " cannot attack");
             commands.Add(null);
             ChangeCurrentDenigen(); }
         else if (state == MenuReader.failure)
@@ -521,7 +523,7 @@ public class BattleMenu : Menu {
             //this while loop bypasses any denigens who have passed away
             while (commandIndex < denigenArray.Count && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
             {
-                print(denigenArray[commandIndex].name + " is dead up top");
+                //print(denigenArray[commandIndex].name + " is dead up top");
                 
                 battleTextList = new List<string>() { };
 
@@ -563,12 +565,12 @@ public class BattleMenu : Menu {
                     }
                 }
 
-                ////print(denigenArray[commandIndex]);
+                //////print(denigenArray[commandIndex]);
                 //make sure there is text to display
                 if (battleTextList[textIndex] != null)
                 {
                     battleText.GetComponent<TextMesh>().text = FormatText(battleTextList[textIndex]);
-					print (battleText.GetComponent<TextMesh> ().text);
+					//print (battleText.GetComponent<TextMesh> ().text);
                 }
                 else { textIndex++; }
 
@@ -608,14 +610,14 @@ public class BattleMenu : Menu {
             if (textIndex < (battleTextList.Count - 1))
             {
                 textIndex++;
-				//print ("inside if");
+				////print ("inside if");
             }
             else
             {
 				//this while loop bypasses any denigens who have passed away
 				while (commandIndex < denigenArray.Count - 1 && denigenArray[commandIndex + 1].StatusState == Denigen.Status.dead)
 				{
-					print(denigenArray[commandIndex + 1].name + " is dead");
+					//print(denigenArray[commandIndex + 1].name + " is dead");
 
 					battleTextList = new List<string>() { };
 
@@ -629,7 +631,7 @@ public class BattleMenu : Menu {
 				}
 
                 textIndex = 0;
-                //print("Move on to the next denigen");
+                ////print("Move on to the next denigen");
                 commandIndex++;
                 battleTextList = new List<string>() { };
 
@@ -651,7 +653,7 @@ public class BattleMenu : Menu {
 				//PostBattle ();
 				textIndex = 0;
 				state = MenuReader.failure;
-				//print("All heroes have fallen");
+				////print("All heroes have fallen");
 
 				return;
 			}
@@ -669,7 +671,7 @@ public class BattleMenu : Menu {
 				//PostBattle ();
 				state = MenuReader.victory;
 
-				//print("All enemies have fallen");
+				////print("All enemies have fallen");
 				return;
 			}
 
@@ -683,7 +685,7 @@ public class BattleMenu : Menu {
 		commands.Clear();
 		SortDenigens();
 		currentDenigen = denigenArray[0];
-		state = MenuReader.main;
+
 		battleText.GetComponent<TextMesh>().text = null;
 		battleText.GetComponent<Renderer>().enabled = false;
 		battleTextList.Clear();
@@ -701,7 +703,9 @@ public class BattleMenu : Menu {
 			b.GetComponent<Renderer>().enabled = true;
 			b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
 		}
-
+		state = MenuReader.main;
+		ChangeContentArray ();
+		StateChangeText ();
 	}
     void UpdateFailure()
     {
@@ -742,7 +746,7 @@ public class BattleMenu : Menu {
             if (textIndex < 2)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
-				print (battleText.GetComponent<TextMesh> ().text);
+				//print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
@@ -803,7 +807,7 @@ public class BattleMenu : Menu {
             if (textIndex < 3)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
-				print (battleText.GetComponent<TextMesh> ().text);
+				//print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
@@ -815,7 +819,7 @@ public class BattleMenu : Menu {
         // check for selected button
         /*if (buttonArray[0])
         {
-            ////print("Strike");
+            //////print("Strike");
         }
         else if (buttonArray[1])
         {
@@ -823,14 +827,14 @@ public class BattleMenu : Menu {
         }
         else if (buttonArray[2])
         {
-            ////print("ITEMS!!!!@#rJ123IO4J2IO3RIAOSFDJ");
+            //////print("ITEMS!!!!@#rJ123IO4J2IO3RIAOSFDJ");
         }
         else if (buttonArray[3])
         {
-            ////print("Flee");
+            //////print("Flee");
         }*/
 	}
-    void UpdateTechniques()
+    void Updateattack()
     {
         /*if (buttonArray[0])
         {
@@ -846,7 +850,7 @@ public class BattleMenu : Menu {
         }
         else if (buttonArray[3])
         {
-            contentArray = new string[] { "Strike", "Techniques", "Items", "Flee" };
+            contentArray = new string[] { "Strike", "attack", "Items", "Flee" };
             buttonArray = new GameObject[numOfRow];
             numOfRow = contentArray.Length;
             state = MenuReader.main;
