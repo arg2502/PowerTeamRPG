@@ -14,6 +14,10 @@ public class Denigen : MonoBehaviour {
     // in-battle/temporary stats -- made public so combatants can view and alter in battle stats
     public int hp, pm, hpMax, pmMax, atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
 
+    //Boolean to block attacks
+    protected bool isBlocking = false;
+    public bool IsBlocking { get { return isBlocking; } set { isBlocking = value; } }
+
     //List of passives, useful for enemies and heroes -- ADD LATER
 
     //List for storing targets of Denigen's attacks and spells
@@ -131,6 +135,11 @@ public class Denigen : MonoBehaviour {
         print(name + " Attacks");
     }
 
+    protected void Block()
+    {
+        calcDamageText.Add(name + " is blocking!");
+    }
+
     // NEEDED for crits
     // CalcDamage
     // TakeDamage
@@ -170,6 +179,14 @@ public class Denigen : MonoBehaviour {
 
             // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
 
+            //Clear the target's previous text, to avoid a build up 
+            print("Num of targets: " + targets.Count);
+            for (int i = 0; i < targets.Count; i++)
+            {
+                targets[i].TakeDamageText.Clear();
+                print("Clear target's damage text");
+            }
+               
             // return final damage amount
             return damage;
         }
@@ -197,11 +214,16 @@ public class Denigen : MonoBehaviour {
 
         // if negative damage, set it to zero -- just in case
         if (damage < 0) { damage = 0; }
+        
+        // check if this denigen is blocking -- if so, halve the damage received
+        if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); }
 
         // check for passives - LATER
 
         // decrease hp based off of damage
         hp -= (int)damage;
+
+        //Now record appropriate text
         takeDamageText.Add(name + " takes " + (int)damage + " damage!");
 
         // check for dead

@@ -74,7 +74,14 @@ public class Hero: Denigen {
 
         //this will use a switch statement to determine the type of
         //targeting required, and then pass off to a more specific method
-        SelectSingleTarget();
+        switch (attack)
+        {
+            case "Block":
+                break;
+            default:
+                SelectSingleTarget();
+                break;
+        }
     }
 
     //a generic, single target selecting method
@@ -167,6 +174,9 @@ public class Hero: Denigen {
         {
             case "Strike":
 			if(targets[0].StatusState != Status.dead) Strike();
+                break;
+            case "Block":
+                base.Block();
                 break;
             default:
                 break;

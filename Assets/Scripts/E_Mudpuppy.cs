@@ -35,11 +35,8 @@ public class E_Mudpuppy : Enemy {
     //Attack method for bite -- straight forward physical attack
     void Bite()
     {
-        //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage("Bite", 0.9f, 0.2f, 0.95f, false);
         // code for choosing the target of this attack
         // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
-        targets.Clear();
         Denigen tempTarget = battleMenu.heroList[0];
         for (int i = 0; i < battleMenu.heroList.Count; i++)
         {
@@ -50,12 +47,18 @@ public class E_Mudpuppy : Enemy {
         }
         targets.Add(tempTarget);
 
+        //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
+        float damage = CalcDamage("Bite", 0.9f, 0.2f, 0.95f, false);
+        
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(damage, false);
     }
 
     public override string ChooseAttack()
     {
+        // clear the targets list
+        targets.Clear();
+
         // Use rng to provide variety to decision making
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated
 

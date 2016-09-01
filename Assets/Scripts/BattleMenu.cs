@@ -281,6 +281,12 @@ public class BattleMenu : Menu {
                 command = label;
                 state = MenuReader.targeting;
                 break;
+            case "Block":
+                //simply flip a boolean
+                currentDenigen.IsBlocking = true;
+                commands.Add(label);
+                ChangeCurrentDenigen();
+                break;
             case "Attack":
                 // change state to attack menu
                 state = MenuReader.attack;                           
@@ -368,19 +374,7 @@ public class BattleMenu : Menu {
     {
         // temporary denigen for sorting
         Denigen temp;
-        //This code does not seem operational right now. I think it is because the denigens all have stats of 0 at this point
-        /*for (int i = 0; i < denigenArray.Length - 1; i++)
-        {
-            for (int j = 1; j < denigenArray.Length - i; j++)
-            {
-                if (denigenArray[j - 1].Spd > denigenArray[j].Spd)
-                {
-                    temp = denigenArray[j - 1];
-                    denigenArray[j - 1] = denigenArray[j];
-                    denigenArray[j] = temp;
-                }
-            }
-        }*/
+        
         for (int j = 0; j < denigenArray.Count; j++)
         {
             for (int i = 0; i < denigenArray.Count - 1; i++)
@@ -535,7 +529,7 @@ public class BattleMenu : Menu {
 					return;
 				}
             }
-            //if the turn hasn't already been calculated, and the denigen is not dead
+            //if the turn hasn't already been calculated, and the denigen is not dead or blocking
 			if (denigenArray[commandIndex].StatusState != Denigen.Status.dead)
             {
                 if (battleTextList.Count == 0)
@@ -692,10 +686,9 @@ public class BattleMenu : Menu {
 		//textIndex = 0;
 		foreach (Denigen d in denigenArray)
 		{
-			//d.CalcDamageText = null;
-			//d.TakeDamageText = null;
             d.CalcDamageText.Clear();
             d.TakeDamageText.Clear();
+            d.IsBlocking = false;
 		}
 		foreach (GameObject b in buttonArray)
 		{

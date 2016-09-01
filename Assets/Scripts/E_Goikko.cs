@@ -35,20 +35,23 @@ public class E_Goikko : Enemy {
     //Attack method for bite -- straight forward physical attack
     void Tackle()
     {
-        //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage("Tackle", 0.5f, 0.25f, 0.9f, false);
         // code for choosing the target of this attack
         // because goikko is an early enemy, let's have it randomly select a target
-        targets.Clear();
         int random = Random.Range(0, battleMenu.heroList.Count);
         targets.Add(battleMenu.heroList[random]);
 
+        //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
+        float damage = CalcDamage("Tackle", 0.5f, 0.25f, 0.9f, false);
+        
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(damage, false);
     }
 
     public override string ChooseAttack()
     {
+        //CLEAR the targets list
+        targets.Clear();
+
         // Use rng to provide variety to decision making
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated
 
