@@ -19,6 +19,8 @@ public class Hero: Denigen {
 
     // used for finding the player's intended target
     protected int targetIndex = 0;
+    protected int targetIndex2 = 0;
+    protected int targetIndex3 = 0;
 
     //properties
     public int Exp { get { return exp; } set { exp = value; } }
@@ -63,7 +65,7 @@ public class Hero: Denigen {
     }
 
     //select the target for your attack
-    public void SelectTarget(string attack)
+    public virtual void SelectTarget(string attack)
     {
         //clear any previously selected targets from other turns
         if (targets != null)
@@ -79,6 +81,7 @@ public class Hero: Denigen {
             case "Block":
                 break;
             default:
+                //SelectAllTargets();
                 SelectSingleTarget();
                 break;
         }
@@ -147,6 +150,162 @@ public class Hero: Denigen {
 
 
 		battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
+    }
+
+    // this is a 3 target attack -- I believe this is fully functional
+    public void SelectSplashTarget()
+    {
+        //Activate up to 3 cursors, less if there is less than 3 denigens
+        int numOfCursors = 0;
+        
+        if (battleMenu.enemyList.Count < 3) { numOfCursors = battleMenu.enemyList.Count; }
+        else { numOfCursors = 3; }
+        for (int i = 0; i < numOfCursors; i++)
+        {
+            if (battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled == false)
+            {
+                battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = true;
+            }
+            if (i > 0)
+            {
+                battleMenu.cursors[i].GetComponent<TargetCursor>().isSplash = true;
+                battleMenu.cursors[i].GetComponent<TargetCursor>().ChangeSprite();
+                if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex + 1, targetIndex + 2, 1); }
+                if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex - 1, targetIndex, 2); }
+            }
+        }
+
+        //handle input
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            //reset previous target's color
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+
+            // if enemy is dead, skip to next
+            if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+            {
+                battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                targetIndex--;
+                if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+            }
+
+            // Move the other 2 cursors
+            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex, 1); }
+            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex + 2, 2); }
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            //reset previous target's color
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+
+            targetIndex++;
+            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+
+            // if enemy is dead, skip to next
+            if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+            {
+                battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                targetIndex++;
+                if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+            }
+
+            // Move the other 2 cursors
+            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex - 2, 1); }
+            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex, 2); }
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            targets.Add(battleMenu.enemyList[targetIndex]);
+
+            //add the splash targets, if they are within range
+            if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex2]); }
+            if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex3]); }
+
+            //deactivate the cursors
+            for (int i = 0; i < numOfCursors; i++)
+            {
+                battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+            }
+        }
+        //move the cursor to the correct position
+        battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
+
+        // if enemy is dead, skip to next
+        if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+        {
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            targetIndex++;
+            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+        }
+
+
+        battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
+    }
+
+    // this method is for an attack that hits all possible targets
+    public void SelectAllTargets()
+    {
+        //Activate as many cursors as there are enemies
+        int numOfCursors = battleMenu.enemyList.Count;
+        for (int i = 0; i < numOfCursors; i++)
+        {
+            if (battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled == false)
+            {
+                battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = true;
+            }
+        }
+        
+        // put a cursor above each target
+        for (int i = 0; i < numOfCursors; i++)
+        {
+            //move the cursor to the correct position
+            battleMenu.cursors[i].transform.position = new Vector2(battleMenu.enemyList[i].transform.position.x, battleMenu.enemyList[i].transform.position.y + 100);
+        }
+
+        // handle input
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            //deactivate the cursors and select targets
+            for (int i = 0; i < numOfCursors; i++)
+            {
+                if (battleMenu.enemyList[i].statusState != Status.dead)
+                {
+                    targets.Add(battleMenu.enemyList[i]);
+                }
+                battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+            }
+        }
+    }
+
+    //supports the selectSplashTarget method
+    public int MoveSecondaryCursor(int index, int prevIndex, int cursorIndex)
+    {
+        // highlight active target, only if theindex is within the scope of the enemy list
+        if (index >= 0 && index < battleMenu.enemyList.Count)
+        {
+            battleMenu.enemyList[index].Card.GetComponent<TextMesh>().color = new Vector4(1.0f, 0.5f, 0.5f, 1.0f);
+            // if the target is in the range of the enemy list count, draw the cursor above the appropriate enemy
+            battleMenu.cursors[cursorIndex].transform.position = new Vector2(battleMenu.enemyList[index].transform.position.x, battleMenu.enemyList[index].transform.position.y + 100);
+        }
+        if (prevIndex >= 0 && prevIndex < battleMenu.enemyList.Count)
+        {
+            battleMenu.enemyList[prevIndex].Card.GetComponent<TextMesh>().color = Color.white;
+        }
+
+        // disable the cursor if it goes out of range
+        if (index > battleMenu.enemyList.Count || index < 0)
+        {
+            battleMenu.cursors[cursorIndex].GetComponent<SpriteRenderer>().enabled = false;
+        }
+        // enable the cursor when it comes back into range
+        if (prevIndex > battleMenu.enemyList.Count || prevIndex < 0)
+        {
+            battleMenu.cursors[cursorIndex].GetComponent<SpriteRenderer>().enabled = true;
+        }
+        return index;
     }
 
     //Strike is standard attack with 50% power

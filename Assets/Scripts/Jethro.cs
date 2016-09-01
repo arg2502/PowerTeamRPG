@@ -34,6 +34,30 @@ public class Jethro : Hero {
         base.Update();
 	}
 
+    public override void SelectTarget(string attack)
+    {
+        //clear any previously selected targets from other turns
+        if (targets != null)
+        {
+            targets.Clear();
+        }
+
+        //this will use a switch statement to determine the type of
+        //targeting required, and then pass off to a more specific method
+        switch (attack)
+        {
+            case "Block":
+                break;
+            case "Helmsplitter":
+            case "Strike":
+                SelectSingleTarget();
+                break;
+            default:
+                SelectSingleTarget();
+                break;
+        }
+    }
+
 	public override void Attack (string atkChoice)
 	{
 		base.Attack (atkChoice);

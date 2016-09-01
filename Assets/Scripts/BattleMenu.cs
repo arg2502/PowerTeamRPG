@@ -364,7 +364,6 @@ public class BattleMenu : Menu {
             if (currentDenigen.GetComponent<Hero>() != null)
             {
                 //reset the menu state for the next denigen
-                //////print("Set to main for " + currentDenigen.name);
                 state = MenuReader.main;
             }
         }
@@ -585,12 +584,13 @@ public class BattleMenu : Menu {
 						}
 
 						// set to appropriate state
-						if (fallenHeroes >= heroList.Count) {
+						if (fallenHeroes >= heroList.Count && textIndex == battleTextList.Count - 2) {
 							textIndex = 0;
 							state = MenuReader.failure;
 							return;
 							//PostBattle ();
-						} if (fallenEnemies >= enemyList.Count) {
+                        } if (fallenEnemies >= enemyList.Count && textIndex == battleTextList.Count - 2)
+                        {
 							textIndex = 0;
 							state = MenuReader.victory;
 							return;
