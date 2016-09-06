@@ -44,7 +44,7 @@ public class enemyControl : OverworldObject {
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
         if (dist <= safeDistance + 100.0f) { Destroy(this.gameObject); }
 
-        numOfEnemies = Random.Range(1, 5);
+        numOfEnemies = Random.Range(1, 6);
         enemies = new List<Enemy>();
         for (int i = 0; i < numOfEnemies; i++)
         {

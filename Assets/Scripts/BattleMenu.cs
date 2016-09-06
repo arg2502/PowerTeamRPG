@@ -555,12 +555,13 @@ public class BattleMenu : Menu {
                         {
                             battleTextList.Add(d.TakeDamageText[i]);
                         }
+                        d.TakeDamageText.Clear();
                     }
                 }
 
                 //////print(denigenArray[commandIndex]);
                 //make sure there is text to display
-                if (battleTextList[textIndex] != null)
+                if ( battleTextList[textIndex] != null)
                 {
                     battleText.GetComponent<TextMesh>().text = FormatText(battleTextList[textIndex]);
 					//print (battleText.GetComponent<TextMesh> ().text);

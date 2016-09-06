@@ -222,6 +222,7 @@ public class Hero: Denigen {
 
             //add the splash targets, if they are within range
             if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex2]); }
+            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { print("Add 2nd"); targets.Add(battleMenu.enemyList[0]); }
             if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex3]); }
 
             //deactivate the cursors
@@ -328,6 +329,16 @@ public class Hero: Denigen {
 
     public virtual void Attack(string atkChoice)
     {
+        while (targets.Count == 1 && targets[0].statusState == Denigen.Status.dead)
+        {
+            for (int i = 0; i < battleMenu.enemyList.Count; i++)
+            {
+                if (battleMenu.enemyList[i].statusState != Status.dead)
+                {
+                    targets[0] = battleMenu.enemyList[i];
+                }
+            }
+        }
         // specific denigens will pick attack methods based off of user choice
         switch (atkChoice)
         {
