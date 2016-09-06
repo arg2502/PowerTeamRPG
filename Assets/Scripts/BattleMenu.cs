@@ -9,6 +9,8 @@ public class BattleMenu : Menu {
     int gold; // the amount of gold awarded for victory
     int exp; // the amount of experience awarded for victory
 
+    bool failedFlee; // this will give the enemy a free turn if you fail to flee
+
     // enumeration to determine what menu is shown
     enum MenuReader { main, attack, skills, spells, summons, items, flee, targeting, battle, victory, failure };
     MenuReader state = MenuReader.main;
@@ -297,7 +299,8 @@ public class BattleMenu : Menu {
                 state = MenuReader.items;
                 break;
             case "Flee":
-                // nothing right now
+                state = MenuReader.flee;
+                CalcFlee();
                 break;
             
                 // attack menu
@@ -427,7 +430,11 @@ public class BattleMenu : Menu {
 
     void Update()
     {
-        if (state == MenuReader.battle)
+        if (state == MenuReader.flee)
+        {
+            UpdateFlee();
+        }
+        else if (state == MenuReader.battle)
         {
             UpdateBattle();
         }
@@ -436,21 +443,31 @@ public class BattleMenu : Menu {
         {
             if (currentDenigen.GetComponent<Hero>() != null)
             {
-                currentDenigen.GetComponent<Hero>().SelectTarget(command);
-                if (Input.GetKeyUp(KeyCode.Space))
+                if (!failedFlee)
                 {
+                    currentDenigen.GetComponent<Hero>().SelectTarget(command);
+                    if (Input.GetKeyUp(KeyCode.Space))
+                    {
+                        //Add the issued command to the queue
+                        commands.Add(command);
+                        //The current denigen's turn is over, move on
+                        ChangeCurrentDenigen();
+                        //Change the cards back to their default color
+                        foreach (Denigen d in enemyList)
+                        {
+                            d.Card.GetComponent<TextMesh>().color = Color.white;
+                        }
+                        //Change state back to the default state
+                        ChangeContentArray();
+                        StateChangeText();
+                    }
+                }
+                else
+                { 
                     //Add the issued command to the queue
-                    commands.Add(command);
+                    commands.Add(null);
                     //The current denigen's turn is over, move on
                     ChangeCurrentDenigen();
-                    //Change the cards back to their default color
-                    foreach (Denigen d in enemyList)
-                    {
-                        d.Card.GetComponent<TextMesh>().color = Color.white;
-                    }
-                    //Change state back to the default state
-                    ChangeContentArray();
-                    StateChangeText();
                 }
             }
             else
@@ -478,7 +495,8 @@ public class BattleMenu : Menu {
         {
             // if it is an enemy's turn, go straight to targeting
             // This avoids the player gaining control of the enemy
-            if (currentDenigen.GetComponent<Enemy>() != null) { state = MenuReader.targeting; } 
+            if (currentDenigen.GetComponent<Enemy>() != null) { state = MenuReader.targeting; }
+            else if (failedFlee) { state = MenuReader.targeting; }
 
             foreach (Denigen d in denigenArray)
             {
@@ -514,6 +532,19 @@ public class BattleMenu : Menu {
         //press space to advance the battle phase
 		if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
         {
+            while (commandIndex < denigenArray.Count && (failedFlee && denigenArray[commandIndex].GetComponent<Hero>() != null))
+            {
+                battleTextList = new List<string>() { };
+
+
+                commandIndex++;
+                // if the command index is at the end, there are no more live denigens in the list
+                // so exit out of UpdateBattle
+                if (commandIndex >= denigenArray.Count)
+                {
+                    return;
+                }
+            }
             //this while loop bypasses any denigens who have passed away
             while (commandIndex < denigenArray.Count && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
             {
@@ -698,6 +729,7 @@ public class BattleMenu : Menu {
 			b.GetComponent<Renderer>().enabled = true;
 			b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
 		}
+        if (failedFlee) { failedFlee = false; }
 		state = MenuReader.main;
 		ChangeContentArray ();
 		StateChangeText ();
@@ -910,9 +942,95 @@ public class BattleMenu : Menu {
         // item
         // v
     }
+
+    // here is where the player will attempt to flee from the battle
     void UpdateFlee() 
     {
-        // here is where the player will attempt to flee from the battle
+        battleText.GetComponent<Renderer>().enabled = true;
+
+        foreach (GameObject b in buttonArray)
+        {
+            //hide the buttons
+            b.GetComponent<Renderer>().enabled = false;
+            b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = false;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space) || textIndex == 0)
+        {
+            if (failedFlee)
+            {
+                if (textIndex == 0) { battleText.GetComponent<TextMesh>().text = GameControl.control.playerName + "'s team failed to escape!"; }
+                if (textIndex == 1) { battleText.GetComponent<TextMesh>().text = "The enemy seizes the opportunity!"; }
+                if (textIndex == 2)
+                {
+                    textIndex = 0;
+                    state = MenuReader.main;
+                    return;
+                }
+            }
+            else
+            {
+                if (textIndex == 0) { battleText.GetComponent<TextMesh>().text = GameControl.control.playerName + "'s team successfully escapes!"; }
+                if (textIndex == 1)
+                {
+                    // set all of the heroData stats equal to in battle stats
+                    foreach (Hero h in heroList)
+                    {
+                        foreach (HeroData hd in GameControl.control.heroList)
+                        {
+                            if (h.name == hd.name)
+                            {
+                                hd.level = h.Level;
+                                hd.levelUpPts = h.LevelUpPts;
+                                hd.exp = h.Exp;
+                                hd.expToLvlUp = h.ExpToLevelUp;
+                                hd.hp = h.hp;
+                                hd.hpMax = h.hpMax;
+                                hd.pm = h.pm;
+                                hd.pmMax = h.pmMax;
+                                hd.atk = h.Atk;
+                                hd.def = h.Def;
+                                hd.mgkAtk = h.MgkAtk;
+                                hd.mgkDef = h.MgkDef;
+                                hd.evasion = h.Evasion;
+                                hd.luck = h.Luck;
+                                hd.spd = h.Spd;
+                                hd.statusState = (HeroData.Status)h.StatusState;
+                            }
+                        }
+                    }
+                    // exit the battle
+                    UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
+                }
+            }
+            if (textIndex <= 1)
+            {
+                battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
+                //print (battleText.GetComponent<TextMesh> ().text);
+            }
+            textIndex++;
+        }
+    }
+
+    void CalcFlee()
+    {
+        // calculate the likelihood of flight
+        int enemyMight = 0;
+        int heroMight = 0;
+        foreach (Enemy e in enemyList)
+        {
+            if( e.statusState != Denigen.Status.dead )enemyMight += e.Level * e.Stars;
+        }
+        foreach (Hero h in heroList)
+        {
+           if( h.statusState != Denigen.Status.dead ) heroMight += h.Level * h.Stars;
+        }
+        float likelihood = (90 + heroMight - enemyMight) / 100;
+
+        //see if the player succeeds or fails
+        float num = Random.Range(0.0f, 1.0f);
+        if (num > likelihood) { failedFlee = true; }
+        else {failedFlee = false;}
     }
    
 }

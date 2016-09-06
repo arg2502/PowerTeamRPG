@@ -4,7 +4,7 @@ using System.Collections;
 public class characterControl : OverworldObject {
     float moveSpeed = 0;
     float walkSpeed = 200;
-    float runSpeed = 300;
+    float runSpeed = 360;
     public Vector2 speed;
 	public bool canMove;
 

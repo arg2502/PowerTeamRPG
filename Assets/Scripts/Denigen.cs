@@ -43,6 +43,7 @@ public class Denigen : MonoBehaviour {
     protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
 	
     // properties
+    public int Stars { get { return stars; } }
     public int Level { get { return level; } set { level = value; } }
     public int Atk { get { return atk; } set { atk = value; } }
     public int Def { get { return def; } set { def = value; } }

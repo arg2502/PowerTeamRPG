@@ -7,7 +7,7 @@ public class enemyControl : OverworldObject {
     //attributes
     float moveSpeed = 0;
     float walkSpeed = 200;
-    float runSpeed = 325;
+    float runSpeed = 375;
     Vector2 speed;
 
     public Transform player;
