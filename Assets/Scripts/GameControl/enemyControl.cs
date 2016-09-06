@@ -103,6 +103,7 @@ public class enemyControl : OverworldObject {
             {
                 GameControl.control.currentPosition = player.position; //record the player's position before entering battle
                 GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
+
                 // Recieve the battle info from the enemy, such as enemy types and # of enemies
                 GameControl.control.numOfEnemies = numOfEnemies;
                 GameControl.control.enemies = enemies;

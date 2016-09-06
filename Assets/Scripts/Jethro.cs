@@ -21,6 +21,8 @@ public class Jethro : Hero {
         evasionPer = 0.09f;
         spdPer = 0.10f;
 
+        growthSpeed = 0.85f;
+
         base.Start();
         /*for (int i = 0; i < 3; i++)
         {

@@ -104,7 +104,7 @@ public class Denigen : MonoBehaviour {
     {
         multiplier = (lvl / 10.0f) + 1.0f;
         boostTotal = stars * 9 * multiplier; // 9 = number of stats
-    
+
         // increase stats
         hp += (int)(boostTotal * hpPer);
         pm += (int)(boostTotal * pmPer);

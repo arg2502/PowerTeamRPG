@@ -6,6 +6,10 @@ public class Hero: Denigen {
     // Hero stats
     protected int exp;
 
+    //the amount of experience required to level up
+    protected int expToLvlUp;
+    protected float growthSpeed;
+
     // item/equipment list - NEED LATER
 
     // skill tree variable - NEED LATER
@@ -24,6 +28,7 @@ public class Hero: Denigen {
 
     //properties
     public int Exp { get { return exp; } set { exp = value; } }
+    public int ExpToLevelUp { get { return expToLvlUp; } set { expToLvlUp = value; } }
     public int LevelUpPts { get { return levelUpPts; } set { levelUpPts = value; } }
     public int TechPts { get { return techPts; } set { techPts = value; } }
     //property for items and equipment -- ADD LATER
@@ -36,9 +41,10 @@ public class Hero: Denigen {
         base.Start();
 	}
 
-    protected void LevelUp()
+    public void LevelUp( int rollover)
     {
         base.LevelUp(level);
+        level++;
 
         // allocate stats
         levelUpPts = (int)(stars * multiplier); // 3 * (level/10 + 1)
@@ -48,6 +54,15 @@ public class Hero: Denigen {
         // increase technique points each level up
         techPts++; 
 
+        //calc new required points to level up
+        expToLvlUp = CalcExpToLvlUp(rollover);
+    }
+
+    protected int CalcExpToLvlUp( int rollover)
+    {
+        float expToGo = 0;
+        expToGo = level * growthSpeed * 10;
+        return ((int) expToGo - rollover);
     }
 
     // add skill to list

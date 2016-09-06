@@ -21,6 +21,7 @@ public class testSceneChanger : MonoBehaviour {
             GameControl.control.heroList.Add(new HeroData());
             GameControl.control.heroList[1].name = "Cole";
             GameControl.control.heroList[1].level = 2;
+            GameControl.control.heroList[1].expToLvlUp = 20;
             GameControl.control.heroList[1].exp = 0;
             GameControl.control.heroList[1].levelUpPts = 0;
             GameControl.control.heroList[1].techPts = 0;

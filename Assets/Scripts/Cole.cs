@@ -21,6 +21,8 @@ public class Cole : Hero {
         evasionPer = 0.08f;
         spdPer = 0.09f;
 
+        growthSpeed = 0.95f;
+
         base.Start();
 	}
 

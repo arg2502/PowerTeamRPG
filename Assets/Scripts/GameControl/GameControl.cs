@@ -50,6 +50,7 @@ public class GameControl : MonoBehaviour {
             heroList[0].name = "Jethro";
             heroList[0].level = 1;
             heroList[0].exp = 0;
+            heroList[0].expToLvlUp = 10;
             heroList[0].levelUpPts = 0;
             heroList[0].techPts = 0;
             heroList[0].hp = 8;
@@ -163,7 +164,7 @@ class PlayerData
 public class HeroData
 {
     public string name;
-    public int level, exp, levelUpPts, techPts;
+    public int level, exp, expToLvlUp, levelUpPts, techPts;
     public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
     public List<string> skillsList, skillsDescription, spellsList, spellsDescription;
     // status effect

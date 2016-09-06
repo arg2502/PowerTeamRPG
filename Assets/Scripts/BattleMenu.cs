@@ -119,6 +119,7 @@ public class BattleMenu : Menu {
                 denigenArray[i].StatusState = (Denigen.Status)tempHeroes[i].statusState;
                 denigenArray[i].GetComponent<Hero>().Exp = tempHeroes[i].exp;
                 denigenArray[i].GetComponent<Hero>().LevelUpPts = tempHeroes[i].levelUpPts;
+                denigenArray[i].GetComponent<Hero>().ExpToLevelUp = tempHeroes[i].expToLvlUp;
             }
         }
         //This code may be depricated or altered later
@@ -766,7 +767,19 @@ public class BattleMenu : Menu {
             if (textIndex == 2)
             {
                 battleText.GetComponent<TextMesh>().text = "Each teammate receives " + exp + " experience points!";
-                foreach (Hero h in heroList) { if (h.StatusState != Denigen.Status.dead) { h.Exp += exp; } }
+                foreach (Hero h in heroList) { 
+                    if (h.StatusState != Denigen.Status.dead) { h.Exp += exp; } 
+
+                    //Level up the hero, if necessary
+                    h.ExpToLevelUp -= exp;
+                    if (h.ExpToLevelUp <= 0)
+                    {
+                        // keep the rollover experience
+                        int extraExp = Mathf.Abs(h.ExpToLevelUp);
+                        h.LevelUp(extraExp);
+                        UpdateCard(h);
+                    }
+                }
             }
             if (textIndex == 3)
             {
@@ -780,6 +793,7 @@ public class BattleMenu : Menu {
                             hd.level = h.Level;
                             hd.levelUpPts = h.LevelUpPts;
                             hd.exp = h.Exp;
+                            hd.expToLvlUp = h.ExpToLevelUp;
                             hd.hp = h.hp;
                             hd.hpMax = h.hpMax;
                             hd.pm = h.pm;

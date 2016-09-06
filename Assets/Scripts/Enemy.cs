@@ -44,6 +44,8 @@ public class Enemy : Denigen {
         // Calculate the experience and gold this enemy should award
         exp = stars * expMultiplier * level;
         gold = stars * goldMultiplier;
+
+        Rename();
 	}
 
     protected void TakeDamage(float damage, bool isMagic)
@@ -70,4 +72,19 @@ public class Enemy : Denigen {
 	protected void Update () {
         base.Update();
 	}
+
+    // This method will make it easier to distinguish the enemies
+    protected void Rename()
+    {
+        int i = 0;
+        foreach (Enemy e in battleMenu.enemyList)
+        {
+            if (e != this && e.name.Contains(name)) { i++; }
+            if (e == this) { break; }
+        }
+        if (i == 1) { name += " B"; }
+        if (i == 2) { name += " C"; }
+        if (i == 3) { name += " D"; }
+        if (i == 4) { name += " E"; }
+    }
 }
