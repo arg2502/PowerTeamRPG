@@ -282,6 +282,7 @@ public class BattleMenu : Menu {
 
                 //store the name of the command you wish to issue
                 command = label;
+                prevState = state;
                 state = MenuReader.targeting;
                 break;
             case "Block":
@@ -292,25 +293,31 @@ public class BattleMenu : Menu {
                 break;
             case "Attack":
                 // change state to attack menu
+                prevState = state;
                 state = MenuReader.attack;                           
                 break;
             case "Items":
                 // change state to items menu
+                prevState = state;
                 state = MenuReader.items;
                 break;
             case "Flee":
+                prevState = state;
                 state = MenuReader.flee;
                 CalcFlee();
                 break;
             
                 // attack menu
             case "Skills":
+                prevState = state;
                 state = MenuReader.skills;
                 break;
             case "Spells":
+                prevState = state;
                 state = MenuReader.spells;
                 break;
             case "Summons":
+                prevState = state;
                 state = MenuReader.summons;
                 break;
 
@@ -330,6 +337,7 @@ public class BattleMenu : Menu {
                     //Giving an attack command marks the end of current denigen's turn
                     //ChangeCurrentDenigen();
 					command = label;
+                    prevState = state;
 					state = MenuReader.targeting;
                 }
                 else if (state == MenuReader.items)
@@ -461,6 +469,13 @@ public class BattleMenu : Menu {
                         ChangeContentArray();
                         StateChangeText();
                     }
+                    // if back button is pressed, set state to previous state
+                    if (Input.GetKeyDown(KeyCode.Backspace))
+                    {
+                        state = prevState;
+                        ChangeContentArray();
+                        StateChangeText();
+                    }   
                 }
                 else
                 { 
@@ -513,6 +528,16 @@ public class BattleMenu : Menu {
                 StateChangeText();
             }   
 
+        }
+
+        // diable cursors if the player is not targeting
+        if(state != MenuReader.targeting)
+        {
+            for(int i = 0; i < enemyList.Count; i++)
+            {
+                cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+                enemyList[i].Card.GetComponent<TextMesh>().color = Color.white;
+            }
         }
         
        
@@ -854,95 +879,6 @@ public class BattleMenu : Menu {
 
     }
 
-	void UpdateMain () {
-
-        // check for selected button
-        /*if (buttonArray[0])
-        {
-            //////print("Strike");
-        }
-        else if (buttonArray[1])
-        {
-            
-        }
-        else if (buttonArray[2])
-        {
-            //////print("ITEMS!!!!@#rJ123IO4J2IO3RIAOSFDJ");
-        }
-        else if (buttonArray[3])
-        {
-            //////print("Flee");
-        }*/
-	}
-    void Updateattack()
-    {
-        /*if (buttonArray[0])
-        {
-            state = MenuReader.skills;
-        }
-        else if (buttonArray[1])
-        {
-            state = MenuReader.spells;
-        }
-        else if (buttonArray[2])
-        {
-            state = MenuReader.summons;
-        }
-        else if (buttonArray[3])
-        {
-            contentArray = new string[] { "Strike", "attack", "Items", "Flee" };
-            buttonArray = new GameObject[numOfRow];
-            numOfRow = contentArray.Length;
-            state = MenuReader.main;
-        }*/
-    }
-    void UpdateSkills() 
-    {
-        // here will be an array of the hero's skill set
-        // that will be listed as such
-        
-        // ^
-        // skill
-        // skill
-        // skill
-        // skill
-        // v
-
-        // side note:
-        // every possible technique name and method will be held in an attack method
-        // within the specific Hero class.
-        // When an attack is selected through the menu, it will be passed back to the specific hero which
-        // will then search through it's list of attacks and perform the attack.
-    }
-    void UpdateSpells() 
-    {
-        // here will be an array of the hero's spells
-        // that will be listed as such
-
-        // ^
-        // spell
-        // spell
-        // spell
-        // spell
-        // v
-    }
-    void UpdateSummons() 
-    {
-        // any possible character specific Guardian summons can be selected here
-    }
-    void UpdateItems() 
-    {
-        // here will be an array of the team's items
-        // that will be listed as such
-
-        // ^
-        // item
-        // item
-        // item
-        // item
-        // v
-    }
-
     // here is where the player will attempt to flee from the battle
     void UpdateFlee() 
     {
@@ -1025,7 +961,7 @@ public class BattleMenu : Menu {
         {
            if( h.statusState != Denigen.Status.dead ) heroMight += h.Level * h.Stars;
         }
-        float likelihood = (90 + heroMight - enemyMight) / 100;
+        float likelihood = (60 + heroMight - enemyMight) / 100.0f;
 
         //see if the player succeeds or fails
         float num = Random.Range(0.0f, 1.0f);
