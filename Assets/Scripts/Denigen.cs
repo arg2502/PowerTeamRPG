@@ -99,6 +99,11 @@ public class Denigen : MonoBehaviour {
             battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
         }
 
+        battleMenu.SortDenigens();
+        //highlight the current denigen
+        // set the current denigen
+        battleMenu.currentDenigen = battleMenu.denigenArray[0];
+        battleMenu.currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
         //statusState = Status.normal;
 	}
     protected void LevelUp(int lvl)

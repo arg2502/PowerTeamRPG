@@ -381,7 +381,7 @@ public class BattleMenu : Menu {
         }
     }
 
-    void SortDenigens()
+    public void SortDenigens()
     {
         // temporary denigen for sorting
         Denigen temp;
