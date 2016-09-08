@@ -7,8 +7,24 @@ public class Cole : Hero {
 	// Use this for initialization
 	void Start () {
         // TEMPORARY LISTS
-        skillsList = new List<string>() {  };
-        spellsList = new List<string>() { "HellFire", "Splash Flame" };
+        //skillsList = new List<string>() {  };
+        //spellsList = new List<string>() { "HellFire", "Splash Flame" };
+        skillsList = new List<Technique>() { };
+        spellsList = new List<Technique>() { };
+
+        // the below code would probably be found in the "Add Spell" functions
+        Technique hellfire = new Technique();
+        hellfire.Name = "HellFire";
+        hellfire.Pm = 8;
+        hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \n Str 40, Crit 03, Acc 100";
+        spellsList.Add(hellfire);
+
+        Technique splashflame = new Technique();
+        splashflame.Name = "Splash Flame";
+        splashflame.Pm = 3;
+        splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
+        spellsList.Add(splashflame);
+
 
         // stats - should total to 1.00f
         hpPer = 0.11f;
@@ -79,7 +95,7 @@ public class Cole : Hero {
     public void HellFire()
     {
         float damage;
-        damage = CalcDamage("HellFire", 0.40f, 0.03f, 1.0f, false);
+        damage = CalcDamage("HellFire", 0.40f, 0.03f, 1.0f, true);
         for (int i = 0; i < targets.Count; i++)
         {
             targets[i].TakeDamage(damage, true);
@@ -89,7 +105,7 @@ public class Cole : Hero {
     public void SplashFlame()
     {
         float damage;
-        damage = CalcDamage("Splash Flame", 0.60f, 0.05f, 0.85f, false);
+        damage = CalcDamage("Splash Flame", 0.60f, 0.05f, 0.85f, true);
         //full damage to the main target
         targets[0].TakeDamage(damage, true);
 

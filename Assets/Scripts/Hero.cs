@@ -68,15 +68,15 @@ public class Hero: Denigen {
     // add skill to list
     protected void AddSkill(string skill, string descrip)
     {
-        skillsList.Add(skill);
-        skillsDescription.Add(descrip);
+        //skillsList.Add(skill);
+        //skillsDescription.Add(descrip);
     }
 
     // add spell to list
     protected void AddSpell(string spell, string descrip)
     {
-        spellsList.Add(spell);
-        spellsDescription.Add(descrip);
+        //spellsList.Add(spell);
+        //spellsDescription.Add(descrip);
     }
 
     //select the target for your attack
@@ -110,6 +110,15 @@ public class Hero: Denigen {
         if(battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled == false)
         {
             battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = true;
+        }
+
+        // Avoid starting on a dead target
+        while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+        {
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
         }
 
         //handle input
@@ -172,6 +181,15 @@ public class Hero: Denigen {
     {
         //Activate up to 3 cursors, less if there is less than 3 denigens
         int numOfCursors = 0;
+
+        // Avoid starting on a dead target
+        while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+        {
+            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+        }
         
         if (battleMenu.enemyList.Count < 3) { numOfCursors = battleMenu.enemyList.Count; }
         else { numOfCursors = 3; }
@@ -197,14 +215,20 @@ public class Hero: Denigen {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
 
             targetIndex--;
-            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+            if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1;
+            foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+            }
 
             // if enemy is dead, skip to next
             if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
             {
-                battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
-                targetIndex--;
-                if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+                while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+                {
+                    battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                    foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+                    targetIndex--;
+                    if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+                }
             }
 
             // Move the other 2 cursors
@@ -217,14 +241,20 @@ public class Hero: Denigen {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
 
             targetIndex++;
-            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0;
+            foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+            }
 
             // if enemy is dead, skip to next
             if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
             {
-                battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
-                targetIndex++;
-                if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+                while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+                {
+                    battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                    foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+                    targetIndex++;
+                    if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+                }
             }
 
             // Move the other 2 cursors
@@ -299,6 +329,8 @@ public class Hero: Denigen {
     //supports the selectSplashTarget method
     public int MoveSecondaryCursor(int index, int prevIndex, int cursorIndex)
     {
+        print("index: " + index);
+        print("prev index: " + prevIndex);
         // highlight active target, only if theindex is within the scope of the enemy list
         if (index >= 0 && index < battleMenu.enemyList.Count)
         {
@@ -365,6 +397,17 @@ public class Hero: Denigen {
                 break;
             default:
                 break;
+        }
+
+        //subtract the appropriate pm from the attacker -- this value will remain 0 for strike and block
+        //go through all techniques to find the correct value
+        for(int i = 0; i < skillsList.Count; i++ )
+        {
+            if (skillsList[i].Name == atkChoice) { pm -= skillsList[i].Pm; break; }
+        }
+        for (int i = 0; i < spellsList.Count; i++)
+        {
+            if (spellsList[i].Name == atkChoice) { pm -= spellsList[i].Pm; break; }
         }
     }
 

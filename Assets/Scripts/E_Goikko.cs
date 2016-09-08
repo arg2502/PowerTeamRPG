@@ -11,10 +11,22 @@ public class E_Goikko : Enemy {
         goldMultiplier = 1;
 
         //Skills and spells will probably be static for enemies
-        skillsList = new List<string>() { "Tackle" };
-        skillsDescription = new List<string>() { "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90" };
-        spellsList = new List<string>() { "Frenzy" };
-        spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
+        //skillsList = new List<string>() { "Tackle" };
+        //skillsDescription = new List<string>() { "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90" };
+        //spellsList = new List<string>() { "Frenzy" };
+        //spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
+        skillsList = new List<Technique>() { };
+        spellsList = new List<Technique>() { };
+        Technique tackle = new Technique();
+        tackle.Name = "Tackle";
+        tackle.Pm = 0;
+        tackle.Description = "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90";
+        skillsList.Add(tackle);
+        Technique frenzy = new Technique();
+        frenzy.Name = "Frenzy";
+        frenzy.Pm = 0;
+        frenzy.Description = "The attacker gets riled up, boosting ATK.\n +10% ATK";
+        skillsList.Add(frenzy);
 
         // stats - should total to 1.00f
         hpPer = 0.09f;

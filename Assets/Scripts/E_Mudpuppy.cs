@@ -11,10 +11,22 @@ public class E_Mudpuppy : Enemy {
         goldMultiplier = 2;
 
         //Skills and spells will probably be static for enemies
-        skillsList = new List<string>() { "Bite" };
-        skillsDescription = new List<string>() { "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95" };
-        spellsList = new List<string>() { "Frenzy" };
-        spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
+        //skillsList = new List<string>() { "Bite" };
+        //skillsDescription = new List<string>() { "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95" };
+        //spellsList = new List<string>() { "Frenzy" };
+        //spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
+        skillsList = new List<Technique>() { };
+        spellsList = new List<Technique>() { };
+        Technique bite = new Technique();
+        bite.Name = "Bite";
+        bite.Pm = 0;
+        bite.Description = "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95";
+        skillsList.Add(bite);
+        Technique frenzy = new Technique();
+        frenzy.Name = "Frenzy";
+        frenzy.Pm = 0;
+        frenzy.Description = "The attacker gets riled up, boosting ATK.\n +10% ATK";
+        skillsList.Add(frenzy);
 
         // stats - should total to 1.00f
         hpPer = 0.08f;

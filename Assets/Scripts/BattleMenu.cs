@@ -246,11 +246,19 @@ public class BattleMenu : Menu {
                prevState = MenuReader.main;
                break;
             case MenuReader.skills:
-               contentArray = currentDenigen.SkillsList;
+               contentArray = new List<string> { };
+               for (int i = 0; i < currentDenigen.SkillsList.Count; i++)
+               {
+                   contentArray.Add(currentDenigen.SkillsList[i].Name);
+               }
                prevState = MenuReader.attack;
                break;
             case MenuReader.spells:
-               contentArray = currentDenigen.SpellsList;
+               contentArray = new List<string> { };
+               for (int i = 0; i < currentDenigen.SpellsList.Count; i++)
+               {
+                   contentArray.Add(currentDenigen.SpellsList[i].Name);
+               }
                prevState = MenuReader.attack;
                break;
             case MenuReader.summons:
@@ -377,6 +385,8 @@ public class BattleMenu : Menu {
             {
                 //reset the menu state for the next denigen
                 state = MenuReader.main;
+                ChangeContentArray();
+                StateChangeText();  
             }
         }
     }
