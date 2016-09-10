@@ -51,5 +51,16 @@ public class testSceneChanger : MonoBehaviour {
             nameList += " " + GameControl.control.heroList[i].name;
         }
         GUI.Label(new Rect(10, 600, 1000, 1000), nameList);
+        if (GUI.Button(new Rect(170, 10, 150, 100), "Add Items"))
+        {
+            GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            GameControl.control.AddItem(temp.GetComponent<Item>());
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            GameControl.control.AddItem(temp.GetComponent<Item>());
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
+            GameControl.control.AddItem(temp.GetComponent<Item>());
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            GameControl.control.AddItem(temp.GetComponent<Item>());
+        }
 	}
 }

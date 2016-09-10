@@ -19,6 +19,7 @@ public class GameControl : MonoBehaviour {
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
     //items -- add later
+    public List<Item> inventory;
 
     //room information
     public string currentScene; // the place where the player currently is (outside of battle)
@@ -93,6 +94,19 @@ public class GameControl : MonoBehaviour {
         
 	}
 
+    public void AddItem(Item item)
+    {
+        // loop through the inventory to see if the player already has this type of item
+        // if so, increase the quantity of that item
+        foreach (Item i in inventory)
+        {
+            if (i.name == item.name) { i.quantity++; Destroy(item.gameObject); return; }
+        }
+
+        // if this type of item is not already in the inventory, add it now
+        inventory.Add(item);
+    }
+
     //this will save our game data to an external, persistent file
     public void Save()
     {
@@ -157,6 +171,7 @@ class PlayerData
     public bool taggedStatue;
     public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
     public List<HeroData> heroList = new List<HeroData>() { };
+    public List<Item> inventory = new List<Item>() { }; // All of the player's items
 }
 
 //this class should hold all of the stuff necessary for a hero object

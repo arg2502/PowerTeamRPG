@@ -196,8 +196,9 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 900), (0)); }
-            else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 900), ((225 / heroList.Count) * (i * 3.4f) - 225)); }
+            heroList[i].Card.GetComponent<TextMesh>().fontSize = 200;
+            if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 775), (0)); }
+            else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 775), ((225 / heroList.Count) * (i * 3) - 225)); }
             heroList[i].Card.GetComponent<TextMesh>().text = heroList[i].name + "\nLvl: " + heroList[i].Level + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
                 + "\nPM: " + heroList[i].pm + " / " + heroList[i].pmMax;
 
@@ -208,8 +209,9 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 900), ( 0 )); }
-            else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 900), ((225 / enemyList.Count) * (i * 3.4f) - 225)); }
+            enemyList[i].Card.GetComponent<TextMesh>().fontSize = 200;
+            if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 775), ( 0 )); }
+            else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 775), ((225 / enemyList.Count) * (i * 3) - 225)); }
             enemyList[i].Card.GetComponent<TextMesh>().text = enemyList[i].name + "\nLvl: " + enemyList[i].Level + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
                 + "\nPM: " + enemyList[i].pm + " / " + enemyList[i].pmMax;
 
@@ -886,11 +888,11 @@ public class BattleMenu : Menu {
             if (textIndex == 2)
             {
                 battleText.GetComponent<TextMesh>().text = "Each teammate receives " + exp + " experience points!";
-                foreach (Hero h in heroList) { 
-                    if (h.StatusState != Denigen.Status.dead) { h.Exp += exp; } 
+                foreach (Hero h in heroList) {
+                    if (h.StatusState != Denigen.Status.dead) { h.Exp += exp; h.ExpToLevelUp -= exp; } 
 
                     //Level up the hero, if necessary
-                    h.ExpToLevelUp -= exp;
+                    
                     if (h.ExpToLevelUp <= 0)
                     {
                         // keep the rollover experience
