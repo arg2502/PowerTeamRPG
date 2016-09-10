@@ -29,7 +29,7 @@ public class E_Mudpuppy : Enemy {
         skillsList.Add(frenzy);
 
         // stats - should total to 1.00f
-        hpPer = 0.08f;
+        hpPer = 0.18f;
         pmPer = 0.06f;
         atkPer = 0.30f;
         defPer = 0.12f;
@@ -66,6 +66,13 @@ public class E_Mudpuppy : Enemy {
         targets[0].TakeDamage(damage, false);
     }
 
+    void Frenzy()
+    {
+        atkBat += (int)(atkBat * 0.1f);
+        calcDamageText.Add(name + " used frenzy!");
+        calcDamageText.Add("It's atk power has increased!");
+    }
+
     public override string ChooseAttack()
     {
         // clear the targets list
@@ -99,7 +106,7 @@ public class E_Mudpuppy : Enemy {
                 Bite();
                 break;
             case "Frenzy":
-                calcDamageText.Add(name + " used frenzy");
+                Frenzy();
                 break;
             default:
                 Bite();

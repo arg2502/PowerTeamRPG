@@ -6,7 +6,7 @@ public class Selene : Hero {
 	// Use this for initialization
 	void Start () {
         // stats - should total to 1.00f
-        hpPer = 0.11f;
+        hpPer = 0.21f;
         pmPer = 0.10f;
         atkPer = 0.11f;
         defPer = 0.06f;

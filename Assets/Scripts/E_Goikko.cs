@@ -29,7 +29,7 @@ public class E_Goikko : Enemy {
         skillsList.Add(frenzy);
 
         // stats - should total to 1.00f
-        hpPer = 0.09f;
+        hpPer = 0.19f;
         pmPer = 0.09f;
         atkPer = 0.11f;
         defPer = 0.09f;
@@ -53,7 +53,7 @@ public class E_Goikko : Enemy {
         targets.Add(battleMenu.heroList[random]);
 
         //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage("Tackle", 0.5f, 0.25f, 0.9f, false);
+        float damage = CalcDamage("Tackle", 0.6f, 0.25f, 0.9f, false);
         
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(damage, false);

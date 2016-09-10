@@ -18,7 +18,7 @@ public class Jethro : Hero {
         skillsList.Add(helmsplitter);
 
         // stats - should total to 1.00f
-        hpPer = 0.14f;
+        hpPer = 0.24f;
         pmPer = 0.08f;
         atkPer = 0.145f;
         defPer = 0.125f;

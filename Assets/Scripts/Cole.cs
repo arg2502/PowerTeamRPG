@@ -27,7 +27,7 @@ public class Cole : Hero {
 
 
         // stats - should total to 1.00f
-        hpPer = 0.11f;
+        hpPer = 0.21f;
         pmPer = 0.16f;
         atkPer = 0.09f;
         defPer = 0.07f;

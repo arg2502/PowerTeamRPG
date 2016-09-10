@@ -25,8 +25,8 @@ public class testSceneChanger : MonoBehaviour {
             GameControl.control.heroList[1].exp = 0;
             GameControl.control.heroList[1].levelUpPts = 0;
             GameControl.control.heroList[1].techPts = 0;
-            GameControl.control.heroList[1].hp = 10;
-            GameControl.control.heroList[1].hpMax = 10;
+            GameControl.control.heroList[1].hp = 18;
+            GameControl.control.heroList[1].hpMax = 18;
             GameControl.control.heroList[1].pm = 17;
             GameControl.control.heroList[1].pmMax = 17;
             GameControl.control.heroList[1].atk = 9;

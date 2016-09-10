@@ -53,8 +53,8 @@ public class GameControl : MonoBehaviour {
             heroList[0].expToLvlUp = 10;
             heroList[0].levelUpPts = 0;
             heroList[0].techPts = 0;
-            heroList[0].hp = 8;
-            heroList[0].hpMax = 8;
+            heroList[0].hp = 14;
+            heroList[0].hpMax = 14;
             heroList[0].pm = 4;
             heroList[0].pmMax = 4;
             heroList[0].atk = 8;

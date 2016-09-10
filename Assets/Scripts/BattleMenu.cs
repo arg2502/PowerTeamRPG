@@ -196,7 +196,8 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            heroList[i].Card.transform.position = new Vector2(-((250/heroList.Count) * (i*3) + 250), (camera.transform.position.y - 250));
+            if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 900), (0)); }
+            else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 900), ((225 / heroList.Count) * (i * 3.4f) - 225)); }
             heroList[i].Card.GetComponent<TextMesh>().text = heroList[i].name + "\nLvl: " + heroList[i].Level + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
                 + "\nPM: " + heroList[i].pm + " / " + heroList[i].pmMax;
 
@@ -207,7 +208,8 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            enemyList[i].Card.transform.position = new Vector2(((250 / enemyList.Count) * (i * 3) + 250), (camera.transform.position.y - 250));
+            if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 900), ( 0 )); }
+            else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 900), ((225 / enemyList.Count) * (i * 3.4f) - 225)); }
             enemyList[i].Card.GetComponent<TextMesh>().text = enemyList[i].name + "\nLvl: " + enemyList[i].Level + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
                 + "\nPM: " + enemyList[i].pm + " / " + enemyList[i].pmMax;
 
