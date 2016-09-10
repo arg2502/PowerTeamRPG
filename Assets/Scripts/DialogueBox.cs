@@ -89,7 +89,6 @@ public class DialogueBox : MonoBehaviour {
 		titlePosition = new Vector3 (textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
 		titleTextGO.transform.position = titlePosition;
 
-
 		transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
 
 		isTyping = false;
@@ -244,7 +243,7 @@ public class DialogueBox : MonoBehaviour {
         spokenText.GetComponent<Renderer>().enabled = true;
         titleText.GetComponent<Renderer>().enabled = true;
         sr.enabled = true;
-        portraitSr.enabled = true;
+        if (portraitSr.sprite) { portraitSr.enabled = true; }
 
 		hero.canMove = false;
 

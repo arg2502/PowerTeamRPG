@@ -37,6 +37,7 @@ public class NPCObject : OverworldObject {
 					dBoxGO = (GameObject)Instantiate (Resources.Load ("Prefabs/DialogueBoxPrefab"));
 					dBox = dBoxGO.GetComponent<DialogueBox> ();
 					dBox.npc = this;
+                    dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 				} else {						
 					dBox = GameObject.FindObjectOfType<DialogueBox> ();
 					dBox.npc = this;
