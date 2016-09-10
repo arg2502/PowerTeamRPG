@@ -40,13 +40,15 @@ public class NPCObject : OverworldObject {
 				} else {						
 					dBox = GameObject.FindObjectOfType<DialogueBox> ();
 					dBox.npc = this;
+                    dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 					dBox.EnableBox ();
 				}
 			} else {
 				dBox.npc = this;
+                dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 				dBox.EnableBox ();
 			}
-			dBox.transform.Find ("Portrait").GetComponent<SpriteRenderer> ().sprite = charImage;
+			
 		}
 	}
 

@@ -75,14 +75,14 @@ public class DialogueBox : MonoBehaviour {
 		hero = GameObject.FindObjectOfType<characterControl> ();
 		hero.canMove = false;
 
-
 		sr = GetComponent<SpriteRenderer> ();
 		portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer> ();
 
 
 		// display at correct location - initially
-		dialogueOffset = new Vector2(-760, -250);
-		titleOffset = new Vector2 (-286, 70);
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
+        else { dialogueOffset = new Vector2(-600, -250);}
+		titleOffset = new Vector2 (0, 70);
 		textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
 		spokenTextGO.transform.position = textPosition;
 
@@ -101,6 +101,24 @@ public class DialogueBox : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (enabled) {
+            // change text position
+            // if the portrait exists, make room for it
+            if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
+            else { dialogueOffset = new Vector2(-600, -250); }
+
+
+            titleText.text = dialogueNode.title;
+            // display at correct location
+            textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+            spokenTextGO.transform.position = textPosition;
+
+            titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
+            titleTextGO.transform.position = titlePosition;
+
+            transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+
+            // turn on renderer
+           // if (sr.enabled == false) { sr.enabled = true; }
 
 			if (Input.GetKeyUp (KeyCode.Space)) {
 				if (!isTyping) {
@@ -127,18 +145,9 @@ public class DialogueBox : MonoBehaviour {
 				}
 			}
 			// display text
-			titleText.text = dialogueNode.title;
 			//spokenText.text = dialogueNode.dialogueList [listPosition];
 
-			// display at correct location
-			textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
-			spokenTextGO.transform.position = textPosition;
-
-			titlePosition = new Vector3 (textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
-			titleTextGO.transform.position = titlePosition;
-
-			transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
-
+			
 
 			//sr.transform.position = new Vector3 (textPosition.x - 200, textPosition.y, -100);
 
@@ -209,17 +218,37 @@ public class DialogueBox : MonoBehaviour {
 
 	// turn box on when player wants to talk
 	public void EnableBox(){
-		enabled = true;
-		listPosition = 0;
-		spokenText.GetComponent<Renderer> ().enabled = true;
-		titleText.GetComponent<Renderer> ().enabled = true;
-		sr.enabled = true;
-		portraitSr.enabled = true;
+        // set the dialogue node to the one inside the npc inspector
+        dialogueNode = npc.GetComponent<NPCDialogue>();
+        // display at correct location
+        // if the portrait exists, make room for it
+        portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer>();
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
+        else { dialogueOffset = new Vector2(-600, -250); }
+
+        titleText.text = dialogueNode.title;
+        textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+        spokenTextGO.transform.position = textPosition;
+
+        titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
+        titleTextGO.transform.position = titlePosition;
+
+        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+
+
+        // now that the items are in the right position,
+        // enable them
+        enabled = true;
+        listPosition = 0;
+
+        spokenText.GetComponent<Renderer>().enabled = true;
+        titleText.GetComponent<Renderer>().enabled = true;
+        sr.enabled = true;
+        portraitSr.enabled = true;
 
 		hero.canMove = false;
 
-		// set the dialogue node to the one inside the npc inspector
-		dialogueNode = npc.GetComponent<NPCDialogue>();
+		// start typing
 		StartCoroutine (ScrollText (dialogueNode.dialogueList [listPosition]));
 
 	}
