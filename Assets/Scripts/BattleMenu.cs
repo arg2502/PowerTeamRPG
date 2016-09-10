@@ -450,6 +450,56 @@ public class BattleMenu : Menu {
 
     void Update()
     {
+        // check for inactive buttons in skills
+        if (state == MenuReader.skills)
+        {
+            // search through all the buttons for their text
+            for(int i = 0; i < buttonArray.Length; i++)
+            {
+                if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
+                    buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
+                {
+
+                    // search through all the skills
+                    for (int j = 0; j < currentDenigen.SkillsList.Count; j++)
+                    {
+                        // compare the text of the button with the skill name
+                        // if the hero's pm is not enough to use the skill, deactivate the button
+                        if (buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == currentDenigen.SkillsList[j].Name
+                            && currentDenigen.pm < currentDenigen.SkillsList[j].Pm)
+                        {
+                            if (i == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }
+                            else { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                        }
+                    }
+                }
+            }
+        }
+        // check for inactive buttons in skills
+        else if(state == MenuReader.spells)
+        {
+            // search through all the buttons for their text
+            for (int i = 0; i < buttonArray.Length; i++)
+            {
+                if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
+                    buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
+                {
+                    // search through all the spells
+                    for (int j = 0; j < currentDenigen.SpellsList.Count; j++)
+                    {
+                        // compare the text of the button with the spell name
+                        // if the hero's pm is not enough to use the spell, deactivate the button
+                        if (buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == currentDenigen.SpellsList[j].Name
+                            && currentDenigen.pm < currentDenigen.SpellsList[j].Pm)
+                        {
+                            if (i == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }
+                            else { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                        }
+                    }
+                }
+            }
+        }
+
         if (state == MenuReader.flee)
         {
             UpdateFlee();
