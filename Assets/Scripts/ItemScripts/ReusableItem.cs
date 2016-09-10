@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 [Serializable]
-public class NewBehaviourScript : Item {
+public class ReusableItem : Item {
 
 	// Use this for initialization
 	void Start () {
