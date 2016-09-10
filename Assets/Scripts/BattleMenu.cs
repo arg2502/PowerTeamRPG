@@ -449,19 +449,29 @@ public class BattleMenu : Menu {
         d.Card.GetComponent<TextMesh>().text = d.name + "\nLvl: " + d.Level + "\nHP: " + d.hp + " / " + d.hpMax
                 + "\nPM: " + d.pm + " / " + d.pmMax;
     }
-
-    void Update()
+    void CheckForInactive()
     {
-        // check for inactive buttons in skills
-        if (state == MenuReader.skills)
+        // search through all the buttons for their text
+        for (int i = 0; i < buttonArray.Length; i++)
         {
-            // search through all the buttons for their text
-            for(int i = 0; i < buttonArray.Length; i++)
+            if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
+                buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
             {
-                if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
-                    buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
+                // inside the attack menu
+                if (state == MenuReader.attack)
                 {
+                    // disable skills/spells if that denigen's list are empty                    
+                    if ((buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == "Skills"
+                        && currentDenigen.SkillsList.Count <= 0)
+                        || (buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == "Spells"
+                        && currentDenigen.SpellsList.Count <= 0))
+                    {
+                        buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                    }
 
+                }
+                else if (state == MenuReader.skills)
+                {
                     // search through all the skills
                     for (int j = 0; j < currentDenigen.SkillsList.Count; j++)
                     {
@@ -475,16 +485,7 @@ public class BattleMenu : Menu {
                         }
                     }
                 }
-            }
-        }
-        // check for inactive buttons in skills
-        else if(state == MenuReader.spells)
-        {
-            // search through all the buttons for their text
-            for (int i = 0; i < buttonArray.Length; i++)
-            {
-                if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
-                    buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
+                else if (state == MenuReader.spells)
                 {
                     // search through all the spells
                     for (int j = 0; j < currentDenigen.SpellsList.Count; j++)
@@ -501,6 +502,11 @@ public class BattleMenu : Menu {
                 }
             }
         }
+    }
+    void Update()
+    {
+        // check for inactive buttons
+        CheckForInactive();
 
         if (state == MenuReader.flee)
         {
