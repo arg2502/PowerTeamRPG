@@ -164,6 +164,16 @@ public class GameControl : MonoBehaviour {
         //Save which scene the player is in
         data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
+        // Save all of the player's inventory
+        foreach (GameObject i in consumables)
+        {
+            Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = item.name;
+            id.quantity = item.quantity;
+            data.consumables.Add(id);
+        }
+
         // record the player's position
         data.posX = currentPosition.x;
         data.posY = currentPosition.y;
@@ -191,12 +201,97 @@ public class GameControl : MonoBehaviour {
             {
                 heroList.Add(data.heroList[i]);
             }
+
+            //Make sure the item lists are cleared before adding more
+            consumables.Clear();
+            reusables.Clear();
+            weapons.Clear();
+            equipment.Clear();
+
+            //Find all items and destroy them
+            Item[] items = FindObjectsOfType<Item>();
+            foreach (Item i in items) { Destroy(i.gameObject); }
+
+            // Read in all consumable items
+            foreach (ItemData id in data.consumables)
+            {
+                LoadConsumableItem(id);
+            }
+
+            //Read in all reusable items
+            //read in all weapons
+            //read in all equipment
+
             //put the player back where they were
             UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
             // Put their position vector here if we choose
             currentPosition = new Vector2(data.posX, data.posY);
             taggedStatue = data.taggedStatue;
         }
+    }
+
+    public void LoadConsumableItem(ItemData id)
+    {
+        GameObject temp = null;
+        switch (id.name)
+        {
+            case "Lesser Restorative":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+                break;
+            case "Restorative":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
+                break;
+            case "Gratuitous Restorative":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousRestorative"));
+                break;
+            case "Terminal Restorative":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalRestorative"));
+                break;
+            default:
+                print("Error: Incorrect item name - " + id.name);
+                break;
+        }
+        GameControl.control.AddItem(temp);
+        GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().quantity = id.quantity;
+    }
+
+    public void LoadReuseableItem(ItemData id)
+    {
+        GameObject temp = null;
+        switch (id.name)
+        {
+            default:
+                print("Error: Incorrect item name - " + id.name);
+                break;
+        }
+        GameControl.control.AddItem(temp);
+        GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().quantity = id.quantity;
+    }
+
+    public void LoadArmorItem(ItemData id)
+    {
+        GameObject temp = null;
+        switch (id.name)
+        {
+            default:
+                print("Error: Incorrect item name - " + id.name);
+                break;
+        }
+        GameControl.control.AddItem(temp);
+        GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
+    }
+
+    public void LoadWeaponItem(ItemData id)
+    {
+        GameObject temp = null;
+        switch (id.name)
+        {
+            default:
+                print("Error: Incorrect item name - " + id.name);
+                break;
+        }
+        GameControl.control.AddItem(temp);
+        GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
     }
 }
 
@@ -212,7 +307,12 @@ class PlayerData
     public bool taggedStatue;
     public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
     public List<HeroData> heroList = new List<HeroData>() { };
-    public List<Item> inventory = new List<Item>() { }; // All of the player's items
+
+    // All of the player's items
+    public List<ItemData> consumables = new List<ItemData>() { };
+    public List<ItemData> reuseables = new List<ItemData>() { };
+    public List<ItemData> equipment = new List<ItemData>() { };
+    public List<ItemData> weapons = new List<ItemData>() { }; 
 }
 
 //this class should hold all of the stuff necessary for a hero object
@@ -227,4 +327,12 @@ public class HeroData
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     public Status statusState;
     //Also need passives, equipment
+}
+
+//this class should hold all of the stuff necessary for an item object
+[Serializable]
+public class ItemData
+{
+    public string name;
+    public int quantity;
 }
