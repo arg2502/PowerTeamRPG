@@ -19,7 +19,10 @@ public class GameControl : MonoBehaviour {
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
     //items -- add later
-    public List<Item> inventory;
+    public List<GameObject> consumables;// = new List<ConsumableItem>() { };
+    public List<GameObject> equipment;
+    public List<GameObject> weapons;
+    public List<GameObject> reusables;
 
     //room information
     public string currentScene; // the place where the player currently is (outside of battle)
@@ -94,17 +97,55 @@ public class GameControl : MonoBehaviour {
         
 	}
 
-    public void AddItem(Item item)
+    public void AddItem(GameObject item)
     {
         // loop through the inventory to see if the player already has this type of item
         // if so, increase the quantity of that item
-        foreach (Item i in inventory)
+        if (item.GetComponent<ReusableItem>() != null)
         {
-            if (i.name == item.name) { i.quantity++; Destroy(item.gameObject); return; }
-        }
+            foreach (GameObject i in reusables)
+            {
+                if (i.GetComponent<ReusableItem>().name == item.GetComponent<ReusableItem>().name) { i.GetComponent<ReusableItem>().quantity++; Destroy(item); return; }
+            }
 
-        // if this type of item is not already in the inventory, add it now
-        inventory.Add(item);
+            // if this type of item is not already in the inventory, add it now
+            reusables.Add(item);
+            DontDestroyOnLoad(reusables[reusables.Count - 1]);
+        }
+        if (item.GetComponent<ConsumableItem>() != null)
+        {
+            foreach (GameObject i in consumables)
+            {
+                if (i.GetComponent<ConsumableItem>().name == item.GetComponent<ConsumableItem>().name) { i.GetComponent<ConsumableItem>().quantity++; Destroy(item); return; }
+            }
+
+            // if this type of item is not already in the inventory, add it now
+            consumables.Add(item);
+            DontDestroyOnLoad(consumables[consumables.Count - 1]);
+        }
+        if (item.GetComponent<ArmorItem>() != null)
+        {
+            foreach (GameObject i in equipment)
+            {
+                if (i.GetComponent<ArmorItem>().name == item.GetComponent<ArmorItem>().name) { i.GetComponent<ArmorItem>().quantity++; Destroy(item); return; }
+            }
+
+            // if this type of item is not already in the inventory, add it now
+            equipment.Add(item);
+            DontDestroyOnLoad(equipment[equipment.Count - 1]);
+        }
+        if (item.GetComponent<WeaponItem>() != null)
+        {
+            foreach (GameObject i in weapons)
+            {
+                if (i.GetComponent<WeaponItem>().name == item.GetComponent<WeaponItem>().name) { i.GetComponent<WeaponItem>().quantity++; Destroy(item); return; }
+            }
+
+            // if this type of item is not already in the inventory, add it now
+            weapons.Add(item);
+            DontDestroyOnLoad(weapons[weapons.Count - 1]);
+        }
+        
     }
 
     //this will save our game data to an external, persistent file

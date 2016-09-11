@@ -54,13 +54,13 @@ public class testSceneChanger : MonoBehaviour {
         if (GUI.Button(new Rect(170, 10, 150, 100), "Add Items"))
         {
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-            GameControl.control.AddItem(temp.GetComponent<Item>());
+            GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-            GameControl.control.AddItem(temp.GetComponent<Item>());
+            GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
-            GameControl.control.AddItem(temp.GetComponent<Item>());
+            GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-            GameControl.control.AddItem(temp.GetComponent<Item>());
+            GameControl.control.AddItem(temp);
         }
 	}
 }
