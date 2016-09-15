@@ -83,7 +83,7 @@ public class DialogueBox : MonoBehaviour {
 		portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer> ();
 
         // set correct image
-        portraitSr.sprite = dialogueNode.charImages[outerListPosition];
+        portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
 
 		// display at correct location - initially
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
@@ -107,7 +107,7 @@ public class DialogueBox : MonoBehaviour {
 	void Update () {
 		if (enabled) {
             // set portrait pic
-            portraitSr.sprite = dialogueNode.charImages[outerListPosition];
+            portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
             // change text position
             // if the portrait exists, make room for it
             if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
@@ -140,7 +140,7 @@ public class DialogueBox : MonoBehaviour {
                     {
                         outerListPosition++; // increase outer list to next person
                         innerListPosition = 0; // reset dialogue list to beginning
-                        portraitSr.sprite = dialogueNode.charImages[outerListPosition]; // change picture
+                        portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];// change picture
                         StartCoroutine(ScrollText(dialogueNode.dialogueList[outerListPosition].dialogue[innerListPosition])); // type text
                     }
                     // move on to next person if 
@@ -245,7 +245,7 @@ public class DialogueBox : MonoBehaviour {
         // display at correct location
         // if the portrait exists, make room for it
         portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer>();
-        portraitSr.sprite = dialogueNode.charImages[outerListPosition]; // draw correct portrait
+        portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition]; // draw correct portrait
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
         else { dialogueOffset = new Vector2(-600, -250); }
 
