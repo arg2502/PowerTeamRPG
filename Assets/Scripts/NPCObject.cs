@@ -20,7 +20,7 @@ public class NPCObject : OverworldObject {
 	// mainly so you can't start a dialogue if
 	// one already exists
 	public bool canTalk;
-	public Sprite charImage;
+	//public Sprite charImage;
 	protected void Start(){
 		player = GameObject.FindObjectOfType<characterControl>().transform;
 		canTalk = true;
@@ -37,16 +37,16 @@ public class NPCObject : OverworldObject {
 					dBoxGO = (GameObject)Instantiate (Resources.Load ("Prefabs/DialogueBoxPrefab"));
 					dBox = dBoxGO.GetComponent<DialogueBox> ();
 					dBox.npc = this;
-                    dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
+                    //dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 				} else {						
 					dBox = GameObject.FindObjectOfType<DialogueBox> ();
 					dBox.npc = this;
-                    dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
+                    //dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 					dBox.EnableBox ();
 				}
 			} else {
 				dBox.npc = this;
-                dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
+                //dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 				dBox.EnableBox ();
 			}
 			
