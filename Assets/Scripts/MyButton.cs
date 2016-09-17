@@ -30,8 +30,6 @@ public class MyButton : MonoBehaviour {
 	void Start () {
         //position = new Rect(0, 0, Screen.width, Screen.height);
 
-        sr = gameObject.AddComponent<SpriteRenderer>();
-
         // load button sprites
         normalTexture = Resources.Load("Sprites/normalButton", typeof(Sprite)) as Sprite;
         hoverTexture = Resources.Load("Sprites/hoverButton", typeof(Sprite)) as Sprite;
