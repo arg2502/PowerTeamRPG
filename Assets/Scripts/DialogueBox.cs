@@ -38,13 +38,17 @@ public class DialogueBox : MonoBehaviour {
 	characterControl hero;
 
 	// character image
-	SpriteRenderer sr;
+	public SpriteRenderer sr;
 	SpriteRenderer portraitSr;
 
 	// scroll typing lines
 	bool isTyping;
 	bool cancelTyping;
 	int desiredLength = 30;
+
+    // check whether a question is being asked
+    bool isAsking;
+
 	// Use this for initialization
 	void Start () {
 
@@ -83,7 +87,10 @@ public class DialogueBox : MonoBehaviour {
 		portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer> ();
 
         // set correct image
-        portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
+        if (dialogueNode.dialogueList[outerListPosition].charImages.Count > 0)
+        {
+            portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
+        }
 
 		// display at correct location - initially
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
@@ -107,7 +114,10 @@ public class DialogueBox : MonoBehaviour {
 	void Update () {
 		if (enabled) {
             // set portrait pic
-            portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
+            if (dialogueNode.dialogueList[outerListPosition].charImages.Count > 0)
+            {
+                portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
+            }
             // change text position
             // if the portrait exists, make room for it
             if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
@@ -135,6 +145,13 @@ public class DialogueBox : MonoBehaviour {
 						innerListPosition++;
 						StartCoroutine (ScrollText (dialogueNode.dialogueList [outerListPosition].dialogue[innerListPosition]));
 					} 
+                    // when the character finishes their dialogue,
+                    // if they have to ask a question, display it
+                    else if(isAsking)
+                    {
+
+                    }
+
                     // move on to next person if there are more
                     else if(outerListPosition < dialogueNode.dialogueList.Count - 1)
                     {
@@ -231,6 +248,16 @@ public class DialogueBox : MonoBehaviour {
 		}
 		isTyping = false;
 		cancelTyping = false;
+
+        // if it's the end of a list and a question needs to be asked, set it
+        if(dialogueNode.dMenu != null && innerListPosition >= dialogueNode.dialogueList[outerListPosition].dialogue.Count - 1)
+        {
+            isAsking = true;
+            dialogueNode.dMenu.enabled = true;
+            dialogueNode.dMenu.EnableQuestionMenu();
+            
+        }
+
 	}
 
 	// turn box on when player wants to talk
@@ -245,7 +272,10 @@ public class DialogueBox : MonoBehaviour {
         // display at correct location
         // if the portrait exists, make room for it
         portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer>();
-        portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition]; // draw correct portrait
+        if (dialogueNode.dialogueList[outerListPosition].charImages.Count > 0)
+        {
+            portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition]; // draw correct portrait
+        }
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
         else { dialogueOffset = new Vector2(-600, -250); }
 
