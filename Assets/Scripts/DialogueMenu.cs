@@ -6,7 +6,10 @@ public class DialogueMenu : Menu {
 
     // list to pass into content array
     //public List<string> questionList;
-    public NPCDialogue npc;
+    public NPCQuestion npc;
+
+    // reference to dialogueBox
+    public DialogueBox dBox;
 
 	// Use this for initialization
 	void Start () {      
@@ -16,16 +19,41 @@ public class DialogueMenu : Menu {
 	// Update is called once per frame
 	void Update () {
         base.Update();
+        PressButton(KeyCode.Space);
 	}
+
+    public override void ButtonAction(string label)
+    {
+        if (enabled)
+        {
+            for (int i = 0; i < npc.answerList.Count; i++)
+            {
+                // if the button is hover when this is called, it's the button that was just pressed
+                if (buttonArray[i].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.hover)
+                {
+                    // set the dialogue box text to corresponding position in response list
+                    print("Inside button action");
+                    dBox.isAsking = false;
+                    dBox.isDialogue = false;
+                    dBox.isResponse = true;
+                    dBox.outerListPosition = 0;
+                    dBox.innerListPosition = 0;
+                    StartCoroutine(dBox.ScrollText(npc.responseList[dBox.outerListPosition].dialogue[dBox.innerListPosition]));
+                    DisableQuestionMenu();
+                }
+            }
+        }
+    }
 
     public void EnableQuestionMenu()
     {
         camera = GameObject.FindGameObjectWithTag("MainCamera");
-        npc = GetComponent<NPCDialogue>();
-        numOfRow = npc.questionList.Count;
+        npc = GetComponent<NPCQuestion>();
+        numOfRow = npc.answerList.Count;
         buttonArray = new GameObject[numOfRow];
         selectedIndex = 0;
         scrollIndex = 0;
+        dBox = GameObject.FindObjectOfType<DialogueBox>();
 
         for (int i = 0; i < numOfRow; i++)
         {
@@ -48,5 +76,15 @@ public class DialogueMenu : Menu {
             buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
     }
+    public void DisableQuestionMenu()
+    {
+        for (int i = 0; i < numOfRow; i++ )
+        {
+            Destroy(buttonArray[i].GetComponent<MyButton>().textObject);
+            Destroy(buttonArray[i]);
+        }
+        enabled = false;
+    }
+    
     
 }

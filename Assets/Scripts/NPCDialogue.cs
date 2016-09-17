@@ -15,23 +15,17 @@ public class NPCDialogue : MonoBehaviour {
 	// based on the progression of the story or player
 	// these could be in child classes
 
-    // lists for npcs that ask questions
-    public List<string> questionList;
+    // question variables
+    public List<string> responseTitle;
 
-    // reference to dialogue menu
-    public DialogueMenu dMenu;
+    public DialogueMenu dMenu; // needs to be here for DialogueBox to access
+    
+    // answers for the player
+    public List<string> answerList;
 
-    void Start()
-    {
-        dMenu = GetComponent<DialogueMenu>();
-        if (dMenu)
-        {
-            dMenu.contentArray = questionList;
-        }
-        
-    }
-
-   
+    // possible responses from the npc depending on the player's choice
+    public List<ListOfStrings> responseList;
+    
 }
 
 [System.Serializable]
