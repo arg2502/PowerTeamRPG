@@ -19,7 +19,7 @@ public class MyButton : MonoBehaviour {
     public Sprite activeTexture;
     public Sprite disabledTexture;
     public Sprite inactiveHoverTexture;
-    protected SpriteRenderer renderer;
+    public SpriteRenderer sr;
 
     // properties
     //public Rect Position { get { return position; } set { position = value; } }
@@ -30,7 +30,7 @@ public class MyButton : MonoBehaviour {
 	void Start () {
         //position = new Rect(0, 0, Screen.width, Screen.height);
 
-        renderer = gameObject.AddComponent<SpriteRenderer>();
+        sr = gameObject.AddComponent<SpriteRenderer>();
 
         // load button sprites
         normalTexture = Resources.Load("Sprites/normalButton", typeof(Sprite)) as Sprite;
@@ -39,16 +39,16 @@ public class MyButton : MonoBehaviour {
         disabledTexture = Resources.Load("Sprites/disabledButton", typeof(Sprite)) as Sprite;
         inactiveHoverTexture = Resources.Load("Sprites/inactiveHoverButton", typeof(Sprite)) as Sprite;
 
-        renderer.sprite = normalTexture;
+        sr.sprite = normalTexture;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (state == MyButtonTextureState.normal) { renderer.sprite = normalTexture; } // button is in standby
-        else if (state == MyButtonTextureState.hover) { renderer.sprite = hoverTexture; } // cursor is over button
-        else if (state == MyButtonTextureState.active) { renderer.sprite = activeTexture; } // player has selected button
-        else if (state == MyButtonTextureState.disabled) { renderer.sprite = disabledTexture; } // there is no option/button to display
-        else if (state == MyButtonTextureState.inactive) { renderer.sprite = disabledTexture; } // player cannot select button
-        else if (state == MyButtonTextureState.inactiveHover) { renderer.sprite = inactiveHoverTexture; } // player hovers over button but cannot select it
+        if (state == MyButtonTextureState.normal) { sr.sprite = normalTexture; } // button is in standby
+        else if (state == MyButtonTextureState.hover) { sr.sprite = hoverTexture; } // cursor is over button
+        else if (state == MyButtonTextureState.active) { sr.sprite = activeTexture; } // player has selected button
+        else if (state == MyButtonTextureState.disabled) { sr.sprite = disabledTexture; } // there is no option/button to display
+        else if (state == MyButtonTextureState.inactive) { sr.sprite = disabledTexture; } // player cannot select button
+        else if (state == MyButtonTextureState.inactiveHover) { sr.sprite = inactiveHoverTexture; } // player hovers over button but cannot select it
 	}
 }

@@ -7,7 +7,7 @@ public class Menu : MonoBehaviour {
     //public GameObject buttonPrefab;
     protected GameObject camera;
     protected int numOfRow;
-    protected List<string> contentArray;
+    public List<string> contentArray;
     protected GameObject[] buttonArray;
     //protected GameObject selectedButtonObj;
     protected int selectedIndex;
@@ -98,19 +98,64 @@ public class Menu : MonoBehaviour {
 	}
 	// Update is called once per frame
 	protected void Update () {
-        // scroll through menu options
-        if (Input.GetKeyDown(KeyCode.S))
+        // sort buttons to front of screen
+        for (int i = 0; i < buttonArray.Length; i++ )
         {
-            // move down the list of buttons
-            if (selectedIndex < buttonArray.Length - 1)
-            {
-                // if next is disabled, stop
-                if (buttonArray[selectedIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled) {return;}
-                else
-                {
-                    // increase index to hover over next button
-                    selectedIndex++;
+            buttonArray[i].GetComponent<MyButton>().sr.sortingOrder = 900;
+            buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<Renderer>().sortingOrder = 900;
+        }
 
+            // scroll through menu options
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                // move down the list of buttons
+                if (selectedIndex < buttonArray.Length - 1)
+                {
+                    // if next is disabled, stop
+                    if (buttonArray[selectedIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled) { return; }
+                    else
+                    {
+                        // increase index to hover over next button
+                        selectedIndex++;
+
+                        // check if the button is inactive
+                        // if it is, set it to inactiveHover
+                        if (buttonArray[selectedIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+                        {
+                            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+                        }
+                        // if it is not inactive, set it to normal hover
+                        else
+                        {
+                            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+                        }
+
+                        // now change the previous button state
+                        // if the last button was inactiveHover, set it to inactive
+                        if (buttonArray[selectedIndex - 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover)
+                        {
+                            buttonArray[selectedIndex - 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                        }
+                        // if it was a normal button, set it back to normal
+                        else
+                        {
+                            buttonArray[selectedIndex - 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                        }
+                    }
+
+                }
+                // scroll down to see more
+                else if (selectedIndex + scrollIndex < contentArray.Count - 1)
+                {
+                    scrollIndex++;
+                    ChangeText();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                if (selectedIndex > 0)
+                {
+                    selectedIndex--;
                     // check if the button is inactive
                     // if it is, set it to inactiveHover
                     if (buttonArray[selectedIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
@@ -125,60 +170,22 @@ public class Menu : MonoBehaviour {
 
                     // now change the previous button state
                     // if the last button was inactiveHover, set it to inactive
-                    if (buttonArray[selectedIndex - 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover)
+                    if (buttonArray[selectedIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover)
                     {
-                        buttonArray[selectedIndex - 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                        buttonArray[selectedIndex + 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
                     }
                     // if it was a normal button, set it back to normal
                     else
                     {
-                        buttonArray[selectedIndex - 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                        buttonArray[selectedIndex + 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
                     }
                 }
-                
-            }
-            // scroll down to see more
-            else if (selectedIndex + scrollIndex < contentArray.Count - 1)
-            {
-                scrollIndex++;
-                ChangeText();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            if (selectedIndex > 0)
-            {
-                selectedIndex--;
-                // check if the button is inactive
-                // if it is, set it to inactiveHover
-                if (buttonArray[selectedIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+                else if (scrollIndex > 0)
                 {
-                    buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
-                }
-                // if it is not inactive, set it to normal hover
-                else
-                {
-                    buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
-                }
-
-                // now change the previous button state
-                // if the last button was inactiveHover, set it to inactive
-                if (buttonArray[selectedIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover)
-                {
-                    buttonArray[selectedIndex + 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
-                }
-                // if it was a normal button, set it back to normal
-                else
-                {
-                    buttonArray[selectedIndex + 1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                    scrollIndex--;
+                    ChangeText();
                 }
             }
-            else if (scrollIndex > 0)
-            {
-                scrollIndex--;
-                ChangeText();
-            }
-        }
 
         // select option if active
         if (buttonArray[selectedIndex].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive
