@@ -299,8 +299,8 @@ public class BattleMenu : Menu {
 
                 //store the name of the command you wish to issue
                 command = label;
-                DisableMenu();
                 prevState = state;
+                DisableMenu();
                 state = MenuReader.targeting;
                 break;
             case "Block":
@@ -355,8 +355,8 @@ public class BattleMenu : Menu {
                     //Giving an attack command marks the end of current denigen's turn
                     //ChangeCurrentDenigen();
 					command = label;
-                    DisableMenu();
                     prevState = state;
+                    DisableMenu();
 					state = MenuReader.targeting;
                 }
                 else if (state == MenuReader.items)
@@ -391,6 +391,7 @@ public class BattleMenu : Menu {
         else
         {
             currentDenigen = denigenArray[currentDenigenIndex];
+            if (currentDenigen is Hero) { EnableMenu(); }
             currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
             if (currentDenigen.GetComponent<Hero>() != null)
             {
@@ -523,6 +524,7 @@ public class BattleMenu : Menu {
         // check for inactive buttons
         CheckForInactive();
 
+
         if (state == MenuReader.flee)
         {
             UpdateFlee();
@@ -605,6 +607,7 @@ public class BattleMenu : Menu {
             }
 
             base.Update();
+            PressButton(KeyCode.Space);
 
             // if back button is pressed, set state to previous state
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -626,8 +629,10 @@ public class BattleMenu : Menu {
                 enemyList[i].Card.GetComponent<TextMesh>().color = Color.white;
             }
         }
-        
-       
+
+
+        // check for button press
+        //PressButton(KeyCode.Space);
     }
 
     void UpdateBattle()

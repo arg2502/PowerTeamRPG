@@ -118,6 +118,7 @@ public class DialogueBox : MonoBehaviour {
             {
                 portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
             }
+            
             // change text position
             // if the portrait exists, make room for it
             if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
@@ -168,6 +169,7 @@ public class DialogueBox : MonoBehaviour {
 						spokenText.GetComponent<Renderer> ().enabled = false;
 						titleText.GetComponent<Renderer> ().enabled = false;
 						sr.enabled = false;
+                        portraitSr.sprite = null;
 						portraitSr.enabled = false;
 						hero.canMove = true;
 						enabled = false;

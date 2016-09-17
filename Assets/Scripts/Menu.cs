@@ -98,13 +98,7 @@ public class Menu : MonoBehaviour {
 	}
 	// Update is called once per frame
 	protected void Update () {
-        // sort buttons to front of screen
-        for (int i = 0; i < buttonArray.Length; i++ )
-        {
-            buttonArray[i].GetComponent<MyButton>().sr.sortingOrder = 900;
-            buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<Renderer>().sortingOrder = 900;
-        }
-
+       
             // scroll through menu options
             if (Input.GetKeyDown(KeyCode.S))
             {
@@ -186,17 +180,28 @@ public class Menu : MonoBehaviour {
                     ChangeText();
                 }
             }
+            // sort buttons to front of screen
+            for (int i = 0; i < buttonArray.Length; i++)
+            {
+                buttonArray[i].GetComponent<MyButton>().sr.sortingOrder = 900;
+                buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<Renderer>().sortingOrder = 900;
+            }
 
+        
+	}
+
+    protected void PressButton(KeyCode button)
+    {
         // select option if active
         if (buttonArray[selectedIndex].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive
             && buttonArray[selectedIndex].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(button))
             {
                 // change button to pressed/active when keystroke down
                 buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.active;
             }
-            else if (Input.GetKeyUp(KeyCode.Space))
+            else if (Input.GetKeyUp(button))
             {
                 buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
@@ -204,5 +209,5 @@ public class Menu : MonoBehaviour {
                 ButtonAction(buttonArray[selectedIndex].GetComponent<MyButton>().labelMesh.text);
             }
         }
-	}
+    }
 }
