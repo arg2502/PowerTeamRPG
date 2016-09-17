@@ -268,6 +268,11 @@ public class BattleMenu : Menu {
             case MenuReader.summons:
                break;
             case MenuReader.items:
+               contentArray = new List<string> { };
+               for (int i = 0; i < GameControl.control.consumables.Count; i++ )
+               {
+                   contentArray.Add(GameControl.control.consumables[i].GetComponent<ConsumableItem>().name);
+               }
                break;
 			default:
                break;
@@ -294,6 +299,7 @@ public class BattleMenu : Menu {
 
                 //store the name of the command you wish to issue
                 command = label;
+                DisableMenu();
                 prevState = state;
                 state = MenuReader.targeting;
                 break;
@@ -349,6 +355,7 @@ public class BattleMenu : Menu {
                     //Giving an attack command marks the end of current denigen's turn
                     //ChangeCurrentDenigen();
 					command = label;
+                    DisableMenu();
                     prevState = state;
 					state = MenuReader.targeting;
                 }
@@ -457,8 +464,16 @@ public class BattleMenu : Menu {
             if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
                 buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
             {
+                if (state == MenuReader.main)
+                {
+                    if (buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == "Items"
+                        && GameControl.control.consumables.Count <= 0)
+                    {
+                        buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                    }
+                }
                 // inside the attack menu
-                if (state == MenuReader.attack)
+                else if (state == MenuReader.attack)
                 {
                     // disable skills/spells if that denigen's list are empty                    
                     if ((buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == "Skills"
@@ -542,6 +557,7 @@ public class BattleMenu : Menu {
                     // if back button is pressed, set state to previous state
                     if (Input.GetKeyDown(KeyCode.Backspace))
                     {
+                        EnableMenu();
                         state = prevState;
                         ChangeContentArray();
                         StateChangeText();
@@ -593,6 +609,7 @@ public class BattleMenu : Menu {
             // if back button is pressed, set state to previous state
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
+                EnableMenu();
                 state = prevState;
                 ChangeContentArray();
                 StateChangeText();
