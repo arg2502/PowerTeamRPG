@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour {
         // test
         // actual version should be parameterized
         camera = GameObject.FindGameObjectWithTag("MainCamera");
-        numOfRow = 4;
+        //numOfRow = 4;
         buttonArray = new GameObject[numOfRow];
         selectedIndex = 0;
         scrollIndex = 0;

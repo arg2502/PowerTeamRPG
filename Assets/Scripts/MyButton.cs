@@ -31,11 +31,11 @@ public class MyButton : MonoBehaviour {
         //position = new Rect(0, 0, Screen.width, Screen.height);
 
         // load button sprites
-        normalTexture = Resources.Load("Sprites/normalButton", typeof(Sprite)) as Sprite;
+        /*normalTexture = Resources.Load("Sprites/normalButton", typeof(Sprite)) as Sprite;
         hoverTexture = Resources.Load("Sprites/hoverButton", typeof(Sprite)) as Sprite;
         activeTexture = Resources.Load("Sprites/activeButton", typeof(Sprite)) as Sprite;
         disabledTexture = Resources.Load("Sprites/disabledButton", typeof(Sprite)) as Sprite;
-        inactiveHoverTexture = Resources.Load("Sprites/inactiveHoverButton", typeof(Sprite)) as Sprite;
+        inactiveHoverTexture = Resources.Load("Sprites/inactiveHoverButton", typeof(Sprite)) as Sprite;*/
 
         sr.sprite = normalTexture;
 	}
