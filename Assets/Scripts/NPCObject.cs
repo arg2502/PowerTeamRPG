@@ -22,6 +22,7 @@ public class NPCObject : OverworldObject {
 	public bool canTalk;
 	//public Sprite charImage;
 	protected void Start(){
+        base.Start();
 		player = GameObject.FindObjectOfType<characterControl>().transform;
 		canTalk = true;
 		npcDialogue = GetComponent<NPCDialogue> ();

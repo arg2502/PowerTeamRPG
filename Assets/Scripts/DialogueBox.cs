@@ -124,7 +124,7 @@ public class DialogueBox : MonoBehaviour {
             }
             else if (isResponse)
             {
-                WriteText(dialogueNode.responseList);
+                WriteResponseText(dialogueNode.responseList);
             }
 		}
 	
@@ -142,8 +142,8 @@ public class DialogueBox : MonoBehaviour {
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
         else { dialogueOffset = new Vector2(-600, -250); }
 
-        if (isDialogue) { titleText.text = dialogueNode.title[outerListPosition]; }
-        else if (isResponse) { titleText.text = dialogueNode.responseTitle[outerListPosition]; }
+        titleText.text = dialogueNode.title[outerListPosition];
+        
             // display at correct location
             textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
         spokenTextGO.transform.position = textPosition;
@@ -162,11 +162,9 @@ public class DialogueBox : MonoBehaviour {
             {
                 // continue list if space is pressed
                 // continue inside list if there is more for that person to say
-               // print("Inner List Position: " + innerListPosition + " < text{outerListPosition].dialogue.Count - 1: " + (text[outerListPosition].dialogue.Count-1));
                 if (innerListPosition < text[outerListPosition].dialogue.Count - 1)
                 {
                     innerListPosition++;
-                   // print("Inside If: " + text[outerListPosition].dialogue[innerListPosition]);
                     StartCoroutine(ScrollText(text[outerListPosition].dialogue[innerListPosition]));
                 }
                
@@ -176,18 +174,9 @@ public class DialogueBox : MonoBehaviour {
                     outerListPosition++; // increase outer list to next person
                     innerListPosition = 0; // reset dialogue list to beginning
                     portraitSr.sprite = text[outerListPosition].charImages[innerListPosition];// change picture
-                   // print("Inside Else If: " + text[outerListPosition].dialogue[innerListPosition]);
                     StartCoroutine(ScrollText(text[outerListPosition].dialogue[innerListPosition])); // type text
                 }
-                /*// display question text
-                else if(isResponse)
-                {
-                    outerListPosition = 0;
-                    innerListPosition = 0;
-                    portraitSr.sprite = text[outerListPosition].charImages[innerListPosition];// change picture
-                    StartCoroutine(ScrollText(dialogueNode.responseList[outerListPosition].dialogue[innerListPosition]));
-                }*/
-                    
+
                 // disable text and box when list is done
                 else if(!isAsking || isResponse)
                 {
@@ -225,7 +214,69 @@ public class DialogueBox : MonoBehaviour {
         sr.sortingOrder = 899;
         portraitSr.sortingOrder = 899;
     }
+    public void WriteResponseText(ListOfStrings response)
+    {
+        // set portrait pic
+        if (response.charImages.Count > 0)
+        {
+            portraitSr.sprite = response.charImages[innerListPosition];
+        }
 
+        // change text position
+        // if the portrait exists, make room for it
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
+        else { dialogueOffset = new Vector2(-600, -250); }
+
+        titleText.text = dialogueNode.responseTitle;
+
+        // display at correct location
+            textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+        spokenTextGO.transform.position = textPosition;
+
+        titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
+        titleTextGO.transform.position = titlePosition;
+
+        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (!isTyping)
+            {
+                // continue list if space is pressed
+                // continue inside list if there is more for that person to say
+                if (innerListPosition < response.dialogue.Count - 1)
+                {
+                    innerListPosition++;
+                    StartCoroutine(ScrollText(response.dialogue[innerListPosition]));
+                }
+                // disable text and box when list is done
+                else if (!isAsking || isResponse)
+                {
+                    isResponse = false;
+                    isDialogue = true;
+                    npc.canTalk = true;
+                    npc = null;
+                    spokenText.GetComponent<Renderer>().enabled = false;
+                    titleText.GetComponent<Renderer>().enabled = false;
+                    sr.enabled = false;
+                    portraitSr.sprite = null;
+                    portraitSr.enabled = false;
+                    hero.canMove = true;
+                    enabled = false;
+
+                }
+            }
+            else if (isTyping && !cancelTyping)
+            {
+                cancelTyping = true;
+                spokenText.text = FormatText(response.dialogue[innerListPosition]);
+            }
+        }
+        titleText.GetComponent<Renderer>().sortingOrder = 900;
+        spokenText.GetComponent<Renderer>().sortingOrder = 900;
+        sr.sortingOrder = 899;
+        portraitSr.sortingOrder = 899;
+    }
 	public string FormatText(string str)
 	{
 		string formattedString = null;
@@ -236,7 +287,6 @@ public class DialogueBox : MonoBehaviour {
 			//if the current line plus the length of the next word and SPACE is greater than the desired line length
 			if (lineLength > desiredLength)
 			{
-				//print (1 + lineLength);
 				//go to new line
 				formattedString += s + "\n";
 				//starting a new line
@@ -267,11 +317,9 @@ public class DialogueBox : MonoBehaviour {
 		cancelTyping = false;
 		while (isTyping && !cancelTyping && letter < line.Length) {
 			if (lineLength > desiredLength && line[letter-1] == ' ') {
-				print ("cur char: " + line[letter] + "\nnext char: " + line [letter + 1]);
 				spokenText.text += "\n";
 				lineLength = 0;
 			}
-            print(line[letter]);
 			spokenText.text += line [letter];
 			letter++;
 			lineLength++;

@@ -16,15 +16,15 @@ public class NPCDialogue : MonoBehaviour {
 	// these could be in child classes
 
     // question variables
-    public List<string> responseTitle;
+    public string responseTitle;
 
     public DialogueMenu dMenu; // needs to be here for DialogueBox to access
-    
+
     // answers for the player
     public List<string> answerList;
 
-    // possible responses from the npc depending on the player's choice
-    public List<ListOfStrings> responseList;
+    // the final response of the npc - this is set inside dialogue menu   
+    public ListOfStrings responseList;
     
 }
 

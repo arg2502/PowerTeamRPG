@@ -32,13 +32,13 @@ public class DialogueMenu : Menu {
                 if (buttonArray[i].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.hover)
                 {
                     // set the dialogue box text to corresponding position in response list
-                    print("Inside button action");
+                    npc.responseList = npc.possibleResponses[i];
                     dBox.isAsking = false;
                     dBox.isDialogue = false;
                     dBox.isResponse = true;
                     dBox.outerListPosition = 0;
                     dBox.innerListPosition = 0;
-                    StartCoroutine(dBox.ScrollText(npc.responseList[dBox.outerListPosition].dialogue[dBox.innerListPosition]));
+                    StartCoroutine(dBox.ScrollText(npc.responseList.dialogue[dBox.innerListPosition]));
                     DisableQuestionMenu();
                 }
             }
