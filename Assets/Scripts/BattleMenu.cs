@@ -10,6 +10,7 @@ public class BattleMenu : Menu {
     int exp; // the amount of experience awarded for victory
 
     bool failedFlee; // this will give the enemy a free turn if you fail to flee
+    bool levelUp; // handles whether to transition to the level up scene or the overworld
 
     // enumeration to determine what menu is shown
     enum MenuReader { main, attack, skills, spells, summons, items, flee, targeting, battle, victory, failure };
@@ -928,6 +929,8 @@ public class BattleMenu : Menu {
                         int extraExp = Mathf.Abs(h.ExpToLevelUp);
                         h.LevelUp(extraExp);
                         UpdateCard(h);
+                        h.levelUp = true;
+                        levelUp = true; // tells the game to go to the level up scene
                     }
                 }
             }
@@ -956,11 +959,15 @@ public class BattleMenu : Menu {
                             hd.luck = h.Luck;
                             hd.spd = h.Spd;
                             hd.statusState = (HeroData.Status)h.StatusState;
+                            hd.levelUp = h.levelUp;
                         }
                     }
                 }
                 // exit the battle
-                UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
+                // if a hero leveled up, go to level up screen
+                if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
+                // otherwise, just go to current room
+                else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
             }
             if (textIndex < 3)
             {

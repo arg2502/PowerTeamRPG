@@ -11,6 +11,7 @@ public class Hero: Denigen {
     //the amount of experience required to level up
     protected int expToLvlUp;
     protected float growthSpeed;
+    public bool levelUp = false;
 
     // item/equipment list - NEED LATER
 

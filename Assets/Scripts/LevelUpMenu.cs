@@ -12,7 +12,10 @@ public class LevelUpMenu : Menu {
     protected List<string> statDescription; // explanation of the stat
     protected GameObject descriptionText;
     protected HeroData hero; // the current hero who is leveling up. This will be provided by the GameControl obj
-    protected int remainingPoints = 10; // this should be determined by the hero thsat is passed in by GameControl
+    protected int remainingPoints;// = 10; // this should be determined by the hero thsat is passed in by GameControl
+
+    // Bool for knowing if we should continue with the level up menu -- this should probably be found in the skill tree section
+    protected bool levelUp = false;
 
     //color green
     Color myGreen = new Color(0.2f, 1.0f, 0.4f);
@@ -26,8 +29,16 @@ public class LevelUpMenu : Menu {
         statBoosts = new List<GameObject>();
         statDescription = new List<string>();
 
-        //Set the hero -- hard coded to jethro for testing
-        hero = GameControl.control.heroList[0];
+        //Set the hero
+        for (int i = 0; i < GameControl.control.heroList.Count; i++)
+        {
+            if (GameControl.control.heroList[i].levelUp) 
+            {
+                GameControl.control.heroList[i].levelUp = false;
+                hero = GameControl.control.heroList[i];
+                break;
+            }
+        }
         originalStats.Add(hero.hpMax);
         originalStats.Add(hero.pmMax);
         originalStats.Add(hero.atk);
@@ -37,6 +48,7 @@ public class LevelUpMenu : Menu {
         originalStats.Add(hero.luck);
         originalStats.Add(hero.evasion);
         originalStats.Add(hero.spd);
+        remainingPoints = hero.levelUpPts;
 
         // fill the stat description list with a description for each stat
         statDescription.Add(hero.name + "'s maximum health points. This stat determines how much damage " + hero.name
@@ -129,6 +141,29 @@ public class LevelUpMenu : Menu {
         if (label == "Allocate Stat Points")
         {
             // Actually add the allocated points and move on to the next step of leveling up -- skills
+            foreach (HeroData hd in GameControl.control.heroList)
+            {
+                if (hd.identity == hero.identity)
+                {
+                    hd.hpMax += statBoostInts[0];
+                    hd.pmMax += statBoostInts[1];
+                    hd.atk += statBoostInts[2];
+                    hd.def += statBoostInts[3];
+                    hd.mgkAtk += statBoostInts[4];
+                    hd.mgkDef += statBoostInts[5];
+                    hd.luck += statBoostInts[6];
+                    hd.evasion += statBoostInts[7];
+                    hd.spd += statBoostInts[8];
+                    hd.levelUpPts = 0;
+                }
+                // also use this loop to figure out if we need to level up another hero
+                if (hd.levelUp) { levelUp = true; }
+            }
+
+            // Either go back to current room, or move to level up the next hero
+            // This should be in the skills area, but it is here since I haven't done the skills yet
+            if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
+            else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
         }
         else // Change all of the labels and necessary sprites
         {
