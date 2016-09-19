@@ -70,25 +70,25 @@ public class BattleMenu : Menu {
             GameObject temp;
             for (int i = 0; i < tempHeroes.Count; i++)
             {
-                switch (tempHeroes[i].name)
+                switch (tempHeroes[i].identity)
                 {
-                    case "Jethro":
+                    case 0:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/JethroPrefab"));
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
-                    case "Cole":
+                    case 1:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/ColePrefab"));
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
-                    case "Eleanor":
+                    case 2:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/EleanorPrefab"));
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
-                    case "Juliette":
+                    case 3:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/JuliettePrefab"));
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
-                    case "Selene":
+                    case 4:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/SelenePrefab"));
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
@@ -98,6 +98,7 @@ public class BattleMenu : Menu {
                         break;
                 }
                 //bring in all of the stats
+                denigenArray[i].GetComponent<Hero>().identity = tempHeroes[i].identity;
                 denigenArray[i].name = tempHeroes[i].name;
                 denigenArray[i].Level = tempHeroes[i].level;
                 denigenArray[i].hp = tempHeroes[i].hp;
@@ -937,7 +938,7 @@ public class BattleMenu : Menu {
                 {
                     foreach (HeroData hd in GameControl.control.heroList)
                     {
-                        if (h.name == hd.name)
+                        if (h.identity == hd.identity)
                         {
                             hd.level = h.Level;
                             hd.levelUpPts = h.LevelUpPts;
@@ -1006,7 +1007,7 @@ public class BattleMenu : Menu {
                     {
                         foreach (HeroData hd in GameControl.control.heroList)
                         {
-                            if (h.name == hd.name)
+                            if (h.identity == hd.identity)
                             {
                                 hd.level = h.Level;
                                 hd.levelUpPts = h.LevelUpPts;

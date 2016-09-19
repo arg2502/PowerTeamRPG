@@ -19,6 +19,7 @@ public class testSceneChanger : MonoBehaviour {
         if (GUI.Button(new Rect(10, 120, 150, 100), "Add Cole"))
         {
             GameControl.control.heroList.Add(new HeroData());
+            GameControl.control.heroList[1].identity = 1;
             GameControl.control.heroList[1].name = "Cole";
             GameControl.control.heroList[1].level = 2;
             GameControl.control.heroList[1].expToLvlUp = 20;

@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Hero: Denigen {
+    // this variable makes the hero unique (more than a name), and will be used for maintaining persistency
+    public int identity;
 
     // Hero stats
     protected int exp;

@@ -35,6 +35,7 @@ public class GameControl : MonoBehaviour {
 
     public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
 
+
     public int areaLevel; // mean level of enemies, determined by an enemyControl obj
     public int numOfEnemies; // number of enemies in battle, determined by an enemyControl obj
     public List<Enemy> enemies; // the type of enemies in battle, determined by an enemyControl obj
@@ -52,6 +53,7 @@ public class GameControl : MonoBehaviour {
             //We will have these stats stored in HeroData objs for consistency between rooms
             heroList.Add(new HeroData());
             heroList[0].name = "Jethro";
+            heroList[0].identity = 0;
             heroList[0].level = 1;
             heroList[0].exp = 0;
             heroList[0].expToLvlUp = 10;
@@ -319,6 +321,7 @@ class PlayerData
 [Serializable]
 public class HeroData
 {
+    public int identity;
     public string name;
     public int level, exp, expToLvlUp, levelUpPts, techPts;
     public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
