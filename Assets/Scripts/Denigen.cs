@@ -18,7 +18,8 @@ public class Denigen : MonoBehaviour {
     protected bool isBlocking = false;
     public bool IsBlocking { get { return isBlocking; } set { isBlocking = value; } }
 
-    //List of passives, useful for enemies and heroes -- ADD LATER
+    //List of passives, useful for enemies and heroes
+    protected List<Passive> passives;
 
     //List for storing targets of Denigen's attacks and spells
     protected List<Denigen> targets = new List<Denigen>() { };
