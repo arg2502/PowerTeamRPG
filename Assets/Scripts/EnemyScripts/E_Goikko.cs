@@ -15,14 +15,14 @@ public class E_Goikko : Enemy {
         //skillsDescription = new List<string>() { "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90" };
         //spellsList = new List<string>() { "Frenzy" };
         //spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
-        skillsList = new List<Technique>() { };
-        spellsList = new List<Technique>() { };
-        Technique tackle = new Technique();
+        skillsList = new List<Skill>() { };
+        spellsList = new List<Spell>() { };
+        Skill tackle = new Skill();
         tackle.Name = "Tackle";
         tackle.Pm = 0;
         tackle.Description = "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90";
         skillsList.Add(tackle);
-        Technique frenzy = new Technique();
+        Skill frenzy = new Skill();
         frenzy.Name = "Frenzy";
         frenzy.Pm = 0;
         frenzy.Description = "The attacker gets riled up, boosting ATK.\n +10% ATK";

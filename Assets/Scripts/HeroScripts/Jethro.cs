@@ -9,9 +9,9 @@ public class Jethro : Hero {
         // TEMPORARY LISTS
         //skillsList = new List<string>() { "Helmsplitter"};
         //spellsList = new List<string>() { "Godspell", "Firepuff", "Wimsy Ass", "Ecpliseddd", "You're goddamn right" };
-        skillsList = new List<Technique>(){ };
-        spellsList = new List<Technique>() { };
-        Technique helmsplitter = new Technique();
+        skillsList = new List<Skill>(){ };
+        spellsList = new List<Spell>() { };
+        Skill helmsplitter = new Skill();
         helmsplitter.Name = "Helmsplitter";
         helmsplitter.Pm = 2;
         helmsplitter.Description = "A powerful sword strike from above. \n Str 75, Crit 03, Acc 90";

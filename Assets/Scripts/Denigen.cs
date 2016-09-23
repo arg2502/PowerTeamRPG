@@ -42,7 +42,8 @@ public class Denigen : MonoBehaviour {
 
     // arrays of techniques
     //protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
-    protected List<Technique> skillsList, spellsList;
+    protected List<Skill> skillsList;
+    protected List<Spell> spellsList;
 	
     // properties
     public int Stars { get { return stars; } }
@@ -60,8 +61,8 @@ public class Denigen : MonoBehaviour {
     //public List<string> SkillsDescription { get { return skillsDescription; } }
     //public List<string> SpellsList { get { return spellsList; } }
     //public List<string> SpellsDescription { get { return spellsDescription; } }
-    public List<Technique> SkillsList { get { return skillsList; } }
-    public List<Technique> SpellsList { get { return spellsList; } }
+    public List<Skill> SkillsList { get { return skillsList; } }
+    public List<Spell> SpellsList { get { return spellsList; } }
 
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };

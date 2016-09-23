@@ -4,7 +4,7 @@ using System;
 
 // This script will contain all of the base classes of passives
 [Serializable]
-public class Passive {
+public class Passive : Technique {
     //Attributes
     //protected int returnNum; // every passive should return a number
     protected string name; // every passive should have a name

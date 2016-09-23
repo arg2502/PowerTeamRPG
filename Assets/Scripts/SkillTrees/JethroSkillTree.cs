@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class JethroSkillTree : SkillTree {
 
     // all possible skills for Jethro
-    Technique helmsplitter;
-    Technique trinitySlice;
-    Technique riser;
-    Technique mordstreich;
-    Technique arcSlash;
+    Skill helmsplitter;
+    Skill trinitySlice;
+    Skill riser;
+    Skill mordstreich;
+    Skill arcSlash;
     
     
     
@@ -22,27 +22,27 @@ public class JethroSkillTree : SkillTree {
 	// Use this for initialization
 	void Start () {
         // create all techniques
-        helmsplitter = new Technique();
+        helmsplitter = new Skill();
         helmsplitter.Name = "Helmsplitter";
         helmsplitter.Description = "A powerful sword strike from above. \n Str 75, Crit 03, Acc 90";
         helmsplitter.Pm = 2;
 
-        trinitySlice = new Technique();
+        trinitySlice = new Skill();
         trinitySlice.Name = "Trinity Slice";
         trinitySlice.Description = "";
         trinitySlice.Pm = 0;
 
-        riser = new Technique();
+        riser = new Skill();
         riser.Name = "Riser";
         riser.Description = "";
         riser.Pm = 0;
 
-        mordstreich = new Technique();
+        mordstreich = new Skill();
         mordstreich.Name = "Mordstreich";
         mordstreich.Description = "";
         mordstreich.Pm = 0;
 
-        arcSlash = new Technique();
+        arcSlash = new Skill();
         arcSlash.Name = "Arc Slash";
         arcSlash.Description = "";
         arcSlash.Pm = 0;

@@ -15,14 +15,14 @@ public class E_Mudpuppy : Enemy {
         //skillsDescription = new List<string>() { "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95" };
         //spellsList = new List<string>() { "Frenzy" };
         //spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
-        skillsList = new List<Technique>() { };
-        spellsList = new List<Technique>() { };
-        Technique bite = new Technique();
+        skillsList = new List<Skill>() { };
+        spellsList = new List<Spell>() { };
+        Skill bite = new Skill();
         bite.Name = "Bite";
         bite.Pm = 0;
         bite.Description = "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95";
         skillsList.Add(bite);
-        Technique frenzy = new Technique();
+        Skill frenzy = new Skill();
         frenzy.Name = "Frenzy";
         frenzy.Pm = 0;
         frenzy.Description = "The attacker gets riled up, boosting ATK.\n +10% ATK";
