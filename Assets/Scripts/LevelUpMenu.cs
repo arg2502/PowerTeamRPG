@@ -163,7 +163,8 @@ public class LevelUpMenu : Menu {
             // Either go back to current room, or move to level up the next hero
             // This should be in the skills area, but it is here since I haven't done the skills yet
             if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
-            else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
+            //else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
+            else { UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu"); }
         }
         else // Change all of the labels and necessary sprites
         {

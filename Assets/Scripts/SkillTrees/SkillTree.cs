@@ -27,8 +27,12 @@ public class SkillTree : MonoBehaviour {
     // access to camera
     protected GameObject camera;
 
+    // denigen obj to access specific techniques
+    protected HeroData hero;
+
     public void Start()
-    {
+    { 
+        // for positioning
         camera = GameObject.FindGameObjectWithTag("MainCamera");
 
         // sizes are set in child classes
@@ -51,7 +55,6 @@ public class SkillTree : MonoBehaviour {
                 
                 if(row >= content2DArray[col].Count)
                 {
-                    print("break");
                     break;
                 }
                 // otherwise, create a button
@@ -66,8 +69,27 @@ public class SkillTree : MonoBehaviour {
                     b.labelMesh = b.textObject.GetComponent<TextMesh>();
                     b.labelMesh.text = content2DArray[col][row].Name;
                     b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);
+                                        
+                    // default disable buttons
+                    b.state = MyButton.MyButtonTextureState.disabled;
+
+                    // check if the denigen has already learned the technique
+                    for(int i = 0; i < hero.skillsList.Count; i++)
+                    {
+                        if(b.labelMesh.text == hero.skillsList[i].Name)
+                        {
+                            b.state = MyButton.MyButtonTextureState.active;
+                        }
+                    }
+                    for(int i = 0; i < hero.spellsList.Count; i++)
+                    {
+                        if (b.labelMesh.text == hero.spellsList[i].Name)
+                        {
+                            b.state = MyButton.MyButtonTextureState.active;
+                        }
+                    }
+
                 }
-                print(row);
             }
         }
 

@@ -10,17 +10,19 @@ public class JethroSkillTree : SkillTree {
     Skill riser;
     Skill mordstreich;
     Skill arcSlash;
-    
-    
-    
+        
     // divided into columns
     List<Technique> col1;
     List<Technique> col2;
     List<Technique> col3;
-
+        
 
 	// Use this for initialization
 	void Start () {
+
+        // set hero to jethro
+        hero = GameControl.control.heroList[0];
+
         // create all techniques
         helmsplitter = new Skill();
         helmsplitter.Name = "Helmsplitter";

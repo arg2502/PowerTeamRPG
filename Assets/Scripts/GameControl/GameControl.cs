@@ -69,6 +69,9 @@ public class GameControl : MonoBehaviour {
             heroList[0].luck = 7;
             heroList[0].evasion = 5;
             heroList[0].spd = 6;
+            heroList[0].skillsList = new List<Skill>();
+            heroList[0].spellsList = new List<Spell>();
+            //heroList[0].skillsList.Add()
 
             //test code for creating Cole -- based on level 2 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
@@ -322,10 +325,12 @@ public class HeroData
 {
     public int identity;
     public bool levelUp = false;
+    public bool skillTree = true; // true for testing
     public string name;
     public int level, exp, expToLvlUp, levelUpPts, techPts;
     public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
-    public List<string> skillsList, skillsDescription, spellsList, spellsDescription;
+    public List<Skill> skillsList;
+    public List<Spell> spellsList;
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     public Status statusState;

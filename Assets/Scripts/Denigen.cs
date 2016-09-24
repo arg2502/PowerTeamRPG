@@ -61,8 +61,8 @@ public class Denigen : MonoBehaviour {
     //public List<string> SkillsDescription { get { return skillsDescription; } }
     //public List<string> SpellsList { get { return spellsList; } }
     //public List<string> SpellsDescription { get { return spellsDescription; } }
-    public List<Skill> SkillsList { get { return skillsList; } }
-    public List<Spell> SpellsList { get { return spellsList; } }
+    public List<Skill> SkillsList { get { return skillsList; } set { skillsList = value; } }
+    public List<Spell> SpellsList { get { return spellsList; } set { spellsList = value; } }
 
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };

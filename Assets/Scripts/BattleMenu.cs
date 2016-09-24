@@ -124,6 +124,8 @@ public class BattleMenu : Menu {
                 denigenArray[i].GetComponent<Hero>().Exp = tempHeroes[i].exp;
                 denigenArray[i].GetComponent<Hero>().LevelUpPts = tempHeroes[i].levelUpPts;
                 denigenArray[i].GetComponent<Hero>().ExpToLevelUp = tempHeroes[i].expToLvlUp;
+                denigenArray[i].GetComponent<Hero>().SkillsList = tempHeroes[i].skillsList;
+                denigenArray[i].GetComponent<Hero>().SpellsList = tempHeroes[i].spellsList;
             }
         }
         //This code may be depricated or altered later
@@ -919,7 +921,10 @@ public class BattleMenu : Menu {
             {
                 battleText.GetComponent<TextMesh>().text = "Each teammate receives " + exp + " experience points!";
                 foreach (Hero h in heroList) {
-                    if (h.StatusState != Denigen.Status.dead) { h.Exp += exp; h.ExpToLevelUp -= exp; } 
+                    if (h.StatusState != Denigen.Status.dead) { 
+                        h.Exp += exp;
+                        h.ExpToLevelUp -= exp; 
+                    } 
 
                     //Level up the hero, if necessary
                     
@@ -960,6 +965,10 @@ public class BattleMenu : Menu {
                             hd.spd = h.Spd;
                             hd.statusState = (HeroData.Status)h.StatusState;
                             hd.levelUp = h.levelUp;
+                            hd.skillTree = h.skillTree;
+                            hd.skillsList = h.SkillsList;
+                            hd.spellsList = h.SpellsList;
+                            print("Skill Count (in Battle): " + hd.skillsList.Count);
                         }
                     }
                 }
@@ -1032,6 +1041,8 @@ public class BattleMenu : Menu {
                                 hd.luck = h.Luck;
                                 hd.spd = h.Spd;
                                 hd.statusState = (HeroData.Status)h.StatusState;
+                                hd.skillsList = h.SkillsList;
+                                hd.spellsList = h.SpellsList;
                             }
                         }
                     }
