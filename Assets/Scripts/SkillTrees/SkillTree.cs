@@ -30,6 +30,9 @@ public class SkillTree : MonoBehaviour {
     // denigen obj to access specific techniques
     protected HeroData hero;
 
+    // previous button object to keep track of which button to set back to normal
+    MyButton prevButton;
+
     public void Start()
     { 
         // for positioning
@@ -137,10 +140,114 @@ public class SkillTree : MonoBehaviour {
             button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
         }
 
-    }
+        // set previous button to the current button
+        prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
 
+    }
+    void ScrollHorizontal(int col)
+    {
+        for (int row = rowIndex - 1; row >= 0; row--)
+        {
+            // if the button exists, and it's either normal or inactive, set to that button
+            if (button2DArray[col, row] != null
+                && (button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
+                || button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive))
+            {
+                rowIndex = row;
+                break;
+            }
+        }
+    }
+    void ScrollChangeButtonState()
+    {
+        // check if the button is inactive
+        // if it is, set it to inactiveHover
+        if (button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+        }
+        // if it is not inactive, set it to normal hover
+        else
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+        }
+
+        // now change the previous button state
+        // if the last button was inactiveHover, set it to inactive
+        if (prevButton.state == MyButton.MyButtonTextureState.inactiveHover)
+        {
+            prevButton.state = MyButton.MyButtonTextureState.inactive;
+        }
+        // if it was a normal button, set it back to normal
+        else
+        {
+            prevButton.state = MyButton.MyButtonTextureState.normal;
+        }
+
+        // set previous button to new current button
+        prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
+    }
     public void Update()
     {
-        
+        if(Input.GetKeyUp(KeyCode.D))
+        {
+            if(columnIndex < numOfColumn - 1)
+            {
+                // if the next button is disabled or doesn't exist, find the next lowest button in the column
+                if (button2DArray[columnIndex + 1, rowIndex] == null
+                    || button2DArray[columnIndex + 1, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled) 
+                {
+                    ScrollHorizontal(columnIndex + 1);
+                }
+                // increase index to hover over next button
+                columnIndex++;
+                ScrollChangeButtonState();
+                    
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.A))
+        {
+            if (columnIndex > 0)
+            {
+                // if the next button is disabled or doesn't exist, find the next lowest button in the column
+                if (button2DArray[columnIndex - 1, rowIndex] == null
+                    || button2DArray[columnIndex - 1, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                {
+                    ScrollHorizontal(columnIndex - 1);
+                }
+                // increase index to hover over next button
+                columnIndex--;
+                ScrollChangeButtonState();
+
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.S))
+        {
+            if(rowIndex < numOfRow - 1)
+            {
+                // if next button is disabled or nonexistant, don't go anywhere
+                if(button2DArray[columnIndex, rowIndex + 1] == null
+                    || button2DArray[columnIndex, rowIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                {
+                    return;
+                }
+                rowIndex++;
+                ScrollChangeButtonState();
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.W))
+        {
+            if (rowIndex > 0)
+            {
+                // if next button is disabled or nonexistant, don't go anywhere
+                if (button2DArray[columnIndex, rowIndex - 1] == null
+                    || button2DArray[columnIndex, rowIndex - 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                {
+                    return;
+                }
+                rowIndex--;
+                ScrollChangeButtonState();
+            }
+        }
     }
 }
