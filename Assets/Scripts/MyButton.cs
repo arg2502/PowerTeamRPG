@@ -18,8 +18,13 @@ public class MyButton : MonoBehaviour {
     public Sprite hoverTexture;
     public Sprite activeTexture;
     public Sprite disabledTexture;
+    public Sprite inactiveTexture;
     public Sprite inactiveHoverTexture;
     public SpriteRenderer sr;
+
+    // skill tree specific
+    // if the Technique has a next, this next takes control of the next button's state
+    public MyButton next;
 
     // properties
     //public Rect Position { get { return position; } set { position = value; } }
@@ -46,7 +51,7 @@ public class MyButton : MonoBehaviour {
         else if (state == MyButtonTextureState.hover) { sr.sprite = hoverTexture; } // cursor is over button
         else if (state == MyButtonTextureState.active) { sr.sprite = activeTexture; } // player has selected button
         else if (state == MyButtonTextureState.disabled) { sr.sprite = disabledTexture; } // there is no option/button to display
-        else if (state == MyButtonTextureState.inactive) { sr.sprite = disabledTexture; } // player cannot select button
+        else if (state == MyButtonTextureState.inactive) { sr.sprite = inactiveTexture; } // player cannot select button
         else if (state == MyButtonTextureState.inactiveHover) { sr.sprite = inactiveHoverTexture; } // player hovers over button but cannot select it
 	}
 }

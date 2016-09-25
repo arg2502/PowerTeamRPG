@@ -17,10 +17,12 @@ public class Technique {
     string name;
     string description;
     int pm;
+    Technique next; // tells the skill tree if this technique is part of a chain/branch
 
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
     public int Pm { get { return pm; } set { pm = value; } }
+    public Technique Next { get { return next; } set { next = value; } }
 
     //// Use this for initialization
     //void Start () {

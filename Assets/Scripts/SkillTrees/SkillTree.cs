@@ -69,30 +69,73 @@ public class SkillTree : MonoBehaviour {
                     b.labelMesh = b.textObject.GetComponent<TextMesh>();
                     b.labelMesh.text = content2DArray[col][row].Name;
                     b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);
-                                        
-                    // default disable buttons
-                    b.state = MyButton.MyButtonTextureState.disabled;
+                    
+                    
+                    // default buttons are inactive
+                    b.state = MyButton.MyButtonTextureState.inactive;
 
                     // check if the denigen has already learned the technique
                     for(int i = 0; i < hero.skillsList.Count; i++)
                     {
                         if(b.labelMesh.text == hero.skillsList[i].Name)
                         {
-                            b.state = MyButton.MyButtonTextureState.active;
+                            b.state = MyButton.MyButtonTextureState.normal;
                         }
                     }
                     for(int i = 0; i < hero.spellsList.Count; i++)
                     {
                         if (b.labelMesh.text == hero.spellsList[i].Name)
                         {
-                            b.state = MyButton.MyButtonTextureState.active;
+                            b.state = MyButton.MyButtonTextureState.normal;
                         }
                     }
 
                 }
             }
         }
+        // set next if need be
+        for (int col = 0; col < numOfColumn; col++)
+        {
+            for (int row = 0; row < numOfRow; row++)
+            {
+                if (row >= content2DArray[col].Count)
+                {
+                    break;
+                }
+                else if(content2DArray[col][row].Next != null && row != content2DArray[col].Count - 1)
+                {
+                    button2DArray[col, row].GetComponent<MyButton>().next = button2DArray[col, row + 1].GetComponent<MyButton>();
+                    print("set next: " + button2DArray[col, row].GetComponent<MyButton>().next.textObject.GetComponent<TextMesh>().text);
+                    // set states of the next button in branch
+                    // if the hero knows the current technique but not the next one, set next to inactive
+                    if(button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
+                        && button2DArray[col,row].GetComponent<MyButton>().next.state != MyButton.MyButtonTextureState.normal)
+                    {
+                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.inactive;
+                        print("set to inactive: " + button2DArray[col, row].GetComponent<MyButton>().next.textObject.GetComponent<TextMesh>().text);
+                    }
+                    // if the hero does not know the technique but can learn it (inactive), set next to disabled
+                    else if (button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+                    {
+                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.disabled;
+                        print("set to disabled: " + button2DArray[col, row].GetComponent<MyButton>().next.textObject.GetComponent<TextMesh>().text);
+                    }
+                }
+                //else { print("Else: " + content2DArray[col][row].Next.Name); }
+            }
+        }
 
+        
+
+        // set selected index to correct state
+        if(button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+        }
+        else if(button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+        }
 
     }
 

@@ -7,9 +7,9 @@ public class JethroSkillTree : SkillTree {
     // all possible skills for Jethro
     Skill helmsplitter;
     Skill trinitySlice;
+    Skill arcSlash;
     Skill riser;
     Skill mordstreich;
-    Skill arcSlash;
       
 	// Use this for initialization
 	void Start () {
@@ -28,6 +28,11 @@ public class JethroSkillTree : SkillTree {
         trinitySlice.Description = "";
         trinitySlice.Pm = 0;
 
+        arcSlash = new Skill();
+        arcSlash.Name = "Arc Slash";
+        arcSlash.Description = "";
+        arcSlash.Pm = 0;
+
         riser = new Skill();
         riser.Name = "Riser";
         riser.Description = "";
@@ -38,16 +43,18 @@ public class JethroSkillTree : SkillTree {
         mordstreich.Description = "";
         mordstreich.Pm = 0;
 
-        arcSlash = new Skill();
-        arcSlash.Name = "Arc Slash";
-        arcSlash.Description = "";
-        arcSlash.Pm = 0;
+        // set nexts to create branches
+        helmsplitter.Next = trinitySlice;
+        riser.Next = mordstreich;
+
 
         // max num of col
         numOfColumn = 3;
 
         // max num of row
         numOfRow = 2;
+
+        print("inside jethro skill tree: " + helmsplitter.Next.Name);
 
         // set content array
         content2DArray = new List<List<Technique>>();

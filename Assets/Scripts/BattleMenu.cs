@@ -182,14 +182,6 @@ public class BattleMenu : Menu {
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
 
-            //b.Position = new Rect(Screen.width / 2 - b.width / 2, Screen.height / 2 + (i * (b.height + b.height / 2)), b.width, b.height);
-            //buttonArray[i].transform.position = new Vector2((Screen.width / 2 - b.width / 2), (Screen.height / 2 + (i * (b.height + b.height / 2))));
-            // if we had multiple columns
-            //for (int j = 0; j < numOfCol; j++)
-            //{
-            //buttonArray[i] = GUILayout.Button(contentArray[j + (i * numOfCol)]); // ////print out buttons in one row based on number of columns
-
-            //}
         }
 
         // set selected button
@@ -287,8 +279,6 @@ public class BattleMenu : Menu {
     // decide on what action to take/mode to change depending on the button pressed
     public override void ButtonAction(string label)
     {
-        //base.ButtonAction(label);
-        ////print("Inside BattleMenu ButtonAction");
         // perform action based on passed in string
         switch (label)
         {
@@ -424,11 +414,6 @@ public class BattleMenu : Menu {
                 }
             }
         }
-
-        //for (int i = 0; i < denigenArray.Count; i++)
-        //{
-        //    ////print(i + " denigen spd: " + denigenArray[i].spdBat);
-        //}
     }
 
     string FormatText(string str)
@@ -587,7 +572,6 @@ public class BattleMenu : Menu {
             
         }
         else if ((state == MenuReader.targeting || state == MenuReader.main) && currentDenigen.StatusState == Denigen.Status.dead) { 
-            //////print(currentDenigen.name + " cannot attack");
             commands.Add(null);
             ChangeCurrentDenigen(); }
         else if (state == MenuReader.failure)
@@ -669,11 +653,7 @@ public class BattleMenu : Menu {
             //this while loop bypasses any denigens who have passed away
             while (commandIndex < denigenArray.Count && denigenArray[commandIndex].StatusState == Denigen.Status.dead)
             {
-                //print(denigenArray[commandIndex].name + " is dead up top");
-                
                 battleTextList = new List<string>() { };
-
-
 				commandIndex++;
 				// if the command index is at the end, there are no more live denigens in the list
 				// so exit out of UpdateBattle
@@ -712,12 +692,10 @@ public class BattleMenu : Menu {
                     }
                 }
 
-                //////print(denigenArray[commandIndex]);
                 //make sure there is text to display
                 if ( battleTextList[textIndex] != null)
                 {
                     battleText.GetComponent<TextMesh>().text = FormatText(battleTextList[textIndex]);
-					//print (battleText.GetComponent<TextMesh> ().text);
                 }
                 else { textIndex++; }
 
@@ -742,13 +720,11 @@ public class BattleMenu : Menu {
 							textIndex = 0;
 							state = MenuReader.failure;
 							return;
-							//PostBattle ();
                         } if (fallenEnemies >= enemyList.Count && textIndex == battleTextList.Count - 2)
                         {
 							textIndex = 0;
 							state = MenuReader.victory;
 							return;
-							//PostBattle ();
 						}
                     }
 				}
@@ -758,18 +734,13 @@ public class BattleMenu : Menu {
             if (textIndex < (battleTextList.Count - 1))
             {
                 textIndex++;
-				////print ("inside if");
             }
             else
             {
 				//this while loop bypasses any denigens who have passed away
 				while (commandIndex < denigenArray.Count - 1 && denigenArray[commandIndex + 1].StatusState == Denigen.Status.dead)
 				{
-					//print(denigenArray[commandIndex + 1].name + " is dead");
-
 					battleTextList = new List<string>() { };
-
-
 					commandIndex++;
 					// if the command index is at the end, there are no more live denigens in the list
 					// so exit out of UpdateBattle
@@ -779,7 +750,6 @@ public class BattleMenu : Menu {
 				}
 
                 textIndex = 0;
-                ////print("Move on to the next denigen");
                 commandIndex++;
                 battleTextList = new List<string>() { };
 
@@ -798,11 +768,8 @@ public class BattleMenu : Menu {
 			if (heroList.Count == fallenHeroes)
 			{
 				//go to a gameover state
-				//PostBattle ();
 				textIndex = 0;
 				state = MenuReader.failure;
-				////print("All heroes have fallen");
-
 				return;
 			}
 
@@ -816,10 +783,7 @@ public class BattleMenu : Menu {
 			{
 				//go to a victory state
 				textIndex = 0;
-				//PostBattle ();
 				state = MenuReader.victory;
-
-				////print("All enemies have fallen");
 				return;
 			}
 
@@ -837,7 +801,6 @@ public class BattleMenu : Menu {
 		battleText.GetComponent<TextMesh>().text = null;
 		battleText.GetComponent<Renderer>().enabled = false;
 		battleTextList.Clear();
-		//textIndex = 0;
 		foreach (Denigen d in denigenArray)
 		{
             d.CalcDamageText.Clear();
@@ -894,7 +857,6 @@ public class BattleMenu : Menu {
             if (textIndex < 2)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
-				//print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
@@ -969,7 +931,6 @@ public class BattleMenu : Menu {
                             hd.skillTree = h.skillTree;
                             hd.skillsList = h.SkillsList;
                             hd.spellsList = h.SpellsList;
-                            print("Skill Count (in Battle): " + hd.skillsList.Count);
                         }
                     }
                 }
@@ -982,7 +943,6 @@ public class BattleMenu : Menu {
             if (textIndex < 3)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
-				//print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
@@ -1054,7 +1014,6 @@ public class BattleMenu : Menu {
             if (textIndex <= 1)
             {
                 battleText.GetComponent<TextMesh>().text = FormatText(battleText.GetComponent<TextMesh>().text);
-                //print (battleText.GetComponent<TextMesh> ().text);
             }
             textIndex++;
         }
