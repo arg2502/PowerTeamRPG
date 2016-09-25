@@ -325,7 +325,7 @@ public class HeroData
 {
     public int identity;
     public bool levelUp = false;
-    public bool skillTree = true; // true for testing
+    public bool skillTree = false;
     public string name;
     public int level, exp, expToLvlUp, levelUpPts, techPts;
     public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;

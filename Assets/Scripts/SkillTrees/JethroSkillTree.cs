@@ -10,13 +10,7 @@ public class JethroSkillTree : SkillTree {
     Skill riser;
     Skill mordstreich;
     Skill arcSlash;
-        
-    // divided into columns
-    List<Technique> col1;
-    List<Technique> col2;
-    List<Technique> col3;
-        
-
+      
 	// Use this for initialization
 	void Start () {
 
