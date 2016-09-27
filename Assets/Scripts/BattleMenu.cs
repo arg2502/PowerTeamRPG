@@ -897,7 +897,7 @@ public class BattleMenu : Menu {
                         h.LevelUp(extraExp);
                         UpdateCard(h);
                         h.levelUp = true;
-                        h.skillTree = true;
+                        //h.skillTree = true;
                         levelUp = true; // tells the game to go to the level up scene
                     }
                 }
@@ -928,7 +928,7 @@ public class BattleMenu : Menu {
                             hd.spd = h.Spd;
                             hd.statusState = (HeroData.Status)h.StatusState;
                             hd.levelUp = h.levelUp;
-                            hd.skillTree = h.skillTree;
+                            //hd.skillTree = h.skillTree;
                             hd.skillsList = h.SkillsList;
                             hd.spellsList = h.SpellsList;
                         }

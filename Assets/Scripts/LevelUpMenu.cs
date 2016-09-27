@@ -34,7 +34,7 @@ public class LevelUpMenu : Menu {
         {
             if (GameControl.control.heroList[i].levelUp) 
             {
-                GameControl.control.heroList[i].levelUp = false;
+                //GameControl.control.heroList[i].levelUp = false;
                 hero = GameControl.control.heroList[i];
                 break;
             }
@@ -157,14 +157,17 @@ public class LevelUpMenu : Menu {
                     hd.levelUpPts = 0;
                 }
                 // also use this loop to figure out if we need to level up another hero
-                if (hd.levelUp) { levelUp = true; }
+                //if (hd.levelUp) { levelUp = true; }
             }
+
+            // Now go to the skill tree portion
+            UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu");
 
             // Either go back to current room, or move to level up the next hero
             // This should be in the skills area, but it is here since I haven't done the skills yet
-            if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
+            //if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
             //else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
-            else { UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu"); }
+            //else { UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu"); }
         }
         else // Change all of the labels and necessary sprites
         {

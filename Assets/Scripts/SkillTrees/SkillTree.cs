@@ -24,7 +24,7 @@ public class SkillTree : MonoBehaviour {
     int columnIndex;
     int rowIndex;
 
-    // access to camera
+    // access to camera 
     protected GameObject camera;
 
     // denigen obj to access specific techniques

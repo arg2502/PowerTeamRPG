@@ -12,7 +12,7 @@ public class Hero: Denigen {
     protected int expToLvlUp;
     protected float growthSpeed;
     public bool levelUp = false;
-    public bool skillTree = false;
+    //public bool skillTree = false;
 
     // item/equipment list - NEED LATER
 
