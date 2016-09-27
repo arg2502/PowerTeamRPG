@@ -63,7 +63,7 @@ public class E_Mudpuppy : Enemy {
         float damage = CalcDamage("Bite", 0.9f, 0.2f, 0.95f, false);
         
         //Using index 0 because there is only one target for this attack
-        targets[0].TakeDamage(damage, false);
+        targets[0].TakeDamage(this, damage, false);
     }
 
     void Frenzy()

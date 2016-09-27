@@ -14,8 +14,8 @@ public class Technique {
     // well as comminicating to the battle menu how much PM a tech takes
 
     // Attributes
-    string name;
-    string description;
+    protected string name;
+    protected string description;
     int pm;
     Technique next; // tells the skill tree if this technique is part of a chain/branch
 

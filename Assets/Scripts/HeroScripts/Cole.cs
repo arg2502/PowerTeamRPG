@@ -98,7 +98,7 @@ public class Cole : Hero {
         damage = CalcDamage("HellFire", 0.40f, 0.03f, 1.0f, true);
         for (int i = 0; i < targets.Count; i++)
         {
-            targets[i].TakeDamage(damage, true);
+            targets[i].TakeDamage(this, damage, true);
         }
     }
 
@@ -107,12 +107,12 @@ public class Cole : Hero {
         float damage;
         damage = CalcDamage("Splash Flame", 0.60f, 0.05f, 0.85f, true);
         //full damage to the main target
-        targets[0].TakeDamage(damage, true);
+        targets[0].TakeDamage(this, damage, true);
 
         // half damage to the surrounding targets
         for (int i = 1; i < targets.Count; i++)
         {
-            targets[i].TakeDamage(damage/2.0f, true);
+            targets[i].TakeDamage(this, damage/2.0f, true);
         }
     }
 

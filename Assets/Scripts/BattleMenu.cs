@@ -787,7 +787,6 @@ public class BattleMenu : Menu {
 				return;
 			}
 
-
 			PostBattle ();
 		}
     }
@@ -803,6 +802,12 @@ public class BattleMenu : Menu {
 		battleTextList.Clear();
 		foreach (Denigen d in denigenArray)
 		{
+            // Passive check here for now... maybe change it later? -- currently non-functional
+            foreach (Passive ptp in d.Passives)
+            {
+                print(d.name + "'s passives");
+                if (ptp is PerTurnPassive) { print(ptp.Name); ptp.Use(d, null); }
+            }
             d.CalcDamageText.Clear();
             d.TakeDamageText.Clear();
             d.IsBlocking = false;

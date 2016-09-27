@@ -51,7 +51,7 @@ public class Enemy : Denigen {
     protected void TakeDamage(float damage, bool isMagic)
     {
         //calculate damage
-        base.TakeDamage(damage, isMagic);
+        base.TakeDamage(this, damage, isMagic);
 
         //after loss of health, a change of healthStatus may be required
         if (hp >= hpMax * 0.8f) { healthState = Health.high; }

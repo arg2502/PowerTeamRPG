@@ -10,40 +10,41 @@ using System.IO;
 public class Passive : Technique {
     //Attributes
     //protected int returnNum; // every passive should return a number
-    protected string name; // every passive should have a name
-    protected string description; // every passive should let the player know what it does
+    //protected string name; // every passive should have a name
+    //protected string description; // every passive should let the player know what it does
 
-    public string Name { get { return name; } }
-    public string Description { get { return description; } }
+    //public string Name { get { return name; } }
+    //public string Description { get { return description; } }
 
     public virtual void Start() { }
 
     //every passive should override this
     //public virtual int Use() { return 0; }
-    public virtual void Use() { /*return 0;*/ }
+    public virtual void Use( Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // Call this during the CalcDamage method
 public class CalcDamagePassive : Passive {
 
     //public virtual int Use() { return 0; }
-    public virtual void Use() { /*return 0;*/ }
+    public virtual void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // Call this during the TakeDamage method
 public class TakeDamagePassive : Passive {
 
     //public virtual int Use() { return 0; }
-    public virtual void Use() { /*return 0;*/ }
+    public virtual void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // call this for every denigen at the end of each turn
 public class PerTurnPassive : Passive {
 
     //public virtual int Use() { return 0; }
-    public virtual void Use() { /*return 0;*/ }
+    public virtual void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
+// this passive just restores 1hp per turn
 public class LightRegeneration : PerTurnPassive {
     
     public override void Start()
@@ -52,8 +53,8 @@ public class LightRegeneration : PerTurnPassive {
         description = "1hp is restored at the end of every turn.";
     }
 
-    public override void Use()
+    public override void Use(Denigen attackingDen, Denigen other)
     {
-        // Code goes here
+        attackingDen.hp += 1;
     }
 }

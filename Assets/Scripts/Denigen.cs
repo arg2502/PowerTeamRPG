@@ -19,7 +19,7 @@ public class Denigen : MonoBehaviour {
     public bool IsBlocking { get { return isBlocking; } set { isBlocking = value; } }
 
     //List of passives, useful for enemies and heroes
-    protected List<Passive> passives;
+    public List<Passive> passives;
 
     //List for storing targets of Denigen's attacks and spells
     protected List<Denigen> targets = new List<Denigen>() { };
@@ -55,17 +55,12 @@ public class Denigen : MonoBehaviour {
     public int Luck { get {return luck; } set { luck = value; } }
     public int Evasion { get { return evasion; } set { evasion = value; } }
     public int Spd { get { return spd; } set { spd = value; } }
-    //property for passives -- ADD LATER
-
-    //public List<string> SkillsList { get { return skillsList; } }
-    //public List<string> SkillsDescription { get { return skillsDescription; } }
-    //public List<string> SpellsList { get { return spellsList; } }
-    //public List<string> SpellsDescription { get { return spellsDescription; } }
+    public List<Passive> Passives { get { return passives; } set { passives = value; } }
     public List<Skill> SkillsList { get { return skillsList; } set { skillsList = value; } }
     public List<Spell> SpellsList { get { return spellsList; } set { spellsList = value; } }
 
     // status effect
-    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
     public Status statusState;// = Status.normal;
 
     public Status StatusState { get { return statusState; } set { statusState = value; } }
@@ -76,6 +71,9 @@ public class Denigen : MonoBehaviour {
 
     // Use this for initialization
 	protected void Start () {
+        //temp passive list
+        passives = new List<Passive>();
+
         takeDamageText = new List<string>();
         calcDamageText = new List<string>();
 
@@ -188,7 +186,11 @@ public class Denigen : MonoBehaviour {
             // add chance to crit to increase the probability of num being the smaller one
             if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); }
 
-            // check for attack based passives - LATER - GO THROUGH DENIGEN'S LIST OF PASSIVES
+            // check for attack based passives
+            foreach (Passive cdp in passives)
+            {
+                if (cdp is CalcDamagePassive) { cdp.Use(this, null); }
+            }
 
             //Clear the target's previous text, to avoid a build up 
             print("Num of targets: " + targets.Count);
@@ -204,7 +206,7 @@ public class Denigen : MonoBehaviour {
     }
 
     //Made public to allow other denigens to deal damage
-    public void TakeDamage(float damage, bool isMagic)
+    public void TakeDamage(Denigen attackingDen, float damage, bool isMagic)
     {
         // use stat based on if magic or physical
         int defStat;
@@ -229,7 +231,11 @@ public class Denigen : MonoBehaviour {
         // check if this denigen is blocking -- if so, halve the damage received
         if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); }
 
-        // check for passives - LATER
+        // check for passives
+        foreach (Passive tdp in passives)
+        {
+            if (tdp is TakeDamagePassive) { tdp.Use(attackingDen, this); }
+        }
 
         // decrease hp based off of damage
         hp -= (int)damage;

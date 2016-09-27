@@ -56,7 +56,7 @@ public class E_Goikko : Enemy {
         float damage = CalcDamage("Tackle", 0.6f, 0.25f, 0.9f, false);
         
         //Using index 0 because there is only one target for this attack
-        targets[0].TakeDamage(damage, false);
+        targets[0].TakeDamage(this, damage, false);
     }
 
     public override string ChooseAttack()

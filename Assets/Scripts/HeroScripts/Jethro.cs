@@ -36,6 +36,11 @@ public class Jethro : Hero {
             level = i + 1;
             base.LevelUp();
         }*/
+
+        // test of passive
+        LightRegeneration lr = new LightRegeneration();
+        lr.Start();
+        passives.Add(lr);
 	}
 	
 	// Update is called once per frame
@@ -87,6 +92,6 @@ public class Jethro : Hero {
 	{
 		float damage;
 		damage = CalcDamage("Helmsplitter", 0.75f, 0.03f, 0.9f, false);
-		targets[0].TakeDamage(damage, false);
+		targets[0].TakeDamage(this, damage, false);
 	}
 }

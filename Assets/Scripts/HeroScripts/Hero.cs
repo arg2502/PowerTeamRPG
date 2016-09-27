@@ -375,7 +375,7 @@ public class Hero: Denigen {
             isMagic = true;
         }
         damage = CalcDamage("Strike", 0.5f, 0.1f, 0.95f, isMagic);
-        targets[0].TakeDamage(damage, isMagic);
+        targets[0].TakeDamage(this, damage, isMagic);
     }
 
     public virtual void Attack(string atkChoice)

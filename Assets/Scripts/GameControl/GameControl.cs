@@ -51,7 +51,7 @@ public class GameControl : MonoBehaviour {
             //test code for creating Jethro -- based on level 1 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
             heroList.Add(new HeroData());
-            heroList[0].name = "Jethro";
+            heroList[0].name = playerName;
             heroList[0].identity = 0;
             heroList[0].level = 1;
             heroList[0].exp = 0;
