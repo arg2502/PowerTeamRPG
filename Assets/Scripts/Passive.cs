@@ -7,7 +7,7 @@ using System.IO;
 
 // This script will contain all of the base classes of passives
 [Serializable]
-public class Passive : Technique {
+public abstract class Passive : Technique {
     //Attributes
     //protected int returnNum; // every passive should return a number
     //protected string name; // every passive should have a name
@@ -16,32 +16,34 @@ public class Passive : Technique {
     //public string Name { get { return name; } }
     //public string Description { get { return description; } }
 
-    public virtual void Start() { }
+    public abstract void Start();
 
     //every passive should override this
-    //public virtual int Use() { return 0; }
-    public virtual void Use( Denigen attackingDen, Denigen other) { /*return 0;*/ }
+    //public abstract int Use() { return 0; }
+    public abstract void Use(Denigen attackingDen, Denigen other);
 }
 
 // Call this during the CalcDamage method
-public class CalcDamagePassive : Passive {
+public abstract class CalcDamagePassive : Passive {
 
-    //public virtual int Use() { return 0; }
-    public virtual void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
+    //public abstract int Use() { return 0; }
+    //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // Call this during the TakeDamage method
-public class TakeDamagePassive : Passive {
+public abstract class TakeDamagePassive : Passive
+{
 
-    //public virtual int Use() { return 0; }
-    public virtual void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
+    //public abstract int Use() { return 0; }
+    //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // call this for every denigen at the end of each turn
-public class PerTurnPassive : Passive {
+public abstract class PerTurnPassive : Passive
+{
 
-    //public virtual int Use() { return 0; }
-    public virtual void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
+    //public abstract int Use() { return 0; }
+    //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // this passive just restores 1hp per turn
@@ -55,6 +57,6 @@ public class LightRegeneration : PerTurnPassive {
 
     public override void Use(Denigen attackingDen, Denigen other)
     {
-        attackingDen.hp += 1;
+        if (attackingDen.hp < attackingDen.hpMax) { attackingDen.hp += 1; }
     }
 }

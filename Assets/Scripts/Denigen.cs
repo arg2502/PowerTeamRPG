@@ -245,6 +245,10 @@ public class Denigen : MonoBehaviour {
 
         // check for dead
         if (hp <= 0) { hp = 0; takeDamageText.Add( name + " falls!"); statusState = Status.dead; }
+
+        GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
+        //be.GetComponent<Effect>().Start();
+        be.GetComponent<Effect>().damage = damage;
     }
 
 	// Update is called once per frame
