@@ -33,6 +33,9 @@ public class SkillTree : MonoBehaviour {
     // previous button object to keep track of which button to set back to normal
     MyButton prevButton;
 
+    // see who else needs to level up
+    protected bool levelUp = false;
+
     public void Start()
     { 
         // for positioning
@@ -41,7 +44,8 @@ public class SkillTree : MonoBehaviour {
         // sizes are set in child classes
         // content2DArray is also set in child classes
         // then base.Start() is called
-        button2DArray = new GameObject[numOfColumn, numOfRow];
+        //int rowSize = numOfRow + 1;
+        button2DArray = new GameObject[numOfColumn, numOfRow + 1];
 
         // set indexs to start
         columnIndex = 0;
@@ -65,7 +69,7 @@ public class SkillTree : MonoBehaviour {
                 {
                     button2DArray[col,row] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
                     MyButton b = button2DArray[col,row].GetComponent<MyButton>();
-                    button2DArray[col,row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width/2)), camera.transform.position.y - (250 - b.height) + (row * -(b.height + b.height / 2)));
+                    button2DArray[col,row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width/2)), camera.transform.position.y + (250 - b.height) + (row * -(b.height + b.height / 2)));
 
                     // display technique's name
                     b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -128,7 +132,19 @@ public class SkillTree : MonoBehaviour {
             }
         }
 
-        
+        // add on Done button at the very end
+        button2DArray[0, numOfRow] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+        MyButton button = button2DArray[0, numOfRow].GetComponent<MyButton>();
+        button2DArray[0, numOfRow].transform.position = new Vector2(camera.transform.position.x - 600, camera.transform.position.y - 400);
+
+        // display "Done" text
+        button.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        button.labelMesh = button.textObject.GetComponent<TextMesh>();
+        button.labelMesh.text = "Done";
+        button.labelMesh.transform.position = new Vector3(button2DArray[0, numOfRow].transform.position.x, button2DArray[0, numOfRow].transform.position.y, -1);
+
+        // set to normal
+        button.state = MyButton.MyButtonTextureState.normal;
 
         // set selected index to correct state
         if(button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal)
@@ -187,11 +203,47 @@ public class SkillTree : MonoBehaviour {
         // set previous button to new current button
         prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
     }
+    public void ButtonAction() 
+    {
+        // show selected (or "active") sprite if inactive or "DONE" on KeyDown
+        if((button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover
+            || (columnIndex == 0 && rowIndex == numOfRow))
+            && Input.GetKeyDown(KeyCode.Space))
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.active;
+        }
+        
+        // check if done
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (columnIndex == 0 && rowIndex == numOfRow)
+            {
+                EndScene();
+            }
+        }
+    
+    }
+    public void EndScene()
+    {
+        foreach (HeroData hd in GameControl.control.heroList)
+        {
+            // also use this loop to figure out if we need to level up another hero
+            if (hd.levelUp) { levelUp = true; }
+        }
+
+        // Either go back to current room, or move to level up the next hero
+        // This should be in the skills area, but it is here since I haven't done the skills yet
+        if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
+        else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
+    }
     public void Update()
     {
+        // check for any button selections
+        ButtonAction();
+
         if(Input.GetKeyUp(KeyCode.D))
         {
-            if(columnIndex < numOfColumn - 1)
+            if(columnIndex < numOfColumn - 1 && rowIndex != numOfRow)
             {
                 // if the next button is disabled or doesn't exist, find the next lowest button in the column
                 if (button2DArray[columnIndex + 1, rowIndex] == null
@@ -207,7 +259,7 @@ public class SkillTree : MonoBehaviour {
         }
         if(Input.GetKeyUp(KeyCode.A))
         {
-            if (columnIndex > 0)
+            if (columnIndex > 0 && rowIndex != numOfRow)
             {
                 // if the next button is disabled or doesn't exist, find the next lowest button in the column
                 if (button2DArray[columnIndex - 1, rowIndex] == null
@@ -223,12 +275,17 @@ public class SkillTree : MonoBehaviour {
         }
         if(Input.GetKeyUp(KeyCode.S))
         {
-            if(rowIndex < numOfRow - 1)
+            if(rowIndex < numOfRow)
             {
                 // if next button is disabled or nonexistant, don't go anywhere
                 if(button2DArray[columnIndex, rowIndex + 1] == null
-                    || button2DArray[columnIndex, rowIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                    || button2DArray[columnIndex, rowIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled
+                    || rowIndex + 1 == numOfRow)
                 {
+                    // automatically send them to DONE
+                    columnIndex = 0;
+                    rowIndex = numOfRow;
+                    ScrollChangeButtonState();
                     return;
                 }
                 rowIndex++;
@@ -238,7 +295,7 @@ public class SkillTree : MonoBehaviour {
         if(Input.GetKeyUp(KeyCode.W))
         {
             if (rowIndex > 0)
-            {
+            {                
                 // if next button is disabled or nonexistant, don't go anywhere
                 if (button2DArray[columnIndex, rowIndex - 1] == null
                     || button2DArray[columnIndex, rowIndex - 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
