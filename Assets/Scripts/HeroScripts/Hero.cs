@@ -40,7 +40,7 @@ public class Hero: Denigen {
 	// Use this for initialization
 	protected void Start () {
         // all heroes have 3 stars
-        stars = 3;
+        stars = 2;
         techPts = 0;        
         base.Start();
 	}

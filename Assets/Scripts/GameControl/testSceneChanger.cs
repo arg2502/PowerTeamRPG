@@ -22,21 +22,21 @@ public class testSceneChanger : MonoBehaviour {
             GameControl.control.heroList[1].identity = 1;
             GameControl.control.heroList[1].name = "Cole";
             GameControl.control.heroList[1].level = 2;
-            GameControl.control.heroList[1].expToLvlUp = 20;
+            GameControl.control.heroList[1].expToLvlUp = 19;
             GameControl.control.heroList[1].exp = 0;
             GameControl.control.heroList[1].levelUpPts = 0;
             GameControl.control.heroList[1].techPts = 0;
-            GameControl.control.heroList[1].hp = 18;
-            GameControl.control.heroList[1].hpMax = 18;
-            GameControl.control.heroList[1].pm = 17;
-            GameControl.control.heroList[1].pmMax = 17;
-            GameControl.control.heroList[1].atk = 9;
-            GameControl.control.heroList[1].def = 6;
-            GameControl.control.heroList[1].mgkAtk = 18;
-            GameControl.control.heroList[1].mgkDef = 13;
-            GameControl.control.heroList[1].luck = 10;
-            GameControl.control.heroList[1].evasion = 8;
-            GameControl.control.heroList[1].spd = 9;
+            GameControl.control.heroList[1].hp = 14;
+            GameControl.control.heroList[1].hpMax = 14;
+            GameControl.control.heroList[1].pm = 10;
+            GameControl.control.heroList[1].pmMax = 10;
+            GameControl.control.heroList[1].atk = 5;
+            GameControl.control.heroList[1].def = 4;
+            GameControl.control.heroList[1].mgkAtk = 11;
+            GameControl.control.heroList[1].mgkDef = 8;
+            GameControl.control.heroList[1].luck = 5;
+            GameControl.control.heroList[1].evasion = 4;
+            GameControl.control.heroList[1].spd = 5;
         }
         if (GUI.Button(new Rect(10, 240, 150, 100), "Save"))
         {
