@@ -17,7 +17,6 @@ public class SkillTreeManager : MonoBehaviour {
             {
                 GameControl.control.heroList[i].levelUp = false;
                 hero = GameControl.control.heroList[i];
-                print("Beginning of Start, Skill Count: " + hero.skillsList.Count);
                 // set specific skill tree
                 switch (hero.identity)
                 {

@@ -24,6 +24,7 @@ public abstract class Passive : Technique {
 }
 
 // Call this during the CalcDamage method
+[Serializable]
 public abstract class CalcDamagePassive : Passive {
 
     //public abstract int Use() { return 0; }
@@ -31,6 +32,7 @@ public abstract class CalcDamagePassive : Passive {
 }
 
 // Call this during the TakeDamage method
+[Serializable]
 public abstract class TakeDamagePassive : Passive
 {
 
@@ -39,6 +41,7 @@ public abstract class TakeDamagePassive : Passive
 }
 
 // call this for every denigen at the end of each turn
+[Serializable]
 public abstract class PerTurnPassive : Passive
 {
 
@@ -47,6 +50,7 @@ public abstract class PerTurnPassive : Passive
 }
 
 // this passive just restores 1hp per turn
+[Serializable]
 public class LightRegeneration : PerTurnPassive {
     
     public override void Start()

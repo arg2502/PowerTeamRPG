@@ -19,7 +19,7 @@ public class Denigen : MonoBehaviour {
     public bool IsBlocking { get { return isBlocking; } set { isBlocking = value; } }
 
     //List of passives, useful for enemies and heroes
-    public List<Passive> passives;
+    
 
     //List for storing targets of Denigen's attacks and spells
     protected List<Denigen> targets = new List<Denigen>() { };
@@ -42,9 +42,9 @@ public class Denigen : MonoBehaviour {
 
     // arrays of techniques
     //protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
-    protected List<Skill> skillsList;
+    public List<Skill> skillsList;
     protected List<Spell> spellsList;
-	
+    protected List<Passive> passives;
     // properties
     public int Stars { get { return stars; } }
     public int Level { get { return level; } set { level = value; } }
@@ -141,7 +141,7 @@ public class Denigen : MonoBehaviour {
     public virtual void Attack(string atkChoice)
     {
         // specific denigens will pick attack methods based off of user choice
-        print(name + " Attacks");
+        
     }
 
     protected void Block()
@@ -193,11 +193,9 @@ public class Denigen : MonoBehaviour {
             }
 
             //Clear the target's previous text, to avoid a build up 
-            print("Num of targets: " + targets.Count);
             for (int i = 0; i < targets.Count; i++)
             {
                 targets[i].TakeDamageText.Clear();
-                print("Clear target's damage text");
             }
                
             // return final damage amount

@@ -807,8 +807,7 @@ public class BattleMenu : Menu {
             {
                 foreach (Passive ptp in d.Passives)
                 {
-                    print(d.name + "'s passives");
-                    if (ptp is PerTurnPassive) { print(ptp.Name); ptp.Use(d, null); }
+                    if (ptp is PerTurnPassive) { ptp.Use(d, null); }
                 }
             }
             d.CalcDamageText.Clear();
@@ -921,6 +920,7 @@ public class BattleMenu : Menu {
                         {
                             hd.level = h.Level;
                             hd.levelUpPts = h.LevelUpPts;
+                            hd.techPts = h.TechPts;
                             hd.exp = h.Exp;
                             hd.expToLvlUp = h.ExpToLevelUp;
                             hd.hp = h.hp;
@@ -936,9 +936,9 @@ public class BattleMenu : Menu {
                             hd.spd = h.Spd;
                             hd.statusState = (HeroData.Status)h.StatusState;
                             hd.levelUp = h.levelUp;
-                            //hd.skillTree = h.skillTree;
                             hd.skillsList = h.SkillsList;
                             hd.spellsList = h.SpellsList;
+                            hd.passiveList = h.Passives;
                         }
                     }
                 }

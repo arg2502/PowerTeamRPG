@@ -20,28 +20,35 @@ public class JethroSkillTree : SkillTree {
         // create all techniques
         helmsplitter = new Skill();
         helmsplitter.Name = "Helmsplitter";
-        helmsplitter.Description = "A powerful sword strike from above. \n Str 75, Crit 03, Acc 90";
+        helmsplitter.Cost = 1;
+        helmsplitter.Description = helmsplitter.Name + "\nA powerful sword strike from above. \nCost " + helmsplitter.Cost + " \nStr 75\nCrit 03\nAcc 90";
         helmsplitter.Pm = 2;
+        
 
         trinitySlice = new Skill();
         trinitySlice.Name = "Trinity Slice";
-        trinitySlice.Description = "";
+        trinitySlice.Cost = 1;
+        trinitySlice.Description = trinitySlice.Name + "\n. \nCost " + trinitySlice.Cost + " \nStr \nCrit \nAcc ";
         trinitySlice.Pm = 0;
 
         arcSlash = new Skill();
         arcSlash.Name = "Arc Slash";
-        arcSlash.Description = "";
+        arcSlash.Cost = 2;
+        arcSlash.Description = arcSlash.Name + "\n. \nCost " + arcSlash.Cost + " \nStr \nCrit \nAcc ";
         arcSlash.Pm = 0;
 
         riser = new Skill();
         riser.Name = "Riser";
-        riser.Description = "";
+        riser.Cost = 1;
+        riser.Description = riser.Name + "\n. \nCost " + riser.Cost + " \nStr \nCrit \nAcc ";
         riser.Pm = 0;
 
         mordstreich = new Skill();
         mordstreich.Name = "Mordstreich";
-        mordstreich.Description = "";
+        mordstreich.Cost = 2;
+        mordstreich.Description = mordstreich.Name + "\n. \nCost " + mordstreich.Cost + " \nStr \nCrit \nAcc ";
         mordstreich.Pm = 0;
+        
 
         // set nexts to create branches
         helmsplitter.Next = trinitySlice;
@@ -54,13 +61,12 @@ public class JethroSkillTree : SkillTree {
         // max num of row
         numOfRow = 2;
 
-        print("inside jethro skill tree: " + helmsplitter.Next.Name);
-
         // set content array
         content2DArray = new List<List<Technique>>();
         content2DArray.Add(new List<Technique>(){helmsplitter, trinitySlice});
         content2DArray.Add(new List<Technique>() { arcSlash });
         content2DArray.Add(new List<Technique>() { riser, mordstreich });
+                 
 
         base.Start();
 	}

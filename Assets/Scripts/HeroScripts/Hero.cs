@@ -271,7 +271,7 @@ public class Hero: Denigen {
 
             //add the splash targets, if they are within range
             if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex2]); }
-            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { print("Add 2nd"); targets.Add(battleMenu.enemyList[0]); }
+            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[0]); }
             if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex3]); }
 
             //deactivate the cursors
@@ -333,8 +333,6 @@ public class Hero: Denigen {
     //supports the selectSplashTarget method
     public int MoveSecondaryCursor(int index, int prevIndex, int cursorIndex)
     {
-        print("index: " + index);
-        print("prev index: " + prevIndex);
         // highlight active target, only if theindex is within the scope of the enemy list
         if (index >= 0 && index < battleMenu.enemyList.Count)
         {

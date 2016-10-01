@@ -331,6 +331,7 @@ public class HeroData
     public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
     public List<Skill> skillsList;
     public List<Spell> spellsList;
+    public List<Passive> passiveList;
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     public Status statusState;

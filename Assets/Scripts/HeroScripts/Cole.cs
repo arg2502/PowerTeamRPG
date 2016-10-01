@@ -9,22 +9,24 @@ public class Cole : Hero {
         // TEMPORARY LISTS
         //skillsList = new List<string>() {  };
         //spellsList = new List<string>() { "HellFire", "Splash Flame" };
-        skillsList = new List<Skill>() { };
-        spellsList = new List<Spell>() { };
+        //skillsList = new List<Skill>() { };
+        //spellsList = new List<Spell>() { };
 
-        // the below code would probably be found in the "Add Spell" functions
-        Spell hellfire = new Spell();
-        hellfire.Name = "HellFire";
-        hellfire.Pm = 8;
-        hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \n Str 40, Crit 03, Acc 100";
-        spellsList.Add(hellfire);
+        if (spellsList.Count == 0)
+        {
+            // the below code would probably be found in the "Add Spell" functions
+            Spell hellfire = new Spell();
+            hellfire.Name = "HellFire";
+            hellfire.Pm = 8;
+            hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \n Str 40, Crit 03, Acc 100";
+            spellsList.Add(hellfire);
 
-        Spell splashflame = new Spell();
-        splashflame.Name = "Splash Flame";
-        splashflame.Pm = 3;
-        splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
-        spellsList.Add(splashflame);
-
+            Spell splashflame = new Spell();
+            splashflame.Name = "Splash Flame";
+            splashflame.Pm = 3;
+            splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
+            spellsList.Add(splashflame);
+        }
 
         // stats - should total to 1.00f
         hpPer = 0.21f;

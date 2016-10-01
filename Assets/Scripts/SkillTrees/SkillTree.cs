@@ -36,6 +36,10 @@ public class SkillTree : MonoBehaviour {
     // see who else needs to level up
     protected bool levelUp = false;
 
+    // technique description
+    protected GameObject descriptionText;
+    protected GameObject remainingPts;
+
     public void Start()
     { 
         // for positioning
@@ -69,7 +73,7 @@ public class SkillTree : MonoBehaviour {
                 {
                     button2DArray[col,row] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
                     MyButton b = button2DArray[col,row].GetComponent<MyButton>();
-                    button2DArray[col,row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width/2)), camera.transform.position.y + (250 - b.height) + (row * -(b.height + b.height / 2)));
+                    button2DArray[col,row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width/4)), camera.transform.position.y + (250 - b.height) + (row * -(b.height + b.height / 2)));
 
                     // display technique's name
                     b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -112,23 +116,19 @@ public class SkillTree : MonoBehaviour {
                 else if(content2DArray[col][row].Next != null && row != content2DArray[col].Count - 1)
                 {
                     button2DArray[col, row].GetComponent<MyButton>().next = button2DArray[col, row + 1].GetComponent<MyButton>();
-                    print("set next: " + button2DArray[col, row].GetComponent<MyButton>().next.textObject.GetComponent<TextMesh>().text);
                     // set states of the next button in branch
                     // if the hero knows the current technique but not the next one, set next to inactive
                     if(button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
                         && button2DArray[col,row].GetComponent<MyButton>().next.state != MyButton.MyButtonTextureState.normal)
                     {
                         button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.inactive;
-                        print("set to inactive: " + button2DArray[col, row].GetComponent<MyButton>().next.textObject.GetComponent<TextMesh>().text);
                     }
                     // if the hero does not know the technique but can learn it (inactive), set next to disabled
                     else if (button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
                     {
                         button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.disabled;
-                        print("set to disabled: " + button2DArray[col, row].GetComponent<MyButton>().next.textObject.GetComponent<TextMesh>().text);
                     }
                 }
-                //else { print("Else: " + content2DArray[col][row].Next.Name); }
             }
         }
 
@@ -158,7 +158,40 @@ public class SkillTree : MonoBehaviour {
 
         // set previous button to the current button
         prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
+       
+        // description text
+        descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        descriptionText.GetComponent<TextMesh>().text = content2DArray[columnIndex][rowIndex].Description;
+        descriptionText.transform.position = new Vector2(button2DArray[numOfColumn - 1, 0].transform.position.x + 400, button2DArray[numOfColumn - 1, 0].transform.position.y + 50);
 
+        remainingPts = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
+        remainingPts.transform.position = new Vector2(button2DArray[0, numOfRow].transform.position.x + 400, button2DArray[0, numOfRow].transform.position.y);
+
+    }
+    string FormatText(string str)
+    {
+        string formattedString = null;
+        int desiredLength = 40;
+        string[] wordArray = str.Split(' ');
+        int lineLength = 0;
+        foreach (string s in wordArray)
+        {
+            //if the current line plus the length of the next word and SPACE is greater than the desired line length
+            if (s.Length + 1 + lineLength > desiredLength)
+            {
+                //go to new line
+                formattedString += "\n" + s + " ";
+                //starting a new line
+                lineLength = s.Length;
+            }
+            else
+            {
+                formattedString += s + " ";
+                lineLength += s.Length + 1;
+            }
+        }
+        return formattedString;
     }
     void ScrollHorizontal(int col)
     {
@@ -212,13 +245,48 @@ public class SkillTree : MonoBehaviour {
         {
             button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.active;
         }
-        
-        // check if done
+                
         if (Input.GetKeyUp(KeyCode.Space))
         {
+            // check if done
             if (columnIndex == 0 && rowIndex == numOfRow)
             {
                 EndScene();
+            }
+            // over an inactive button
+            else if(button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.active)
+            {
+                // if you have enough skill points, add the technique
+                if(hero.techPts >= content2DArray[columnIndex][rowIndex].Cost)
+                {
+                    // check what kind of technique
+                    if(content2DArray[columnIndex][rowIndex] is Skill)
+                    {
+                        hero.skillsList.Add((Skill)content2DArray[columnIndex][rowIndex]);
+                        print("Skill Added");
+                    }
+                    else if (content2DArray[columnIndex][rowIndex] is Spell)
+                    {
+                        hero.spellsList.Add((Spell)content2DArray[columnIndex][rowIndex]);
+                    }
+                    else if (content2DArray[columnIndex][rowIndex] is Passive)
+                    {
+                        hero.passiveList.Add((Passive)content2DArray[columnIndex][rowIndex]);
+                    }
+                    else
+                    {
+                        print("Technique not added.");
+                    }
+                    // set button state to normal
+                    button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+                }
+                // change text to display failure
+                // change button back to inactiveHover
+                else
+                {
+                    descriptionText.GetComponent<TextMesh>().text = "You don't have enough points.";
+                    button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+                }
             }
         }
     
@@ -227,6 +295,10 @@ public class SkillTree : MonoBehaviour {
     {
         foreach (HeroData hd in GameControl.control.heroList)
         {
+            hd.skillsList = hero.skillsList;
+            hd.spellsList = hero.spellsList;
+            hd.passiveList = hero.passiveList;
+
             // also use this loop to figure out if we need to level up another hero
             if (hd.levelUp) { levelUp = true; }
         }
@@ -238,6 +310,12 @@ public class SkillTree : MonoBehaviour {
     }
     public void Update()
     {
+        // text positions
+        if (rowIndex < numOfRow) { descriptionText.GetComponent<TextMesh>().text = content2DArray[columnIndex][rowIndex].Description; }
+        else { descriptionText.GetComponent<TextMesh>().text = ""; }
+
+        remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
+
         // check for any button selections
         ButtonAction();
 

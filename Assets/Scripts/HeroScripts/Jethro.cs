@@ -9,13 +9,13 @@ public class Jethro : Hero {
         // TEMPORARY LISTS
         //skillsList = new List<string>() { "Helmsplitter"};
         //spellsList = new List<string>() { "Godspell", "Firepuff", "Wimsy Ass", "Ecpliseddd", "You're goddamn right" };
-        skillsList = new List<Skill>(){ };
-        spellsList = new List<Spell>() { };
-        Skill helmsplitter = new Skill();
-        helmsplitter.Name = "Helmsplitter";
-        helmsplitter.Pm = 2;
-        helmsplitter.Description = "A powerful sword strike from above. \n Str 75, Crit 03, Acc 90";
-        skillsList.Add(helmsplitter);
+        //skillsList = new List<Skill>(){ };
+        //spellsList = new List<Spell>() { };
+        //Skill helmsplitter = new Skill();
+        //helmsplitter.Name = "Helmsplitter";
+        //helmsplitter.Pm = 2;
+        //helmsplitter.Description = "A powerful sword strike from above. \n Str 75, Crit 03, Acc 90";
+        //skillsList.Add(helmsplitter);
 
         // stats - should total to 1.00f
         hpPer = 0.24f;
