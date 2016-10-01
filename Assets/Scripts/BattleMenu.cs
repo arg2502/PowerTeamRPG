@@ -805,7 +805,7 @@ public class BattleMenu : Menu {
             // Passive check here for now... maybe change it later?
             if (d.statusState != Denigen.Status.dead)
             {
-                foreach (Passive ptp in d.Passives)
+                foreach (Passive ptp in d.PassivesList)
                 {
                     if (ptp is PerTurnPassive) { ptp.Use(d, null); }
                 }
@@ -938,7 +938,7 @@ public class BattleMenu : Menu {
                             hd.levelUp = h.levelUp;
                             hd.skillsList = h.SkillsList;
                             hd.spellsList = h.SpellsList;
-                            hd.passiveList = h.Passives;
+                            hd.passiveList = h.PassivesList;
                         }
                     }
                 }

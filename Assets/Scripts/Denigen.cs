@@ -42,9 +42,9 @@ public class Denigen : MonoBehaviour {
 
     // arrays of techniques
     //protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
-    public List<Skill> skillsList;
+    protected List<Skill> skillsList;
     protected List<Spell> spellsList;
-    protected List<Passive> passives;
+    protected List<Passive> passivesList;
     // properties
     public int Stars { get { return stars; } }
     public int Level { get { return level; } set { level = value; } }
@@ -55,7 +55,7 @@ public class Denigen : MonoBehaviour {
     public int Luck { get {return luck; } set { luck = value; } }
     public int Evasion { get { return evasion; } set { evasion = value; } }
     public int Spd { get { return spd; } set { spd = value; } }
-    public List<Passive> Passives { get { return passives; } set { passives = value; } }
+    public List<Passive> PassivesList { get { return passivesList; } set { passivesList = value; } }
     public List<Skill> SkillsList { get { return skillsList; } set { skillsList = value; } }
     public List<Spell> SpellsList { get { return spellsList; } set { spellsList = value; } }
 
@@ -72,7 +72,7 @@ public class Denigen : MonoBehaviour {
     // Use this for initialization
 	protected void Start () {
         //temp passive list
-        passives = new List<Passive>();
+        passivesList = new List<Passive>();
 
         takeDamageText = new List<string>();
         calcDamageText = new List<string>();
@@ -186,8 +186,8 @@ public class Denigen : MonoBehaviour {
             // add chance to crit to increase the probability of num being the smaller one
             if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); }
 
-            // check for attack based passives
-            foreach (Passive cdp in passives)
+            // check for attack based passivesList
+            foreach (Passive cdp in passivesList)
             {
                 if (cdp is CalcDamagePassive) { cdp.Use(this, null); }
             }
@@ -229,8 +229,8 @@ public class Denigen : MonoBehaviour {
         // check if this denigen is blocking -- if so, halve the damage received
         if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); }
 
-        // check for passives
-        foreach (Passive tdp in passives)
+        // check for passivesList
+        foreach (Passive tdp in passivesList)
         {
             if (tdp is TakeDamagePassive) { tdp.Use(attackingDen, this); }
         }

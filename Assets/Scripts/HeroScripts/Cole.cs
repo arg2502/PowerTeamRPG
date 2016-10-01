@@ -6,14 +6,16 @@ public class Cole : Hero {
 
 	// Use this for initialization
 	void Start () {
-        // TEMPORARY LISTS
-        //skillsList = new List<string>() {  };
-        //spellsList = new List<string>() { "HellFire", "Splash Flame" };
-        //skillsList = new List<Skill>() { };
-        //spellsList = new List<Spell>() { };
-
-        if (spellsList.Count == 0)
+        
+        // if this is the first time the hero is made, create the lists
+        if(skillsList == null)
         {
+            skillsList = new List<Skill>();
+        }
+        if (spellsList == null)
+        {            
+            spellsList = new List<Spell>();
+
             // the below code would probably be found in the "Add Spell" functions
             Spell hellfire = new Spell();
             hellfire.Name = "HellFire";
@@ -26,6 +28,10 @@ public class Cole : Hero {
             splashflame.Pm = 3;
             splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
             spellsList.Add(splashflame);
+        }
+        if(passivesList == null)
+        {
+            passivesList = new List<Passive>();
         }
 
         // stats - should total to 1.00f
