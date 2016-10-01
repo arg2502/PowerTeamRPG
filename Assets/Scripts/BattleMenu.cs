@@ -635,12 +635,11 @@ public class BattleMenu : Menu {
        
        
         //press space to advance the battle phase
-		if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
+		if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) /*&& (commandIndex <= commands.Count - 1 && denigenArray[commandIndex].statusState != Denigen.Status.dead))*/ || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
         {
             while (commandIndex < denigenArray.Count && (failedFlee && denigenArray[commandIndex].GetComponent<Hero>() != null))
             {
                 battleTextList = new List<string>() { };
-
 
                 commandIndex++;
                 // if the command index is at the end, there are no more live denigens in the list
@@ -680,8 +679,8 @@ public class BattleMenu : Menu {
                     {
                         battleTextList.Add(denigenArray[commandIndex].CalcDamageText[i]);
                     }
-                    foreach (Denigen d in denigenArray[commandIndex].Targets)
-                    {
+                    //foreach (Denigen d in denigenArray[commandIndex].Targets)
+                   // {
                         //this causes an error when the target is dead. hopefully ending the battle when all heroes are dead will avoid this
 						//if (d.TakeDamageText != null)
                        /* for (int i = 0; i < d.TakeDamageText.Count; i ++ )
@@ -689,7 +688,7 @@ public class BattleMenu : Menu {
                             battleTextList.Add(d.TakeDamageText[i]);
                         }
                         d.TakeDamageText.Clear();*/
-                    }
+                   // }
                 }
 
                 //make sure there is text to display
@@ -705,28 +704,8 @@ public class BattleMenu : Menu {
 					// checks after attack to break out as soon as all enemies are dead
 					fallenHeroes = 0;
 					fallenEnemies = 0;
-
-                    foreach (Denigen d in denigenArray)
-                    {
-                        UpdateCard(d);
-						if (d is Hero && d.StatusState == Denigen.Status.dead) {
-							fallenHeroes++;
-						} else if ( d is Enemy && d.StatusState == Denigen.Status.dead) {
-							fallenEnemies++;
-						}
-
-						// set to appropriate state
-						if (fallenHeroes >= heroList.Count && textIndex == battleTextList.Count - 2) {
-							textIndex = 0;
-							state = MenuReader.failure;
-							return;
-                        } if (fallenEnemies >= enemyList.Count && textIndex == battleTextList.Count - 2)
-                        {
-							textIndex = 0;
-							state = MenuReader.victory;
-							return;
-						}
-                    }
+                    if (CheckForDead()) { return; }
+                    
 				//}
 
 
@@ -748,49 +727,59 @@ public class BattleMenu : Menu {
 						return;
 					}
 				}
-
                 textIndex = 0;
+                if (CheckForDead()) { return; }
                 commandIndex++;
                 battleTextList = new List<string>() { };
-
             }
         }
 
 		else if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
-		{			
+		{
 			textIndex = 0;
 			//check if all heroes have fallen
-			fallenHeroes = 0;
-			foreach (Denigen d in heroList)
-			{
-				if (d.StatusState == Denigen.Status.dead) { fallenHeroes++; }
-			}
-			if (heroList.Count == fallenHeroes)
-			{
-				//go to a gameover state
-				textIndex = 0;
-				state = MenuReader.failure;
-				return;
-			}
-
-			//check if all enemies have fallen
-			fallenEnemies = 0;
-			foreach (Denigen d in enemyList)
-			{
-				if (d.StatusState == Denigen.Status.dead) { fallenEnemies++; }
-			}
-			if (enemyList.Count == fallenEnemies)
-			{
-				//go to a victory state
-				textIndex = 0;
-				state = MenuReader.victory;
-				return;
-			}
-
+            //check if all enemies have fallen
+            if (CheckForDead()) { return; }
 			PostBattle ();
 		}
+
+        // check if heroes/enemies are dead
+        // checks after attack to break out as soon as all enemies are dead
+        if (CheckForDead()) { return;}
     }
 
+    bool CheckForDead()
+    {
+        int fallenHeroes = 0;
+        int fallenEnemies = 0;
+
+        foreach (Denigen d in denigenArray)
+        {
+            UpdateCard(d);
+            if (d is Hero && d.StatusState == Denigen.Status.dead)
+            {
+                fallenHeroes++;
+            }
+            else if (d is Enemy && d.StatusState == Denigen.Status.dead)
+            {
+                fallenEnemies++;
+            }
+
+            // set to appropriate state
+            if (fallenHeroes >= heroList.Count && textIndex == battleTextList.Count - 1)
+            {
+                textIndex = 0;
+                state = MenuReader.failure;
+                return true;
+            } if (fallenEnemies >= enemyList.Count && textIndex == battleTextList.Count - 1)
+            {
+                textIndex = 0;
+                state = MenuReader.victory;
+                return true;
+            }
+        }
+        return false;
+    }
 	void PostBattle(){
 		commandIndex = 0;
 		commands.Clear();

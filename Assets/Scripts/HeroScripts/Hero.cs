@@ -117,12 +117,14 @@ public class Hero: Denigen {
         }
 
         // Avoid starting on a dead target
+        
         while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
         {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+            
         }
 
         //handle input
@@ -226,12 +228,15 @@ public class Hero: Denigen {
             // if enemy is dead, skip to next
             if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
             {
+                //int loopCount = 0;
                 while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
                 {
                     battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
                     foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
                     targetIndex--;
                     if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+                    //loopCount++;
+                    //if (loopCount > battleMenu.enemyList.Count) { break; }
                 }
             }
 
