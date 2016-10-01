@@ -684,11 +684,11 @@ public class BattleMenu : Menu {
                     {
                         //this causes an error when the target is dead. hopefully ending the battle when all heroes are dead will avoid this
 						//if (d.TakeDamageText != null)
-                        for (int i = 0; i < d.TakeDamageText.Count; i ++ )
+                       /* for (int i = 0; i < d.TakeDamageText.Count; i ++ )
                         {
                             battleTextList.Add(d.TakeDamageText[i]);
                         }
-                        d.TakeDamageText.Clear();
+                        d.TakeDamageText.Clear();*/
                     }
                 }
 
@@ -699,8 +699,8 @@ public class BattleMenu : Menu {
                 }
                 else { textIndex++; }
 
-                if (battleText.GetComponent<TextMesh>().text.Contains("damage!")) //this hopefully only updates the HUD when damage is dealt
-                {
+               // if (battleText.GetComponent<TextMesh>().text.Contains("damage!")) //this hopefully only updates the HUD when damage is dealt
+                //{
 					// check if heroes/enemies are dead
 					// checks after attack to break out as soon as all enemies are dead
 					fallenHeroes = 0;
@@ -727,7 +727,7 @@ public class BattleMenu : Menu {
 							return;
 						}
                     }
-				}
+				//}
 
 
             }

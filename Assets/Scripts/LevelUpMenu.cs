@@ -154,7 +154,7 @@ public class LevelUpMenu : Menu {
                     hd.luck += statBoostInts[6];
                     hd.evasion += statBoostInts[7];
                     hd.spd += statBoostInts[8];
-                    hd.levelUpPts = 0;
+                    hd.levelUpPts = hero.levelUpPts;
                 }
                 // also use this loop to figure out if we need to level up another hero
                 //if (hd.levelUp) { levelUp = true; }

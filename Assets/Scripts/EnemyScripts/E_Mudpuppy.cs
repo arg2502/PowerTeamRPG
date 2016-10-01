@@ -20,7 +20,7 @@ public class E_Mudpuppy : Enemy {
         Skill bite = new Skill();
         bite.Name = "Bite";
         bite.Pm = 0;
-        bite.Description = "The attacker uses their powerful jaws to deal physical damage. \n Str 90, Crit 20, Acc 95";
+        bite.Description = "The attacker uses their powerful jaws to deal physical damage. \n Str 80, Crit 15, Acc 95";
         skillsList.Add(bite);
         Skill frenzy = new Skill();
         frenzy.Name = "Frenzy";
@@ -60,7 +60,7 @@ public class E_Mudpuppy : Enemy {
         targets.Add(tempTarget);
 
         //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage("Bite", 0.9f, 0.2f, 0.95f, false);
+        float damage = CalcDamage("Bite", 0.8f, 0.15f, 0.95f, false);
         
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(this, damage, false);

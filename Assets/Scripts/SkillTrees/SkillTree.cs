@@ -104,33 +104,8 @@ public class SkillTree : MonoBehaviour {
                 }
             }
         }
-        // set next if need be
-        for (int col = 0; col < numOfColumn; col++)
-        {
-            for (int row = 0; row < numOfRow; row++)
-            {
-                if (row >= content2DArray[col].Count)
-                {
-                    break;
-                }
-                else if(content2DArray[col][row].Next != null && row != content2DArray[col].Count - 1)
-                {
-                    button2DArray[col, row].GetComponent<MyButton>().next = button2DArray[col, row + 1].GetComponent<MyButton>();
-                    // set states of the next button in branch
-                    // if the hero knows the current technique but not the next one, set next to inactive
-                    if(button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
-                        && button2DArray[col,row].GetComponent<MyButton>().next.state != MyButton.MyButtonTextureState.normal)
-                    {
-                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.inactive;
-                    }
-                    // if the hero does not know the technique but can learn it (inactive), set next to disabled
-                    else if (button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
-                    {
-                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.disabled;
-                    }
-                }
-            }
-        }
+        // set the next button states
+        UpdateButtons();
 
         // add on Done button at the very end
         button2DArray[0, numOfRow] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
@@ -215,6 +190,11 @@ public class SkillTree : MonoBehaviour {
         {
             button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
         }
+        // if it's a disabled button, stay disabled (FOR NOW)
+        else if(button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled;
+        }
         // if it is not inactive, set it to normal hover
         else
         {
@@ -227,7 +207,12 @@ public class SkillTree : MonoBehaviour {
         {
             prevButton.state = MyButton.MyButtonTextureState.inactive;
         }
-        // if it was a normal button, set it back to normal
+        // if it's a disabled button, stay disabled (FOR NOW)
+        else if(prevButton.state == MyButton.MyButtonTextureState.disabled)
+        {
+            prevButton.state = MyButton.MyButtonTextureState.disabled;
+        }
+        // if it was a normal button, set it back to normal        
         else
         {
             prevButton.state = MyButton.MyButtonTextureState.normal;
@@ -235,6 +220,10 @@ public class SkillTree : MonoBehaviour {
 
         // set previous button to new current button
         prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
+
+        // text positions
+        if (rowIndex < numOfRow) { descriptionText.GetComponent<TextMesh>().text = content2DArray[columnIndex][rowIndex].Description; }
+        else { descriptionText.GetComponent<TextMesh>().text = ""; }
     }
     public void ButtonAction() 
     {
@@ -263,7 +252,6 @@ public class SkillTree : MonoBehaviour {
                     if(content2DArray[columnIndex][rowIndex] is Skill)
                     {
                         hero.skillsList.Add((Skill)content2DArray[columnIndex][rowIndex]);
-                        print("Skill Added");
                     }
                     else if (content2DArray[columnIndex][rowIndex] is Spell)
                     {
@@ -276,9 +264,12 @@ public class SkillTree : MonoBehaviour {
                     else
                     {
                         print("Technique not added.");
+                        return;
                     }
                     // set button state to normal
                     button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+                    hero.techPts--;
+                    UpdateButtons();
                 }
                 // change text to display failure
                 // change button back to inactiveHover
@@ -291,14 +282,66 @@ public class SkillTree : MonoBehaviour {
         }
     
     }
+    public void UpdateButtons()
+    {
+        /*for(int col = 0; col < numOfColumn; col++)
+        {
+            for(int row = 0; row < numOfRow; row++)
+            {
+                for(int i = 0; i < hero.skillsList.Count; i++)
+                {
+                    if (button2DArray[col,row].GetComponent<MyButton>().labelMesh.text == hero.skillsList[i].Name)
+                    {
+                        button2DArray[col, row].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                    }
+                }
+                for(int i = 0; i < hero.spellsList.Count; i++)
+                {
+                    if (button2DArray[col, row].GetComponent<MyButton>().labelMesh.text == hero.spellsList[i].Name)
+                    {
+                        button2DArray[col, row].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                    }
+                }
+            }
+        }*/
+        // set next if need be
+        for (int col = 0; col < numOfColumn; col++)
+        {
+            for (int row = 0; row < numOfRow; row++)
+            {
+                if (row >= content2DArray[col].Count)
+                {
+                    break;
+                }
+                else if (content2DArray[col][row].Next != null && row != content2DArray[col].Count - 1)
+                {
+                    button2DArray[col, row].GetComponent<MyButton>().next = button2DArray[col, row + 1].GetComponent<MyButton>();
+                    // set states of the next button in branch
+                    // if the hero knows the current technique but not the next one, set next to inactive
+                    if (button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
+                        && button2DArray[col, row].GetComponent<MyButton>().next.state != MyButton.MyButtonTextureState.normal)
+                    {
+                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.inactive;
+                    }
+                    // if the hero does not know the technique but can learn it (inactive), set next to disabled
+                    else if (button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+                    {
+                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.disabled;
+                    }
+                }
+            }
+        }
+    }
     public void EndScene()
     {
         foreach (HeroData hd in GameControl.control.heroList)
         {
-            hd.skillsList = hero.skillsList;
-            hd.spellsList = hero.spellsList;
-            hd.passiveList = hero.passiveList;
-
+            if (hd.identity == hero.identity)
+            {
+                hd.skillsList = hero.skillsList;
+                hd.spellsList = hero.spellsList;
+                hd.passiveList = hero.passiveList;
+            }
             // also use this loop to figure out if we need to level up another hero
             if (hd.levelUp) { levelUp = true; }
         }
@@ -310,78 +353,91 @@ public class SkillTree : MonoBehaviour {
     }
     public void Update()
     {
-        // text positions
-        if (rowIndex < numOfRow) { descriptionText.GetComponent<TextMesh>().text = content2DArray[columnIndex][rowIndex].Description; }
-        else { descriptionText.GetComponent<TextMesh>().text = ""; }
-
         remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
+
 
         // check for any button selections
         ButtonAction();
-
-        if(Input.GetKeyUp(KeyCode.D))
+        // make sure space is not being held down before moving arrows
+        if (!Input.GetKeyDown(KeyCode.Space))
         {
-            if(columnIndex < numOfColumn - 1 && rowIndex != numOfRow)
+            if (Input.GetKeyUp(KeyCode.D))
             {
-                // if the next button is disabled or doesn't exist, find the next lowest button in the column
-                if (button2DArray[columnIndex + 1, rowIndex] == null
-                    || button2DArray[columnIndex + 1, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled) 
+                if (columnIndex < numOfColumn - 1 && rowIndex != numOfRow)
                 {
-                    ScrollHorizontal(columnIndex + 1);
-                }
-                // increase index to hover over next button
-                columnIndex++;
-                ScrollChangeButtonState();
-                    
-            }
-        }
-        if(Input.GetKeyUp(KeyCode.A))
-        {
-            if (columnIndex > 0 && rowIndex != numOfRow)
-            {
-                // if the next button is disabled or doesn't exist, find the next lowest button in the column
-                if (button2DArray[columnIndex - 1, rowIndex] == null
-                    || button2DArray[columnIndex - 1, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
-                {
-                    ScrollHorizontal(columnIndex - 1);
-                }
-                // increase index to hover over next button
-                columnIndex--;
-                ScrollChangeButtonState();
-
-            }
-        }
-        if(Input.GetKeyUp(KeyCode.S))
-        {
-            if(rowIndex < numOfRow)
-            {
-                // if next button is disabled or nonexistant, don't go anywhere
-                if(button2DArray[columnIndex, rowIndex + 1] == null
-                    || button2DArray[columnIndex, rowIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled
-                    || rowIndex + 1 == numOfRow)
-                {
-                    // automatically send them to DONE
-                    columnIndex = 0;
-                    rowIndex = numOfRow;
+                    // if the next button is disabled or doesn't exist, find the next lowest button in the column
+                    if (button2DArray[columnIndex + 1, rowIndex] == null)
+                        //|| button2DArray[columnIndex + 1, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                    {
+                        ScrollHorizontal(columnIndex + 1);
+                    }
+                    // increase index to hover over next button
+                    columnIndex++;
                     ScrollChangeButtonState();
-                    return;
+
                 }
-                rowIndex++;
-                ScrollChangeButtonState();
             }
-        }
-        if(Input.GetKeyUp(KeyCode.W))
-        {
-            if (rowIndex > 0)
-            {                
-                // if next button is disabled or nonexistant, don't go anywhere
-                if (button2DArray[columnIndex, rowIndex - 1] == null
-                    || button2DArray[columnIndex, rowIndex - 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+            if (Input.GetKeyUp(KeyCode.A))
+            {
+                if (columnIndex > 0 && rowIndex != numOfRow)
                 {
-                    return;
+                    // if the next button is disabled or doesn't exist, find the next lowest button in the column
+                    if (button2DArray[columnIndex - 1, rowIndex] == null)
+                        //|| button2DArray[columnIndex - 1, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                    {
+                        ScrollHorizontal(columnIndex - 1);
+                    }
+                    // increase index to hover over next button
+                    columnIndex--;
+                    ScrollChangeButtonState();
+
                 }
-                rowIndex--;
-                ScrollChangeButtonState();
+            }
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                if (rowIndex < numOfRow)
+                {
+                    // if next button is disabled or nonexistant, don't go anywhere
+                    if (button2DArray[columnIndex, rowIndex + 1] == null
+                        //|| button2DArray[columnIndex, rowIndex + 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled
+                        || rowIndex + 1 == numOfRow)
+                    {
+                        // automatically send them to DONE
+                        columnIndex = 0;
+                        rowIndex = numOfRow;
+                        ScrollChangeButtonState();
+                        return;
+                    }
+                    rowIndex++;
+                    ScrollChangeButtonState();
+                }
+            }
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                if (rowIndex > 0)
+                {
+                    // if on done button, find the next active button
+                    //if(rowIndex == numOfRow)
+                    //{
+                    //    int tempRow = rowIndex - 1;
+                    //    while(button2DArray[columnIndex, tempRow].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                    //    {
+                    //        tempRow--;
+                    //    }
+                    //    rowIndex = tempRow;
+                    //    ScrollChangeButtonState();
+                    //    return;
+                    //}
+                    //// if next button is disabled or nonexistant, don't go anywhere
+                    //else 
+                    if (button2DArray[columnIndex, rowIndex - 1] == null)
+                        //|| button2DArray[columnIndex, rowIndex - 1].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+                    {
+                        return;
+                    }
+                    rowIndex--;
+                    ScrollChangeButtonState();
+                }
             }
         }
     }
