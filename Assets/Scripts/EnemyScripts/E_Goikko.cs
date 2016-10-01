@@ -49,8 +49,14 @@ public class E_Goikko : Enemy {
     {
         // code for choosing the target of this attack
         // because goikko is an early enemy, let's have it randomly select a target
-        int random = Random.Range(0, battleMenu.heroList.Count);
+        int random = 0;
+        do
+        {
+            random = Random.Range(0, battleMenu.heroList.Count);
+        } while (battleMenu.heroList[random].statusState == Status.dead);
+
         targets.Add(battleMenu.heroList[random]);
+        
 
         //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
         float damage = CalcDamage("Tackle", 0.65f, 0.25f, 0.9f, false);

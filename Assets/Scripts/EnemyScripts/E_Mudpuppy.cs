@@ -32,10 +32,10 @@ public class E_Mudpuppy : Enemy {
         hpPer = 0.18f;
         pmPer = 0.06f;
         atkPer = 0.30f;
-        defPer = 0.12f;
-        mgkAtkPer = 0.02f;
-        mgkDefPer = 0.09f;
-        luckPer = 0.14f;
+        defPer = 0.11f;
+        mgkAtkPer = 0.03f;
+        mgkDefPer = 0.08f;
+        luckPer = 0.15f;
         evasionPer = 0.12f;
         spdPer = 0.06f;
 
