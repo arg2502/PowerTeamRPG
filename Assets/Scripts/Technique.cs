@@ -18,13 +18,18 @@ public class Technique {
     protected string description;
     int pm;
     Technique next; // tells the skill tree if this technique is part of a chain/branch
+    [NonSerialized]
+    List<Technique> prerequisites;
     int cost; // number of skill points required to unlock
+    bool active; // if true, the hero has this technique
 
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
     public int Pm { get { return pm; } set { pm = value; } }
     public Technique Next { get { return next; } set { next = value; } }
+    public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
     public int Cost { get { return cost; } set { cost = value; } }
+    public bool Active { get { return active; } set { active = value; } }
     
 
     //// Use this for initialization

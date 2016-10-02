@@ -10,6 +10,7 @@ public class JethroSkillTree : SkillTree {
     Skill arcSlash;
     Skill riser;
     Skill mordstreich;
+    Skill superMordstreich; // temp
       
 	// Use this for initialization
 	void Start () {
@@ -48,25 +49,55 @@ public class JethroSkillTree : SkillTree {
         mordstreich.Cost = 2;
         mordstreich.Description = mordstreich.Name + "\n. \nCost " + mordstreich.Cost + " \nStr \nCrit \nAcc ";
         mordstreich.Pm = 0;
+
+        superMordstreich = new Skill();
+        superMordstreich.Name = "Super Mordstreich";
+        superMordstreich.Cost = 1;
+        superMordstreich.Description = superMordstreich.Name + "\n\nCost " + superMordstreich.Cost + "\nStr \nCrit \nAcc ";
+        superMordstreich.Pm = 0;
+        
         
 
         // set nexts to create branches
         helmsplitter.Next = trinitySlice;
         riser.Next = mordstreich;
+        mordstreich.Next = superMordstreich;
 
+        // prerequisites
+        superMordstreich.Prerequisites = new List<Technique>();
+        superMordstreich.Prerequisites.Add(mordstreich);
+        superMordstreich.Prerequisites.Add(arcSlash);
+        superMordstreich.Prerequisites.Add(trinitySlice);
 
         // max num of col
-        numOfColumn = 3;
+        //numOfColumn = 3;
 
         // max num of row
-        numOfRow = 2;
+        //numOfRow = 2;
+
+        // descriptions
+        if(superMordstreich.Prerequisites != null)
+        {
+            superMordstreich.Description += "\n\nPrerequisites: ";
+            foreach(Technique t in superMordstreich.Prerequisites)
+            {
+                superMordstreich.Description += "\n" + t.Name;
+            }
+        }
 
         // set content array
         content2DArray = new List<List<Technique>>();
         content2DArray.Add(new List<Technique>(){helmsplitter, trinitySlice});
         content2DArray.Add(new List<Technique>() { arcSlash });
-        content2DArray.Add(new List<Technique>() { riser, mordstreich });
-                 
+        content2DArray.Add(new List<Technique>() { riser, mordstreich, superMordstreich });
+
+        // set sizes of columns and rows
+        numOfColumn = content2DArray.Count;
+
+        foreach(List<Technique> t in content2DArray)
+        {
+            if (numOfRow < t.Count) numOfRow = t.Count;
+        }
 
         base.Start();
 	}

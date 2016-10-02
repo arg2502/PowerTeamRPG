@@ -126,6 +126,7 @@ public class BattleMenu : Menu {
                 denigenArray[i].GetComponent<Hero>().ExpToLevelUp = tempHeroes[i].expToLvlUp;
                 denigenArray[i].GetComponent<Hero>().SkillsList = tempHeroes[i].skillsList;
                 denigenArray[i].GetComponent<Hero>().SpellsList = tempHeroes[i].spellsList;
+                denigenArray[i].GetComponent<Hero>().TechPts = tempHeroes[i].techPts;
             }
         }
         //This code may be depricated or altered later
