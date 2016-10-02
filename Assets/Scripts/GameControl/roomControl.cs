@@ -14,6 +14,8 @@ public class roomControl : MonoBehaviour {
     public List<Enemy> possibleEnemies;// Array of possible enemy types
     List<enemyControl> enemies = new List<enemyControl>();
     public GameObject enemyControlPrefab; // a generic enemy control object
+    public int minEnemiesPerBattle;
+    public int maxEnemiesPerBattle;
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +27,7 @@ public class roomControl : MonoBehaviour {
         {
             GameObject temp = GameObject.Instantiate(enemyControlPrefab);
             temp.transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f)); // hopefully we will have a better way of placing enemies
-            temp.GetComponent<enemyControl>().maxEnemies = 4; // maybe this shouldn't be here
+            temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
             enemies.Add(temp.GetComponent<enemyControl>());
         }
 	}

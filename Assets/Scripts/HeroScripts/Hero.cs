@@ -27,6 +27,8 @@ public class Hero: Denigen {
 
     // used for finding the player's intended target
     protected int targetIndex = 0;
+    protected int prevTargetIndex1 = 0;
+    protected int prevTargetIndex2 = 0;
     protected int targetIndex2 = 0;
     protected int targetIndex3 = 0;
 
@@ -111,16 +113,18 @@ public class Hero: Denigen {
     public void SelectSingleTarget()
     {
         //Activate the first cursor for targeting
-        if(battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled == false)
+        /*if(battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled == false)
         {
             battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = true;
-        }
+        }*/
 
         // Avoid starting on a dead target
         
         while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
         {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
             foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
@@ -132,13 +136,16 @@ public class Hero: Denigen {
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
-
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
             targetIndex--;
 			if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
 
 			// if enemy is dead, skip to next
 			if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
 				battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+                battleMenu.enemyList[targetIndex].Sr.color = Color.white;
 				targetIndex--;
 				if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
 			}
@@ -149,40 +156,50 @@ public class Hero: Denigen {
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
-
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
             targetIndex++;
 			if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
 
 			// if enemy is dead, skip to next
 			if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
 				battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+                battleMenu.enemyList[targetIndex].Sr.color = Color.white;
 				targetIndex++;
 				if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
 			}
 
             
         }
+
+        battleMenu.enemyList[targetIndex].Sr.material.shader = targetShader;
+        battleMenu.enemyList[targetIndex].Sr.color = targetRed;
+
         if (Input.GetKeyUp(KeyCode.Space))
         {
             targets.Add(battleMenu.enemyList[targetIndex]);
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
             //deactivate the cursor
-            battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = false;
+            //battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = false;
         }
+
         //move the cursor to the correct position
-        battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
+        //battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
 
 		// if enemy is dead, skip to next
 		if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
 			battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
 			targetIndex++;
 			if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
 		}
 
-
 		battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
     }
 
-    // this is a 3 target attack -- I believe this is fully functional
+    // this is a 3 target attack
     public void SelectSplashTarget()
     {
         //Activate up to 3 cursors, less if there is less than 3 denigens
@@ -192,6 +209,8 @@ public class Hero: Denigen {
         while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
         {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
             foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
@@ -201,16 +220,18 @@ public class Hero: Denigen {
         else { numOfCursors = 3; }
         for (int i = 0; i < numOfCursors; i++)
         {
-            if (battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled == false)
+            /*if (battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled == false)
             {
                 battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = true;
-            }
+            }*/
             if (i > 0)
             {
-                battleMenu.cursors[i].GetComponent<TargetCursor>().isSplash = true;
-                battleMenu.cursors[i].GetComponent<TargetCursor>().ChangeSprite();
+                //battleMenu.cursors[i].GetComponent<TargetCursor>().isSplash = true;
+                //battleMenu.cursors[i].GetComponent<TargetCursor>().ChangeSprite();
                 if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex + 1, targetIndex + 2, 1); }
                 if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex - 1, targetIndex, 2); }
+                prevTargetIndex1 = targetIndex + 1;
+                prevTargetIndex2 = targetIndex - 1;
             }
         }
 
@@ -219,6 +240,8 @@ public class Hero: Denigen {
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
 
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1;
@@ -232,6 +255,8 @@ public class Hero: Denigen {
                 while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
                 {
                     battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                    battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+                    battleMenu.enemyList[targetIndex].Sr.color = Color.white;
                     foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
                     targetIndex--;
                     if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
@@ -241,13 +266,19 @@ public class Hero: Denigen {
             }
 
             // Move the other 2 cursors
-            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex, 1); }
-            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex + 2, 2); }
+            //if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex, 1); }
+            //if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex + 2, 2); }
+            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, prevTargetIndex1, 1); }
+            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, prevTargetIndex2, 2); }
+            prevTargetIndex1 = targetIndex + 1;
+            prevTargetIndex2 = targetIndex - 1;
         }
         if (Input.GetKeyUp(KeyCode.W))
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
 
             targetIndex++;
             if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0;
@@ -260,6 +291,8 @@ public class Hero: Denigen {
                 while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
                 {
                     battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                    battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+                    battleMenu.enemyList[targetIndex].Sr.color = Color.white;
                     foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
                     targetIndex++;
                     if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
@@ -267,37 +300,51 @@ public class Hero: Denigen {
             }
 
             // Move the other 2 cursors
+            //if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex - 2, 1); }
+            //if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex, 2); }
             if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex - 2, 1); }
             if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex, 2); }
+            prevTargetIndex1 = targetIndex + 1;
+            prevTargetIndex2 = targetIndex - 1;
         }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            targets.Add(battleMenu.enemyList[targetIndex]);
-
-            //add the splash targets, if they are within range
-            if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex2]); }
-            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[0]); }
-            if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count)) { targets.Add(battleMenu.enemyList[targetIndex3]); }
-
-            //deactivate the cursors
-            for (int i = 0; i < numOfCursors; i++)
-            {
-                battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
-            }
-        }
-        //move the cursor to the correct position
-        battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
 
         // if enemy is dead, skip to next
         if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
         {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
             targetIndex++;
             if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
         }
 
 
         battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
+        battleMenu.enemyList[targetIndex].Sr.material.shader = targetShader;
+        battleMenu.enemyList[targetIndex].Sr.color = targetRed;
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            for (int i = 0; i < battleMenu.enemyList.Count; i++)
+            {
+                battleMenu.enemyList[i].Sr.material.shader = normalShader;
+                battleMenu.enemyList[i].Sr.color = Color.white;
+            }
+            targets.Add(battleMenu.enemyList[targetIndex]);
+
+            //add the splash targets, if they are within range
+            if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { /*battleMenu.enemyList[targetIndex2].Sr.material.shader = normalShader; battleMenu.enemyList[targetIndex2].Sr.color = Color.white;*/ targets.Add(battleMenu.enemyList[targetIndex2]); }
+            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { /*battleMenu.enemyList[0].Sr.material.shader = normalShader; battleMenu.enemyList[0].Sr.color = Color.white;*/ targets.Add(battleMenu.enemyList[0]); }
+            if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count)) {/* battleMenu.enemyList[targetIndex3].Sr.material.shader = normalShader; battleMenu.enemyList[targetIndex3].Sr.color = Color.white;*/ targets.Add(battleMenu.enemyList[targetIndex3]); }
+
+            //deactivate the cursors
+            //for (int i = 0; i < numOfCursors; i++)
+            //{
+            //    battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+            //}
+        }
+        //move the cursor to the correct position
+        //battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
     }
 
     // this method is for an attack that hits all possible targets
@@ -305,19 +352,25 @@ public class Hero: Denigen {
     {
         //Activate as many cursors as there are enemies
         int numOfCursors = battleMenu.enemyList.Count;
-        for (int i = 0; i < numOfCursors; i++)
+        /*for (int i = 0; i < numOfCursors; i++)
         {
             if (battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled == false)
             {
                 battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = true;
             }
-        }
+        }*/
         
         // put a cursor above each target
-        for (int i = 0; i < numOfCursors; i++)
+        /*for (int i = 0; i < numOfCursors; i++)
         {
             //move the cursor to the correct position
             battleMenu.cursors[i].transform.position = new Vector2(battleMenu.enemyList[i].transform.position.x, battleMenu.enemyList[i].transform.position.y + 100);
+        }*/
+
+        // tint the enemies red to indicate targeting
+        for (int i = 0; i < battleMenu.enemyList.Count; i++ )
+        {
+            if (battleMenu.enemyList[i].statusState != Status.dead) { battleMenu.enemyList[i].Sr.material.shader = targetShader; battleMenu.enemyList[i].Sr.color = targetRed; }
         }
 
         // handle input
@@ -329,8 +382,10 @@ public class Hero: Denigen {
                 if (battleMenu.enemyList[i].statusState != Status.dead)
                 {
                     targets.Add(battleMenu.enemyList[i]);
+                    battleMenu.enemyList[i].Sr.material.shader = normalShader;
+                    battleMenu.enemyList[i].Sr.color = Color.white;
                 }
-                battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+                //battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
             }
         }
     }
@@ -338,20 +393,24 @@ public class Hero: Denigen {
     //supports the selectSplashTarget method
     public int MoveSecondaryCursor(int index, int prevIndex, int cursorIndex)
     {
-        // highlight active target, only if theindex is within the scope of the enemy list
+        // highlight active target, only if the index is within the scope of the enemy list
         if (index >= 0 && index < battleMenu.enemyList.Count)
         {
             battleMenu.enemyList[index].Card.GetComponent<TextMesh>().color = new Vector4(1.0f, 0.5f, 0.5f, 1.0f);
+            battleMenu.enemyList[index].Sr.material.shader = normalShader;
+            battleMenu.enemyList[index].Sr.color = splashTargetRed;
             // if the target is in the range of the enemy list count, draw the cursor above the appropriate enemy
-            battleMenu.cursors[cursorIndex].transform.position = new Vector2(battleMenu.enemyList[index].transform.position.x, battleMenu.enemyList[index].transform.position.y + 100);
+            //battleMenu.cursors[cursorIndex].transform.position = new Vector2(battleMenu.enemyList[index].transform.position.x, battleMenu.enemyList[index].transform.position.y + 100);
         }
         if (prevIndex >= 0 && prevIndex < battleMenu.enemyList.Count)
         {
             battleMenu.enemyList[prevIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.enemyList[prevIndex].Sr.material.shader = normalShader;
+            battleMenu.enemyList[prevIndex].Sr.color = Color.white;
         }
 
         // disable the cursor if it goes out of range
-        if (index > battleMenu.enemyList.Count || index < 0)
+        /*if (index > battleMenu.enemyList.Count || index < 0)
         {
             battleMenu.cursors[cursorIndex].GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -359,7 +418,7 @@ public class Hero: Denigen {
         if (prevIndex > battleMenu.enemyList.Count || prevIndex < 0)
         {
             battleMenu.cursors[cursorIndex].GetComponent<SpriteRenderer>().enabled = true;
-        }
+        }*/
         return index;
     }
 

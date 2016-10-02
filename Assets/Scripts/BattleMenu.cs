@@ -43,7 +43,7 @@ public class BattleMenu : Menu {
     string command;
 
     //Cursors for targeting attacks
-    public GameObject[] cursors;
+    //public GameObject[] cursors;
 
     //Int for tracking which denigen should act in a battle phase
     public int commandIndex = 0;
@@ -214,13 +214,13 @@ public class BattleMenu : Menu {
         }
 
         //create cursors for the targeting of attacks
-        cursors = new GameObject[enemyList.Count];
+        /*cursors = new GameObject[enemyList.Count];
         for (int i = 0; i < enemyList.Count; i++)
         {
             cursors[i] = (GameObject)Instantiate(Resources.Load("Prefabs/cursorPrefab"));
             //Shut the cursors' renderers off until they are needed
             cursors[i].GetComponent<SpriteRenderer>().enabled = false;
-        }
+        }*/
         
         //Create the text object for the battle phase
         battleText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -552,6 +552,12 @@ public class BattleMenu : Menu {
                         state = prevState;
                         ChangeContentArray();
                         StateChangeText();
+                        // make sure all of the enemies are back to their normal color
+                        for (int i = 0; i < enemyList.Count; i++)
+                        {
+                            enemyList[i].Sr.material.shader = enemyList[i].normalShader;
+                            enemyList[i].Sr.color = Color.white;
+                        }
                     }   
                 }
                 else
@@ -613,8 +619,9 @@ public class BattleMenu : Menu {
         {
             for(int i = 0; i < enemyList.Count; i++)
             {
-                cursors[i].GetComponent<SpriteRenderer>().enabled = false;
+                //cursors[i].GetComponent<SpriteRenderer>().enabled = false;
                 enemyList[i].Card.GetComponent<TextMesh>().color = Color.white;
+                //enemyList[i].Sr.color = Color.white;
             }
         }
 

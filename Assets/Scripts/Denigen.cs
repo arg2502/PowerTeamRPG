@@ -18,9 +18,6 @@ public class Denigen : MonoBehaviour {
     protected bool isBlocking = false;
     public bool IsBlocking { get { return isBlocking; } set { isBlocking = value; } }
 
-    //List of passives, useful for enemies and heroes
-    
-
     //List for storing targets of Denigen's attacks and spells
     protected List<Denigen> targets = new List<Denigen>() { };
     public List<Denigen> Targets { get { return targets; } }
@@ -44,7 +41,7 @@ public class Denigen : MonoBehaviour {
     //protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
     protected List<Skill> skillsList;
     protected List<Spell> spellsList;
-    protected List<Passive> passivesList;
+    protected List<Passive> passivesList; // List of passives, useful for enemies and heroes
     // properties
     public int Stars { get { return stars; } }
     public int Level { get { return level; } set { level = value; } }
@@ -68,6 +65,18 @@ public class Denigen : MonoBehaviour {
     protected GameObject card;
     public GameObject Card { get { return card; } set { card = value; } }
 
+    //sprite renderer, for targeting and fading effects
+    protected SpriteRenderer sr;
+    public SpriteRenderer Sr { get { return sr; } set { sr = value; } }
+
+    public Shader targetShader;
+    public Shader normalShader;
+
+    //colors for targeting and fading effects
+    protected Color targetRed = new Color(0.7f, 0.0f, 0.0f, 1.0f);
+    protected Color splashTargetRed = new Color(0.7f, 0.0f, 0.0f, 0.5f);
+    protected Color targetGreen = new Color(0.1f, 1.0f, 0.2f, 1.0f);
+    protected Color fade = new Color(0.0f, 0.0f, 0.0f, 0.2f);
 
     // Use this for initialization
 	protected void Start () {
@@ -108,6 +117,10 @@ public class Denigen : MonoBehaviour {
         battleMenu.currentDenigen = battleMenu.denigenArray[0];
         battleMenu.currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
         //statusState = Status.normal;
+
+        sr = gameObject.GetComponent<SpriteRenderer>();
+        targetShader = Shader.Find("GUI/Text Shader");
+        normalShader = Shader.Find("Sprites/Default");
 	}
     protected void LevelUp(int lvl)
     {

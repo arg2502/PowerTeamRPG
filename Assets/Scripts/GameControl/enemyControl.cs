@@ -15,6 +15,7 @@ public class enemyControl : OverworldObject {
     float safeDistance;
 
     public int maxEnemies = 0;
+    public int minEnemies = 0;
 
     //These are useful for contolling the enemy's movement
     float waitTimer;
@@ -46,7 +47,7 @@ public class enemyControl : OverworldObject {
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
         if (dist <= safeDistance + 100.0f) { Destroy(this.gameObject); }
 
-        numOfEnemies = Random.Range(1, maxEnemies);
+        numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
         enemies = new List<Enemy>();
         for (int i = 0; i < numOfEnemies; i++)
         {
