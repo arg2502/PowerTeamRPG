@@ -27,6 +27,7 @@ public class roomControl : MonoBehaviour {
         {
             GameObject temp = GameObject.Instantiate(enemyControlPrefab);
             temp.transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f)); // hopefully we will have a better way of placing enemies
+            temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
             temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
             enemies.Add(temp.GetComponent<enemyControl>());
         }
