@@ -51,6 +51,7 @@ public class Jethro : Hero {
         switch (attack)
         {
             case "Block":
+                SelectSelfTarget(attack);
                 break;
             case "Helmsplitter":
             case "Strike":

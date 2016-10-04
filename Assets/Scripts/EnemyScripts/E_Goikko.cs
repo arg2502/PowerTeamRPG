@@ -31,10 +31,10 @@ public class E_Goikko : Enemy {
         // stats - should total to 1.00f
         hpPer = 0.19f;
         pmPer = 0.09f;
-        atkPer = 0.11f;
-        defPer = 0.09f;
+        atkPer = 0.13f;
+        defPer = 0.08f;
         mgkAtkPer = 0.10f;
-        mgkDefPer = 0.09f;
+        mgkDefPer = 0.08f;
         luckPer = 0.11f;
         evasionPer = 0.14f;
         spdPer = 0.18f;

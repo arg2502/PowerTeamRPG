@@ -300,9 +300,13 @@ public class BattleMenu : Menu {
                 break;
             case "Block":
                 //simply flip a boolean
-                currentDenigen.IsBlocking = true;
-                commands.Add(label);
-                ChangeCurrentDenigen();
+                //currentDenigen.IsBlocking = true;
+                //commands.Add(label);
+                //ChangeCurrentDenigen();
+                command = label;
+                prevState = state;
+                DisableMenu();
+                state = MenuReader.targeting;
                 break;
             case "Attack":
                 // change state to attack menu
@@ -560,6 +564,15 @@ public class BattleMenu : Menu {
                             {
                                 enemyList[i].Sr.material.shader = enemyList[i].normalShader;
                                 enemyList[i].Sr.color = Color.white;
+                            }
+                        }
+                        // make sure all of the heroes turn back as well
+                        for (int i = 0; i < heroList.Count; i++)
+                        {
+                            if (heroList[i].statusState != Denigen.Status.dead && heroList[i].statusState != Denigen.Status.overkill)
+                            {
+                                heroList[i].Sr.material.shader = heroList[i].normalShader;
+                                heroList[i].Sr.color = Color.white;
                             }
                         }
                     }   

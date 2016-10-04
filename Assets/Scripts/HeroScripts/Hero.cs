@@ -99,7 +99,7 @@ public class Hero: Denigen {
         switch (attack)
         {
             case "Block":
-                SelectSelfTarget();
+                SelectSelfTarget(attack);
                 break;
             default:
                 //SelectAllTargets();
@@ -350,7 +350,7 @@ public class Hero: Denigen {
             for (int i = 0; i < battleMenu.enemyList.Count; i++)
             {
                 battleMenu.enemyList[i].Sr.material.shader = normalShader;
-                battleMenu.enemyList[i].Sr.color = Color.white;
+                if (battleMenu.enemyList[i].statusState != Status.dead && battleMenu.enemyList[i].statusState != Status.overkill) battleMenu.enemyList[i].Sr.color = Color.white;
             }
             targets.Add(battleMenu.enemyList[targetIndex]);
 
@@ -397,7 +397,12 @@ public class Hero: Denigen {
         // tint the enemies red to indicate targeting
         for (int i = 0; i < battleMenu.enemyList.Count; i++ )
         {
-            if (battleMenu.enemyList[i].statusState != Status.dead && battleMenu.enemyList[i].statusState != Status.overkill) { battleMenu.enemyList[i].Sr.material.shader = targetShader; battleMenu.enemyList[i].Sr.color = targetRed; }
+            if (battleMenu.enemyList[i].statusState != Status.dead && battleMenu.enemyList[i].statusState != Status.overkill)
+            { 
+                battleMenu.enemyList[i].Sr.material.shader = targetShader;
+                battleMenu.enemyList[i].Sr.color = targetRed;
+                battleMenu.enemyList[i].Card.GetComponent<TextMesh>().color = Color.red;
+            }
         }
 
         // handle input
@@ -450,11 +455,18 @@ public class Hero: Denigen {
     }
 
     // This is used for self buffs, self healing, item use, and blocking
-    public void SelectSelfTarget()
+    public void SelectSelfTarget(string attack)
     {
         sr.material.shader = targetShader;
         sr.color = targetGreen;
-        //kdsfsdlkf
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (attack == "Block") { isBlocking = true; }
+            else { targets[0] = this; }
+            sr.material.shader = normalShader;
+            sr.color = Color.white;
+        }
     } 
 
     //Strike is standard attack with 50% power

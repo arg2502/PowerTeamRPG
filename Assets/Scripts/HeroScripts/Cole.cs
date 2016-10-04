@@ -84,6 +84,7 @@ public class Cole : Hero {
         switch (attack)
         {
             case "Block":
+                SelectSelfTarget(attack);
                 break;
             case "Strike":
                 SelectSingleTarget();
