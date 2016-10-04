@@ -255,12 +255,16 @@ public class Denigen : MonoBehaviour {
         //Now record appropriate text
         takeDamageText.Add(name + " takes " + (int)damage + " damage!");
 
+        // create the damage effect, but onlu if the denigen is not dead
+        if (statusState != Status.dead && statusState != Status.overkill)
+        {
+            GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
+            //be.GetComponent<Effect>().Start();
+            be.GetComponent<Effect>().damage = damage;
+        }
+
         // check for dead
         if (hp <= 0) { hp = 0; takeDamageText.Add( name + " falls!"); statusState = Status.dead; }
-
-        GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
-        //be.GetComponent<Effect>().Start();
-        be.GetComponent<Effect>().damage = damage;
     }
 
 	// Update is called once per frame
