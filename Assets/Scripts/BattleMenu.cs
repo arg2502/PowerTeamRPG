@@ -556,8 +556,11 @@ public class BattleMenu : Menu {
                         // make sure all of the enemies are back to their normal color
                         for (int i = 0; i < enemyList.Count; i++)
                         {
-                            enemyList[i].Sr.material.shader = enemyList[i].normalShader;
-                            enemyList[i].Sr.color = Color.white;
+                            if (enemyList[i].statusState != Denigen.Status.dead && enemyList[i].statusState != Denigen.Status.overkill)
+                            {
+                                enemyList[i].Sr.material.shader = enemyList[i].normalShader;
+                                enemyList[i].Sr.color = Color.white;
+                            }
                         }
                     }   
                 }

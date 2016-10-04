@@ -99,6 +99,7 @@ public class Hero: Denigen {
         switch (attack)
         {
             case "Block":
+                SelectSelfTarget();
                 break;
             default:
                 //SelectAllTargets();
@@ -118,12 +119,12 @@ public class Hero: Denigen {
         }*/
 
         // Avoid starting on a dead target
-        
-        while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+
+        while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
         {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.color = invisible;
             foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
@@ -136,15 +137,17 @@ public class Hero: Denigen {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            if (battleMenu.enemyList[targetIndex].StatusState != Status.dead && battleMenu.enemyList[targetIndex].StatusState != Status.overkill) { battleMenu.enemyList[targetIndex].Sr.color = Color.white; }
             targetIndex--;
 			if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
 
 			// if enemy is dead, skip to next
-			if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
+            while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
+            {
+			//if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
 				battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
                 battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-                battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+                battleMenu.enemyList[targetIndex].Sr.color = invisible;
 				targetIndex--;
 				if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
 			}
@@ -156,15 +159,17 @@ public class Hero: Denigen {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            if (battleMenu.enemyList[targetIndex].StatusState != Status.dead && battleMenu.enemyList[targetIndex].StatusState != Status.overkill) { battleMenu.enemyList[targetIndex].Sr.color = Color.white; }
             targetIndex++;
 			if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
 
 			// if enemy is dead, skip to next
-			if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
+            while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
+            {
+			//if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
 				battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
                 battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-                battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+                battleMenu.enemyList[targetIndex].Sr.color = invisible;
 				targetIndex++;
 				if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
 			}
@@ -188,12 +193,12 @@ public class Hero: Denigen {
         //battleMenu.cursors[0].transform.position = new Vector2(battleMenu.enemyList[targetIndex].transform.position.x, battleMenu.enemyList[targetIndex].transform.position.y + 100);
 
 		// if enemy is dead, skip to next
-		if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
-			battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
-			targetIndex++;
-			if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
-		}
+        //if (battleMenu.enemyList [targetIndex].StatusState == Status.dead) {
+        //    battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+        //    battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+        //    targetIndex++;
+        //    if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+        //}
 
 		battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
     }
@@ -205,14 +210,19 @@ public class Hero: Denigen {
         int numOfCursors = 0;
 
         // Avoid starting on a dead target
-        while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+        while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
         {
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            battleMenu.enemyList[targetIndex].Sr.color = invisible;
             foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+
+            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex + 1, targetIndex + 2, 1); }
+            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex - 1, targetIndex, 2); }
+            prevTargetIndex1 = targetIndex + 1;
+            prevTargetIndex2 = targetIndex - 1;
         }
         
         if (battleMenu.enemyList.Count < 3) { numOfCursors = battleMenu.enemyList.Count; }
@@ -240,7 +250,7 @@ public class Hero: Denigen {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            if (battleMenu.enemyList[targetIndex].StatusState != Status.dead && battleMenu.enemyList[targetIndex].StatusState != Status.overkill) { battleMenu.enemyList[targetIndex].Sr.color = Color.white; }
 
             targetIndex--;
             if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1;
@@ -248,17 +258,23 @@ public class Hero: Denigen {
             }
 
             // if enemy is dead, skip to next
-            if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+            if (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
             {
                 //int loopCount = 0;
-                while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+                while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
                 {
                     battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
                     battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-                    battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+                    battleMenu.enemyList[targetIndex].Sr.color = invisible;
                     foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
                     targetIndex--;
                     if (targetIndex < 0) { targetIndex = battleMenu.enemyList.Count - 1; }
+
+                    // Move the other 2 cursors
+                    if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, prevTargetIndex1, 1); }
+                    if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, prevTargetIndex2, 2); }
+                    prevTargetIndex1 = targetIndex + 1;
+                    prevTargetIndex2 = targetIndex - 1;
                     //loopCount++;
                     //if (loopCount > battleMenu.enemyList.Count) { break; }
                 }
@@ -277,7 +293,7 @@ public class Hero: Denigen {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            if (battleMenu.enemyList[targetIndex].StatusState != Status.dead && battleMenu.enemyList[targetIndex].StatusState != Status.overkill) { battleMenu.enemyList[targetIndex].Sr.color = Color.white; }
 
             targetIndex++;
             if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0;
@@ -285,37 +301,44 @@ public class Hero: Denigen {
             }
 
             // if enemy is dead, skip to next
-            if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+            if (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
             {
-                while (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+                while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
                 {
                     battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
                     battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-                    battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+                    battleMenu.enemyList[targetIndex].Sr.color = invisible;
                     foreach (Enemy e in battleMenu.enemyList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
                     targetIndex++;
                     if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+
+                    // Move the other 2 cursors
+                    if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, prevTargetIndex1, 1); }
+                    if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, prevTargetIndex2, 2); }
+                    prevTargetIndex1 = targetIndex + 1;
+                    prevTargetIndex2 = targetIndex - 1;
                 }
             }
 
             // Move the other 2 cursors
             //if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex - 2, 1); }
             //if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex, 2); }
-            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, targetIndex - 2, 1); }
-            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, targetIndex, 2); }
+            if (numOfCursors > 1) { targetIndex2 = MoveSecondaryCursor(targetIndex - 1, prevTargetIndex1, 1); }
+            if (numOfCursors > 2) { targetIndex3 = MoveSecondaryCursor(targetIndex + 1, prevTargetIndex2, 2); }
             prevTargetIndex1 = targetIndex + 1;
             prevTargetIndex2 = targetIndex - 1;
         }
 
         // if enemy is dead, skip to next
-        if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
-        {
-            battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
-            battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
-            battleMenu.enemyList[targetIndex].Sr.color = Color.white;
-            targetIndex++;
-            if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
-        }
+        //while (battleMenu.enemyList[targetIndex].StatusState == Status.dead || battleMenu.enemyList[targetIndex].StatusState == Status.overkill)
+        ////if (battleMenu.enemyList[targetIndex].StatusState == Status.dead)
+        //{
+        //    battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+        //    battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
+        //    battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+        //    targetIndex++;
+        //    if (targetIndex >= battleMenu.enemyList.Count) { targetIndex = 0; }
+        //}
 
 
         battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.red;
@@ -332,9 +355,14 @@ public class Hero: Denigen {
             targets.Add(battleMenu.enemyList[targetIndex]);
 
             //add the splash targets, if they are within range
-            if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { /*battleMenu.enemyList[targetIndex2].Sr.material.shader = normalShader; battleMenu.enemyList[targetIndex2].Sr.color = Color.white;*/ targets.Add(battleMenu.enemyList[targetIndex2]); }
-            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count)) { /*battleMenu.enemyList[0].Sr.material.shader = normalShader; battleMenu.enemyList[0].Sr.color = Color.white;*/ targets.Add(battleMenu.enemyList[0]); }
-            if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count)) {/* battleMenu.enemyList[targetIndex3].Sr.material.shader = normalShader; battleMenu.enemyList[targetIndex3].Sr.color = Color.white;*/ targets.Add(battleMenu.enemyList[targetIndex3]); }
+            if (numOfCursors > 1 && (targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count) && 
+                (battleMenu.enemyList[targetIndex2].statusState != Status.dead && battleMenu.enemyList[targetIndex2].statusState != Status.overkill)) { targets.Add(battleMenu.enemyList[targetIndex2]); }
+
+            if (numOfCursors == 2 && !(targetIndex2 >= 0 && targetIndex2 < battleMenu.enemyList.Count) &&
+                (battleMenu.enemyList[0].statusState != Status.dead && battleMenu.enemyList[0].statusState != Status.overkill)) { targets.Add(battleMenu.enemyList[0]); }
+
+            if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count) &&
+                (battleMenu.enemyList[targetIndex3].statusState != Status.dead && battleMenu.enemyList[targetIndex3].statusState != Status.overkill)) { targets.Add(battleMenu.enemyList[targetIndex3]); }
 
             //deactivate the cursors
             //for (int i = 0; i < numOfCursors; i++)
@@ -369,7 +397,7 @@ public class Hero: Denigen {
         // tint the enemies red to indicate targeting
         for (int i = 0; i < battleMenu.enemyList.Count; i++ )
         {
-            if (battleMenu.enemyList[i].statusState != Status.dead) { battleMenu.enemyList[i].Sr.material.shader = targetShader; battleMenu.enemyList[i].Sr.color = targetRed; }
+            if (battleMenu.enemyList[i].statusState != Status.dead && battleMenu.enemyList[i].statusState != Status.overkill) { battleMenu.enemyList[i].Sr.material.shader = targetShader; battleMenu.enemyList[i].Sr.color = targetRed; }
         }
 
         // handle input
@@ -378,7 +406,7 @@ public class Hero: Denigen {
             //deactivate the cursors and select targets
             for (int i = 0; i < numOfCursors; i++)
             {
-                if (battleMenu.enemyList[i].statusState != Status.dead)
+                if (battleMenu.enemyList[i].statusState != Status.dead && battleMenu.enemyList[i].statusState != Status.overkill)
                 {
                     targets.Add(battleMenu.enemyList[i]);
                     battleMenu.enemyList[i].Sr.material.shader = normalShader;
@@ -393,7 +421,7 @@ public class Hero: Denigen {
     public int MoveSecondaryCursor(int index, int prevIndex, int cursorIndex)
     {
         // highlight active target, only if the index is within the scope of the enemy list
-        if (index >= 0 && index < battleMenu.enemyList.Count)
+        if (index >= 0 && index < battleMenu.enemyList.Count && (battleMenu.enemyList[index].statusState != Status.dead && battleMenu.enemyList[index].statusState != Status.overkill))
         {
             battleMenu.enemyList[index].Card.GetComponent<TextMesh>().color = new Vector4(1.0f, 0.5f, 0.5f, 1.0f);
             battleMenu.enemyList[index].Sr.material.shader = normalShader;
@@ -401,7 +429,7 @@ public class Hero: Denigen {
             // if the target is in the range of the enemy list count, draw the cursor above the appropriate enemy
             //battleMenu.cursors[cursorIndex].transform.position = new Vector2(battleMenu.enemyList[index].transform.position.x, battleMenu.enemyList[index].transform.position.y + 100);
         }
-        if (prevIndex >= 0 && prevIndex < battleMenu.enemyList.Count)
+        if (prevIndex >= 0 && prevIndex < battleMenu.enemyList.Count && (battleMenu.enemyList[prevIndex].statusState != Status.dead && battleMenu.enemyList[prevIndex].statusState != Status.overkill))
         {
             battleMenu.enemyList[prevIndex].Card.GetComponent<TextMesh>().color = Color.white;
             battleMenu.enemyList[prevIndex].Sr.material.shader = normalShader;
@@ -420,6 +448,14 @@ public class Hero: Denigen {
         }*/
         return index;
     }
+
+    // This is used for self buffs, self healing, item use, and blocking
+    public void SelectSelfTarget()
+    {
+        sr.material.shader = targetShader;
+        sr.color = targetGreen;
+        //kdsfsdlkf
+    } 
 
     //Strike is standard attack with 50% power
     //It uses no mana, and its magic properties are determined by the stat breakdown
@@ -441,11 +477,11 @@ public class Hero: Denigen {
 
     public virtual void Attack(string atkChoice)
     {
-        while (targets.Count == 1 && targets[0].statusState == Denigen.Status.dead)
+        while (targets.Count == 1 && (targets[0].statusState == Denigen.Status.dead || targets[0].statusState == Denigen.Status.overkill))
         {
             for (int i = 0; i < battleMenu.enemyList.Count; i++)
             {
-                if (battleMenu.enemyList[i].statusState != Status.dead)
+                if (battleMenu.enemyList[i].statusState != Status.dead && battleMenu.enemyList[i].statusState != Denigen.Status.overkill)
                 {
                     targets[0] = battleMenu.enemyList[i];
                 }
@@ -455,7 +491,7 @@ public class Hero: Denigen {
         switch (atkChoice)
         {
             case "Strike":
-			if(targets[0].StatusState != Status.dead) Strike();
+			if(targets[0].StatusState != Status.dead && targets[0].StatusState != Status.overkill) Strike();
                 break;
             case "Block":
                 base.Block();

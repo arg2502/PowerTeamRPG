@@ -76,7 +76,8 @@ public class Denigen : MonoBehaviour {
     protected Color targetRed = new Color(0.7f, 0.0f, 0.0f, 1.0f);
     protected Color splashTargetRed = new Color(0.7f, 0.0f, 0.0f, 0.5f);
     protected Color targetGreen = new Color(0.1f, 1.0f, 0.2f, 1.0f);
-    protected Color fade = new Color(0.0f, 0.0f, 0.0f, 0.2f);
+    protected Color fade = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+    protected Color invisible = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 
     // Use this for initialization
 	protected void Start () {
@@ -265,5 +266,8 @@ public class Denigen : MonoBehaviour {
 	// Update is called once per frame
 	protected void Update () {
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
+
+        //fade away if fallen
+        if (statusState == Status.dead || statusState == Status.overkill) { sr.color -= fade * Time.deltaTime; }
 	}
 }
