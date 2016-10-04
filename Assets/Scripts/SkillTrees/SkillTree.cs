@@ -347,6 +347,7 @@ public class SkillTree : MonoBehaviour {
                 hd.skillsList = hero.skillsList;
                 hd.spellsList = hero.spellsList;
                 hd.passiveList = hero.passiveList;
+                hd.techPts = hero.techPts;
             }
             // also use this loop to figure out if we need to level up another hero
             if (hd.levelUp) { levelUp = true; }
