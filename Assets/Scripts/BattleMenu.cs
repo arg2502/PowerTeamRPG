@@ -450,6 +450,12 @@ public class BattleMenu : Menu {
     {
         d.Card.GetComponent<TextMesh>().text = d.name + "\nLvl: " + d.Level + "\nHP: " + d.hp + " / " + d.hpMax
                 + "\nPM: " + d.pm + " / " + d.pmMax;
+        
+        // display nothing if denigen is dead
+        if(d.statusState == Denigen.Status.dead || d.statusState == Denigen.Status.overkill)
+        {
+            d.Card.GetComponent<TextMesh>().text = "";
+        }
     }
     void CheckForInactive()
     {
