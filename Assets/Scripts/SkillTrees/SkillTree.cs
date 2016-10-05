@@ -285,7 +285,7 @@ public class SkillTree : MonoBehaviour {
                     // set button state to hover (normal)
                     button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
                     content2DArray[columnIndex][rowIndex].Active = true;
-                    //hero.techPts--;
+                    hero.techPts -= content2DArray[columnIndex][rowIndex].Cost;
                     UpdateButtons();
                 }
                 // change text to display failure
@@ -293,7 +293,7 @@ public class SkillTree : MonoBehaviour {
                 else
                 {                    
                     if (!pass) { descriptionText.GetComponent<TextMesh>().text = "You don't have the proper prerequisites."; }
-                    else if (hero.techPts >= content2DArray[columnIndex][rowIndex].Cost) { descriptionText.GetComponent<TextMesh>().text = "You don't have enough points."; }
+                    else if (hero.techPts <= content2DArray[columnIndex][rowIndex].Cost) { descriptionText.GetComponent<TextMesh>().text = "You don't have enough points."; }
                     button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
                 }
             }
@@ -360,7 +360,7 @@ public class SkillTree : MonoBehaviour {
     }
     public void Update()
     {
-        remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
+        remainingPts.GetComponent<TextMesh>().text = "Technique Points: " + hero.techPts;
 
 
         // check for any button selections
