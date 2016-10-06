@@ -58,7 +58,8 @@ public class Jethro : Hero {
                 SelectSingleTarget();
                 break;
             default:
-                SelectSingleTarget();
+                // if there is no case for this action, then it must be treated as an item
+                SelectSingleTeamTarget(attack);
                 break;
         }
     }
@@ -75,6 +76,8 @@ public class Jethro : Hero {
 					Helmsplitter ();
 				break;
 			default:
+                // if there is no case for this action, then it must be treated as an item
+                //ItemUse(atkChoice);
 				break;
 
 		}

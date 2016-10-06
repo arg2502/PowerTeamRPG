@@ -84,6 +84,31 @@ public class Hero: Denigen {
         //spellsDescription.Add(descrip);
     }
 
+    // the method for handling item use
+    public void ItemUse( string itemName)
+    {
+        if (targets[0].statusState != Status.dead && targets[0].statusState != Status.overkill)
+        {
+            if (name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
+            else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
+
+            //search through all of the items
+            for (int j = 0; j < GameControl.control.consumables.Count; j++)
+            {
+                // Disable an item if the number of denigens commanded to use said item is >= its quantity
+                if (itemName == GameControl.control.consumables[j].GetComponent<ConsumableItem>().name)
+                {
+                    GameControl.control.consumables[j].GetComponent<ConsumableItem>().Use(targets[0]);
+                }
+            }
+        }
+        else
+        {
+            calcDamageText.Add(name + " tried to use " + itemName + " on " + targets[0].name + ", but it would have no effect. "
+                + name + " put the item away.");
+        }
+    }
+
     //select the target for your attack
     public virtual void SelectTarget(string attack)
     {
@@ -102,8 +127,7 @@ public class Hero: Denigen {
                 SelectSelfTarget(attack);
                 break;
             default:
-                //SelectAllTargets();
-                SelectSingleTarget();
+                // the default cases will be used for items
                 break;
         }
     }
@@ -459,6 +483,7 @@ public class Hero: Denigen {
     {
         sr.material.shader = targetShader;
         sr.color = targetGreen;
+        card.GetComponent<TextMesh>().color = Color.green;
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -467,7 +492,93 @@ public class Hero: Denigen {
             sr.material.shader = normalShader;
             sr.color = Color.white;
         }
-    } 
+    }
+
+    //a generic, single target selecting method
+    //any of this code can of course be changed later, this is just for testing purposes
+    public void SelectSingleTeamTarget(string atkChoice)
+    {
+        // Avoid starting on a dead target
+        while (battleMenu.heroList[targetIndex].StatusState == Status.dead || battleMenu.heroList[targetIndex].StatusState == Status.overkill)
+        {
+            battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.heroList[targetIndex].Sr.color = invisible;
+            foreach (Hero e in battleMenu.heroList) { e.Card.GetComponent<TextMesh>().color = Color.white; }
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.heroList.Count - 1; }
+
+        }
+
+        //handle input
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            //reset previous target's color
+            battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
+            if (battleMenu.heroList[targetIndex].StatusState != Status.dead && battleMenu.heroList[targetIndex].StatusState != Status.overkill) { battleMenu.heroList[targetIndex].Sr.color = Color.white; }
+            targetIndex--;
+            if (targetIndex < 0) { targetIndex = battleMenu.heroList.Count - 1; }
+
+            // if hero is dead, skip to next
+            while (battleMenu.heroList[targetIndex].StatusState == Status.dead || battleMenu.heroList[targetIndex].StatusState == Status.overkill)
+            {
+                //if (battleMenu.heroList [targetIndex].StatusState == Status.dead) {
+                battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
+                battleMenu.heroList[targetIndex].Sr.color = invisible;
+                targetIndex--;
+                if (targetIndex < 0) { targetIndex = battleMenu.heroList.Count - 1; }
+            }
+
+
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            //reset previous target's color
+            battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+            battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
+            if (battleMenu.heroList[targetIndex].StatusState != Status.dead && battleMenu.heroList[targetIndex].StatusState != Status.overkill) { battleMenu.heroList[targetIndex].Sr.color = Color.white; }
+            targetIndex++;
+            if (targetIndex >= battleMenu.heroList.Count) { targetIndex = 0; }
+
+            // if hero is dead, skip to next
+            while (battleMenu.heroList[targetIndex].StatusState == Status.dead || battleMenu.heroList[targetIndex].StatusState == Status.overkill)
+            {
+                //if (battleMenu.heroList [targetIndex].StatusState == Status.dead) {
+                battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
+                battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
+                battleMenu.heroList[targetIndex].Sr.color = invisible;
+                targetIndex++;
+                if (targetIndex >= battleMenu.heroList.Count) { targetIndex = 0; }
+            }
+
+
+        }
+
+        battleMenu.heroList[targetIndex].Sr.material.shader = targetShader;
+        battleMenu.heroList[targetIndex].Sr.color = targetGreen;
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            targets.Add(battleMenu.heroList[targetIndex]);
+            battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
+            battleMenu.heroList[targetIndex].Sr.color = Color.white;
+
+            //if the command is to use an item, we must increase its uses variable
+            //search through all of the items
+            for (int j = 0; j < GameControl.control.consumables.Count; j++)
+            {
+                // Disable an item if the number of denigens commanded to use said item is >= its quantity
+                if (atkChoice == GameControl.control.consumables[j].GetComponent<ConsumableItem>().name)
+                {
+                    GameControl.control.consumables[j].GetComponent<ConsumableItem>().uses += 1;
+                }
+            }
+        }
+
+        battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.green;
+    }
 
     //Strike is standard attack with 50% power
     //It uses no mana, and its magic properties are determined by the stat breakdown
@@ -509,6 +620,8 @@ public class Hero: Denigen {
                 base.Block();
                 break;
             default:
+                // if there is no case for this action, then it must be treated as an item
+                ItemUse(atkChoice);
                 break;
         }
 

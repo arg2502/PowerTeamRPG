@@ -48,6 +48,12 @@ public class testSceneChanger : MonoBehaviour {
             splashflame.Pm = 3;
             splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
             GameControl.control.heroList[1].spellsList.Add(splashflame);
+
+            Spell testtarget = new Spell();
+            testtarget.Name = "Test Target";
+            testtarget.Pm = 0;
+            testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
+            GameControl.control.heroList[1].spellsList.Add(testtarget);
         }
        
         if (GUI.Button(new Rect(10, 240, 150, 100), "Load"))

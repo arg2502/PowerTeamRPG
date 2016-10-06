@@ -54,6 +54,11 @@ public class BattleMenu : Menu {
     public List<string> battleTextList = new List<string>() { };
     int textIndex;
 
+    // A textObject that will show the decriptions of attacks
+    public GameObject decriptionText;
+    // A textObject that will say whose turn it is
+    public GameObject menuLabel;
+
 	// Use this for initialization
 	void Start () {
         base.Start();
@@ -184,6 +189,10 @@ public class BattleMenu : Menu {
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
 
         }
+
+        // Create the text object for the top of the menu which says whose turn it is
+        menuLabel = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        menuLabel.transform.position = buttonArray[0].transform.position + new Vector3(0.0f, 50.0f, 0.0f);
 
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
@@ -361,6 +370,10 @@ public class BattleMenu : Menu {
                 else if (state == MenuReader.items)
                 {
                     //do the item related stuff here
+                    command = label;
+                    prevState = state;
+                    DisableMenu();
+                    state = MenuReader.targeting;
                 }
                 break;
         }
@@ -516,6 +529,21 @@ public class BattleMenu : Menu {
                         }
                     }
                 }
+
+                else if (state == MenuReader.items)
+                {
+                    //search through all of the items
+                    for (int j = 0; j < GameControl.control.consumables.Count; j++)
+                    {
+                        // Disable an item if the number of denigens commanded to use said item is >= its quantity
+                        if (buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text == GameControl.control.consumables[j].GetComponent<ConsumableItem>().name
+                            && GameControl.control.consumables[j].GetComponent<ConsumableItem>().uses >= GameControl.control.consumables[j].GetComponent<ConsumableItem>().quantity)
+                        {
+                            if (i == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }
+                            else { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                        }
+                    }
+                }
             }
         }
     }
@@ -524,6 +552,16 @@ public class BattleMenu : Menu {
         // check for inactive buttons
         CheckForInactive();
 
+        // make the menu label object reflect the current denigen
+        if ((state != MenuReader.battle && state != MenuReader.failure && state != MenuReader.flee && state != MenuReader.targeting && state != MenuReader.victory) && currentDenigen.GetComponent<Hero>() != null)
+        {
+            menuLabel.GetComponent<TextMesh>().text = currentDenigen.name + "'s turn";
+        }
+        else
+        {
+            menuLabel.GetComponent<TextMesh>().text = "";
+        }
+        
 
         if (state == MenuReader.flee)
         {
@@ -644,6 +682,7 @@ public class BattleMenu : Menu {
             {
                 //cursors[i].GetComponent<SpriteRenderer>().enabled = false;
                 enemyList[i].Card.GetComponent<TextMesh>().color = Color.white;
+                heroList[i].Card.GetComponent<TextMesh>().color = Color.white;
                 //enemyList[i].Sr.color = Color.white;
             }
         }
@@ -660,8 +699,8 @@ public class BattleMenu : Menu {
         //the strings we previously recorded for them
         //at the end, we clear the commands list, reorder the denigens based on speed (incase there were stat changes)
 
-		int fallenHeroes = 0;
-		int fallenEnemies = 0;
+        int fallenHeroes = 0;
+        int fallenEnemies = 0;
        
        
         //press space to advance the battle phase
@@ -811,6 +850,7 @@ public class BattleMenu : Menu {
         return false;
     }
 	void PostBattle(){
+
 		commandIndex = 0;
 		commands.Clear();
 		SortDenigens();
@@ -819,6 +859,7 @@ public class BattleMenu : Menu {
 		battleText.GetComponent<TextMesh>().text = null;
 		battleText.GetComponent<Renderer>().enabled = false;
 		battleTextList.Clear();
+
 		foreach (Denigen d in denigenArray)
 		{
             // Passive check here for now... maybe change it later?
@@ -833,12 +874,19 @@ public class BattleMenu : Menu {
             d.TakeDamageText.Clear();
             d.IsBlocking = false;
 		}
+
 		foreach (GameObject b in buttonArray)
 		{
 			//show the buttons
 			b.GetComponent<Renderer>().enabled = true;
 			b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
-		}
+        }
+
+        foreach (GameObject i in GameControl.control.consumables)
+        {
+            i.GetComponent<ConsumableItem>().uses = 0;
+        }
+
         if (failedFlee) { failedFlee = false; }
 		state = MenuReader.main;
 		ChangeContentArray ();

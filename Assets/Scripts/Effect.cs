@@ -22,12 +22,15 @@ public class Effect : MonoBehaviour {
         textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
         textObject.GetComponent<MeshRenderer>().sortingOrder = 1000;
         labelMesh = textObject.GetComponent<TextMesh>();
+
+        // give them a random offset for cases where multiple effects appear around the same time
+        transform.position += new Vector3(Random.Range(-1, 2) * 50.0f, Random.Range(-1, 2)* 50.0f);
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        sr.sortingOrder -= (int)(timer);
-        textObject.GetComponent<MeshRenderer>().sortingOrder -= (int)(timer);
+        sr.sortingOrder = (int)transform.position.y + 500;
+        textObject.GetComponent<MeshRenderer>().sortingOrder = (int)transform.position.y + 500;
 
         labelMesh.text = (int)damage + "";
 
