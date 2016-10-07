@@ -7,6 +7,7 @@ public class enemyControl : OverworldObject {
     //attributes
     float moveSpeed = 0;
     float walkSpeed = 200;
+    float coolDownSpeed = 150;
     float runSpeed = 375;
     Vector2 speed;
 
@@ -22,9 +23,11 @@ public class enemyControl : OverworldObject {
     float walkTimer;
     float pursueTimer;
     float timer;
+    float coolDownTimer;
+    int dir; // the direction the enemy chooses
     List<Vector2> directions = new List<Vector2>() { new Vector2(1.0f, 0.0f), new Vector2(-1.0f, 0.0f), new Vector2(0.0f, 1.0f), new Vector2(0.0f, -1.0f) };
 
-    enum State { wait, walk, pursue };
+    enum State { wait, walk, pursue, coolDown };
     State state;
 
     roomControl rc; // a reference to the roomControl object, which will dictate enemy specifics
@@ -38,6 +41,7 @@ public class enemyControl : OverworldObject {
         walkTimer = 3.0f;
         waitTimer = 2.0f;
         pursueTimer = 5.0f;
+        coolDownTimer = 1.5f;
         safeDistance = 500.0f;
 
         rc = GameObject.FindObjectOfType<roomControl>();
@@ -66,16 +70,17 @@ public class enemyControl : OverworldObject {
         //check player's distance from enemy
         dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-        if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
-        
 
         if (state == State.wait)
         {
+            
+            if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
+
             if (timer >= waitTimer)
             {
                 state = State.walk;
                 //pick a direction to walk
-                int dir = Random.Range(0, 3);
+                dir = Random.Range(0, 3);
                 speed = directions[dir] * walkSpeed * Time.deltaTime;
                 //reset the timer
                 timer = 0.0f;
@@ -85,7 +90,19 @@ public class enemyControl : OverworldObject {
         {
             checkCollision();
 
+            if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
+
             if (timer >= walkTimer)
+            {
+                state = State.wait;
+                timer = 0.0f;
+            }
+        }
+        else if (state == State.coolDown)
+        {
+            checkCollision();
+
+            if (timer >= coolDownTimer)
             {
                 state = State.wait;
                 timer = 0.0f;
@@ -115,8 +132,11 @@ public class enemyControl : OverworldObject {
 
             if (timer >= pursueTimer)
             {
-                state = State.walk;
+                state = State.coolDown;
                 timer = 0.0f;
+                int prevDir = dir;
+                while (dir == prevDir) { dir = Random.Range(0, 3); }
+                speed = directions[dir] * coolDownSpeed * Time.deltaTime;
             }
         }
 	}
@@ -128,6 +148,14 @@ public class enemyControl : OverworldObject {
         if (topHit.collider == null && bottomHit.collider == null)
         {
             transform.Translate(speed);
+        }
+        else
+        {
+            state = State.coolDown;
+            timer = 0.0f;
+            int prevDir = dir;
+            while (dir == prevDir) { dir = Random.Range(0, 3); }
+            speed = directions[dir] * coolDownSpeed * Time.deltaTime;
         }
     }
 }

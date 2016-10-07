@@ -122,6 +122,8 @@ public class Denigen : MonoBehaviour {
         sr = gameObject.GetComponent<SpriteRenderer>();
         targetShader = Shader.Find("GUI/Text Shader");
         normalShader = Shader.Find("Sprites/Default");
+
+        if (statusState == Status.dead || statusState == Status.overkill) { sr.color = new Color(0.0f, 0.0f, 0.0f, 0.0f); }
 	}
     protected void LevelUp(int lvl)
     {
