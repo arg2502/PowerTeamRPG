@@ -58,11 +58,11 @@ public class DialogueBox : MonoBehaviour {
 
 		//Create the text objects
 		titleTextGO = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-		titleTextGO.GetComponent<TextMesh> ().fontSize = 500;
+		titleTextGO.GetComponent<TextMesh> ().fontSize = 100;
 		titleTextGO.GetComponent<TextMesh> ().alignment = TextAlignment.Left;
 
 		spokenTextGO = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-		spokenTextGO.GetComponent<TextMesh>().fontSize = 500;
+		spokenTextGO.GetComponent<TextMesh>().fontSize = 100;
 		spokenTextGO.GetComponent<TextMesh>().alignment = TextAlignment.Left;
 
 		// set text

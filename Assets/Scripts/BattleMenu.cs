@@ -202,7 +202,7 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            heroList[i].Card.GetComponent<TextMesh>().fontSize = 200;
+            heroList[i].Card.GetComponent<TextMesh>().fontSize = 40;
             if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 775), (0)); }
             else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 775), ((225 / heroList.Count) * (i * 3) - 225)); }
             heroList[i].Card.GetComponent<TextMesh>().text = heroList[i].name + "\nLvl: " + heroList[i].Level + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
@@ -215,7 +215,7 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            enemyList[i].Card.GetComponent<TextMesh>().fontSize = 200;
+            enemyList[i].Card.GetComponent<TextMesh>().fontSize = 40;
             if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 775), ( 0 )); }
             else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 775), ((225 / enemyList.Count) * (i * 3) - 225)); }
             enemyList[i].Card.GetComponent<TextMesh>().text = enemyList[i].name + "\nLvl: " + enemyList[i].Level + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
@@ -234,7 +234,7 @@ public class BattleMenu : Menu {
         
         //Create the text object for the battle phase
         battleText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-        battleText.GetComponent<TextMesh>().fontSize = 250;
+        battleText.GetComponent<TextMesh>().fontSize = 50;
         battleText.GetComponent<TextMesh>().alignment = TextAlignment.Left;
         
         //highlight the current denigen
@@ -682,8 +682,11 @@ public class BattleMenu : Menu {
             {
                 //cursors[i].GetComponent<SpriteRenderer>().enabled = false;
                 enemyList[i].Card.GetComponent<TextMesh>().color = Color.white;
-                heroList[i].Card.GetComponent<TextMesh>().color = Color.white;
                 //enemyList[i].Sr.color = Color.white;
+            }
+            for (int i = 0; i < heroList.Count; i++)
+            {
+                heroList[i].Card.GetComponent<TextMesh>().color = Color.white;
             }
         }
 

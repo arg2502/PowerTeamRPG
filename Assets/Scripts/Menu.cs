@@ -58,11 +58,11 @@ public class Menu : MonoBehaviour {
                 // decrease the font size if small
                 if(contentArray[i + scrollIndex].Length > 10)
                 {
-                    buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().fontSize = 300 - ((contentArray[i + scrollIndex].Length - 10) * 10);
+                    buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().fontSize = (300 - ((contentArray[i + scrollIndex].Length - 10) * 10))/5;
                 }
                 else // write normally
                 {
-                   buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().fontSize = 300;
+                   buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().fontSize = 300/5;
                 }
                 
                 buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text = contentArray[i + scrollIndex];
