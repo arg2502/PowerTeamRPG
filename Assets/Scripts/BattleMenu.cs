@@ -279,6 +279,7 @@ public class BattleMenu : Menu {
                {
                    contentArray.Add(GameControl.control.consumables[i].GetComponent<ConsumableItem>().name);
                }
+               prevState = MenuReader.main;
                break;
 			default:
                break;
@@ -354,7 +355,7 @@ public class BattleMenu : Menu {
 
                 //if the case is none of the above, then the button selected must be an attack or an item
             default:
-                if(state == MenuReader.spells || state == MenuReader.skills)
+                if (state == MenuReader.spells || state == MenuReader.skills || state == MenuReader.items)
                 {
                     //Passes the name of the attack to the denigen
                     //currentDenigen.GetComponent<Hero>().SelectTarget(label);
@@ -367,14 +368,14 @@ public class BattleMenu : Menu {
                     DisableMenu();
 					state = MenuReader.targeting;
                 }
-                else if (state == MenuReader.items)
-                {
-                    //do the item related stuff here
-                    command = label;
-                    prevState = state;
-                    DisableMenu();
-                    state = MenuReader.targeting;
-                }
+                //else if (state == MenuReader.items)
+                //{
+                //    //do the item related stuff here
+                //    command = label;
+                //    prevState = state;
+                //    DisableMenu();
+                //    state = MenuReader.targeting;
+                //}
                 break;
         }
         ChangeContentArray();

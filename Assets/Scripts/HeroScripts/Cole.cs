@@ -63,6 +63,12 @@ public class Cole : Hero {
         // attacks specific to the character
         switch (atkChoice)
         {
+            case "Strike":
+                if (targets[0].StatusState != Status.dead && targets[0].StatusState != Status.overkill) Strike();
+                break;
+            case "Block":
+                base.Block();
+                break;
             case "HellFire":
                 HellFire();
                 break;
@@ -71,7 +77,7 @@ public class Cole : Hero {
                 break;
             default:
                 // if there is no case for this action, then it must be treated as an item
-                //ItemUse(atkChoice);
+                ItemUse(atkChoice);
                 break;
 
         }

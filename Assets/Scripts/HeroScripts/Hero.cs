@@ -87,25 +87,33 @@ public class Hero: Denigen {
     // the method for handling item use
     public void ItemUse( string itemName)
     {
-        if (targets[0].statusState != Status.dead && targets[0].statusState != Status.overkill)
+        // this switch statement will separate items that can be used on fallen heroes from items which cannot
+        // the default case will handle every item not usable on fallen enemies
+        // all other cases will have the name of specific items (Ex: "Revive")
+        switch (itemName)
         {
-            if (name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
-            else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
-
-            //search through all of the items
-            for (int j = 0; j < GameControl.control.consumables.Count; j++)
-            {
-                // Disable an item if the number of denigens commanded to use said item is >= its quantity
-                if (itemName == GameControl.control.consumables[j].GetComponent<ConsumableItem>().name)
+            default:
+                if (targets[0].statusState != Status.dead && targets[0].statusState != Status.overkill)
                 {
-                    GameControl.control.consumables[j].GetComponent<ConsumableItem>().Use(targets[0]);
+                    if (name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
+                    else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
+
+                    //search through all of the items
+                    for (int j = 0; j < GameControl.control.consumables.Count; j++)
+                    {
+                        // Disable an item if the number of denigens commanded to use said item is >= its quantity
+                        if (itemName == GameControl.control.consumables[j].GetComponent<ConsumableItem>().name)
+                        {
+                            GameControl.control.consumables[j].GetComponent<ConsumableItem>().Use(targets[0]);
+                        }
+                    }
                 }
-            }
-        }
-        else
-        {
-            calcDamageText.Add(name + " tried to use " + itemName + " on " + targets[0].name + ", but it would have no effect. "
-                + name + " put the item away.");
+                else
+                {
+                    calcDamageText.Add(name + " tried to use " + itemName + " on " + targets[0].name + ", but it would have no effect. "
+                        + name + " put the item away.");
+                }
+                break;
         }
     }
 
@@ -611,19 +619,19 @@ public class Hero: Denigen {
             }
         }
         // specific denigens will pick attack methods based off of user choice
-        switch (atkChoice)
-        {
-            case "Strike":
-			if(targets[0].StatusState != Status.dead && targets[0].StatusState != Status.overkill) Strike();
-                break;
-            case "Block":
-                base.Block();
-                break;
-            default:
-                // if there is no case for this action, then it must be treated as an item
-                ItemUse(atkChoice);
-                break;
-        }
+        //switch (atkChoice)
+        //{
+        //    case "Strike":
+        //    if(targets[0].StatusState != Status.dead && targets[0].StatusState != Status.overkill) Strike();
+        //        break;
+        //    case "Block":
+        //        base.Block();
+        //        break;
+        //    default:
+        //        // if there is no case for this action, then it must be treated as an item
+        //        //ItemUse(atkChoice);
+        //        break;
+        //}
 
         //subtract the appropriate pm from the attacker -- this value will remain 0 for strike and block
         //go through all techniques to find the correct value
