@@ -251,6 +251,18 @@ public class GameControl : MonoBehaviour {
             case "Terminal Restorative":
                 temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalRestorative"));
                 break;
+            case "Lesser Elixir":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+                break;
+            case "Elixir":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
+                break;
+            case "Gratuitous Elixir":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousElixir"));
+                break;
+            case "Terminal Elixir":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalElixir"));
+                break;
             default:
                 print("Error: Incorrect item name - " + id.name);
                 break;

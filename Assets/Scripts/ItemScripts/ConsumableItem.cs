@@ -63,6 +63,48 @@ public class ConsumableItem : Item {
                 }
                 target.hp = target.hpMax;
                 break;
+            case "Lesser Elixir":
+                // if you are in battle, make a healing effect object
+                if (GameObject.FindObjectOfType<BattleMenu>() != null)
+                {
+                    GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    if (target.pm <= (target.pmMax - 20)) { be.GetComponent<Effect>().damage = 20; }
+                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm); }
+                }
+                target.pm += 20;
+                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                break;
+            case "Elixir":
+                // if you are in battle, make a healing effect object
+                if (GameObject.FindObjectOfType<BattleMenu>() != null)
+                {
+                    GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    if (target.pm <= (target.pmMax - 40)) { be.GetComponent<Effect>().damage = 40; }
+                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm); }
+                }
+                target.pm += 40;
+                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                break;
+            case "Gratuitous Elixir":
+                // if you are in battle, make a healing effect object
+                if (GameObject.FindObjectOfType<BattleMenu>() != null)
+                {
+                    GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    if (target.pm <= (target.pmMax - 60)) { be.GetComponent<Effect>().damage = 60; }
+                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm); }
+                }
+                target.pm += 60;
+                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                break;
+            case "Terminal Elixir":
+                // if you are in battle, make a healing effect object
+                if (GameObject.FindObjectOfType<BattleMenu>() != null)
+                {
+                    GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.GetComponent<Effect>().damage = (target.pmMax - target.pm);
+                }
+                target.pm = target.pmMax;
+                break;
             default:
                 print(name + " does not have a case!");
                 break;
