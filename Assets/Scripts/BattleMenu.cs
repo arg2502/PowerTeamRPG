@@ -920,6 +920,9 @@ public class BattleMenu : Menu {
                     h.pm = h.pmMax;
                     h.statusState = HeroData.Status.normal;
                 }
+                // reset the "uses" variable for any items that didn't get used by the battle's end
+                foreach (GameObject i in GameControl.control.consumables) { i.GetComponent<ConsumableItem>().uses = 0; }
+
                 // Go to the last saved location of the dungeon
                 if (GameControl.control.taggedStatue)
                 {
@@ -1013,6 +1016,8 @@ public class BattleMenu : Menu {
                         }
                     }
                 }
+                // reset the "uses" variable for any items that didn't get used by the battle's end
+                foreach (GameObject i in GameControl.control.consumables) { i.GetComponent<ConsumableItem>().uses = 0; }
                 // exit the battle
                 // if a hero leveled up, go to level up screen
                 if (levelUp == true) { UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu"); }
@@ -1086,6 +1091,9 @@ public class BattleMenu : Menu {
                             }
                         }
                     }
+                    // reset the "uses" variable for any items that didn't get used by the battle's end
+                    foreach (GameObject i in GameControl.control.consumables) { i.GetComponent<ConsumableItem>().uses = 0; }
+
                     // exit the battle
                     UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
                 }

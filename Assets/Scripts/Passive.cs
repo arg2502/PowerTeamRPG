@@ -65,7 +65,7 @@ public class LightRegeneration : PerTurnPassive {
         {
             attackingDen.hp += 1;
             GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), attackingDen.transform.position, Quaternion.identity);
-            be.GetComponent<Effect>().damage = 1;
+            be.GetComponent<Effect>().damage = 1 + "hp";
         }
         
     }

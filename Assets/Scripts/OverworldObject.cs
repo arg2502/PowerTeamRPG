@@ -4,6 +4,7 @@ using System.Collections;
 public class OverworldObject : MonoBehaviour {
 
     protected SpriteRenderer sr;
+    public LayerMask mask;
 
 	// Use this for initialization
 	protected void Start () {

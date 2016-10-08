@@ -262,7 +262,7 @@ public class Denigen : MonoBehaviour {
         {
             GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
             //be.GetComponent<Effect>().Start();
-            be.GetComponent<Effect>().damage = damage;
+            be.GetComponent<Effect>().damage = (int)damage + "";
         }
 
         // check for dead

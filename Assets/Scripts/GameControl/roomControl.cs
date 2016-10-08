@@ -9,6 +9,7 @@ public class roomControl : MonoBehaviour {
     public Vector2 entrance;
 
     // Attributes dealing with enemies
+    public int areaIDNumber; // helps the gameControl obj know what data to synch
     public int areaLevel; // the locked level of enemies in the area
     public int numOfEnemies; //number of enemies walking around
     public List<Enemy> possibleEnemies;// Array of possible enemy types
@@ -16,11 +17,17 @@ public class roomControl : MonoBehaviour {
     public GameObject enemyControlPrefab; // a generic enemy control object
     public int minEnemiesPerBattle;
     public int maxEnemiesPerBattle;
+    public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
 
 	// Use this for initialization
 	void Start () {
         //tell the gameControl object what it needs to know
         GameControl.control.areaEntrance = entrance;
+
+        foreach(MovableOverworldObject m in GameObject.FindObjectsOfType<MovableOverworldObject>())
+        {
+            movables.Add(m);
+        }
 
         //create the appropriate amount of enemies
         for (int i = 0; i < numOfEnemies; i++)

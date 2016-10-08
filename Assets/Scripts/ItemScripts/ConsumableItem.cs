@@ -26,8 +26,8 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    if (target.hp <= (target.hpMax - 20)) { be.GetComponent<Effect>().damage = 20; }
-                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp); }
+                    if (target.hp <= (target.hpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
+                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
                 }
                 target.hp += 20;
                 if (target.hp > target.hpMax) { target.hp = target.hpMax; }
@@ -37,8 +37,8 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    if (target.hp <= (target.hpMax - 40)) { be.GetComponent<Effect>().damage = 40; }
-                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp); }
+                    if (target.hp <= (target.hpMax - 40)) { be.GetComponent<Effect>().damage = 40 + "hp"; }
+                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
                 }
                 target.hp += 40;
                 if (target.hp > target.hpMax) { target.hp = target.hpMax; }
@@ -48,8 +48,8 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    if (target.hp <= (target.hpMax - 60)) { be.GetComponent<Effect>().damage = 60; }
-                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp); }
+                    if (target.hp <= (target.hpMax - 60)) { be.GetComponent<Effect>().damage = 60 + "hp"; }
+                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
                 }
                 target.hp += 60;
                 if (target.hp > target.hpMax) { target.hp = target.hpMax; }
@@ -59,7 +59,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    be.GetComponent<Effect>().damage = (target.hpMax - target.hp);
+                    be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp";
                 }
                 target.hp = target.hpMax;
                 break;
@@ -68,8 +68,8 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    if (target.pm <= (target.pmMax - 20)) { be.GetComponent<Effect>().damage = 20; }
-                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm); }
+                    if (target.pm <= (target.pmMax - 20)) { be.GetComponent<Effect>().damage = 20 + "pm"; }
+                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
                 }
                 target.pm += 20;
                 if (target.pm > target.pmMax) { target.pm = target.pmMax; }
@@ -79,8 +79,8 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    if (target.pm <= (target.pmMax - 40)) { be.GetComponent<Effect>().damage = 40; }
-                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm); }
+                    if (target.pm <= (target.pmMax - 40)) { be.GetComponent<Effect>().damage = 40 + "pm"; }
+                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
                 }
                 target.pm += 40;
                 if (target.pm > target.pmMax) { target.pm = target.pmMax; }
@@ -90,8 +90,8 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    if (target.pm <= (target.pmMax - 60)) { be.GetComponent<Effect>().damage = 60; }
-                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm); }
+                    if (target.pm <= (target.pmMax - 60)) { be.GetComponent<Effect>().damage = 60 + "pm"; }
+                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
                 }
                 target.pm += 60;
                 if (target.pm > target.pmMax) { target.pm = target.pmMax; }
@@ -101,7 +101,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    be.GetComponent<Effect>().damage = (target.pmMax - target.pm);
+                    be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm";
                 }
                 target.pm = target.pmMax;
                 break;

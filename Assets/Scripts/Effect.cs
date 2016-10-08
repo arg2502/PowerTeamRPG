@@ -8,7 +8,7 @@ public class Effect : MonoBehaviour {
     public float lifeTime; // the total amount of time that the effect should exist
     public float risingSpeed;
     Color fade = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-    public float damage = 0;
+    public string damage;
 
     public TextMesh labelMesh;
     public GameObject textObject;
@@ -32,7 +32,7 @@ public class Effect : MonoBehaviour {
         sr.sortingOrder = (int)transform.position.y + 500;
         textObject.GetComponent<MeshRenderer>().sortingOrder = (int)transform.position.y + 500;
 
-        labelMesh.text = (int)damage + "";
+        labelMesh.text = damage;
 
 	    //increase the timer every frame
         timer += Time.deltaTime;

@@ -76,6 +76,10 @@ public class testSceneChanger : MonoBehaviour {
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
             GameControl.control.AddItem(temp);
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+            GameControl.control.AddItem(temp);
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
+            GameControl.control.AddItem(temp);
         }
 	}
 }
