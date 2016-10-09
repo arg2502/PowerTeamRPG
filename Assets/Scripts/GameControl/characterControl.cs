@@ -123,20 +123,11 @@ public class characterControl : OverworldObject {
             if (Input.GetKeyUp(KeyCode.Escape))
             {
                 ////save the current room, to acheive persistency while paused
-                GameControl.control.RecordRoom();
-                //roomControl rc = GameObject.FindObjectOfType<roomControl>();
-                //foreach (RoomControlData rcd in GameControl.control.rooms)
-                //{
-                //    if (rcd.areaIDNumber == rc.areaIDNumber) // find the appropriate room
-                //    {
-                //        for (int i = 0; i < rc.movables.Count; i++)// save the movable block positions
-                //        {
-                //            rcd.movableBlockPos[i].x = rc.movables[i].transform.position.x;
-                //            rcd.movableBlockPos[i].y = rc.movables[i].transform.position.y;
-                //            rcd.movableBlockPos[i].z = rc.movables[i].transform.position.z;
-                //        }
-                //    }
-                //}
+                GameControl.control.RecordRoom(); 
+                GameControl.control.currentPosition = transform.position; //record the player's position before opening menu
+                GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
+
+                UnityEngine.SceneManagement.SceneManager.LoadScene("PauseMenu"); // load the pause menu scene
             }
 		}
         //flip the horizontal walking sprite based on speed

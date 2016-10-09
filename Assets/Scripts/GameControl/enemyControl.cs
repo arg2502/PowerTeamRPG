@@ -130,18 +130,6 @@ public class enemyControl : OverworldObject {
 
                 //save the current room, to acheive persistency while paused
                 GameControl.control.RecordRoom();
-                //foreach (RoomControlData rcd in GameControl.control.rooms)
-                //{
-                //    if (rcd.areaIDNumber == rc.areaIDNumber) // find the appropriate room
-                //    {
-                //        for (int i = 0; i < rc.movables.Count; i++)// save the movable block positions
-                //        {
-                //            rcd.movableBlockPos[i].x = rc.movables[i].transform.position.x;
-                //            rcd.movableBlockPos[i].y = rc.movables[i].transform.position.y;
-                //            rcd.movableBlockPos[i].z = rc.movables[i].transform.position.z;
-                //        }
-                //    }
-                //}
 
                 UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
             }
