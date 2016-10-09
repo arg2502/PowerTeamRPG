@@ -29,11 +29,11 @@ public class Cole : Hero {
             splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
             spellsList.Add(splashflame);
 
-            Spell testtarget = new Spell();
-            testtarget.Name = "Test Target";
-            testtarget.Pm = 0;
-            testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
-            spellsList.Add(testtarget);
+            //Spell testtarget = new Spell();
+            //testtarget.Name = "Test Target";
+            //testtarget.Pm = 0;
+            //testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
+            //spellsList.Add(testtarget);
         }
         if(passivesList == null)
         {
@@ -110,7 +110,7 @@ public class Cole : Hero {
                 SelectAllTargets();
                 break;
             case "Test Target":
-                SelectSingleTeamTarget(attack);
+                SelectAllTeamTargets(attack);
                 break;
             default:
                 // if there is no case for this action, then it must be treated as an item

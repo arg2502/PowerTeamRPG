@@ -95,7 +95,7 @@ public class Hero: Denigen {
             default:
                 if (targets[0].statusState != Status.dead && targets[0].statusState != Status.overkill)
                 {
-                    if (name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
+                    if (targets.Count > 1 || name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
                     else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
 
                     //search through all of the items
@@ -586,6 +586,39 @@ public class Hero: Denigen {
         }
 
         battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.green;
+    }
+
+    // this method is for an attack that hits all possible teammates
+    public void SelectAllTeamTargets(string atkChoice)
+    {
+        //Activate as many cursors as there are enemies
+        int numOfCursors = battleMenu.heroList.Count;
+
+        // tint the enemies red to indicate targeting
+        for (int i = 0; i < battleMenu.heroList.Count; i++)
+        {
+            if (battleMenu.heroList[i].statusState != Status.dead && battleMenu.heroList[i].statusState != Status.overkill)
+            {
+                battleMenu.heroList[i].Sr.material.shader = targetShader;
+                battleMenu.heroList[i].Sr.color = targetGreen;
+                battleMenu.heroList[i].Card.GetComponent<TextMesh>().color = Color.green;
+            }
+        }
+
+        // handle input
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            //deactivate the cursors and select targets
+            for (int i = 0; i < numOfCursors; i++)
+            {
+                if (battleMenu.heroList[i].statusState != Status.dead && battleMenu.heroList[i].statusState != Status.overkill)
+                {
+                    targets.Add(battleMenu.heroList[i]);
+                    battleMenu.heroList[i].Sr.material.shader = normalShader;
+                    battleMenu.heroList[i].Sr.color = Color.white;
+                }
+            }
+        }
     }
 
     //Strike is standard attack with 50% power

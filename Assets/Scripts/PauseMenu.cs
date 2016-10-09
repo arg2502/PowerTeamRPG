@@ -23,6 +23,7 @@ public class PauseMenu : Menu {
         buttonDescription.Add("View your team's stats, status ailments, and assign them equipment.");
         buttonDescription.Add("Access your entire inventory.");
         buttonDescription.Add("Save your game.");
+        buttonDescription.Add("Load a previously saved game.");
         buttonDescription.Add("Return to the game.");
 
         for (int i = 0; i < contentArray.Count; i++)
@@ -98,6 +99,10 @@ public class PauseMenu : Menu {
                 }
                 // Save the game
                 GameControl.control.Save();
+                break;
+            case "Load":
+                //Maybe at some point there will be multiple saves, but for now, there's just one
+                GameControl.control.Load();
                 break;
             case "Exit Menu":
                 DisablePauseMenu();
