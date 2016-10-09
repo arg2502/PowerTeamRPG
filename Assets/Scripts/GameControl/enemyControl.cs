@@ -36,6 +36,9 @@ public class enemyControl : OverworldObject {
 
 	// Use this for initialization
 	void Start () {
+
+        canMove = true;
+
         player = GameObject.FindObjectOfType<characterControl>().transform;
         state = State.wait;
         walkTimer = 3.0f;
@@ -64,83 +67,87 @@ public class enemyControl : OverworldObject {
 	// Update is called once per frame
 	void FixedUpdate () {
         sr.sortingOrder = (int)-transform.position.y;
-        //iterate timer
-        timer += Time.deltaTime;
 
-        //check player's distance from enemy
-        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-            + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-
-        if (state == State.wait)
+        if (canMove)
         {
-            
-            if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
+            //iterate timer
+            timer += Time.deltaTime;
 
-            if (timer >= waitTimer)
+            //check player's distance from enemy
+            dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+                + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+
+            if (state == State.wait)
             {
-                state = State.walk;
-                //pick a direction to walk
-                dir = Random.Range(0, 3);
-                speed = directions[dir] * walkSpeed * Time.deltaTime;
-                //reset the timer
-                timer = 0.0f;
+
+                if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
+
+                if (timer >= waitTimer)
+                {
+                    state = State.walk;
+                    //pick a direction to walk
+                    dir = Random.Range(0, 3);
+                    speed = directions[dir] * walkSpeed * Time.deltaTime;
+                    //reset the timer
+                    timer = 0.0f;
+                }
             }
-        }
-        else if (state == State.walk)
-        {
-            checkCollision();
-
-            if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
-
-            if (timer >= walkTimer)
+            else if (state == State.walk)
             {
-                state = State.wait;
-                timer = 0.0f;
+                checkCollision();
+
+                if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
+
+                if (timer >= walkTimer)
+                {
+                    state = State.wait;
+                    timer = 0.0f;
+                }
             }
-        }
-        else if (state == State.coolDown)
-        {
-            checkCollision();
-
-            if (timer >= coolDownTimer)
+            else if (state == State.coolDown)
             {
-                state = State.wait;
-                timer = 0.0f;
+                checkCollision();
+
+                if (timer >= coolDownTimer)
+                {
+                    state = State.wait;
+                    timer = 0.0f;
+                }
             }
-        }
-        else
-        {
-            speed = Vector2.zero;
-
-            if (player.position.x < transform.position.x - 5.0f) { speed += directions[1] * runSpeed * Time.deltaTime; }
-            else if (player.position.x > transform.position.x + 5.0f) { speed += directions[0] * runSpeed * Time.deltaTime; }
-            if (player.position.y < transform.position.y - 5.0f) { speed += directions[3] * runSpeed * Time.deltaTime; }
-            else if (player.position.y > transform.position.y + 5.0f) { speed += directions[2] * runSpeed * Time.deltaTime; }
-
-            checkCollision();
-
-            if (dist <= 15.0f)
+            else
             {
-                GameControl.control.currentPosition = player.position; //record the player's position before entering battle
-                GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
+                speed = Vector2.zero;
 
-                // Recieve the battle info from the enemy, such as enemy types and # of enemies
-                GameControl.control.numOfEnemies = numOfEnemies;
-                GameControl.control.enemies = enemies;
+                if (player.position.x < transform.position.x - 5.0f) { speed += directions[1] * runSpeed * Time.deltaTime; }
+                else if (player.position.x > transform.position.x + 5.0f) { speed += directions[0] * runSpeed * Time.deltaTime; }
+                if (player.position.y < transform.position.y - 5.0f) { speed += directions[3] * runSpeed * Time.deltaTime; }
+                else if (player.position.y > transform.position.y + 5.0f) { speed += directions[2] * runSpeed * Time.deltaTime; }
 
-                //save the current room, to acheive persistency while paused
-                GameControl.control.RecordRoom();
+                checkCollision();
 
-                UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
-            }
+                if (dist <= 15.0f)
+                {
+                    GameControl.control.currentPosition = player.position; //record the player's position before entering battle
+                    GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
 
-            if (timer >= pursueTimer)
-            {
-                state = State.coolDown;
-                timer = 0.0f;
-                int prevDir = dir;
-                while (dir == prevDir) { dir = Random.Range(0, 3); }
-                speed = directions[dir] * coolDownSpeed * Time.deltaTime;
+                    // Recieve the battle info from the enemy, such as enemy types and # of enemies
+                    GameControl.control.numOfEnemies = numOfEnemies;
+                    GameControl.control.enemies = enemies;
+
+                    //save the current room, to acheive persistency while paused
+                    GameControl.control.RecordRoom();
+
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
+                }
+
+                if (timer >= pursueTimer)
+                {
+                    state = State.coolDown;
+                    timer = 0.0f;
+                    int prevDir = dir;
+                    while (dir == prevDir) { dir = Random.Range(0, 3); }
+                    speed = directions[dir] * coolDownSpeed * Time.deltaTime;
+                }
             }
         }
 	}

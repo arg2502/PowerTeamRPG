@@ -84,7 +84,8 @@ public class DialogueBox : MonoBehaviour {
 
 
 		hero = GameObject.FindObjectOfType<characterControl> ();
-		hero.canMove = false;
+		//hero.canMove = false;
+        hero.ToggleMovement();
 
 		sr = GetComponent<SpriteRenderer> ();
 		portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer> ();
@@ -190,7 +191,8 @@ public class DialogueBox : MonoBehaviour {
                     sr.enabled = false;
                     portraitSr.sprite = null;
                     portraitSr.enabled = false;
-                    hero.canMove = true;
+                    //hero.canMove = true;
+                    hero.ToggleMovement();
                     enabled = false;
 
                 }
@@ -261,7 +263,8 @@ public class DialogueBox : MonoBehaviour {
                     sr.enabled = false;
                     portraitSr.sprite = null;
                     portraitSr.enabled = false;
-                    hero.canMove = true;
+                    //hero.canMove = true;
+                    hero.ToggleMovement();
                     enabled = false;
 
                 }
@@ -385,7 +388,8 @@ public class DialogueBox : MonoBehaviour {
         sr.enabled = true;
         if (portraitSr.sprite) { portraitSr.enabled = true; }
 
-		hero.canMove = false;
+		//hero.canMove = false;
+        hero.ToggleMovement();
 
 		// start typing
 		StartCoroutine (ScrollText (dialogueNode.dialogueList[outerListPosition].dialogue [innerListPosition]));

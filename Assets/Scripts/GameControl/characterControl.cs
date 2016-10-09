@@ -6,12 +6,16 @@ public class characterControl : OverworldObject {
     float walkSpeed = 200;
     float runSpeed = 360;
     public Vector2 speed;
-	public bool canMove;
+    PauseMenu pm;
+	//public bool canMove;
 
     Animator anim;
 
 	// Use this for initialization
 	void Start () {
+
+        pm = GameObject.FindObjectOfType<PauseMenu>();
+
         anim = GetComponent<Animator>();
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
 		canMove = true;
@@ -118,18 +122,30 @@ public class characterControl : OverworldObject {
                 bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
                 if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed/2); }
             }
-
-            // the way to pause the game
-            if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                ////save the current room, to acheive persistency while paused
-                GameControl.control.RecordRoom(); 
-                GameControl.control.currentPosition = transform.position; //record the player's position before opening menu
-                GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
-
-                UnityEngine.SceneManagement.SceneManager.LoadScene("PauseMenu"); // load the pause menu scene
-            }
 		}
+
+        // the way to pause the game
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            ////save the current room, to acheive persistency while paused
+            //GameControl.control.RecordRoom(); 
+            //GameControl.control.currentPosition = transform.position; //record the player's position before opening menu
+            //GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
+
+            //UnityEngine.SceneManagement.SceneManager.LoadScene("PauseMenu"); // load the pause menu scene
+            if (pm.isVisible == false)
+            {
+                pm.isVisible = true;
+                pm.EnablePauseMenu();
+                ToggleMovement();
+            }
+            else
+            {
+                pm.DisablePauseMenu();
+            }
+
+        }
+
         //flip the horizontal walking sprite based on speed
         if (speed.x < 0 && transform.localScale.x < 0) { transform.localScale = new Vector3(1, 1, 1); }
         else if (speed.x > 0 && transform.localScale.x > 0) { transform.localScale = new Vector3(-1, 1, 1); }

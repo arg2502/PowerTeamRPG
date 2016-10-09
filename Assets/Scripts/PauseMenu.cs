@@ -7,8 +7,15 @@ public class PauseMenu : Menu {
     protected List<string> buttonDescription;
     protected GameObject descriptionText;
 
+    public bool isVisible; // variable to hide pause menu
+    protected characterControl player;
+
 	// Use this for initialization
 	void Start () {
+
+        // find the player
+        player = GameObject.FindObjectOfType<characterControl>();
+
         base.Start();
         buttonArray = new GameObject[contentArray.Count];
         buttonDescription = new List<string>();
@@ -23,7 +30,7 @@ public class PauseMenu : Menu {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
             MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 600, camera.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
+            buttonArray[i].transform.position = new Vector2(player.transform.position.x - 600, player.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -39,10 +46,13 @@ public class PauseMenu : Menu {
         //Create the description text object
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
         descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
-        descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
+        descriptionText.transform.position = new Vector2(player.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
         //call change text method to correctly size text and avoid a certain bug
         ChangeText();
+
+        DisablePauseMenu(); // hide the menu until the player opens it
+        isVisible = false;
 	}
 
     string FormatText(string str)
@@ -78,20 +88,66 @@ public class PauseMenu : Menu {
             case "Inventory":
                 break;
             case "Save":
+                // set the current scene variable
+                GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                GameControl.control.RecordRoom();
+                //current position is at the entrance, unless a savestatue is tagged
+                if (GameControl.control.taggedStatue == false)
+                {
+                    GameControl.control.currentPosition = GameControl.control.areaEntrance;
+                }
+                // Save the game
+                GameControl.control.Save();
                 break;
             case "Exit Menu":
-                UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
+                DisablePauseMenu();
                 break;
         }
     }
 
+    public void EnablePauseMenu()
+    {
+        base.EnableMenu();
+        descriptionText.GetComponent<Renderer>().enabled = true;
+    }
+
+    public void DisablePauseMenu()
+    {
+        // reset the menu for the next use
+        buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+        selectedIndex = 0;
+        buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+
+        // hide the menu
+        isVisible = false;
+        //DisablePauseMenu();
+
+        // release the overworld objects
+        if (player.canMove == false) { player.ToggleMovement(); }
+        
+        base.DisableMenu();
+        descriptionText.GetComponent<Renderer>().enabled = false;
+    }
+
 	// Update is called once per frame
 	void Update () {
-        base.Update();
+        if (isVisible)
+        {
+            base.Update();
 
-        // Update the description
-        descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
+            //update the position of the menu
+            for (int i = 0; i < contentArray.Count; i++)
+            {
+                MyButton b = buttonArray[i].GetComponent<MyButton>();
+                buttonArray[i].transform.position = new Vector2(player.transform.position.x - 600, player.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
+                b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
+            }
+            descriptionText.transform.position = new Vector2(player.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
-        PressButton(KeyCode.Space);
+            // Update the description
+            descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
+
+            PressButton(KeyCode.Space);
+        }
 	}
 }
