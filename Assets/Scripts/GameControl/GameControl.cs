@@ -35,6 +35,8 @@ public class GameControl : MonoBehaviour {
 
     public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
 
+    public List<RoomControlData> rooms = new List<RoomControlData>() { }; // stores all of the data for areas the player has been to, like block positions, etc.
+    // probably going to need a roomData class for long term saving of the abouve list
     public int areaLevel; // mean level of enemies, determined by an enemyControl obj
     public int numOfEnemies; // number of enemies in battle, determined by an enemyControl obj
     public List<Enemy> enemies; // the type of enemies in battle, determined by an enemyControl obj
@@ -98,7 +100,6 @@ public class GameControl : MonoBehaviour {
             //If a gameControl already exists, we don't want 2 of them
             Destroy(gameObject);
         }
-        
 	}
 
     public void AddItem(GameObject item)
@@ -166,7 +167,7 @@ public class GameControl : MonoBehaviour {
             data.heroList.Add(heroList[i]);
         }
         //Save which scene the player is in
-        data.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        data.currentScene = currentScene;
 
         // Save all of the player's inventory
         foreach (GameObject i in consumables)
@@ -183,9 +184,30 @@ public class GameControl : MonoBehaviour {
         data.posY = currentPosition.y;
         data.taggedStatue = taggedStatue;
 
+        // save all of the changes player made in the overworld
+        data.rooms = rooms;
+
         //Writes our player class to a file
         bf.Serialize(file, data);
         file.Close();
+    }
+
+    public void RecordRoom()
+    {
+        //save the current room, to acheive persistency while paused
+        roomControl rc = GameObject.FindObjectOfType<roomControl>();
+        foreach (RoomControlData rcd in rooms)
+        {
+            if (rcd.areaIDNumber == rc.areaIDNumber) // find the appropriate room
+            {
+                for (int i = 0; i < rc.movables.Count; i++)// save the movable block positions
+                {
+                    rcd.movableBlockPos[i].x = rc.movables[i].transform.position.x;
+                    rcd.movableBlockPos[i].y = rc.movables[i].transform.position.y;
+                    rcd.movableBlockPos[i].z = rc.movables[i].transform.position.z;
+                }
+            }
+        }
     }
 
     public void Load()
@@ -231,6 +253,9 @@ public class GameControl : MonoBehaviour {
             // Put their position vector here if we choose
             currentPosition = new Vector2(data.posX, data.posY);
             taggedStatue = data.taggedStatue;
+
+            // put all interactable item data back
+            rooms = data.rooms;
         }
     }
 
@@ -323,6 +348,7 @@ class PlayerData
     public bool taggedStatue;
     public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
     public List<HeroData> heroList = new List<HeroData>() { };
+    public List<RoomControlData> rooms = new List<RoomControlData>() { }; // stores all of the data for areas the player has been to, like block positions, etc.
 
     // All of the player's items
     public List<ItemData> consumables = new List<ItemData>() { };
@@ -356,4 +382,19 @@ public class ItemData
 {
     public string name;
     public int quantity;
+}
+
+//this class will store all the stuff in a roomControl object that the player influences
+[Serializable]
+public class RoomControlData
+{
+    public int areaIDNumber;
+    public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
+    //also store treasure boxes, doors, switches, antyhing important
+}
+
+[Serializable]
+public class SerializableVector3
+{
+    public float x, y, z;
 }

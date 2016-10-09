@@ -38,6 +38,32 @@ public class roomControl : MonoBehaviour {
             temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
             enemies.Add(temp.GetComponent<enemyControl>());
         }
+
+        // Check if this room is already tracked by the game control obj - if not, make it so!
+        foreach (RoomControlData rc in GameControl.control.rooms)
+        {
+            if (areaIDNumber == rc.areaIDNumber) 
+            {
+                // synch the data
+                // first the blocks -- since that's what ive got
+                for (int i = 0; i < movables.Count; i++)
+                {
+                    movables[i].transform.position = new Vector3(rc.movableBlockPos[i].x, rc.movableBlockPos[i].y, rc.movableBlockPos[i].z);
+                }
+                return;
+            }
+        }
+        // if we're here, this room must not be currently tracked. Lets add it
+        GameControl.control.rooms.Add(new RoomControlData());
+        GameControl.control.rooms[GameControl.control.rooms.Count - 1].areaIDNumber = areaIDNumber;
+        // add the necessary data to store all movable object positions
+        foreach (MovableOverworldObject m in movables)
+        {
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Add(new SerializableVector3());
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.x;
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.y;
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.z;
+        }
 	}
 	
 	// Update is called once per frame

@@ -21,6 +21,8 @@ public class MorttimerStatue : NPCObject {
         if (flip) { mult = -1.0f; }
         if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk)
         {
+            // set the current scene variable
+            GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             // heal the heroes
             foreach(HeroData hd in GameControl.control.heroList)
             {
@@ -41,7 +43,9 @@ public class MorttimerStatue : NPCObject {
                 GameControl.control.savedStatue = new Vector2(this.transform.position.x - (100.0f * mult), this.transform.position.y);
                 GameControl.control.currentPosition = new Vector2(this.transform.position.x - (100.0f * mult), this.transform.position.y);
             }
-            
+
+            GameControl.control.RecordRoom();
+
             // Save the game
             GameControl.control.Save();
         }
