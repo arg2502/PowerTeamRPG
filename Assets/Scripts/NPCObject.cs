@@ -30,7 +30,7 @@ public class NPCObject : OverworldObject {
 
 	// begin conversation when player collides and presses space
 	protected void Update(){
-		if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk) {
+		if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk && player.gameObject.GetComponent<characterControl>().canMove) {
 			canTalk = false;
 			// if first time, set equal to existing box
 			if (dBox == null && dBoxGO == null) {				
