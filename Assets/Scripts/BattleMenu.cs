@@ -977,8 +977,8 @@ public class BattleMenu : Menu {
                         int extraExp = Mathf.Abs(h.ExpToLevelUp);
                         h.LevelUp(extraExp);
                         UpdateCard(h);
-                        h.levelUp = true;
-                        //h.skillTree = true;
+                        h.statBoost = true;
+                        h.skillTree = true;
                         levelUp = true; // tells the game to go to the level up scene
                     }
                 }
@@ -1009,7 +1009,8 @@ public class BattleMenu : Menu {
                             hd.luck = h.Luck;
                             hd.spd = h.Spd;
                             hd.statusState = (HeroData.Status)h.StatusState;
-                            hd.levelUp = h.levelUp;
+                            hd.statBoost = h.statBoost;
+                            hd.skillTree = h.skillTree;
                             hd.skillsList = h.SkillsList;
                             hd.spellsList = h.SpellsList;
                             hd.passiveList = h.PassivesList;

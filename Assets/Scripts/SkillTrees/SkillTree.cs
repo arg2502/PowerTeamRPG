@@ -350,7 +350,7 @@ public class SkillTree : MonoBehaviour {
                 hd.techPts = hero.techPts;
             }
             // also use this loop to figure out if we need to level up another hero
-            if (hd.levelUp) { levelUp = true; }
+            if (hd.statBoost) { levelUp = true; }
         }
 
         // Either go back to current room, or move to level up the next hero

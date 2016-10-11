@@ -13,9 +13,9 @@ public class SkillTreeManager : MonoBehaviour {
         //Set the hero
         for (int i = 0; i < GameControl.control.heroList.Count; i++)
         {
-            if (GameControl.control.heroList[i].levelUp)
+            if (GameControl.control.heroList[i].skillTree)
             {
-                GameControl.control.heroList[i].levelUp = false;
+                GameControl.control.heroList[i].skillTree = false;
                 hero = GameControl.control.heroList[i];
                 // set specific skill tree
                 switch (hero.identity)

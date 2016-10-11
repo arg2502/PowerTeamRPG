@@ -32,9 +32,9 @@ public class LevelUpMenu : Menu {
         //Set the hero
         for (int i = 0; i < GameControl.control.heroList.Count; i++)
         {
-            if (GameControl.control.heroList[i].levelUp) 
+            if (GameControl.control.heroList[i].statBoost) 
             {
-                //GameControl.control.heroList[i].levelUp = false;
+                GameControl.control.heroList[i].statBoost = false;
                 hero = GameControl.control.heroList[i];
                 break;
             }

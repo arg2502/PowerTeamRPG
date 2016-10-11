@@ -362,7 +362,7 @@ class PlayerData
 public class HeroData
 {
     public int identity;
-    public bool levelUp = false;
+    public bool statBoost = false;
     public bool skillTree = false;
     public string name;
     public int level, exp, expToLvlUp, levelUpPts, techPts;

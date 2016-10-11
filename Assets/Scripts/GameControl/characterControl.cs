@@ -125,7 +125,7 @@ public class characterControl : OverworldObject {
 		}
 
         // the way to pause the game
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.Q))
         {
             ////save the current room, to acheive persistency while paused
             //GameControl.control.RecordRoom(); 
