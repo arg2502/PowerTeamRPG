@@ -146,12 +146,14 @@ public class characterControl : OverworldObject {
 
         }
 
-        //flip the horizontal walking sprite based on speed
-        if (speed.x < 0 && transform.localScale.x < 0 && anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide")) { transform.localScale = new Vector3(1, 1, 1); }
-        else if (speed.x > 0 && transform.localScale.x > 0 && anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide")) { transform.localScale = new Vector3(-1, 1, 1); }
-
         anim.SetFloat("vSpeed", speed.y);
         anim.SetFloat("hSpeed", Mathf.Abs(speed.x));
+        if (speed.y == 0)
+        {
+            //flip the horizontal walking sprite based on speed
+            if (speed.x < 0 && transform.localScale.x < 0 /*&& anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide")*/) { transform.localScale = new Vector3(1, 1, 1); }
+            else if (speed.x > 0 && transform.localScale.x > 0 /*&& anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide")*/) { transform.localScale = new Vector3(-1, 1, 1); }
+        }
     }
 
 }
