@@ -127,7 +127,6 @@ public class characterControl : OverworldObject {
         // the way to pause the game
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            print("Pressed");
             ////save the current room, to acheive persistency while paused
             //GameControl.control.RecordRoom(); 
             //GameControl.control.currentPosition = transform.position; //record the player's position before opening menu
