@@ -20,18 +20,20 @@ public class Technique {
     Technique next; // tells the skill tree if this technique is part of a chain/branch
     [NonSerialized]
     List<Technique> prerequisites;
+    [NonSerialized]
+    Sprite treeImage; // image to display on the button in the skill tree
     int cost; // number of skill points required to unlock
     bool active; // if true, the hero has this technique
+    
 
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
     public int Pm { get { return pm; } set { pm = value; } }
     public Technique Next { get { return next; } set { next = value; } }
-    public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
     public int Cost { get { return cost; } set { cost = value; } }
     public bool Active { get { return active; } set { active = value; } }
-    
-
+    public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    
+    public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
     //// Use this for initialization
     //void Start () {
 	

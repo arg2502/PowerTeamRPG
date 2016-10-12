@@ -71,24 +71,32 @@ public class SkillTree : MonoBehaviour {
                 // otherwise, create a button
                 else
                 {
-                    button2DArray[col,row] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+                    button2DArray[col,row] = (GameObject)Instantiate(Resources.Load("Prefabs/SkillTreeButton"));
                     MyButton b = button2DArray[col,row].GetComponent<MyButton>();
                     button2DArray[col,row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width/4)), camera.transform.position.y + (250 - b.height) + (row * -(b.height + b.height / 2)));
 
                     // display technique's name
-                    b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+                    /*b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
                     b.labelMesh = b.textObject.GetComponent<TextMesh>();
                     b.labelMesh.text = content2DArray[col][row].Name;
-                    b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);
+                    b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);*/
                     
-                    
+                    // display technique's image
+                    b.contentSr = b.gameObject.transform.Find("Content").GetComponent<SpriteRenderer>();
+                    if (content2DArray[col][row].TreeImage != null)
+                    {
+                        b.contentSr.sprite = content2DArray[col][row].TreeImage;
+                    }
+                    b.sr.sortingOrder = 900;
+                    b.contentSr.sortingOrder = 899;
+
                     // default buttons are inactive
                     b.state = MyButton.MyButtonTextureState.inactive;
 
                     // check if the denigen has already learned the technique
                     for(int i = 0; i < hero.skillsList.Count; i++)
                     {
-                        if(b.labelMesh.text == hero.skillsList[i].Name)
+                        if (content2DArray[col][row].Name == hero.skillsList[i].Name)
                         {
                             b.state = MyButton.MyButtonTextureState.normal;
                             content2DArray[col][row].Active = true;
@@ -96,7 +104,7 @@ public class SkillTree : MonoBehaviour {
                     }
                     for(int i = 0; i < hero.spellsList.Count; i++)
                     {
-                        if (b.labelMesh.text == hero.spellsList[i].Name)
+                        if (content2DArray[col][row].Name == hero.spellsList[i].Name)
                         {
                             b.state = MyButton.MyButtonTextureState.normal;
                             content2DArray[col][row].Active = true;
@@ -132,6 +140,10 @@ public class SkillTree : MonoBehaviour {
         {
             button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
         }
+        else if(button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabledHover;
+        }
 
         // set previous button to the current button
         prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
@@ -145,6 +157,7 @@ public class SkillTree : MonoBehaviour {
         remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
         remainingPts.transform.position = new Vector2(button2DArray[0, numOfRow].transform.position.x + 400, button2DArray[0, numOfRow].transform.position.y);
 
+        
     }
     string FormatText(string str)
     {
@@ -192,10 +205,10 @@ public class SkillTree : MonoBehaviour {
         {
             button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
         }
-        // if it's a disabled button, stay disabled (FOR NOW)
+        // if it's a disabled button, set disabled hover
         else if(button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
         {
-            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled;
+            button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabledHover;
         }
         // if it is not inactive, set it to normal hover
         else
@@ -209,8 +222,8 @@ public class SkillTree : MonoBehaviour {
         {
             prevButton.state = MyButton.MyButtonTextureState.inactive;
         }
-        // if it's a disabled button, stay disabled (FOR NOW)
-        else if(prevButton.state == MyButton.MyButtonTextureState.disabled)
+        // if it's disabled hover, set back to disabled
+        else if(prevButton.state == MyButton.MyButtonTextureState.disabledHover)
         {
             prevButton.state = MyButton.MyButtonTextureState.disabled;
         }
@@ -361,8 +374,7 @@ public class SkillTree : MonoBehaviour {
     public void Update()
     {
         remainingPts.GetComponent<TextMesh>().text = "Technique Points: " + hero.techPts;
-
-
+        
         // check for any button selections
         ButtonAction();
         // make sure space is not being held down before moving arrows

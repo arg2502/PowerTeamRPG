@@ -5,11 +5,10 @@ public class MyButton : MonoBehaviour {
 
     // attributes
     //public Rect position;
-    public enum MyButtonTextureState { normal, hover, active, disabled, inactive, inactiveHover };
+    public enum MyButtonTextureState { normal, hover, active, disabled, inactive, inactiveHover, disabledHover};
     public MyButtonTextureState state = MyButtonTextureState.normal;
-    //protected string label;
-    public int width = 200;
-    public int height = 50;
+    public int width;
+    public int height;
     public TextMesh labelMesh;
     public GameObject textObject;
     public GameObject textPrefab;
@@ -20,28 +19,16 @@ public class MyButton : MonoBehaviour {
     public Sprite disabledTexture;
     public Sprite inactiveTexture;
     public Sprite inactiveHoverTexture;
+    public Sprite disabledHoverTexture;
     public SpriteRenderer sr;
 
     // skill tree specific
     // if the Technique has a next, this next takes control of the next button's state
     public MyButton next;
-
-    // properties
-    //public Rect Position { get { return position; } set { position = value; } }
-    //public string Label { get { return label; } set { label = value; } }
-    //public TextMesh LabelMesh { get { return labelMesh; } set { labelMesh = value; } }
-
+    public SpriteRenderer contentSr;
+    
 	// Use this for initialization
-	void Start () {
-        //position = new Rect(0, 0, Screen.width, Screen.height);
-
-        // load button sprites
-        /*normalTexture = Resources.Load("Sprites/normalButton", typeof(Sprite)) as Sprite;
-        hoverTexture = Resources.Load("Sprites/hoverButton", typeof(Sprite)) as Sprite;
-        activeTexture = Resources.Load("Sprites/activeButton", typeof(Sprite)) as Sprite;
-        disabledTexture = Resources.Load("Sprites/disabledButton", typeof(Sprite)) as Sprite;
-        inactiveHoverTexture = Resources.Load("Sprites/inactiveHoverButton", typeof(Sprite)) as Sprite;*/
-
+	void Start () {        
         sr.sprite = normalTexture;
 	}
 	
@@ -53,5 +40,6 @@ public class MyButton : MonoBehaviour {
         else if (state == MyButtonTextureState.disabled) { sr.sprite = disabledTexture; } // there is no option/button to display
         else if (state == MyButtonTextureState.inactive) { sr.sprite = inactiveTexture; } // player cannot select button
         else if (state == MyButtonTextureState.inactiveHover) { sr.sprite = inactiveHoverTexture; } // player hovers over button but cannot select it
+        else if (state == MyButtonTextureState.disabledHover) { sr.sprite = disabledHoverTexture; } // skill tree specific - hover over technique you cannot buy yet
 	}
 }

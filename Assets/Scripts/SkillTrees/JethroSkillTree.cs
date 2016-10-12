@@ -24,6 +24,7 @@ public class JethroSkillTree : SkillTree {
         helmsplitter.Cost = 1;
         helmsplitter.Description = helmsplitter.Name + "\nA powerful sword strike from above. \nCost " + helmsplitter.Cost + " \nStr 75\nCrit 03\nAcc 90";
         helmsplitter.Pm = 2;
+        helmsplitter.TreeImage = (Sprite)Resources.Load("Sprites/damageEffect.png");
         
 
         trinitySlice = new Skill();
