@@ -33,6 +33,7 @@ public class Hero: Denigen {
     protected int targetIndex3 = 0;
 
     //properties
+    public int TargetIndex { get { return targetIndex; } set { targetIndex = value; } }
     public int Exp { get { return exp; } set { exp = value; } }
     public int ExpToLevelUp { get { return expToLvlUp; } set { expToLvlUp = value; } }
     public int LevelUpPts { get { return levelUpPts; } set { levelUpPts = value; } }
@@ -217,6 +218,7 @@ public class Hero: Denigen {
             targets.Add(battleMenu.enemyList[targetIndex]);
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
             battleMenu.enemyList[targetIndex].Sr.color = Color.white;
+            targetIndex = 0;
             //deactivate the cursor
             //battleMenu.cursors[0].GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -396,6 +398,7 @@ public class Hero: Denigen {
             if (numOfCursors > 2 && (targetIndex3 >= 0 && targetIndex3 < battleMenu.enemyList.Count) &&
                 (battleMenu.enemyList[targetIndex3].statusState != Status.dead && battleMenu.enemyList[targetIndex3].statusState != Status.overkill)) { targets.Add(battleMenu.enemyList[targetIndex3]); }
 
+            targetIndex = 0;
             //deactivate the cursors
             //for (int i = 0; i < numOfCursors; i++)
             //{
@@ -451,6 +454,7 @@ public class Hero: Denigen {
                 }
                 //battleMenu.cursors[i].GetComponent<SpriteRenderer>().enabled = false;
             }
+            targetIndex = 0;
         }
     }
 
@@ -583,6 +587,8 @@ public class Hero: Denigen {
                     GameControl.control.consumables[j].GetComponent<ConsumableItem>().uses += 1;
                 }
             }
+
+            targetIndex = 0;
         }
 
         battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.green;
@@ -618,6 +624,7 @@ public class Hero: Denigen {
                     battleMenu.heroList[i].Sr.color = Color.white;
                 }
             }
+            targetIndex = 0;
         }
     }
 

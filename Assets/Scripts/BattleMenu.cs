@@ -620,6 +620,8 @@ public class BattleMenu : Menu {
                                 heroList[i].Sr.color = Color.white;
                             }
                         }
+                        //set the target index back to 0
+                        currentDenigen.GetComponent<Hero>().TargetIndex = 0;
                     }   
                 }
                 else
