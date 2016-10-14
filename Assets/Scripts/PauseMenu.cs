@@ -5,10 +5,13 @@ using System.Collections.Generic;
 public class PauseMenu : Menu {
 
     protected List<string> buttonDescription;
-    protected GameObject descriptionText;
+    public GameObject descriptionText;
 
     public bool isVisible; // variable to hide pause menu
+    public bool isActive = true; // a sub menu is not present
     protected characterControl player;
+
+    protected SubMenu inventorySub;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +44,11 @@ public class PauseMenu : Menu {
 
         }
 
+        //create sub menus
+        GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/InventorySubMenu"));
+        inventorySub = temp.GetComponent<SubMenu>();
+        inventorySub.parentPos = buttonArray[1].transform;
+
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
@@ -54,9 +62,10 @@ public class PauseMenu : Menu {
 
         DisablePauseMenu(); // hide the menu until the player opens it
         isVisible = false;
+        isActive = true;
 	}
 
-    string FormatText(string str)
+    protected string FormatText(string str)
     {
         string formattedString = null;
         int desiredLength = 40;
@@ -87,16 +96,15 @@ public class PauseMenu : Menu {
             case "Team Info":
                 break;
             case "Inventory":
+                inventorySub.EnableSubMenu();
                 break;
             case "Save":
                 // set the current scene variable
                 GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
                 GameControl.control.RecordRoom();
                 //current position is at the entrance, unless a savestatue is tagged
-                if (GameControl.control.taggedStatue == false)
-                {
-                    GameControl.control.currentPosition = GameControl.control.areaEntrance;
-                }
+                if (GameControl.control.taggedStatue == false) { GameControl.control.currentPosition = GameControl.control.areaEntrance; }
+                else { GameControl.control.currentPosition = GameControl.control.savedStatue; }
                 // Save the game
                 GameControl.control.Save();
                 break;
@@ -125,7 +133,9 @@ public class PauseMenu : Menu {
 
         // hide the menu
         isVisible = false;
-        //DisablePauseMenu();
+        
+        //disable the submenus
+        //inventorySub.DisableSubMenu();
 
         // release the overworld objects
         if (player.canMove == false) { player.ToggleMovement(); }
@@ -134,9 +144,27 @@ public class PauseMenu : Menu {
         descriptionText.GetComponent<Renderer>().enabled = false;
     }
 
+    public void DeactivateMenu()
+    {
+        isActive = false;
+        for (int i = 0; i < buttonArray.Length; i++)
+        {
+            if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled; }
+        }
+    }
+
+    public void ActivateMenu()
+    {
+        isActive = true;
+        for (int i = 0; i < buttonArray.Length; i++)
+        {
+            if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+        }
+    }
+
 	// Update is called once per frame
 	void Update () {
-        if (isVisible)
+        if (isVisible && isActive)
         {
             base.Update();
 
@@ -153,6 +181,11 @@ public class PauseMenu : Menu {
             descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
 
             PressButton(KeyCode.Space);
+
+            if (Input.GetKeyUp(KeyCode.Backspace))
+            {
+                DisablePauseMenu();
+            }
         }
 	}
 }
