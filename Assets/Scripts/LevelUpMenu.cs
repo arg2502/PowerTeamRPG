@@ -133,6 +133,12 @@ public class LevelUpMenu : Menu {
 
         //call change text method to correctly size text and avoid a certain bug
         ChangeText();
+
+        // If the player enters here with no points, make the buttons reflect that
+        if (remainingPoints == 0)
+        {
+            DisableButtons();
+        }
 	}
 
     // decide on what action to take/mode to change depending on the button pressed
@@ -161,7 +167,8 @@ public class LevelUpMenu : Menu {
             }
 
             // Now go to the skill tree portion
-            UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu");
+            if (hero.skillTree) { UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu"); }
+            else { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
 
             // Either go back to current room, or move to level up the next hero
             // This should be in the skills area, but it is here since I haven't done the skills yet
@@ -249,26 +256,7 @@ public class LevelUpMenu : Menu {
             // If there are no more allocation points remaining, all of the buttons' sprites need to be changed
             if (remainingPoints == 0)
             {
-                for (int i = 0; i < numOfRow; i++)
-                {
-                    // if statboost has been applied to this index, then the left button should be enabled
-                    if (statBoostInts[i] > 0)
-                    {
-                        //buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledRightlvlUpButton", typeof(Sprite)) as Sprite;
-                        buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
-                        buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
-                        //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
-                    }
-
-                    // if not, both arrows should be disabled
-                    else if (statBoostInts[i] == 0)
-                    {
-                        buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledlvlUpButton", typeof(Sprite)) as Sprite;
-                        buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
-                        buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
-                        //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
-                    }
-                }
+                DisableButtons();
             }
         }
     }
@@ -296,6 +284,30 @@ public class LevelUpMenu : Menu {
             }
         }
         return formattedString;
+    }
+
+    void DisableButtons()
+    {
+        for (int i = 0; i < numOfRow; i++)
+        {
+            // if statboost has been applied to this index, then the left button should be enabled
+            if (statBoostInts[i] > 0)
+            {
+                //buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledRightlvlUpButton", typeof(Sprite)) as Sprite;
+                buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
+                buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
+                //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+            }
+
+            // if not, both arrows should be disabled
+            else if (statBoostInts[i] == 0)
+            {
+                buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledlvlUpButton", typeof(Sprite)) as Sprite;
+                buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+            }
+        }
     }
 	
 	// Update is called once per frame

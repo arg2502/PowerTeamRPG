@@ -7,7 +7,7 @@ public class TeamSubMenu : SubMenu {
     GameObject heroDescription; // the obj that will show the hero info
     HeroSubMenu heroSub; // A universal submenu for all heroes
 
-    public bool isActive;
+    //public bool isActive;
 
 	// Use this for initialization
 	void Start () {
@@ -47,7 +47,7 @@ public class TeamSubMenu : SubMenu {
     {
         pm.descriptionText.GetComponent<Renderer>().enabled = false;
         heroDescription.GetComponent<Renderer>().enabled = true;
-        isActive = true;
+        //isActive = true;
         base.EnableSubMenu();
     }
 
@@ -61,6 +61,7 @@ public class TeamSubMenu : SubMenu {
     public override void ButtonAction(string label)
     {
         heroSub.EnableSubMenu();
+        heroSub.heroID = selectedIndex;
     }
 
     public void DeactivateMenu()
@@ -89,18 +90,8 @@ public class TeamSubMenu : SubMenu {
             //update which position the submenu should appear in
             heroSub.parentPos = buttonArray[selectedIndex].transform;
 
-            heroDescription.transform.position = pm.descriptionText.transform.position;
+            //heroDescription.transform.position = pm.descriptionText.transform.position;
             
-            //set the herodescription to the appropriate info
-            heroDescription.GetComponent<TextMesh>().text = ("Status: " + GameControl.control.heroList[selectedIndex].statusState
-                + "\nHP: " + GameControl.control.heroList[selectedIndex].hp + " / " + GameControl.control.heroList[selectedIndex].hpMax
-                + "\nPM: " + GameControl.control.heroList[selectedIndex].pm + " / " + GameControl.control.heroList[selectedIndex].pmMax
-                + "\nAtk: " + GameControl.control.heroList[selectedIndex].atk + "\nDef: " + GameControl.control.heroList[selectedIndex].def
-                + "\nMgk Atk: " + GameControl.control.heroList[selectedIndex].mgkAtk + "\nMgk Def: " + GameControl.control.heroList[selectedIndex].mgkDef
-                + "\nLuck: " + GameControl.control.heroList[selectedIndex].luck + "\nEvasion: " + GameControl.control.heroList[selectedIndex].evasion
-                + "\nSpd: " + GameControl.control.heroList[selectedIndex].spd + "\n\nExp to next level: " + GameControl.control.heroList[selectedIndex].expToLvlUp
-                + "\nTotal Exp: " + GameControl.control.heroList[selectedIndex].exp);
-
             if (Input.GetKeyUp(KeyCode.Backspace))
             {
                 pm.ActivateMenu();
@@ -113,8 +104,22 @@ public class TeamSubMenu : SubMenu {
                 pm.descriptionText.GetComponent<Renderer>().enabled = true;
             }
 
-            base.Update();
+            //base.Update();
         }
+        if (isVisible)
+        {
+            heroDescription.transform.position = pm.descriptionText.transform.position;
+            //set the herodescription to the appropriate info
+            heroDescription.GetComponent<TextMesh>().text = ("Status: " + GameControl.control.heroList[selectedIndex].statusState
+                + "\nHP: " + GameControl.control.heroList[selectedIndex].hp + " / " + GameControl.control.heroList[selectedIndex].hpMax
+                + "\nPM: " + GameControl.control.heroList[selectedIndex].pm + " / " + GameControl.control.heroList[selectedIndex].pmMax
+                + "\nAtk: " + GameControl.control.heroList[selectedIndex].atk + "\nDef: " + GameControl.control.heroList[selectedIndex].def
+                + "\nMgk Atk: " + GameControl.control.heroList[selectedIndex].mgkAtk + "\nMgk Def: " + GameControl.control.heroList[selectedIndex].mgkDef
+                + "\nLuck: " + GameControl.control.heroList[selectedIndex].luck + "\nEvasion: " + GameControl.control.heroList[selectedIndex].evasion
+                + "\nSpd: " + GameControl.control.heroList[selectedIndex].spd + "\n\nExp to next level: " + GameControl.control.heroList[selectedIndex].expToLvlUp
+                + "\nTotal Exp: " + GameControl.control.heroList[selectedIndex].exp);
+        }
+        base.Update();
         if (!isVisible) { isActive = false;  heroDescription.GetComponent<Renderer>().enabled = false; }
 	}
 }

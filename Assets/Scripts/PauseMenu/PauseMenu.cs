@@ -9,11 +9,13 @@ public class PauseMenu : Menu {
 
     public bool isVisible; // variable to hide pause menu
     public bool isActive = true; // a sub menu is not present
-    protected characterControl player;
+    public characterControl player;
 
     protected TeamSubMenu teamSub;
     protected InventorySubMenu inventorySub;
     protected LoadSubMenu loadSub;
+
+    public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; } }
 
 	// Use this for initialization
 	void Start () {
@@ -72,6 +74,7 @@ public class PauseMenu : Menu {
         DisablePauseMenu(); // hide the menu until the player opens it
         isVisible = false;
         isActive = true;
+
 	}
 
     public string FormatText(string str)
@@ -203,12 +206,14 @@ public class PauseMenu : Menu {
         {
             if (isVisible == false)
             {
+                GameControl.control.isPaused = true;
                 isVisible = true;
                 EnablePauseMenu();
                 player.ToggleMovement();
             }
             else
             {
+                GameControl.control.isPaused = false;
                 DisablePauseMenu();
             }
 

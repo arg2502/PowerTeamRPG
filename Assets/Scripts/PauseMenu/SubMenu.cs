@@ -11,7 +11,11 @@ public class SubMenu : Menu {
     // a variable to make sure there is at least one frame before input is read, else the first button in the submenu is always clicked when the submenu is enabled
     public float frameDelay = 0.0f; 
 
-    protected bool isVisible;
+    public bool isVisible;
+
+    public bool isActive;
+
+    public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; } }
 
 	// Use this for initialization
 	protected void Start () {
@@ -79,6 +83,7 @@ public class SubMenu : Menu {
     {
         frameDelay = 0.0f;
         isVisible = true;
+        isActive = true;
         base.EnableMenu();
         pm.DeactivateMenu();
     }
@@ -90,6 +95,7 @@ public class SubMenu : Menu {
         selectedIndex = 0;
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
         isVisible = false;
+        isActive = false;
 
         //pm.isActive = true;
         //pm.EnablePauseMenu();
@@ -117,21 +123,24 @@ public class SubMenu : Menu {
         {
             base.Update();
 
-            PressButton(KeyCode.Space);
-
-            // return to the previous menu
-            if (Input.GetKeyUp(KeyCode.Backspace))
+            if (isActive)
             {
-                DisableSubMenu();
-                //pm.ActivateMenu();
-            }
+                PressButton(KeyCode.Space);
 
-            // unpause the game
-            if (Input.GetKeyUp(KeyCode.Q))
-            {
-                DisableSubMenu();
-                pm.ActivateMenu();
-                pm.DisablePauseMenu();
+                // return to the previous menu
+                if (Input.GetKeyUp(KeyCode.Backspace))
+                {
+                    DisableSubMenu();
+                    //pm.ActivateMenu();
+                }
+
+                // unpause the game
+                if (Input.GetKeyUp(KeyCode.Q))
+                {
+                    DisableSubMenu();
+                    pm.ActivateMenu();
+                    pm.DisablePauseMenu();
+                }
             }
         }
         frameDelay += Time.deltaTime;

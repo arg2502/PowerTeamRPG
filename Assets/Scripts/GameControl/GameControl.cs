@@ -41,6 +41,13 @@ public class GameControl : MonoBehaviour {
     public int numOfEnemies; // number of enemies in battle, determined by an enemyControl obj
     public List<Enemy> enemies; // the type of enemies in battle, determined by an enemyControl obj
 
+    // things for saving the state of the pause menu - temporary, not to be written to a file
+    public bool isPaused;
+    public tempMenu pause;
+    public tempMenu teamSub;
+    public tempMenu heroSub;
+    public tempMenu inventSub;
+
     //awake gets called before start
     void Awake () {
         if (control == null)
@@ -94,6 +101,11 @@ public class GameControl : MonoBehaviour {
             //heroList[1].luck = 10;
             //heroList[1].evasion = 8;
             //heroList[1].spd = 9;
+
+            pause = new tempMenu();
+            teamSub = new tempMenu();
+            heroSub = new tempMenu();
+            inventSub = new tempMenu();
         }
         else if (control != this)
         {
@@ -207,6 +219,59 @@ public class GameControl : MonoBehaviour {
                     rcd.movableBlockPos[i].z = rc.movables[i].transform.position.z;
                 }
             }
+        }
+    }
+
+    // save the menu for when you transition to an external portion of the menu
+    public void RecordPauseMenu()
+    {
+        PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
+        pause.isActive = tempPause.isActive;
+        pause.isVisible = tempPause.isVisible;
+        pause.selectedIndex = tempPause.SelectedIndex;
+
+        TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
+        teamSub.isActive = tempTeamSub.isActive;
+        teamSub.isVisible = tempTeamSub.isVisible;
+        teamSub.selectedIndex = tempTeamSub.SelectedIndex;
+
+        HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
+        heroSub.isVisible = tempHeroSub.isVisible;
+        heroSub.selectedIndex = tempHeroSub.SelectedIndex;
+
+        InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
+        inventSub.isVisible = tempInventSub.isVisible;
+        inventSub.selectedIndex = tempInventSub.SelectedIndex;
+    }
+
+    // called if the isPaused variable is set to true
+    public void RestorePauseMenu()
+    {
+        PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
+        TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
+        HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
+        InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
+
+        if (pause.isVisible) 
+        {
+            tempPause.isVisible = true;
+            tempPause.EnablePauseMenu();
+            tempPause.player.ToggleMovement();
+            tempPause.isActive = pause.isActive;
+            tempPause.SelectedIndex = pause.selectedIndex;
+        }
+        if (teamSub.isVisible)
+        {
+            tempTeamSub.isVisible = true;
+            tempTeamSub.EnableSubMenu();
+            tempTeamSub.isActive = teamSub.isActive;
+            tempTeamSub.SelectedIndex = teamSub.selectedIndex;
+        }
+        if (heroSub.isVisible)
+        {
+            tempHeroSub.isVisible = true;
+            tempHeroSub.EnableSubMenu();
+            tempHeroSub.SelectedIndex = heroSub.selectedIndex;
         }
     }
 
@@ -397,4 +462,13 @@ public class RoomControlData
 public class SerializableVector3
 {
     public float x, y, z;
+}
+
+[Serializable]
+public class tempMenu
+{
+    public bool isVisible;
+    public bool isActive;
+    public int selectedIndex;
+    public bool isDisabled;
 }
