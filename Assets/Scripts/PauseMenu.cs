@@ -11,7 +11,9 @@ public class PauseMenu : Menu {
     public bool isActive = true; // a sub menu is not present
     protected characterControl player;
 
-    protected SubMenu inventorySub;
+    protected TeamSubMenu teamSub;
+    protected InventorySubMenu inventorySub;
+    protected LoadSubMenu loadSub;
 
 	// Use this for initialization
 	void Start () {
@@ -46,8 +48,14 @@ public class PauseMenu : Menu {
 
         //create sub menus
         GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/InventorySubMenu"));
-        inventorySub = temp.GetComponent<SubMenu>();
-        inventorySub.parentPos = buttonArray[1].transform;
+        inventorySub = temp.GetComponent<InventorySubMenu>();
+        inventorySub.parentPos = buttonArray[2].transform;
+        temp = (GameObject)Instantiate(Resources.Load("Prefabs/LoadSubMenu"));
+        loadSub = temp.GetComponent<LoadSubMenu>();
+        loadSub.parentPos = buttonArray[4].transform;
+        temp = (GameObject)Instantiate(Resources.Load("Prefabs/TeamSubMenu"));
+        teamSub = temp.GetComponent<TeamSubMenu>();
+        teamSub.parentPos = buttonArray[1].transform;
 
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
@@ -94,6 +102,7 @@ public class PauseMenu : Menu {
         switch (label)
         {
             case "Team Info":
+                teamSub.EnableSubMenu();
                 break;
             case "Inventory":
                 inventorySub.EnableSubMenu();
@@ -109,8 +118,9 @@ public class PauseMenu : Menu {
                 GameControl.control.Save();
                 break;
             case "Load":
-                //Maybe at some point there will be multiple saves, but for now, there's just one
-                GameControl.control.Load();
+                //Open the submenu for saveFiles
+                loadSub.EnableSubMenu();
+                //GameControl.control.Load();
                 break;
             case "Exit Menu":
                 DisablePauseMenu();

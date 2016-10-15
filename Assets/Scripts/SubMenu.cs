@@ -11,7 +11,7 @@ public class SubMenu : Menu {
     bool isVisible;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 
         // find the pause menu
         pm = GameObject.FindObjectOfType<PauseMenu>();
@@ -95,7 +95,7 @@ public class SubMenu : Menu {
     }
 
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
         if(isVisible)
         {
             base.Update();
