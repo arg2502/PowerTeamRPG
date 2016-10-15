@@ -75,20 +75,22 @@ public class SkillTree : MonoBehaviour {
                     MyButton b = button2DArray[col,row].GetComponent<MyButton>();
                     button2DArray[col,row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width/4)), camera.transform.position.y + (250 - b.height) + (row * -(b.height + b.height / 2)));
 
-                    // display technique's name
-                    /*b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+                    // display technique's name - for right now
+                    b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
                     b.labelMesh = b.textObject.GetComponent<TextMesh>();
                     b.labelMesh.text = content2DArray[col][row].Name;
-                    b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);*/
+                    b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);
                     
                     // display technique's image
-                    b.contentSr = b.gameObject.transform.Find("Content").GetComponent<SpriteRenderer>();
-                    if (content2DArray[col][row].TreeImage != null)
-                    {
-                        b.contentSr.sprite = content2DArray[col][row].TreeImage;
-                    }
-                    b.sr.sortingOrder = 900;
-                    b.contentSr.sortingOrder = 899;
+                    //b.contentSr = button2DArray[col,row].transform.Find("Content").GetComponent<SpriteRenderer>();
+                    //print("before if");
+                    //if (content2DArray[col][row].TreeImage != null)
+                    //{
+                    //b.contentSr.sprite = Resources.Load("Sprites/damageEffect.png", typeof(Sprite)) as Sprite;//content2DArray[col][row].TreeImage;
+                      //  print("set image");
+                    //}
+                   // b.sr.sortingOrder = 899;
+                   // b.contentSr.sortingOrder = 900;
 
                     // default buttons are inactive
                     b.state = MyButton.MyButtonTextureState.inactive;
@@ -243,7 +245,8 @@ public class SkillTree : MonoBehaviour {
     public void ButtonAction() 
     {
         // show selected (or "active") sprite if inactive or "DONE" on KeyDown
-        if((button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover
+        if(((button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover
+            || button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabledHover)
             || (columnIndex == 0 && rowIndex == numOfRow))
             && Input.GetKeyDown(KeyCode.Space))
         {
@@ -374,7 +377,7 @@ public class SkillTree : MonoBehaviour {
     public void Update()
     {
         remainingPts.GetComponent<TextMesh>().text = "Technique Points: " + hero.techPts;
-        
+
         // check for any button selections
         ButtonAction();
         // make sure space is not being held down before moving arrows

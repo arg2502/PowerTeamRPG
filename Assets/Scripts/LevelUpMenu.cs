@@ -187,7 +187,7 @@ public class LevelUpMenu : Menu {
                     //buttonArray[selectedIndex].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/lvlUpButton", typeof(Sprite)) as Sprite;
                     buttonArray[selectedIndex].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverlvlUpButton", typeof(Sprite)) as Sprite;
                     buttonArray[selectedIndex].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activelvlUpButton", typeof(Sprite)) as Sprite;
-                    buttonArray[selectedIndex].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                    //buttonArray[selectedIndex].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                     
                 }
             }
@@ -211,7 +211,7 @@ public class LevelUpMenu : Menu {
                                 buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/lvlUpButton", typeof(Sprite)) as Sprite;
                                 buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverlvlUpButton", typeof(Sprite)) as Sprite;
                                 buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activelvlUpButton", typeof(Sprite)) as Sprite;
-                                buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                                //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                             }
 
                             // if not, only the right arrow should be enabled
@@ -220,7 +220,7 @@ public class LevelUpMenu : Menu {
                                 buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/lvlUpButton", typeof(Sprite)) as Sprite;
                                 buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverDisabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
                                 buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
-                                buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                                //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                             }
                         }
                     }
@@ -236,7 +236,7 @@ public class LevelUpMenu : Menu {
                     //buttonArray[selectedIndex].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
                     buttonArray[selectedIndex].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverDisabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
                     buttonArray[selectedIndex].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
-                    buttonArray[selectedIndex].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                    //buttonArray[selectedIndex].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                 }
                 
             }
@@ -257,7 +257,7 @@ public class LevelUpMenu : Menu {
                         //buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledRightlvlUpButton", typeof(Sprite)) as Sprite;
                         buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/hoverDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
                         buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
-                        buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                        //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                     }
 
                     // if not, both arrows should be disabled
@@ -266,7 +266,7 @@ public class LevelUpMenu : Menu {
                         buttonArray[i].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledlvlUpButton", typeof(Sprite)) as Sprite;
                         buttonArray[i].GetComponent<MyButton>().hoverTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                         buttonArray[i].GetComponent<MyButton>().activeTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
-                        buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
+                        //buttonArray[i].GetComponent<MyButton>().disabledTexture = Resources.Load("Sprites/lvlUpMenu/activeDisabledlvlUpButton", typeof(Sprite)) as Sprite;
                     }
                 }
             }

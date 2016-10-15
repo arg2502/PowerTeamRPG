@@ -16,10 +16,10 @@ public class MyButton : MonoBehaviour {
     public Sprite normalTexture;
     public Sprite hoverTexture;
     public Sprite activeTexture;
-    public Sprite disabledTexture;
+    //public Sprite disabledTexture;
     public Sprite inactiveTexture;
     public Sprite inactiveHoverTexture;
-    public Sprite disabledHoverTexture;
+    //public Sprite disabledHoverTexture;
     public SpriteRenderer sr;
 
     // skill tree specific
@@ -30,6 +30,7 @@ public class MyButton : MonoBehaviour {
 	// Use this for initialization
 	void Start () {        
         sr.sprite = normalTexture;
+        //contentSr = gameObject.transform.Find("Content").GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -37,9 +38,9 @@ public class MyButton : MonoBehaviour {
         if (state == MyButtonTextureState.normal) { sr.sprite = normalTexture; } // button is in standby
         else if (state == MyButtonTextureState.hover) { sr.sprite = hoverTexture; } // cursor is over button
         else if (state == MyButtonTextureState.active) { sr.sprite = activeTexture; } // player has selected button
-        else if (state == MyButtonTextureState.disabled) { sr.sprite = disabledTexture; } // there is no option/button to display
+        else if (state == MyButtonTextureState.disabled) { sr.sprite = inactiveTexture; } // there is no option/button to display
         else if (state == MyButtonTextureState.inactive) { sr.sprite = inactiveTexture; } // player cannot select button
         else if (state == MyButtonTextureState.inactiveHover) { sr.sprite = inactiveHoverTexture; } // player hovers over button but cannot select it
-        else if (state == MyButtonTextureState.disabledHover) { sr.sprite = disabledHoverTexture; } // skill tree specific - hover over technique you cannot buy yet
+        else if (state == MyButtonTextureState.disabledHover) { sr.sprite = inactiveHoverTexture; } // skill tree specific - hover over technique you cannot buy yet
 	}
 }
