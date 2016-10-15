@@ -140,28 +140,6 @@ public class characterControl : OverworldObject {
             }
 		}
 
-        // the way to pause the game
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            ////save the current room, to acheive persistency while paused
-            //GameControl.control.RecordRoom(); 
-            //GameControl.control.currentPosition = transform.position; //record the player's position before opening menu
-            //GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
-
-            //UnityEngine.SceneManagement.SceneManager.LoadScene("PauseMenu"); // load the pause menu scene
-            if (pm.isVisible == false)
-            {
-                pm.isVisible = true;
-                pm.EnablePauseMenu();
-                ToggleMovement();
-            }
-            else
-            {
-                pm.DisablePauseMenu();
-            }
-
-        }
-
         anim.SetFloat("vSpeed", speed.y);
         anim.SetFloat("hSpeed", Mathf.Abs(speed.x));
         if (speed.y == 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide"))
