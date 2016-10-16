@@ -58,10 +58,20 @@ public class InventorySubMenu : SubMenu {
             if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
                 buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)
             {
+                //if (i == selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }
                 if (i == 0 && GameControl.control.consumables.Count == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
                 if (i == 1 && GameControl.control.weapons.Count == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
                 if (i == 2 && GameControl.control.equipment.Count == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
                 if (i == 3 && GameControl.control.reusables.Count == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+            }
+            else if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.normal &&
+                     buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.hover)
+            {
+                //if (i == selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover; }
+                if (i == 0 && GameControl.control.consumables.Count > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                if (i == 1 && GameControl.control.weapons.Count > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                if (i == 2 && GameControl.control.equipment.Count > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                if (i == 3 && GameControl.control.reusables.Count > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
             }
         }
     }

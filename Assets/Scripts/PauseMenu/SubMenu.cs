@@ -48,7 +48,7 @@ public class SubMenu : Menu {
         ChangeText();
 
         //Change the description text
-        pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
+        if (pm != null) { pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]); }
 
         DisableSubMenu(); // hide the menu until the player opens it
         isVisible = false;
@@ -85,7 +85,7 @@ public class SubMenu : Menu {
         isVisible = true;
         isActive = true;
         base.EnableMenu();
-        pm.DeactivateMenu();
+        if (pm != null) { pm.DeactivateMenu(); }
     }
 
     public void DisableSubMenu()
@@ -127,7 +127,7 @@ public class SubMenu : Menu {
             }
 
             // Update the description
-            pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
+            if (pm != null) { pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]); }
         }
         if(isVisible && frameDelay > 0)
         {
@@ -148,9 +148,12 @@ public class SubMenu : Menu {
                 if (Input.GetKeyUp(KeyCode.Q))
                 {
                     DisableSubMenu();
-                    pm.ActivateMenu();
-                    GameControl.control.isPaused = false;
-                    pm.DisablePauseMenu();
+                    if (pm != null)
+                    {
+                        pm.ActivateMenu();
+                        GameControl.control.isPaused = false;
+                        pm.DisablePauseMenu();
+                    }
                 }
             }
         }
