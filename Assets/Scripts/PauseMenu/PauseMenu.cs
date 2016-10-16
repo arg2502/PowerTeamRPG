@@ -151,14 +151,6 @@ public class PauseMenu : Menu {
         isVisible = false;
         //GameControl.control.isPaused = false;
         
-        //disable the submenus
-        //if (inventorySub != null)
-        //{
-        //    inventorySub.DisableSubMenu();
-        //    teamSub.DisableSubMenu();
-        //    loadSub.DisableSubMenu();
-        //}
-        
         // release the overworld objects
         if (player.canMove == false) { player.ToggleMovement(); }
         
@@ -194,10 +186,18 @@ public class PauseMenu : Menu {
         }
     }
 
+    void CheckForInactive()
+    {
+        if(GameControl.control.consumables.Count == 0 && GameControl.control.reusables.Count == 0
+            && GameControl.control.weapons.Count == 0 && GameControl.control.equipment.Count == 0 && (buttonArray[2].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
+                buttonArray[2].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)) { buttonArray[2].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+    }
+
 	// Update is called once per frame
 	void Update () {
         if (isVisible && isActive)
         {
+            CheckForInactive();
             base.Update();
 
             ////update the position of the menu

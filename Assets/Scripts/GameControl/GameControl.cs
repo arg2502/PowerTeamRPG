@@ -18,7 +18,7 @@ public class GameControl : MonoBehaviour {
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
-    //items -- add later
+    //items
     public List<GameObject> consumables;// = new List<ConsumableItem>() { };
     public List<GameObject> equipment;
     public List<GameObject> weapons;
@@ -50,6 +50,9 @@ public class GameControl : MonoBehaviour {
 
     // for temporarily saving the state of enemies when pausing and unpausing the game
     public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
+
+    // for telling the pause menu which list of items to use
+    public string whichInventory; 
 
     //awake gets called before start
     void Awake () {
