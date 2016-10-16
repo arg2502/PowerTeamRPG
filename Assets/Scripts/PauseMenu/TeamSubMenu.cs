@@ -53,7 +53,7 @@ public class TeamSubMenu : SubMenu {
 
     public void DisableSubMenu()
     {
-        pm.descriptionText.GetComponent<Renderer>().enabled = true;
+        if (GameControl.control.isPaused) { pm.descriptionText.GetComponent<Renderer>().enabled = true; }
         base.DisableSubMenu();
     }
 
@@ -102,6 +102,7 @@ public class TeamSubMenu : SubMenu {
             if (Input.GetKeyUp(KeyCode.Q))
             {
                 pm.descriptionText.GetComponent<Renderer>().enabled = true;
+                //pm.descriptionText.GetComponent<Renderer>().enabled = false;
             }
 
             base.Update();

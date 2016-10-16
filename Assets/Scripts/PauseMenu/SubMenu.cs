@@ -149,6 +149,7 @@ public class SubMenu : Menu {
                 {
                     DisableSubMenu();
                     pm.ActivateMenu();
+                    GameControl.control.isPaused = false;
                     pm.DisablePauseMenu();
                 }
             }

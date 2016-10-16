@@ -68,8 +68,9 @@ public class HeroSubMenu : SubMenu {
         // unpause the game
         if (Input.GetKeyUp(KeyCode.Q))
         {
-            tsm.ActivateMenu();
+            //tsm.ActivateMenu();
             //pm.descriptionText.GetComponent<Renderer>().enabled = true;
+            tsm.DisableSubMenu();
         }
         base.Update();
 	}

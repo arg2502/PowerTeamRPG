@@ -127,6 +127,7 @@ public class PauseMenu : Menu {
                 //GameControl.control.Load();
                 break;
             case "Exit Menu":
+                GameControl.control.isPaused = false;
                 DisablePauseMenu();
                 break;
         }
@@ -134,6 +135,7 @@ public class PauseMenu : Menu {
 
     public void EnablePauseMenu()
     {
+        GameControl.control.isPaused = true;
         base.EnableMenu();
         descriptionText.GetComponent<Renderer>().enabled = true;
     }
@@ -147,11 +149,16 @@ public class PauseMenu : Menu {
 
         // hide the menu
         isVisible = false;
-        GameControl.control.isPaused = false;
+        //GameControl.control.isPaused = false;
         
         //disable the submenus
-        //inventorySub.DisableSubMenu();
-
+        //if (inventorySub != null)
+        //{
+        //    inventorySub.DisableSubMenu();
+        //    teamSub.DisableSubMenu();
+        //    loadSub.DisableSubMenu();
+        //}
+        
         // release the overworld objects
         if (player.canMove == false) { player.ToggleMovement(); }
         
@@ -209,6 +216,7 @@ public class PauseMenu : Menu {
 
             if (Input.GetKeyUp(KeyCode.Backspace))
             {
+                GameControl.control.isPaused = false;
                 DisablePauseMenu();
             }
         }
