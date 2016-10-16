@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MyButton : MonoBehaviour {
 
@@ -24,12 +25,17 @@ public class MyButton : MonoBehaviour {
 
     // skill tree specific
     // if the Technique has a next, this next takes control of the next button's state
-    public MyButton next;
+    public List<MyButton> listNextButton;
     public SpriteRenderer contentSr;
-    
+    public List<GameObject> nextLine;
+    public Sprite solidLine;
+    public Sprite dottedLine;
+
 	// Use this for initialization
 	void Start () {        
         sr.sprite = normalTexture;
+        //solidLine = Resources.Load("Sprites/nextLine.png", typeof(Sprite)) as Sprite;
+        //dottedLine = Resources.Load("Sprites/nextDottedLine.png", typeof(Sprite)) as Sprite;
         //contentSr = gameObject.transform.Find("Content").GetComponent<SpriteRenderer>();
 	}
 	

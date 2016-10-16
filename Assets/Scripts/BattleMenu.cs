@@ -386,6 +386,7 @@ public class BattleMenu : Menu {
     {
         currentDenigen.Card.GetComponent<TextMesh>().color = Color.white;
         currentDenigenIndex++;
+
         if (currentDenigenIndex >= denigenArray.Count)
         {
             //Begin the battle phase
@@ -404,14 +405,19 @@ public class BattleMenu : Menu {
         else
         {
             currentDenigen = denigenArray[currentDenigenIndex];
-            if (currentDenigen is Hero) { EnableMenu(); }
-            currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
-            if (currentDenigen.GetComponent<Hero>() != null)
+            if (currentDenigen is Hero
+                && (currentDenigen.statusState != Denigen.Status.dead
+                && currentDenigen.statusState != Denigen.Status.overkill))
             {
-                //reset the menu state for the next denigen
-                state = MenuReader.main;
-                ChangeContentArray();
-                StateChangeText();  
+                EnableMenu();
+                currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
+                if (currentDenigen.GetComponent<Hero>() != null)
+                {
+                    //reset the menu state for the next denigen
+                    state = MenuReader.main;
+                    ChangeContentArray();
+                    StateChangeText();
+                }
             }
         }
     }

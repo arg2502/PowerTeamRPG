@@ -81,6 +81,14 @@ public class SkillTree : MonoBehaviour {
                     b.labelMesh.text = content2DArray[col][row].Name;
                     b.labelMesh.transform.position = new Vector3(button2DArray[col,row].transform.position.x, button2DArray[col,row].transform.position.y, -1);
                     
+                    // link technique to buttons
+                    content2DArray[col][row].Button = b;
+
+                    // setup next list
+                    content2DArray[col][row].Button.listNextButton = new List<MyButton>();
+
+                    
+
                     // display technique's image
                     //b.contentSr = button2DArray[col,row].transform.Find("Content").GetComponent<SpriteRenderer>();
                     //print("before if");
@@ -112,7 +120,7 @@ public class SkillTree : MonoBehaviour {
                             content2DArray[col][row].Active = true;
                         }
                     }
-
+                                        
                 }
             }
         }
@@ -327,29 +335,103 @@ public class SkillTree : MonoBehaviour {
                 {
                     break;
                 }
-                else if (content2DArray[col][row].Next != null && row != content2DArray[col].Count - 1)
+                else if (content2DArray[col][row].ListNextTechnique != null && row != content2DArray[col].Count - 1)
                 {
-                    button2DArray[col, row].GetComponent<MyButton>().next = button2DArray[col, row + 1].GetComponent<MyButton>();
+                    // add next lines
+                    //if (content2DArray[col][row].ListNextTechnique.Count > 0)
+                    //{
+                        // loop through all the nexts and add to the buttons next to keep track of states
+                        // if not already added
+                        if (content2DArray[col][row].Button.listNextButton.Count <= 0)
+                        {
+                            foreach (Technique next in content2DArray[col][row].ListNextTechnique)
+                            {
+                                content2DArray[col][row].Button.listNextButton.Add(next.Button);
+                            }
+                        }
+
+                        // temp
+                        MyButton curButton = content2DArray[col][row].Button;
+
+                        // loop through all next buttons
+                        for (int i = 0; i < content2DArray[col][row].Button.listNextButton.Count; i++)
+                        {
+                            // temp
+                            MyButton nextButton = content2DArray[col][row].Button.listNextButton[i];
+
+                            if (content2DArray[col][row].Active && !content2DArray[col][row].ListNextTechnique[i].Active)
+                            {
+                                nextButton.state = MyButton.MyButtonTextureState.inactive;
+                            }
+                            // if the hero does not know the technique but can learn it (inactive), set next to disabled
+                            else if (curButton.state == MyButton.MyButtonTextureState.inactive
+                                || curButton.state == MyButton.MyButtonTextureState.inactiveHover)
+                            {
+                                nextButton.state = MyButton.MyButtonTextureState.disabled;
+                            }
+                            // if the button is disabled, the rest should also be disabled
+                            else if (curButton.state == MyButton.MyButtonTextureState.disabled)
+                            {
+                                nextButton.state = MyButton.MyButtonTextureState.disabled;
+                            }
+                        }
+
+                        // temp
+                        MyButton b = content2DArray[col][row].Button;
+
+                        if (b.nextLine.Count <= 0) {
+                            print("inside if");
+                            b.nextLine = new List<GameObject>();
+                            for (int i = 0; i < b.listNextButton.Count; i++ )
+                            {
+                                b.nextLine.Add((GameObject)Instantiate(Resources.Load("Prefabs/NextLine")));
+                                // check if need to rotate
+                                // rotate right
+                                if(b.listNextButton[i].transform.position.x > b.transform.position.x)
+                                {
+                                    b.nextLine[i].transform.position = new Vector2(b.transform.position.x + b.width / 2, b.transform.position.y);
+                                    b.nextLine[i].transform.Rotate(new Vector3(0.0f,0.0f,1.0f), 90.0f);
+                                }
+                                // rotate left
+                                else if(b.listNextButton[i].transform.position.x < b.transform.position.x)
+                                {
+                                    b.nextLine[i].transform.position = new Vector2(b.transform.position.x - b.width / 2, b.transform.position.y);
+                                    b.nextLine[i].transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), 90.0f);
+                                }
+                                // stay straight down
+                                else
+                                {
+
+                                    b.nextLine[i].transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
+                                }
+
+                                b.nextLine[i].GetComponent<SpriteRenderer>().sortingOrder = 0;
+                            }
+                        }//b.nextLine = (GameObject)Instantiate(Resources.Load("Prefabs/NextLine")); }
+                        //b.nextLine.transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
+                        //b.nextLine.GetComponent<SpriteRenderer>().sortingOrder = 0;
+
+                        for (int i = 0; i < b.listNextButton.Count; i++ )
+                        {
+                            if (b.listNextButton[i].state == MyButton.MyButtonTextureState.inactive)
+                            {
+                                b.nextLine[i].GetComponent<SpriteRenderer>().sprite = b.solidLine;
+                            }
+                            else if (b.listNextButton[i].state == MyButton.MyButtonTextureState.disabled)
+                            {
+                                b.nextLine[i].GetComponent<SpriteRenderer>().sprite = b.dottedLine;
+                                //print(nextButton.labelMesh.text + " is disabled");
+                            }
+                        }
+                    //}
+                    
                     // set states of the next button in branch
                     // if the hero knows the current technique but not the next one, set next to inactive
                     //if ((button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
                     //    || button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.hover)
                     //    && button2DArray[col, row].GetComponent<MyButton>().next.state != MyButton.MyButtonTextureState.normal)
-                    if(content2DArray[col][row].Active && !content2DArray[col][row].Next.Active)
-                    {
-                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.inactive;
-                    }
-                    // if the hero does not know the technique but can learn it (inactive), set next to disabled
-                    else if (button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive
-                        || button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover)
-                    {
-                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.disabled;
-                    }
-                    // if the button is disabled, the rest should also be disabled
-                    else if(button2DArray[col,row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled)
-                    {
-                        button2DArray[col, row].GetComponent<MyButton>().next.state = MyButton.MyButtonTextureState.disabled;
-                    }
+
+                    
                 }
             }
         }

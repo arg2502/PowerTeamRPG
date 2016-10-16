@@ -10,6 +10,7 @@ public class JethroSkillTree : SkillTree {
     Skill arcSlash;
     Skill riser;
     Skill mordstreich;
+    Skill superMordstreich;
       
 	// Use this for initialization
 	void Start () {
@@ -53,22 +54,36 @@ public class JethroSkillTree : SkillTree {
         mordstreich.Description = mordstreich.Name + "\n. \nCost " + mordstreich.Cost + " \nStr \nCrit \nAcc ";
         mordstreich.Pm = 0;
         //mordstreich.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-        
+
+        superMordstreich = new Skill();
+        superMordstreich.Name = "Super Mordstreich";
+        superMordstreich.Cost = 1;
+        superMordstreich.Description = superMordstreich.Name + "\n. \nCost " + superMordstreich.Cost + " \nStr \nCrit \nAcc ";
+        superMordstreich.Pm = 0;
+
         // set nexts to create branches
-        helmsplitter.Next = trinitySlice;
-        riser.Next = mordstreich;
+        helmsplitter.ListNextTechnique = new List<Technique>();
+        riser.ListNextTechnique = new List<Technique>();
+        mordstreich.ListNextTechnique = new List<Technique>();
+        helmsplitter.ListNextTechnique.Add(trinitySlice);
+        helmsplitter.ListNextTechnique.Add(arcSlash);
+        riser.ListNextTechnique.Add(mordstreich);
+        mordstreich.ListNextTechnique.Add(superMordstreich);
+        
 
         // prerequisites
         trinitySlice.Prerequisites = new List<Technique>();
         mordstreich.Prerequisites = new List<Technique>();
+        superMordstreich.Prerequisites = new List<Technique>();
         trinitySlice.Prerequisites.Add(helmsplitter);
         mordstreich.Prerequisites.Add(riser);
+        superMordstreich.Prerequisites.Add(mordstreich);
 
         // set content array
         content2DArray = new List<List<Technique>>();
         content2DArray.Add(new List<Technique>(){helmsplitter, trinitySlice});
         content2DArray.Add(new List<Technique>() { arcSlash });
-        content2DArray.Add(new List<Technique>() { riser, mordstreich });
+        content2DArray.Add(new List<Technique>() { riser, mordstreich, superMordstreich });
 
         // set sizes of columns and rows
         numOfColumn = content2DArray.Count;
