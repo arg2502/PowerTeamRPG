@@ -60,8 +60,8 @@ public class TeamSubMenu : SubMenu {
     // deal with the button pressed
     public override void ButtonAction(string label)
     {
-        heroSub.EnableSubMenu();
         heroSub.heroID = selectedIndex;
+        heroSub.EnableSubMenu();
     }
 
     public void DeactivateMenu()
