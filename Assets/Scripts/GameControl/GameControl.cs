@@ -48,6 +48,9 @@ public class GameControl : MonoBehaviour {
     public tempMenu heroSub;
     public tempMenu inventSub;
 
+    // for temporarily saving the state of enemies when pausing and unpausing the game
+    public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
+
     //awake gets called before start
     void Awake () {
         if (control == null)
@@ -222,6 +225,21 @@ public class GameControl : MonoBehaviour {
         }
     }
 
+    public void RecordEnemyPos()
+    {
+        enemyControl[] enemies = GameObject.FindObjectsOfType<enemyControl>();
+        enemyPos = new List<SerializableVector3>();
+        SerializableVector3 temp = new SerializableVector3();
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            temp = new SerializableVector3();
+            temp.x = enemies[i].transform.position.x;
+            temp.y = enemies[i].transform.position.y;
+            temp.z = enemies[i].transform.position.z;
+            enemyPos.Add(temp);
+        }
+    }
+
     // save the menu for when you transition to an external portion of the menu
     public void RecordPauseMenu()
     {
@@ -259,6 +277,7 @@ public class GameControl : MonoBehaviour {
             tempPause.player.ToggleMovement();
             tempPause.isActive = pause.isActive;
             tempPause.SelectedIndex = pause.selectedIndex;
+            tempPause.HighlightButton();
         }
         if (teamSub.isVisible)
         {
@@ -266,12 +285,21 @@ public class GameControl : MonoBehaviour {
             tempTeamSub.EnableSubMenu();
             tempTeamSub.isActive = teamSub.isActive;
             tempTeamSub.SelectedIndex = teamSub.selectedIndex;
+            tempTeamSub.HighlightButton();
         }
         if (heroSub.isVisible)
         {
             tempHeroSub.isVisible = true;
             tempHeroSub.EnableSubMenu();
             tempHeroSub.SelectedIndex = heroSub.selectedIndex;
+            tempHeroSub.HighlightButton();
+        }
+        if (inventSub.isVisible)
+        {
+            tempInventSub.isVisible = true;
+            tempInventSub.EnableSubMenu();
+            tempInventSub.SelectedIndex = inventSub.selectedIndex;
+            tempInventSub.HighlightButton();
         }
     }
 

@@ -104,7 +104,7 @@ public class TeamSubMenu : SubMenu {
                 pm.descriptionText.GetComponent<Renderer>().enabled = true;
             }
 
-            //base.Update();
+            base.Update();
         }
         if (isVisible)
         {
@@ -119,7 +119,7 @@ public class TeamSubMenu : SubMenu {
                 + "\nSpd: " + GameControl.control.heroList[selectedIndex].spd + "\n\nExp to next level: " + GameControl.control.heroList[selectedIndex].expToLvlUp
                 + "\nTotal Exp: " + GameControl.control.heroList[selectedIndex].exp);
         }
-        base.Update();
+        //base.Update();
         if (!isVisible) { isActive = false;  heroDescription.GetComponent<Renderer>().enabled = false; }
 	}
 }

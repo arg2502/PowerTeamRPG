@@ -104,6 +104,16 @@ public class SubMenu : Menu {
         //descriptionText.GetComponent<Renderer>().enabled = false;
     }
 
+    public void HighlightButton()
+    {
+        for (int i = 0; i < buttonArray.Length; i++)
+        {
+            if (i != selectedIndex && !isActive) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled; }
+            else if (i != selectedIndex && isActive) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+            else if (i == selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover; }
+        }
+    }
+
 	// Update is called once per frame
 	protected void Update () {
         if (isVisible)

@@ -50,10 +50,16 @@ public class enemyControl : OverworldObject {
         rc = GameObject.FindObjectOfType<roomControl>();
 
         //check player's distance from enemy
-        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-            + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-        if (dist <= safeDistance + 100.0f) { Destroy(this.gameObject); }
-
+        if (!GameControl.control.isPaused)
+        {
+            do
+            {
+                transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
+                dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+                + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+            } while (dist <= safeDistance + 100.0f);
+        }
+        
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
         enemies = new List<Enemy>();
         for (int i = 0; i < numOfEnemies; i++)

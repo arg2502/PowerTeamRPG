@@ -147,6 +147,7 @@ public class PauseMenu : Menu {
 
         // hide the menu
         isVisible = false;
+        GameControl.control.isPaused = false;
         
         //disable the submenus
         //inventorySub.DisableSubMenu();
@@ -173,6 +174,16 @@ public class PauseMenu : Menu {
         for (int i = 0; i < buttonArray.Length; i++)
         {
             if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+        }
+    }
+
+    public void HighlightButton()
+    {
+        for (int i = 0; i < buttonArray.Length; i++)
+        {
+            if (i != selectedIndex && !isActive) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled; }
+            else if (i != selectedIndex && isActive) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+            else if (i == selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover; }
         }
     }
 
@@ -204,14 +215,14 @@ public class PauseMenu : Menu {
         // the way to pause the game
         if (Input.GetKeyUp(KeyCode.Q))
         {
-            if (isVisible == false)
+            if (isVisible == false && player.canMove)
             {
                 GameControl.control.isPaused = true;
                 isVisible = true;
                 EnablePauseMenu();
                 player.ToggleMovement();
             }
-            else
+            else if (isVisible)
             {
                 GameControl.control.isPaused = false;
                 DisablePauseMenu();

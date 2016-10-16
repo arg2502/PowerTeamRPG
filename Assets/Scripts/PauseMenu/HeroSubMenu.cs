@@ -30,6 +30,7 @@ public class HeroSubMenu : SubMenu {
                 GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
                 GameControl.control.RecordRoom();
                 GameControl.control.RecordPauseMenu();
+                GameControl.control.RecordEnemyPos();
                 UnityEngine.SceneManagement.SceneManager.LoadScene("SkillTreeMenu");
                 break;
             case "Allocate Stat Points":
@@ -38,6 +39,7 @@ public class HeroSubMenu : SubMenu {
                 GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
                 GameControl.control.RecordRoom();
                 GameControl.control.RecordPauseMenu();
+                GameControl.control.RecordEnemyPos();
                 UnityEngine.SceneManagement.SceneManager.LoadScene("LevelUpMenu");
                 break;
             default:

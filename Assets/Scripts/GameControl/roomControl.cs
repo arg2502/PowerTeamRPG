@@ -30,13 +30,27 @@ public class roomControl : MonoBehaviour {
         }
 
         //create the appropriate amount of enemies
-        for (int i = 0; i < numOfEnemies; i++)
+        if (!GameControl.control.isPaused)
         {
-            GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-            temp.transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f)); // hopefully we will have a better way of placing enemies
-            temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
-            temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
-            enemies.Add(temp.GetComponent<enemyControl>());
+            for (int i = 0; i < numOfEnemies; i++)
+            {
+                GameObject temp = GameObject.Instantiate(enemyControlPrefab);
+                temp.transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f)); // hopefully we will have a better way of placing enemies
+                temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
+                temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
+                enemies.Add(temp.GetComponent<enemyControl>());
+            }
+        }
+        else if (GameControl.control.isPaused)
+        {
+            for (int i = 0; i < GameControl.control.enemyPos.Count; i++)
+            {
+                GameObject temp = GameObject.Instantiate(enemyControlPrefab);
+                temp.transform.position = new Vector2(GameControl.control.enemyPos[i].x, GameControl.control.enemyPos[i].y); // hopefully we will have a better way of placing enemies
+                temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
+                temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
+                enemies.Add(temp.GetComponent<enemyControl>());
+            }
         }
 
         // Check if this room is already tracked by the game control obj - if not, make it so!
