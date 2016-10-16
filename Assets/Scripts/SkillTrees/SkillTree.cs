@@ -200,7 +200,8 @@ public class SkillTree : MonoBehaviour {
             // if the button exists, and it's either normal or inactive, set to that button
             if (button2DArray[col, row] != null
                 && (button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal
-                || button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive))
+                || button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive
+                || button2DArray[col, row].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabled))
             {
                 rowIndex = row;
                 break;
@@ -401,7 +402,6 @@ public class SkillTree : MonoBehaviour {
                                 // stay straight down
                                 else
                                 {
-
                                     b.nextLine[i].transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
                                 }
 
