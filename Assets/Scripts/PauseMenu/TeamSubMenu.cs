@@ -84,7 +84,7 @@ public class TeamSubMenu : SubMenu {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	public void Update () {
         if (isVisible && isActive)
         {
             //update which position the submenu should appear in
@@ -109,6 +109,14 @@ public class TeamSubMenu : SubMenu {
         }
         if (isVisible)
         {
+            //update the position of the menu
+            for (int i = 0; i < contentArray.Count; i++)
+            {
+                MyButton b = buttonArray[i].GetComponent<MyButton>();
+                buttonArray[i].transform.position = new Vector2(parentPos.position.x + b.width + 50, parentPos.position.y + (i * -(b.height + b.height / 2)));
+                b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
+            }
+
             heroDescription.transform.position = pm.descriptionText.transform.position;
             //set the herodescription to the appropriate info
             heroDescription.GetComponent<TextMesh>().text = ("Status: " + GameControl.control.heroList[selectedIndex].statusState
@@ -120,7 +128,6 @@ public class TeamSubMenu : SubMenu {
                 + "\nSpd: " + GameControl.control.heroList[selectedIndex].spd + "\n\nExp to next level: " + GameControl.control.heroList[selectedIndex].expToLvlUp
                 + "\nTotal Exp: " + GameControl.control.heroList[selectedIndex].exp);
         }
-        //base.Update();
         if (!isVisible) { isActive = false;  heroDescription.GetComponent<Renderer>().enabled = false; }
 	}
 }

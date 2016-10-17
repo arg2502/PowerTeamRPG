@@ -12,7 +12,7 @@ public class HeroSubMenu : SubMenu {
         tsm = GameObject.FindObjectOfType<TeamSubMenu>();
         base.Start();
 
-        if (GameControl.control.isPaused) { GameControl.control.RestorePauseMenu(); }
+        if (GameControl.control.isPaused) { GameControl.control.RestorePauseMenu(); tsm.Update(); }
 	}
 
     // deal with the button pressed

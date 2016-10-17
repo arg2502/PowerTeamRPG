@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class InventoryMenu : Menu {
 
     public List<Item> itemList;
-    protected GameObject descriptionText;
+    public GameObject descriptionText;
     ConsumableItemSubMenu consumeSub; // a universal sub menu for all consumable items
     public bool isActive = true; // a sub menu is not present
 
@@ -88,7 +88,7 @@ public class InventoryMenu : Menu {
         ChangeText();
 	}
 
-    string FormatText(string str)
+    public string FormatText(string str)
     {
         string formattedString = null;
         int desiredLength = 40;

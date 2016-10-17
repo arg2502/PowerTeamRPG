@@ -250,19 +250,23 @@ public class GameControl : MonoBehaviour {
         pause.isActive = tempPause.isActive;
         pause.isVisible = tempPause.isVisible;
         pause.selectedIndex = tempPause.SelectedIndex;
+        pause.position = tempPause.transform.position;
 
         TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
         teamSub.isActive = tempTeamSub.isActive;
         teamSub.isVisible = tempTeamSub.isVisible;
         teamSub.selectedIndex = tempTeamSub.SelectedIndex;
+        teamSub.position = tempTeamSub.transform.position;
 
         HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
         heroSub.isVisible = tempHeroSub.isVisible;
         heroSub.selectedIndex = tempHeroSub.SelectedIndex;
+        heroSub.position = tempHeroSub.transform.position;
 
         InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
         inventSub.isVisible = tempInventSub.isVisible;
         inventSub.selectedIndex = tempInventSub.SelectedIndex;
+        inventSub.position = tempInventSub.transform.position;
     }
 
     // called if the isPaused variable is set to true
@@ -281,6 +285,7 @@ public class GameControl : MonoBehaviour {
             tempPause.isActive = pause.isActive;
             tempPause.SelectedIndex = pause.selectedIndex;
             tempPause.HighlightButton();
+            tempPause.transform.position = pause.position;
         }
         if (teamSub.isVisible)
         {
@@ -289,6 +294,7 @@ public class GameControl : MonoBehaviour {
             tempTeamSub.isActive = teamSub.isActive;
             tempTeamSub.SelectedIndex = teamSub.selectedIndex;
             tempTeamSub.HighlightButton();
+            tempTeamSub.transform.position = teamSub.position;
         }
         if (heroSub.isVisible)
         {
@@ -296,6 +302,7 @@ public class GameControl : MonoBehaviour {
             tempHeroSub.EnableSubMenu();
             tempHeroSub.SelectedIndex = heroSub.selectedIndex;
             tempHeroSub.HighlightButton();
+            tempHeroSub.transform.position = heroSub.position;
         }
         if (inventSub.isVisible)
         {
@@ -303,6 +310,7 @@ public class GameControl : MonoBehaviour {
             tempInventSub.EnableSubMenu();
             tempInventSub.SelectedIndex = inventSub.selectedIndex;
             tempInventSub.HighlightButton();
+            tempInventSub.transform.position = inventSub.position;
         }
     }
 
@@ -502,4 +510,5 @@ public class tempMenu
     public bool isActive;
     public int selectedIndex;
     public bool isDisabled;
+    public Vector2 position;
 }
