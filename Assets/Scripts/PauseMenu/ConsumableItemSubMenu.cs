@@ -12,6 +12,10 @@ public class ConsumableItemSubMenu : SubMenu {
         im = GameObject.FindObjectOfType<InventoryMenu>();
         use = GameObject.FindObjectOfType<ItemUseSubMenu>();
 
+        // check if the button's name needs to be changed
+        if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
+        { contentArray[0] = "Equip"; buttonDescription[0] = "Equip this item to one of your teammates."; }
+
         base.Start();
 
         // Create the use sub menu
@@ -26,6 +30,7 @@ public class ConsumableItemSubMenu : SubMenu {
         switch (label)
         {
             case "Use":
+            case "Equip":
                 use.EnableSubMenu();
                 break;
             default:

@@ -80,6 +80,12 @@ public class testSceneChanger : MonoBehaviour {
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
             GameControl.control.AddItem(temp);
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+            GameControl.control.AddItem(temp);
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
+            GameControl.control.AddItem(temp);
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
+            GameControl.control.AddItem(temp);
         }
 	}
 }

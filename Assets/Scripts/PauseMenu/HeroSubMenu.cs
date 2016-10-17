@@ -58,8 +58,27 @@ public class HeroSubMenu : SubMenu {
         base.EnableSubMenu();
     }
 
+    void CheckForInactive()
+    {
+        // disable the two item related buttons associated with this submenu
+        if (buttonArray[2].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
+            buttonArray[2].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover &&
+            GameControl.control.weapons.Count == 0) { buttonArray[2].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+        else if (buttonArray[2].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.normal &&
+                 buttonArray[2].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.hover &&
+                 GameControl.control.weapons.Count > 0) { buttonArray[2].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+
+        if (buttonArray[3].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
+            buttonArray[3].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover &&
+            GameControl.control.equipment.Count == 0) { buttonArray[3].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+        else if (buttonArray[3].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.normal &&
+                 buttonArray[3].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.hover &&
+                 GameControl.control.equipment.Count > 0) { buttonArray[3].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+    }
+
 	// Update is called once per frame
 	void Update () {
+        CheckForInactive();
         if (Input.GetKeyUp(KeyCode.Backspace))
         {
             tsm.ActivateMenu();

@@ -196,6 +196,30 @@ public class GameControl : MonoBehaviour {
             id.quantity = item.quantity;
             data.consumables.Add(id);
         }
+        foreach (GameObject i in reusables)
+        {
+            Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = item.name;
+            id.quantity = item.quantity;
+            data.reusables.Add(id);
+        }
+        foreach (GameObject i in weapons)
+        {
+            Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = item.name;
+            id.quantity = item.quantity;
+            data.weapons.Add(id);
+        }
+        foreach (GameObject i in equipment)
+        {
+            Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = item.name;
+            id.quantity = item.quantity;
+            data.equipment.Add(id);
+        }
 
         // record the player's position
         data.posX = currentPosition.x;
@@ -343,14 +367,16 @@ public class GameControl : MonoBehaviour {
             foreach (Item i in items) { Destroy(i.gameObject); }
 
             // Read in all consumable items
-            foreach (ItemData id in data.consumables)
-            {
-                LoadConsumableItem(id);
-            }
+            foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
 
             //Read in all reusable items
+            foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
+
             //read in all weapons
+            foreach (ItemData id in data.weapons) { LoadWeaponItem(id); }
+
             //read in all equipment
+            foreach (ItemData id in data.equipment) { LoadArmorItem(id); }
 
             //put the player back where they were
             UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
@@ -400,7 +426,7 @@ public class GameControl : MonoBehaviour {
         GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().quantity = id.quantity;
     }
 
-    public void LoadReuseableItem(ItemData id)
+    public void LoadReusableItem(ItemData id)
     {
         GameObject temp = null;
         switch (id.name)
@@ -418,6 +444,9 @@ public class GameControl : MonoBehaviour {
         GameObject temp = null;
         switch (id.name)
         {
+            case "Helmet of Fortitude":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
+                break;
             default:
                 print("Error: Incorrect item name - " + id.name);
                 break;
@@ -431,6 +460,12 @@ public class GameControl : MonoBehaviour {
         GameObject temp = null;
         switch (id.name)
         {
+            case "Spare Sword":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+                break;
+            case "Tome of Practical Spells":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
+                break;
             default:
                 print("Error: Incorrect item name - " + id.name);
                 break;
@@ -456,7 +491,7 @@ class PlayerData
 
     // All of the player's items
     public List<ItemData> consumables = new List<ItemData>() { };
-    public List<ItemData> reuseables = new List<ItemData>() { };
+    public List<ItemData> reusables = new List<ItemData>() { };
     public List<ItemData> equipment = new List<ItemData>() { };
     public List<ItemData> weapons = new List<ItemData>() { }; 
 }

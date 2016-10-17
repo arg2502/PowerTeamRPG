@@ -62,27 +62,28 @@ public class InventoryMenu : Menu {
 
         //Create the description text object
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-        descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity;
+        if (selectedIndex + scrollIndex < itemList.Count)
+        { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity; }
         descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
         // Create the appropriate sub menu
-        if (GameControl.control.whichInventory == "consumables")
-        {
+        //if (GameControl.control.whichInventory == "consumables")
+        //{
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
             consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
             consumeSub.parentPos = buttonArray[selectedIndex].transform;
-        }
-        else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
-        {
+        //}
+        //else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
+        //{
             // do stuff here
-        }
-        else
-        {
+        //}
+        //else
+        //{
             // do key item stuff here
-        }
+        //}
 
         //call change text method to correctly size text and avoid a certain bug
         ChangeText();
@@ -132,9 +133,10 @@ public class InventoryMenu : Menu {
     }
     public override void ButtonAction(string label)
     {
-        if (GameControl.control.whichInventory == "consumables") { consumeSub.EnableSubMenu(); }
-        else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor") { /* do stuff here*/ }
-        else { /* do key item stuff here*/ }
+        //if (GameControl.control.whichInventory == "consumables") { consumeSub.EnableSubMenu(); }
+        //else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor") { /* do stuff here*/ }
+        //else { /* do key item stuff here*/ }
+        consumeSub.EnableSubMenu();
     }
 
 	// Update is called once per frame
@@ -148,7 +150,8 @@ public class InventoryMenu : Menu {
             else { /* do key item stuff here*/ }
 
             // update the description text
-            descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity;
+            if (selectedIndex + scrollIndex < itemList.Count) 
+            { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity; }
 
             PressButton(KeyCode.Space);
 
