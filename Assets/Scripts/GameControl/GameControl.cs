@@ -86,6 +86,7 @@ public class GameControl : MonoBehaviour {
             heroList[0].spd = 4;
             heroList[0].skillsList = new List<Skill>();
             heroList[0].spellsList = new List<Spell>();
+            heroList[0].passiveList = new List<Passive>();
             //heroList[0].skillsList.Add()
 
             //test code for creating Cole -- based on level 2 stats

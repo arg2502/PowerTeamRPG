@@ -13,6 +13,17 @@ public class Item : MonoBehaviour {
     public int price;
     public Sprite sprite;
 
+    // variables used to make effects easier to impliment
+    public int hpChange;
+    public int pmChange;
+    public int atkChange;
+    public int defChange;
+    public int mgkAtkChange;
+    public int mgkDefChange;
+    public int luckChange;
+    public int evadeChange;
+    public int spdChange;
+
 	// Use this for initialization
 	protected void Start () {
 	

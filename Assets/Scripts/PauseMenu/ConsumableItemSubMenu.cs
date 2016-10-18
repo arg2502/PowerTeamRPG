@@ -57,6 +57,7 @@ public class ConsumableItemSubMenu : SubMenu {
     {
         frameDelay = 0.0f;
         isActive = true;
+        im.descriptionText.GetComponent<Renderer>().enabled = true;
         for (int i = 0; i < buttonArray.Length; i++)
         {
             if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }

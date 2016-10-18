@@ -12,7 +12,7 @@ public class InventoryMenu : Menu {
 	// Use this for initialization
 	void Start () {
         contentArray = new List<string>();
-        numOfRow = 10;
+        numOfRow = 7;
 
         // set the correct list of items
         if (GameControl.control.whichInventory == "consumables")
@@ -48,6 +48,7 @@ public class InventoryMenu : Menu {
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
+            // if there are not as many items as there are buttons
             if (i >= contentArray.Count)
             {
                 buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text = "";
