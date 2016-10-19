@@ -18,17 +18,21 @@ public class roomControl : MonoBehaviour {
     public int minEnemiesPerBattle;
     public int maxEnemiesPerBattle;
     public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
-
+    public List<TreasureChest> treasureChests = new List<TreasureChest>();
 	// Use this for initialization
 	void Start () {
         //tell the gameControl object what it needs to know
         GameControl.control.areaEntrance = entrance;
 
+        // convert arrays to lists
         foreach(MovableOverworldObject m in GameObject.FindObjectsOfType<MovableOverworldObject>())
         {
             movables.Add(m);
         }
-
+        foreach(TreasureChest tc in GameObject.FindObjectsOfType<TreasureChest>())
+        {
+            treasureChests.Add(tc);
+        }
         //create the appropriate amount of enemies
         if (!GameControl.control.isPaused)
         {
@@ -64,6 +68,11 @@ public class roomControl : MonoBehaviour {
                 {
                     movables[i].transform.position = new Vector3(rc.movableBlockPos[i].x, rc.movableBlockPos[i].y, rc.movableBlockPos[i].z);
                 }
+                // sync open chests
+                for (int i = 0; i < treasureChests.Count; i++ )
+                {
+                    treasureChests[i].isOpen = rc.isChestOpen[i];
+                }
                 return;
             }
         }
@@ -77,6 +86,10 @@ public class roomControl : MonoBehaviour {
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.x;
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.y;
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.z;
+        }
+        foreach(TreasureChest tc in treasureChests)
+        {
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].isChestOpen.Add(tc.isOpen);
         }
 	}
 	

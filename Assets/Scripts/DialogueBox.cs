@@ -89,9 +89,7 @@ public class DialogueBox : MonoBehaviour {
 
 		sr = GetComponent<SpriteRenderer> ();
 		portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer> ();
-
-        print(dialogueNode.dialogueList[outerListPosition].charImages.Count);
-        
+                
         // set correct image
         if (dialogueNode.dialogueList[outerListPosition].charImages.Count > 0)
         {

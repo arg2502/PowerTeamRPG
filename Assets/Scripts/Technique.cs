@@ -25,6 +25,7 @@ public class Technique {
     //Sprite treeImage; // image to display on the button in the skill tree
     int cost; // number of skill points required to unlock
     bool active; // if true, the hero has this technique
+    [NonSerialized]
     MyButton button;
     
 

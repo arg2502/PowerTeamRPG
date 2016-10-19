@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TreasureChest : NPCObject {
     
-    bool isOpen; // check if the chest has been opened
+    public bool isOpen; // check if the chest has been opened
     Sprite openSprite;
     // three types of chest
     public int amountOfGold; // Will only be greater than zero if the chest gives gold
@@ -12,7 +12,7 @@ public class TreasureChest : NPCObject {
     public GameObject chestItem; // item that the chest contains
 
     ListOfStrings chestDialogue; // var to hold dialogue text that will be added to dialogue box
-
+    GameObject temp;
     void Start()
     {
         base.Start();
@@ -83,7 +83,8 @@ public class TreasureChest : NPCObject {
         else
         {
             // add item to GameControl
-            GameControl.control.AddItem(chestItem);
+            temp = (GameObject)Instantiate(chestItem);
+            GameControl.control.AddItem(temp);
             chestDialogue.dialogue.Add("You got " + chestItem.GetComponent<Item>().name);
         }
 

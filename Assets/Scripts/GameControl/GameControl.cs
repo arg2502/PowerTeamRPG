@@ -88,7 +88,7 @@ public class GameControl : MonoBehaviour {
             heroList[0].spellsList = new List<Spell>();
             heroList[0].passiveList = new List<Passive>();
             // Passives are non serializable now because they inherit from something with a my button variable
-            //heroList[0].passiveList.Add(new LightRegeneration());
+            heroList[0].passiveList.Add(new LightRegeneration());
             //heroList[0].weapon = null;
             //heroList[0].equipment = new List<ArmorItem>();
 
@@ -190,6 +190,7 @@ public class GameControl : MonoBehaviour {
         }
         //Save which scene the player is in
         data.currentScene = currentScene;
+        data.totalGold = totalGold;
 
         // Save all of the player's inventory
         foreach (GameObject i in consumables)
@@ -251,6 +252,10 @@ public class GameControl : MonoBehaviour {
                     rcd.movableBlockPos[i].x = rc.movables[i].transform.position.x;
                     rcd.movableBlockPos[i].y = rc.movables[i].transform.position.y;
                     rcd.movableBlockPos[i].z = rc.movables[i].transform.position.z;
+                }
+                for(int i = 0; i < rc.treasureChests.Count; i++)
+                {
+                    rcd.isChestOpen[i] = rc.treasureChests[i].isOpen;
                 }
             }
         }
@@ -387,6 +392,7 @@ public class GameControl : MonoBehaviour {
             // Put their position vector here if we choose
             currentPosition = new Vector2(data.posX, data.posY);
             taggedStatue = data.taggedStatue;
+            totalGold = data.totalGold;
 
             // put all interactable item data back
             rooms = data.rooms;
@@ -536,6 +542,7 @@ public class RoomControlData
     public int areaIDNumber;
     public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
     //also store treasure boxes, doors, switches, antyhing important
+    public List<bool> isChestOpen = new List<bool>();
 }
 
 [Serializable]
