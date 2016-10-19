@@ -20,7 +20,7 @@ public class DialogueBox : MonoBehaviour {
     public int outerListPosition;
 
 	// npc dialogue to get the list of text to write
-	NPCDialogue dialogueNode;
+	//NPCDialogue npc.npcDialogue;
 
 	// npc object in order to turn
 	// canTalk back to true
@@ -70,7 +70,7 @@ public class DialogueBox : MonoBehaviour {
 		spokenText = spokenTextGO.GetComponent<TextMesh>();
 
 		// set the dialogue node to the one inside the npc inspector
-		dialogueNode = npc.GetComponent<NPCDialogue>();
+		//npc.npcDialogue = npc.GetComponent<NPCDialogue>();
 
 		// set npc
 		//npc = GetComponent<NPCObject>();
@@ -91,9 +91,9 @@ public class DialogueBox : MonoBehaviour {
 		portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer> ();
                 
         // set correct image
-        if (dialogueNode.dialogueList[outerListPosition].charImages.Count > 0)
+        if (npc.npcDialogue.dialogueList[outerListPosition].charImages.Count > 0)
         {
-            portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition];
+            portraitSr.sprite = npc.npcDialogue.dialogueList[outerListPosition].charImages[innerListPosition];
         }
 
 		// display at correct location - initially
@@ -113,7 +113,7 @@ public class DialogueBox : MonoBehaviour {
 
         isDialogue = true;
 
-		StartCoroutine (ScrollText (dialogueNode.dialogueList[outerListPosition].dialogue [innerListPosition]));
+		StartCoroutine (ScrollText (npc.npcDialogue.dialogueList[outerListPosition].dialogue [innerListPosition]));
 	}
 	
 	// Update is called once per frame
@@ -121,11 +121,11 @@ public class DialogueBox : MonoBehaviour {
 		if (enabled) {
             if (isDialogue)
             {
-                WriteText(dialogueNode.dialogueList);
+                WriteText(npc.npcDialogue.dialogueList);
             }
             else if (isResponse)
             {
-                WriteResponseText(dialogueNode.responseList);
+                WriteResponseText(npc.npcDialogue.responseList);
             }
 		}
 	
@@ -143,7 +143,7 @@ public class DialogueBox : MonoBehaviour {
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
         else { dialogueOffset = new Vector2(-600, -250); }
 
-        titleText.text = dialogueNode.title[outerListPosition];
+        titleText.text = npc.npcDialogue.title[outerListPosition];
         
             // display at correct location
             textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
@@ -181,7 +181,7 @@ public class DialogueBox : MonoBehaviour {
                 // disable text and box when list is done
                 else if(!isAsking || isResponse)
                 {
-                    //dialogueNode.dMenu.enabled = false;
+                    //npc.npcDialogue.dMenu.enabled = false;
                     isResponse = false;
                     isDialogue = true;
                     npc.canTalk = true;
@@ -229,7 +229,7 @@ public class DialogueBox : MonoBehaviour {
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
         else { dialogueOffset = new Vector2(-600, -250); }
 
-        titleText.text = dialogueNode.responseTitle;
+        titleText.text = npc.npcDialogue.responseTitle;
 
         // display at correct location
             textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
@@ -327,20 +327,20 @@ public class DialogueBox : MonoBehaviour {
 			letter++;
 			lineLength++;
 			//spokenText.text = FormatText (spokenText.text);
-			yield return new WaitForSeconds (dialogueNode.typingSpeed);
+			yield return new WaitForSeconds (npc.npcDialogue.typingSpeed);
 		}
 		isTyping = false;
 		cancelTyping = false;
 
         // if it's the end of a list and a question needs to be asked, set it
-        if (!isResponse) // nested if b/c "dialogueNode.dialogueList[outerListPosition]" gives an out of range exception
+        if (!isResponse) // nested if b/c "npc.npcDialogue.dialogueList[outerListPosition]" gives an out of range exception
         {
-            if (dialogueNode.dMenu != null && innerListPosition >= dialogueNode.dialogueList[outerListPosition].dialogue.Count - 1)
+            if (npc.npcDialogue.dMenu != null && innerListPosition >= npc.npcDialogue.dialogueList[outerListPosition].dialogue.Count - 1)
             {
                 isDialogue = false;
                 isAsking = true;
-                dialogueNode.dMenu.enabled = true;
-                dialogueNode.dMenu.EnableQuestionMenu();
+                npc.npcDialogue.dMenu.enabled = true;
+                npc.npcDialogue.dMenu.EnableQuestionMenu();
 
 
             }
@@ -351,7 +351,7 @@ public class DialogueBox : MonoBehaviour {
 	// turn box on when player wants to talk
 	public void EnableBox(){
         // set the dialogue node to the one inside the npc inspector
-        dialogueNode = npc.GetComponent<NPCDialogue>();
+        //npc.npcDialogue = npc.GetComponent<NPCDialogue>();
 
         // reset list positions
         outerListPosition = 0;
@@ -360,15 +360,15 @@ public class DialogueBox : MonoBehaviour {
         // display at correct location
         // if the portrait exists, make room for it
         portraitSr = gameObject.transform.Find("Portrait").GetComponent<SpriteRenderer>();
-        if (dialogueNode.dialogueList[outerListPosition].charImages.Count > 0)
+        if (npc.npcDialogue.dialogueList[outerListPosition].charImages.Count > 0)
         {
-            portraitSr.sprite = dialogueNode.dialogueList[outerListPosition].charImages[innerListPosition]; // draw correct portrait
+            portraitSr.sprite = npc.npcDialogue.dialogueList[outerListPosition].charImages[innerListPosition]; // draw correct portrait
         }
         if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
         else { dialogueOffset = new Vector2(-600, -250); }
 
 
-        titleText.text = dialogueNode.title[outerListPosition];
+        titleText.text = npc.npcDialogue.title[outerListPosition];
         textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
         spokenTextGO.transform.position = textPosition;
 
@@ -392,7 +392,7 @@ public class DialogueBox : MonoBehaviour {
         hero.ToggleMovement();
 
 		// start typing
-		StartCoroutine (ScrollText (dialogueNode.dialogueList[outerListPosition].dialogue [innerListPosition]));
+		StartCoroutine (ScrollText (npc.npcDialogue.dialogueList[outerListPosition].dialogue [innerListPosition]));
 
 	}
 }

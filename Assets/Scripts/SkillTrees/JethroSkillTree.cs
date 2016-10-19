@@ -66,7 +66,6 @@ public class JethroSkillTree : SkillTree {
         riser.ListNextTechnique = new List<Technique>();
         mordstreich.ListNextTechnique = new List<Technique>();
         helmsplitter.ListNextTechnique.Add(trinitySlice);
-        helmsplitter.ListNextTechnique.Add(arcSlash);
         riser.ListNextTechnique.Add(mordstreich);
         mordstreich.ListNextTechnique.Add(superMordstreich);
         

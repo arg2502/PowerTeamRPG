@@ -13,7 +13,9 @@ public class NPCObject : OverworldObject {
 	public DialogueBox dBox;
 	protected GameObject dBoxGO;
 
-	protected NPCDialogue npcDialogue;
+    public NPCDialogue npcDialogue;
+	List<NPCDialogue> dialogueList;
+    int numOfTimesTalked;
 
 	// variable to determine whether the player
 	// can talk to the npc
@@ -25,13 +27,34 @@ public class NPCObject : OverworldObject {
         base.Start();
 		player = GameObject.FindObjectOfType<characterControl>().transform;
 		canTalk = true;
-		npcDialogue = GetComponent<NPCDialogue> ();
+		//npcDialogue = GetComponent<NPCDialogue> ();
+        dialogueList = new List<NPCDialogue>();
+        foreach(NPCDialogue npcD in GetComponents<NPCDialogue>())
+        {
+            dialogueList.Add(npcD);
+        }
+        numOfTimesTalked = 0;
+        npcDialogue = dialogueList[numOfTimesTalked];
+        
 	}
 
 	// begin conversation when player collides and presses space
 	protected void Update(){
 		if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk && player.gameObject.GetComponent<characterControl>().canMove) {
-			canTalk = false;
+			// set which dialogue is spoken based on num of times talked
+            // if out of range, say last option in list
+            if(numOfTimesTalked >= dialogueList.Count)
+            {
+                npcDialogue = dialogueList[dialogueList.Count - 1];
+                //print("Inside if: " + numOfTimesTalked);
+            }
+            else
+            {
+                npcDialogue = dialogueList[numOfTimesTalked];
+                numOfTimesTalked++;
+            }
+            
+            canTalk = false;
 			// if first time, set equal to existing box
 			if (dBox == null && dBoxGO == null) {				
 				if (GameObject.FindObjectOfType<DialogueBox> () == null) {

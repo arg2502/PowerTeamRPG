@@ -381,7 +381,6 @@ public class SkillTree : MonoBehaviour {
                         MyButton b = content2DArray[col][row].Button;
 
                         if (b.nextLine.Count <= 0) {
-                            print("inside if");
                             b.nextLine = new List<GameObject>();
                             for (int i = 0; i < b.listNextButton.Count; i++ )
                             {
