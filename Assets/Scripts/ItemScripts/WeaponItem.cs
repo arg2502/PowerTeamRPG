@@ -15,13 +15,13 @@ public class WeaponItem : Item {
 
     }
 
-    public void Use()
+    public void Use(HeroData hero)
     {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform
         //the item's specific effect
     }
-
+        
     public void Equip()
     {
         // functions similarly to the use method, but this method will add

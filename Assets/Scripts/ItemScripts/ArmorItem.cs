@@ -14,7 +14,7 @@ public class ArmorItem : Item {
 	
 	}
 
-    public void Use()
+    public void Use(HeroData hero)
     {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform

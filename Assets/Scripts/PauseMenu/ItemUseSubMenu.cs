@@ -51,7 +51,7 @@ public class ItemUseSubMenu : SubMenu {
         heroInfo[7].GetComponent<TextMesh>().text = "Luck: " + h.luck;
         heroInfo[8].GetComponent<TextMesh>().text = "Evasion: " + h.evasion;
         heroInfo[9].GetComponent<TextMesh>().text = "Spd: " + h.spd;
-        for (int i = 10; i < h.passiveList.Count; i++) { heroInfo[i].GetComponent<TextMesh>().text = h.passiveList[i].Name; }
+        for (int i = 10; (i - 10) < h.passiveList.Count; i++) { heroInfo[i].GetComponent<TextMesh>().text = h.passiveList[i - 10].Name; }
     }
 
     public void EnableSubMenu()

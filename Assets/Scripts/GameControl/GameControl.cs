@@ -87,7 +87,10 @@ public class GameControl : MonoBehaviour {
             heroList[0].skillsList = new List<Skill>();
             heroList[0].spellsList = new List<Spell>();
             heroList[0].passiveList = new List<Passive>();
-            //heroList[0].skillsList.Add()
+            // Passives are non serializable now because they inherit from something with a my button variable
+            //heroList[0].passiveList.Add(new LightRegeneration());
+            //heroList[0].weapon = null;
+            //heroList[0].equipment = new List<ArmorItem>();
 
             //test code for creating Cole -- based on level 2 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
@@ -513,7 +516,9 @@ public class HeroData
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     public Status statusState;
-    //Also need passives, equipment
+    // Need a creative way to store which items are equipped since items are non-serializable
+    public string weapon;
+    public List<string> equipment;
 }
 
 //this class should hold all of the stuff necessary for an item object

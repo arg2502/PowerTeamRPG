@@ -5,14 +5,17 @@ using System;
 
 [Serializable]
 public class ConsumableItem : Item {
-    // counts how many denigens were commanded to use this item, since simply decreasing quantity upon issuing an item's use
-    // does not take into account what happens if the denigen dies before using said item, or if victory is acheived before then
-    public int uses;
+    
 
 	// Use this for initialization
 	void Start () {
 	
 	}
+
+    public void Use(HeroData hero)
+    {
+        // out of battle use method
+    }
 
     public void Use(Denigen target)
     {
