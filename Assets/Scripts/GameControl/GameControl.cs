@@ -89,8 +89,8 @@ public class GameControl : MonoBehaviour {
             heroList[0].passiveList = new List<Passive>();
             // Passives are non serializable now because they inherit from something with a my button variable
             heroList[0].passiveList.Add(new LightRegeneration());
-            //heroList[0].weapon = null;
-            //heroList[0].equipment = new List<ArmorItem>();
+            heroList[0].weapon = null;
+            heroList[0].equipment = new List<GameObject>();
 
             //test code for creating Cole -- based on level 2 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
@@ -186,7 +186,55 @@ public class GameControl : MonoBehaviour {
         //save all of the heroes
         for (int i = 0; i < heroList.Count; i++)
         {
-            data.heroList.Add(heroList[i]);
+            SavableHeroData temp = new SavableHeroData();
+            temp.identity = heroList[i].identity;
+            temp.statBoost = heroList[i].statBoost;
+            temp.skillTree = heroList[i].skillTree;
+            temp.name = heroList[i].name;
+            temp.level = heroList[i].level;
+            temp.exp = heroList[i].exp;
+            temp.expToLvlUp = heroList[i].expToLvlUp;
+            temp.levelUpPts = heroList[i].levelUpPts;
+            temp.techPts = heroList[i].techPts;
+            temp.hp = heroList[i].hp;
+            temp.hpMax = heroList[i].hpMax;
+            temp.pm = heroList[i].pm;
+            temp.pmMax = heroList[i].pmMax;
+            temp.atk = heroList[i].atk;
+            temp.def = heroList[i].def;
+            temp.mgkAtk = heroList[i].mgkAtk;
+            temp.mgkDef = heroList[i].mgkDef;
+            temp.luck = heroList[i].luck;
+            temp.evasion = heroList[i].evasion;
+            temp.spd = heroList[i].spd;
+            temp.skillsList = heroList[i].skillsList;
+            temp.spellsList = heroList[i].spellsList;
+            temp.passiveList = heroList[i].passiveList;
+            temp.statusState = (SavableHeroData.Status)heroList[i].statusState;
+
+            if (heroList[i].weapon != null)
+            {
+                Item item = heroList[i].weapon.GetComponent<Item>();
+                ItemData id = new ItemData();
+                id.name = item.name;
+                id.quantity = item.quantity;
+                temp.weapon = id;
+            }
+
+            temp.equipment = new List<ItemData>();
+            for (int j = 0; j < heroList[i].equipment.Count; j++)
+            {
+                print("Index: " + j);
+                print("Saving item:" + heroList[i].equipment[j].name);
+                Item item = heroList[i].equipment[j].GetComponent<Item>();
+                ItemData id = new ItemData();
+                id.name = item.name;
+                id.quantity = item.quantity;
+                temp.equipment.Add(id);
+                print("Saved Item data: " + temp.equipment[j].name);
+            }
+
+            data.heroList.Add(temp);
         }
         //Save which scene the player is in
         data.currentScene = currentScene;
@@ -357,14 +405,7 @@ public class GameControl : MonoBehaviour {
             file.Close();
             //clear any current data
             heroList = new List<HeroData>() { };
-            //sets local data to the stored data
-            //health = data.health;
-            //load all of the heroes
-            for (int i = 0; i < data.heroList.Count; i++)
-            {
-                heroList.Add(data.heroList[i]);
-            }
-
+           
             //Make sure the item lists are cleared before adding more
             consumables.Clear();
             reusables.Clear();
@@ -382,10 +423,46 @@ public class GameControl : MonoBehaviour {
             foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
 
             //read in all weapons
-            foreach (ItemData id in data.weapons) { LoadWeaponItem(id); }
+            foreach (ItemData id in data.weapons) { LoadWeaponItem(id, null); }
 
             //read in all equipment
-            foreach (ItemData id in data.equipment) { LoadArmorItem(id); }
+            foreach (ItemData id in data.equipment) { LoadArmorItem(id, null); }
+
+            //load all of the heroes
+            for (int i = 0; i < data.heroList.Count; i++)
+            {
+                HeroData temp = new HeroData();
+                temp.identity = data.heroList[i].identity;
+                temp.statBoost = data.heroList[i].statBoost;
+                temp.skillTree = data.heroList[i].skillTree;
+                temp.name = data.heroList[i].name;
+                temp.level = data.heroList[i].level;
+                temp.exp = data.heroList[i].exp;
+                temp.expToLvlUp = data.heroList[i].expToLvlUp;
+                temp.levelUpPts = data.heroList[i].levelUpPts;
+                temp.techPts = data.heroList[i].techPts;
+                temp.hp = data.heroList[i].hp;
+                temp.hpMax = data.heroList[i].hpMax;
+                temp.pm = data.heroList[i].pm;
+                temp.pmMax = data.heroList[i].pmMax;
+                temp.atk = data.heroList[i].atk;
+                temp.def = data.heroList[i].def;
+                temp.mgkAtk = data.heroList[i].mgkAtk;
+                temp.mgkDef = data.heroList[i].mgkDef;
+                temp.luck = data.heroList[i].luck;
+                temp.evasion = data.heroList[i].evasion;
+                temp.spd = data.heroList[i].spd;
+                temp.skillsList = data.heroList[i].skillsList;
+                temp.spellsList = data.heroList[i].spellsList;
+                temp.passiveList = data.heroList[i].passiveList;
+                temp.statusState = (HeroData.Status)data.heroList[i].statusState;
+
+                if (data.heroList[i].weapon != null) { print("Loading Item: " + data.heroList[i].weapon.name); LoadWeaponItem(data.heroList[i].weapon, temp); }
+                temp.equipment = new List<GameObject>();
+                if (data.heroList[i].equipment.Count > 0) { for (int j = 0; j < data.heroList[i].equipment.Count; j++) { LoadArmorItem(data.heroList[i].equipment[j], temp); } }
+
+                heroList.Add(temp);
+            }
 
             //put the player back where they were
             UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
@@ -449,7 +526,7 @@ public class GameControl : MonoBehaviour {
         GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().quantity = id.quantity;
     }
 
-    public void LoadArmorItem(ItemData id)
+    public void LoadArmorItem(ItemData id, HeroData hd)
     {
         GameObject temp = null;
         switch (id.name)
@@ -461,11 +538,15 @@ public class GameControl : MonoBehaviour {
                 print("Error: Incorrect item name - " + id.name);
                 break;
         }
-        GameControl.control.AddItem(temp);
-        GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
+        if (hd == null)
+        {
+            GameControl.control.AddItem(temp);
+            GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
+        }
+        else { hd.equipment.Add(temp); DontDestroyOnLoad(temp); }
     }
 
-    public void LoadWeaponItem(ItemData id)
+    public void LoadWeaponItem(ItemData id, HeroData hd)
     {
         GameObject temp = null;
         switch (id.name)
@@ -480,8 +561,12 @@ public class GameControl : MonoBehaviour {
                 print("Error: Incorrect item name - " + id.name);
                 break;
         }
-        GameControl.control.AddItem(temp);
-        GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
+        if (hd == null)
+        {
+            GameControl.control.AddItem(temp);
+            GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
+        }
+        else { hd.weapon = temp; DontDestroyOnLoad(temp); }
     }
 }
 
@@ -496,7 +581,7 @@ class PlayerData
     //public float statuePosX, statuePosY, statuePosZ; // the position of where the player last saved -- dungeon entrance as default
     public bool taggedStatue;
     public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
-    public List<HeroData> heroList = new List<HeroData>() { };
+    public List<SavableHeroData> heroList = new List<SavableHeroData>() { };
     public List<RoomControlData> rooms = new List<RoomControlData>() { }; // stores all of the data for areas the player has been to, like block positions, etc.
 
     // All of the player's items
@@ -523,8 +608,29 @@ public class HeroData
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
     public Status statusState;
     // Need a creative way to store which items are equipped since items are non-serializable
-    public string weapon;
-    public List<string> equipment;
+    public GameObject weapon;
+    public List<GameObject> equipment;
+}
+
+// this class exists to save the hero item
+[Serializable]
+public class SavableHeroData
+{
+    public int identity;
+    public bool statBoost = false;
+    public bool skillTree = false;
+    public string name;
+    public int level, exp, expToLvlUp, levelUpPts, techPts;
+    public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
+    public List<Skill> skillsList;
+    public List<Spell> spellsList;
+    public List<Passive> passiveList;
+    // status effect
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
+    public Status statusState;
+    // Need a creative way to store which items are equipped since items are non-serializable
+    public ItemData weapon;
+    public List<ItemData> equipment;
 }
 
 //this class should hold all of the stuff necessary for an item object
