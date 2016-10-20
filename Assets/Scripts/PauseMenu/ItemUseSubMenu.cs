@@ -14,7 +14,7 @@ public class ItemUseSubMenu : SubMenu {
 	void Start () {
         parent = GameObject.FindObjectOfType<ConsumableItemSubMenu>();
         contentArray = new List<string>();
-        
+        statChangeNumbers = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         // make the content array reflect the heroes in your party
         foreach (HeroData hd in GameControl.control.heroList)
@@ -73,24 +73,22 @@ public class ItemUseSubMenu : SubMenu {
             currentItem = GameControl.control.consumables[parent.itemIndex].GetComponent<Item>();
 
             statChanges[0].GetComponent<TextMesh>().text = currentItem.statusChange;
-            if (currentItem.hpChange != 0) { statChanges[1].GetComponent<TextMesh>().text = "(" + currentItem.hpChange + ")"; }
-            else { statChanges[1].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.pmChange != 0) { statChanges[2].GetComponent<TextMesh>().text = "(" + currentItem.pmChange + ")"; }
-            else { statChanges[2].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.atkChange != 0) { statChanges[3].GetComponent<TextMesh>().text = "(" + currentItem.atkChange + ")"; }
-            else { statChanges[3].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.defChange != 0) { statChanges[4].GetComponent<TextMesh>().text = "(" + currentItem.defChange + ")"; }
-            else { statChanges[4].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.mgkAtkChange != 0) { statChanges[5].GetComponent<TextMesh>().text = "(" + currentItem.mgkAtkChange + ")"; }
-            else { statChanges[5].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.mgkDefChange != 0) { statChanges[6].GetComponent<TextMesh>().text = "(" + currentItem.mgkDefChange + ")"; }
-            else { statChanges[6].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.luckChange != 0) { statChanges[7].GetComponent<TextMesh>().text = "(" + currentItem.luckChange + ")"; }
-            else { statChanges[7].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.evadeChange != 0) { statChanges[8].GetComponent<TextMesh>().text = "(" + currentItem.evadeChange + ")"; }
-            else { statChanges[8].GetComponent<TextMesh>().text = ""; }
-            if (currentItem.spdChange != 0) statChanges[9].GetComponent<TextMesh>().text = "(" + currentItem.spdChange + ")";
-            else { statChanges[9].GetComponent<TextMesh>().text = ""; }
+            statChangeNumbers[1] = currentItem.hpChange;
+            statChangeNumbers[2] = currentItem.pmChange;
+            statChangeNumbers[3] = currentItem.atkChange;
+            statChangeNumbers[4] = currentItem.defChange;
+            statChangeNumbers[5] = currentItem.mgkAtkChange;
+            statChangeNumbers[6] = currentItem.mgkDefChange;
+            statChangeNumbers[7] = currentItem.luckChange;
+            statChangeNumbers[8] = currentItem.evadeChange;
+            statChangeNumbers[9] = currentItem.spdChange;
+
+            for (int i = 1; i < statChangeNumbers.Count; i++)
+            {
+                if (statChangeNumbers[i] > 0) { statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")"; }
+                else if (statChangeNumbers[i] < 0) { statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")"; }
+                else { statChanges[i].GetComponent<TextMesh>().text = ""; }
+            }
         }
         //else if (GameControl.control.whichInventory == "reusables") { currentItem = GameControl.control.reusables[parent.itemIndex].GetComponent<Item>(); }
         else if (GameControl.control.whichInventory == "weapons") 
@@ -103,45 +101,41 @@ public class ItemUseSubMenu : SubMenu {
 
             if (h.weapon == null)
             {
-                if (currentItem.hpChange != 0) { statChanges[1].GetComponent<TextMesh>().text = "(" + currentItem.hpChange + ")"; }
-                else { statChanges[1].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.pmChange != 0) { statChanges[2].GetComponent<TextMesh>().text = "(" + currentItem.pmChange + ")"; }
-                else { statChanges[2].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.atkChange != 0) { statChanges[3].GetComponent<TextMesh>().text = "(" + currentItem.atkChange + ")"; }
-                else { statChanges[3].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.defChange != 0) { statChanges[4].GetComponent<TextMesh>().text = "(" + currentItem.defChange + ")"; }
-                else { statChanges[4].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.mgkAtkChange != 0) { statChanges[5].GetComponent<TextMesh>().text = "(" + currentItem.mgkAtkChange + ")"; }
-                else { statChanges[5].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.mgkDefChange != 0) { statChanges[6].GetComponent<TextMesh>().text = "(" + currentItem.mgkDefChange + ")"; }
-                else { statChanges[6].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.luckChange != 0) { statChanges[7].GetComponent<TextMesh>().text = "(" + currentItem.luckChange + ")"; }
-                else { statChanges[7].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.evadeChange != 0) { statChanges[8].GetComponent<TextMesh>().text = "(" + currentItem.evadeChange + ")"; }
-                else { statChanges[8].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.spdChange != 0) statChanges[9].GetComponent<TextMesh>().text = "(" + currentItem.spdChange + ")";
-                else { statChanges[9].GetComponent<TextMesh>().text = ""; }
+                statChangeNumbers[1] = currentItem.hpChange;
+                statChangeNumbers[2] = currentItem.pmChange;
+                statChangeNumbers[3] = currentItem.atkChange;
+                statChangeNumbers[4] = currentItem.defChange;
+                statChangeNumbers[5] = currentItem.mgkAtkChange;
+                statChangeNumbers[6] = currentItem.mgkDefChange;
+                statChangeNumbers[7] = currentItem.luckChange;
+                statChangeNumbers[8] = currentItem.evadeChange;
+                statChangeNumbers[9] = currentItem.spdChange;
+                
+                for (int i = 1; i < statChangeNumbers.Count; i++)
+                {
+                    if (statChangeNumbers[i] > 0) { statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")"; }
+                    else if (statChangeNumbers[i] < 0) { statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")"; }
+                    else { statChanges[i].GetComponent<TextMesh>().text = ""; }
+                }
             }
             else
             {
-                if (currentItem.hpChange - heroWeapon.hpChange != 0) { statChanges[1].GetComponent<TextMesh>().text = "(" + (currentItem.hpChange - heroWeapon.hpChange) + ")"; }
-                else { statChanges[1].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.pmChange - heroWeapon.pmChange != 0) { statChanges[2].GetComponent<TextMesh>().text = "(" + (currentItem.pmChange - heroWeapon.pmChange) + ")"; }
-                else { statChanges[2].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.atkChange - heroWeapon.atkChange != 0) { statChanges[3].GetComponent<TextMesh>().text = "(" + (currentItem.atkChange - heroWeapon.atkChange) + ")"; }
-                else { statChanges[3].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.defChange - heroWeapon.defChange != 0) { statChanges[4].GetComponent<TextMesh>().text = "(" + (currentItem.defChange - heroWeapon.defChange) + ")"; }
-                else { statChanges[4].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.mgkAtkChange - heroWeapon.mgkAtkChange != 0) { statChanges[5].GetComponent<TextMesh>().text = "(" + (currentItem.mgkAtkChange - heroWeapon.mgkAtkChange) + ")"; }
-                else { statChanges[5].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.mgkDefChange - heroWeapon.mgkDefChange != 0) { statChanges[6].GetComponent<TextMesh>().text = "(" + (currentItem.mgkDefChange - heroWeapon.mgkDefChange) + ")"; }
-                else { statChanges[6].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.luckChange - heroWeapon.luckChange != 0) { statChanges[7].GetComponent<TextMesh>().text = "(" + (currentItem.luckChange - heroWeapon.luckChange) + ")"; }
-                else { statChanges[7].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.evadeChange - heroWeapon.evadeChange != 0) { statChanges[8].GetComponent<TextMesh>().text = "(" + (currentItem.evadeChange - heroWeapon.evadeChange) + ")"; }
-                else { statChanges[8].GetComponent<TextMesh>().text = ""; }
-                if (currentItem.spdChange - heroWeapon.spdChange != 0) statChanges[9].GetComponent<TextMesh>().text = "(" + (currentItem.spdChange - heroWeapon.spdChange) + ")";
-                else { statChanges[9].GetComponent<TextMesh>().text = ""; }
+                statChangeNumbers[1] = currentItem.hpChange - heroWeapon.hpChange;
+                statChangeNumbers[2] = currentItem.pmChange - heroWeapon.pmChange;
+                statChangeNumbers[3] = currentItem.atkChange - heroWeapon.atkChange;
+                statChangeNumbers[4] = currentItem.defChange - heroWeapon.defChange;
+                statChangeNumbers[5] = currentItem.mgkAtkChange - heroWeapon.mgkAtkChange;
+                statChangeNumbers[6] = currentItem.mgkDefChange - heroWeapon.mgkDefChange;
+                statChangeNumbers[7] = currentItem.luckChange - heroWeapon.luckChange;
+                statChangeNumbers[8] = currentItem.evadeChange - heroWeapon.evadeChange;
+                statChangeNumbers[9] = currentItem.spdChange - heroWeapon.spdChange;
+
+                for (int i = 1; i < statChangeNumbers.Count; i++)
+                {
+                    if (statChangeNumbers[i] > 0) { statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")"; }
+                    else if (statChangeNumbers[i] < 0) { statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")"; }
+                    else { statChanges[i].GetComponent<TextMesh>().text = ""; }
+                }
             }
         }
         else if (GameControl.control.whichInventory == "armor") { currentItem = GameControl.control.equipment[parent.itemIndex].GetComponent<Item>(); }
