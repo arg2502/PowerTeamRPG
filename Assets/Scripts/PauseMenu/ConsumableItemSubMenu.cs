@@ -5,6 +5,7 @@ public class ConsumableItemSubMenu : SubMenu {
 
     public InventoryMenu im;
     ItemUseSubMenu use;
+    public int itemIndex; // the index of an item in inventory
 
     // Use this for initialization
     void Start()

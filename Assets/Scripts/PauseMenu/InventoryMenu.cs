@@ -76,6 +76,7 @@ public class InventoryMenu : Menu {
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
             consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
             consumeSub.parentPos = buttonArray[selectedIndex].transform;
+            consumeSub.itemIndex = selectedIndex + scrollIndex;
         //}
         //else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
         //{
@@ -149,6 +150,9 @@ public class InventoryMenu : Menu {
             if (GameControl.control.whichInventory == "consumables") { consumeSub.parentPos = buttonArray[selectedIndex].transform; }
             else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor") { /* do stuff here*/ }
             else { /* do key item stuff here*/ }
+
+            //update which item is selected for sub menus
+            consumeSub.itemIndex = selectedIndex + scrollIndex;
 
             // update the description text
             if (selectedIndex + scrollIndex < itemList.Count) 
