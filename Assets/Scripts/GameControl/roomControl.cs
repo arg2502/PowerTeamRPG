@@ -69,10 +69,18 @@ public class roomControl : MonoBehaviour {
                     movables[i].transform.position = new Vector3(rc.movableBlockPos[i].x, rc.movableBlockPos[i].y, rc.movableBlockPos[i].z);
                 }
                 // sync open chests
-                for (int i = 0; i < treasureChests.Count; i++ )
+                for (int i = 0; i < treasureChests.Count; i++)
                 {
-                    treasureChests[i].isOpen = rc.isChestOpen[i];
+                    for (int j = 0; j < treasureChests.Count; j++)
+                    {
+                        if (treasureChests[i].name == rc.chestData[j].chestName)
+                        {
+                            print(treasureChests[i].name);
+                            treasureChests[i].isOpen = rc.chestData[j].isChestOpen;
+                        }
+                    }
                 }
+                
                 return;
             }
         }
@@ -87,9 +95,11 @@ public class roomControl : MonoBehaviour {
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.y;
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.z;
         }
-        foreach(TreasureChest tc in treasureChests)
+        for(int i = 0; i < treasureChests.Count; i++)
         {
-            GameControl.control.rooms[GameControl.control.rooms.Count - 1].isChestOpen.Add(tc.isOpen);
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData[i].isChestOpen = treasureChests[i].isOpen;
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData[i].chestName = treasureChests[i].name;
         }
 	}
 	

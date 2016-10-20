@@ -303,7 +303,8 @@ public class GameControl : MonoBehaviour {
                 }
                 for(int i = 0; i < rc.treasureChests.Count; i++)
                 {
-                    rcd.isChestOpen[i] = rc.treasureChests[i].isOpen;
+                    rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
+                    rcd.chestData[i].chestName = rc.treasureChests[i].name;
                 }
             }
         }
@@ -648,7 +649,14 @@ public class RoomControlData
     public int areaIDNumber;
     public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
     //also store treasure boxes, doors, switches, antyhing important
-    public List<bool> isChestOpen = new List<bool>();
+    public List<TreasureData> chestData = new List<TreasureData>();
+}
+
+[Serializable]
+public class TreasureData
+{
+    public bool isChestOpen;
+    public string chestName;
 }
 
 [Serializable]
