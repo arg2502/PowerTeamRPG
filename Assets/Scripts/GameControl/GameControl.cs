@@ -458,9 +458,24 @@ public class GameControl : MonoBehaviour {
                 temp.passiveList = data.heroList[i].passiveList;
                 temp.statusState = (HeroData.Status)data.heroList[i].statusState;
 
-                if (data.heroList[i].weapon != null) { print("Loading Item: " + data.heroList[i].weapon.name); LoadWeaponItem(data.heroList[i].weapon, temp); }
+                if (data.heroList[i].weapon != null) 
+                { 
+                    foreach (GameObject w in weapons)
+                    {
+                        if (w.GetComponent<WeaponItem>().name == data.heroList[i].weapon.name) { temp.weapon = w; }
+                    } 
+                }
                 temp.equipment = new List<GameObject>();
-                if (data.heroList[i].equipment.Count > 0) { for (int j = 0; j < data.heroList[i].equipment.Count; j++) { LoadArmorItem(data.heroList[i].equipment[j], temp); } }
+                if (data.heroList[i].equipment.Count > 0) 
+                { 
+                    for (int j = 0; j < data.heroList[i].equipment.Count; j++)
+                    {
+                        foreach (GameObject e in equipment)
+                        {
+                            if (e.GetComponent<ArmorItem>().name == data.heroList[i].equipment[j].name) { temp.equipment.Add(e); }
+                        }
+                    } 
+                }
 
                 heroList.Add(temp);
             }
