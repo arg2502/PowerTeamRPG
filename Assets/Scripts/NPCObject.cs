@@ -16,6 +16,7 @@ public class NPCObject : OverworldObject {
     public NPCDialogue npcDialogue;
 	List<NPCDialogue> dialogueList;
     int numOfTimesTalked;
+    protected float distToTalk;
 
 	// variable to determine whether the player
 	// can talk to the npc
@@ -35,18 +36,18 @@ public class NPCObject : OverworldObject {
         }
         numOfTimesTalked = 0;
         npcDialogue = dialogueList[numOfTimesTalked];
+        distToTalk = 120.0f;
         
 	}
 
 	// begin conversation when player collides and presses space
 	protected void Update(){
-		if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk && player.gameObject.GetComponent<characterControl>().canMove) {
+		if (distFromPlayer < distToTalk && Input.GetKeyUp(KeyCode.Space) && canTalk && player.gameObject.GetComponent<characterControl>().canMove) {
 			// set which dialogue is spoken based on num of times talked
             // if out of range, say last option in list
             if(numOfTimesTalked >= dialogueList.Count)
             {
                 npcDialogue = dialogueList[dialogueList.Count - 1];
-                //print("Inside if: " + numOfTimesTalked);
             }
             else
             {
@@ -61,16 +62,13 @@ public class NPCObject : OverworldObject {
 					dBoxGO = (GameObject)Instantiate (Resources.Load ("Prefabs/DialogueBoxPrefab"));
 					dBox = dBoxGO.GetComponent<DialogueBox> ();
 					dBox.npc = this;
-                    //dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 				} else {						
 					dBox = GameObject.FindObjectOfType<DialogueBox> ();
 					dBox.npc = this;
-                    //dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 					dBox.EnableBox ();
 				}
 			} else {
 				dBox.npc = this;
-                //dBox.transform.Find("Portrait").GetComponent<SpriteRenderer>().sprite = charImage;
 				dBox.EnableBox ();
 			}
 			
