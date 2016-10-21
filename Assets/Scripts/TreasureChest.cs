@@ -25,7 +25,7 @@ public class TreasureChest : NPCObject {
     // begin conversation when player collides and presses space
     protected void Update()
     {
-        if (distFromPlayer < 150.0f 
+        if (distFromPlayer < distToTalk
             && Input.GetKeyUp(KeyCode.Space) 
             && canTalk 
             && player.gameObject.GetComponent<characterControl>().canMove
@@ -85,7 +85,7 @@ public class TreasureChest : NPCObject {
             // add item to GameControl
             temp = (GameObject)Instantiate(chestItem);
             GameControl.control.AddItem(temp);
-            chestDialogue.dialogue.Add("You got " + chestItem.GetComponent<Item>().name);
+            chestDialogue.dialogue.Add("You got " + chestItem.GetComponent<Item>().name + ".");
         }
 
         npcDialogue.dialogueList.Add(chestDialogue); // add text to dialogue box

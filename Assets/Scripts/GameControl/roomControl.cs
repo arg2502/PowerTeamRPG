@@ -75,7 +75,6 @@ public class roomControl : MonoBehaviour {
                     {
                         if (treasureChests[i].name == rc.chestData[j].chestName)
                         {
-                            print(treasureChests[i].name);
                             treasureChests[i].isOpen = rc.chestData[j].isChestOpen;
                         }
                     }
