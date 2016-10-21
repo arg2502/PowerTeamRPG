@@ -10,6 +10,9 @@ public class ItemUseSubMenu : SubMenu {
     List<GameObject> statChanges; // displays any changes an item may cause
     Item currentItem;
 
+    Color myGreen = new Color(0.2f, 1.0f, 0.4f);
+    Color myRed = new Color(1.0f, 0.2f, 0.4f);
+
 	// Use this for initialization
 	void Start () {
         parent = GameObject.FindObjectOfType<ConsumableItemSubMenu>();
@@ -52,20 +55,20 @@ public class ItemUseSubMenu : SubMenu {
             heroInfo[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(0.0f, -(i * 35.0f), 0.0f);
         }
         heroInfo[0].GetComponent<TextMesh>().text = "Status: " + h.statusState;
-        heroInfo[1].GetComponent<TextMesh>().text = "Hp: " + h.hp + " / " + h.hpMax;
-        heroInfo[2].GetComponent<TextMesh>().text = "Pm: " + h.pm + " / " + h.pmMax;
-        heroInfo[3].GetComponent<TextMesh>().text = "Atk: " + h.atk;
-        heroInfo[4].GetComponent<TextMesh>().text = "Def: " + h.def;
-        heroInfo[5].GetComponent<TextMesh>().text = "Mgk Atk: " + h.mgkAtk;
-        heroInfo[6].GetComponent<TextMesh>().text = "Mgk Def: " + h.mgkDef;
-        heroInfo[7].GetComponent<TextMesh>().text = "Luck: " + h.luck;
-        heroInfo[8].GetComponent<TextMesh>().text = "Evasion: " + h.evasion;
-        heroInfo[9].GetComponent<TextMesh>().text = "Spd: " + h.spd;
+        heroInfo[1].GetComponent<TextMesh>().text = "Hp: " + Mathf.Clamp((h.hp + statChangeNumbers[1]), 0, h.hpMax) + " / " + h.hpMax;
+        heroInfo[2].GetComponent<TextMesh>().text = "Pm: " + Mathf.Clamp((h.pm + statChangeNumbers[2]), 0, h.pmMax) + " / " + h.pmMax;
+        heroInfo[3].GetComponent<TextMesh>().text = "Atk: " + (h.atk + statChangeNumbers[3]);
+        heroInfo[4].GetComponent<TextMesh>().text = "Def: " + (h.def + statChangeNumbers[4]);
+        heroInfo[5].GetComponent<TextMesh>().text = "Mgk Atk: " + (h.mgkAtk + statChangeNumbers[5]);
+        heroInfo[6].GetComponent<TextMesh>().text = "Mgk Def: " + (h.mgkDef + statChangeNumbers[6]);
+        heroInfo[7].GetComponent<TextMesh>().text = "Luck: " + (h.luck + statChangeNumbers[7]);
+        heroInfo[8].GetComponent<TextMesh>().text = "Evasion: " + (h.evasion + statChangeNumbers[8]);
+        heroInfo[9].GetComponent<TextMesh>().text = "Spd: " + (h.spd + statChangeNumbers[9]);
         for (int i = 10; (i - 10) < h.passiveList.Count; i++) { heroInfo[i].GetComponent<TextMesh>().text = h.passiveList[i - 10].Name; }
     }
 
     // this method exists to be more efficient with memory - all items minimally have these 10 attributes
-    public void UpdateStatChanges(HeroData h)
+    public void SetStatChanges(HeroData h)
     {
         // draw the current item from the correct list of items
         if (GameControl.control.whichInventory == "consumables") 
@@ -82,19 +85,11 @@ public class ItemUseSubMenu : SubMenu {
             statChangeNumbers[7] = currentItem.luckChange;
             statChangeNumbers[8] = currentItem.evadeChange;
             statChangeNumbers[9] = currentItem.spdChange;
-
-            for (int i = 1; i < statChangeNumbers.Count; i++)
-            {
-                if (statChangeNumbers[i] > 0) { statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")"; }
-                else if (statChangeNumbers[i] < 0) { statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")"; }
-                else { statChanges[i].GetComponent<TextMesh>().text = ""; }
-            }
         }
         //else if (GameControl.control.whichInventory == "reusables") { currentItem = GameControl.control.reusables[parent.itemIndex].GetComponent<Item>(); }
         else if (GameControl.control.whichInventory == "weapons") 
         { 
             currentItem = GameControl.control.weapons[parent.itemIndex].GetComponent<Item>();
-            print(parent.itemIndex);
 
             Item heroWeapon = null;
             if (h.weapon != null) { heroWeapon = h.weapon.GetComponent<Item>(); }
@@ -110,13 +105,6 @@ public class ItemUseSubMenu : SubMenu {
                 statChangeNumbers[7] = currentItem.luckChange;
                 statChangeNumbers[8] = currentItem.evadeChange;
                 statChangeNumbers[9] = currentItem.spdChange;
-                
-                for (int i = 1; i < statChangeNumbers.Count; i++)
-                {
-                    if (statChangeNumbers[i] > 0) { statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")"; }
-                    else if (statChangeNumbers[i] < 0) { statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")"; }
-                    else { statChanges[i].GetComponent<TextMesh>().text = ""; }
-                }
             }
             else
             {
@@ -129,16 +117,68 @@ public class ItemUseSubMenu : SubMenu {
                 statChangeNumbers[7] = currentItem.luckChange - heroWeapon.luckChange;
                 statChangeNumbers[8] = currentItem.evadeChange - heroWeapon.evadeChange;
                 statChangeNumbers[9] = currentItem.spdChange - heroWeapon.spdChange;
-
-                for (int i = 1; i < statChangeNumbers.Count; i++)
-                {
-                    if (statChangeNumbers[i] > 0) { statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")"; }
-                    else if (statChangeNumbers[i] < 0) { statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")"; }
-                    else { statChanges[i].GetComponent<TextMesh>().text = ""; }
-                }
             }
         }
-        else if (GameControl.control.whichInventory == "armor") { currentItem = GameControl.control.equipment[parent.itemIndex].GetComponent<Item>(); }
+        else if (GameControl.control.whichInventory == "armor")
+        { 
+            currentItem = GameControl.control.equipment[parent.itemIndex].GetComponent<Item>();
+
+            ArmorItem relevantItem = null; // this will need to be of the same type as the current item (Ex: helmet, gloves, etc)
+            for (int i = 0; i < h.equipment.Count; i++) 
+            {
+                if (h.equipment[i].GetComponent<ArmorItem>().type == currentItem.GetComponent<ArmorItem>().type) { relevantItem = h.equipment[i].GetComponent<ArmorItem>(); }
+            }
+
+            if (relevantItem == null)
+            {
+                statChangeNumbers[1] = currentItem.hpChange;
+                statChangeNumbers[2] = currentItem.pmChange;
+                statChangeNumbers[3] = currentItem.atkChange;
+                statChangeNumbers[4] = currentItem.defChange;
+                statChangeNumbers[5] = currentItem.mgkAtkChange;
+                statChangeNumbers[6] = currentItem.mgkDefChange;
+                statChangeNumbers[7] = currentItem.luckChange;
+                statChangeNumbers[8] = currentItem.evadeChange;
+                statChangeNumbers[9] = currentItem.spdChange;
+            }
+            else
+            {
+                statChangeNumbers[1] = currentItem.hpChange - relevantItem.hpChange;
+                statChangeNumbers[2] = currentItem.pmChange - relevantItem.pmChange;
+                statChangeNumbers[3] = currentItem.atkChange - relevantItem.atkChange;
+                statChangeNumbers[4] = currentItem.defChange - relevantItem.defChange;
+                statChangeNumbers[5] = currentItem.mgkAtkChange - relevantItem.mgkAtkChange;
+                statChangeNumbers[6] = currentItem.mgkDefChange - relevantItem.mgkDefChange;
+                statChangeNumbers[7] = currentItem.luckChange - relevantItem.luckChange;
+                statChangeNumbers[8] = currentItem.evadeChange - relevantItem.evadeChange;
+                statChangeNumbers[9] = currentItem.spdChange - relevantItem.spdChange;
+            }
+        }
+    }
+
+    void UpdateStatChanges()
+    {
+        for (int i = 1; i < statChangeNumbers.Count; i++)
+        {
+            if (statChangeNumbers[i] > 0)
+            {
+                statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")";
+                statChanges[i].GetComponent<TextMesh>().color = myGreen;
+                heroInfo[i].GetComponent<TextMesh>().color = myGreen;
+            }
+            else if (statChangeNumbers[i] < 0)
+            {
+                statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")";
+                statChanges[i].GetComponent<TextMesh>().color = myRed;
+                heroInfo[i].GetComponent<TextMesh>().color = myRed;
+            }
+            else
+            {
+                statChanges[i].GetComponent<TextMesh>().text = "";
+                statChanges[i].GetComponent<TextMesh>().color = Color.white;
+                heroInfo[i].GetComponent<TextMesh>().color = Color.white;
+            }
+        }
     }
 
     public void EnableSubMenu()
@@ -147,8 +187,9 @@ public class ItemUseSubMenu : SubMenu {
         parent.im.descriptionText.GetComponent<Renderer>().enabled = false;
 
         // create the text objects that will show the hero's stats
+        SetStatChanges(GameControl.control.heroList[selectedIndex]);
         InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]);
-        UpdateStatChanges(GameControl.control.heroList[selectedIndex]);
+        //UpdateStatChanges(GameControl.control.heroList[selectedIndex]);
         foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = true; }
         foreach (GameObject go in statChanges) { go.GetComponent<Renderer>().enabled = true; }
 
@@ -159,8 +200,9 @@ public class ItemUseSubMenu : SubMenu {
 	void Update () {
         if (isVisible && frameDelay > 0) 
         {
+            UpdateStatChanges();
             //parent.im.descriptionText.GetComponent<TextMesh>().text = buttonDescription[selectedIndex];
-            if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) { InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]); UpdateStatChanges(GameControl.control.heroList[selectedIndex]); }
+            if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) { SetStatChanges(GameControl.control.heroList[selectedIndex]); InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]); }
             if (Input.GetKeyUp(KeyCode.Backspace) || Input.GetKeyUp(KeyCode.Q)) 
             {
                 parent.ActivateMenu();

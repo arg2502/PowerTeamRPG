@@ -147,9 +147,7 @@ public class InventoryMenu : Menu {
         {
             base.Update();
             //update which position the submenu should appear in
-            if (GameControl.control.whichInventory == "consumables") { consumeSub.parentPos = buttonArray[selectedIndex].transform; }
-            else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor") { /* do stuff here*/ }
-            else { /* do key item stuff here*/ }
+            consumeSub.parentPos = buttonArray[selectedIndex].transform;
 
             //update which item is selected for sub menus
             consumeSub.itemIndex = selectedIndex + scrollIndex;

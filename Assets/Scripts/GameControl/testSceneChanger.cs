@@ -37,6 +37,8 @@ public class testSceneChanger : MonoBehaviour {
             GameControl.control.heroList[1].skillsList = new List<Skill>();
             GameControl.control.heroList[1].spellsList = new List<Spell>();
             GameControl.control.heroList[1].passiveList = new List<Passive>();
+            GameControl.control.heroList[1].weapon = null;
+            GameControl.control.heroList[1].equipment = new List<GameObject>();
 
             // the below code would probably be found in the "Add Spell" functions
             Spell hellfire = new Spell();

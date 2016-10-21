@@ -8,6 +8,7 @@ public class ArmorItem : Item {
 
     //Attributes
     public enum Type { head, chest, hands, misc};
+    public Type type;
 
 	// Use this for initialization
 	void Start () {
