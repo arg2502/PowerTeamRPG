@@ -31,8 +31,25 @@ public class ItemUseSubMenu : SubMenu {
 
         base.Start();
 
-        // create the text objects that will show the hero's stats
-        //InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]);
+        // disable the buttons for any fallen heroes unless item can be used on the dead
+        if (GameControl.control.whichInventory == "consumables")
+        {
+            // this switch statement will separate items that can be used on fallen heroes from items which cannot
+            // the default case will handle every item not usable on fallen enemies
+            // all other cases will have the name of specific items (Ex: "Revive")
+            switch (GameControl.control.consumables[parent.itemIndex].GetComponent<Item>().name)
+            {
+                default:
+                    for (int i = 0; i < GameControl.control.heroList.Count; i++)
+                    {
+                        if (GameControl.control.heroList[i].statusState == HeroData.Status.dead || GameControl.control.heroList[i].statusState == HeroData.Status.overkill)
+                        {
+                            buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                        }
+                    }
+                        break;
+            }
+        }
 
         // create the text objects that will show the items' effects
         statChanges = new List<GameObject>();
@@ -194,6 +211,22 @@ public class ItemUseSubMenu : SubMenu {
         foreach (GameObject go in statChanges) { go.GetComponent<Renderer>().enabled = true; }
 
         base.EnableSubMenu();
+    }
+
+    // deal with the button pressed
+    public override void ButtonAction(string label)
+    {
+        if (GameControl.control.whichInventory == "consumables") { currentItem.GetComponent<ConsumableItem>().Use(GameControl.control.heroList[selectedIndex]); }
+        else if (GameControl.control.whichInventory == "weapons") { currentItem.GetComponent<WeaponItem>().Use(GameControl.control.heroList[selectedIndex]); }
+        else if (GameControl.control.whichInventory == "armor") { currentItem.GetComponent<ArmorItem>().Use(GameControl.control.heroList[selectedIndex]); }
+
+        // after item use, close all submenus
+        parent.ActivateMenu();
+        foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = false; }
+        foreach (GameObject go in statChanges) { go.GetComponent<Renderer>().enabled = false; }
+        DisableSubMenu();
+        parent.im.ActivateMenu();
+        parent.DisableSubMenu();
     }
 	
 	// Update is called once per frame

@@ -71,21 +71,10 @@ public class InventoryMenu : Menu {
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
         // Create the appropriate sub menu
-        //if (GameControl.control.whichInventory == "consumables")
-        //{
-            GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
-            consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
-            consumeSub.parentPos = buttonArray[selectedIndex].transform;
-            consumeSub.itemIndex = selectedIndex + scrollIndex;
-        //}
-        //else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
-        //{
-            // do stuff here
-        //}
-        //else
-        //{
-            // do key item stuff here
-        //}
+        GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
+        consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
+        consumeSub.parentPos = buttonArray[selectedIndex].transform;
+        consumeSub.itemIndex = selectedIndex + scrollIndex;
 
         //call change text method to correctly size text and avoid a certain bug
         ChangeText();
@@ -128,17 +117,63 @@ public class InventoryMenu : Menu {
     public void ActivateMenu()
     {
         isActive = true;
+        UpdateMenu();
         for (int i = 0; i < buttonArray.Length; i++)
         {
             if (i != selectedIndex && i < itemList.Count) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
         }
     }
+
     public override void ButtonAction(string label)
     {
-        //if (GameControl.control.whichInventory == "consumables") { consumeSub.EnableSubMenu(); }
-        //else if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor") { /* do stuff here*/ }
-        //else { /* do key item stuff here*/ }
         consumeSub.EnableSubMenu();
+    }
+
+    public void UpdateMenu()
+    {
+        contentArray = new List<string>();
+        itemList = new List<Item>();
+
+        // set the correct list of items
+        if (GameControl.control.whichInventory == "consumables")
+        {
+            foreach (GameObject go in GameControl.control.consumables) { itemList.Add(go.GetComponent<ConsumableItem>()); }
+        }
+        else if (GameControl.control.whichInventory == "reusables")
+        {
+            foreach (GameObject go in GameControl.control.reusables) { itemList.Add(go.GetComponent<ReusableItem>()); }
+        }
+        else if (GameControl.control.whichInventory == "weapons")
+        {
+            foreach (GameObject go in GameControl.control.weapons) { itemList.Add(go.GetComponent<WeaponItem>()); }
+        }
+        else if (GameControl.control.whichInventory == "armor")
+        {
+            foreach (GameObject go in GameControl.control.equipment) { itemList.Add(go.GetComponent<ArmorItem>()); }
+        }
+
+        // set the content array to the list of item names
+        for (int i = 0; i < itemList.Count; i++) { contentArray.Add(itemList[i].name); }
+
+        // if all of the items are gone, leave the scene
+        if (contentArray.Count == 0) { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); return; }
+
+        // make sure the selected index remains in range
+        if (selectedIndex >= contentArray.Count) 
+        {
+            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled;
+            selectedIndex--; 
+            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+        }
+        //update the button labels
+        for (int i = 0; i < numOfRow; i++) 
+        {
+            if (i < contentArray.Count) { buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text = contentArray[i]; }
+            else { buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<TextMesh>().text = ""; }
+        }
+
+        //call change text method to correctly size text and avoid a certain bug
+        ChangeText();
     }
 
 	// Update is called once per frame

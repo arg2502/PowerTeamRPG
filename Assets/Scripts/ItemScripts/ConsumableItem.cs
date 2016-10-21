@@ -12,9 +12,50 @@ public class ConsumableItem : Item {
 	
 	}
 
-    public void Use(HeroData hero)
+    // out of battle use method
+    public void Use(HeroData target)
     {
-        // out of battle use method
+        switch (name)
+        {
+            case "Lesser Restorative":
+                target.hp += 20;
+                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
+                break;
+            case "Restorative":
+                target.hp += 40;
+                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
+                break;
+            case "Gratuitous Restorative":
+                target.hp += 60;
+                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
+                break;
+            case "Terminal Restorative":
+                target.hp = target.hpMax;
+                break;
+            case "Lesser Elixir":
+                target.pm += 20;
+                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                break;
+            case "Elixir":
+                target.pm += 40;
+                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                break;
+            case "Gratuitous Elixir":
+                target.pm += 60;
+                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                break;
+            case "Terminal Elixir":
+                target.pm = target.pmMax;
+                break;
+            default:
+                print(name + " does not have a case!");
+                break;
+        }
+
+        // Always decrease quantity by 1 since this is the consumable item class
+        quantity--;
+        // if quantity hits 0, remove it from the inventory
+        if (quantity <= 0) { GameControl.control.consumables.Remove(this.gameObject); }
     }
 
     public void Use(Denigen target)

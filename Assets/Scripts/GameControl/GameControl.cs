@@ -606,7 +606,7 @@ public class HeroData
     public List<Spell> spellsList;
     public List<Passive> passiveList;
     // status effect
-    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
     public Status statusState;
     // Need a creative way to store which items are equipped since items are non-serializable
     public GameObject weapon;
@@ -627,7 +627,7 @@ public class SavableHeroData
     public List<Spell> spellsList;
     public List<Passive> passiveList;
     // status effect
-    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead };
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
     public Status statusState;
     // Need a creative way to store which items are equipped since items are non-serializable
     public ItemData weapon;

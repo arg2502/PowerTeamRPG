@@ -37,6 +37,6 @@ public class Item : MonoBehaviour {
 
     public void Use()
     {
-        // items will have there own overrides
+        // items will have their own overrides
     }
 }
