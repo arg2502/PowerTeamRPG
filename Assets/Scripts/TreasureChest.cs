@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class TreasureChest : NPCObject {
     
     public bool isOpen; // check if the chest has been opened
-    Sprite openSprite;
+    public Sprite openSprite;
     // three types of chest
     public int amountOfGold; // Will only be greater than zero if the chest gives gold
     public bool hasKey; // set to true if chest contains key
@@ -20,7 +20,7 @@ public class TreasureChest : NPCObject {
         chestDialogue.dialogue = new List<string>();
         chestDialogue.charImages = new List<Sprite>();
         npcDialogue.title.Add("Treasure Chest");
-        openSprite = Resources.Load("Sprites/disabledButton", typeof(Sprite)) as Sprite;
+        //openSprite = Resources.Load("Sprites/disabledButton", typeof(Sprite)) as Sprite;
     }
     // begin conversation when player collides and presses space
     protected void Update()
