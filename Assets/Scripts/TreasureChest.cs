@@ -76,7 +76,8 @@ public class TreasureChest : NPCObject {
         // if no gold, then check for key
         else if(hasKey)
         {
-            // add key - LATER
+            // add key
+            GameControl.control.totalKeys++;
             chestDialogue.dialogue.Add("You got a key.");
         }
         // if no key, then the chest holds an item

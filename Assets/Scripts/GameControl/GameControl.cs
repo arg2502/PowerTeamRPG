@@ -18,6 +18,7 @@ public class GameControl : MonoBehaviour {
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
+    public int totalKeys;
     //items
     public List<GameObject> consumables;// = new List<ConsumableItem>() { };
     public List<GameObject> equipment;
@@ -63,6 +64,7 @@ public class GameControl : MonoBehaviour {
             control = this;
 
             totalGold = 0;
+            totalKeys = 0;
             //test code for creating Jethro -- based on level 1 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
             heroList.Add(new HeroData());
@@ -241,6 +243,7 @@ public class GameControl : MonoBehaviour {
         //Save which scene the player is in
         data.currentScene = currentScene;
         data.totalGold = totalGold;
+        data.totalKeys = totalKeys;
 
         // Save all of the player's inventory
         foreach (GameObject i in consumables)
@@ -311,6 +314,11 @@ public class GameControl : MonoBehaviour {
                 {
                     rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
                     rcd.chestData[i].chestName = rc.treasureChests[i].name;
+                }
+                for (int i = 0; i < rc.doorsInRoom.Count; i++)
+                {
+                    rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
+                    rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
                 }
             }
         }
@@ -492,6 +500,7 @@ public class GameControl : MonoBehaviour {
             currentPosition = new Vector2(data.posX, data.posY);
             taggedStatue = data.taggedStatue;
             totalGold = data.totalGold;
+            totalKeys = data.totalKeys;
 
             // put all interactable item data back
             rooms = data.rooms;
@@ -604,6 +613,7 @@ public class GameControl : MonoBehaviour {
 class PlayerData
 {
     public int totalGold; // the player's total gold
+    public int totalKeys;
     //items -- add later
     public string currentScene; // the place where the currently is (outside of battle)
     public string savedScene; // the room where the player last saved
@@ -679,6 +689,7 @@ public class RoomControlData
     public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
     //also store treasure boxes, doors, switches, antyhing important
     public List<TreasureData> chestData = new List<TreasureData>();
+    public List<DoorData> doorData = new List<DoorData>();
 }
 
 [Serializable]
@@ -687,7 +698,12 @@ public class TreasureData
     public bool isChestOpen;
     public string chestName;
 }
-
+[Serializable]
+public class DoorData
+{
+    public bool isLocked;
+    public string doorName;
+}
 [Serializable]
 public class SerializableVector3
 {

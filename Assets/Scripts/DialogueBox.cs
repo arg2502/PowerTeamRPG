@@ -125,7 +125,11 @@ public class DialogueBox : MonoBehaviour {
             }
             else if (isResponse)
             {
-                WriteResponseText(npc.npcDialogue.responseList);
+                 WriteResponseText(npc.npcDialogue.responseList);                
+            }
+            else if(!isAsking)
+            {
+                DisableBox();
             }
 		}
 	
@@ -145,8 +149,15 @@ public class DialogueBox : MonoBehaviour {
 
         titleText.text = npc.npcDialogue.title[outerListPosition];
         
-            // display at correct location
+            // display at correct locationif (titleText.text == "")
+        if(titleText.text == "")
+        {
+            textPosition = new Vector3(mainCamera.transform.position.x + (dialogueOffset.x + titleOffset.x), mainCamera.transform.position.y + (dialogueOffset.y + titleOffset.y), -100);
+        }
+        else
+        {
             textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+        }
         spokenTextGO.transform.position = textPosition;
 
         titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
@@ -181,19 +192,7 @@ public class DialogueBox : MonoBehaviour {
                 // disable text and box when list is done
                 else if(!isAsking || isResponse)
                 {
-                    //npc.npcDialogue.dMenu.enabled = false;
-                    isResponse = false;
-                    isDialogue = true;
-                    npc.canTalk = true;
-                    npc = null;
-                    spokenText.GetComponent<Renderer>().enabled = false;
-                    titleText.GetComponent<Renderer>().enabled = false;
-                    sr.enabled = false;
-                    portraitSr.sprite = null;
-                    portraitSr.enabled = false;
-                    //hero.canMove = true;
-                    hero.ToggleMovement();
-                    enabled = false;
+                    DisableBox();
 
                 }
             }
@@ -232,7 +231,14 @@ public class DialogueBox : MonoBehaviour {
         titleText.text = npc.npcDialogue.responseTitle;
 
         // display at correct location
+        if (titleText.text == "")
+        {
+            textPosition = new Vector3(mainCamera.transform.position.x + (dialogueOffset.x + titleOffset.x), mainCamera.transform.position.y + (dialogueOffset.y + titleOffset.y), -100);
+        }
+        else
+        {
             textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+        }
         spokenTextGO.transform.position = textPosition;
 
         titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
@@ -254,18 +260,7 @@ public class DialogueBox : MonoBehaviour {
                 // disable text and box when list is done
                 else if (!isAsking || isResponse)
                 {
-                    isResponse = false;
-                    isDialogue = true;
-                    npc.canTalk = true;
-                    npc = null;
-                    spokenText.GetComponent<Renderer>().enabled = false;
-                    titleText.GetComponent<Renderer>().enabled = false;
-                    sr.enabled = false;
-                    portraitSr.sprite = null;
-                    portraitSr.enabled = false;
-                    //hero.canMove = true;
-                    hero.ToggleMovement();
-                    enabled = false;
+                    DisableBox();
 
                 }
             }
@@ -341,11 +336,8 @@ public class DialogueBox : MonoBehaviour {
                 isAsking = true;
                 npc.npcDialogue.dMenu.enabled = true;
                 npc.npcDialogue.dMenu.EnableQuestionMenu();
-
-
             }
         }
-
 	}
 
 	// turn box on when player wants to talk
@@ -395,4 +387,20 @@ public class DialogueBox : MonoBehaviour {
 		StartCoroutine (ScrollText (npc.npcDialogue.dialogueList[outerListPosition].dialogue [innerListPosition]));
 
 	}
+    void DisableBox()
+    {
+        //npc.npcDialogue.dMenu.enabled = false;
+        isResponse = false;
+        isDialogue = true;
+        npc.canTalk = true;
+        npc = null;
+        spokenText.GetComponent<Renderer>().enabled = false;
+        titleText.GetComponent<Renderer>().enabled = false;
+        sr.enabled = false;
+        portraitSr.sprite = null;
+        portraitSr.enabled = false;
+        //hero.canMove = true;
+        hero.ToggleMovement();
+        enabled = false;
+    }
 }

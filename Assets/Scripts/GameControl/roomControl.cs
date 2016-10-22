@@ -19,6 +19,7 @@ public class roomControl : MonoBehaviour {
     public int maxEnemiesPerBattle;
     public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
     public List<TreasureChest> treasureChests = new List<TreasureChest>();
+    public List<DoorQuestion> doorsInRoom = new List<DoorQuestion>();
 	// Use this for initialization
 	void Start () {
         //tell the gameControl object what it needs to know
@@ -32,6 +33,10 @@ public class roomControl : MonoBehaviour {
         foreach(TreasureChest tc in GameObject.FindObjectsOfType<TreasureChest>())
         {
             treasureChests.Add(tc);
+        }
+        foreach(DoorQuestion dq in GameControl.FindObjectsOfType<DoorQuestion>())
+        {
+            doorsInRoom.Add(dq);
         }
         //create the appropriate amount of enemies
         if (!GameControl.control.isPaused)
@@ -79,6 +84,17 @@ public class roomControl : MonoBehaviour {
                         }
                     }
                 }
+                // sync doors
+                for (int i = 0; i < doorsInRoom.Count; i++)
+                {
+                    for (int j = 0; j < doorsInRoom.Count; j++)
+                    {
+                        if (doorsInRoom[i].name == rc.doorData[j].doorName)
+                        {
+                            doorsInRoom[i].gameObject.SetActive(rc.doorData[j].isLocked);
+                        }
+                    }
+                }
                 
                 return;
             }
@@ -99,6 +115,13 @@ public class roomControl : MonoBehaviour {
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData[i].isChestOpen = treasureChests[i].isOpen;
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData[i].chestName = treasureChests[i].name;
+        }
+        for(int i = 0; i < doorsInRoom.Count; i++)
+        {
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData.Add(new DoorData());
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData[i].isLocked = doorsInRoom[i].gameObject.activeSelf;
+            GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData[i].doorName = doorsInRoom[i].name;
+
         }
 	}
 	

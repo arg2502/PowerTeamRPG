@@ -186,8 +186,6 @@ public class Menu : MonoBehaviour {
                 buttonArray[i].GetComponent<MyButton>().sr.sortingOrder = 900;
                 buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<Renderer>().sortingOrder = 900;
             }
-
-        
 	}
 
     protected void PressButton(KeyCode button)

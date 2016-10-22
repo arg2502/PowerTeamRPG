@@ -9,7 +9,7 @@ public class NPCQuestion : NPCDialogue {
     //List<string> response;
     public List<ListOfStrings> possibleResponses;
 
-    void Start()
+    public void Start()
     {
         dMenu = GetComponent<DialogueMenu>();
         if (dMenu)
@@ -17,5 +17,8 @@ public class NPCQuestion : NPCDialogue {
             dMenu.contentArray = answerList;
         }
     }
+    public virtual void ResponseAction(int responseIndex) { }
+    
+
 	
 }

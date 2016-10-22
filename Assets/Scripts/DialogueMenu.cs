@@ -32,13 +32,19 @@ public class DialogueMenu : Menu {
                 if (buttonArray[i].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.hover)
                 {
                     // set the dialogue box text to corresponding position in response list
-                    npc.responseList = npc.possibleResponses[i];
+                    npc.ResponseAction(i);
                     dBox.isAsking = false;
                     dBox.isDialogue = false;
-                    dBox.isResponse = true;
-                    dBox.outerListPosition = 0;
-                    dBox.innerListPosition = 0;
-                    StartCoroutine(dBox.ScrollText(npc.responseList.dialogue[dBox.innerListPosition]));
+
+                    // if there are any responses, set it up here
+                    if (npc.possibleResponses.Count > 0)
+                    {
+                        npc.responseList = npc.possibleResponses[i];
+                        dBox.isResponse = true;
+                        dBox.outerListPosition = 0;
+                        dBox.innerListPosition = 0;
+                        StartCoroutine(dBox.ScrollText(npc.responseList.dialogue[dBox.innerListPosition]));
+                    }
                     DisableQuestionMenu();
                 }
             }
@@ -60,7 +66,7 @@ public class DialogueMenu : Menu {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
             MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y - (250 - b.height) + (i * -(b.height + b.height / 2)));
+            buttonArray[i].transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y - (375 - b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
