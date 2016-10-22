@@ -33,7 +33,7 @@ public class enemyControl : OverworldObject {
     roomControl rc; // a reference to the roomControl object, which will dictate enemy specifics
     int numOfEnemies; // number of enemies this object carries
     List<Enemy> enemies; // the enemies this object carries
-
+    
 	// Use this for initialization
 	void Start () {
 
@@ -58,6 +58,36 @@ public class enemyControl : OverworldObject {
                 dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
                 + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
             } while (dist <= safeDistance + 100.0f);
+
+            // if both top and bottom are both colliding with object, it's stuck
+            RaycastHit2D topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
+            RaycastHit2D bottomHit = Physics2D.Raycast(transform.position, directions[3], 30.0f, mask);
+            
+            if(topHit.collider != null
+                && bottomHit.collider != null)
+            {
+                //print("inside if: " + topHit.collider);
+                OverworldObject owo = topHit.collider.GetComponent<OverworldObject>();
+                while(topHit.collider == owo.GetComponent<Collider2D>()
+                    || bottomHit.collider == owo.GetComponent<Collider2D>())
+                {
+                    
+                    transform.position += owo.offset;
+                    print(name + ": " + transform.position);
+                    topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
+                    bottomHit = Physics2D.Raycast(transform.position, directions[3], 30.0f, mask);
+                    if (topHit.collider == null
+                        && bottomHit.collider == null) { break; }
+                    else if(topHit.collider != null)
+                    {
+                        owo = topHit.collider.GetComponent<OverworldObject>();
+                    }
+                    else if(bottomHit.collider != null)
+                    {
+                        owo = bottomHit.collider.GetComponent<OverworldObject>();
+                    }
+                }
+            }
         }
         
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
@@ -165,7 +195,7 @@ public class enemyControl : OverworldObject {
         if (topHit.collider == null && bottomHit.collider == null)
         {
             transform.Translate(speed);
-        }
+        }        
         else
         {
             state = State.coolDown;

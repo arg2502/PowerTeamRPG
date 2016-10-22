@@ -6,7 +6,7 @@ public class OverworldObject : MonoBehaviour {
     protected SpriteRenderer sr;
     public LayerMask mask;
     public bool canMove = true;
-
+    public Vector3 offset = new Vector3(256.0f, 0.0f, 0.0f); // offset for stuck enemies, default: right
 	// Use this for initialization
 	protected void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
