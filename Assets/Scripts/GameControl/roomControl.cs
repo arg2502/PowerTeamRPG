@@ -10,6 +10,7 @@ public class roomControl : MonoBehaviour {
 
     // Attributes dealing with enemies
     public int areaIDNumber; // helps the gameControl obj know what data to synch
+    public int dungeonID = -1;
     public int areaLevel; // the locked level of enemies in the area
     public int numOfEnemies; //number of enemies walking around
     public List<Enemy> possibleEnemies;// Array of possible enemy types
@@ -20,6 +21,7 @@ public class roomControl : MonoBehaviour {
     public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
     public List<TreasureChest> treasureChests = new List<TreasureChest>();
     public List<DoorQuestion> doorsInRoom = new List<DoorQuestion>();
+
 	// Use this for initialization
 	void Start () {
         //tell the gameControl object what it needs to know
@@ -95,13 +97,25 @@ public class roomControl : MonoBehaviour {
                         }
                     }
                 }
-                
+                // set the amount of keys equal to the dungeon you are in
+                // if < 0 (-1), then you are not in a dungeon. Set keys to 0
+                if (dungeonID < 0)
+                {
+                    GameControl.control.totalKeys = 0;
+                }
+                // set keys to the amount that you previously had in the current dungeon
+                else
+                {
+                    GameControl.control.totalKeys = GameControl.control.keysObtainedInDungeons[dungeonID];
+                }
                 return;
             }
         }
         // if we're here, this room must not be currently tracked. Lets add it
         GameControl.control.rooms.Add(new RoomControlData());
         GameControl.control.rooms[GameControl.control.rooms.Count - 1].areaIDNumber = areaIDNumber;
+        GameControl.control.rooms[GameControl.control.rooms.Count - 1].dungeonID = dungeonID;
+
         // add the necessary data to store all movable object positions
         foreach (MovableOverworldObject m in movables)
         {

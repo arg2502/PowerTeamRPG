@@ -19,6 +19,8 @@ public class GameControl : MonoBehaviour {
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
     public int totalKeys;
+    public List<int> keysObtainedInDungeons = new List<int>();
+    public int numOfDungeons;
     //items
     public List<GameObject> consumables;// = new List<ConsumableItem>() { };
     public List<GameObject> equipment;
@@ -65,6 +67,14 @@ public class GameControl : MonoBehaviour {
 
             totalGold = 0;
             totalKeys = 0;
+
+            // create list keeping track of dungeon keys, start off at zero keys
+            numOfDungeons = 1;
+            for (int i = 0; i < numOfDungeons; i++)
+            {
+                keysObtainedInDungeons.Add(0);
+            }
+
             //test code for creating Jethro -- based on level 1 stats
             //We will have these stats stored in HeroData objs for consistency between rooms
             heroList.Add(new HeroData());
@@ -243,7 +253,10 @@ public class GameControl : MonoBehaviour {
         //Save which scene the player is in
         data.currentScene = currentScene;
         data.totalGold = totalGold;
-        data.totalKeys = totalKeys;
+        data.keysObtainedInDungeons = keysObtainedInDungeons;
+        //data.totalKeys = totalKeys;
+        
+
 
         // Save all of the player's inventory
         foreach (GameObject i in consumables)
@@ -319,6 +332,13 @@ public class GameControl : MonoBehaviour {
                 {
                     rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
                     rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
+                }
+                // save which dungeon the player is in
+                // if >= 0, save the keys
+                rcd.dungeonID = rc.dungeonID;
+                if (rcd.dungeonID >= 0)
+                {
+                    keysObtainedInDungeons[rcd.dungeonID] = totalKeys;
                 }
             }
         }
@@ -500,10 +520,26 @@ public class GameControl : MonoBehaviour {
             currentPosition = new Vector2(data.posX, data.posY);
             taggedStatue = data.taggedStatue;
             totalGold = data.totalGold;
-            totalKeys = data.totalKeys;
-
+            keysObtainedInDungeons = data.keysObtainedInDungeons;
             // put all interactable item data back
             rooms = data.rooms;
+
+            // load keys
+            roomControl rc = GameObject.FindObjectOfType<roomControl>();
+            foreach(RoomControlData rcd in rooms)
+            {
+                if(rcd.dungeonID == rc.dungeonID)
+                {
+                    if(rcd.dungeonID < 0)
+                    {
+                        totalKeys = 0;
+                    }
+                    else
+                    {
+                        totalKeys = keysObtainedInDungeons[rcd.dungeonID];
+                    }
+                }
+            }
         }
     }
 
@@ -613,7 +649,7 @@ public class GameControl : MonoBehaviour {
 class PlayerData
 {
     public int totalGold; // the player's total gold
-    public int totalKeys;
+    public List<int> keysObtainedInDungeons = new List<int>();
     //items -- add later
     public string currentScene; // the place where the currently is (outside of battle)
     public string savedScene; // the room where the player last saved
@@ -686,6 +722,7 @@ public class ItemData
 public class RoomControlData
 {
     public int areaIDNumber;
+    public int dungeonID;
     public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
     //also store treasure boxes, doors, switches, antyhing important
     public List<TreasureData> chestData = new List<TreasureData>();

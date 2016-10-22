@@ -27,8 +27,8 @@ public class DoorQuestion : NPCQuestion {
         // if the response is the "Yes"(0), unlock the door
         if(responseIndex == 0)
         {
-            // disable door
-            gameObject.SetActive(false);
+            gameObject.SetActive(false); // disable door
+            GameControl.control.totalKeys--; // remove key
         }
     }
 }

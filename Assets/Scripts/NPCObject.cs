@@ -14,7 +14,7 @@ public class NPCObject : OverworldObject {
 	protected GameObject dBoxGO;
 
     public NPCDialogue npcDialogue;
-	List<NPCDialogue> dialogueList;
+	protected List<NPCDialogue> dialogueList;
     int numOfTimesTalked;
     protected float distToTalk;
 
@@ -43,17 +43,9 @@ public class NPCObject : OverworldObject {
 	// begin conversation when player collides and presses space
 	protected void Update(){
 		if (distFromPlayer < distToTalk && Input.GetKeyUp(KeyCode.Space) && canTalk && player.gameObject.GetComponent<characterControl>().canMove) {
-			// set which dialogue is spoken based on num of times talked
-            // if out of range, say last option in list
-            if(numOfTimesTalked >= dialogueList.Count)
-            {
-                npcDialogue = dialogueList[dialogueList.Count - 1];
-            }
-            else
-            {
-                npcDialogue = dialogueList[numOfTimesTalked];
-                numOfTimesTalked++;
-            }
+            
+            // set which dialogue is spoken
+            SetDialogue();
             
             canTalk = false;
 			// if first time, set equal to existing box
@@ -79,4 +71,18 @@ public class NPCObject : OverworldObject {
 		distFromPlayer = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
 			+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 	}
+    protected virtual void SetDialogue()
+    {
+        // set which dialogue is spoken based on num of times talked
+        // if out of range, say last option in list
+        if (numOfTimesTalked >= dialogueList.Count)
+        {
+            npcDialogue = dialogueList[dialogueList.Count - 1];
+        }
+        else
+        {
+            npcDialogue = dialogueList[numOfTimesTalked];
+            numOfTimesTalked++;
+        }
+    }
 }
