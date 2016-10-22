@@ -17,19 +17,19 @@ public class InventoryMenu : Menu {
         // set the correct list of items
         if (GameControl.control.whichInventory == "consumables")
         {
-            foreach (GameObject go in GameControl.control.consumables) { itemList.Add(go.GetComponent<ConsumableItem>());}
+            foreach (GameObject go in GameControl.control.consumables) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ConsumableItem>()); } }
         }
         else if (GameControl.control.whichInventory == "reusables")
         {
-            foreach (GameObject go in GameControl.control.reusables) { itemList.Add(go.GetComponent<ReusableItem>()); }
+            foreach (GameObject go in GameControl.control.reusables) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ReusableItem>()); } }
         }
         else if (GameControl.control.whichInventory == "weapons")
         {
-            foreach (GameObject go in GameControl.control.weapons) { itemList.Add(go.GetComponent<WeaponItem>()); }
+            foreach (GameObject go in GameControl.control.weapons) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<WeaponItem>()); } }
         }
         else if (GameControl.control.whichInventory == "armor")
         {
-            foreach (GameObject go in GameControl.control.equipment) { itemList.Add(go.GetComponent<ArmorItem>()); }
+            foreach (GameObject go in GameControl.control.equipment) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ArmorItem>()); } }
         }
 
         // set the content array to the list of item names
@@ -74,7 +74,7 @@ public class InventoryMenu : Menu {
         GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
         consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
         consumeSub.parentPos = buttonArray[selectedIndex].transform;
-        consumeSub.itemIndex = selectedIndex + scrollIndex;
+        consumeSub.itemName = contentArray[selectedIndex + scrollIndex];
 
         //call change text method to correctly size text and avoid a certain bug
         ChangeText();
@@ -137,19 +137,19 @@ public class InventoryMenu : Menu {
         // set the correct list of items
         if (GameControl.control.whichInventory == "consumables")
         {
-            foreach (GameObject go in GameControl.control.consumables) { itemList.Add(go.GetComponent<ConsumableItem>()); }
+            foreach (GameObject go in GameControl.control.consumables) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ConsumableItem>()); } }
         }
         else if (GameControl.control.whichInventory == "reusables")
         {
-            foreach (GameObject go in GameControl.control.reusables) { itemList.Add(go.GetComponent<ReusableItem>()); }
+            foreach (GameObject go in GameControl.control.reusables) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ReusableItem>()); } }
         }
         else if (GameControl.control.whichInventory == "weapons")
         {
-            foreach (GameObject go in GameControl.control.weapons) { itemList.Add(go.GetComponent<WeaponItem>()); }
+            foreach (GameObject go in GameControl.control.weapons) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<WeaponItem>()); } }
         }
         else if (GameControl.control.whichInventory == "armor")
         {
-            foreach (GameObject go in GameControl.control.equipment) { itemList.Add(go.GetComponent<ArmorItem>()); }
+            foreach (GameObject go in GameControl.control.equipment) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ArmorItem>()); } }
         }
 
         // set the content array to the list of item names
@@ -185,11 +185,11 @@ public class InventoryMenu : Menu {
             consumeSub.parentPos = buttonArray[selectedIndex].transform;
 
             //update which item is selected for sub menus
-            consumeSub.itemIndex = selectedIndex + scrollIndex;
+            consumeSub.itemName = contentArray[selectedIndex + scrollIndex];
 
             // update the description text
-            if (selectedIndex + scrollIndex < itemList.Count) 
-            { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity; }
+            if (selectedIndex + scrollIndex < itemList.Count)
+            { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
 
             PressButton(KeyCode.Space);
 

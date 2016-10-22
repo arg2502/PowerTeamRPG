@@ -36,9 +36,10 @@ public class WeaponItem : Item {
         hero.weapon = this.gameObject;
 
         // Always decrease quantity by 1 to avoid multiple heroes sharing the same sword
-        quantity--;
+        //quantity--;
+        uses++;
         // if quantity hits 0, remove it from the inventory
-        if (quantity <= 0) { GameControl.control.weapons.Remove(this.gameObject); }
+        //if (quantity <= 0) { GameControl.control.weapons.Remove(this.gameObject); }
     }
 
     public void Remove(HeroData hero)
@@ -60,8 +61,9 @@ public class WeaponItem : Item {
         }
 
         // make it possible to use the item again
-        quantity++;
+        //quantity++;
+        uses--;
         // if this item is not in the inventory anymore, add it back in
-        if (quantity == 1) { GameControl.control.weapons.Add(this.gameObject); }
+        //if (quantity == 1) { GameControl.control.weapons.Add(this.gameObject); }
     }
 }

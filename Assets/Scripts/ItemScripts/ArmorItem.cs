@@ -61,7 +61,8 @@ public class ArmorItem : Item {
         else { hero.equipment.Add(this.gameObject); }
         
         // Always decrease quantity by 1 to avoid multiple heroes sharing the same piece of armor
-        quantity--;
+        //quantity--;
+        uses++;
         // if quantity hits 0, remove it from the inventory
         if (quantity <= 0) { GameControl.control.equipment.Remove(this.gameObject); }
     }
@@ -96,7 +97,8 @@ public class ArmorItem : Item {
         }
 
         // make it possible to use the item again
-        quantity++;
+        //quantity++;
+        uses--;
         // if this item is not in the inventory anymore, add it back in
         if (quantity == 1) { GameControl.control.equipment.Add(this.gameObject); }
     }

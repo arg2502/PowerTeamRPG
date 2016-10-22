@@ -37,7 +37,7 @@ public class ItemUseSubMenu : SubMenu {
             // this switch statement will separate items that can be used on fallen heroes from items which cannot
             // the default case will handle every item not usable on fallen enemies
             // all other cases will have the name of specific items (Ex: "Revive")
-            switch (GameControl.control.consumables[parent.itemIndex].GetComponent<Item>().name)
+            switch (parent.itemName)
             {
                 default:
                     for (int i = 0; i < GameControl.control.heroList.Count; i++)
@@ -90,7 +90,8 @@ public class ItemUseSubMenu : SubMenu {
         // draw the current item from the correct list of items
         if (GameControl.control.whichInventory == "consumables") 
         { 
-            currentItem = GameControl.control.consumables[parent.itemIndex].GetComponent<Item>();
+            //currentItem = GameControl.control.consumables[parent.itemIndex].GetComponent<Item>();
+            foreach (GameObject go in GameControl.control.consumables) { if (go.GetComponent<Item>().name == parent.itemName) { currentItem = go.GetComponent<Item>(); } }
 
             statChanges[0].GetComponent<TextMesh>().text = currentItem.statusChange;
             statChangeNumbers[1] = currentItem.hpChange;
@@ -106,7 +107,8 @@ public class ItemUseSubMenu : SubMenu {
         //else if (GameControl.control.whichInventory == "reusables") { currentItem = GameControl.control.reusables[parent.itemIndex].GetComponent<Item>(); }
         else if (GameControl.control.whichInventory == "weapons") 
         { 
-            currentItem = GameControl.control.weapons[parent.itemIndex].GetComponent<Item>();
+            //currentItem = GameControl.control.weapons[parent.itemIndex].GetComponent<Item>();
+            foreach (GameObject go in GameControl.control.weapons) { if (go.GetComponent<Item>().name == parent.itemName) { currentItem = go.GetComponent<Item>(); } }
 
             Item heroWeapon = null;
             if (h.weapon != null) { heroWeapon = h.weapon.GetComponent<Item>(); }
@@ -138,7 +140,8 @@ public class ItemUseSubMenu : SubMenu {
         }
         else if (GameControl.control.whichInventory == "armor")
         { 
-            currentItem = GameControl.control.equipment[parent.itemIndex].GetComponent<Item>();
+            //currentItem = GameControl.control.equipment[parent.itemIndex].GetComponent<Item>();
+            foreach (GameObject go in GameControl.control.equipment) { if (go.GetComponent<Item>().name == parent.itemName) { currentItem = go.GetComponent<Item>(); } }
 
             ArmorItem relevantItem = null; // this will need to be of the same type as the current item (Ex: helmet, gloves, etc)
             for (int i = 0; i < h.equipment.Count; i++) 

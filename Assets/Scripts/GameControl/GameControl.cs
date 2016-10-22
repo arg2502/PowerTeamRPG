@@ -218,6 +218,7 @@ public class GameControl : MonoBehaviour {
                 ItemData id = new ItemData();
                 id.name = item.name;
                 id.quantity = item.quantity;
+                id.uses = item.uses;
                 temp.weapon = id;
             }
 
@@ -230,6 +231,7 @@ public class GameControl : MonoBehaviour {
                 ItemData id = new ItemData();
                 id.name = item.name;
                 id.quantity = item.quantity;
+                id.uses = item.uses;
                 temp.equipment.Add(id);
                 print("Saved Item data: " + temp.equipment[j].name);
             }
@@ -247,6 +249,7 @@ public class GameControl : MonoBehaviour {
             ItemData id = new ItemData();
             id.name = item.name;
             id.quantity = item.quantity;
+            id.uses = item.uses;
             data.consumables.Add(id);
         }
         foreach (GameObject i in reusables)
@@ -255,6 +258,7 @@ public class GameControl : MonoBehaviour {
             ItemData id = new ItemData();
             id.name = item.name;
             id.quantity = item.quantity;
+            id.uses = item.uses;
             data.reusables.Add(id);
         }
         foreach (GameObject i in weapons)
@@ -263,6 +267,7 @@ public class GameControl : MonoBehaviour {
             ItemData id = new ItemData();
             id.name = item.name;
             id.quantity = item.quantity;
+            id.uses = item.uses;
             data.weapons.Add(id);
         }
         foreach (GameObject i in equipment)
@@ -271,6 +276,7 @@ public class GameControl : MonoBehaviour {
             ItemData id = new ItemData();
             id.name = item.name;
             id.quantity = item.quantity;
+            id.uses = item.uses;
             data.equipment.Add(id);
         }
 
@@ -527,6 +533,7 @@ public class GameControl : MonoBehaviour {
         }
         GameControl.control.AddItem(temp);
         GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().quantity = id.quantity;
+        GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().uses = id.uses;
     }
 
     public void LoadReusableItem(ItemData id)
@@ -540,6 +547,8 @@ public class GameControl : MonoBehaviour {
         }
         GameControl.control.AddItem(temp);
         GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().quantity = id.quantity;
+        GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().uses = id.uses;
+
     }
 
     public void LoadArmorItem(ItemData id, HeroData hd)
@@ -558,6 +567,8 @@ public class GameControl : MonoBehaviour {
         {
             GameControl.control.AddItem(temp);
             GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
+            GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().uses = id.uses;
+
         }
         else { hd.equipment.Add(temp); DontDestroyOnLoad(temp); }
     }
@@ -581,6 +592,8 @@ public class GameControl : MonoBehaviour {
         {
             GameControl.control.AddItem(temp);
             GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
+            GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().uses = id.uses;
+
         }
         else { hd.weapon = temp; DontDestroyOnLoad(temp); }
     }
@@ -655,6 +668,7 @@ public class ItemData
 {
     public string name;
     public int quantity;
+    public int uses;
 }
 
 //this class will store all the stuff in a roomControl object that the player influences
