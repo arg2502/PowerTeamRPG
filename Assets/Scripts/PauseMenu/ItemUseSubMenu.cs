@@ -195,8 +195,8 @@ public class ItemUseSubMenu : SubMenu {
             else
             {
                 statChanges[i].GetComponent<TextMesh>().text = "";
-                statChanges[i].GetComponent<TextMesh>().color = Color.white;
-                heroInfo[i].GetComponent<TextMesh>().color = Color.white;
+                statChanges[i].GetComponent<TextMesh>().color = Color.black;
+                heroInfo[i].GetComponent<TextMesh>().color = Color.black;
             }
         }
     }

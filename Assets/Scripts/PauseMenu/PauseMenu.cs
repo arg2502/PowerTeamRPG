@@ -7,6 +7,8 @@ public class PauseMenu : Menu {
     protected List<string> buttonDescription;
     public GameObject descriptionText;
 
+    SpriteRenderer sr;
+
     public bool isVisible; // variable to hide pause menu
     public bool isActive = true; // a sub menu is not present
     public characterControl player;
@@ -19,6 +21,10 @@ public class PauseMenu : Menu {
 
 	// Use this for initialization
 	void Start () {
+
+        // find the sprite renderer
+        sr = gameObject.GetComponent<SpriteRenderer>();
+        sr.enabled = false;
 
         // find the player
         player = GameObject.FindObjectOfType<characterControl>();
@@ -138,6 +144,7 @@ public class PauseMenu : Menu {
     public void EnablePauseMenu()
     {
         GameControl.control.isPaused = true;
+        sr.enabled = true;
         base.EnableMenu();
         descriptionText.GetComponent<Renderer>().enabled = true;
     }
@@ -152,6 +159,7 @@ public class PauseMenu : Menu {
         // hide the menu
         isVisible = false;
         //GameControl.control.isPaused = false;
+        sr.enabled = false;
         
         // release the overworld objects
         if (player.canMove == false) { player.ToggleMovement(); }

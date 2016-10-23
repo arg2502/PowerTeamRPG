@@ -236,8 +236,8 @@ public class LevelUpMenu : Menu {
                 // Change the color of the stat label back to white if it is no longer recieving points
                 if (statBoostInts[selectedIndex] == 0)
                 {
-                    statNumbers[selectedIndex].GetComponent<TextMesh>().color = Color.white;
-                    statBoosts[selectedIndex].GetComponent<TextMesh>().color = Color.white;
+                    statNumbers[selectedIndex].GetComponent<TextMesh>().color = Color.black;
+                    statBoosts[selectedIndex].GetComponent<TextMesh>().color = Color.black;
 
                     // Change sprite values for the button to reflect that the left button no longer works
                     //buttonArray[selectedIndex].GetComponent<MyButton>().normalTexture = Resources.Load("Sprites/lvlUpMenu/disabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
