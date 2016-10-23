@@ -36,10 +36,13 @@ public class enemyControl : OverworldObject {
     public List<RaycastHit2D> raycastHits = new List<RaycastHit2D>();
     float distance = 100.0f;
 
+    Animator anim;
+
 	// Use this for initialization
 	void Start () {
 
         canMove = true;
+        anim = GetComponent<Animator>();
 
         player = GameObject.FindObjectOfType<characterControl>().transform;
         state = State.wait;
@@ -135,8 +138,16 @@ public class enemyControl : OverworldObject {
             }
         sr.sortingOrder = (int)-transform.position.y;
 
+        // don't animate if the game is paused
+        if (!canMove)
+        {
+            anim.speed = 0;
+        }
+
         if (canMove)
         {
+            anim.speed = 1;
+
             //iterate timer
             timer += Time.deltaTime;
 
