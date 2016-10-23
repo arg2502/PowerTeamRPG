@@ -33,7 +33,9 @@ public class enemyControl : OverworldObject {
     roomControl rc; // a reference to the roomControl object, which will dictate enemy specifics
     int numOfEnemies; // number of enemies this object carries
     List<Enemy> enemies; // the enemies this object carries
-    
+    public List<RaycastHit2D> raycastHits = new List<RaycastHit2D>();
+    float distance = 100.0f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -60,31 +62,52 @@ public class enemyControl : OverworldObject {
             } while (dist <= safeDistance + 100.0f);
 
             // if both top and bottom are both colliding with object, it's stuck
-            RaycastHit2D topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
-            RaycastHit2D bottomHit = Physics2D.Raycast(transform.position, directions[3], 30.0f, mask);
-            
-            if(topHit.collider != null
-                && bottomHit.collider != null)
+            //RaycastHit2D topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
+            //RaycastHit2D bottomHit = Physics2D.Raycast(transform.position, directions[3], 30.0f, mask);
+            for (int i = 0; i < 2; i++ )
             {
-                //print("inside if: " + topHit.collider);
-                OverworldObject owo = topHit.collider.GetComponent<OverworldObject>();
-                while(topHit.collider == owo.GetComponent<Collider2D>()
-                    || bottomHit.collider == owo.GetComponent<Collider2D>())
+                raycastHits.Add(Physics2D.Raycast(transform.position, directions[i], distance, mask));
+            }
+            foreach (RaycastHit2D rh in raycastHits)
+            {
+                if (rh.collider != null)
                 {
-                    
-                    transform.position += owo.offset;
-                    print(name + ": " + transform.position);
-                    topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
-                    bottomHit = Physics2D.Raycast(transform.position, directions[3], 30.0f, mask);
-                    if (topHit.collider == null
-                        && bottomHit.collider == null) { break; }
-                    else if(topHit.collider != null)
+                    //print("inside if: " + topHit.collider);
+                    OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
+                    while (raycastHits[0].collider == owo.GetComponent<Collider2D>()
+                            || raycastHits[1].collider == owo.GetComponent<Collider2D>())
+                            //|| raycastHits[2].collider == owo.GetComponent<Collider2D>()
+                            //|| raycastHits[3].collider == owo.GetComponent<Collider2D>())
                     {
-                        owo = topHit.collider.GetComponent<OverworldObject>();
-                    }
-                    else if(bottomHit.collider != null)
-                    {
-                        owo = bottomHit.collider.GetComponent<OverworldObject>();
+
+                        transform.position += owo.offset;
+                        print(name + ": " + transform.position);
+                        for (int i = 0; i < raycastHits.Count; i++ )
+                        {
+                             raycastHits[i] = Physics2D.Raycast(transform.position, directions[i], distance, mask);
+                        }
+                
+                        if (raycastHits[0].collider == null
+                        || raycastHits[1].collider == null)
+                        //&& raycastHits[2].collider == null
+                        //&& raycastHits[3].collider == null) 
+                        { break; }
+                        else if (raycastHits[0].collider != null)
+                        {
+                            owo = raycastHits[0].collider.GetComponent<OverworldObject>();
+                        }
+                        else if (raycastHits[1].collider != null)
+                        {
+                             owo = raycastHits[1].collider.GetComponent<OverworldObject>();
+                        }
+                        //else if (raycastHits[2].collider != null)
+                        //{
+                        //     owo = raycastHits[2].collider.GetComponent<OverworldObject>();
+                        //}
+                        //else if (raycastHits[3].collider != null)
+                        //{
+                        //     owo = raycastHits[3].collider.GetComponent<OverworldObject>();
+                        //}
                     }
                 }
             }
@@ -102,6 +125,14 @@ public class enemyControl : OverworldObject {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+        
+            for (int i = 0; i < raycastHits.Count; i++)
+            {
+                if (raycastHits[i].collider != null)
+                {
+                Debug.DrawLine(raycastHits[i].transform.position, raycastHits[i].point);
+                }
+            }
         sr.sortingOrder = (int)-transform.position.y;
 
         if (canMove)
@@ -122,7 +153,7 @@ public class enemyControl : OverworldObject {
                 {
                     state = State.walk;
                     //pick a direction to walk
-                    dir = Random.Range(0, 3);
+                    dir = Random.Range(0, 4);
                     speed = directions[dir] * walkSpeed * Time.deltaTime;
                     //reset the timer
                     timer = 0.0f;
@@ -181,10 +212,54 @@ public class enemyControl : OverworldObject {
                     state = State.coolDown;
                     timer = 0.0f;
                     int prevDir = dir;
-                    while (dir == prevDir) { dir = Random.Range(0, 3); }
+                    while (dir == prevDir) { dir = Random.Range(0, 4); }
                     speed = directions[dir] * coolDownSpeed * Time.deltaTime;
                 }
             }
+
+            //foreach (RaycastHit2D rh in raycastHits)
+            //{
+            //    if (rh.collider != null)
+            //    {
+            //        //print("inside if: " + topHit.collider);
+            //        OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
+            //        if (raycastHits[0].collider == owo.GetComponent<Collider2D>()
+            //                || raycastHits[1].collider == owo.GetComponent<Collider2D>())
+            //        //|| raycastHits[2].collider == owo.GetComponent<Collider2D>()
+            //        //|| raycastHits[3].collider == owo.GetComponent<Collider2D>())
+            //        {
+
+            //            transform.position += owo.offset;
+            //            print(name + ": " + transform.position);
+            //            for (int i = 0; i < raycastHits.Count; i++)
+            //            {
+            //                raycastHits[i] = Physics2D.Raycast(transform.position, directions[i], distance, mask);
+            //            }
+
+            //            if (raycastHits[0].collider == null
+            //            && raycastHits[1].collider == null)
+            //            //&& raycastHits[2].collider == null
+            //            //&& raycastHits[3].collider == null) 
+            //            { break; }
+            //            else if (raycastHits[0].collider != null)
+            //            {
+            //                owo = raycastHits[0].collider.GetComponent<OverworldObject>();
+            //            }
+            //            else if (raycastHits[1].collider != null)
+            //            {
+            //                owo = raycastHits[1].collider.GetComponent<OverworldObject>();
+            //            }
+            //            //else if (raycastHits[2].collider != null)
+            //            //{
+            //            //     owo = raycastHits[2].collider.GetComponent<OverworldObject>();
+            //            //}
+            //            //else if (raycastHits[3].collider != null)
+            //            //{
+            //            //     owo = raycastHits[3].collider.GetComponent<OverworldObject>();
+            //            //}
+            //        }
+            //    }
+            //}
         }
 	}
 
