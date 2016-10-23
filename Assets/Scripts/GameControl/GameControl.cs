@@ -604,6 +604,21 @@ public class GameControl : MonoBehaviour {
             case "Helmet of Fortitude":
                 temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
                 break;
+            case "Iron Armor":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronArmor"));
+                break;
+            case "Iron Helm":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronHelm"));
+                break;
+            case "Steel Armor":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelArmor"));
+                break;
+            case "Steel Gauntlets":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelGauntlets"));
+                break;
+            case "Steel Helm":
+                temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelHelm"));
+                break;
             default:
                 print("Error: Incorrect item name - " + id.name);
                 break;

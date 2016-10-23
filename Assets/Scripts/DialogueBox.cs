@@ -210,10 +210,10 @@ public class DialogueBox : MonoBehaviour {
         //sr.transform.position = new Vector3 (textPosition.x - 200, textPosition.y, -100);
 
 
-        titleText.GetComponent<Renderer>().sortingOrder = 900;
-        spokenText.GetComponent<Renderer>().sortingOrder = 900;
-        sr.sortingOrder = 899;
-        portraitSr.sortingOrder = 899;
+        titleText.GetComponent<Renderer>().sortingOrder = 9900;
+        spokenText.GetComponent<Renderer>().sortingOrder = 9900;
+        sr.sortingOrder = 9899;
+        portraitSr.sortingOrder = 9899;
     }
     public void WriteResponseText(ListOfStrings response)
     {
@@ -270,10 +270,10 @@ public class DialogueBox : MonoBehaviour {
                 spokenText.text = FormatText(response.dialogue[innerListPosition]);
             }
         }
-        titleText.GetComponent<Renderer>().sortingOrder = 900;
-        spokenText.GetComponent<Renderer>().sortingOrder = 900;
-        sr.sortingOrder = 899;
-        portraitSr.sortingOrder = 899;
+        titleText.GetComponent<Renderer>().sortingOrder = 9900;
+        spokenText.GetComponent<Renderer>().sortingOrder = 9900;
+        sr.sortingOrder = 9899;
+        portraitSr.sortingOrder = 9899;
     }
 	public string FormatText(string str)
 	{

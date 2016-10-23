@@ -183,8 +183,8 @@ public class Menu : MonoBehaviour {
             // sort buttons to front of screen
             for (int i = 0; i < buttonArray.Length; i++)
             {
-                buttonArray[i].GetComponent<MyButton>().sr.sortingOrder = 900;
-                buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<Renderer>().sortingOrder = 900;
+                buttonArray[i].GetComponent<MyButton>().sr.sortingOrder = 9900;
+                buttonArray[i].GetComponent<MyButton>().textObject.GetComponent<Renderer>().sortingOrder = 9900;
             }
 	}
 
