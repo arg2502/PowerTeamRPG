@@ -91,26 +91,31 @@ public class LevelUpMenu : Menu {
             // create the text objects that will display the hero's stats, as well as the points they are adding
             statNumbers.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
             statNumbers[i].GetComponent<TextMesh>().text = "" + originalStats[i];  // should initially be equal to the original stats
+            statNumbers[i].GetComponent<TextMesh>().color = Color.black;
             statNumbers[i].transform.position = new Vector2(buttonArray[i].transform.position.x + 250, buttonArray[i].transform.position.y);
 
             // create the text objects that will display the amount that the player is adding to the stats
             statBoosts.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
             statBoosts[i].GetComponent<TextMesh>().text = "( +" + (statBoostInts[i]) + ")";
+            statBoosts[i].GetComponent<TextMesh>().color = Color.black;
             statBoosts[i].transform.position = new Vector2(buttonArray[i].transform.position.x + 500, buttonArray[i].transform.position.y);
         }
 
         // create the labels above the columns
         statNumbers.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
         statNumbers[statNumbers.Count - 1].GetComponent<TextMesh>().text = "Stat Points";
+        statNumbers[statNumbers.Count - 1].GetComponent<TextMesh>().color = Color.black;
         statNumbers[statNumbers.Count - 1].transform.position = new Vector2(statNumbers[0].transform.position.x, statNumbers[0].transform.position.y + 75);
 
         statBoosts.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
         statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().text = "Allocated Points";
+        statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().color = Color.black;
         statBoosts[statBoosts.Count - 1].transform.position = new Vector2(statBoosts[0].transform.position.x, statBoosts[0].transform.position.y + 75);
 
         // create the label that shows remaining points
         statBoosts.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
         statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().text = "Remaining Points: " + remainingPoints;
+        statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().color = Color.black;
         statBoosts[statBoosts.Count - 1].transform.position = new Vector2(statBoosts[8].transform.position.x, statBoosts[8].transform.position.y - 125);
 
         // create the final button

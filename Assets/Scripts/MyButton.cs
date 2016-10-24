@@ -34,6 +34,7 @@ public class MyButton : MonoBehaviour {
 	// Use this for initialization
 	void Start () {        
         sr.sprite = normalTexture;
+        sr.sortingOrder = 9899;
         //solidLine = Resources.Load("Sprites/nextLine.png", typeof(Sprite)) as Sprite;
         //dottedLine = Resources.Load("Sprites/nextDottedLine.png", typeof(Sprite)) as Sprite;
         //contentSr = gameObject.transform.Find("Content").GetComponent<SpriteRenderer>();
