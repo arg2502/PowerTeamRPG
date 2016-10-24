@@ -75,45 +75,70 @@ public class enemyControl : OverworldObject {
             {
                 if (rh.collider != null)
                 {
-                    //print("inside if: " + topHit.collider);
                     OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
-                    while (raycastHits[0].collider == owo.GetComponent<Collider2D>()
-                            || raycastHits[1].collider == owo.GetComponent<Collider2D>())
-                            //|| raycastHits[2].collider == owo.GetComponent<Collider2D>()
-                            //|| raycastHits[3].collider == owo.GetComponent<Collider2D>())
+                    int loopCounter = 0; // keep track of the number of loops
+                    while ((raycastHits[0].collider == owo.GetComponent<Collider2D>()
+                                   || raycastHits[1].collider == owo.GetComponent<Collider2D>()) || (dist <= safeDistance + 100.0f))
                     {
+                        transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
 
-                        transform.position += owo.offset;
-                        print(name + ": " + transform.position);
-                        for (int i = 0; i < raycastHits.Count; i++ )
+                        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+                        + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+
+                        raycastHits = new List<RaycastHit2D>();
+                        for (int i = 0; i < 2; i++)
                         {
-                             raycastHits[i] = Physics2D.Raycast(transform.position, directions[i], distance, mask);
+                            raycastHits.Add(Physics2D.Raycast(transform.position, directions[i], distance, mask));
                         }
-                
-                        if (raycastHits[0].collider == null
-                        || raycastHits[1].collider == null)
-                        //&& raycastHits[2].collider == null
-                        //&& raycastHits[3].collider == null) 
-                        { break; }
-                        else if (raycastHits[0].collider != null)
-                        {
-                            owo = raycastHits[0].collider.GetComponent<OverworldObject>();
-                        }
-                        else if (raycastHits[1].collider != null)
-                        {
-                             owo = raycastHits[1].collider.GetComponent<OverworldObject>();
-                        }
-                        //else if (raycastHits[2].collider != null)
-                        //{
-                        //     owo = raycastHits[2].collider.GetComponent<OverworldObject>();
-                        //}
-                        //else if (raycastHits[3].collider != null)
-                        //{
-                        //     owo = raycastHits[3].collider.GetComponent<OverworldObject>();
-                        //}
+                        loopCounter++;
+                        // if looping excedes a number, just quit
+                        if (loopCounter >= 50) { Destroy(this.gameObject); }
                     }
                 }
             }
+            //foreach (RaycastHit2D rh in raycastHits)
+            //{
+            //    if (rh.collider != null)
+            //    {
+            //        //print("inside if: " + topHit.collider);
+            //        OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
+            //        while (raycastHits[0].collider == owo.GetComponent<Collider2D>()
+            //                || raycastHits[1].collider == owo.GetComponent<Collider2D>())
+            //                //|| raycastHits[2].collider == owo.GetComponent<Collider2D>()
+            //                //|| raycastHits[3].collider == owo.GetComponent<Collider2D>())
+            //        {
+
+            //            transform.position += owo.offset;
+            //            print(name + ": " + transform.position);
+            //            for (int i = 0; i < raycastHits.Count; i++ )
+            //            {
+            //                 raycastHits[i] = Physics2D.Raycast(transform.position, directions[i], distance, mask);
+            //            }
+                
+            //            if (raycastHits[0].collider == null
+            //            || raycastHits[1].collider == null)
+            //            //&& raycastHits[2].collider == null
+            //            //&& raycastHits[3].collider == null) 
+            //            { break; }
+            //            else if (raycastHits[0].collider != null)
+            //            {
+            //                owo = raycastHits[0].collider.GetComponent<OverworldObject>();
+            //            }
+            //            else if (raycastHits[1].collider != null)
+            //            {
+            //                 owo = raycastHits[1].collider.GetComponent<OverworldObject>();
+            //            }
+            //            //else if (raycastHits[2].collider != null)
+            //            //{
+            //            //     owo = raycastHits[2].collider.GetComponent<OverworldObject>();
+            //            //}
+            //            //else if (raycastHits[3].collider != null)
+            //            //{
+            //            //     owo = raycastHits[3].collider.GetComponent<OverworldObject>();
+            //            //}
+            //        }
+            //    }
+            //}
         }
         
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);

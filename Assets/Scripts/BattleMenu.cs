@@ -444,7 +444,7 @@ public class BattleMenu : Menu {
     string FormatText(string str)
     {
         string formattedString = null;
-        int desiredLength = 30;
+        int desiredLength = 26;
         string[] wordArray = str.Split(' ');
         int lineLength = 0;
         foreach (string s in wordArray)
@@ -453,13 +453,13 @@ public class BattleMenu : Menu {
             if (s.Length + 1 + lineLength > desiredLength)
             {
                 //go to new line
-                formattedString += "\n" + s;
+                formattedString += "\n" + s + " ";
                 //starting a new line
                 lineLength = s.Length;
             }
             else
             {
-                formattedString += " " + s;
+                formattedString += s + " ";
                 lineLength += s.Length + 1;
             }
         }
