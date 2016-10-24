@@ -77,8 +77,9 @@ public class enemyControl : OverworldObject {
                 {
                     OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
                     int loopCounter = 0; // keep track of the number of loops
-                    while ((raycastHits[0].collider == owo.GetComponent<Collider2D>()
-                                   || raycastHits[1].collider == owo.GetComponent<Collider2D>()) || (dist <= safeDistance + 100.0f))
+                    while ((raycastHits[0].collider != null //owo.GetComponent<Collider2D>()
+                                   || raycastHits[1].collider != null) //owo.GetComponent<Collider2D>()) 
+                                   || (dist <= safeDistance + 100.0f))
                     {
                         transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
 
@@ -161,6 +162,7 @@ public class enemyControl : OverworldObject {
                 Debug.DrawLine(raycastHits[i].transform.position, raycastHits[i].point);
                 }
             }
+            
         sr.sortingOrder = (int)-transform.position.y;
 
         // don't animate if the game is paused
