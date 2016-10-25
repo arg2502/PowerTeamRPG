@@ -10,8 +10,8 @@ public class ItemUseSubMenu : SubMenu {
     List<GameObject> statChanges; // displays any changes an item may cause
     Item currentItem;
 
-    Color myGreen = new Color(0.2f, 1.0f, 0.4f);
-    Color myRed = new Color(1.0f, 0.2f, 0.4f);
+    Color myGreen = new Color(0.1f, 0.6f, 0.2f);
+    Color myRed = new Color(5.0f, 0.1f, 0.2f);
 
 	// Use this for initialization
 	void Start () {

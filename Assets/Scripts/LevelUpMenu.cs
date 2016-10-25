@@ -18,7 +18,7 @@ public class LevelUpMenu : Menu {
     protected bool levelUp = false;
 
     //color green
-    Color myGreen = new Color(0.2f, 1.0f, 0.4f);
+    Color myGreen = new Color(0.1f, 0.6f, 0.2f);
 
 	// Use this for initialization
 	void Start () {
