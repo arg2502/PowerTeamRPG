@@ -204,6 +204,7 @@ public class BattleMenu : Menu {
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
         descriptionText.GetComponent<TextMesh>().color = Color.black;
         descriptionText.transform.position = descriptionBox.transform.position;
+        GetComponent<SpriteRenderer>().sortingOrder = 9800;
 
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
@@ -245,8 +246,11 @@ public class BattleMenu : Menu {
         
         //Create the text object for the battle phase
         battleText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-        battleText.GetComponent<TextMesh>().fontSize = 50;
+        battleText.GetComponent<TextMesh>().fontSize = 60;
         battleText.GetComponent<TextMesh>().alignment = TextAlignment.Left;
+        battleText.transform.position = transform.position + new Vector3(0.0f, -195.0f, 0.0f);
+        battleText.GetComponent<TextMesh>().color = Color.black;
+        
         
         //highlight the current denigen
         // set the current denigen
@@ -317,7 +321,7 @@ public class BattleMenu : Menu {
                 command = label;
                 prevState = state;
                 DisableMenu();
-                descriptionBox.GetComponent<Renderer>().enabled = false;
+                GetComponent<Renderer>().enabled = false;
                 descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
                 state = MenuReader.targeting;
                 break;
@@ -329,7 +333,7 @@ public class BattleMenu : Menu {
                 command = label;
                 prevState = state;
                 DisableMenu();
-                descriptionBox.GetComponent<Renderer>().enabled = false;
+                GetComponent<Renderer>().enabled = false;
                 descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
                 state = MenuReader.targeting;
                 break;
@@ -381,7 +385,7 @@ public class BattleMenu : Menu {
 					command = label;
                     prevState = state;
                     DisableMenu();
-                    descriptionBox.GetComponent<Renderer>().enabled = false;
+                    GetComponent<Renderer>().enabled = false;
                     descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
 					state = MenuReader.targeting;
                 }
@@ -415,7 +419,7 @@ public class BattleMenu : Menu {
                 b.GetComponent<Renderer>().enabled = false;
                 b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = false;
             }
-            descriptionBox.GetComponent<Renderer>().enabled = false;
+            GetComponent<Renderer>().enabled = false;
             descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
 
             //reset the counter for right now
@@ -430,7 +434,7 @@ public class BattleMenu : Menu {
                 && currentDenigen.statusState != Denigen.Status.overkill))
             {
                 EnableMenu();
-                descriptionBox.GetComponent<Renderer>().enabled = true;
+                GetComponent<Renderer>().enabled = true;
                 descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
                 currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
                 if (currentDenigen.GetComponent<Hero>() != null)
@@ -466,7 +470,7 @@ public class BattleMenu : Menu {
     string FormatText(string str)
     {
         string formattedString = null;
-        int desiredLength = 26;
+        int desiredLength = 50;
         string[] wordArray = str.Split(' ');
         int lineLength = 0;
         foreach (string s in wordArray)
@@ -627,7 +631,8 @@ public class BattleMenu : Menu {
                     if (Input.GetKeyDown(KeyCode.Backspace))
                     {
                         EnableMenu();
-                        descriptionBox.GetComponent<Renderer>().enabled = true;
+                        //descriptionBox.GetComponent<Renderer>().enabled = true;
+                        GetComponent<Renderer>().enabled = true;
                         descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
                         state = prevState;
                         ChangeContentArray();
@@ -708,7 +713,7 @@ public class BattleMenu : Menu {
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
                 EnableMenu();
-                descriptionBox.GetComponent<Renderer>().enabled = true;
+                GetComponent<Renderer>().enabled = true;
                 descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
                 state = prevState;
                 ChangeContentArray();
@@ -1086,7 +1091,7 @@ public class BattleMenu : Menu {
             b.GetComponent<Renderer>().enabled = false;
             b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = false;
         }
-        descriptionBox.GetComponent<Renderer>().enabled = false;
+        GetComponent<Renderer>().enabled = false;
         descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
 
         if (Input.GetKeyUp(KeyCode.Space) || textIndex == 0)
