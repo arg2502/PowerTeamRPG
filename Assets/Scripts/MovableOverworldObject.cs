@@ -34,7 +34,7 @@ public class MovableOverworldObject : OverworldObject {
 	void Update () {
         if (isActivated)
         {
-            gameObject.SetActive(true);
+            //gameObject.SetActive(true);
             sr.sortingOrder = (int)-transform.position.y;
         }
 	}

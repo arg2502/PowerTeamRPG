@@ -43,7 +43,28 @@ public class Switch : OverworldObject {
                 { 
                     foreach (GameObject go in affectedObjs) 
                     {
-                        if (go.GetComponent<MovableOverworldObject>() != null) { go.GetComponent<MovableOverworldObject>().isActivated = true; }
+                        if (go.GetComponent<MovableOverworldObject>() != null) 
+                        { 
+                            go.GetComponent<MovableOverworldObject>().isActivated = true; 
+                            go.SetActive(true); 
+                        }
+                    }
+                }
+                else if(switchType == SwitchType.openDoor)
+                {
+                    foreach(GameObject go in affectedObjs)
+                    {
+                        go.SetActive(false);
+                    }
+                }
+                else if(switchType == SwitchType.activateObj)
+                {
+                    foreach(GameObject go in affectedObjs)
+                    {
+                        if(go.GetComponent<OverworldObject>() != null)
+                        {
+                            go.GetComponent<OverworldObject>().Activate();
+                        }
                     }
                 }
             }
