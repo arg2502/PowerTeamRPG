@@ -20,4 +20,5 @@ public class OverworldObject : MonoBehaviour {
             o.canMove = !canMove;
         }
     }
+    public virtual void Activate() {}
 }
