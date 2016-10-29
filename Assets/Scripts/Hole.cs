@@ -10,25 +10,38 @@ public class Hole : OverworldObject {
     public List<MovableOverworldObject> relevantBlocks;
 
     public bool isFull; // checks whether a block is in the hole or not
+    float timer = 0.0f; // a timer to make sure the collider disappears when the block is fully in the hole
 
-    float distFromBlock;
+    public float distFromBlock;
+
+    Animator anim;
 
 	// Use this for initialization
 	void Start () {
         base.Start();
+        anim = GetComponent<Animator>();
         sr.sortingOrder = -9999;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        // if a block gets close enough, deactivate the block, and the hole collider
-        foreach (MovableOverworldObject m in relevantBlocks)
-        {
-            distFromBlock = Mathf.Abs(Mathf.Sqrt(((transform.position.x - m.transform.position.x) * (transform.position.x - m.transform.position.x))
-            + ((transform.position.y - m.transform.position.y) * (transform.position.y - m.transform.position.y))));
+        if (!isFull)
+        { 
+            // if a block gets close enough, deactivate the block, and the hole collider
+            foreach (MovableOverworldObject m in relevantBlocks)
+            {
+                distFromBlock = Mathf.Abs(Mathf.Sqrt(((transform.position.x - m.transform.position.x) * (transform.position.x - m.transform.position.x))
+                + ((transform.position.y - (m.transform.position.y - 30.0f)) * (transform.position.y - (m.transform.position.y - 30.0f)))));
 
-            if (distFromBlock < 30) { isFull = true; GetComponent<BoxCollider2D>().enabled = false; sr.color = Color.white; m.gameObject.SetActive(false); }
+                if (distFromBlock < 60) { isFull = true; anim.SetBool("isFull", true); m.gameObject.SetActive(false); }
+            }
         }
-        // also change the hole's sprite to look like a block is filling it
+        
+
+        if (isFull) 
+        {
+            timer += Time.deltaTime;
+            if (timer >= 0.5f) { GetComponent<Collider2D>().enabled = false; }
+        }
 	}
 }
