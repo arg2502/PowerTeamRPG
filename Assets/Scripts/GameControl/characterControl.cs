@@ -68,14 +68,20 @@ public class characterControl : OverworldObject {
 			}
             else if (topHit.collider != null && topHit.collider.tag == "Movable")
             {
-                if (transform.position.y/* - 24.0f + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ <= topHit.transform.position.y && (Input.GetKey(KeyCode.W))) // up - W
+                if (transform.position.y <= topHit.transform.position.y &&
+                    !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) || 
+                    (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    && (Input.GetKey(KeyCode.W))) // up - W
                 {
                     if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
                     {
                         topHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
                     }
                 }
-                else if (transform.position.y/* + 24.0f - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ >= topHit.transform.position.y && (Input.GetKey(KeyCode.S))) // down - S
+                else if (transform.position.y >= topHit.transform.position.y &&
+                    !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    && (Input.GetKey(KeyCode.S))) // down - S
                 {
                     if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
                     {
@@ -83,14 +89,20 @@ public class characterControl : OverworldObject {
                     }
                 }
 
-                if (transform.position.x/* + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ <= topHit.transform.position.x && (Input.GetKey(KeyCode.D))) // right - D
+                else if (transform.position.x <= topHit.transform.position.x &&
+                    !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    && (Input.GetKey(KeyCode.D))) // right - D
                 {
                     if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
                     {
                         topHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
                     }
                 }
-                else if (transform.position.x/* - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ >= topHit.transform.position.x && (Input.GetKey(KeyCode.A))) // left - A
+                else if (transform.position.x >= topHit.transform.position.x &&
+                    !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    && (Input.GetKey(KeyCode.A))) // left - A
                 {
                     if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
                     {
@@ -104,14 +116,20 @@ public class characterControl : OverworldObject {
             }
             else if (bottomHit.collider != null && bottomHit.collider.tag == "Movable")
             {
-                if (transform.position.y /*+ 24.0f - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ >= bottomHit.transform.position.y && (Input.GetKey(KeyCode.S))) // down - S
+                if (transform.position.y >= bottomHit.transform.position.y &&
+                    !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset)) 
+                    && (Input.GetKey(KeyCode.S))) // down - S
                 {
                     if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
                     {
                         bottomHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
                     }
                 }
-                else if (transform.position.y/* - 24.0f + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ <= bottomHit.transform.position.y && (Input.GetKey(KeyCode.W))) // up - W
+                else if (transform.position.y <= bottomHit.transform.position.y &&
+                    !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset)) 
+                    && (Input.GetKey(KeyCode.W))) // up - W
                 {
                     if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
                     {
@@ -119,14 +137,20 @@ public class characterControl : OverworldObject {
                     }
                 }
 
-                if (transform.position.x/* - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ >= bottomHit.transform.position.x && (Input.GetKey(KeyCode.A))) // left - A
+                else if (transform.position.x >= bottomHit.transform.position.x &&
+                    !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    && (Input.GetKey(KeyCode.A))) // left - A
                 {
                     if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
                     {
                         bottomHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
                     }
                 }
-                else if (transform.position.x/* + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset*/ <= bottomHit.transform.position.x && (Input.GetKey(KeyCode.D))) // right - D
+                else if (transform.position.x <= bottomHit.transform.position.x &&
+                    !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    && (Input.GetKey(KeyCode.D))) // right - D
                 {
                     if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
                     {
