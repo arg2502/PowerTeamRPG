@@ -3,6 +3,11 @@ using System.Collections;
 
 public class LockedDoor : NPCObject {
 
+    void Start()
+    {
+        base.Start();
+        distToTalk = 180.0f;
+    }
 	protected override void SetDialogue()
     {
         // if the player does not have any keys, set node to dialogue

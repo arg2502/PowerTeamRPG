@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Switch : OverworldObject {
 
-    public enum SwitchType { activateObj, createObj, openDoor };
+    public enum SwitchType { activateObj, createObj, openDoor, colorSwitch };
     // activate object affects a non-door obj in the room
     // create object does what it's name implies
     // open door opens an already existing door
@@ -20,10 +20,12 @@ public class Switch : OverworldObject {
     float distFromPlayer;
     Transform player;
 
+    Color origColor;
 	// Use this for initialization
 	void Start () {
         base.Start();
         player = GameObject.FindObjectOfType<characterControl>().transform;
+        origColor = sr.color;
 	}
 	
 	// Update is called once per frame
@@ -33,7 +35,7 @@ public class Switch : OverworldObject {
             distFromPlayer = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 
-            if (distFromPlayer < 100.0f)
+            if (distFromPlayer < 150.0f)
             {
                 isActivated = true;
                 sr.color = Color.green; // would change the sprite, but for now just change color
@@ -67,6 +69,18 @@ public class Switch : OverworldObject {
                         }
                     }
                 }
+                else if(switchType== SwitchType.colorSwitch)
+                {
+                    foreach(GameObject go in affectedObjs)
+                    {
+                        if (go.GetComponent<ColorBridge>() != null)
+                        {
+                            go.GetComponent<ColorBridge>().Activate();
+                            isActivated = false;
+                            sr.color = origColor;
+                        }
+                    }
+                }                
             }
         }
 	}

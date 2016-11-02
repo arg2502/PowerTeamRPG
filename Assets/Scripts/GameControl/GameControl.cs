@@ -69,7 +69,7 @@ public class GameControl : MonoBehaviour {
             totalKeys = 0;
 
             // create list keeping track of dungeon keys, start off at zero keys
-            numOfDungeons = 1;
+            numOfDungeons = 2;
             for (int i = 0; i < numOfDungeons; i++)
             {
                 keysObtainedInDungeons.Add(0);
