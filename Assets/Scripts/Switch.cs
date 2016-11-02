@@ -20,12 +20,14 @@ public class Switch : OverworldObject {
     float distFromPlayer;
     Transform player;
 
-    Color origColor;
+    //Color origColor;
+    public Sprite passiveSprite;
+    public Sprite activeSprite;
+
 	// Use this for initialization
 	void Start () {
         base.Start();
         player = GameObject.FindObjectOfType<characterControl>().transform;
-        origColor = sr.color;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +40,7 @@ public class Switch : OverworldObject {
             if (distFromPlayer < 150.0f)
             {
                 isActivated = true;
-                sr.color = Color.green; // would change the sprite, but for now just change color
+                //sr.color = Color.green; // would change the sprite, but for now just change color
 
                 // perform the appropriate activation
                 if (switchType == SwitchType.createObj) 
@@ -48,9 +50,11 @@ public class Switch : OverworldObject {
                         if (go.GetComponent<MovableOverworldObject>() != null) 
                         { 
                             go.GetComponent<MovableOverworldObject>().isActivated = true; 
-                            go.SetActive(true); 
+                            go.SetActive(true);
                         }
                     }
+
+                    sr.sprite = activeSprite;
                 }
                 else if(switchType == SwitchType.openDoor)
                 {
@@ -58,6 +62,8 @@ public class Switch : OverworldObject {
                     {
                         go.SetActive(false);
                     }
+                    print(sr.sprite);
+                    sr.sprite = activeSprite;
                 }
                 else if(switchType == SwitchType.activateObj)
                 {
@@ -68,6 +74,8 @@ public class Switch : OverworldObject {
                             go.GetComponent<OverworldObject>().Activate();
                         }
                     }
+
+                    sr.sprite = activeSprite;
                 }
                 else if(switchType== SwitchType.colorSwitch)
                 {
@@ -77,8 +85,17 @@ public class Switch : OverworldObject {
                         {
                             go.GetComponent<ColorBridge>().Activate();
                             isActivated = false;
-                            sr.color = origColor;
                         }
+                    }
+                    print(sr.sprite);
+                    print(activeSprite);
+                    if (sr.sprite == passiveSprite)
+                    {
+                        sr.sprite = activeSprite;
+                    }
+                    else if (sr.sprite == activeSprite)
+                    {
+                        sr.sprite = passiveSprite;
                     }
                 }                
             }
