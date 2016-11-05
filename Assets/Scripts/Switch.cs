@@ -62,7 +62,7 @@ public class Switch : OverworldObject {
                     {
                         go.SetActive(false);
                     }
-                    print(sr.sprite);
+                    
                     sr.sprite = activeSprite;
                 }
                 else if(switchType == SwitchType.activateObj)
@@ -87,8 +87,6 @@ public class Switch : OverworldObject {
                             isActivated = false;
                         }
                     }
-                    print(sr.sprite);
-                    print(activeSprite);
                     if (sr.sprite == passiveSprite)
                     {
                         sr.sprite = activeSprite;

@@ -10,8 +10,8 @@ public class Drawbridge : OverworldObject {
 
     void Start()
     {
-        sr = GetComponent<SpriteRenderer>();
-        sr.sortingOrder = (int)-transform.position.y - 200;
+        base.Start();
+        sr.sortingOrder = (int)-transform.position.y - 2000;
         initialPos = transform.position.y;
     }
     public override void Activate()
