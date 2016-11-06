@@ -32,7 +32,7 @@ public class enemyControl : OverworldObject {
 
     roomControl rc; // a reference to the roomControl object, which will dictate enemy specifics
     int numOfEnemies; // number of enemies this object carries
-    List<Enemy> enemies; // the enemies this object carries
+    public List<Enemy> enemies; // the enemies this object carries
     public List<RaycastHit2D> raycastHits = new List<RaycastHit2D>();
     float distance = 100.0f;
 
@@ -57,12 +57,17 @@ public class enemyControl : OverworldObject {
         //check player's distance from enemy
         if (!GameControl.control.isPaused)
         {
-            do
+            //do
+            dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+                + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+
+            while (dist <= safeDistance + 100.0f)
             {
+                print("inside while");
                 transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
                 dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
                 + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-            } while (dist <= safeDistance + 100.0f);
+            } //while (dist <= safeDistance + 100.0f);
 
             // if both top and bottom are both colliding with object, it's stuck
             //RaycastHit2D topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
@@ -141,13 +146,9 @@ public class enemyControl : OverworldObject {
             //    }
             //}
         }
-        
+
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
-        enemies = new List<Enemy>();
-        for (int i = 0; i < numOfEnemies; i++)
-        {
-            enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
-        }
+        //enemies = new List<Enemy>();
 
         base.Start();
 	}
@@ -235,6 +236,16 @@ public class enemyControl : OverworldObject {
                     GameControl.control.currentPosition = player.position; //record the player's position before entering battle
                     GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
 
+                    // if the enemies are not preset, set then based on the Room Control obj here
+                    if(enemies.Count == 0)
+                    {
+                        numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
+                        enemies = new List<Enemy>();
+                        for (int i = 0; i < numOfEnemies; i++)
+                        {
+                            enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
+                        }
+                    }
                     // Recieve the battle info from the enemy, such as enemy types and # of enemies
                     GameControl.control.numOfEnemies = numOfEnemies;
                     GameControl.control.enemies = enemies;
