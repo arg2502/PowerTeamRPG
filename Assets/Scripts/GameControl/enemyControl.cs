@@ -38,9 +38,10 @@ public class enemyControl : OverworldObject {
 
     Animator anim;
 
+    public bool beenPlaced; // true if the enemy has been arbitrarily placed
+
 	// Use this for initialization
 	void Start () {
-
         canMove = true;
         anim = GetComponent<Animator>();
 
@@ -57,17 +58,33 @@ public class enemyControl : OverworldObject {
         //check player's distance from enemy
         if (!GameControl.control.isPaused)
         {
-            //do
-            dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-                + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-
-            while (dist <= safeDistance + 100.0f)
+            //do            
+            // vector3 to store updated player location
+            Vector3 currentPosition = GameControl.control.currentPosition;
+            //dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+            //    + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+            dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
+                + ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
+            
+            if (dist <= safeDistance + 100.0f)
             {
-                print("inside while");
-                transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
-                dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-                + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-            } //while (dist <= safeDistance + 100.0f);
+                // if the enemy has been arbitrarily place, destroy it
+                if(beenPlaced)
+                {
+                    Destroy(this.gameObject);
+                }
+                // if it's a random enemy, push it somewhere else
+                else
+                {
+                    while (dist <= safeDistance + 100.0f)
+                    {
+                        transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
+                        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
+                        + ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
+                    }
+                }
+            }
+             //while (dist <= safeDistance + 100.0f);
 
             // if both top and bottom are both colliding with object, it's stuck
             //RaycastHit2D topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
