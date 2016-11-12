@@ -83,8 +83,11 @@ public class Switch : OverworldObject {
                     {
                         if (go.GetComponent<ColorBridge>() != null)
                         {
-                            go.GetComponent<ColorBridge>().Activate();
-                            isActivated = false;
+                            if (!go.GetComponent<ColorBridge>().isMoving)
+                            {
+                                go.GetComponent<ColorBridge>().Activate();
+                                //isActivated = false;
+                            }
                         }
                     }
                     if (sr.sprite == passiveSprite)
@@ -98,5 +101,30 @@ public class Switch : OverworldObject {
                 }                
             }
         }
-	}
+        // check for bridges still moving
+        else if(isActivated)
+        {
+            // keep track of how many bridges have stopped moving
+            int allClear = 0;
+
+            if (switchType == SwitchType.colorSwitch)
+            {
+                foreach (GameObject go in affectedObjs)
+                {
+                    if (go.GetComponent<ColorBridge>() != null)
+                    {
+                        if(!go.GetComponent<ColorBridge>().isMoving)
+                        {
+                            allClear++;
+                        }
+                    }
+                }
+                // all bridges have stopped, set isActivated equal to false
+                if(allClear == affectedObjs.Count)
+                {
+                    isActivated = false;
+                }
+            }
+        }
+	}    
 }
