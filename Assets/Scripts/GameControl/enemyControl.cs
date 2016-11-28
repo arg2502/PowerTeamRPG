@@ -42,7 +42,7 @@ public class enemyControl : OverworldObject {
 
 	// Use this for initialization
 	void Start () {
-        canMove = true;
+		//canMove = true;
         anim = GetComponent<Animator>();
 
         player = GameObject.FindObjectOfType<characterControl>().transform;
@@ -168,11 +168,13 @@ public class enemyControl : OverworldObject {
         //enemies = new List<Enemy>();
 
         base.Start();
+
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        
+
+		//canMove = false; // FOR LEVEL DESIGN VIDEO
             for (int i = 0; i < raycastHits.Count; i++)
             {
                 if (raycastHits[i].collider != null)

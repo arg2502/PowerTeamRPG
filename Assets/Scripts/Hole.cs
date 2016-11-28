@@ -33,7 +33,7 @@ public class Hole : OverworldObject {
                 distFromBlock = Mathf.Abs(Mathf.Sqrt(((transform.position.x - m.transform.position.x) * (transform.position.x - m.transform.position.x))
                 + ((transform.position.y - (m.transform.position.y - 30.0f)) * (transform.position.y - (m.transform.position.y - 30.0f)))));
 
-                if (distFromBlock < 70) { isFull = true; anim.SetBool("isFull", true); m.gameObject.SetActive(false); }
+                if (distFromBlock < 80) { isFull = true; anim.SetBool("isFull", true); m.gameObject.SetActive(false); }
             }
         }
         

@@ -102,8 +102,8 @@ public class Switch : OverworldObject {
             }
         }
         // check for bridges still moving
-        else if(isActivated)
-        {
+        //else if(isActivated)
+        //{
             // keep track of how many bridges have stopped moving
             int allClear = 0;
 
@@ -124,7 +124,10 @@ public class Switch : OverworldObject {
                 {
                     isActivated = false;
                 }
-            }
-        }
-	}    
+				else
+				{
+				isActivated = true;
+            	}
+        	}
+		}    
 }

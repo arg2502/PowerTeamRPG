@@ -42,7 +42,11 @@ public class NPCObject : OverworldObject {
 
 	// begin conversation when player collides and presses space
 	protected void Update(){
-		if (distFromPlayer < distToTalk && Input.GetKeyUp(KeyCode.Space) && canTalk && player.gameObject.GetComponent<characterControl>().canMove) {
+		if (distFromPlayer < distToTalk 
+			&& Input.GetKeyUp(KeyCode.Space) 
+			&& canTalk 
+			&& player.gameObject.GetComponent<characterControl>().canMove
+			&& gameObject.GetComponent<SpriteRenderer>().enabled) {
             
             // set which dialogue is spoken
             SetDialogue();

@@ -29,7 +29,8 @@ public class TreasureChest : NPCObject {
             && Input.GetKeyUp(KeyCode.Space) 
             && canTalk 
             && player.gameObject.GetComponent<characterControl>().canMove
-            && !isOpen)
+            && !isOpen
+			&& gameObject.GetComponent<SpriteRenderer>().enabled)
         {
             OpenChest();
 
