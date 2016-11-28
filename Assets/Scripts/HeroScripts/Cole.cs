@@ -20,13 +20,13 @@ public class Cole : Hero {
             Spell hellfire = new Spell();
             hellfire.Name = "HellFire";
             hellfire.Pm = 8;
-            hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \n Str 40, Crit 03, Acc 100";
+            hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \nCost 8pm, Str 40, Crit 03, Acc 100";
             spellsList.Add(hellfire);
 
             Spell splashflame = new Spell();
             splashflame.Name = "Splash Flame";
             splashflame.Pm = 3;
-            splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
+            splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \nCost 3pm, Str 60, Crit 05, Acc 85";
             spellsList.Add(splashflame);
 
             //Spell testtarget = new Spell();

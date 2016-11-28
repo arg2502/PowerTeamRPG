@@ -22,7 +22,7 @@ public class JethroSkillTree : SkillTree {
         helmsplitter = new Skill();
         helmsplitter.Name = "Helmsplitter";
         helmsplitter.Cost = 1;
-        helmsplitter.Description = helmsplitter.Name + "\nA powerful sword strike from above. \nCost " + helmsplitter.Cost + " \nStr 75\nCrit 03\nAcc 90";
+        helmsplitter.Description = "A powerful sword strike from above. \nCost " + helmsplitter.Cost + ", Str 75, Crit 03, Acc 90";
         helmsplitter.Pm = 2;
         //helmsplitter.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
         
@@ -30,7 +30,7 @@ public class JethroSkillTree : SkillTree {
         trinitySlice = new Skill();
         trinitySlice.Name = "Trinity Slice";
         trinitySlice.Cost = 1;
-        trinitySlice.Description = trinitySlice.Name + "\n. \nCost " + trinitySlice.Cost + " \nStr \nCrit \nAcc ";
+        trinitySlice.Description = ". \nCost " + trinitySlice.Cost + ", Str, Crit, Acc ";
         trinitySlice.Pm = 0;
         //trinitySlice.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 

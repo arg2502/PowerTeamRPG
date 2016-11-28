@@ -160,7 +160,7 @@ public class SkillTree : MonoBehaviour {
        
         // description text
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-        descriptionText.GetComponent<TextMesh>().text = content2DArray[columnIndex][rowIndex].Description;
+        descriptionText.GetComponent<TextMesh>().text = FormatText(content2DArray[columnIndex][rowIndex].Description);
         descriptionText.transform.position = new Vector2(button2DArray[numOfColumn - 1, 0].transform.position.x + 400, button2DArray[numOfColumn - 1, 0].transform.position.y + 50);
 
         remainingPts = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
@@ -248,7 +248,7 @@ public class SkillTree : MonoBehaviour {
         prevButton = button2DArray[columnIndex, rowIndex].GetComponent<MyButton>();
 
         // text positions
-        if (rowIndex < numOfRow) { descriptionText.GetComponent<TextMesh>().text = content2DArray[columnIndex][rowIndex].Description; }
+        if (rowIndex < numOfRow) { descriptionText.GetComponent<TextMesh>().text = FormatText(content2DArray[columnIndex][rowIndex].Description); }
         else { descriptionText.GetComponent<TextMesh>().text = ""; }
     }
     public void ButtonAction() 
