@@ -6,13 +6,14 @@ public class characterControl : OverworldObject {
     float walkSpeed = 200;
     float runSpeed = 360;
     public Vector2 speed;
+    public Vector2 desiredSpeed;
     PauseMenu pm;
 	//public bool canMove;
 
     public LayerMask movableMask;
 
-    RaycastHit2D topHit;
-    RaycastHit2D bottomHit;
+    RaycastHit2D topHitCheck;
+    RaycastHit2D bottomHitCheck;
 
     Animator anim;
 
@@ -29,9 +30,9 @@ public class characterControl : OverworldObject {
 
     public bool CheckCollision(Vector2 dir)
     {
-        topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), dir, 32.0f, movableMask);
-        bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), dir, 32.0f, movableMask);
-        if (topHit.collider == null && bottomHit.collider == null) { return false; }
+        topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), dir, 32.0f, movableMask);
+        bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), dir, 32.0f, movableMask);
+        if (topHitCheck.collider == null && bottomHitCheck.collider == null) { return false; }
         else { return true; }
     }
 	
@@ -40,6 +41,7 @@ public class characterControl : OverworldObject {
     {
         sr.sortingOrder = (int)-transform.position.y;
         speed = new Vector2(0f, 0f);
+        //desiredSpeed = Vector2.zero;
 
 		if (canMove) {
 			if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
@@ -48,119 +50,160 @@ public class characterControl : OverworldObject {
 				moveSpeed = walkSpeed;
 			}
 
-			if (Input.GetKey (KeyCode.W)) {
-                if (CheckCollision(new Vector2(0, moveSpeed)) == false) { speed += new Vector2(0, moveSpeed) * Time.deltaTime; }
-			}
-			else if (Input.GetKey (KeyCode.S)) {
-                if (CheckCollision(new Vector2(0, -moveSpeed)) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
-			}
-
-			if (Input.GetKey (KeyCode.A)) {
-                if (CheckCollision(new Vector2(-moveSpeed, 0)) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
-			}
-			else if (Input.GetKey (KeyCode.D)) {
-                if (CheckCollision(new Vector2(moveSpeed, 0)) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
-			}
-			RaycastHit2D topHit = Physics2D.Raycast (new Vector3 (transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
-			RaycastHit2D bottomHit = Physics2D.Raycast (new Vector3 (transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
-			if (topHit.collider == null && bottomHit.collider == null) {
-				transform.Translate (speed);
-			}
-            else if (topHit.collider != null && topHit.collider.tag == "Movable")
+            // If not pushing or pulling
+            if (!Input.GetKey(KeyCode.Space))
             {
-                if (transform.position.y <= topHit.transform.position.y &&
-                    !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) || 
-                    (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    && (Input.GetKey(KeyCode.W))) // up - W
+                if (Input.GetKey(KeyCode.W))
                 {
-                    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
-                    {
-                        topHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
-                    }
+                    desiredSpeed = new Vector2(0, moveSpeed) * Time.deltaTime;
+                    if (CheckCollision(new Vector2(0, moveSpeed)) == false) { speed += new Vector2(0, moveSpeed) * Time.deltaTime; }
                 }
-                else if (transform.position.y >= topHit.transform.position.y &&
-                    !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    && (Input.GetKey(KeyCode.S))) // down - S
+                else if (Input.GetKey(KeyCode.S))
                 {
-                    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
-                    {
-                        topHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
-                    }
+                    desiredSpeed = new Vector2(0, -moveSpeed) * Time.deltaTime;
+                    if (CheckCollision(new Vector2(0, -moveSpeed)) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
                 }
 
-                else if (transform.position.x <= topHit.transform.position.x &&
-                    !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    && (Input.GetKey(KeyCode.D))) // right - D
+                if (Input.GetKey(KeyCode.A))
                 {
-                    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
-                    {
-                        topHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
-                    }
+                    desiredSpeed = new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                    if (CheckCollision(new Vector2(-moveSpeed, 0)) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
                 }
-                else if (transform.position.x >= topHit.transform.position.x &&
-                    !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    && (Input.GetKey(KeyCode.A))) // left - A
+                else if (Input.GetKey(KeyCode.D))
                 {
-                    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
-                    {
-                        topHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
-                    }
+                    desiredSpeed = new Vector2(moveSpeed, 0) * Time.deltaTime;
+                    if (CheckCollision(new Vector2(moveSpeed, 0)) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
                 }
-
-                topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
-                bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
-                if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed/2); }
+                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
+                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
+                if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
+                {
+                    transform.Translate(speed);
+                    desiredSpeed = Vector2.zero;
+                }
             }
-            else if (bottomHit.collider != null && bottomHit.collider.tag == "Movable")
+			
+            // If pushing or pulling
+            if (Input.GetKey(KeyCode.Space))
             {
-                if (transform.position.y >= bottomHit.transform.position.y &&
-                    !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset)) 
-                    && (Input.GetKey(KeyCode.S))) // down - S
+                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), desiredSpeed, 32.0f, mask);
+                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), desiredSpeed, 32.0f, mask);
+                if (topHit.collider != null && topHit.collider.tag == "Movable")
                 {
-                    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
+                    if (//transform.position.y <= topHit.transform.position.y &&
+                        !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.W))) // up - W
                     {
-                        bottomHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
+                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
+                        {
+                            if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime))
+                            {
+                                topHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
+                                speed += new Vector2(0, moveSpeed) * Time.deltaTime;
+                            }
+                        }
                     }
-                }
-                else if (transform.position.y <= bottomHit.transform.position.y &&
-                    !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset)) 
-                    && (Input.GetKey(KeyCode.W))) // up - W
-                {
-                    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
+                    else if (//transform.position.y >= topHit.transform.position.y &&
+                        !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.S))) // down - S
                     {
-                        bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
+                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
+                        {
+                            if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime)) 
+                            {
+                                topHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
+                                speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
+                            }
+                        }
                     }
-                }
 
-                else if (transform.position.x >= bottomHit.transform.position.x &&
-                    !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    && (Input.GetKey(KeyCode.A))) // left - A
-                {
-                    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
+                    else if (//transform.position.x <= topHit.transform.position.x &&
+                        !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.D))) // right - D
                     {
-                        bottomHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
+                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
+                        {
+                            if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime))
+                            {
+                                topHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
+                                speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
+                            }
+                        }
                     }
-                }
-                else if (transform.position.x <= bottomHit.transform.position.x &&
-                    !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    && (Input.GetKey(KeyCode.D))) // right - D
-                {
-                    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
+                    else if (//transform.position.x >= topHit.transform.position.x &&
+                        !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.A))) // left - A
                     {
-                        bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
+                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
+                        {
+                            if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime))
+                            {
+                                topHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
+                                speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                            }
+                        }
                     }
-                }
 
-                topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
-                bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
-                if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed/2); }
+                    topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
+                    bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
+                    if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed / 2); }
+                }
+                else if (bottomHit.collider != null && bottomHit.collider.tag == "Movable")
+                {
+                    if (//transform.position.y >= bottomHit.transform.position.y &&
+                        !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.S))) // down - S
+                    {
+                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
+                        {
+                            bottomHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
+                            speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
+                        }
+                    }
+                    else if (//transform.position.y <= bottomHit.transform.position.y &&
+                        !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.W))) // up - W
+                    {
+                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
+                        {
+                            bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
+                            speed += new Vector2(0, moveSpeed) * Time.deltaTime;
+                        }
+                    }
+
+                    else if (//transform.position.x >= bottomHit.transform.position.x &&
+                        !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.A))) // left - A
+                    {
+                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
+                        {
+                            bottomHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
+                            speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                        }
+                    }
+                    else if (//transform.position.x <= bottomHit.transform.position.x &&
+                        !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                        (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                        && (Input.GetKey(KeyCode.D))) // right - D
+                    {
+                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
+                        {
+                            bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
+                            speed += new Vector2(moveSpeed, 0) * Time.deltaTime; 
+                        }
+                    }
+
+                    topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
+                    bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
+                    if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed / 2); }
+                }
             }
 		}
 
