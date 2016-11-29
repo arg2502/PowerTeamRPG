@@ -43,7 +43,7 @@ public class enemyControl : OverworldObject {
 
 	// Use this for initialization
 	void Start () {
-		//canMove = true;
+		canMove = true;
         anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer> ();
         player = GameObject.FindObjectOfType<characterControl>().transform;

@@ -24,6 +24,9 @@ public class Switch : OverworldObject {
     public Sprite passiveSprite;
     public Sprite activeSprite;
 
+	float timer = 0.0f;
+	float maxTime = 8.99f;
+
 	// Use this for initialization
 	void Start () {
         base.Start();
@@ -102,32 +105,45 @@ public class Switch : OverworldObject {
             }
         }
         // check for bridges still moving
-        //else if(isActivated)
-        //{
-            // keep track of how many bridges have stopped moving
-            int allClear = 0;
+        
+        int allClear = 0;
 
-            if (switchType == SwitchType.colorSwitch)
+        if (switchType == SwitchType.colorSwitch)
+        {		
+
+            foreach (GameObject go in affectedObjs)
             {
-                foreach (GameObject go in affectedObjs)
+                if (go.GetComponent<ColorBridge>() != null)
                 {
-                    if (go.GetComponent<ColorBridge>() != null)
-                    {
-                        if(!go.GetComponent<ColorBridge>().isMoving)
-                        {
-                            allClear++;
-                        }
-                    }
+					// keep track of how many bridges have stopped moving
+					if (!go.GetComponent<ColorBridge> ().isMoving) {
+						allClear++;
+					} 
+
                 }
-                // all bridges have stopped, set isActivated equal to false
-                if(allClear == affectedObjs.Count)
-                {
-                    isActivated = false;
-                }
-				else
-				{
+            }
+
+			// timer to start movement again
+			if (isActivated) {
+				if (timer <= maxTime) {
+					timer += 0.1f;
+				} else {
+					timer = 0.0f;
+					ToggleMovement ();
+				}
+			} else {
+				timer = 0.0f;
+			}
+
+            // all bridges have stopped, set isActivated equal to false
+            if(allClear == affectedObjs.Count)
+            {
+                isActivated = false;
+            }
+			else
+			{
 				isActivated = true;
-            	}
-        	}
-		}    
+            }
+        }
+	}    
 }

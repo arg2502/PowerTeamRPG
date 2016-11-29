@@ -434,6 +434,7 @@ public class BattleMenu : Menu {
                 && currentDenigen.statusState != Denigen.Status.overkill))
             {
                 EnableMenu();
+				print ("enable");
                 GetComponent<Renderer>().enabled = true;
                 descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
                 currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
@@ -931,6 +932,10 @@ public class BattleMenu : Menu {
 			b.GetComponent<Renderer>().enabled = true;
 			b.GetComponent<MyButton>().textObject.GetComponent<Renderer>().enabled = true;
         }
+
+		// bring back background and description text
+		GetComponent<Renderer>().enabled = true;
+		descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
 
         foreach (GameObject i in GameControl.control.consumables)
         {

@@ -11,6 +11,7 @@ public class ColorBridge : OverworldObject {
 	Transform player;
 	float width = 240.0f;
 	float height = 332.0f;
+	roomControl room;
 
     void Start()
     {
@@ -18,16 +19,22 @@ public class ColorBridge : OverworldObject {
         sr.sortingOrder = (int)-transform.position.y - 2000;
         isMoving = false;
 		player = GameObject.FindObjectOfType<characterControl>().transform;
+		room = GameObject.FindObjectOfType<roomControl> ();
     }
 
     public override void Activate()
     {
+		isMoving = true;
+		// freeze the player
+		if(player.GetComponent<characterControl>().canMove){ToggleMovement();}
         StartCoroutine(RotateBridge());
-        isMoving = true;
+        
+
     }
     IEnumerator RotateBridge()
     {
-        if (transform.eulerAngles.z < rotationDegrees2)
+        if (transform.eulerAngles.z < rotationDegrees2
+			&& isMoving)
         {
             while (transform.eulerAngles.z < rotationDegrees2)
             {
@@ -46,13 +53,27 @@ public class ColorBridge : OverworldObject {
                 // set isMoving to false
                 if (transform.eulerAngles.z == rotationDegrees2)
                 {
+					// reactivate player
+					/*if (!player.GetComponent<characterControl> ().canMove) {
+						ToggleMovement ();
+						print ("toggle 1");
+					}*/
+
+					// reactivate enemies
+					/*foreach(enemyControl e in room.enemies)
+					{
+						if (!e.GetComponent<enemyControl> ().canMove)
+							ToggleMovement ();
+					}*/
+
                     isMoving = false;
                 }
 
                 yield return new WaitForSeconds(0.01f);
             }
         }
-        else if(transform.eulerAngles.z > rotationDegrees1)
+        else if(transform.eulerAngles.z > rotationDegrees1
+			&& isMoving)
         {
             while (transform.eulerAngles.z > rotationDegrees1)
             {
@@ -74,8 +95,15 @@ public class ColorBridge : OverworldObject {
                 if(transform.eulerAngles.z > 358.0f 
                     || transform.eulerAngles.z < 2.0f)
                 {
+					// reactivate player
+					/*if (!player.GetComponent<characterControl> ().canMove) {
+						ToggleMovement ();
+						print ("toggle 2");
+					}*/
+
                     transform.rotation = Quaternion.Euler(0, 0, 0);
                     isMoving = false;
+
                 }
                 yield return new WaitForSeconds(0.01f);
             }
