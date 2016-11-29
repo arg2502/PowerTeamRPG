@@ -25,7 +25,7 @@ public class Switch : OverworldObject {
     public Sprite activeSprite;
 
 	float timer = 0.0f;
-	float maxTime = 8.99f;
+	float maxTime = 1.66f;
 
 	// Use this for initialization
 	void Start () {
@@ -125,8 +125,9 @@ public class Switch : OverworldObject {
 
 			// timer to start movement again
 			if (isActivated) {
-				if (timer <= maxTime) {
-					timer += 0.1f;
+				print (timer);
+				if (timer <= maxTime) {					
+					timer += Time.deltaTime;
 				} else {
 					timer = 0.0f;
 					ToggleMovement ();
