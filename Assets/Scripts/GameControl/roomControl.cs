@@ -14,7 +14,7 @@ public class roomControl : MonoBehaviour {
     public int areaLevel; // the locked level of enemies in the area
     public int numOfEnemies; //number of enemies walking around
     public List<Enemy> possibleEnemies;// Array of possible enemy types
-    List<enemyControl> enemies = new List<enemyControl>();
+    public List<enemyControl> enemies = new List<enemyControl>();
     public GameObject enemyControlPrefab; // a generic enemy control object
     public int minEnemiesPerBattle;
     public int maxEnemiesPerBattle;
@@ -40,9 +40,16 @@ public class roomControl : MonoBehaviour {
         {
             doorsInRoom.Add(dq);
         }
+		// add any manually placed enemies first
+		foreach (enemyControl e in GameObject.FindObjectsOfType<enemyControl>()) {
+			enemies.Add (e);
+		}
+
         //create the appropriate amount of enemies
         if (!GameControl.control.isPaused)
         {
+			
+
             for (int i = 0; i < numOfEnemies; i++)
             {
                 GameObject temp = GameObject.Instantiate(enemyControlPrefab);
@@ -52,17 +59,18 @@ public class roomControl : MonoBehaviour {
                 enemies.Add(temp.GetComponent<enemyControl>());
             }
         }
-        else if (GameControl.control.isPaused)
+        /*else if (GameControl.control.isPaused)
         {
-            for (int i = 0; i < GameControl.control.enemyPos.Count; i++)
+			for (int i = 0; i < numOfEnemiesGameControl.control.enemyPos.Count; i++)
             {
                 GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-                temp.transform.position = new Vector2(GameControl.control.enemyPos[i].x, GameControl.control.enemyPos[i].y); // hopefully we will have a better way of placing enemies
-                temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
+                //temp.transform.position = new Vector2(GameControl.control.enemyPos[i].x, GameControl.control.enemyPos[i].y); // hopefully we will have a better way of placing enemies
+                
+				temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
                 temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
                 enemies.Add(temp.GetComponent<enemyControl>());
             }
-        }
+        }*/
 
         // Check if this room is already tracked by the game control obj - if not, make it so!
         foreach (RoomControlData rc in GameControl.control.rooms)
@@ -97,6 +105,26 @@ public class roomControl : MonoBehaviour {
                         }
                     }
                 }
+				// sync enemy locations
+				for (int i = 0; i < enemies.Count; i++) {
+					for (int j = 0; j < enemies.Count; j++) {
+						if (enemies [i].name == rc.enemyData [j].enemyName) {
+							
+							//enemies [i].CheckDistance (); // after state is saved, check the distance
+							enemies[i].transform.position = new Vector3(rc.enemyData[j].position.x,rc.enemyData[j].position.y, rc.enemyData[j].position.z);
+							enemies [i].beenBattled = rc.enemyData [j].battledState;
+							if (enemies [i].beenBattled) {
+								enemies [i].GetComponent<SpriteRenderer> ().enabled = false;
+								enemies [i].enabled = false;
+							} else {
+								enemies [i].GetComponent<SpriteRenderer> ().enabled = true;
+								enemies [i].enabled = true;
+							}
+						}
+					}
+				}
+
+
                 // set the amount of keys equal to the dungeon you are in
                 // if < 0 (-1), then you are not in a dungeon. Set keys to 0
                 if (dungeonID < 0)
@@ -108,6 +136,8 @@ public class roomControl : MonoBehaviour {
                 {
                     GameControl.control.totalKeys = GameControl.control.keysObtainedInDungeons[dungeonID];
                 }
+
+
                 return;
             }
         }
@@ -137,6 +167,14 @@ public class roomControl : MonoBehaviour {
             GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData[i].doorName = doorsInRoom[i].name;
 
         }
+		for (int i = 0; i < enemies.Count; i++) {
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData.Add (new EnemyControlData ());
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].enemyName = enemies [i].name;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].battledState = enemies [i].beenBattled;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.x = enemies [i].transform.position.x;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.y = enemies [i].transform.position.y;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.z = enemies [i].transform.position.z;
+		}
 	}
 	
 	// Update is called once per frame

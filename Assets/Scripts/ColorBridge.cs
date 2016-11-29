@@ -40,6 +40,7 @@ public class ColorBridge : OverworldObject {
 				   && player.transform.position.y > (transform.position.y - height / 2)
 				   && player.transform.position.y < (transform.position.y + height / 2)) {
 					//player.transform.RotateAround (transform.position, Vector3.forward, 1.0f);
+					//player.transform.Rotate (Vector3.forward, -1.0f);
 				}
 
                 // set isMoving to false
@@ -64,6 +65,7 @@ public class ColorBridge : OverworldObject {
 					&& player.transform.position.y > (transform.position.y - height / 2)
 					&& player.transform.position.y < (transform.position.y + height / 2)) {
 					//player.transform.RotateAround (transform.position, Vector3.back, 1.0f);
+					//player.transform.Rotate (Vector3.back, -1.0f);
 
 				}
 

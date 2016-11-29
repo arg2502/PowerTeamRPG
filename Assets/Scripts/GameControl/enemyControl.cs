@@ -39,12 +39,13 @@ public class enemyControl : OverworldObject {
     Animator anim;
 
     public bool beenPlaced; // true if the enemy has been arbitrarily placed
+	public bool beenBattled; // true if you battled/fleed this enemy - all normal enemies should be set back to false when player dies
 
 	// Use this for initialization
 	void Start () {
 		//canMove = true;
         anim = GetComponent<Animator>();
-
+		sr = GetComponent<SpriteRenderer> ();
         player = GameObject.FindObjectOfType<characterControl>().transform;
         state = State.wait;
         walkTimer = 3.0f;
@@ -55,113 +56,77 @@ public class enemyControl : OverworldObject {
 
         rc = GameObject.FindObjectOfType<roomControl>();
 
+		// vector3 to store updated player location
+		Vector3 currentPosition = GameControl.control.currentPosition;
+		//dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+		//    + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+		dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
+			+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
+
+		// set enabled state if you battled and close to it
+		// mainly for coming out of pause sub menus
+		if (beenBattled && dist <= safeDistance + 100.0f) {
+			sr.enabled = false;
+			enabled = false;
+		} 
+		// if we want the enemies to reappear after you walk away from battling them
+		// THIS DOESN'T WORK RIGHT NOW - NEED TO ENABLE THEM OUTIDE OF CLASS
+		else if (beenBattled && dist > safeDistance + 100.0f) {
+			print ("inside else if");
+			enabled = true;
+			sr.enabled = true;
+			beenBattled = false;
+		}
         //check player's distance from enemy
         if (!GameControl.control.isPaused)
         {
-            //do            
-            // vector3 to store updated player location
-            Vector3 currentPosition = GameControl.control.currentPosition;
-            //dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-            //    + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-            dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
-                + ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
-            
-            if (dist <= safeDistance + 100.0f)
-            {
-                // if the enemy has been arbitrarily place, destroy it
-                if(beenPlaced)
-                {
-                    Destroy(this.gameObject);
-                }
-                // if it's a random enemy, push it somewhere else
-                else
-                {
-                    while (dist <= safeDistance + 100.0f)
-                    {
-                        transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
-                        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
-                        + ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
-                    }
-                }
-            }
-             //while (dist <= safeDistance + 100.0f);
+			if (dist <= safeDistance + 100.0f) {
+				// if the enemy has been arbitrarily place, destroy it
+				if (beenPlaced) {
+					sr.enabled = false;
+					enabled = false;
+				}
+				// if it's a random enemy, push it somewhere else
+				else {
+					while (dist <= safeDistance + 100.0f) {
+						transform.position = new Vector2 (Random.Range (-1000.0f, 1000.0f), Random.Range (-1000.0f, 1000.0f));
+						dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
+							+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
+					}
+				}
+			} 
 
-            // if both top and bottom are both colliding with object, it's stuck
-            //RaycastHit2D topHit = Physics2D.Raycast(transform.position, directions[2], 30.0f, mask);
-            //RaycastHit2D bottomHit = Physics2D.Raycast(transform.position, directions[3], 30.0f, mask);
-            for (int i = 0; i < 2; i++ )
-            {
-                raycastHits.Add(Physics2D.Raycast(transform.position, directions[i], distance, mask));
-            }
-            foreach (RaycastHit2D rh in raycastHits)
-            {
-                if (rh.collider != null)
-                {
-                    OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
-                    int loopCounter = 0; // keep track of the number of loops
-                    while ((raycastHits[0].collider != null //owo.GetComponent<Collider2D>()
-                                   || raycastHits[1].collider != null) //owo.GetComponent<Collider2D>()) 
-                                   || (dist <= safeDistance + 100.0f))
-                    {
-                        transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f));
+			// if enemy is stuck in wall, push them out
+			// only for randomly placed enemies
+			if (!beenPlaced) {
+				for (int i = 0; i < 2; i++) {
+					raycastHits.Add (Physics2D.Raycast (transform.position, directions [i], distance, mask));
+				}
+				foreach (RaycastHit2D rh in raycastHits) {
+					if (rh.collider != null) {
+						OverworldObject owo = rh.collider.GetComponent<OverworldObject> ();
+						int loopCounter = 0; // keep track of the number of loops
+						while ((raycastHits [0].collider != null//owo.GetComponent<Collider2D>()
+						                     || raycastHits [1].collider != null)//owo.GetComponent<Collider2D>()) 
+						                     || (dist <= safeDistance + 100.0f)) {
+							transform.position = new Vector2 (Random.Range (-1000.0f, 1000.0f), Random.Range (-1000.0f, 1000.0f));
+							print ("hit");
+							dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
+							+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 
-                        dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-                        + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-
-                        raycastHits = new List<RaycastHit2D>();
-                        for (int i = 0; i < 2; i++)
-                        {
-                            raycastHits.Add(Physics2D.Raycast(transform.position, directions[i], distance, mask));
-                        }
-                        loopCounter++;
-                        // if looping excedes a number, just quit
-                        if (loopCounter >= 50) { Destroy(this.gameObject); }
-                    }
-                }
-            }
-            //foreach (RaycastHit2D rh in raycastHits)
-            //{
-            //    if (rh.collider != null)
-            //    {
-            //        //print("inside if: " + topHit.collider);
-            //        OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
-            //        while (raycastHits[0].collider == owo.GetComponent<Collider2D>()
-            //                || raycastHits[1].collider == owo.GetComponent<Collider2D>())
-            //                //|| raycastHits[2].collider == owo.GetComponent<Collider2D>()
-            //                //|| raycastHits[3].collider == owo.GetComponent<Collider2D>())
-            //        {
-
-            //            transform.position += owo.offset;
-            //            print(name + ": " + transform.position);
-            //            for (int i = 0; i < raycastHits.Count; i++ )
-            //            {
-            //                 raycastHits[i] = Physics2D.Raycast(transform.position, directions[i], distance, mask);
-            //            }
-                
-            //            if (raycastHits[0].collider == null
-            //            || raycastHits[1].collider == null)
-            //            //&& raycastHits[2].collider == null
-            //            //&& raycastHits[3].collider == null) 
-            //            { break; }
-            //            else if (raycastHits[0].collider != null)
-            //            {
-            //                owo = raycastHits[0].collider.GetComponent<OverworldObject>();
-            //            }
-            //            else if (raycastHits[1].collider != null)
-            //            {
-            //                 owo = raycastHits[1].collider.GetComponent<OverworldObject>();
-            //            }
-            //            //else if (raycastHits[2].collider != null)
-            //            //{
-            //            //     owo = raycastHits[2].collider.GetComponent<OverworldObject>();
-            //            //}
-            //            //else if (raycastHits[3].collider != null)
-            //            //{
-            //            //     owo = raycastHits[3].collider.GetComponent<OverworldObject>();
-            //            //}
-            //        }
-            //    }
-            //}
+							raycastHits = new List<RaycastHit2D> ();
+							for (int i = 0; i < 2; i++) {
+								raycastHits.Add (Physics2D.Raycast (transform.position, directions [i], distance, mask));
+							}
+							loopCounter++;
+							// if looping excedes a number, just quit
+							if (loopCounter >= 50) {
+								Destroy (this.gameObject);
+							}
+						}
+					}
+				}
+			}
         }
 
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
@@ -170,11 +135,10 @@ public class enemyControl : OverworldObject {
         base.Start();
 
 	}
-	
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		//canMove = false; // FOR LEVEL DESIGN VIDEO
             for (int i = 0; i < raycastHits.Count; i++)
             {
                 if (raycastHits[i].collider != null)
@@ -269,6 +233,7 @@ public class enemyControl : OverworldObject {
                     GameControl.control.numOfEnemies = numOfEnemies;
                     GameControl.control.enemies = enemies;
 
+					beenBattled = true;
                     //save the current room, to acheive persistency while paused
                     GameControl.control.RecordRoom();
 
@@ -283,51 +248,7 @@ public class enemyControl : OverworldObject {
                     while (dir == prevDir) { dir = Random.Range(0, 4); }
                     speed = directions[dir] * coolDownSpeed * Time.deltaTime;
                 }
-            }
-
-            //foreach (RaycastHit2D rh in raycastHits)
-            //{
-            //    if (rh.collider != null)
-            //    {
-            //        //print("inside if: " + topHit.collider);
-            //        OverworldObject owo = rh.collider.GetComponent<OverworldObject>();
-            //        if (raycastHits[0].collider == owo.GetComponent<Collider2D>()
-            //                || raycastHits[1].collider == owo.GetComponent<Collider2D>())
-            //        //|| raycastHits[2].collider == owo.GetComponent<Collider2D>()
-            //        //|| raycastHits[3].collider == owo.GetComponent<Collider2D>())
-            //        {
-
-            //            transform.position += owo.offset;
-            //            print(name + ": " + transform.position);
-            //            for (int i = 0; i < raycastHits.Count; i++)
-            //            {
-            //                raycastHits[i] = Physics2D.Raycast(transform.position, directions[i], distance, mask);
-            //            }
-
-            //            if (raycastHits[0].collider == null
-            //            && raycastHits[1].collider == null)
-            //            //&& raycastHits[2].collider == null
-            //            //&& raycastHits[3].collider == null) 
-            //            { break; }
-            //            else if (raycastHits[0].collider != null)
-            //            {
-            //                owo = raycastHits[0].collider.GetComponent<OverworldObject>();
-            //            }
-            //            else if (raycastHits[1].collider != null)
-            //            {
-            //                owo = raycastHits[1].collider.GetComponent<OverworldObject>();
-            //            }
-            //            //else if (raycastHits[2].collider != null)
-            //            //{
-            //            //     owo = raycastHits[2].collider.GetComponent<OverworldObject>();
-            //            //}
-            //            //else if (raycastHits[3].collider != null)
-            //            //{
-            //            //     owo = raycastHits[3].collider.GetComponent<OverworldObject>();
-            //            //}
-            //        }
-            //    }
-            //}
+            }           
         }
 	}
 

@@ -395,6 +395,13 @@ public class GameControl : MonoBehaviour {
                     rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
                     rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
                 }
+				for (int i = 0; i < rc.enemies.Count; i++) {
+					rcd.enemyData [i].enemyName = rc.enemies [i].name;
+					rcd.enemyData [i].battledState = rc.enemies [i].beenBattled;
+					rcd.enemyData [i].position.x = rc.enemies [i].transform.position.x;
+					rcd.enemyData [i].position.y = rc.enemies [i].transform.position.y;
+					rcd.enemyData [i].position.z = rc.enemies [i].transform.position.z;
+				}
                 // save which dungeon the player is in
                 // if >= 0, save the keys
                 rcd.dungeonID = rc.dungeonID;
@@ -804,6 +811,7 @@ public class RoomControlData
     //also store treasure boxes, doors, switches, antyhing important
     public List<TreasureData> chestData = new List<TreasureData>();
     public List<DoorData> doorData = new List<DoorData>();
+	public List<EnemyControlData> enemyData = new List<EnemyControlData>();
 }
 
 [Serializable]
@@ -818,12 +826,19 @@ public class DoorData
     public bool isLocked;
     public string doorName;
 }
+
 [Serializable]
 public class SerializableVector3
 {
     public float x, y, z;
 }
-
+[Serializable]
+public class EnemyControlData
+{
+	public string enemyName;
+	public bool battledState;
+	public SerializableVector3 position = new SerializableVector3 ();
+}
 [Serializable]
 public class tempMenu
 {
