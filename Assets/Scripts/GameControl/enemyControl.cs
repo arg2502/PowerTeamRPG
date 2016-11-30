@@ -168,7 +168,7 @@ public class enemyControl : OverworldObject {
 
             if (state == State.wait)
             {
-
+                CheckForBattle();
                 if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
 
                 if (timer >= waitTimer)
@@ -183,7 +183,8 @@ public class enemyControl : OverworldObject {
             }
             else if (state == State.walk)
             {
-                checkCollision();
+                CheckCollision();
+                CheckForBattle();
 
                 if (dist <= safeDistance) { state = State.pursue; timer = 0.0f; }
 
@@ -195,7 +196,8 @@ public class enemyControl : OverworldObject {
             }
             else if (state == State.coolDown)
             {
-                checkCollision();
+                CheckCollision();
+                CheckForBattle();
 
                 if (timer >= coolDownTimer)
                 {
@@ -212,33 +214,8 @@ public class enemyControl : OverworldObject {
                 if (player.position.y < transform.position.y - 5.0f) { speed += directions[3] * runSpeed * Time.deltaTime; }
                 else if (player.position.y > transform.position.y + 5.0f) { speed += directions[2] * runSpeed * Time.deltaTime; }
 
-                checkCollision();
-
-                if (dist <= 15.0f)
-                {
-                    GameControl.control.currentPosition = player.position; //record the player's position before entering battle
-                    GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
-
-                    // if the enemies are not preset, set then based on the Room Control obj here
-                    if(enemies.Count == 0)
-                    {
-                        numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
-                        enemies = new List<Enemy>();
-                        for (int i = 0; i < numOfEnemies; i++)
-                        {
-                            enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
-                        }
-                    }
-                    // Recieve the battle info from the enemy, such as enemy types and # of enemies
-                    GameControl.control.numOfEnemies = numOfEnemies;
-                    GameControl.control.enemies = enemies;
-
-					beenBattled = true;
-                    //save the current room, to acheive persistency while paused
-                    GameControl.control.RecordRoom();
-
-                    UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
-                }
+                CheckCollision();
+                CheckForBattle();
 
                 if (timer >= pursueTimer)
                 {
@@ -252,7 +229,7 @@ public class enemyControl : OverworldObject {
         }
 	}
 
-    void checkCollision()
+    void CheckCollision()
     {
         RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y + 5.0f, transform.position.z), speed, 30.0f, mask);
         RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 10.0f, transform.position.z), speed, 30.0f, mask);
@@ -267,6 +244,35 @@ public class enemyControl : OverworldObject {
             int prevDir = dir;
             while (dir == prevDir) { dir = Random.Range(0, 3); }
             speed = directions[dir] * coolDownSpeed * Time.deltaTime;
+        }
+    }
+
+    void CheckForBattle()
+    {
+        if (dist <= 15.0f)
+        {
+            GameControl.control.currentPosition = player.position; //record the player's position before entering battle
+            GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
+
+            // if the enemies are not preset, set then based on the Room Control obj here
+            if (enemies.Count == 0)
+            {
+                numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
+                enemies = new List<Enemy>();
+                for (int i = 0; i < numOfEnemies; i++)
+                {
+                    enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
+                }
+            }
+            // Recieve the battle info from the enemy, such as enemy types and # of enemies
+            GameControl.control.numOfEnemies = numOfEnemies;
+            GameControl.control.enemies = enemies;
+
+            beenBattled = true;
+            //save the current room, to acheive persistency while paused
+            GameControl.control.RecordRoom();
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
         }
     }
 }

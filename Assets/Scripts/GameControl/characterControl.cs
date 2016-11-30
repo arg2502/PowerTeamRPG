@@ -28,10 +28,10 @@ public class characterControl : OverworldObject {
         base.Start();
 	}
 
-    public bool CheckCollision(Vector2 dir)
+    public bool CheckCollision(Vector2 dir, LayerMask _mask)
     {
-        topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), dir, 32.0f, movableMask);
-        bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), dir, 32.0f, movableMask);
+        topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), dir, 32.0f, _mask);
+        bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), dir, 32.0f, _mask);
         if (topHitCheck.collider == null && bottomHitCheck.collider == null) { return false; }
         else { return true; }
     }
@@ -56,23 +56,23 @@ public class characterControl : OverworldObject {
                 if (Input.GetKey(KeyCode.W))
                 {
                     desiredSpeed = new Vector2(0, moveSpeed) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(0, moveSpeed)) == false) { speed += new Vector2(0, moveSpeed) * Time.deltaTime; }
+                    if (CheckCollision(new Vector2(0, moveSpeed), movableMask) == false) { speed += new Vector2(0, moveSpeed) * Time.deltaTime; }
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
                     desiredSpeed = new Vector2(0, -moveSpeed) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(0, -moveSpeed)) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
+                    if (CheckCollision(new Vector2(0, -moveSpeed), movableMask) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
                 }
 
                 if (Input.GetKey(KeyCode.A))
                 {
                     desiredSpeed = new Vector2(-moveSpeed, 0) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(-moveSpeed, 0)) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
+                    if (CheckCollision(new Vector2(-moveSpeed, 0), movableMask) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     desiredSpeed = new Vector2(moveSpeed, 0) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(moveSpeed, 0)) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
+                    if (CheckCollision(new Vector2(moveSpeed, 0), movableMask) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
                 }
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
@@ -97,7 +97,7 @@ public class characterControl : OverworldObject {
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
                         {
-                            if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime))
+                            if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime, movableMask))
                             {
                                 topHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
                                 speed += new Vector2(0, moveSpeed) * Time.deltaTime;
@@ -111,7 +111,7 @@ public class characterControl : OverworldObject {
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
                         {
-                            if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime)) 
+                            if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime, mask)) 
                             {
                                 topHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
                                 speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
@@ -126,7 +126,7 @@ public class characterControl : OverworldObject {
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
                         {
-                            if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime))
+                            if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime, movableMask))
                             {
                                 topHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
                                 speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
@@ -140,7 +140,7 @@ public class characterControl : OverworldObject {
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
                         {
-                            if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime))
+                            if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime, mask))
                             {
                                 topHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
                                 speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
@@ -161,8 +161,11 @@ public class characterControl : OverworldObject {
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
                         {
-                            bottomHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
-                            speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
+                            if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime, movableMask))
+                            {
+                                bottomHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
+                                speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
+                            }
                         }
                     }
                     else if (//transform.position.y <= bottomHit.transform.position.y &&
@@ -172,8 +175,11 @@ public class characterControl : OverworldObject {
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
                         {
-                            bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
-                            speed += new Vector2(0, moveSpeed) * Time.deltaTime;
+                            if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime, mask))
+                            {
+                                bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
+                                speed += new Vector2(0, moveSpeed) * Time.deltaTime;
+                            }
                         }
                     }
 
@@ -184,8 +190,11 @@ public class characterControl : OverworldObject {
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
                         {
-                            bottomHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
-                            speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                            if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime, movableMask))
+                            {
+                                bottomHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
+                                speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                            }
                         }
                     }
                     else if (//transform.position.x <= bottomHit.transform.position.x &&
@@ -195,8 +204,11 @@ public class characterControl : OverworldObject {
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
                         {
-                            bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
-                            speed += new Vector2(moveSpeed, 0) * Time.deltaTime; 
+                            if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime, mask))
+                            {
+                                bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
+                                speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
+                            }
                         }
                     }
 
