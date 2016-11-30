@@ -15,9 +15,11 @@ public class OverworldObject : MonoBehaviour {
 
     public void ToggleMovement()
     {
+		print ("ToggleMovement called");
         foreach (OverworldObject o in GameObject.FindObjectsOfType<OverworldObject>())
         {
-            o.canMove = !canMove;
+            o.canMove = !o.canMove;
+			//print (o.name);
         }
     }
     public virtual void Activate() {}

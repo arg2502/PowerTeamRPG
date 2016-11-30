@@ -434,7 +434,6 @@ public class BattleMenu : Menu {
                 && currentDenigen.statusState != Denigen.Status.overkill))
             {
                 EnableMenu();
-				print ("enable");
                 GetComponent<Renderer>().enabled = true;
                 descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
                 currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
@@ -926,6 +925,11 @@ public class BattleMenu : Menu {
             d.IsBlocking = false;
 		}
 
+		// change the state and text before showing the buttons and text again
+		state = MenuReader.main;
+		ChangeContentArray ();
+		StateChangeText ();
+
 		foreach (GameObject b in buttonArray)
 		{
 			//show the buttons
@@ -943,9 +947,7 @@ public class BattleMenu : Menu {
         }
 
         if (failedFlee) { failedFlee = false; }
-		state = MenuReader.main;
-		ChangeContentArray ();
-		StateChangeText ();
+
 	}
     void UpdateFailure()
     {

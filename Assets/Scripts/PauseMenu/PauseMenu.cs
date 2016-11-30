@@ -79,7 +79,33 @@ public class PauseMenu : Menu {
         //call change text method to correctly size text and avoid a certain bug
         ChangeText();
 
-        DisablePauseMenu(); // hide the menu until the player opens it
+
+		// calling this method at start called ToggleMovement on all Overworld objs
+		// while they were still being created resulting in some objs with canMove true
+		// and others with it false
+		// the following code is the Disable Pause Menu method with the ToggleMovement line
+		// commented out.
+		// A better way can be made later
+
+        //DisablePauseMenu(); 
+		// hide the menu until the player opens it
+		// reset the menu for the next use
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+		selectedIndex = 0;
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+
+		// hide the menu
+		isVisible = false;
+		//GameControl.control.isPaused = false;
+		sr.enabled = false;
+
+		// release the overworld objects
+		//if (player.canMove == false) { player.ToggleMovement(); }
+
+		base.DisableMenu();
+		descriptionText.GetComponent<Renderer>().enabled = false;
+		//
+
         isVisible = false;
         isActive = true;
 

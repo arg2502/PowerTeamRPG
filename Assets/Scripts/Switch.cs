@@ -111,7 +111,7 @@ public class Switch : OverworldObject {
         if (switchType == SwitchType.colorSwitch)
         {		
 
-            foreach (GameObject go in affectedObjs)
+            /*foreach (GameObject go in affectedObjs)
             {
                 if (go.GetComponent<ColorBridge>() != null)
                 {
@@ -121,30 +121,32 @@ public class Switch : OverworldObject {
 					} 
 
                 }
-            }
+            }*/
 
 			// timer to start movement again
 			if (isActivated) {
-				print (timer);
-				if (timer <= maxTime) {					
+				//print (timer);
+				if (timer < maxTime) {					
 					timer += Time.deltaTime;
 				} else {
-					timer = 0.0f;
+					timer = maxTime;
 					ToggleMovement ();
+					isActivated = false;
+					//print ("toggled");
 				}
 			} else {
 				timer = 0.0f;
 			}
 
             // all bridges have stopped, set isActivated equal to false
-            if(allClear == affectedObjs.Count)
+            /*if(allClear == affectedObjs.Count)
             {
                 isActivated = false;
             }
 			else
 			{
 				isActivated = true;
-            }
+            }*/
         }
 	}    
 }
