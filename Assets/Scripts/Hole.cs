@@ -20,7 +20,7 @@ public class Hole : OverworldObject {
 	void Start () {
         base.Start();
         anim = GetComponent<Animator>();
-        sr.sortingOrder = -9998;
+        sr.sortingOrder = -9799;
 	}
 	
 	// Update is called once per frame

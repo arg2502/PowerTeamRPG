@@ -432,11 +432,7 @@ public class BattleMenu : Menu {
             if (currentDenigen is Hero
                 && (currentDenigen.statusState != Denigen.Status.dead
                 && currentDenigen.statusState != Denigen.Status.overkill))
-            {
-                EnableMenu();
-                GetComponent<Renderer>().enabled = true;
-                descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
-                currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
+            {               
                 if (currentDenigen.GetComponent<Hero>() != null)
                 {
                     //reset the menu state for the next denigen
@@ -444,6 +440,10 @@ public class BattleMenu : Menu {
                     ChangeContentArray();
                     StateChangeText();
                 }
+				EnableMenu();
+				GetComponent<Renderer>().enabled = true;
+				descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
+				currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
             }
         }
     }
