@@ -7,6 +7,7 @@ public class Drawbridge : OverworldObject {
     int height = 500;
     float initialPos;
     public List<GameObject> colliders;
+	public bool isActive;
 
     void Start()
     {
@@ -14,6 +15,16 @@ public class Drawbridge : OverworldObject {
         sr.sortingOrder = (int)-transform.position.y - 2000;
         initialPos = transform.position.y;
     }
+	void Update()
+	{
+		if (isActive) {
+			foreach (GameObject go in colliders) {
+				if (go.activeSelf) {
+					go.SetActive (false);
+				}
+			}
+		}
+	}
     public override void Activate()
     {
         StartCoroutine(LowerBridge());
