@@ -113,12 +113,19 @@ public class roomControl : MonoBehaviour {
 							//enemies [i].CheckDistance (); // after state is saved, check the distance
 							enemies[i].transform.position = new Vector3(rc.enemyData[j].position.x,rc.enemyData[j].position.y, rc.enemyData[j].position.z);
 							enemies [i].beenBattled = rc.enemyData [j].battledState;
-							if (enemies [i].beenBattled) {
-								enemies [i].GetComponent<SpriteRenderer> ().enabled = false;
-								enemies [i].enabled = false;
-							} else {
-								enemies [i].GetComponent<SpriteRenderer> ().enabled = true;
-								enemies [i].enabled = true;
+
+							// if the enemy has been battled and they are within the safe distance, deactivate them
+							if (enemies [i] != null) {
+								enemies [i].UpdateDist ();
+								if (enemies [i].beenBattled 
+									&& enemies [i].dist < enemies [i].safeDistance + 100.0f) {
+									enemies [i].GetComponent<SpriteRenderer> ().enabled = false;
+									enemies [i].enabled = false;
+								} else {
+									enemies [i].GetComponent<SpriteRenderer> ().enabled = true;
+									enemies [i].enabled = true;
+									enemies [i].beenBattled = false;
+								}
 							}
 						}
 					}

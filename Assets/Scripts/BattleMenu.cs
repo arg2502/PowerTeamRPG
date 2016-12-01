@@ -399,6 +399,7 @@ public class BattleMenu : Menu {
                 //}
                 break;
         }
+		UpdateDescription ();
         ChangeContentArray();
         StateChangeText();   
     }
@@ -437,6 +438,7 @@ public class BattleMenu : Menu {
                 {
                     //reset the menu state for the next denigen
                     state = MenuReader.main;
+					UpdateDescription ();
                     ChangeContentArray();
                     StateChangeText();
                 }
@@ -624,19 +626,22 @@ public class BattleMenu : Menu {
                             d.Card.GetComponent<TextMesh>().color = Color.white;
                         }
                         //Change state back to the default state
+						UpdateDescription();
                         ChangeContentArray();
                         StateChangeText();
                     }
                     // if back button is pressed, set state to previous state
                     if (Input.GetKeyDown(KeyCode.Backspace))
                     {
+						state = prevState;
+						UpdateDescription ();
+						ChangeContentArray();
+						StateChangeText();
                         EnableMenu();
                         //descriptionBox.GetComponent<Renderer>().enabled = true;
                         GetComponent<Renderer>().enabled = true;
                         descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
-                        state = prevState;
-                        ChangeContentArray();
-                        StateChangeText();
+                        
                         // make sure all of the enemies are back to their normal color
                         for (int i = 0; i < enemyList.Count; i++)
                         {
@@ -703,21 +708,19 @@ public class BattleMenu : Menu {
             PressButton(KeyCode.Space);
 
             //update the description text
-            if (state == MenuReader.main) { descriptionText.GetComponent<TextMesh>().text = descriptionBox.GetComponent<DescriptionText>().mainDesc[selectedIndex]; }
-            else if (state == MenuReader.attack) { descriptionText.GetComponent<TextMesh>().text = descriptionBox.GetComponent<DescriptionText>().attackDesc[selectedIndex]; }
-            else if (state == MenuReader.skills) { descriptionText.GetComponent<TextMesh>().text = currentDenigen.SkillsList[selectedIndex + scrollIndex].Description; }
-            else if (state == MenuReader.spells) { descriptionText.GetComponent<TextMesh>().text = currentDenigen.SpellsList[selectedIndex + scrollIndex].Description; }
-            else if (state == MenuReader.items) { descriptionText.GetComponent<TextMesh>().text = GameControl.control.consumables[selectedIndex + scrollIndex].GetComponent<Item>().description; }
+			UpdateDescription();
 
             // if back button is pressed, set state to previous state
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
-                EnableMenu();
-                GetComponent<Renderer>().enabled = true;
-                descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
+                
                 state = prevState;
                 ChangeContentArray();
                 StateChangeText();
+				UpdateDescription ();
+				EnableMenu();
+				GetComponent<Renderer>().enabled = true;
+				descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
             }   
 
         }
@@ -741,7 +744,15 @@ public class BattleMenu : Menu {
         // check for button press
         //PressButton(KeyCode.Space);
     }
+	void UpdateDescription()
+	{
+		if (state == MenuReader.main) { descriptionText.GetComponent<TextMesh>().text = descriptionBox.GetComponent<DescriptionText>().mainDesc[selectedIndex]; }
+		else if (state == MenuReader.attack) { descriptionText.GetComponent<TextMesh>().text = descriptionBox.GetComponent<DescriptionText>().attackDesc[selectedIndex]; }
+		else if (state == MenuReader.skills) { descriptionText.GetComponent<TextMesh>().text = currentDenigen.SkillsList[selectedIndex + scrollIndex].Description; }
+		else if (state == MenuReader.spells) { descriptionText.GetComponent<TextMesh>().text = currentDenigen.SpellsList[selectedIndex + scrollIndex].Description; }
+		else if (state == MenuReader.items) { descriptionText.GetComponent<TextMesh>().text = GameControl.control.consumables[selectedIndex + scrollIndex].GetComponent<Item>().description; }
 
+	}
     void UpdateBattle()
     {
         //This is where we step through the issued commands and execute them one at a time
@@ -927,6 +938,7 @@ public class BattleMenu : Menu {
 
 		// change the state and text before showing the buttons and text again
 		state = MenuReader.main;
+		UpdateDescription ();
 		ChangeContentArray ();
 		StateChangeText ();
 

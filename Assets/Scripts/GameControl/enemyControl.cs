@@ -13,7 +13,7 @@ public class enemyControl : OverworldObject {
 
     public Transform player;
     public float dist = 0;
-    float safeDistance;
+    public float safeDistance;
 
     public int maxEnemies = 0;
     public int minEnemies = 0;
@@ -41,6 +41,8 @@ public class enemyControl : OverworldObject {
     public bool beenPlaced; // true if the enemy has been arbitrarily placed
 	public bool beenBattled; // true if you battled/fleed this enemy - all normal enemies should be set back to false when player dies
 
+	public Vector3 currentPosition;
+
 	// Use this for initialization
 	void Start () {
 		canMove = true;
@@ -57,26 +59,18 @@ public class enemyControl : OverworldObject {
         rc = GameObject.FindObjectOfType<roomControl>();
 
 		// vector3 to store updated player location
-		Vector3 currentPosition = GameControl.control.currentPosition;
-		//dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-		//    + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
+		currentPosition = GameControl.control.currentPosition;
+
 		dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
 			+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
-
+		
 		// set enabled state if you battled and close to it
 		// mainly for coming out of pause sub menus
 		if (beenBattled && dist <= safeDistance + 100.0f) {
 			sr.enabled = false;
 			enabled = false;
 		} 
-		// if we want the enemies to reappear after you walk away from battling them
-		// THIS DOESN'T WORK RIGHT NOW - NEED TO ENABLE THEM OUTIDE OF CLASS
-		else if (beenBattled && dist > safeDistance + 100.0f) {
-			print ("inside else if");
-			enabled = true;
-			sr.enabled = true;
-			beenBattled = false;
-		}
+
         //check player's distance from enemy
         if (!GameControl.control.isPaused)
         {
@@ -130,12 +124,15 @@ public class enemyControl : OverworldObject {
         }
 
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
-        //enemies = new List<Enemy>();
 
         base.Start();
 
 	}
-
+	public void UpdateDist()
+	{
+		dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
+			+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
+	}
 	// Update is called once per frame
 	void FixedUpdate () {
 
