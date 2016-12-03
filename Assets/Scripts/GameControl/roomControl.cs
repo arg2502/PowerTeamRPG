@@ -94,7 +94,7 @@ public class roomControl : MonoBehaviour {
 				// first the blocks -- since that's what ive got
 				for (int i = 0; i < movables.Count; i++)
 				{
-					movables[i].transform.position = new Vector3(rc.movableBlockPos[i].x, rc.movableBlockPos[i].y, rc.movableBlockPos[i].z);
+					movables[i].transform.position = new Vector3(rc.blockData[i].position.x, rc.blockData[i].position.y, rc.blockData[i].position.z);
 				}
 				// sync open chests
 				for (int i = 0; i < treasureChests.Count; i++)
@@ -192,12 +192,15 @@ public class roomControl : MonoBehaviour {
 		GameControl.control.rooms[GameControl.control.rooms.Count - 1].dungeonID = dungeonID;
 
 		// add the necessary data to store all movable object positions
-		foreach (MovableOverworldObject m in movables)
+		for(int i = 0; i < movables.Count; i++)
 		{
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Add(new SerializableVector3());
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.x;
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.y;
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos[GameControl.control.rooms[GameControl.control.rooms.Count - 1].movableBlockPos.Count - 1].x = m.transform.position.z;
+			GameControl.control.rooms[GameControl.control.rooms.Count - 1].blockData.Add(new BlockData());
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].blockName = movables [i].name;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].isActivated = movables [i].isActivated;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].position.x = movables [i].transform.position.x;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].position.y = movables [i].transform.position.y;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].position.z = movables [i].transform.position.z;
+
 		}
 		for(int i = 0; i < treasureChests.Count; i++)
 		{
