@@ -21,7 +21,7 @@ public class TeamSubMenu : SubMenu {
         contentArray = new List<string>();
         buttonDescription = new List<string>();
 
-        statChangeNumbers = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        statChangeNumbers = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         //set up the description obj
         heroDescription = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
@@ -42,7 +42,7 @@ public class TeamSubMenu : SubMenu {
 
         // create the text objects that will show the items' effects
         statChanges = new List<GameObject>();
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 11; i++)
         {
             statChanges.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
             statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(200.0f, -(i * 35.0f), 0.0f);
@@ -63,8 +63,9 @@ public class TeamSubMenu : SubMenu {
         // create the text objects that will show the hero's stats
         SetStatChanges(0);
         InstantiateHeroInfo();
-        //UpdateStatChanges(GameControl.control.heroList[selectedIndex]);
-        foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = true; }
+        for (int i = 0; i < statChanges.Count; i++) { statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(200.0f, -(i * 35.0f), 0.0f); }
+            //UpdateStatChanges(GameControl.control.heroList[selectedIndex]);
+            foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = true; }
         foreach (GameObject go in statChanges) { go.GetComponent<Renderer>().enabled = true; }
         base.EnableSubMenu();
     }

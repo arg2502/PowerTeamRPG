@@ -31,6 +31,7 @@ public class HeroSubMenu : SubMenu {
                 {
                     activeHero.weapon.GetComponent<WeaponItem>().Remove(activeHero); // remove current weapon
                     activeHero.weapon = null;
+                    tsm.SetStatChanges(selectedIndex);
                 }
                 break;
             case "Remove Armor":
@@ -41,6 +42,7 @@ public class HeroSubMenu : SubMenu {
                         activeHero.equipment[i].GetComponent<ArmorItem>().Remove(activeHero);
                     }
                     activeHero.equipment.Clear();
+                    tsm.SetStatChanges(selectedIndex);
                 }
                 break;
             case "View Skill Tree":

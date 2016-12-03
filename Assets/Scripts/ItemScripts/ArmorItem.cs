@@ -20,26 +20,30 @@ public class ArmorItem : Item {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform
         //the item's specific effect
+
+        hero.hpMax += hpChange;
+        hero.pmMax += pmChange;
+        hero.atk += atkChange;
+        hero.def += defChange;
+        hero.mgkAtk += mgkAtkChange;
+        hero.mgkDef += mgkDefChange;
+        hero.luck += luckChange;
+        hero.evasion += evadeChange;
+        hero.spd += spdChange;
+
         switch (name)
         {
             case "Helmet of Fortitude":
-                hero.def += defChange;
-                hero.luck += luckChange;
                 break;
             case "Iron Helm":
-                hero.def += defChange;
                 break;
             case "Steel Helm":
-                hero.def += defChange;
                 break;
             case "Iron Armor":
-                hero.def += defChange;
                 break;
             case "Steel Armor":
-                hero.def += defChange;
                 break;
             case "Steel Gauntlets":
-                hero.def += defChange;
                 break;
             default:
                 print(name + " does not have a case!");
@@ -69,27 +73,31 @@ public class ArmorItem : Item {
 
     public void Remove(HeroData hero)
     {
+
+        hero.hpMax -= hpChange;
+        hero.pmMax -= pmChange;
+        hero.atk -= atkChange;
+        hero.def -= defChange;
+        hero.mgkAtk -= mgkAtkChange;
+        hero.mgkDef -= mgkDefChange;
+        hero.luck -= luckChange;
+        hero.evasion -= evadeChange;
+        hero.spd -= spdChange;
+
         // Does the equip function in reverse, so it subtracts instead of adding
         switch (name)
         {
             case "Helmet of Fortitude":
-                hero.def -= defChange;
-                hero.luck -= luckChange;
                 break;
             case "Iron Helm":
-                hero.def -= defChange;
                 break;
             case "Steel Helm":
-                hero.def -= defChange;
                 break;
             case "Iron Armor":
-                hero.def -= defChange;
                 break;
             case "Steel Armor":
-                hero.def -= defChange;
                 break;
             case "Steel Gauntlets":
-                hero.def -= defChange;
                 break;
             default:
                 print(name + " does not have a case!");

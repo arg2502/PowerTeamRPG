@@ -20,13 +20,22 @@ public class WeaponItem : Item {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform
         //the item's specific effect
+
+        hero.hpMax += hpChange;
+        hero.pmMax += pmChange;
+        hero.atk += atkChange;
+        hero.def += defChange;
+        hero.mgkAtk += mgkAtkChange;
+        hero.mgkDef += mgkDefChange;
+        hero.luck += luckChange;
+        hero.evasion += evadeChange;
+        hero.spd += spdChange;
+
         switch (name)
         {
             case "Spare Sword":
-                hero.atk += atkChange;
                 break;
             case "Tome of Practical Spells":
-                hero.mgkAtk += mgkAtkChange;
                 break;
             default:
                 print(name + " does not have a case!");
@@ -47,13 +56,22 @@ public class WeaponItem : Item {
         // functions similarly to the use method, but this method will remove
         // passives or boost stats when called. It may require passing in
         // the denigen who is equipping the item as an argument
+
+        hero.hpMax -= hpChange;
+        hero.pmMax -= pmChange;
+        hero.atk -= atkChange;
+        hero.def -= defChange;
+        hero.mgkAtk -= mgkAtkChange;
+        hero.mgkDef -= mgkDefChange;
+        hero.luck -= luckChange;
+        hero.evasion -= evadeChange;
+        hero.spd -= spdChange;
+
         switch (name)
         {
             case "Spare Sword":
-                hero.atk -= atkChange;
                 break;
             case "Tome of Practical Spells":
-                hero.mgkAtk -= mgkAtkChange;
                 break;
             default:
                 print(name + " does not have a case!");

@@ -15,33 +15,22 @@ public class ConsumableItem : Item {
     // out of battle use method
     public void Use(HeroData target)
     {
+        target.hp += hpChange;
+        target.pm += pmChange;
+
         switch (name)
         {
             case "Lesser Restorative":
-                target.hp += 20;
-                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
-                break;
             case "Restorative":
-                target.hp += 40;
-                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
-                break;
             case "Gratuitous Restorative":
-                target.hp += 60;
                 if (target.hp > target.hpMax) { target.hp = target.hpMax; }
                 break;
             case "Terminal Restorative":
                 target.hp = target.hpMax;
                 break;
             case "Lesser Elixir":
-                target.pm += 20;
-                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
-                break;
             case "Elixir":
-                target.pm += 40;
-                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
-                break;
             case "Gratuitous Elixir":
-                target.pm += 60;
                 if (target.pm > target.pmMax) { target.pm = target.pmMax; }
                 break;
             case "Terminal Elixir":
