@@ -381,9 +381,11 @@ public class GameControl : MonoBehaviour {
 			{
 				for (int i = 0; i < rc.movables.Count; i++)// save the movable block positions
 				{
-					rcd.movableBlockPos[i].x = rc.movables[i].transform.position.x;
-					rcd.movableBlockPos[i].y = rc.movables[i].transform.position.y;
-					rcd.movableBlockPos[i].z = rc.movables[i].transform.position.z;
+					rcd.blockData [i].blockName = rc.movables [i].name;
+					rcd.blockData [i].isActivated = rc.movables [i].isActivated;
+					rcd.blockData[i].position.x = rc.movables[i].transform.position.x;
+					rcd.blockData[i].position.y = rc.movables[i].transform.position.y;
+					rcd.blockData[i].position.z = rc.movables[i].transform.position.z;
 				}
 				for(int i = 0; i < rc.treasureChests.Count; i++)
 				{
@@ -820,8 +822,9 @@ public class RoomControlData
 {
 	public int areaIDNumber;
 	public int dungeonID;
-	public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
+	//public List<SerializableVector3> movableBlockPos = new List<SerializableVector3>(); // the positions of all of the movable blocks
 	//also store treasure boxes, doors, switches, antyhing important
+	public List<BlockData> blockData = new List<BlockData>();
 	public List<TreasureData> chestData = new List<TreasureData>();
 	public List<DoorData> doorData = new List<DoorData>();
 	public List<SwitchData> switchData = new List<SwitchData> ();
@@ -829,7 +832,13 @@ public class RoomControlData
 	public List<DrawbridgeData> drawbridgeData = new List<DrawbridgeData>();
 	public List<EnemyControlData> enemyData = new List<EnemyControlData>();
 }
-
+[Serializable]
+public class BlockData
+{
+	public string blockName;
+	public bool isActivated;
+	public SerializableVector3 position = new SerializableVector3();
+}
 [Serializable]
 public class TreasureData
 {
