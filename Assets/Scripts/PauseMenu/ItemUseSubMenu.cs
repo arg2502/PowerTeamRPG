@@ -53,7 +53,7 @@ public class ItemUseSubMenu : SubMenu {
 
         // create the text objects that will show the items' effects
         statChanges = new List<GameObject>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 11; i++)
         {
             statChanges.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
             statChanges[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(200.0f, -(i * 35.0f), 0.0f);
@@ -67,21 +67,22 @@ public class ItemUseSubMenu : SubMenu {
         else { foreach (GameObject go in heroInfo) { Destroy(go); } heroInfo.Clear(); }
 
         // Create all of the text Objs necessary
-        for (int i = 0; i < (10 + h.passiveList.Count); i++) {
+        for (int i = 0; i < (11 + h.passiveList.Count); i++) {
             heroInfo.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
             heroInfo[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(0.0f, -(i * 35.0f), 0.0f);
         }
-        heroInfo[0].GetComponent<TextMesh>().text = "Status: " + h.statusState;
-        heroInfo[1].GetComponent<TextMesh>().text = "Hp: " + Mathf.Clamp((h.hp + statChangeNumbers[1]), 0, h.hpMax) + " / " + h.hpMax;
-        heroInfo[2].GetComponent<TextMesh>().text = "Pm: " + Mathf.Clamp((h.pm + statChangeNumbers[2]), 0, h.pmMax) + " / " + h.pmMax;
-        heroInfo[3].GetComponent<TextMesh>().text = "Atk: " + (h.atk + statChangeNumbers[3]);
-        heroInfo[4].GetComponent<TextMesh>().text = "Def: " + (h.def + statChangeNumbers[4]);
-        heroInfo[5].GetComponent<TextMesh>().text = "Mgk Atk: " + (h.mgkAtk + statChangeNumbers[5]);
-        heroInfo[6].GetComponent<TextMesh>().text = "Mgk Def: " + (h.mgkDef + statChangeNumbers[6]);
-        heroInfo[7].GetComponent<TextMesh>().text = "Luck: " + (h.luck + statChangeNumbers[7]);
-        heroInfo[8].GetComponent<TextMesh>().text = "Evasion: " + (h.evasion + statChangeNumbers[8]);
-        heroInfo[9].GetComponent<TextMesh>().text = "Spd: " + (h.spd + statChangeNumbers[9]);
-        for (int i = 10; (i - 10) < h.passiveList.Count; i++) { heroInfo[i].GetComponent<TextMesh>().text = h.passiveList[i - 10].Name; }
+        heroInfo[0].GetComponent<TextMesh>().text = h.name;
+        heroInfo[1].GetComponent<TextMesh>().text = "Status: " + h.statusState;
+        heroInfo[2].GetComponent<TextMesh>().text = "Hp: " + Mathf.Clamp((h.hp + statChangeNumbers[1]), 0, h.hpMax) + " / " + h.hpMax;
+        heroInfo[3].GetComponent<TextMesh>().text = "Pm: " + Mathf.Clamp((h.pm + statChangeNumbers[2]), 0, h.pmMax) + " / " + h.pmMax;
+        heroInfo[4].GetComponent<TextMesh>().text = "Atk: " + (h.atk + statChangeNumbers[3]);
+        heroInfo[5].GetComponent<TextMesh>().text = "Def: " + (h.def + statChangeNumbers[4]);
+        heroInfo[6].GetComponent<TextMesh>().text = "Mgk Atk: " + (h.mgkAtk + statChangeNumbers[5]);
+        heroInfo[7].GetComponent<TextMesh>().text = "Mgk Def: " + (h.mgkDef + statChangeNumbers[6]);
+        heroInfo[8].GetComponent<TextMesh>().text = "Luck: " + (h.luck + statChangeNumbers[7]);
+        heroInfo[9].GetComponent<TextMesh>().text = "Evasion: " + (h.evasion + statChangeNumbers[8]);
+        heroInfo[10].GetComponent<TextMesh>().text = "Spd: " + (h.spd + statChangeNumbers[9]);
+        for (int i = 11; (i - 11) < h.passiveList.Count; i++) { heroInfo[i].GetComponent<TextMesh>().text = h.passiveList[i - 11].Name; }
     }
 
     // this method exists to be more efficient with memory - all items minimally have these 10 attributes
@@ -182,21 +183,21 @@ public class ItemUseSubMenu : SubMenu {
         {
             if (statChangeNumbers[i] > 0)
             {
-                statChanges[i].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")";
-                statChanges[i].GetComponent<TextMesh>().color = myGreen;
-                heroInfo[i].GetComponent<TextMesh>().color = myGreen;
+                statChanges[i + 1].GetComponent<TextMesh>().text = "(+" + statChangeNumbers[i] + ")";
+                statChanges[i + 1].GetComponent<TextMesh>().color = myGreen;
+                heroInfo[i + 1].GetComponent<TextMesh>().color = myGreen;
             }
             else if (statChangeNumbers[i] < 0)
             {
-                statChanges[i].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")";
-                statChanges[i].GetComponent<TextMesh>().color = myRed;
-                heroInfo[i].GetComponent<TextMesh>().color = myRed;
+                statChanges[i + 1].GetComponent<TextMesh>().text = "(" + statChangeNumbers[i] + ")";
+                statChanges[i + 1].GetComponent<TextMesh>().color = myRed;
+                heroInfo[i + 1].GetComponent<TextMesh>().color = myRed;
             }
             else
             {
-                statChanges[i].GetComponent<TextMesh>().text = "";
-                statChanges[i].GetComponent<TextMesh>().color = Color.black;
-                heroInfo[i].GetComponent<TextMesh>().color = Color.black;
+                statChanges[i + 1].GetComponent<TextMesh>().text = "";
+                statChanges[i + 1].GetComponent<TextMesh>().color = Color.black;
+                heroInfo[i + 1].GetComponent<TextMesh>().color = Color.black;
             }
         }
     }

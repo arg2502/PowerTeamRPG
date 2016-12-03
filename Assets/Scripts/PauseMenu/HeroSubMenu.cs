@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HeroSubMenu : SubMenu {
 
@@ -7,10 +8,15 @@ public class HeroSubMenu : SubMenu {
     public int heroID = 0;
     HeroData activeHero;
 
+    
+
 	// Use this for initialization
 	void Start () {
         tsm = GameObject.FindObjectOfType<TeamSubMenu>();
         base.Start();
+
+        //call change text method to correctly size text and avoid a certain bug
+        ChangeText();
 
         if (GameControl.control.isPaused) { GameControl.control.RestorePauseMenu(); tsm.Update(); }
 	}
@@ -20,9 +26,22 @@ public class HeroSubMenu : SubMenu {
     {
         switch (label)
         {
-            case "Equip Weapon":
+            case "Remove Weapon":
+                if (activeHero.weapon != null)
+                {
+                    activeHero.weapon.GetComponent<WeaponItem>().Remove(activeHero); // remove current weapon
+                    activeHero.weapon = null;
+                }
                 break;
-            case "Equip Armor":
+            case "Remove Armor":
+                if (activeHero.equipment.Count > 0)
+                {
+                    for (int i = 0; i < activeHero.equipment.Count; i++ )
+                    {
+                        activeHero.equipment[i].GetComponent<ArmorItem>().Remove(activeHero);
+                    }
+                    activeHero.equipment.Clear();
+                }
                 break;
             case "View Skill Tree":
                 activeHero.skillTree = true;
@@ -79,13 +98,17 @@ public class HeroSubMenu : SubMenu {
 	// Update is called once per frame
 	void Update () {
         CheckForInactive();
-        if (Input.GetKeyUp(KeyCode.Backspace))
+        //tsm.UpdateStatChanges();
+        if (Input.GetKeyUp(KeyCode.Backspace) && isActive)
         {
             tsm.ActivateMenu();
+            tsm.SetStatChanges(0);
+            tsm.InstantiateHeroInfo();
         }
 
+        if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) && tsm.isVisible) { tsm.SetStatChanges(selectedIndex); tsm.InstantiateHeroInfo(); }
         // unpause the game
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyUp(KeyCode.Q) && isVisible)
         {
             //tsm.ActivateMenu();
             //pm.descriptionText.GetComponent<Renderer>().enabled = true;
