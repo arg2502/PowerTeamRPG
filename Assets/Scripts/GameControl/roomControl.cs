@@ -138,7 +138,7 @@ public class roomControl : MonoBehaviour {
 				for (int i = 0; i < drawbridgesInRoom.Count; i++) {
 					for (int j = 0; j < drawbridgesInRoom.Count; j++) {
 						if (drawbridgesInRoom [i].name == rc.drawbridgeData [j].bridgeName) {
-							drawbridgesInRoom [i].transform.position = new Vector3 (drawbridgesInRoom [i].transform.position.x, rc.drawbridgeData [j].positionY, drawbridgesInRoom [i].transform.position.z);
+							//drawbridgesInRoom [i].transform.position = new Vector3 (drawbridgesInRoom [i].transform.position.x, rc.drawbridgeData [j].positionY, drawbridgesInRoom [i].transform.position.z);
 							drawbridgesInRoom [i].isActive = rc.drawbridgeData [j].isActive;
 						}
 					}
@@ -228,7 +228,7 @@ public class roomControl : MonoBehaviour {
 		for (int i = 0; i < drawbridgesInRoom.Count; i++) {
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData.Add (new DrawbridgeData ());
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].bridgeName = drawbridgesInRoom [i].name;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
+			//GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].isActive = drawbridgesInRoom [i].isActive;
 		}
 		for (int i = 0; i < enemies.Count; i++) {

@@ -40,7 +40,7 @@ public class Switch : OverworldObject {
             distFromPlayer = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 
-            if (distFromPlayer < 150.0f)
+            if (distFromPlayer < 100.0f)
             {
                 isActivated = true;
                 //sr.color = Color.green; // would change the sprite, but for now just change color

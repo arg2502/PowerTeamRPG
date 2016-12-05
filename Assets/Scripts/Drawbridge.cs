@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class Drawbridge : OverworldObject {
 
-    int height = 500;
+    float height = 125.0f;
+	//float difference = 50.0f;
     float initialPos;
     public List<GameObject> colliders;
 	public bool isActive;
@@ -14,19 +15,26 @@ public class Drawbridge : OverworldObject {
         base.Start();
         sr.sortingOrder = (int)-transform.position.y - 2000;
         initialPos = transform.position.y;
-    }
-	void Update()
-	{
+
+		//if (isActive) {
+			
+		//}
 		if (isActive) {
 			foreach (GameObject go in colliders) {
 				if (go.activeSelf) {
+					transform.position = new Vector3 (transform.position.x, transform.position.y - height, transform.position.z);
 					go.SetActive (false);
 				}
 			}
 		}
+    }
+	void Update()
+	{
+		
 	}
     public override void Activate()
     {
+		isActive = true;
         StartCoroutine(LowerBridge());
     }
     public IEnumerator LowerBridge()

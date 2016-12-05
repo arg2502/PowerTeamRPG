@@ -133,13 +133,13 @@ public class GameControl : MonoBehaviour {
 			Spell hellfire = new Spell();
 			hellfire.Name = "HellFire";
 			hellfire.Pm = 8;
-			hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \n Str 40, Crit 03, Acc 100";
+			hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \nCost 8pm Str 40, Crit 03, Acc 100";
 			GameControl.control.heroList[1].spellsList.Add(hellfire);
 
 			Spell splashflame = new Spell();
 			splashflame.Name = "Splash Flame";
 			splashflame.Pm = 3;
-			splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \n Str 60, Crit 05, Acc 85";
+			splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \nCost 3pm Str 60, Crit 05, Acc 85";
 			GameControl.control.heroList[1].spellsList.Add(splashflame);
 
 			Spell testtarget = new Spell();
@@ -408,7 +408,7 @@ public class GameControl : MonoBehaviour {
 				for (int i = 0; i < rc.drawbridgesInRoom.Count; i++) {
 					rcd.drawbridgeData [i].bridgeName = rc.drawbridgesInRoom [i].name;
 					rcd.drawbridgeData [i].isActive = rc.drawbridgesInRoom [i].isActive;
-					rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
+					//rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
 				}
 				for (int i = 0; i < rc.enemies.Count; i++) {
 					rcd.enemyData [i].enemyName = rc.enemies [i].name;
@@ -867,7 +867,7 @@ public class ColorBridgeData
 public class DrawbridgeData
 {
 	public string bridgeName;
-	public float positionY;
+	//public float positionY;
 	public bool isActive;
 }
 [Serializable]
