@@ -399,9 +399,9 @@ public class BattleMenu : Menu {
                 //}
                 break;
         }
-		UpdateDescription ();
         ChangeContentArray();
-        StateChangeText();   
+		StateChangeText();   
+		UpdateDescription ();
     }
 
     void ChangeCurrentDenigen()
@@ -438,9 +438,9 @@ public class BattleMenu : Menu {
                 {
                     //reset the menu state for the next denigen
                     state = MenuReader.main;
-					UpdateDescription ();
                     ChangeContentArray();
-                    StateChangeText();
+					StateChangeText();
+					UpdateDescription ();
                 }
 				EnableMenu();
 				GetComponent<Renderer>().enabled = true;
@@ -626,17 +626,17 @@ public class BattleMenu : Menu {
                             d.Card.GetComponent<TextMesh>().color = Color.white;
                         }
                         //Change state back to the default state
-						UpdateDescription();
                         ChangeContentArray();
-                        StateChangeText();
+						StateChangeText();
+						UpdateDescription();
                     }
                     // if back button is pressed, set state to previous state
                     if (Input.GetKeyDown(KeyCode.Backspace))
                     {
 						state = prevState;
-						UpdateDescription ();
 						ChangeContentArray();
 						StateChangeText();
+						UpdateDescription ();
                         EnableMenu();
                         //descriptionBox.GetComponent<Renderer>().enabled = true;
                         GetComponent<Renderer>().enabled = true;
@@ -938,9 +938,9 @@ public class BattleMenu : Menu {
 
 		// change the state and text before showing the buttons and text again
 		state = MenuReader.main;
-		UpdateDescription ();
 		ChangeContentArray ();
 		StateChangeText ();
+		UpdateDescription ();
 
 		foreach (GameObject b in buttonArray)
 		{

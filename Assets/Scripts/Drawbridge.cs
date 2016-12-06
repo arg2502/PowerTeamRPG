@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class Drawbridge : OverworldObject {
 
-    float height = 125.0f;
-	//float difference = 50.0f;
+    float height = 500.0f;
+	float difference = 125.0f;
     float initialPos;
     public List<GameObject> colliders;
 	public bool isActive;
@@ -17,20 +17,21 @@ public class Drawbridge : OverworldObject {
         initialPos = transform.position.y;
 
 		//if (isActive) {
-			
-		//}
-		if (isActive) {
+
+    }
+	void Update()
+	{
+		if(transform.position.y != initialPos && !isActive){
+			print ("change position");
+			isActive = true;
+			transform.position = new Vector3 (transform.position.x, initialPos - height, transform.position.z);
 			foreach (GameObject go in colliders) {
 				if (go.activeSelf) {
-					transform.position = new Vector3 (transform.position.x, transform.position.y - height, transform.position.z);
+
 					go.SetActive (false);
 				}
 			}
 		}
-    }
-	void Update()
-	{
-		
 	}
     public override void Activate()
     {

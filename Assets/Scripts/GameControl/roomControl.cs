@@ -130,7 +130,7 @@ public class roomControl : MonoBehaviour {
 				for (int i = 0; i < colorBridgesInRoom.Count; i++) {
 					for (int j = 0; j < colorBridgesInRoom.Count; j++) {
 						if (colorBridgesInRoom [i].name == rc.colorBridgeData [j].bridgeName) {
-							colorBridgesInRoom [i].transform.rotation = Quaternion.Euler (0.0f, 0.0f, rc.colorBridgeData [j].rotationZ);
+							colorBridgesInRoom [i].transform.Find("Bridge").transform.rotation = Quaternion.Euler (0.0f, 0.0f, rc.colorBridgeData [j].rotationZ);
 						}
 					}
 				}
@@ -138,8 +138,8 @@ public class roomControl : MonoBehaviour {
 				for (int i = 0; i < drawbridgesInRoom.Count; i++) {
 					for (int j = 0; j < drawbridgesInRoom.Count; j++) {
 						if (drawbridgesInRoom [i].name == rc.drawbridgeData [j].bridgeName) {
-							//drawbridgesInRoom [i].transform.position = new Vector3 (drawbridgesInRoom [i].transform.position.x, rc.drawbridgeData [j].positionY, drawbridgesInRoom [i].transform.position.z);
-							drawbridgesInRoom [i].isActive = rc.drawbridgeData [j].isActive;
+							drawbridgesInRoom [i].transform.position = new Vector3 (drawbridgesInRoom [i].transform.position.x, rc.drawbridgeData [j].positionY, drawbridgesInRoom [i].transform.position.z);
+							//drawbridgesInRoom [i].isActive = rc.drawbridgeData [j].isActive;
 						}
 					}
 				}
@@ -222,14 +222,14 @@ public class roomControl : MonoBehaviour {
 		}
 		for(int i = 0; i < colorBridgesInRoom.Count; i++){
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData.Add (new ColorBridgeData ());
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData [i].rotationZ = colorBridgesInRoom [i].transform.eulerAngles.z;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData [i].rotationZ = colorBridgesInRoom [i].transform.Find("Bridge").transform.eulerAngles.z;
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData [i].bridgeName = colorBridgesInRoom [i].name;
 		}
 		for (int i = 0; i < drawbridgesInRoom.Count; i++) {
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData.Add (new DrawbridgeData ());
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].bridgeName = drawbridgesInRoom [i].name;
-			//GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].isActive = drawbridgesInRoom [i].isActive;
+			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
+			//GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].isActive = drawbridgesInRoom [i].isActive;
 		}
 		for (int i = 0; i < enemies.Count; i++) {
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData.Add (new EnemyControlData ());

@@ -402,13 +402,13 @@ public class GameControl : MonoBehaviour {
 					rcd.switchData [i].switchName = rc.switchesInRoom [i].name;
 				}
 				for (int i = 0; i < rc.colorBridgesInRoom.Count; i++) {
-					rcd.colorBridgeData [i].rotationZ = rc.colorBridgesInRoom [i].transform.eulerAngles.z;
+					rcd.colorBridgeData [i].rotationZ = rc.colorBridgesInRoom [i].transform.Find("Bridge").transform.eulerAngles.z;
 					rcd.colorBridgeData [i].bridgeName = rc.colorBridgesInRoom [i].name;
 				}
 				for (int i = 0; i < rc.drawbridgesInRoom.Count; i++) {
 					rcd.drawbridgeData [i].bridgeName = rc.drawbridgesInRoom [i].name;
-					rcd.drawbridgeData [i].isActive = rc.drawbridgesInRoom [i].isActive;
-					//rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
+					//rcd.drawbridgeData [i].isActive = rc.drawbridgesInRoom [i].isActive;
+					rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
 				}
 				for (int i = 0; i < rc.enemies.Count; i++) {
 					rcd.enemyData [i].enemyName = rc.enemies [i].name;
@@ -867,8 +867,8 @@ public class ColorBridgeData
 public class DrawbridgeData
 {
 	public string bridgeName;
-	//public float positionY;
-	public bool isActive;
+	public float positionY;
+	//public bool isActive;
 }
 [Serializable]
 public class SerializableVector3

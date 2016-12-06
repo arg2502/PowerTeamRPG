@@ -9,6 +9,7 @@ public class ColorBridge : OverworldObject {
     float rotationDegrees1 = 0.0f;
     float rotationDegrees2 = 90.0f;
 	Transform player;
+	Transform bridgeTransform;
 	float width = 240.0f;
 	float height = 332.0f;
 	roomControl room;
@@ -16,12 +17,17 @@ public class ColorBridge : OverworldObject {
     void Start()
     {
         base.Start();
+		bridgeTransform = gameObject.transform.Find ("Bridge").transform;
         sr.sortingOrder = (int)-transform.position.y - 2000;
+		bridgeTransform.GetComponent<SpriteRenderer> ().sortingOrder = sr.sortingOrder - 1;
         isMoving = false;
 		player = GameObject.FindObjectOfType<characterControl>().transform;
+
 		room = GameObject.FindObjectOfType<roomControl> ();
     }
-
+	void Update(){
+		bridgeTransform = gameObject.transform.Find ("Bridge").transform;
+	}
     public override void Activate()
     {
 		isMoving = true;
@@ -33,25 +39,18 @@ public class ColorBridge : OverworldObject {
     }
     IEnumerator RotateBridge()
     {
-        if (transform.eulerAngles.z < rotationDegrees2
+        if (bridgeTransform.eulerAngles.z < rotationDegrees2
 			&& isMoving)
         {
-            while (transform.eulerAngles.z < rotationDegrees2)
+			while (bridgeTransform.eulerAngles.z < rotationDegrees2)
             {
-                transform.Rotate(Vector3.forward, 1.0f);
+				bridgeTransform.Rotate(Vector3.forward, Time.deltaTime * 40.0f);
                 //print(transform.eulerAngles.z);
 
-				// is player on bridge
-				if (player.transform.position.x > (transform.position.x - width / 2)
-				   && player.transform.position.x < (transform.position.x + width / 2)
-				   && player.transform.position.y > (transform.position.y - height / 2)
-				   && player.transform.position.y < (transform.position.y + height / 2)) {
-					//player.transform.RotateAround (transform.position, Vector3.forward, 1.0f);
-					//player.transform.Rotate (Vector3.forward, -1.0f);
-				}
 
                 // set isMoving to false
-                if (transform.eulerAngles.z == rotationDegrees2)
+				if (bridgeTransform.eulerAngles.z < rotationDegrees2 + 2.0f
+					&& bridgeTransform.eulerAngles.z > rotationDegrees2 - 2.0f)
                 {
 					// reactivate player
 					/*if (!player.GetComponent<characterControl> ().canMove) {
@@ -65,35 +64,26 @@ public class ColorBridge : OverworldObject {
 						if (!e.GetComponent<enemyControl> ().canMove)
 							ToggleMovement ();
 					}*/
-
+					bridgeTransform.rotation = Quaternion.Euler(0, 0, 90);
                     isMoving = false;
                 }
 
                 yield return new WaitForSeconds(0.01f);
             }
         }
-        else if(transform.eulerAngles.z > rotationDegrees1
+        else if(bridgeTransform.eulerAngles.z > rotationDegrees1
 			&& isMoving)
         {
-            while (transform.eulerAngles.z > rotationDegrees1)
+            while (bridgeTransform.eulerAngles.z > rotationDegrees1)
             {
-                transform.Rotate(Vector3.back, 1.0f);
+				bridgeTransform.Rotate(Vector3.back, Time.deltaTime * 40.0f);
                 //print(transform.eulerAngles.z);
 
-				// is player on bridge
-				if (player.transform.position.x > (transform.position.x - width / 2)
-					&& player.transform.position.x < (transform.position.x + width / 2)
-					&& player.transform.position.y > (transform.position.y - height / 2)
-					&& player.transform.position.y < (transform.position.y + height / 2)) {
-					//player.transform.RotateAround (transform.position, Vector3.back, 1.0f);
-					//player.transform.Rotate (Vector3.back, -1.0f);
-
-				}
 
                 // to compensate for the error of shifting the block's rotation upon start
                 // set isMoving to false
-                if(transform.eulerAngles.z > 358.0f 
-                    || transform.eulerAngles.z < 2.0f)
+                if(bridgeTransform.eulerAngles.z > 358.0f 
+                    || bridgeTransform.eulerAngles.z < 2.0f)
                 {
 					// reactivate player
 					/*if (!player.GetComponent<characterControl> ().canMove) {
@@ -101,7 +91,7 @@ public class ColorBridge : OverworldObject {
 						print ("toggle 2");
 					}*/
 
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    bridgeTransform.rotation = Quaternion.Euler(0, 0, 0);
                     isMoving = false;
 
                 }
