@@ -13,6 +13,11 @@ public class Menu : MonoBehaviour {
     protected int selectedIndex;
     protected int scrollIndex;
 
+	// sub menu attributes
+	public bool isActive;
+	public GameObject descriptionText;
+	public bool isVisible; // variable to hide pause menu
+	public characterControl player;
 
 	// Use this for initialization
 	protected void Start () { 
@@ -23,10 +28,25 @@ public class Menu : MonoBehaviour {
         buttonArray = new GameObject[numOfRow];
         selectedIndex = 0;
         scrollIndex = 0;
-        
+		isActive = false;
 	}
     public virtual void ButtonAction(string label) { }
+	public void DeactivateMenu()
+	{
+		isActive = false;
+		for(int i = 0; i < buttonArray.Length; i++)
+		{			
+			if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled; }
+		}
+	}
+	public void ActivateMenu()
+	{
+		isActive = true;
+		for (int i = 0; i < buttonArray.Length; i++) {
+			if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+		}
 
+	}
     public void StateChangeText()
     {
         // reset index nums back to zero
@@ -95,6 +115,41 @@ public class Menu : MonoBehaviour {
 				b.GetComponent<MyButton> ().textObject.GetComponent<Renderer> ().enabled = false;
 			}
 		}
+	}
+	public void DisableSubMenu()
+	{
+		// reset the menu for the next use
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+		selectedIndex = 0;
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+		isVisible = false;
+		isActive = false;
+
+		//pm.isActive = true;
+		//pm.EnablePauseMenu();
+
+		DisableMenu ();
+		//base.DisableMenu();
+		//descriptionText.GetComponent<Renderer>().enabled = false;
+	}
+	public void DisablePauseMenu()
+	{
+		// reset the menu for the next use
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+		selectedIndex = 0;
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+
+		// hide the menu
+		isVisible = false;
+		//GameControl.control.isPaused = false;
+		GetComponent<SpriteRenderer>().enabled = false;
+
+		// release the overworld objects
+		if (player.canMove == false) { player.ToggleMovement(); }
+
+		//base.DisableMenu();
+		DisableMenu();
+		descriptionText.GetComponent<Renderer>().enabled = false;
 	}
 	// Update is called once per frame
 	protected void Update () {

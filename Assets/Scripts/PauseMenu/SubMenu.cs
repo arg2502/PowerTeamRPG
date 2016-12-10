@@ -6,14 +6,14 @@ public class SubMenu : Menu {
 
     public Transform parentPos; // Parent button -- the location for starting the subMenu
     public List<string> buttonDescription;
-    public PauseMenu pm;
+    public Menu pm;
 
     // a variable to make sure there is at least one frame before input is read, else the first button in the submenu is always clicked when the submenu is enabled
     public float frameDelay = 0.0f; 
 
-    public bool isVisible;
+    //public bool isVisible;
 
-    public bool isActive;
+    //public bool isActive;
 
     public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; } }
 
@@ -42,6 +42,7 @@ public class SubMenu : Menu {
         }
 
         // set selected button
+		print(contentArray.Count);
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
         //call change text method to correctly size text and avoid a certain bug
@@ -78,31 +79,17 @@ public class SubMenu : Menu {
         }
         return formattedString;
     }
+	public void EnableSubMenu()
+	{
+		frameDelay = 0.0f;
+		isVisible = true;
+		isActive = true;
+		base.EnableMenu();
+		if (pm != null) { pm.DeactivateMenu(); }
+	}
 
-    public void EnableSubMenu()
-    {
-        frameDelay = 0.0f;
-        isVisible = true;
-        isActive = true;
-        base.EnableMenu();
-        if (pm != null) { pm.DeactivateMenu(); }
-    }
-
-    public void DisableSubMenu()
-    {
-        // reset the menu for the next use
-        buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
-        selectedIndex = 0;
-        buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
-        isVisible = false;
-        isActive = false;
-
-        //pm.isActive = true;
-        //pm.EnablePauseMenu();
-
-        base.DisableMenu();
-        //descriptionText.GetComponent<Renderer>().enabled = false;
-    }
+    
+    
 
     public void HighlightButton()
     {

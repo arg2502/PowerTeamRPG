@@ -5,13 +5,13 @@ using System.Collections.Generic;
 public class PauseMenu : Menu {
 
     protected List<string> buttonDescription;
-    public GameObject descriptionText;
+    //public GameObject descriptionText;
 
     SpriteRenderer sr;
 
-    public bool isVisible; // variable to hide pause menu
-    public bool isActive = true; // a sub menu is not present
-    public characterControl player;
+    
+	//public bool isActive = true; // a sub menu is not present
+    
 
     protected TeamSubMenu teamSub;
     protected InventorySubMenu inventorySub;
@@ -175,42 +175,9 @@ public class PauseMenu : Menu {
         descriptionText.GetComponent<Renderer>().enabled = true;
     }
 
-    public void DisablePauseMenu()
-    {
-        // reset the menu for the next use
-        buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
-        selectedIndex = 0;
-        buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+   
 
-        // hide the menu
-        isVisible = false;
-        //GameControl.control.isPaused = false;
-        sr.enabled = false;
-        
-        // release the overworld objects
-        if (player.canMove == false) { player.ToggleMovement(); }
-        
-        base.DisableMenu();
-        descriptionText.GetComponent<Renderer>().enabled = false;
-    }
 
-    public void DeactivateMenu()
-    {
-        isActive = false;
-        for (int i = 0; i < buttonArray.Length; i++)
-        {
-            if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled; }
-        }
-    }
-
-    public void ActivateMenu()
-    {
-        isActive = true;
-        for (int i = 0; i < buttonArray.Length; i++)
-        {
-            if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
-        }
-    }
 
     public void HighlightButton()
     {

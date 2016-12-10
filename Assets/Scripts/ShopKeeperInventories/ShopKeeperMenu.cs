@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class ShopKeeperMenu : Menu {
 
 	ShopKeeper shopKeeper; // access to the shopkeeper
-	DialogueBoxShopKeeper dBox; // to set dialogue box's flavor text
-	GameObject descriptionText;
-
+	public DialogueBoxShopKeeper dBox; // to set dialogue box's flavor text
+	public GameObject descriptionText;
+	NumItemsShopKeeperSubMenu subMenu;
 	// Use this for initialization
 	void Start () {
 		contentArray = new List<string>();
@@ -21,6 +21,9 @@ public class ShopKeeperMenu : Menu {
 		}
 
 		base.Start();
+
+
+
 
 		// create the buttons
 		for (int i = 0; i < numOfRow; i++)
@@ -45,6 +48,10 @@ public class ShopKeeperMenu : Menu {
 			}
 			b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
 		}
+
+		GameObject go = (GameObject)Instantiate (Resources.Load ("Prefabs/NumItemsShopKeeperSubMenu"));
+		subMenu = go.GetComponent<NumItemsShopKeeperSubMenu> ();
+		subMenu.parentPos = buttonArray [0].transform;
 
 		//Create the description text object
 		descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
@@ -79,8 +86,19 @@ public class ShopKeeperMenu : Menu {
 		PressButton(KeyCode.Space);
 
 		if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.Backspace)) { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
-	}
+	
+		// set the submenus position to the button you are on - no need to make more than one submenu...right?
+		subMenu.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
 
+
+	}
+	public override void ButtonAction (string label)
+	{
+		// set the submenu's item equal to the item of the button you selected
+		// then activate the submenu
+		subMenu.item = shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>();
+		subMenu.EnableSubMenu ();
+	}
 	public string FormatText(string str)
 	{
 		string formattedString = null;
