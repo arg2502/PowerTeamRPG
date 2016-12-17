@@ -95,6 +95,8 @@ public class roomControl : MonoBehaviour {
 				for (int i = 0; i < movables.Count; i++)
 				{
 					movables[i].transform.position = new Vector3(rc.blockData[i].position.x, rc.blockData[i].position.y, rc.blockData[i].position.z);
+					movables [i].isActivated = rc.blockData [i].isActivated;
+					//movables [i].gameObject.SetActive (movables [i].isActivated);
 				}
 				// sync open chests
 				for (int i = 0; i < treasureChests.Count; i++)

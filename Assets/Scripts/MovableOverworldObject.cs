@@ -7,9 +7,10 @@ public class MovableOverworldObject : OverworldObject {
     public bool isActivated;
 
     void Start()
-    {
+    {		
         base.Start();
-        if (!isActivated) { gameObject.SetActive(false); }
+        GetComponent<SpriteRenderer>().enabled = isActivated; 
+		GetComponent<BoxCollider2D> ().enabled = isActivated;
     }
 
     //check collisions
@@ -32,7 +33,9 @@ public class MovableOverworldObject : OverworldObject {
     }
 	// Update is called once per frame
 	void Update () {
-        if (isActivated)
+		GetComponent<SpriteRenderer>().enabled = isActivated; 
+		GetComponent<BoxCollider2D> ().enabled = isActivated;
+		if (isActivated)
         {
             //gameObject.SetActive(true);
             sr.sortingOrder = (int)-transform.position.y;

@@ -42,7 +42,7 @@ public class SubMenu : Menu {
         }
 
         // set selected button
-		print(contentArray.Count);
+		//print(contentArray.Count);
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
 
         //call change text method to correctly size text and avoid a certain bug

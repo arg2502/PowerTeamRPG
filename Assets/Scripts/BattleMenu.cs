@@ -55,7 +55,7 @@ public class BattleMenu : Menu {
     int textIndex;
 
     // A textObject that will show the decriptions of attacks
-    public GameObject descriptionText;
+    //public GameObject descriptionText;
     // an object to contain the descriptions
     public GameObject descriptionBox;
 
