@@ -53,6 +53,14 @@ public class Menu : MonoBehaviour {
         selectedIndex = 0;
         scrollIndex = 0;
 
+		// set all back to normal so a random button in the list won't be highlighted
+		for (int i = 0; i < buttonArray.Length; i++) {
+			buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.normal;
+		}
+
+		// set first button to hover
+		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+
         ChangeText();
         
     }
@@ -60,11 +68,7 @@ public class Menu : MonoBehaviour {
     {
         for (int i = 0; i < buttonArray.Length; i++)
         {
-            // set all back to normal just in case
-            buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
-
-            // set first button to hover
-            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+            
 
             // if the string has less than four, leave disabled buttons
             if (i >= contentArray.Count)

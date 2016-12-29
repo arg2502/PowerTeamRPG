@@ -12,6 +12,7 @@ public class HarveyShopKeeper : ShopKeeper {
 		inventory.Add((GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir")));
 		inventory.Add((GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude")));
 
+
 		portraitImages.Add(image);
 		portraitImages.Add(image);
 		portraitImages.Add(image);
@@ -21,6 +22,8 @@ public class HarveyShopKeeper : ShopKeeper {
 		flavorText.Add ("That just looks stupid.");
 
 		typingSpeed = 0.0f;
+
+		sceneName = "ShopKeeperInventory"; // TEMPORARY NAME
 
 	}
 	

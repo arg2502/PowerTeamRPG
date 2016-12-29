@@ -22,8 +22,7 @@ public class ShopKeeperMenu : Menu {
 
 		base.Start();
 
-
-
+		//isActive = true;
 
 		// create the buttons
 		for (int i = 0; i < numOfRow; i++)
@@ -47,6 +46,9 @@ public class ShopKeeperMenu : Menu {
 				b.labelMesh.text = contentArray[i];
 			}
 			b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
+
+
+
 		}
 
 		GameObject go = (GameObject)Instantiate (Resources.Load ("Prefabs/NumItemsShopKeeperSubMenu"));
@@ -60,8 +62,9 @@ public class ShopKeeperMenu : Menu {
 		}
 		descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
-		// set selected button
-		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+		// set correct button states (and menu to isActive)
+		ActivateMenu ();
+
 
 		// Create the appropriate sub menu
 		//GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
@@ -75,21 +78,24 @@ public class ShopKeeperMenu : Menu {
 	
 	// Update is called once per frame
 	void Update () {
-		base.Update ();
+		if (isActive) {
+			base.Update ();
 
-		// update the description text
-		if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
-			descriptionText.GetComponent<TextMesh> ().text = FormatText (shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
-			dBox.listPosition = selectedIndex + scrollIndex;
-		}// + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
+			// update the description text
+			if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
+				descriptionText.GetComponent<TextMesh> ().text = FormatText (shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
+				dBox.listPosition = selectedIndex + scrollIndex;
+			}// + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
 
-		PressButton(KeyCode.Space);
+			PressButton (KeyCode.Space);
 
-		if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.Backspace)) { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
+			if (Input.GetKeyUp (KeyCode.Q) || Input.GetKeyUp (KeyCode.Backspace)) {
+				UnityEngine.SceneManagement.SceneManager.LoadScene (GameControl.control.currentScene);
+			}
 	
-		// set the submenus position to the button you are on - no need to make more than one submenu...right?
-		subMenu.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
-
+			// set the submenus position to the button you are on - no need to make more than one submenu...right?
+			subMenu.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
+		}
 
 	}
 	public override void ButtonAction (string label)
@@ -123,4 +129,36 @@ public class ShopKeeperMenu : Menu {
 		}
 		return formattedString;
 	}
+	public void DeactivateMenu()
+	{
+		isActive = false;
+		for (int i = 0; i < buttonArray.Length; i++)
+		{
+			if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.disabled; }
+		}
+	}
+
+	public void ActivateMenu()
+	{
+		isActive = true;
+		// see which items are available to buy - code here based on how battle menu deactivates the skills and spells
+		for (int i = 0; i < buttonArray.Length; i++) {
+			for (int j = 0; j < shopKeeper.inventory.Count; j++) {
+				if (buttonArray [i].GetComponent<MyButton> ().textObject.GetComponent<TextMesh> ().text == shopKeeper.inventory [j].GetComponent<Item> ().name
+					&& GameControl.control.totalGold < shopKeeper.inventory [j].GetComponent<Item> ().price) {
+					buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+				}
+			}
+		}
+
+		// set selected button
+		if (buttonArray [selectedIndex].GetComponent<MyButton> ().state == MyButton.MyButtonTextureState.normal) {
+			buttonArray [selectedIndex].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.hover;
+		} else if (buttonArray[selectedIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive) {
+			buttonArray [selectedIndex].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactiveHover;			
+		}
+	}
+
+
+
 }

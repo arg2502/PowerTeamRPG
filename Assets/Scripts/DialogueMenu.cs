@@ -36,16 +36,32 @@ public class DialogueMenu : Menu {
                     dBox.isAsking = false;
                     dBox.isDialogue = false;
 
-                    // if there are any responses, set it up here
-                    if (npc.possibleResponses.Count > 0)
-                    {
-                        npc.responseList = npc.possibleResponses[i];
-                        dBox.isResponse = true;
-                        dBox.outerListPosition = 0;
-                        dBox.innerListPosition = 0;
-                        StartCoroutine(dBox.ScrollText(npc.responseList.dialogue[dBox.innerListPosition]));
-                    }
-                    DisableQuestionMenu();
+
+					// stop response if shop keeper
+					if (npc.GetComponent<ShopKeeperQuestion> () != null) {
+						if (!npc.GetComponent<ShopKeeperQuestion> ().canBuy) {
+							if (npc.possibleResponses.Count > 0) {
+								npc.responseList = npc.possibleResponses [0];
+								dBox.isResponse = true;
+								dBox.outerListPosition = 0;
+								dBox.innerListPosition = 0;
+								StartCoroutine (dBox.ScrollText (npc.responseList.dialogue [dBox.innerListPosition]));
+							}
+							DisableQuestionMenu ();
+						}
+					}
+
+					// if there are any responses (and not going to another scene), set it up here
+					else {
+						if (npc.possibleResponses.Count > 0) {
+							npc.responseList = npc.possibleResponses [i];
+							dBox.isResponse = true;
+							dBox.outerListPosition = 0;
+							dBox.innerListPosition = 0;
+							StartCoroutine (dBox.ScrollText (npc.responseList.dialogue [dBox.innerListPosition]));
+						}
+						DisableQuestionMenu ();
+					}
                 }
             }
         }

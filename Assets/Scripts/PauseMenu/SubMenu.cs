@@ -20,7 +20,7 @@ public class SubMenu : Menu {
 	// Use this for initialization
 	protected void Start () {
 
-        // find the pause menu
+        // find the pause menu - default for most menus
         pm = GameObject.FindObjectOfType<PauseMenu>();
 
         base.Start();
@@ -49,13 +49,15 @@ public class SubMenu : Menu {
         ChangeText();
 
         //Change the description text
-        if (pm != null) { pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]); }
+        if (pm != null) { 
+			pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]); 
+		}
 
         DisableSubMenu(); // hide the menu until the player opens it
         isVisible = false;
 	}
 
-    string FormatText(string str)
+    protected string FormatText(string str)
     {
         string formattedString = null;
         int desiredLength = 40;
@@ -85,7 +87,7 @@ public class SubMenu : Menu {
 		isVisible = true;
 		isActive = true;
 		base.EnableMenu();
-		if (pm != null) { pm.DeactivateMenu(); }
+		if (pm != null) { pm.DeactivateMenu();}
 	}
 
     
@@ -114,7 +116,10 @@ public class SubMenu : Menu {
             }
 
             // Update the description
-            if (pm != null) { pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]); }
+			if (pm != null) { 
+					pm.descriptionText.GetComponent<TextMesh> ().text = FormatText (buttonDescription [selectedIndex]); 
+
+			}
         }
         if(isVisible && frameDelay > 0)
         {
