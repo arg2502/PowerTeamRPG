@@ -21,6 +21,9 @@ public class HarveyShopKeeper : ShopKeeper {
 		flavorText.Add ("Good on ya, lesser elixer");
 		flavorText.Add ("That just looks stupid.");
 
+		buyingText = "How much you want?";
+		tooMuchText = "Whoa, you can't afford any more than that.";
+
 		typingSpeed = 0.0f;
 
 		sceneName = "ShopKeeperInventory"; // TEMPORARY NAME

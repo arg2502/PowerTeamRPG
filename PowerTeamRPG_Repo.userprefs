@@ -1,11 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BattleMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ShopKeeperInventories\ShopKeeperMenu.cs">
     <Files>
+      <File FileName="Assets\Scripts\ShopKeeperInventories\ShopKeeperMenu.cs" Line="149" Column="3" />
+      <File FileName="Assets\Scripts\ShopKeeperInventories\DialogueBoxShopKeeper.cs" Line="39" Column="9" />
+      <File FileName="Assets\Scripts\ShopKeeperInventories\NumItemsShopKeeperSubMenu.cs" Line="89" Column="33" />
       <File FileName="Assets\Scripts\BattleMenu.cs" Line="545" Column="19" />
-      <File FileName="Assets\Scripts\Hero.cs" Line="169" Column="46" />
-      <File FileName="Assets\Scripts\Denigen.cs" Line="1" Column="6" />
-      <File FileName="Assets\Scripts\E_Mudpuppy.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

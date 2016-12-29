@@ -36,7 +36,7 @@ public class DialogueBoxShopKeeper : MonoBehaviour {
 	ShopKeeper shopKeeper;
 
 	// keep track of list position
-	int prevPosition;
+	public int prevPosition;
 
 	// check whether a question is being asked
 	//public bool isAsking;
@@ -45,6 +45,12 @@ public class DialogueBoxShopKeeper : MonoBehaviour {
 
 	// coroutine currently running
 	IEnumerator currentRoutine;
+
+	// change the text when the player is in the submenus
+	public bool isBuying;
+	public string currentText;
+	public string prevText;
+
 
 	// Use this for initialization
 	void Start () {
@@ -97,20 +103,37 @@ public class DialogueBoxShopKeeper : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		// only update text when position changes
-		if (prevPosition != listPosition) {
-			// stop coroutine that's currently running, to prevent mumbled up text
-			StopCoroutine (currentRoutine);
+		if (isBuying) {
+			if (currentText != prevText) {
+				// stop coroutine that's currently running, to prevent mumbled up text
+				StopCoroutine (currentRoutine);
 
-			// reset text
-			spokenText.text = "";
+				// reset text
+				spokenText.text = "";
 
-			// set current coroutine to the appropriate coroutine
-			currentRoutine = ScrollText (shopKeeper.flavorText [listPosition]);
+				// set current coroutine to the appropriate coroutine
+				currentRoutine = ScrollText (currentText);
 
-			// start new flavor text
-			StartCoroutine (currentRoutine);
-			prevPosition = listPosition;
+				// start new flavor text
+				StartCoroutine (currentRoutine);
+				prevText = currentText;
+			}
+		} else {
+			// only update text when position changes
+			if (prevPosition != listPosition) {
+				// stop coroutine that's currently running, to prevent mumbled up text
+				StopCoroutine (currentRoutine);
+
+				// reset text
+				spokenText.text = "";
+
+				// set current coroutine to the appropriate coroutine
+				currentRoutine = ScrollText (shopKeeper.flavorText [listPosition]);
+
+				// start new flavor text
+				StartCoroutine (currentRoutine);
+				prevPosition = listPosition;
+			}
 		}
 
 	}

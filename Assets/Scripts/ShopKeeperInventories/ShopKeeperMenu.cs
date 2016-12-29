@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ShopKeeperMenu : Menu {
 
-	ShopKeeper shopKeeper; // access to the shopkeeper
+	public ShopKeeper shopKeeper; // access to the shopkeeper
 	public DialogueBoxShopKeeper dBox; // to set dialogue box's flavor text
 	public GameObject descriptionText;
 	NumItemsShopKeeperSubMenu subMenu;
@@ -58,7 +58,9 @@ public class ShopKeeperMenu : Menu {
 		//Create the description text object
 		descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
 		if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
-			descriptionText.GetComponent<TextMesh> ().text = FormatText (shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
+			descriptionText.GetComponent<TextMesh> ().text = 
+				FormatText ("Price: " + shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>().price + 
+					"\n\n" + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
 		}
 		descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
@@ -83,7 +85,9 @@ public class ShopKeeperMenu : Menu {
 
 			// update the description text
 			if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
-				descriptionText.GetComponent<TextMesh> ().text = FormatText (shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
+				descriptionText.GetComponent<TextMesh> ().text = 
+					FormatText ("Price: " + shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>().price + 
+						"\n\n" + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
 				dBox.listPosition = selectedIndex + scrollIndex;
 			}// + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
 
@@ -102,6 +106,9 @@ public class ShopKeeperMenu : Menu {
 	{
 		// set the submenu's item equal to the item of the button you selected
 		// then activate the submenu
+		dBox.isBuying = true;
+		dBox.currentText = shopKeeper.buyingText;
+		dBox.prevPosition = -1;
 		subMenu.item = shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>();
 		subMenu.EnableSubMenu ();
 	}
@@ -144,9 +151,16 @@ public class ShopKeeperMenu : Menu {
 		// see which items are available to buy - code here based on how battle menu deactivates the skills and spells
 		for (int i = 0; i < buttonArray.Length; i++) {
 			for (int j = 0; j < shopKeeper.inventory.Count; j++) {
-				if (buttonArray [i].GetComponent<MyButton> ().textObject.GetComponent<TextMesh> ().text == shopKeeper.inventory [j].GetComponent<Item> ().name
-					&& GameControl.control.totalGold < shopKeeper.inventory [j].GetComponent<Item> ().price) {
+				
+
+				if (buttonArray [i].GetComponent<MyButton> ().textObject.GetComponent<TextMesh> ().text == shopKeeper.inventory [j].GetComponent<Item> ().name)
+				{
+					// set to normal when coming back from sub menu first
+					buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+
+					if(GameControl.control.totalGold < shopKeeper.inventory [j].GetComponent<Item> ().price) {
 					buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+					}
 				}
 			}
 		}

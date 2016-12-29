@@ -31,28 +31,31 @@ public class DialogueMenu : Menu {
                 // if the button is hover when this is called, it's the button that was just pressed
                 if (buttonArray[i].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.hover)
                 {
-                    // set the dialogue box text to corresponding position in response list
-                    npc.ResponseAction(i);
-                    dBox.isAsking = false;
-                    dBox.isDialogue = false;
-
+					dBox.isAsking = false;
+					dBox.isDialogue = false;
 
 					// stop response if shop keeper
 					if (npc.GetComponent<ShopKeeperQuestion> () != null) {
-						if (!npc.GetComponent<ShopKeeperQuestion> ().canBuy) {
-							if (npc.possibleResponses.Count > 0) {
-								npc.responseList = npc.possibleResponses [0];
-								dBox.isResponse = true;
-								dBox.outerListPosition = 0;
-								dBox.innerListPosition = 0;
-								StartCoroutine (dBox.ScrollText (npc.responseList.dialogue [dBox.innerListPosition]));
-							}
-							DisableQuestionMenu ();
+						npc.ResponseAction (selectedIndex + scrollIndex);
+
+						// if nothing, close out dialogue
+						if (label == "Nothing") {
+							npc.responseList = npc.possibleResponses [0];
+							dBox.isResponse = true;
+							dBox.outerListPosition = 0;
+							dBox.innerListPosition = 0;
+							StartCoroutine (dBox.ScrollText (npc.responseList.dialogue [dBox.innerListPosition]));
 						}
+						DisableQuestionMenu ();
 					}
 
 					// if there are any responses (and not going to another scene), set it up here
-					else {
+					else if(npc.GetComponent<ShopKeeperQuestion>() == null){
+
+						// set the dialogue box text to corresponding position in response list
+						npc.ResponseAction(i);
+
+
 						if (npc.possibleResponses.Count > 0) {
 							npc.responseList = npc.possibleResponses [i];
 							dBox.isResponse = true;
