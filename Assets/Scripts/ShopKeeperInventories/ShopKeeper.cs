@@ -9,6 +9,8 @@ public class ShopKeeper : MonoBehaviour {
 	public List<string> flavorText; // what the shopkeeper has to say about the item
 	public string buyingText; // asking "how much?"
 	public string tooMuchText; // saying you can't buy anymore
+	public string confirmationText; // make sure you really wanna buy it
+	public string receiptText; // text after purchase
 	public float typingSpeed;
 	public string sceneName;
 

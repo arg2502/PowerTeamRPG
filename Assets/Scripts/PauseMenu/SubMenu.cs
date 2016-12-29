@@ -17,6 +17,8 @@ public class SubMenu : Menu {
 
     public int SelectedIndex { get { return selectedIndex; } set { selectedIndex = value; } }
 
+	public float offsetPercent = 1.25f;
+
 	// Use this for initialization
 	protected void Start () {
 
@@ -24,15 +26,16 @@ public class SubMenu : Menu {
         pm = GameObject.FindObjectOfType<PauseMenu>();
 
         base.Start();
-        buttonArray = new GameObject[contentArray.Count];
+        
+		buttonArray = new GameObject[contentArray.Count];
 
         for (int i = 0; i < contentArray.Count; i++)
         {
             // create a button
-            buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
-            MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(parentPos.position.x + b.width + 50, parentPos.position.y + (i * -(b.height + b.height / 2)));
-
+			buttonArray [i] = (GameObject)Instantiate (Resources.Load ("Prefabs/ButtonPrefab"));
+			MyButton b = buttonArray [i].GetComponent<MyButton> ();
+			buttonArray [i].transform.position = new Vector2 (parentPos.position.x + (b.width * offsetPercent), parentPos.position.y + (i * -(b.height + b.height / 2)));
+			
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
@@ -111,7 +114,7 @@ public class SubMenu : Menu {
             for (int i = 0; i < contentArray.Count; i++)
             {
                 MyButton b = buttonArray[i].GetComponent<MyButton>();
-                buttonArray[i].transform.position = new Vector2(parentPos.position.x + b.width + 50, parentPos.position.y + (i * -(b.height + b.height / 2)));
+				buttonArray[i].transform.position = new Vector2(parentPos.position.x + (b.width * offsetPercent), parentPos.position.y + (i * -(b.height + b.height / 2)));
                 b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
             }
 

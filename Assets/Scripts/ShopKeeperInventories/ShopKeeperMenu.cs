@@ -7,6 +7,7 @@ public class ShopKeeperMenu : Menu {
 	public ShopKeeper shopKeeper; // access to the shopkeeper
 	public DialogueBoxShopKeeper dBox; // to set dialogue box's flavor text
 	public GameObject descriptionText;
+	public GameObject goldText;
 	NumItemsShopKeeperSubMenu subMenu;
 	// Use this for initialization
 	void Start () {
@@ -64,6 +65,11 @@ public class ShopKeeperMenu : Menu {
 		}
 		descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
+		// state how much gold player has
+		goldText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+		goldText.GetComponent<TextMesh> ().text = "Gold: " + GameControl.control.totalGold;
+		goldText.transform.position = new Vector2 (buttonArray [0].transform.position.x - buttonArray[0].GetComponent<MyButton>().width/2, buttonArray [0].transform.position.y + buttonArray [0].GetComponent<MyButton> ().height*2);
+
 		// set correct button states (and menu to isActive)
 		ActivateMenu ();
 
@@ -99,6 +105,12 @@ public class ShopKeeperMenu : Menu {
 	
 			// set the submenus position to the button you are on - no need to make more than one submenu...right?
 			subMenu.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
+
+			// set dialogue isBuying to false upon moving
+			if (Input.GetKeyUp (KeyCode.W) || Input.GetKeyUp (KeyCode.S)) {
+				dBox.isBuying = false;
+			}
+
 		}
 
 	}
@@ -108,7 +120,7 @@ public class ShopKeeperMenu : Menu {
 		// then activate the submenu
 		dBox.isBuying = true;
 		dBox.currentText = shopKeeper.buyingText;
-		dBox.prevPosition = -1;
+		dBox.prevPosition = -1; // so it start's different - triggers a change
 		subMenu.item = shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>();
 		subMenu.EnableSubMenu ();
 	}

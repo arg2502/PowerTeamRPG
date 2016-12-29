@@ -23,6 +23,8 @@ public class HarveyShopKeeper : ShopKeeper {
 
 		buyingText = "How much you want?";
 		tooMuchText = "Whoa, you can't afford any more than that.";
+		confirmationText = "Are ya sure you wanna buy that?";
+		receiptText = "Great choice!";
 
 		typingSpeed = 0.0f;
 
