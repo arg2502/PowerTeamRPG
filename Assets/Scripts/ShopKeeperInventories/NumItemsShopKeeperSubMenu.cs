@@ -8,6 +8,8 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	public Item item; // item selected
 	public int quantity; // number of items
 	public int totalPrice; // final product
+	public GameObject costText;
+	public GameObject costTitle;
 	ConfirmPurchaseShopKeeperSub sub;
 
 	// Use this for initialization
@@ -18,33 +20,9 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 		contentArray = new List<string>{ "" };
 		//buttonDescription = new List<string>{"How many?"};
 		buttonArray = new GameObject[contentArray.Count];
-		offsetPercent = 0.95f;
-		// basically base.Start(), but slightly different for the different button prefab
-		for (int i = 0; i < contentArray.Count; i++) {
-			buttonArray[i] = (GameObject)Instantiate(Resources.Load ("Prefabs/LevelUpButtonPrefab"));
-			MyButton b = buttonArray [i].GetComponent<MyButton> ();
-			//buttonArray [i].transform.position = new Vector2 (parentPos.position.x + b.width, parentPos.position.y + (i * -(b.height + b.height / 2)));
-
-			// assign text
-			b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-			b.labelMesh = b.textObject.GetComponent<TextMesh>();
-			b.labelMesh.text = contentArray[i];
-			b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
-		}
-		// set selected button
-		//print(contentArray.Count);
-		buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
-
-		//call change text method to correctly size text and avoid a certain bug
-		ChangeText();
-
-		//Change the description text
-		if (pm != null) { 
-			pm.descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]); 
-		}
-
-		DisableSubMenu(); // hide the menu until the player opens it
-		isVisible = false;
+		offsetPercent = 1.2f;
+		buttonPrefab = "Prefabs/QuantityButtonPrefab";
+		base.Start ();
 
 		// link to parent
 		shopMenu = GameObject.FindObjectOfType<ShopKeeperMenu> ();
@@ -53,6 +31,18 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 		GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/ConfirmPurchaseShopKeeperSub"));
 		sub = go.GetComponent<ConfirmPurchaseShopKeeperSub> ();
 		sub.parentPos = buttonArray [0].transform;
+
+
+		// total cost of purchase
+		costText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+		costText.GetComponent<TextMesh>().GetComponent<Renderer> ().enabled = false;
+		costText.GetComponent<TextMesh> ().text = "";
+		costText.transform.position = new Vector2 (shopMenu.descriptionText.transform.position.x - (buttonArray [0].GetComponent<MyButton> ().width*1.3f), shopMenu.descriptionText.transform.position.y);
+
+		costTitle = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+		costTitle.GetComponent<TextMesh>().GetComponent<Renderer> ().enabled = false;
+		costTitle.GetComponent<TextMesh> ().text = "Total Cost";
+		costTitle.transform.position = new Vector2 (costText.transform.position.x, shopMenu.goldText.transform.position.y);
 	}
 	
 	// deal with the button pressed
@@ -67,11 +57,11 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 
 					// set appropriate button textures
 					if (quantity == 1) {
-						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/lvlUpMenu/hoverDisabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
-						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/lvlUpMenu/activeDisabledLeftlvlUpButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
 					} else {
-						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/lvlUpMenu/hoverlvlUpButton", typeof(Sprite)) as Sprite;
-						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/lvlUpMenu/activelvlUpButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverQuantityButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeQuantityButton", typeof(Sprite)) as Sprite;
 					}
 				} else {
 					quantity = 1;
@@ -84,11 +74,11 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 
 					// set appropriate button textures
 					if (GameControl.control.totalGold < (quantity + 1) * item.price) {
-						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/lvlUpMenu/hoverDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
-						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/lvlUpMenu/activeDisabledRightlvlUpButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
 					} else {
-						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/lvlUpMenu/hoverlvlUpButton", typeof(Sprite)) as Sprite;
-						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/lvlUpMenu/activelvlUpButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverQuantityButton", typeof(Sprite)) as Sprite;
+						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeQuantityButton", typeof(Sprite)) as Sprite;
 					}
 
 				} else {
@@ -109,6 +99,8 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	{
 		shopMenu.DeactivateMenu();
 		quantity = 1;
+		buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+		buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
 		base.EnableSubMenu();
 	}
 
@@ -137,24 +129,43 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	void Update()
 	{
 		//if (isVisible && frameDelay > 0)
-		if (isVisible && isActive)
-		{
+		if (isVisible && isActive) {
 			// update quantity - how many items are being bought
 			totalPrice = quantity * item.price;
-			contentArray[0] = quantity.ToString() + " x " + item.price.ToString() + " = " + totalPrice.ToString();
+			contentArray [0] = quantity.ToString ();
+			costText.GetComponent<TextMesh> ().text = totalPrice.ToString ();
 			ChangeText ();
-			if (Input.GetKeyUp(KeyCode.Backspace) || Input.GetKeyUp(KeyCode.Q))
-			{
+			if (Input.GetKeyUp (KeyCode.Backspace) || Input.GetKeyUp (KeyCode.Q)) {
 				quantity = 1;
 				shopMenu.dBox.isBuying = false;
 				shopMenu.dBox.currentText = "";
 				shopMenu.dBox.prevText = "";
-				shopMenu.ActivateMenu();
+				shopMenu.ActivateMenu ();
+			}
+			PressButton (KeyCode.A);
+			PressButton (KeyCode.D);
+
+		} 
+
+		if (isVisible) {
+			// turn on total cost text if off
+			if (costText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled == false
+				&& costTitle.GetComponent<TextMesh>().GetComponent<Renderer>().enabled == false) {
+				costText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
+				costTitle.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = true;
 			}
 		}
 
-		PressButton (KeyCode.A);
-		PressButton (KeyCode.D);
+		else {
+			// turn off total cost text if on
+			if (costText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled == true
+				&& costTitle.GetComponent<TextMesh>().GetComponent<Renderer>().enabled == true) {
+				costText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
+				costTitle.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
+			}
+		}
+
+
 
 		//update which position the submenu should appear in
 		//use.parentPos = buttonArray[selectedIndex].transform;

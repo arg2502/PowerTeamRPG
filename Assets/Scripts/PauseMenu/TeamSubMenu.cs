@@ -34,7 +34,6 @@ public class TeamSubMenu : SubMenu {
             contentArray.Add(hd.name);
             buttonDescription.Add("O_o");
         }
-
         base.Start();
 
         //call change text method to correctly size text and avoid a certain bug

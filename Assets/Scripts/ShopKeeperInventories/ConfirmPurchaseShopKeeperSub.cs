@@ -11,7 +11,8 @@ public class ConfirmPurchaseShopKeeperSub : SubMenu {
 	void Start () {
 		parent = GameObject.FindObjectOfType<NumItemsShopKeeperSubMenu> ();
 		contentArray = new List<string> { "Yes", "No" };
-
+		buttonPrefab = "Prefabs/SmallButtonPrefab";
+		offsetPercent = 1.5f;
 		base.Start ();
 	
 	}

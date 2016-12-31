@@ -19,6 +19,8 @@ public class SubMenu : Menu {
 
 	public float offsetPercent = 1.25f;
 
+	public string buttonPrefab = "Prefabs/ButtonPrefab"; // the string path to the button prefab used in the specific menu
+
 	// Use this for initialization
 	protected void Start () {
 
@@ -32,7 +34,7 @@ public class SubMenu : Menu {
         for (int i = 0; i < contentArray.Count; i++)
         {
             // create a button
-			buttonArray [i] = (GameObject)Instantiate (Resources.Load ("Prefabs/ButtonPrefab"));
+			buttonArray [i] = (GameObject)Instantiate (Resources.Load (buttonPrefab));
 			MyButton b = buttonArray [i].GetComponent<MyButton> ();
 			buttonArray [i].transform.position = new Vector2 (parentPos.position.x + (b.width * offsetPercent), parentPos.position.y + (i * -(b.height + b.height / 2)));
 			

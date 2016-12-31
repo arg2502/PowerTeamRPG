@@ -28,7 +28,6 @@ public class ItemUseSubMenu : SubMenu {
             //    + "\nPm: " + hd.pm + " / " + hd.pmMax);
             buttonDescription.Add("");
         }
-
         base.Start();
 
         // disable the buttons for any fallen heroes unless item can be used on the dead

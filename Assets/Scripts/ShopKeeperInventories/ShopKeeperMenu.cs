@@ -7,6 +7,7 @@ public class ShopKeeperMenu : Menu {
 	public ShopKeeper shopKeeper; // access to the shopkeeper
 	public DialogueBoxShopKeeper dBox; // to set dialogue box's flavor text
 	public GameObject descriptionText;
+	public GameObject descriptionTitle;
 	public GameObject goldText;
 	NumItemsShopKeeperSubMenu subMenu;
 	// Use this for initialization
@@ -65,10 +66,16 @@ public class ShopKeeperMenu : Menu {
 		}
 		descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
+
+
 		// state how much gold player has
 		goldText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
 		goldText.GetComponent<TextMesh> ().text = "Gold: " + GameControl.control.totalGold;
 		goldText.transform.position = new Vector2 (buttonArray [0].transform.position.x - buttonArray[0].GetComponent<MyButton>().width/2, buttonArray [0].transform.position.y + buttonArray [0].GetComponent<MyButton> ().height*2);
+
+		descriptionTitle = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+		descriptionTitle.GetComponent<TextMesh> ().text = "Item Description";
+		descriptionTitle.transform.position = new Vector2 (descriptionText.transform.position.x, goldText.transform.position.y);
 
 		// set correct button states (and menu to isActive)
 		ActivateMenu ();
