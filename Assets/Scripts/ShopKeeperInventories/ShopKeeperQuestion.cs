@@ -25,6 +25,7 @@ public class ShopKeeperQuestion : NPCQuestion {
 	{
 		// 0 - Buy
 		if (responseIndex == 0) {
+			GameControl.control.isSellMenu = false;
 			GameControl.control.currentPosition = player.transform.position; //record the player's position
 			GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
 			GameControl.control.RecordRoom();
@@ -35,7 +36,13 @@ public class ShopKeeperQuestion : NPCQuestion {
 		}
 		// 1 - Sell
 		else if (responseIndex == 1) {
-			GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+			GameControl.control.isSellMenu = true;
+			GameControl.control.currentPosition = player.transform.position; //record the player's position
+			GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
+			GameControl.control.RecordRoom();
+			GameControl.control.RecordPauseMenu();
+			GameControl.control.RecordEnemyPos();
+			UnityEngine.SceneManagement.SceneManager.LoadScene(shopKeeper.sceneName);
 
 		}
 		// 2 - Nothing

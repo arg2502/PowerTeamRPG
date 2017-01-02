@@ -57,6 +57,11 @@ public class GameControl : MonoBehaviour {
 	// for telling the pause menu which list of items to use
 	public string whichInventory; 
 
+	// tells shopkeeper whether to open buy or sell menu
+	// false - buy
+	// true - sell
+	public bool isSellMenu;
+
 	//awake gets called before start
 	void Awake () {
 		if (control == null)

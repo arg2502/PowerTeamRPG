@@ -21,14 +21,32 @@ public class HarveyShopKeeper : ShopKeeper {
 		flavorText.Add ("Good on ya, lesser elixer");
 		flavorText.Add ("That just looks stupid.");
 
-		buyingText = "How much you want?";
-		tooMuchText = "Whoa, you can't afford any more than that.";
-		confirmationText = "Are ya sure you wanna buy that?";
-		receiptText = "Great choice!";
+		//howMuchText = "How much you want?";
+		//tooMuchText = "Whoa, you can't afford any more than that.";
+		//confirmationText = "Are ya sure you wanna buy that?";
+		//receiptText = "Great choice!";
+
+		howMuchBuying = "How much you want?";
+		tooMuchBuying = "Whoa, you can't afford any more than that.";
+		confirmationBuying = "Are ya sure you wanna buy that?";
+		receiptBuying = "Great choice!";
+
+		howMuchSelling = "How much you wanna sell?";
+		tooMuchSelling = "Looks like that's all you got.";
+		confirmationSelling = "Are ya sure you wanna sell that?";
+		receiptSelling = "Thanks for that!";
+
+		sellingText = "What do ya got for me?";
 
 		typingSpeed = 0.0f;
 
 		sceneName = "ShopKeeperInventory"; // TEMPORARY NAME
+
+		consumablesPerc = 0.9f;
+		weaponsPerc = 0.6f;
+		equipPerc = 0.4f;
+		reusePerc = 0.75f;
+
 
 	}
 	

@@ -103,7 +103,7 @@ public class DialogueBoxShopKeeper : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (isBuying) {
+		if (isBuying || GameControl.control.isSellMenu) {
 			if (currentText != prevText) {
 				// stop coroutine that's currently running, to prevent mumbled up text
 				StopCoroutine (currentRoutine);

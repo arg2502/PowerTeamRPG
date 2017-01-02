@@ -56,7 +56,7 @@ public class InventorySubMenu : SubMenu {
 
     void CheckForInactive()
     {
-        for (int i = 0; i < contentArray.Count; i++)
+		for (int i = 0; i < numOfRow; i++)
         {
             if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactive &&
                 buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.inactiveHover)

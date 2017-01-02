@@ -9,19 +9,46 @@ public class ShopKeeperMenu : Menu {
 	public GameObject descriptionText;
 	public GameObject descriptionTitle;
 	public GameObject goldText;
-	NumItemsShopKeeperSubMenu subMenu;
+	public NumItemsShopKeeperSubMenu subMenu;
+	public SellerSubMenu sellerSub;
+	public string whichInventory; // tell SellerSubMenu which list to show
+
 	// Use this for initialization
 	void Start () {
 		contentArray = new List<string>();
-		numOfRow = 6;
+		//numOfRow = 6;
 		shopKeeper = GetComponent<ShopKeeper> (); // both ShopKeeper & ShopKeeperMenu should be attached to the same game object
 		dBox = GameObject.FindObjectOfType<DialogueBoxShopKeeper>();
 
-		// set the content array to the list of item names
-		for (int i = 0; i < shopKeeper.inventory.Count; i++) { 
-			contentArray.Add(shopKeeper.inventory[i].GetComponent<Item>().name); 
-		}
+		// set the content array 
+		// Buy Menu - isSellMenu = false
+		// list of item names
+		if (!GameControl.control.isSellMenu) {
+			numOfRow = 6;
+			for (int i = 0; i < shopKeeper.inventory.Count; i++) { 
+				contentArray.Add (shopKeeper.inventory [i].GetComponent<Item> ().name); 
+			}
+			shopKeeper.howMuchText = shopKeeper.howMuchBuying;
+			shopKeeper.tooMuchText = shopKeeper.tooMuchBuying;
+			shopKeeper.confirmationText = shopKeeper.confirmationBuying;
+			shopKeeper.receiptText = shopKeeper.receiptBuying;
 
+		}
+		// Sell Menu - isSellMenu = true
+		// list of inventory
+		else{
+			numOfRow = 4;
+			contentArray.Add ("Consumable Items");
+			contentArray.Add ("Weapons");
+			contentArray.Add ("Armor");
+			contentArray.Add ("Key Items");
+
+			shopKeeper.howMuchText = shopKeeper.howMuchSelling;
+			shopKeeper.tooMuchText = shopKeeper.tooMuchSelling;
+			shopKeeper.confirmationText = shopKeeper.confirmationSelling;
+			shopKeeper.receiptText = shopKeeper.receiptSelling;
+
+		}
 		base.Start();
 
 		//isActive = true;
@@ -53,17 +80,16 @@ public class ShopKeeperMenu : Menu {
 
 		}
 
+		// sub menus
 		GameObject go = (GameObject)Instantiate (Resources.Load ("Prefabs/NumItemsShopKeeperSubMenu"));
 		subMenu = go.GetComponent<NumItemsShopKeeperSubMenu> ();
 		subMenu.parentPos = buttonArray [0].transform;
 
+
+
 		//Create the description text object
 		descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-		if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
-			descriptionText.GetComponent<TextMesh> ().text = 
-				FormatText ("Price: " + shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>().price + 
-					"\n\n" + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
-		}
+
 		descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
 
 
@@ -77,15 +103,21 @@ public class ShopKeeperMenu : Menu {
 		descriptionTitle.GetComponent<TextMesh> ().text = "Item Description";
 		descriptionTitle.transform.position = new Vector2 (descriptionText.transform.position.x, goldText.transform.position.y);
 
+
+
+		if (!GameControl.control.isSellMenu) {
+			if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
+				descriptionText.GetComponent<TextMesh> ().text = 
+					FormatText ("Price: " + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().price +
+						"\n\n" + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
+			}
+		} else {
+			descriptionText.GetComponent<TextMesh> ().GetComponent<Renderer> ().enabled = false;
+			descriptionTitle.GetComponent<TextMesh> ().GetComponent<Renderer> ().enabled = false;
+		}
+
 		// set correct button states (and menu to isActive)
 		ActivateMenu ();
-
-
-		// Create the appropriate sub menu
-		//GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
-		//consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
-		//consumeSub.parentPos = buttonArray[selectedIndex].transform;
-		//consumeSub.itemName = contentArray[selectedIndex + scrollIndex];
 
 		//call change text method to correctly size text and avoid a certain bug
 		ChangeText();
@@ -97,13 +129,18 @@ public class ShopKeeperMenu : Menu {
 			base.Update ();
 
 			// update the description text
-			if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
-				descriptionText.GetComponent<TextMesh> ().text = 
-					FormatText ("Price: " + shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>().price + 
-						"\n\n" + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
-				dBox.listPosition = selectedIndex + scrollIndex;
-			}// + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
-
+			if (!GameControl.control.isSellMenu) {
+				if (selectedIndex + scrollIndex < shopKeeper.inventory.Count) {
+					descriptionText.GetComponent<TextMesh> ().text = 
+					FormatText ("Price: " + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().price +
+					"\n\n" + shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ().description);
+					dBox.listPosition = selectedIndex + scrollIndex;
+				}
+			} else {
+				descriptionText.GetComponent<TextMesh> ().GetComponent<Renderer> ().enabled = false;
+				descriptionTitle.GetComponent<TextMesh> ().GetComponent<Renderer> ().enabled = false;
+				if(!dBox.isBuying) dBox.currentText = shopKeeper.sellingText;
+			}
 			PressButton (KeyCode.Space);
 
 			if (Input.GetKeyUp (KeyCode.Q) || Input.GetKeyUp (KeyCode.Backspace)) {
@@ -111,7 +148,11 @@ public class ShopKeeperMenu : Menu {
 			}
 	
 			// set the submenus position to the button you are on - no need to make more than one submenu...right?
-			subMenu.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
+			if (!GameControl.control.isSellMenu) {
+				subMenu.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
+			} else {
+				//sellerSub.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
+			}
 
 			// set dialogue isBuying to false upon moving
 			if (Input.GetKeyUp (KeyCode.W) || Input.GetKeyUp (KeyCode.S)) {
@@ -125,11 +166,23 @@ public class ShopKeeperMenu : Menu {
 	{
 		// set the submenu's item equal to the item of the button you selected
 		// then activate the submenu
-		dBox.isBuying = true;
-		dBox.currentText = shopKeeper.buyingText;
-		dBox.prevPosition = -1; // so it start's different - triggers a change
-		subMenu.item = shopKeeper.inventory[selectedIndex + scrollIndex].GetComponent<Item>();
-		subMenu.EnableSubMenu ();
+		if (!GameControl.control.isSellMenu) {
+			dBox.isBuying = true;
+			dBox.currentText = shopKeeper.howMuchText;
+			dBox.prevPosition = -1; // so it start's different - triggers a change
+			subMenu.item = shopKeeper.inventory [selectedIndex + scrollIndex].GetComponent<Item> ();
+			subMenu.EnableSubMenu ();
+		} else {
+			whichInventory = buttonArray [selectedIndex].GetComponent<MyButton> ().labelMesh.text;
+
+			// create seller sub menu now
+			GameObject sellerGo = (GameObject)Instantiate (Resources.Load ("Prefabs/SellerSubMenuPrefab"));
+			sellerSub = sellerGo.GetComponent<SellerSubMenu> ();
+			//sellerSub.parent = this;
+			sellerSub.parentPos = buttonArray [selectedIndex + scrollIndex].transform;
+
+			//sellerSub.EnableSubMenu ();
+		}
 	}
 	public string FormatText(string str)
 	{
@@ -167,21 +220,40 @@ public class ShopKeeperMenu : Menu {
 	public void ActivateMenu()
 	{
 		isActive = true;
-		// see which items are available to buy - code here based on how battle menu deactivates the skills and spells
-		for (int i = 0; i < buttonArray.Length; i++) {
-			for (int j = 0; j < shopKeeper.inventory.Count; j++) {
+
+		if (!GameControl.control.isSellMenu) {
+			// see which items are available to buy - code here based on how battle menu deactivates the skills and spells
+			for (int i = 0; i < buttonArray.Length; i++) {
+				for (int j = 0; j < shopKeeper.inventory.Count; j++) {
 				
 
-				if (buttonArray [i].GetComponent<MyButton> ().textObject.GetComponent<TextMesh> ().text == shopKeeper.inventory [j].GetComponent<Item> ().name)
-				{
-					// set to normal when coming back from sub menu first
-					buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+					if (buttonArray [i].GetComponent<MyButton> ().textObject.GetComponent<TextMesh> ().text == shopKeeper.inventory [j].GetComponent<Item> ().name) {
+						// set to normal when coming back from sub menu first
+						buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.normal;
 
-					if(GameControl.control.totalGold < shopKeeper.inventory [j].GetComponent<Item> ().price) {
-					buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+						if (GameControl.control.totalGold < shopKeeper.inventory [j].GetComponent<Item> ().price) {
+							buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+						}
 					}
 				}
 			}
+		} else {
+
+			// set back to normal first
+			for (int i = 0; i < buttonArray.Length; i++) {
+				buttonArray [i].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.normal;
+			}
+
+			// check if the player still has that type of item
+			if (GameControl.control.consumables.Count <= 0) {
+				buttonArray [0].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+			} if (GameControl.control.weapons.Count <= 0) {
+				buttonArray [1].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+			} if (GameControl.control.equipment.Count <= 0) {
+				buttonArray [2].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+			} if (GameControl.control.reusables.Count <= 0) {
+				buttonArray [3].GetComponent<MyButton> ().state = MyButton.MyButtonTextureState.inactive;
+			} 
 		}
 
 		// set selected button

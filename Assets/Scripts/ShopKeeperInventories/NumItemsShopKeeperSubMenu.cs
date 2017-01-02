@@ -11,6 +11,8 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	public GameObject costText;
 	public GameObject costTitle;
 	ConfirmPurchaseShopKeeperSub sub;
+	public SellerSubMenu sellerParent;
+
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +28,7 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 
 		// link to parent
 		shopMenu = GameObject.FindObjectOfType<ShopKeeperMenu> ();
+		sellerParent = GameObject.FindObjectOfType<SellerSubMenu>();
 
 		// create submenu
 		GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/ConfirmPurchaseShopKeeperSub"));
@@ -37,12 +40,12 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 		costText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
 		costText.GetComponent<TextMesh>().GetComponent<Renderer> ().enabled = false;
 		costText.GetComponent<TextMesh> ().text = "";
-		costText.transform.position = new Vector2 (shopMenu.descriptionText.transform.position.x - (buttonArray [0].GetComponent<MyButton> ().width*1.3f), shopMenu.descriptionText.transform.position.y);
+		costText.transform.position = new Vector2 (shopMenu.descriptionText.transform.position.x - (buttonArray [0].GetComponent<MyButton> ().width*1.3f), shopMenu.goldText.transform.position.y);
 
 		costTitle = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
 		costTitle.GetComponent<TextMesh>().GetComponent<Renderer> ().enabled = false;
-		costTitle.GetComponent<TextMesh> ().text = "Total Cost";
-		costTitle.transform.position = new Vector2 (costText.transform.position.x, shopMenu.goldText.transform.position.y);
+		costTitle.GetComponent<TextMesh> ().text = "Total: ";
+		costTitle.transform.position = new Vector2 (shopMenu.descriptionTitle.transform.position.x - (buttonArray [0].GetComponent<MyButton> ().width*2.0f), shopMenu.goldText.transform.position.y);
 	}
 	
 	// deal with the button pressed
@@ -53,7 +56,7 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 				// make sure quantity does not go below 1
 				if (quantity > 1) {
 					quantity--;
-					shopMenu.dBox.currentText = shopMenu.shopKeeper.buyingText;
+					shopMenu.dBox.currentText = shopMenu.shopKeeper.howMuchText;
 
 					// set appropriate button textures
 					if (quantity == 1) {
@@ -68,23 +71,41 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 
 				}
 			} else if (Input.GetKeyUp (KeyCode.D)) {
-				// max = amount that can be bought with total gold
-				if (GameControl.control.totalGold >= (quantity + 1) * item.price) {
-					quantity++;
+				if (!GameControl.control.isSellMenu) {
+					// max = amount that can be bought with total gold
+					if (GameControl.control.totalGold >= (quantity + 1) * item.price) {
+						quantity++;
 
-					// set appropriate button textures
-					if (GameControl.control.totalGold < (quantity + 1) * item.price) {
-						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
-						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
+						// set appropriate button textures
+						if (GameControl.control.totalGold < (quantity + 1) * item.price) {
+							buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
+							buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
+						} else {
+							buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverQuantityButton", typeof(Sprite)) as Sprite;
+							buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeQuantityButton", typeof(Sprite)) as Sprite;
+						}
+
 					} else {
-						buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverQuantityButton", typeof(Sprite)) as Sprite;
-						buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeQuantityButton", typeof(Sprite)) as Sprite;
+						shopMenu.dBox.currentText = shopMenu.shopKeeper.tooMuchText;
+						//buttonDescription [0] = "You cannot afford more than that.";
+						//print ("right 2");
 					}
-
 				} else {
-					shopMenu.dBox.currentText = shopMenu.shopKeeper.tooMuchText;
-					//buttonDescription [0] = "You cannot afford more than that.";
-					//print ("right 2");
+					if (item.quantity >= (quantity + 1)) {
+						quantity++;
+
+						if (item.quantity < (quantity + 1)) {
+							buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
+							buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledRightQuantityButton", typeof(Sprite)) as Sprite;
+
+						} else {
+							buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverQuantityButton", typeof(Sprite)) as Sprite;
+							buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeQuantityButton", typeof(Sprite)) as Sprite;
+
+						}
+					} else {
+						shopMenu.dBox.currentText = shopMenu.shopKeeper.tooMuchText;
+					}
 				}
 			}
 			else if(Input.GetKeyUp(KeyCode.Space))
@@ -97,10 +118,46 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 
 	public void EnableSubMenu()
 	{
-		shopMenu.DeactivateMenu();
 		quantity = 1;
-		buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
-		buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+
+		if (!GameControl.control.isSellMenu) {
+			shopMenu.DeactivateMenu ();
+
+			// set button to both disabled if quantity can only be 1
+			if (GameControl.control.totalGold < (quantity + 1) * item.price) {
+				buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledBothQuantityButton", typeof(Sprite)) as Sprite;
+				buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledBothQuantityButton", typeof(Sprite)) as Sprite;
+			} else {
+				buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+				buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+			}
+
+		} else {
+			sellerParent = GameObject.FindObjectOfType<SellerSubMenu>();
+			sellerParent.DeactivateMenu ();
+
+			// set button to both disabled if quantity can only be 1
+			if (item.quantity < (quantity + 1)) {
+				buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledBothQuantityButton", typeof(Sprite)) as Sprite;
+				buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledBothQuantityButton", typeof(Sprite)) as Sprite;
+			} else {
+				buttonArray [0].GetComponent<MyButton> ().hoverTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/hoverDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+				buttonArray [0].GetComponent<MyButton> ().activeTexture = Resources.Load ("Sprites/shopkeeperQuantityButtons/activeDisabledLeftQuantityButton", typeof(Sprite)) as Sprite;
+			}
+		}
+
+
+
+		// set appropriate text
+		if (!GameControl.control.isSellMenu) {
+			totalPrice = quantity * item.price;
+		} else {
+			totalPrice = quantity * sellerParent.sellingPrice;
+		}
+		costText.GetComponent<TextMesh> ().text = totalPrice.ToString ();
+		contentArray [0] = quantity.ToString ();
+		ChangeText ();
+
 		base.EnableSubMenu();
 	}
 
@@ -117,6 +174,8 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	{
 		frameDelay = 0.0f;
 		isActive = true;
+
+
 		shopMenu.descriptionText.GetComponent<Renderer>().enabled = true;
 
 		for (int i = 0; i < buttonArray.Length; i++)
@@ -128,22 +187,36 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	// Update is called once per frame
 	void Update()
 	{
+
+
 		//if (isVisible && frameDelay > 0)
-		if (isVisible && isActive) {
+		if (isVisible && isActive && frameDelay > 0) {
+
 			// update quantity - how many items are being bought
-			totalPrice = quantity * item.price;
-			contentArray [0] = quantity.ToString ();
+			if (!GameControl.control.isSellMenu) {
+				totalPrice = quantity * item.price;
+			} else {
+				totalPrice = quantity * sellerParent.sellingPrice;
+			}
 			costText.GetComponent<TextMesh> ().text = totalPrice.ToString ();
+			contentArray [0] = quantity.ToString ();
 			ChangeText ();
+
 			if (Input.GetKeyUp (KeyCode.Backspace) || Input.GetKeyUp (KeyCode.Q)) {
 				quantity = 1;
 				shopMenu.dBox.isBuying = false;
 				shopMenu.dBox.currentText = "";
 				shopMenu.dBox.prevText = "";
-				shopMenu.ActivateMenu ();
+
+				if (!GameControl.control.isSellMenu) {
+					shopMenu.ActivateMenu ();
+				} else {
+					sellerParent.ActivateMenu ();
+				}
 			}
 			PressButton (KeyCode.A);
 			PressButton (KeyCode.D);
+
 
 		} 
 

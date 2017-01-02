@@ -34,28 +34,83 @@ public class ConfirmPurchaseShopKeeperSub : SubMenu {
 		// return to main buying window
 		if (label == "Yes") {
 
-			// add the items
-			for (int i = 0; i < parent.quantity; i++) {
-				GameObject temp = (GameObject)Instantiate(parent.item.gameObject);
-				GameControl.control.AddItem (temp);
-			}
+			// buying
+			if (!GameControl.control.isSellMenu) {
+				// add the items
+				for (int i = 0; i < parent.quantity; i++) {
+					GameObject temp = (GameObject)Instantiate (parent.item.gameObject);
+					GameControl.control.AddItem (temp);
+				}
 
-			// remove the gold
-			GameControl.control.totalGold -= parent.totalPrice;
-			parent.shopMenu.goldText.GetComponent<TextMesh> ().text = "Gold: " + GameControl.control.totalGold;
+				// remove the gold
+				GameControl.control.totalGold -= parent.totalPrice;
+				parent.shopMenu.goldText.GetComponent<TextMesh> ().text = "Gold: " + GameControl.control.totalGold;
+			} else {
+				// selling
+				// remove items
+				if (parent.shopMenu.whichInventory == "Consumable Items") {
+					if (parent.item.quantity - parent.quantity > 0) {
+						//parent.item.quantity -= parent.quantity; // this may not affect the actual item, just the menu's version. WE'll see
+						GameControl.control.consumables[parent.sellerParent.inventoryPos].GetComponent<Item>().quantity -= parent.quantity;
+					} else {
+						// remove item
+						GameControl.control.consumables.RemoveAt(parent.sellerParent.inventoryPos);
+					}
+				}
+				else if (parent.shopMenu.whichInventory == "Weapons") {
+					if (parent.item.quantity - parent.quantity > 0) {
+						//parent.item.quantity -= parent.quantity; // this may not affect the actual item, just the menu's version. WE'll see
+						GameControl.control.weapons[parent.sellerParent.inventoryPos].GetComponent<Item>().quantity -= parent.quantity;
+					} else {
+						// remove item
+						GameControl.control.weapons.RemoveAt(parent.sellerParent.inventoryPos);
+					}
+				}
+				else if (parent.shopMenu.whichInventory == "Armor") {
+					if (parent.item.quantity - parent.quantity > 0) {
+						//parent.item.quantity -= parent.quantity; // this may not affect the actual item, just the menu's version. WE'll see
+						GameControl.control.equipment[parent.sellerParent.inventoryPos].GetComponent<Item>().quantity -= parent.quantity;
+					} else {
+						// remove item
+						GameControl.control.equipment.RemoveAt(parent.sellerParent.inventoryPos);
+					}
+				}
+				else if (parent.shopMenu.whichInventory == "Key Items") {
+					if (parent.item.quantity - parent.quantity > 0) {
+						//parent.item.quantity -= parent.quantity; // this may not affect the actual item, just the menu's version. WE'll see
+						GameControl.control.reusables[parent.sellerParent.inventoryPos].GetComponent<Item>().quantity -= parent.quantity;
+					} else {
+						// remove item
+						GameControl.control.reusables.RemoveAt(parent.sellerParent.inventoryPos);
+					}
+				}
+
+
+				// add gold
+				GameControl.control.totalGold += parent.totalPrice;
+				parent.shopMenu.goldText.GetComponent<TextMesh> ().text = "Gold: " + GameControl.control.totalGold;
+			}
 
 			// after purchase, close all submenus
 			parent.shopMenu.dBox.currentText = parent.shopMenu.shopKeeper.receiptText;
 			parent.ActivateMenu ();
 			DisableSubMenu ();
-			parent.shopMenu.ActivateMenu ();
-			parent.DisableSubMenu ();
+
+			if (!GameControl.control.isSellMenu) {
+				parent.shopMenu.ActivateMenu ();
+				parent.DisableSubMenu ();
+			} else {
+				parent.sellerParent.ActivateMenu ();
+				parent.DisableSubMenu ();
+				parent.sellerParent.parent.ActivateMenu ();
+				parent.sellerParent.DisableSubMenu ();
+			}
 		}
 
 		// no to purchase
 		// return to numItems submenu
 		else if (label == "No") {
-			parent.shopMenu.dBox.currentText = parent.shopMenu.shopKeeper.buyingText;
+			parent.shopMenu.dBox.currentText = parent.shopMenu.shopKeeper.howMuchText;
 			parent.ActivateMenu ();
 			DisableSubMenu ();
 		}
@@ -71,7 +126,7 @@ public class ConfirmPurchaseShopKeeperSub : SubMenu {
 			//if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) { SetStatChanges(GameControl.control.heroList[selectedIndex]); InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]); }
 			if (Input.GetKeyUp(KeyCode.Backspace) || Input.GetKeyUp(KeyCode.Q)) 
 			{
-				parent.shopMenu.dBox.currentText = parent.shopMenu.shopKeeper.buyingText;
+				parent.shopMenu.dBox.currentText = parent.shopMenu.shopKeeper.howMuchText;
 				parent.ActivateMenu();
 			}
 		}

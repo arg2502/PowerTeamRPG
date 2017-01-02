@@ -21,6 +21,8 @@ public class SubMenu : Menu {
 
 	public string buttonPrefab = "Prefabs/ButtonPrefab"; // the string path to the button prefab used in the specific menu
 
+	int maxMenuSize = 10; // large default size - can be personalized in later menus
+
 	// Use this for initialization
 	protected void Start () {
 
@@ -28,10 +30,17 @@ public class SubMenu : Menu {
         pm = GameObject.FindObjectOfType<PauseMenu>();
 
         base.Start();
-        
-		buttonArray = new GameObject[contentArray.Count];
 
-        for (int i = 0; i < contentArray.Count; i++)
+		// prevent a menu from being too long
+		if (contentArray.Count > maxMenuSize) {
+			numOfRow = maxMenuSize;
+		} else {
+			numOfRow = contentArray.Count;
+		}
+
+		buttonArray = new GameObject[numOfRow];
+
+		for (int i = 0; i < numOfRow; i++)
         {
             // create a button
 			buttonArray [i] = (GameObject)Instantiate (Resources.Load (buttonPrefab));
@@ -110,16 +119,16 @@ public class SubMenu : Menu {
 
 	// Update is called once per frame
 	protected void Update () {
-        if (isVisible)
-        {
+        
             //update the position of the menu
-            for (int i = 0; i < contentArray.Count; i++)
+			for (int i = 0; i < numOfRow; i++)
             {
                 MyButton b = buttonArray[i].GetComponent<MyButton>();
 				buttonArray[i].transform.position = new Vector2(parentPos.position.x + (b.width * offsetPercent), parentPos.position.y + (i * -(b.height + b.height / 2)));
                 b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
             }
-
+		if (isVisible)
+		{
             // Update the description
 			if (pm != null) { 
 					pm.descriptionText.GetComponent<TextMesh> ().text = FormatText (buttonDescription [selectedIndex]); 
