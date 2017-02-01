@@ -614,7 +614,7 @@ public class BattleMenu : Menu {
                 if (!failedFlee)
                 {
                     currentDenigen.GetComponent<Hero>().SelectTarget(command);
-                    if (Input.GetKeyUp(KeyCode.Space))
+					if (Input.GetKeyUp(GameControl.control.selectKey))
                     {
                         //Add the issued command to the queue
                         commands.Add(command);
@@ -631,7 +631,7 @@ public class BattleMenu : Menu {
 						UpdateDescription();
                     }
                     // if back button is pressed, set state to previous state
-                    if (Input.GetKeyDown(KeyCode.Backspace))
+					if (Input.GetKeyDown(GameControl.control.backKey))
                     {
 						state = prevState;
 						ChangeContentArray();
@@ -705,13 +705,13 @@ public class BattleMenu : Menu {
             }
 
             base.Update();
-            PressButton(KeyCode.Space);
+			PressButton(GameControl.control.selectKey);
 
             //update the description text
 			UpdateDescription();
 
             // if back button is pressed, set state to previous state
-            if (Input.GetKeyDown(KeyCode.Backspace))
+			if (Input.GetKeyDown(GameControl.control.backKey))
             {
                 
                 state = prevState;
@@ -742,7 +742,7 @@ public class BattleMenu : Menu {
 
 
         // check for button press
-        //PressButton(KeyCode.Space);
+        //PressButton(GameControl.control.selectKey);
     }
 	void UpdateDescription()
 	{
@@ -765,7 +765,7 @@ public class BattleMenu : Menu {
        
        
         //press space to advance the battle phase
-		if (commandIndex < commands.Count && (Input.GetKeyUp(KeyCode.Space) /*&& (commandIndex <= commands.Count - 1 && denigenArray[commandIndex].statusState != Denigen.Status.dead))*/ || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
+		if (commandIndex < commands.Count && (Input.GetKeyUp(GameControl.control.selectKey) /*&& (commandIndex <= commands.Count - 1 && denigenArray[commandIndex].statusState != Denigen.Status.dead))*/ || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
         {
             while (commandIndex < denigenArray.Count && (failedFlee && denigenArray[commandIndex].GetComponent<Hero>() != null))
             {
@@ -864,7 +864,7 @@ public class BattleMenu : Menu {
             }
         }
 
-		else if (Input.GetKeyUp(KeyCode.Space) && commandIndex >= commands.Count)
+		else if (Input.GetKeyUp(GameControl.control.selectKey) && commandIndex >= commands.Count)
 		{
 			textIndex = 0;
 			//check if all heroes have fallen
@@ -963,7 +963,7 @@ public class BattleMenu : Menu {
 	}
     void UpdateFailure()
     {
-		if (Input.GetKeyUp(KeyCode.Space))
+		if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             if (textIndex == 0)
             { 
@@ -1010,7 +1010,7 @@ public class BattleMenu : Menu {
 
     void UpdateVictory()
     {
-		if (Input.GetKeyUp(KeyCode.Space))
+		if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             if (textIndex == 0)
             {
@@ -1113,7 +1113,7 @@ public class BattleMenu : Menu {
         GetComponent<Renderer>().enabled = false;
         descriptionText.GetComponent<TextMesh>().GetComponent<Renderer>().enabled = false;
 
-        if (Input.GetKeyUp(KeyCode.Space) || textIndex == 0)
+        if (Input.GetKeyUp(GameControl.control.selectKey) || textIndex == 0)
         {
             if (failedFlee)
             {

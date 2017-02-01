@@ -62,6 +62,16 @@ public class GameControl : MonoBehaviour {
 	// true - sell
 	public bool isSellMenu;
 
+	// Keycodes
+	public KeyCode upKey;
+	public KeyCode downKey;
+	public KeyCode leftKey;
+	public KeyCode rightKey;
+	public KeyCode selectKey;
+	public KeyCode backKey;
+	public KeyCode pauseKey;
+	public KeyCode runKey;
+
 	//awake gets called before start
 	void Awake () {
 		if (control == null)
@@ -69,6 +79,17 @@ public class GameControl : MonoBehaviour {
 			//this keeps the game object from being destroyed between scenes
 			DontDestroyOnLoad(gameObject);
 			control = this;
+
+			// default KeyCodes
+			// possibly have them loaded in from somewhere based off user settings
+			upKey = KeyCode.W;
+			downKey = KeyCode.S;
+			leftKey = KeyCode.A;
+			rightKey = KeyCode.D;
+			selectKey = KeyCode.Space;
+			backKey = KeyCode.Backspace;
+			pauseKey = KeyCode.Q;
+			runKey = KeyCode.LeftShift;
 
 			totalGold = 0;
 			totalKeys = 0;

@@ -168,7 +168,7 @@ public class DialogueBox : MonoBehaviour {
         // turn on renderer
         // if (sr.enabled == false) { sr.enabled = true; }
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             if (!isTyping)
             {
@@ -246,7 +246,7 @@ public class DialogueBox : MonoBehaviour {
 
         transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             if (!isTyping)
             {

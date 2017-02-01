@@ -218,16 +218,16 @@ public class PauseMenu : Menu {
             // Update the description
             descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
 
-            PressButton(KeyCode.Space);
+            PressButton(GameControl.control.selectKey);
 
-            if (Input.GetKeyUp(KeyCode.Backspace))
+            if (Input.GetKeyUp(GameControl.control.backKey))
             {
                 GameControl.control.isPaused = false;
                 DisablePauseMenu();
             }
         }
         // the way to pause the game
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyUp(GameControl.control.pauseKey))
         {
             if (isVisible == false && player.canMove)
             {

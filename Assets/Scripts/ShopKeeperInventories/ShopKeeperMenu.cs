@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -141,9 +143,9 @@ public class ShopKeeperMenu : Menu {
 				descriptionTitle.GetComponent<TextMesh> ().GetComponent<Renderer> ().enabled = false;
 				if(!dBox.isBuying) dBox.currentText = shopKeeper.sellingText;
 			}
-			PressButton (KeyCode.Space);
+			PressButton (GameControl.control.selectKey);
 
-			if (Input.GetKeyUp (KeyCode.Q) || Input.GetKeyUp (KeyCode.Backspace)) {
+			if (Input.GetKeyUp (GameControl.control.pauseKey) || Input.GetKeyUp (GameControl.control.backKey)) {
 				UnityEngine.SceneManagement.SceneManager.LoadScene (GameControl.control.currentScene);
 			}
 	
@@ -155,7 +157,7 @@ public class ShopKeeperMenu : Menu {
 			}
 
 			// set dialogue isBuying to false upon moving
-			if (Input.GetKeyUp (KeyCode.W) || Input.GetKeyUp (KeyCode.S)) {
+			if (Input.GetKeyUp (GameControl.control.upKey) || Input.GetKeyUp (GameControl.control.downKey)) {
 				dBox.isBuying = false;
 			}
 

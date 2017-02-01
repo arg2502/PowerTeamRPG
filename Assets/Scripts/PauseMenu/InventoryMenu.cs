@@ -191,10 +191,10 @@ public class InventoryMenu : Menu {
             if (selectedIndex + scrollIndex < itemList.Count)
             { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
 
-            PressButton(KeyCode.Space);
+            PressButton(GameControl.control.selectKey);
 
             // Exit to the previous room
-            if (Input.GetKeyUp(KeyCode.Q) || Input.GetKeyUp(KeyCode.Backspace)) { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
+            if (Input.GetKeyUp(GameControl.control.pauseKey) || Input.GetKeyUp(GameControl.control.backKey)) { UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene); }
         }
 	}
 }

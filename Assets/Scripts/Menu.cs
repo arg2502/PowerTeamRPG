@@ -159,7 +159,7 @@ public class Menu : MonoBehaviour {
 	protected void Update () {
        
             // scroll through menu options
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(GameControl.control.downKey))
             {
                 // move down the list of buttons
                 if (selectedIndex < buttonArray.Length - 1)
@@ -204,7 +204,7 @@ public class Menu : MonoBehaviour {
                     ChangeText();
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.W))
+            else if (Input.GetKeyDown(GameControl.control.upKey))
             {
                 if (selectedIndex > 0)
                 {

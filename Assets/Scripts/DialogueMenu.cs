@@ -19,7 +19,7 @@ public class DialogueMenu : Menu {
 	// Update is called once per frame
 	void Update () {
         base.Update();
-        PressButton(KeyCode.Space);
+        PressButton(GameControl.control.selectKey);
 	}
 
     public override void ButtonAction(string label)

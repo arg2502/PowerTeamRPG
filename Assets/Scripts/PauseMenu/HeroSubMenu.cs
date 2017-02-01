@@ -101,16 +101,16 @@ public class HeroSubMenu : SubMenu {
 	void Update () {
         CheckForInactive();
         //tsm.UpdateStatChanges();
-        if (Input.GetKeyUp(KeyCode.Backspace) && isActive)
+        if (Input.GetKeyUp(GameControl.control.backKey) && isActive)
         {
             tsm.ActivateMenu();
             tsm.SetStatChanges(0);
             tsm.InstantiateHeroInfo();
         }
 
-        if ((Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) && tsm.isVisible) { tsm.SetStatChanges(selectedIndex); tsm.InstantiateHeroInfo(); }
+        if ((Input.GetKeyUp(GameControl.control.upKey) || Input.GetKeyUp(GameControl.control.downKey)) && tsm.isVisible) { tsm.SetStatChanges(selectedIndex); tsm.InstantiateHeroInfo(); }
         // unpause the game
-        if (Input.GetKeyUp(KeyCode.Q) && isVisible)
+        if (Input.GetKeyUp(GameControl.control.pauseKey) && isVisible)
         {
             //tsm.ActivateMenu();
             //pm.descriptionText.GetComponent<Renderer>().enabled = true;

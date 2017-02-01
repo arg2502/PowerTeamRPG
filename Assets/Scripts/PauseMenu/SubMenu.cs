@@ -141,17 +141,17 @@ public class SubMenu : Menu {
 
             if (isActive)
             {
-                PressButton(KeyCode.Space);
+                PressButton(GameControl.control.selectKey);
 
                 // return to the previous menu
-                if (Input.GetKeyUp(KeyCode.Backspace))
+                if (Input.GetKeyUp(GameControl.control.backKey))
                 {
                     DisableSubMenu();
                     //pm.ActivateMenu();
                 }
 
                 // unpause the game
-                if (Input.GetKeyUp(KeyCode.Q))
+                if (Input.GetKeyUp(GameControl.control.pauseKey))
                 {
                     DisableSubMenu();
                     if (pm != null)

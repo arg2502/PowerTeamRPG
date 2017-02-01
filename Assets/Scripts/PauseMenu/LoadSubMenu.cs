@@ -22,7 +22,7 @@ public class LoadSubMenu : SubMenu {
 	void Update () {
         if (isVisible && frameDelay > 0)
         {
-            if (Input.GetKeyUp(KeyCode.Backspace))
+            if (Input.GetKeyUp(GameControl.control.backKey))
             {
                 pm.ActivateMenu();
             }

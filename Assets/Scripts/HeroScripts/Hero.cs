@@ -165,7 +165,7 @@ public class Hero: Denigen {
         }
 
         //handle input
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(GameControl.control.downKey))
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
@@ -187,7 +187,7 @@ public class Hero: Denigen {
 
             
         }
-        if (Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyUp(GameControl.control.upKey))
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
@@ -213,7 +213,7 @@ public class Hero: Denigen {
         battleMenu.enemyList[targetIndex].Sr.material.shader = targetShader;
         battleMenu.enemyList[targetIndex].Sr.color = targetRed;
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             targets.Add(battleMenu.enemyList[targetIndex]);
             battleMenu.enemyList[targetIndex].Sr.material.shader = normalShader;
@@ -279,7 +279,7 @@ public class Hero: Denigen {
         }
 
         //handle input
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(GameControl.control.downKey))
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
@@ -322,7 +322,7 @@ public class Hero: Denigen {
             prevTargetIndex1 = targetIndex + 1;
             prevTargetIndex2 = targetIndex - 1;
         }
-        if (Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyUp(GameControl.control.upKey))
         {
             //reset previous target's color
             battleMenu.enemyList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
@@ -379,7 +379,7 @@ public class Hero: Denigen {
         battleMenu.enemyList[targetIndex].Sr.material.shader = targetShader;
         battleMenu.enemyList[targetIndex].Sr.color = targetRed;
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             for (int i = 0; i < battleMenu.enemyList.Count; i++)
             {
@@ -441,7 +441,7 @@ public class Hero: Denigen {
         }
 
         // handle input
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             //deactivate the cursors and select targets
             for (int i = 0; i < numOfCursors; i++)
@@ -497,7 +497,7 @@ public class Hero: Denigen {
         sr.color = targetGreen;
         card.GetComponent<TextMesh>().color = Color.green;
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             if (attack == "Block") { isBlocking = true; }
             else { targets[0] = this; }
@@ -523,7 +523,7 @@ public class Hero: Denigen {
         }
 
         //handle input
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(GameControl.control.downKey))
         {
             //reset previous target's color
             battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
@@ -545,7 +545,7 @@ public class Hero: Denigen {
 
 
         }
-        if (Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyUp(GameControl.control.upKey))
         {
             //reset previous target's color
             battleMenu.heroList[targetIndex].Card.GetComponent<TextMesh>().color = Color.white;
@@ -571,7 +571,7 @@ public class Hero: Denigen {
         battleMenu.heroList[targetIndex].Sr.material.shader = targetShader;
         battleMenu.heroList[targetIndex].Sr.color = targetGreen;
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             targets.Add(battleMenu.heroList[targetIndex]);
             battleMenu.heroList[targetIndex].Sr.material.shader = normalShader;
@@ -612,7 +612,7 @@ public class Hero: Denigen {
         }
 
         // handle input
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             //deactivate the cursors and select targets
             for (int i = 0; i < numOfCursors; i++)

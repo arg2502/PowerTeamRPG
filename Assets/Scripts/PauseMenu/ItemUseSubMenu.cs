@@ -238,8 +238,8 @@ public class ItemUseSubMenu : SubMenu {
         {
             UpdateStatChanges();
             //parent.im.descriptionText.GetComponent<TextMesh>().text = buttonDescription[selectedIndex];
-            if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) { SetStatChanges(GameControl.control.heroList[selectedIndex]); InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]); }
-            if (Input.GetKeyUp(KeyCode.Backspace) || Input.GetKeyUp(KeyCode.Q)) 
+            if (Input.GetKeyUp(GameControl.control.upKey) || Input.GetKeyUp(GameControl.control.downKey)) { SetStatChanges(GameControl.control.heroList[selectedIndex]); InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]); }
+            if (Input.GetKeyUp(GameControl.control.backKey) || Input.GetKeyUp(GameControl.control.pauseKey)) 
             {
                 parent.ActivateMenu();
                 foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = false; }

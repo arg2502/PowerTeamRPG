@@ -202,7 +202,7 @@ public class TeamSubMenu : SubMenu {
 
             //heroDescription.transform.position = pm.descriptionText.transform.position;
             
-            if (Input.GetKeyUp(KeyCode.Backspace))
+            if (Input.GetKeyUp(GameControl.control.backKey))
             {
                 pm.ActivateMenu();
                 pm.descriptionText.GetComponent<Renderer>().enabled = true;
@@ -212,7 +212,7 @@ public class TeamSubMenu : SubMenu {
             }
 
             // unpause the game
-            if (Input.GetKeyUp(KeyCode.Q) && isActive)
+            if (Input.GetKeyUp(GameControl.control.pauseKey) && isActive)
             {
                 pm.descriptionText.GetComponent<Renderer>().enabled = true;
                 //pm.descriptionText.GetComponent<Renderer>().enabled = false;

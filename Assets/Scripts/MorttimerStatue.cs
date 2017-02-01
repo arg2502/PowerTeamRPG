@@ -19,7 +19,7 @@ public class MorttimerStatue : NPCObject {
     void Update()
     {
         if (flip) { mult = -1.0f; }
-        if (distFromPlayer < 150.0f && Input.GetKeyUp(KeyCode.Space) && canTalk)
+        if (distFromPlayer < 150.0f && Input.GetKeyUp(GameControl.control.selectKey) && canTalk)
         {
             // set the current scene variable
             GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;

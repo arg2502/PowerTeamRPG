@@ -52,7 +52,7 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 	public override void ButtonAction(string label)
 	{
 		if (isActive && isVisible) {
-			if (Input.GetKeyUp (KeyCode.A)) {
+			if (Input.GetKeyUp (GameControl.control.leftKey)) {
 				// make sure quantity does not go below 1
 				if (quantity > 1) {
 					quantity--;
@@ -70,7 +70,7 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 					quantity = 1;
 
 				}
-			} else if (Input.GetKeyUp (KeyCode.D)) {
+			} else if (Input.GetKeyUp (GameControl.control.rightKey)) {
 				if (!GameControl.control.isSellMenu) {
 					// max = amount that can be bought with total gold
 					if (GameControl.control.totalGold >= (quantity + 1) * item.price) {
@@ -108,7 +108,7 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 					}
 				}
 			}
-			else if(Input.GetKeyUp(KeyCode.Space))
+			else if(Input.GetKeyUp(GameControl.control.selectKey))
 			{
 				sub.EnableSubMenu ();
 			}
@@ -202,7 +202,7 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 			contentArray [0] = quantity.ToString ();
 			ChangeText ();
 
-			if (Input.GetKeyUp (KeyCode.Backspace) || Input.GetKeyUp (KeyCode.Q)) {
+			if (Input.GetKeyUp (GameControl.control.backKey) || Input.GetKeyUp (GameControl.control.pauseKey)) {
 				quantity = 1;
 				shopMenu.dBox.isBuying = false;
 				shopMenu.dBox.currentText = "";
@@ -214,8 +214,8 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 					sellerParent.ActivateMenu ();
 				}
 			}
-			PressButton (KeyCode.A);
-			PressButton (KeyCode.D);
+			PressButton (GameControl.control.leftKey);
+			PressButton (GameControl.control.rightKey);
 
 
 		} 

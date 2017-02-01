@@ -83,7 +83,7 @@ public class SellerSubMenu : SubMenu {
 	// Update is called once per frame
 	void Update () {
 		if (isActive && frameDelay > 0) {
-			if (Input.GetKeyUp (KeyCode.Q) || Input.GetKeyUp (KeyCode.Backspace)) {
+			if (Input.GetKeyUp (GameControl.control.pauseKey) || Input.GetKeyUp (GameControl.control.backKey)) {
 				parent.ActivateMenu ();
 			}
 			ChangeText ();

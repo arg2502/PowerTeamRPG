@@ -44,32 +44,32 @@ public class characterControl : OverworldObject {
         //desiredSpeed = Vector2.zero;
 
 		if (canMove) {
-			if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
+			if (Input.GetKey (GameControl.control.runKey) || Input.GetKey (KeyCode.RightShift)) {
 				moveSpeed = runSpeed;
 			} else {
 				moveSpeed = walkSpeed;
 			}
 
             // If not pushing or pulling
-            if (!Input.GetKey(KeyCode.Space))
+            if (!Input.GetKey(GameControl.control.selectKey))
             {
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(GameControl.control.upKey))
                 {
                     desiredSpeed = new Vector2(0, moveSpeed) * Time.deltaTime;
                     if (CheckCollision(new Vector2(0, moveSpeed), movableMask) == false) { speed += new Vector2(0, moveSpeed) * Time.deltaTime; }
                 }
-                else if (Input.GetKey(KeyCode.S))
+                else if (Input.GetKey(GameControl.control.downKey))
                 {
                     desiredSpeed = new Vector2(0, -moveSpeed) * Time.deltaTime;
                     if (CheckCollision(new Vector2(0, -moveSpeed), movableMask) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
                 }
 
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(GameControl.control.leftKey))
                 {
                     desiredSpeed = new Vector2(-moveSpeed, 0) * Time.deltaTime;
                     if (CheckCollision(new Vector2(-moveSpeed, 0), movableMask) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
                 }
-                else if (Input.GetKey(KeyCode.D))
+                else if (Input.GetKey(GameControl.control.rightKey))
                 {
                     desiredSpeed = new Vector2(moveSpeed, 0) * Time.deltaTime;
                     if (CheckCollision(new Vector2(moveSpeed, 0), movableMask) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
@@ -84,7 +84,7 @@ public class characterControl : OverworldObject {
             }
 			
             // If pushing or pulling
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(GameControl.control.selectKey))
             {
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), desiredSpeed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), desiredSpeed, 32.0f, mask);
@@ -93,7 +93,7 @@ public class characterControl : OverworldObject {
                     if (//transform.position.y <= topHit.transform.position.y &&
                         !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.W))) // up - W
+                        && (Input.GetKey(GameControl.control.upKey))) // up - W
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
                         {
@@ -107,7 +107,7 @@ public class characterControl : OverworldObject {
                     else if (//transform.position.y >= topHit.transform.position.y &&
                         !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.S))) // down - S
+                        && (Input.GetKey(GameControl.control.downKey))) // down - S
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
                         {
@@ -122,7 +122,7 @@ public class characterControl : OverworldObject {
                     else if (//transform.position.x <= topHit.transform.position.x &&
                         !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.D))) // right - D
+                        && (Input.GetKey(GameControl.control.rightKey))) // right - D
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
                         {
@@ -136,7 +136,7 @@ public class characterControl : OverworldObject {
                     else if (//transform.position.x >= topHit.transform.position.x &&
                         !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.A))) // left - A
+                        && (Input.GetKey(GameControl.control.leftKey))) // left - A
                     {
                         if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
                         {
@@ -157,7 +157,7 @@ public class characterControl : OverworldObject {
                     if (//transform.position.y >= bottomHit.transform.position.y &&
                         !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.S))) // down - S
+                        && (Input.GetKey(GameControl.control.downKey))) // down - S
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
                         {
@@ -171,7 +171,7 @@ public class characterControl : OverworldObject {
                     else if (//transform.position.y <= bottomHit.transform.position.y &&
                         !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.W))) // up - W
+                        && (Input.GetKey(GameControl.control.upKey))) // up - W
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
                         {
@@ -186,7 +186,7 @@ public class characterControl : OverworldObject {
                     else if (//transform.position.x >= bottomHit.transform.position.x &&
                         !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.A))) // left - A
+                        && (Input.GetKey(GameControl.control.leftKey))) // left - A
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
                         {
@@ -200,7 +200,7 @@ public class characterControl : OverworldObject {
                     else if (//transform.position.x <= bottomHit.transform.position.x &&
                         !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(KeyCode.D))) // right - D
+                        && (Input.GetKey(GameControl.control.rightKey))) // right - D
                     {
                         if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
                         {

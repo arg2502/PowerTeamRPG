@@ -26,7 +26,7 @@ public class TreasureChest : NPCObject {
     protected void Update()
     {
         if (distFromPlayer < distToTalk
-            && Input.GetKeyUp(KeyCode.Space) 
+            && Input.GetKeyUp(GameControl.control.selectKey) 
             && canTalk 
             && player.gameObject.GetComponent<characterControl>().canMove
             && !isOpen

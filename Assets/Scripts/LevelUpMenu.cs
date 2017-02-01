@@ -183,7 +183,7 @@ public class LevelUpMenu : Menu {
         }
         else // Change all of the labels and necessary sprites
         {
-            if (Input.GetKeyUp(KeyCode.D))
+            if (Input.GetKeyUp(GameControl.control.rightKey))
             {
                 // Add to the appropriate stat boost number based on button index
                 if (remainingPoints > 0)
@@ -204,7 +204,7 @@ public class LevelUpMenu : Menu {
                 }
             }
 
-            if (Input.GetKeyUp(KeyCode.A))
+            if (Input.GetKeyUp(GameControl.control.leftKey))
             {
                 // subtract from the appropriate stat only if it has had points added
                 if (statBoostInts[selectedIndex] > 0)
@@ -325,12 +325,12 @@ public class LevelUpMenu : Menu {
         // The last button is different than the others, so make sure the last button only responds to space
         if (selectedIndex < buttonArray.Length - 1)
         {
-            PressButton(KeyCode.D);
-            PressButton(KeyCode.A);
+            PressButton(GameControl.control.rightKey);
+            PressButton(GameControl.control.leftKey);
         }
         else if (selectedIndex == buttonArray.Length - 1)
         {
-            PressButton(KeyCode.Space);
+            PressButton(GameControl.control.selectKey);
         }
         
 	}

@@ -257,12 +257,12 @@ public class SkillTree : MonoBehaviour {
         if(((button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactiveHover
             || button2DArray[columnIndex,rowIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.disabledHover)
             || (columnIndex == 0 && rowIndex == numOfRow))
-            && Input.GetKeyDown(KeyCode.Space))
+            && Input.GetKeyDown(GameControl.control.selectKey))
         {
             button2DArray[columnIndex, rowIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.active;
         }
                 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(GameControl.control.selectKey))
         {
             // check if done
             if (columnIndex == 0 && rowIndex == numOfRow)
@@ -462,9 +462,9 @@ public class SkillTree : MonoBehaviour {
         // check for any button selections
         ButtonAction();
         // make sure space is not being held down before moving arrows
-        if (!Input.GetKeyDown(KeyCode.Space))
+        if (!Input.GetKeyDown(GameControl.control.selectKey))
         {
-            if (Input.GetKeyUp(KeyCode.D))
+            if (Input.GetKeyUp(GameControl.control.rightKey))
             {
                 if (columnIndex < numOfColumn - 1 && rowIndex != numOfRow)
                 {
@@ -480,7 +480,7 @@ public class SkillTree : MonoBehaviour {
 
                 }
             }
-            if (Input.GetKeyUp(KeyCode.A))
+            if (Input.GetKeyUp(GameControl.control.leftKey))
             {
                 if (columnIndex > 0 && rowIndex != numOfRow)
                 {
@@ -496,7 +496,7 @@ public class SkillTree : MonoBehaviour {
 
                 }
             }
-            if (Input.GetKeyUp(KeyCode.S))
+            if (Input.GetKeyUp(GameControl.control.downKey))
             {
                 if (rowIndex < numOfRow)
                 {
@@ -515,7 +515,7 @@ public class SkillTree : MonoBehaviour {
                     ScrollChangeButtonState();
                 }
             }
-            if (Input.GetKeyUp(KeyCode.W))
+            if (Input.GetKeyUp(GameControl.control.upKey))
             {
                 if (rowIndex > 0)
                 {

@@ -72,7 +72,7 @@ public class ConsumableItemSubMenu : SubMenu {
         if (isVisible && isActive)
         {
             im.descriptionText.GetComponent<TextMesh>().text = im.FormatText(buttonDescription[selectedIndex]);
-            if (Input.GetKeyUp(KeyCode.Backspace) || Input.GetKeyUp(KeyCode.Q))
+            if (Input.GetKeyUp(GameControl.control.backKey) || Input.GetKeyUp(GameControl.control.pauseKey))
             {
                 im.ActivateMenu();
             }
