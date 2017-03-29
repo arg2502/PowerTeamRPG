@@ -16,9 +16,6 @@ public class Hero: Denigen {
 
     // item/equipment list - NEED LATER
 
-    // skill tree variable - NEED LATER
-    // skill tree will have to be specific to the character somehow
-
     // allocating levelup points
     protected int levelUpPts;
 

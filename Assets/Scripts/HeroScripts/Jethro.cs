@@ -91,7 +91,7 @@ public class Jethro : Hero {
 	public void Helmsplitter()
 	{
 		float damage;
-		damage = CalcDamage("Helmsplitter", 0.75f, 0.03f, 0.9f, false);
+		damage = CalcDamage("Helmsplitter", 0.5f, 0.03f, 0.9f, false);
 		targets[0].TakeDamage(this, damage, false);
 	}
 }

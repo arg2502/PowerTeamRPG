@@ -16,28 +16,49 @@ public class Technique {
     // Attributes
     protected string name;
     protected string description;
-    int pm;
+    protected int pm;
+    protected int colPos;
+    protected int rowPos;
     [NonSerialized]
     List<Technique> listNextTechnique; // tells the skill tree if this technique is part of a chain/branch
     [NonSerialized]
     List<Technique> prerequisites;
     //[NonSerialized]
     //Sprite treeImage; // image to display on the button in the skill tree
-    int cost; // number of skill points required to unlock
+    protected int cost; // number of skill points required to unlock
     bool active; // if true, the hero has this technique
     [NonSerialized]
-    MyButton button;
+    ButtonSkillTree button;
+    protected int damage;
+    protected int critical;
+    protected int accuracy;
     
 
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
     public int Pm { get { return pm; } set { pm = value; } }
+    public int ColPos { get { return colPos; } set { colPos = value; } }
+    public int RowPos { get { return rowPos; } set { rowPos = value; } }
     public List<Technique> ListNextTechnique { get { return listNextTechnique; } set { listNextTechnique = value; } }
     public int Cost { get { return cost; } set { cost = value; } }
     public bool Active { get { return active; } set { active = value; } }
     //public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    
     public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
-    public MyButton Button { get { return button; } set { button = value; } }
+    public ButtonSkillTree Button { get { return button; } set { button = value; } }
+
+    public Technique() {}
+    public Technique(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+    {
+        name = nm;
+        cost = cst;
+        pm = powerMag;
+        colPos = cp;
+        rowPos = rp;
+        damage = dmg;
+        critical = crit;
+        accuracy = acc;
+        description = name + "\n" + descrip + "\nCost: " + cost + "\n\nDMG: " + damage + "\nCRIT: " + critical + "\nACC: " + accuracy;
+    }
     //// Use this for initialization
     //void Start () {
 	

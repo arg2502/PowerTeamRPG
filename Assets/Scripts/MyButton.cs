@@ -23,16 +23,10 @@ public class MyButton : MonoBehaviour {
     //public Sprite disabledHoverTexture;
     public SpriteRenderer sr;
 
-    // skill tree specific
-    // if the Technique has a next, this next takes control of the next button's state
-    public List<MyButton> listNextButton;
-    public SpriteRenderer contentSr;
-    public List<GameObject> nextLine;
-    public Sprite solidLine;
-    public Sprite dottedLine;
+    
 
 	// Use this for initialization
-	void Start () {        
+	protected void Start () {        
         sr.sprite = normalTexture;
         sr.sortingOrder = 9899;
         //solidLine = Resources.Load("Sprites/nextLine.png", typeof(Sprite)) as Sprite;
@@ -41,7 +35,7 @@ public class MyButton : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected void Update () {
         if (state == MyButtonTextureState.normal) { sr.sprite = normalTexture; } // button is in standby
         else if (state == MyButtonTextureState.hover) { sr.sprite = hoverTexture; } // cursor is over button
         else if (state == MyButtonTextureState.active) { sr.sprite = activeTexture; } // player has selected button

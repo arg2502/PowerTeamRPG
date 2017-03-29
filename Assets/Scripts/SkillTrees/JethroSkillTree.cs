@@ -5,33 +5,66 @@ using System.Collections.Generic;
 public class JethroSkillTree : SkillTree {
 
     // all possible skills for Jethro
+
+    // tree 1
     Skill helmsplitter;
     Skill trinitySlice;
     Skill arcSlash;
-    Skill riser;
+    Passive siegeBreaker;
+    Spell frostEdge;
     Skill mordstreich;
-    Skill superMordstreich;
-      
+    Skill riser;
+    Passive duelistI;
+    Passive duelistII;
+    Passive duelistIII;
+    Skill rally;
+    Skill goldSoul;
+
+    // tree 2
+    Spell fog;
+    Spell frost;
+    Spell iceArmor;
+    Spell iceBarrier;
+    Passive resilience;
+    Spell coldShoulder;
+    Passive unbreakable;
+    Passive magicianI;
+    Passive magicianII;
+    Passive magicianIII;
+    Spell iceSpear;
+    Spell frostBite;
+
+    
+
+    // Trees
+    MyTree basic;
+
+    // FILL TREES DOWN BELOW, THEN TEST
+
 	// Use this for initialization
 	void Start () {
 
         // set hero to jethro
         hero = GameControl.control.heroList[0];
-
+        whichContent = new List<string> { "Basic" };
         // create all techniques
-        helmsplitter = new Skill();
-        helmsplitter.Name = "Helmsplitter";
+        helmsplitter = new Skill("Helmsplitter", "A powerful sword strike from above.", 1, 2, 75, 3, 90, 2, 0);
+        /*helmsplitter.Name = "Helmsplitter";
         helmsplitter.Cost = 1;
         helmsplitter.Description = "A powerful sword strike from above. \nCost " + helmsplitter.Cost + ", Str 75, Crit 03, Acc 90";
         helmsplitter.Pm = 2;
+        helmsplitter.ColPos = 0;
+        helmsplitter.RowPos = 0;*/
         //helmsplitter.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
         
 
-        trinitySlice = new Skill();
-        trinitySlice.Name = "Trinity Slice";
+        trinitySlice = new Skill("Trinity Slice", "Rapidly slash an opponent three times.", 1, 6, 40, 5, 80, 0, 0);
+        /*trinitySlice.Name = "Trinity Slice";
         trinitySlice.Cost = 1;
         trinitySlice.Description = ". \nCost " + trinitySlice.Cost + ", Str, Crit, Acc ";
         trinitySlice.Pm = 0;
+        trinitySlice.ColPos = 0;
+        trinitySlice.RowPos = 1;*/
         //trinitySlice.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 
         arcSlash = new Skill();
@@ -39,6 +72,8 @@ public class JethroSkillTree : SkillTree {
         arcSlash.Cost = 2;
         arcSlash.Description = arcSlash.Name + "\n. \nCost " + arcSlash.Cost + " \nStr \nCrit \nAcc ";
         arcSlash.Pm = 0;
+        arcSlash.ColPos = 1;
+        arcSlash.RowPos = 0;
         //arcSlash.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 
         riser = new Skill();
@@ -46,6 +81,8 @@ public class JethroSkillTree : SkillTree {
         riser.Cost = 1;
         riser.Description = riser.Name + "\n. \nCost " + riser.Cost + " \nStr \nCrit \nAcc ";
         riser.Pm = 0;
+        riser.ColPos = 2;
+        riser.RowPos = 0;
         //riser.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 
         mordstreich = new Skill();
@@ -53,48 +90,49 @@ public class JethroSkillTree : SkillTree {
         mordstreich.Cost = 2;
         mordstreich.Description = mordstreich.Name + "\n. \nCost " + mordstreich.Cost + " \nStr \nCrit \nAcc ";
         mordstreich.Pm = 0;
+        mordstreich.ColPos = 2;
+        mordstreich.RowPos = 1;
         //mordstreich.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 
-        superMordstreich = new Skill();
-        superMordstreich.Name = "Super Mordstreich";
-        superMordstreich.Cost = 1;
-        superMordstreich.Description = superMordstreich.Name + "\n. \nCost " + superMordstreich.Cost + " \nStr \nCrit \nAcc ";
-        superMordstreich.Pm = 0;
-
+      
         // set nexts to create branches
         helmsplitter.ListNextTechnique = new List<Technique>();
         riser.ListNextTechnique = new List<Technique>();
         mordstreich.ListNextTechnique = new List<Technique>();
         helmsplitter.ListNextTechnique.Add(trinitySlice);
         riser.ListNextTechnique.Add(mordstreich);
-        mordstreich.ListNextTechnique.Add(superMordstreich);
         
 
         // prerequisites
         trinitySlice.Prerequisites = new List<Technique>();
         mordstreich.Prerequisites = new List<Technique>();
-        superMordstreich.Prerequisites = new List<Technique>();
         trinitySlice.Prerequisites.Add(helmsplitter);
         mordstreich.Prerequisites.Add(riser);
-        superMordstreich.Prerequisites.Add(mordstreich);
+
+       
+
+        // trees
+        basic = new MyTree();
 
         // set content array
-        content2DArray = new List<List<Technique>>();
-        content2DArray.Add(new List<Technique>(){helmsplitter, trinitySlice});
-        content2DArray.Add(new List<Technique>() { arcSlash });
-        content2DArray.Add(new List<Technique>() { riser, mordstreich, superMordstreich });
-
+        basic.listOfContent = new List<Technique>() { helmsplitter, trinitySlice };
+        
         // set sizes of columns and rows
-        numOfColumn = content2DArray.Count;
+        basic.numOfColumn = 3;
+        basic.numOfRow = 3;
 
-        foreach(List<Technique> t in content2DArray)
-        {
-            if (numOfRow < t.Count) numOfRow = t.Count;
+        // set starting position
+        basic.rootCol = 2;
+        basic.rootRow = 0;
+        
+        //foreach(List<Technique> t in basic.listOfContent)
+        //{
+           // if (basic.numOfRow < t.Count) basic.numOfRow = t.Count;
 
             // add prerequisites to descriptions
-            foreach(Technique tq in t)
+            foreach(Technique tq in basic.listOfContent)
             {
-                if(tq.Prerequisites != null)
+                if(tq != null && tq.Prerequisites != null)
                 {
                     tq.Description += "\n\nPrerequisites: ";
                     foreach(Technique tqn in tq.Prerequisites)
@@ -104,7 +142,9 @@ public class JethroSkillTree : SkillTree {
                 }
             }
 
-        }
+        
+        listOfTrees = new List<MyTree>();
+        listOfTrees.Add(basic);
 
         base.Start();
 	}

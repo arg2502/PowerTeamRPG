@@ -8,6 +8,8 @@ public class ColeSkillTree : SkillTree {
     Spell hellfire;
     Spell splashflame;
 
+    MyTree basic;
+
 	// Use this for initialization
 	void Start () {
         // set hero to Cole
@@ -24,12 +26,10 @@ public class ColeSkillTree : SkillTree {
         splashflame.Pm = 3;
 		splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \nCost " + splashflame.Pm + "pm, Str 60, Crit 05, Acc 85";
 
-        numOfColumn = 2;
-        numOfRow = 1;
+        basic.numOfColumn = 2;
+        basic.numOfRow = 1;
 
-        content2DArray = new List<List<Technique>>();
-        content2DArray.Add(new List<Technique>() { hellfire });
-        content2DArray.Add(new List<Technique>() { splashflame });
+        basic.listOfContent = new List<Technique>() { hellfire, splashflame };
 
         base.Start();
 	
