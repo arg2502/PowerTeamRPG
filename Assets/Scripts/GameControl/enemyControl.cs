@@ -18,6 +18,8 @@ public class enemyControl : OverworldObject {
     public int maxEnemies = 0;
     public int minEnemies = 0;
 
+    GameObject musicManager;
+
     //These are useful for contolling the enemy's movement
     float waitTimer;
     float walkTimer;
@@ -58,8 +60,10 @@ public class enemyControl : OverworldObject {
 
         rc = GameObject.FindObjectOfType<roomControl>();
 
-		// vector3 to store updated player location
-		currentPosition = GameControl.control.currentPosition;
+        musicManager = GameObject.Find("MusicManager");
+
+        // vector3 to store updated player location
+        currentPosition = GameControl.control.currentPosition;
 
 		dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
 			+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
@@ -248,6 +252,8 @@ public class enemyControl : OverworldObject {
     {
         if (dist <= 15.0f)
         {
+            // start battle music
+            AkSoundEngine.PostEvent("EndAll", musicManager);
             GameControl.control.currentPosition = player.position; //record the player's position before entering battle
             GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
 
@@ -268,7 +274,7 @@ public class enemyControl : OverworldObject {
             beenBattled = true;
             //save the current room, to acheive persistency while paused
             GameControl.control.RecordRoom();
-
+            
             UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
         }
     }

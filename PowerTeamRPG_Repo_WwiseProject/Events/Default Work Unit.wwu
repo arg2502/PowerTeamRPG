@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" SchemaVersion="75">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="PlayRing" ID="{D638557E-FF94-4F74-8DBC-B0E2C0B69E3F}">
+					<ChildrenList>
+						<Action Name="Play" ID="{92647889-0E51-4035-BF4E-B21F225C5ADF}" ShortID="366812921" Type="Play" Scope="One" Global="false">
+							<ElementList>
+								<Element ID="{69AF1899-63A1-4B37-A9F8-1262D1345E3A}" Global="false">
+									<ObjectRef Name="ring_Test" ID="{D86BE569-E89C-4216-BE6A-28ABDA912A34}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+								</Element>
+							</ElementList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="PowerCityMusic" ID="{BBC25F97-76FD-4131-8011-16A3C1C80767}">
+					<ChildrenList>
+						<Action Name="Play" ID="{148A08BF-EC05-4216-A7E8-417BCB8963E9}" ShortID="470910943" Type="Play" Scope="One" Global="false">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.5"/>
+							</PropertyList>
+							<ElementList>
+								<Element ID="{06FEE840-0928-47C1-BB33-A02ED4CB2DE4}" Global="false">
+									<ObjectRef Name="PowerCity_Normal" ID="{ADCABC92-44C4-418C-A232-F94D5635DAE8}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+								</Element>
+							</ElementList>
+						</Action>
+						<Action Name="Play" ID="{1EF20A0C-ACF0-4ADB-A3DA-0142A49E28EE}" ShortID="212440690" Type="Play" Scope="One" Global="false">
+							<ElementList>
+								<Element ID="{F79FE255-7CCC-48D0-9F0D-B3707ACB15D9}" Global="false">
+									<ObjectRef Name="PowerCity_Market" ID="{D85C42AC-3653-4D6C-9CD5-D997D9D819DF}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+								</Element>
+							</ElementList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Folder Name="Battle" ID="{983E361C-70E2-4490-85C8-BF57A4CB8B7E}" ShortID="104197185">
+					<ChildrenList>
+						<Event Name="Start" ID="{CDFCB233-1A54-4FCB-8FC7-8F2FCA280A05}">
+							<ChildrenList>
+								<Action Name="Mute" ID="{DD71E119-20B8-41A2-9B69-9BE11D22264A}" ShortID="801729163" Type="Mute" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{B3378DCD-AF90-4CB9-A869-8598FD30BAD2}" Global="false">
+											<ObjectRef Name="PowerCity_Normal" ID="{ADCABC92-44C4-418C-A232-F94D5635DAE8}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Mute" ID="{722B8CA7-5E8C-478C-A1E8-CB06CE86781C}" ShortID="868858341" Type="Mute" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{4D92154E-7DB9-4F58-B4B9-3A11E0C21DB5}" Global="false">
+											<ObjectRef Name="PowerCity_Market" ID="{D85C42AC-3653-4D6C-9CD5-D997D9D819DF}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Stop" ID="{5CB38EF8-7099-43C9-9312-799D7AB055F3}" ShortID="231056366" Type="Stop" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{4C2C0058-5579-4540-8B68-41B919F65073}" Global="false">
+											<ObjectRef Name="PowerCity_Market" ID="{D85C42AC-3653-4D6C-9CD5-D997D9D819DF}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Stop" ID="{D1A8D369-F210-4899-B3EA-CF315F0B72BB}" ShortID="559740066" Type="Stop" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{DB27778F-ECAF-44D0-AA22-1ABBE1C95447}" Global="false">
+											<ObjectRef Name="PowerCity_Normal" ID="{ADCABC92-44C4-418C-A232-F94D5635DAE8}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Play" ID="{8DA4CEC2-077D-4250-A7B6-0C05A3484DCE}" ShortID="978800930" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{A47D4085-E946-4635-8DE8-78360E562A97}" Global="false">
+											<ObjectRef Name="Battle_Start" ID="{073E2760-E6BF-43B7-881E-7B672685F35A}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Post Event" ID="{22D06241-4296-4EDE-8F66-1CAE8843FE0F}" ShortID="697194079" Type="PlayEvent" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{5439A889-D7F9-4C88-94E1-37608A88AAEE}" Global="false">
+											<ObjectRef Name="BeginChoosing" ID="{CC05401A-272D-45D8-BE03-E62946464E66}" WorkUnitID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="BeginChoosing" ID="{CC05401A-272D-45D8-BE03-E62946464E66}">
+							<ChildrenList>
+								<Action Name="Play" ID="{9D1F797A-218F-407B-86BF-142636ACB45E}" ShortID="496029723" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{D28C99FE-6CC3-4107-9AB9-4FCD7B584C1C}" Global="false">
+											<ObjectRef Name="Battle_Choosing" ID="{A9B7F5B2-74D0-4472-9151-F6012D1E01C2}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Play" ID="{6DA530F2-2F29-43C7-A9F0-50084D99ECA0}" ShortID="965878944" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{46654A24-5441-45B7-8203-FFB4ABAD75CE}" Global="false">
+											<ObjectRef Name="Battle_Battle" ID="{01B78072-7DED-4951-AEA7-1E84BF4E7C16}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Mute" ID="{B5D09529-7EF6-4938-A78B-C34BB2A1FC25}" ShortID="268992229" Type="Mute" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{9BD2F5C5-E62B-4970-A6A4-D9ABEE9CF56A}" Global="false">
+											<ObjectRef Name="Battle_Battle" ID="{01B78072-7DED-4951-AEA7-1E84BF4E7C16}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Battle" ID="{90C225F0-E969-4099-8EF6-65E1E9C7744F}">
+							<ChildrenList>
+								<Action Name="UnMute" ID="{5E30AD43-A3E7-4570-8283-0CEB1FB87F67}" ShortID="219726484" Type="UnMute" Scope="One" Global="false">
+									<PropertyList>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ElementList>
+										<Element ID="{FF4D94A4-B6E3-49C0-BB34-D3235BEAB694}" Global="false">
+											<ObjectRef Name="Battle_Battle" ID="{01B78072-7DED-4951-AEA7-1E84BF4E7C16}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Mute" ID="{FF154500-D535-4743-B930-05797A4E3966}" ShortID="264191442" Type="Mute" Scope="One" Global="false">
+									<PropertyList>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ElementList>
+										<Element ID="{294B1E4F-20E4-40F1-8D21-8906322F7327}" Global="false">
+											<ObjectRef Name="Battle_Choosing" ID="{A9B7F5B2-74D0-4472-9151-F6012D1E01C2}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Choosing" ID="{DC1098DD-6505-4406-9423-D9209FC083FD}">
+							<ChildrenList>
+								<Action Name="Mute" ID="{E8442B54-086E-4901-BD52-0AE10AE4435D}" ShortID="358514572" Type="Mute" Scope="One" Global="false">
+									<PropertyList>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ElementList>
+										<Element ID="{6DE27801-63A1-48C1-B94A-6943BD26CB60}" Global="false">
+											<ObjectRef Name="Battle_Battle" ID="{01B78072-7DED-4951-AEA7-1E84BF4E7C16}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="UnMute" ID="{4550C2A0-610D-4E5E-855B-83ADA3375E8D}" ShortID="900635676" Type="UnMute" Scope="One" Global="false">
+									<PropertyList>
+										<Property Name="FadeTime" Type="Real64" Value="1"/>
+									</PropertyList>
+									<ElementList>
+										<Element ID="{E8203879-0B66-44DC-910B-E99F86EA51EB}" Global="false">
+											<ObjectRef Name="Battle_Choosing" ID="{A9B7F5B2-74D0-4472-9151-F6012D1E01C2}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Victory" ID="{EB92B646-EE3B-4984-8E13-F94AF4956A18}">
+							<ChildrenList>
+								<Action Name="Play" ID="{21074CBB-0B84-4E8F-9224-909267F3B3FB}" ShortID="278290389" Type="Play" Scope="One" Global="false">
+									<ElementList>
+										<Element ID="{C431EF34-AD86-4F7F-81EA-C04BD3FD149E}" Global="false">
+											<ObjectRef Name="Battle_Victory" ID="{00FC6ECB-D4BB-4A7E-9DB2-4666DB1E9CE2}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+								<Action Name="Stop All Except" ID="{37B61024-C154-4D18-814C-0532497CF5CE}" ShortID="791188780" Type="Stop" Scope="AllExcept" Global="false">
+									<ElementList>
+										<Element ID="{64F23D87-EB90-42CF-8EF9-A229E6663EB8}" Global="false">
+											<ObjectRef Name="Battle_Victory" ID="{00FC6ECB-D4BB-4A7E-9DB2-4666DB1E9CE2}" WorkUnitID="{2363D5BC-313B-4A6E-9330-1598F7383986}"/>
+										</Element>
+									</ElementList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+				<Event Name="EndAll" ID="{5517E4F3-6C54-4133-8CDC-60493E7CCC2F}">
+					<ChildrenList>
+						<Action Name="Stop All" ID="{C9877BDA-F93F-49DB-8E06-034FF6437CDB}" ShortID="467034875" Type="Stop" Scope="All" Global="true">
+							<PropertyList>
+								<Property Name="FadeTime" Type="Real64" Value="0.1"/>
+							</PropertyList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

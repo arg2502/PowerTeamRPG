@@ -90,6 +90,7 @@ public class TreasureChest : NPCObject {
             chestDialogue.dialogue.Add("You got " + chestItem.GetComponent<Item>().name + ".");
         }
 
+        AkSoundEngine.PostEvent("PlayRing", GameObject.Find("Soundbanks"));
         npcDialogue.dialogueList.Add(chestDialogue); // add text to dialogue box
         isOpen = true; // set chest to open
         

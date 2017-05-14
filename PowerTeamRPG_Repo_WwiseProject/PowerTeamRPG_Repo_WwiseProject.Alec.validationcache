@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ValidationCache Version="1" SchemaVersion="75">
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Actor-Mixer Hierarchy\Default Work Unit.wwu" DateLow="1125280107" DateHigh="30591478"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Attenuations\Default Work Unit.wwu" DateLow="839875901" DateHigh="30590845"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Audio Devices\Default Work Unit.wwu" DateLow="3831527082" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Control Surface Sessions\Default Work Unit.wwu" DateLow="2688571172" DateHigh="30585395"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Conversion Settings\Default Work Unit.wwu" DateLow="3831512070" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Conversion Settings\Factory Conversion Settings.wwu" DateLow="4125525359" DateHigh="30581572"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Dynamic Dialogue\Default Work Unit.wwu" DateLow="3831472041" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Effects\Default Work Unit.wwu" DateLow="3831447045" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Effects\Factory Effects.wwu" DateLow="4127848038" DateHigh="30581572"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Events\Default Work Unit.wwu" DateLow="1125315138" DateHigh="30591478"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Game Parameters\Default Work Unit.wwu" DateLow="3831146812" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Interactive Music Hierarchy\Default Work Unit.wwu" DateLow="3831366965" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Master-Mixer Hierarchy\Default Work Unit.wwu" DateLow="3831321934" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Mixing Sessions\Default Work Unit.wwu" DateLow="3831422017" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Modulators\Default Work Unit.wwu" DateLow="3831492055" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\PowerTeamRPG_Repo_WwiseProject.Alec.wsettings" DateLow="3739492540" DateHigh="30591688"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\PowerTeamRPG_Repo_WwiseProject.wproj" DateLow="600834275" DateHigh="30584787"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Presets\Default Work Unit.wwu" DateLow="3831341949" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Queries\Default Work Unit.wwu" DateLow="3831552098" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Queries\Factory Queries.wwu" DateLow="4125445302" DateHigh="30581572"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\SoundBanks\Default Work Unit.wwu" DateLow="3519462822" DateHigh="30591463"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Soundcaster Sessions\Default Work Unit.wwu" DateLow="3831386983" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\States\Default Work Unit.wwu" DateLow="401064276" DateHigh="30590863"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Switches\Default Work Unit.wwu" DateLow="3831166822" DateHigh="30584786"/>
+	<ValidationCacheItem File="C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\Triggers\Default Work Unit.wwu" DateLow="3831637176" DateHigh="30584786"/>
+</ValidationCache>

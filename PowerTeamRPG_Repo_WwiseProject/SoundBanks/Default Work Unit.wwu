@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{4C1D2F52-DE7C-4A80-BDBB-567EA2A0FD44}" SchemaVersion="75">
+	<SoundBanks>
+		<WorkUnit Name="Default Work Unit" ID="{4C1D2F52-DE7C-4A80-BDBB-567EA2A0FD44}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="ring_Test_bank" ID="{BA948A79-917B-4BEC-BDDC-EA2CA4463D8E}">
+					<ObjectInclusionList>
+						<ObjectRef Name="PlayRing" ID="{D638557E-FF94-4F74-8DBC-B0E2C0B69E3F}" WorkUnitID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" Filter="7" Origin="Manual"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="PowerCity" ID="{A1BEB14F-FA75-4B63-88A2-DB4103C42C01}">
+					<ObjectInclusionList>
+						<ObjectRef Name="PowerCityMusic" ID="{BBC25F97-76FD-4131-8011-16A3C1C80767}" WorkUnitID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="EndAll" ID="{5517E4F3-6C54-4133-8CDC-60493E7CCC2F}" WorkUnitID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" Filter="7" Origin="Manual"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="Battle" ID="{3729DFB8-269B-4E24-A46A-BA99B1A41A3A}">
+					<ObjectInclusionList>
+						<ObjectRef Name="EndAll" ID="{5517E4F3-6C54-4133-8CDC-60493E7CCC2F}" WorkUnitID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Battle" ID="{983E361C-70E2-4490-85C8-BF57A4CB8B7E}" WorkUnitID="{A4EF03C5-34CA-40E6-BFF4-3B5FC2832395}" Filter="7" Origin="Manual"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundBanks>
+</WwiseDocument>

@@ -49,50 +49,13 @@ public class JethroSkillTree : SkillTree {
         whichContent = new List<string> { "Basic" };
         // create all techniques
         helmsplitter = new Skill("Helmsplitter", "A powerful sword strike from above.", 1, 2, 75, 3, 90, 2, 0);
-        /*helmsplitter.Name = "Helmsplitter";
-        helmsplitter.Cost = 1;
-        helmsplitter.Description = "A powerful sword strike from above. \nCost " + helmsplitter.Cost + ", Str 75, Crit 03, Acc 90";
-        helmsplitter.Pm = 2;
-        helmsplitter.ColPos = 0;
-        helmsplitter.RowPos = 0;*/
-        //helmsplitter.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
+        trinitySlice = new Skill("Trinity Slice", "Rapidly slash an opponent three times.", 1, 6, 40, 5, 80, 1, 1);
+        arcSlash = new Skill("Arc Slash", "DESCRIPTION", 2, 0, 0, 0, 0, 0, 1);
+       
+        riser = new Skill("Riser", "DESCRIPTION", 1, 0, 0, 0, 0, 1, 4);
+        mordstreich = new Skill("Mordstreich", "DESCRIPTION", 1, 0, 0, 0, 0, 0, 3);
         
 
-        trinitySlice = new Skill("Trinity Slice", "Rapidly slash an opponent three times.", 1, 6, 40, 5, 80, 0, 0);
-        /*trinitySlice.Name = "Trinity Slice";
-        trinitySlice.Cost = 1;
-        trinitySlice.Description = ". \nCost " + trinitySlice.Cost + ", Str, Crit, Acc ";
-        trinitySlice.Pm = 0;
-        trinitySlice.ColPos = 0;
-        trinitySlice.RowPos = 1;*/
-        //trinitySlice.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-
-        arcSlash = new Skill();
-        arcSlash.Name = "Arc Slash";
-        arcSlash.Cost = 2;
-        arcSlash.Description = arcSlash.Name + "\n. \nCost " + arcSlash.Cost + " \nStr \nCrit \nAcc ";
-        arcSlash.Pm = 0;
-        arcSlash.ColPos = 1;
-        arcSlash.RowPos = 0;
-        //arcSlash.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-
-        riser = new Skill();
-        riser.Name = "Riser";
-        riser.Cost = 1;
-        riser.Description = riser.Name + "\n. \nCost " + riser.Cost + " \nStr \nCrit \nAcc ";
-        riser.Pm = 0;
-        riser.ColPos = 2;
-        riser.RowPos = 0;
-        //riser.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-
-        mordstreich = new Skill();
-        mordstreich.Name = "Mordstreich";
-        mordstreich.Cost = 2;
-        mordstreich.Description = mordstreich.Name + "\n. \nCost " + mordstreich.Cost + " \nStr \nCrit \nAcc ";
-        mordstreich.Pm = 0;
-        mordstreich.ColPos = 2;
-        mordstreich.RowPos = 1;
-        //mordstreich.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 
       
         // set nexts to create branches
