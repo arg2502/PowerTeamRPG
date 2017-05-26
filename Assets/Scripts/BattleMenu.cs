@@ -605,9 +605,6 @@ public class BattleMenu : Menu {
         else if (state == MenuReader.battle)
         {
             UpdateBattle();
-
-            // switch to battle music
-            AkSoundEngine.PostEvent("Battle", GameObject.Find("MusicManager"));
         }
         //Targeting means that our WASD will not be navigating buttons
         else if (state == MenuReader.targeting && currentDenigen.StatusState != Denigen.Status.dead)
@@ -694,14 +691,9 @@ public class BattleMenu : Menu {
         else if (state == MenuReader.victory)
         {
             UpdateVictory();
-
         }
         else
         {
-
-            // switch to choosing music
-            AkSoundEngine.PostEvent("Choosing", GameObject.Find("MusicManager"));
-
             // if it is an enemy's turn, go straight to targeting
             // This avoids the player gaining control of the enemy
             if (currentDenigen.GetComponent<Enemy>() != null) { state = MenuReader.targeting; }
@@ -875,7 +867,7 @@ public class BattleMenu : Menu {
 		else if (Input.GetKeyUp(GameControl.control.selectKey) && commandIndex >= commands.Count)
 		{
 			textIndex = 0;
-            //check if all heroes have fallen
+			//check if all heroes have fallen
             //check if all enemies have fallen
             if (CheckForDead()) { return; }
 			PostBattle ();
@@ -913,7 +905,6 @@ public class BattleMenu : Menu {
             {
                 textIndex = 0;
                 state = MenuReader.victory;
-
                 return true;
             }
         }
@@ -945,8 +936,8 @@ public class BattleMenu : Menu {
             d.IsBlocking = false;
 		}
 
-        // change the state and text before showing the buttons and text again
-        state = MenuReader.main;
+		// change the state and text before showing the buttons and text again
+		state = MenuReader.main;
 		ChangeContentArray ();
 		StateChangeText ();
 		UpdateDescription ();
@@ -969,10 +960,7 @@ public class BattleMenu : Menu {
 
         if (failedFlee) { failedFlee = false; }
 
-        // switch to choosing music
-        //AkSoundEngine.PostEvent("Choosing", GameObject.Find("MusicManager"));
-
-    }
+	}
     void UpdateFailure()
     {
 		if (Input.GetKeyUp(GameControl.control.selectKey))
@@ -1010,7 +998,6 @@ public class BattleMenu : Menu {
                     GameControl.control.currentPosition = GameControl.control.areaEntrance;
                 }
                 // load the scene
-                AkSoundEngine.PostEvent("EndAll", GameObject.Find("MusicManager"));
                 UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
             }
             if (textIndex < 2)
@@ -1027,9 +1014,6 @@ public class BattleMenu : Menu {
         {
             if (textIndex == 0)
             {
-                // play victory music
-                AkSoundEngine.PostEvent("Victory", GameObject.Find("MusicManager"));
-
                 //the gold to award to the player
                 gold = 0;
                 exp = 0;
@@ -1179,7 +1163,6 @@ public class BattleMenu : Menu {
                     foreach (GameObject i in GameControl.control.consumables) { i.GetComponent<ConsumableItem>().uses = 0; }
 
                     // exit the battle
-                    AkSoundEngine.PostEvent("EndAll", GameObject.Find("MusicManager"));
                     UnityEngine.SceneManagement.SceneManager.LoadScene(GameControl.control.currentScene);
                 }
             }

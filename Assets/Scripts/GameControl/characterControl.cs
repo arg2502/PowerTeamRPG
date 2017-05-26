@@ -33,12 +33,6 @@ public class characterControl : OverworldObject {
         topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), dir, 32.0f, _mask);
         bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), dir, 32.0f, _mask);
         if (topHitCheck.collider == null && bottomHitCheck.collider == null) { return false; }
-        else if(topHitCheck.collider != null && topHitCheck.collider.isTrigger 
-            || bottomHitCheck.collider != null && bottomHitCheck.collider.isTrigger){
-            print("trigger collision");
-            
-            return false;
-        }
         else { return true; }
     }
 	
@@ -82,7 +76,7 @@ public class characterControl : OverworldObject {
                 }
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
-                if ((topHit.collider == null || topHit.collider.isTrigger)&& (bottomHit.collider == null || bottomHit.collider.isTrigger) && speed != Vector2.zero)
+                if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
                 {
                     transform.Translate(speed);
                     desiredSpeed = Vector2.zero;

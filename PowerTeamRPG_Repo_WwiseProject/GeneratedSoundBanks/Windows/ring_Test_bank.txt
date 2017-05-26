@@ -1,6 +1,0 @@
-Event	ID	Name			Wwise Object Path	Notes
-	2114567873	PlayRing			\Default Work Unit\PlayRing	
-
-In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	288471156	ring_Test	C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\.cache\Windows\SFX\TELEPHONE_RING_9E69E797.wem		\Actor-Mixer Hierarchy\Default Work Unit\ring_Test		457528
-

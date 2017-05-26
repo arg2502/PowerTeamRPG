@@ -1,8 +1,0 @@
-Event	ID	Name			Wwise Object Path	Notes
-	2156075318	PowerCityMusic			\Default Work Unit\PowerCityMusic	
-	4001133389	EndAll			\Default Work Unit\EndAll	
-
-In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	302650499	PowerCity_Market	C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\.cache\Windows\SFX\PowerCity_Market_4B8CC0C5.wem		\Actor-Mixer Hierarchy\Default Work Unit\PowerCity_Market		19600064
-	654499917	PowerCity_Normal	C:\Users\Alec\Projects\PowerTeamRPG_Repo\PowerTeamRPG_Repo_WwiseProject\.cache\Windows\SFX\PowerCity_Normal_4B8CC0C5.wem		\Actor-Mixer Hierarchy\Default Work Unit\PowerCity_Normal		19600064
-
