@@ -650,12 +650,12 @@ public class SkillTree : MonoBehaviour {
                     if (rowIndex > 0)
                     {
                         // if on done button, find the next active button
-                        if (rowIndex == maxRows)
-                        {
+                        //if (rowIndex == maxRows)
+                        //{
                             ScrollVertical(rowIndex - 1);
                            // ScrollHorizontal(columnIndex);
                             
-                        }
+                        //}
                         //// if next button is disabled or nonexistant, don't go anywhere
                         //else 
                         //if (button2DArray[columnIndex, rowIndex - 1] == null)

@@ -47,79 +47,93 @@ public class JethroSkillTree : SkillTree {
         // set hero to jethro
         hero = GameControl.control.heroList[0];
         whichContent = new List<string> { "Basic" };
+        
         // create all techniques
         helmsplitter = new Skill("Helmsplitter", "A powerful sword strike from above.", 1, 2, 75, 3, 90, 2, 0);
-        /*helmsplitter.Name = "Helmsplitter";
-        helmsplitter.Cost = 1;
-        helmsplitter.Description = "A powerful sword strike from above. \nCost " + helmsplitter.Cost + ", Str 75, Crit 03, Acc 90";
-        helmsplitter.Pm = 2;
-        helmsplitter.ColPos = 0;
-        helmsplitter.RowPos = 0;*/
-        //helmsplitter.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-        
+        trinitySlice = new Skill("Trinity Slice", "Rapidly slash an opponent three times.", 1, 6, 40, 5, 80, 1, 1);
+        arcSlash = new Skill("Arc Slash", "A wide swing striking a row of opponents.", 2, 9, 50, 5, 100, 0, 1);
+        siegeBreaker = new SiegeBreaker("Siege Breaker", "Boosts all damage output at lower health.", 0, 0, 0, 0, 0, 1, 2);
+        frostEdge = new Spell("Frost Edge", "Increase chance of critical hit by 15% for 2 turns.", 1, 7, 0, 0, 100, 1, 3);
+        mordstreich = new Skill("Mordstreich", "Jump into the air for a deadly sword thrust.", 1, 15, 75, 60, 60, 0, 3);
+        riser = new Skill("Riser", "Jumping sword strike. Knocks opponent upward. 60% chance to decrease enemy's defense.", 1, 10, 75, 10, 95, 1, 4);
+        duelistI = new Duelist("Duelist I", "Boost physical damage output by 5%.", 1, 0, 0, 0, 100, 3, 1, 1);
+        duelistII = new Duelist("Duelist II", "Boost physical damage output by 10%.", 1, 0, 0, 0, 100, 3, 3, 2);
+        duelistIII = new Duelist("Duelist III", "Boost physical damage output by 15%.", 1, 0, 0, 0, 100, 4, 3, 3);
+        rally = new Skill("Rally", "Boost physical attack for the entire team.", 1, 5, 0, 0, 100, 3, 2);
+        goldSoul = new Skill("Gold Soul", "Boost stats of entire team slightly.", 1, 20, 0, 0, 100, 0, 3);
 
-        trinitySlice = new Skill("Trinity Slice", "Rapidly slash an opponent three times.", 1, 6, 40, 5, 80, 0, 0);
-        /*trinitySlice.Name = "Trinity Slice";
-        trinitySlice.Cost = 1;
-        trinitySlice.Description = ". \nCost " + trinitySlice.Cost + ", Str, Crit, Acc ";
-        trinitySlice.Pm = 0;
-        trinitySlice.ColPos = 0;
-        trinitySlice.RowPos = 1;*/
-        //trinitySlice.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
 
-        arcSlash = new Skill();
-        arcSlash.Name = "Arc Slash";
-        arcSlash.Cost = 2;
-        arcSlash.Description = arcSlash.Name + "\n. \nCost " + arcSlash.Cost + " \nStr \nCrit \nAcc ";
-        arcSlash.Pm = 0;
-        arcSlash.ColPos = 1;
-        arcSlash.RowPos = 0;
-        //arcSlash.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-
-        riser = new Skill();
-        riser.Name = "Riser";
-        riser.Cost = 1;
-        riser.Description = riser.Name + "\n. \nCost " + riser.Cost + " \nStr \nCrit \nAcc ";
-        riser.Pm = 0;
-        riser.ColPos = 2;
-        riser.RowPos = 0;
-        //riser.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-
-        mordstreich = new Skill();
-        mordstreich.Name = "Mordstreich";
-        mordstreich.Cost = 2;
-        mordstreich.Description = mordstreich.Name + "\n. \nCost " + mordstreich.Cost + " \nStr \nCrit \nAcc ";
-        mordstreich.Pm = 0;
-        mordstreich.ColPos = 2;
-        mordstreich.RowPos = 1;
-        //mordstreich.TreeImage = Resources.Load<Sprite>("Sprites/damageEffect.png");
-
-      
         // set nexts to create branches
         helmsplitter.ListNextTechnique = new List<Technique>();
-        riser.ListNextTechnique = new List<Technique>();
-        mordstreich.ListNextTechnique = new List<Technique>();
         helmsplitter.ListNextTechnique.Add(trinitySlice);
-        riser.ListNextTechnique.Add(mordstreich);
+        helmsplitter.ListNextTechnique.Add(duelistI);
+
+        trinitySlice.ListNextTechnique = new List<Technique>();
+        trinitySlice.ListNextTechnique.Add(arcSlash);
+        trinitySlice.ListNextTechnique.Add(siegeBreaker);
+
+        siegeBreaker.ListNextTechnique = new List<Technique>();
+        siegeBreaker.ListNextTechnique.Add(frostEdge);
+
+        frostEdge.ListNextTechnique = new List<Technique>();
+        frostEdge.ListNextTechnique.Add(mordstreich);
+        frostEdge.ListNextTechnique.Add(riser);
+
+        duelistI.ListNextTechnique = new List<Technique>();
+        duelistI.ListNextTechnique.Add(rally);
+
+        rally.ListNextTechnique = new List<Technique>();
+        rally.ListNextTechnique.Add(duelistII);
+
+        duelistII.ListNextTechnique = new List<Technique>();
+        duelistII.ListNextTechnique.Add(duelistIII);
+        duelistII.ListNextTechnique.Add(goldSoul);
         
 
         // prerequisites
         trinitySlice.Prerequisites = new List<Technique>();
-        mordstreich.Prerequisites = new List<Technique>();
         trinitySlice.Prerequisites.Add(helmsplitter);
-        mordstreich.Prerequisites.Add(riser);
 
-       
+        arcSlash.Prerequisites = new List<Technique>();
+        arcSlash.Prerequisites.Add(trinitySlice);
+
+        siegeBreaker.Prerequisites = new List<Technique>();
+        siegeBreaker.Prerequisites.Add(trinitySlice);
+
+        frostEdge.Prerequisites = new List<Technique>();
+        frostEdge.Prerequisites.Add(siegeBreaker);
+
+        mordstreich.Prerequisites = new List<Technique>();
+        mordstreich.Prerequisites.Add(frostEdge);
+
+        riser.Prerequisites = new List<Technique>();
+        riser.Prerequisites.Add(frostEdge);
+
+        duelistI.Prerequisites = new List<Technique>();
+        duelistI.Prerequisites.Add(helmsplitter);
+
+        rally.Prerequisites = new List<Technique>();
+        rally.Prerequisites.Add(duelistI);
+
+        duelistII.Prerequisites = new List<Technique>();
+        duelistII.Prerequisites.Add(rally);
+
+        duelistIII.Prerequisites = new List<Technique>();
+        duelistIII.Prerequisites.Add(duelistII);
+
+        goldSoul.Prerequisites = new List<Technique>();
+        goldSoul.Prerequisites.Add(duelistII);
+                      
 
         // trees
         basic = new MyTree();
 
         // set content array
-        basic.listOfContent = new List<Technique>() { helmsplitter, trinitySlice };
+        basic.listOfContent = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, siegeBreaker, frostEdge, mordstreich, riser, duelistI, duelistII, duelistIII, rally, goldSoul };
         
         // set sizes of columns and rows
-        basic.numOfColumn = 3;
-        basic.numOfRow = 3;
+        basic.numOfColumn = 5;
+        basic.numOfRow = 5;
 
         // set starting position
         basic.rootCol = 2;

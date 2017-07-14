@@ -126,7 +126,7 @@ public class GameControl : MonoBehaviour {
 			heroList[0].spellsList = new List<Spell>();
 			heroList[0].passiveList = new List<Passive>();
 			// Passives are non serializable now because they inherit from something with a my button variable
-			heroList[0].passiveList.Add(new LightRegeneration());
+			//heroList[0].passiveList.Add(new LightRegeneration());
 			heroList[0].weapon = null;
 			heroList[0].equipment = new List<GameObject>();
 

@@ -28,9 +28,9 @@ public class Jethro : Hero {
         }*/
 
         // test of passive
-        LightRegeneration lr = new LightRegeneration();
-        lr.Start();
-        passivesList.Add(lr);
+        //LightRegeneration lr = new LightRegeneration();
+        //lr.Start();
+        //passivesList.Add(lr);
 	}
 	
 	// Update is called once per frame

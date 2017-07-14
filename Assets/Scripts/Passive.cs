@@ -15,6 +15,19 @@ public abstract class Passive : Technique {
 
     //public string Name { get { return name; } }
     //public string Description { get { return description; } }
+    public Passive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp)
+    {
+        name = nm;
+        cost = cst;
+        pm = powerMag;
+        colPos = cp;
+        rowPos = rp;
+        damage = dmg;
+        critical = crit;
+        accuracy = acc;
+        description = name + "\n" + descrip + "\nCost: " + cost + "\n\nDMG: " + damage + "\nCRIT: " + critical + "\nACC: " + accuracy;
+    }
 
     public abstract void Start();
 
@@ -27,6 +40,8 @@ public abstract class Passive : Technique {
 [Serializable]
 public abstract class CalcDamagePassive : Passive {
 
+    public CalcDamagePassive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
     //public abstract int Use() { return 0; }
     //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
@@ -35,7 +50,8 @@ public abstract class CalcDamagePassive : Passive {
 [Serializable]
 public abstract class TakeDamagePassive : Passive
 {
-
+    public TakeDamagePassive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
     //public abstract int Use() { return 0; }
     //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
@@ -44,7 +60,8 @@ public abstract class TakeDamagePassive : Passive
 [Serializable]
 public abstract class PerTurnPassive : Passive
 {
-
+    public PerTurnPassive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
     //public abstract int Use() { return 0; }
     //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
@@ -52,7 +69,10 @@ public abstract class PerTurnPassive : Passive
 // this passive just restores 1hp per turn
 [Serializable]
 public class LightRegeneration : PerTurnPassive {
-    
+
+    public LightRegeneration(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+
     public override void Start()
     {
         name = "Light Regeneration";
@@ -68,5 +88,41 @@ public class LightRegeneration : PerTurnPassive {
             be.GetComponent<Effect>().damage = 1 + "hp";
         }
         
+    }
+}
+[Serializable]
+public class SiegeBreaker : CalcDamagePassive
+{
+    public SiegeBreaker(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+
+    public override void Start()
+    {
+                
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+        
+    }
+}
+[Serializable]
+public class Duelist : CalcDamagePassive
+{
+    public Duelist(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp, int level)
+        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp)
+    {
+        // the level will be passed in and all calculations can be based on that
+        // Duelist I : level = 1
+        // Duelist II : level = 2
+        // Duelist III : level = 3
+    }
+
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
     }
 }
