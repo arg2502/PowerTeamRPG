@@ -37,6 +37,8 @@ public abstract class Passive : Technique {
 }
 
 // Call this during the CalcDamage method
+// attack based passives
+// ex: 10% chance of inflicting poison
 [Serializable]
 public abstract class CalcDamagePassive : Passive {
 
@@ -47,6 +49,8 @@ public abstract class CalcDamagePassive : Passive {
 }
 
 // Call this during the TakeDamage method
+// defensive passives (increase defense, evasion)
+// ex: item gives 50% resistance to fire attacks
 [Serializable]
 public abstract class TakeDamagePassive : Passive
 {
@@ -57,6 +61,7 @@ public abstract class TakeDamagePassive : Passive
 }
 
 // call this for every denigen at the end of each turn
+// 
 [Serializable]
 public abstract class PerTurnPassive : Passive
 {

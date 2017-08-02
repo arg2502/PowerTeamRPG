@@ -3,8 +3,8 @@ using System.Collections;
 
 public class characterControl : OverworldObject {
     float moveSpeed = 0;
-    float walkSpeed = 200;
-    float runSpeed = 360;
+    float walkSpeed = 300;
+    float runSpeed = 450;
     public Vector2 speed;
     public Vector2 desiredSpeed;
     PauseMenu pm;
@@ -20,7 +20,7 @@ public class characterControl : OverworldObject {
 	// Use this for initialization
 	void Start () {
 
-        pm = GameObject.FindObjectOfType<PauseMenu>();
+        pm = GetComponentInChildren<PauseMenu>();
 
         anim = GetComponent<Animator>();
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
@@ -53,6 +53,7 @@ public class characterControl : OverworldObject {
             // If not pushing or pulling
             if (!Input.GetKey(GameControl.control.selectKey))
             {
+                // vertical input
                 if (Input.GetKey(GameControl.control.upKey))
                 {
                     desiredSpeed = new Vector2(0, moveSpeed) * Time.deltaTime;
@@ -64,20 +65,25 @@ public class characterControl : OverworldObject {
                     if (CheckCollision(new Vector2(0, -moveSpeed), movableMask) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
                 }
 
+                // horizontal input - may or may not be vertical input already
                 if (Input.GetKey(GameControl.control.leftKey))
                 {
-                    desiredSpeed = new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                    desiredSpeed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
                     if (CheckCollision(new Vector2(-moveSpeed, 0), movableMask) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
                 }
                 else if (Input.GetKey(GameControl.control.rightKey))
                 {
-                    desiredSpeed = new Vector2(moveSpeed, 0) * Time.deltaTime;
+                    desiredSpeed += new Vector2(moveSpeed, 0) * Time.deltaTime;
                     if (CheckCollision(new Vector2(moveSpeed, 0), movableMask) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
                 }
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
                 if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
                 {
+                    // normalize speed and mult by moveSpeed to prevent super fastness
+                    speed.Normalize();
+                    speed *= moveSpeed * Time.deltaTime;
+
                     transform.Translate(speed);
                     desiredSpeed = Vector2.zero;
                 }
