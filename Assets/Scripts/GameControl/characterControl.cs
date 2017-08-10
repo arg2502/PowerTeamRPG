@@ -54,27 +54,23 @@ public class characterControl : OverworldObject {
             if (!Input.GetKey(GameControl.control.selectKey))
             {
                 // vertical input
-                if (Input.GetKey(GameControl.control.upKey))
+                if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < 0.5f)
                 {
-                    desiredSpeed = new Vector2(0, moveSpeed) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(0, moveSpeed), movableMask) == false) { speed += new Vector2(0, moveSpeed) * Time.deltaTime; }
-                }
-                else if (Input.GetKey(GameControl.control.downKey))
-                {
-                    desiredSpeed = new Vector2(0, -moveSpeed) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(0, -moveSpeed), movableMask) == false) { speed += new Vector2(0, -moveSpeed) * Time.deltaTime; }
+                    desiredSpeed = new Vector2(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime);
+                    if(CheckCollision(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")), movableMask) == false)
+                    {
+                        speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") * Time.deltaTime);
+                    }
                 }
 
                 // horizontal input - may or may not be vertical input already
-                if (Input.GetKey(GameControl.control.leftKey))
+                if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < 0.5f)
                 {
-                    desiredSpeed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(-moveSpeed, 0), movableMask) == false) { speed += new Vector2(-moveSpeed, 0) * Time.deltaTime; }
-                }
-                else if (Input.GetKey(GameControl.control.rightKey))
-                {
-                    desiredSpeed += new Vector2(moveSpeed, 0) * Time.deltaTime;
-                    if (CheckCollision(new Vector2(moveSpeed, 0), movableMask) == false) { speed += new Vector2(moveSpeed, 0) * Time.deltaTime; }
+                    desiredSpeed = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f);
+                    if (CheckCollision(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0f), movableMask) == false)
+                    {
+                        speed += new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0f);
+                    }
                 }
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
