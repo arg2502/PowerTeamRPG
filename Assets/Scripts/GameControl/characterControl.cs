@@ -17,6 +17,9 @@ public class characterControl : OverworldObject {
 
     Animator anim;
 
+    bool isMoving;
+    Vector2 lastMovement;
+
 	// Use this for initialization
 	void Start () {
 
@@ -44,6 +47,8 @@ public class characterControl : OverworldObject {
         //desiredSpeed = Vector2.zero;
 
 		if (canMove) {
+            isMoving = false;
+
 			if (Input.GetKey (GameControl.control.runKey) || Input.GetKey (KeyCode.RightShift)) {
 				moveSpeed = runSpeed;
 			} else {
@@ -54,26 +59,33 @@ public class characterControl : OverworldObject {
             if (!Input.GetKey(GameControl.control.selectKey))
             {
                 // vertical input
-                if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < 0.5f)
+                if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
                 {
                     desiredSpeed = new Vector2(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime);
                     if(CheckCollision(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")), movableMask) == false)
                     {
                         speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") * Time.deltaTime);
                     }
+                    isMoving = true;
+                    lastMovement = new Vector2(0f, Input.GetAxisRaw("Vertical"));
                 }
 
                 // horizontal input - may or may not be vertical input already
-                if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < 0.5f)
+                if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
                 {
                     desiredSpeed = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f);
                     if (CheckCollision(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0f), movableMask) == false)
                     {
                         speed += new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0f);
                     }
+                    isMoving = true;
+                    lastMovement = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
                 }
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
+
+                
+                // if not colliding with object, move
                 if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
                 {
                     // normalize speed and mult by moveSpeed to prevent super fastness
@@ -83,8 +95,14 @@ public class characterControl : OverworldObject {
                     transform.Translate(speed);
                     desiredSpeed = Vector2.zero;
                 }
+                else
+                {
+                    isMoving = false;
+                }
+                
+
             }
-			
+
             // If pushing or pulling
             if (Input.GetKey(GameControl.control.selectKey))
             {
@@ -221,14 +239,12 @@ public class characterControl : OverworldObject {
             }
 		}
 
+        // set values for animator to determine movement/idle animations
         anim.SetFloat("vSpeed", speed.y);
-        anim.SetFloat("hSpeed", Mathf.Abs(speed.x));
-        if (speed.y == 0 || anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide"))
-        {
-            //flip the horizontal walking sprite based on speed
-            if (speed.x < 0 && transform.localScale.x < 0 /*&& anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide")*/) { transform.localScale = new Vector3(1, 1, 1); }
-            else if (speed.x > 0 && transform.localScale.x > 0 /*&& anim.GetCurrentAnimatorStateInfo(0).IsName("Jethro_OWalkSide")*/) { transform.localScale = new Vector3(-1, 1, 1); }
-        }
+        anim.SetFloat("hSpeed", speed.x);
+        anim.SetBool("isMoving", isMoving);
+        anim.SetFloat("lastHSpeed", lastMovement.x);
+        anim.SetFloat("lastVSpeed", lastMovement.y);
     }
 
 }
