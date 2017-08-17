@@ -802,7 +802,7 @@ public class BattleMenu : Menu {
                     else
                     {
                         denigenArray[commandIndex].GetComponent<Enemy>().Attack(commands[commandIndex]);
-                    }
+                    }                    
 
                     //record the appropriate text to display
                     for (int i = 0; i < denigenArray[commandIndex].CalcDamageText.Count; i++)

@@ -79,6 +79,9 @@ public class Denigen : MonoBehaviour {
     protected Color fade = new Color(0.0f, 0.0f, 0.0f, 1.0f);
     protected Color invisible = new Color(0.0f, 0.0f, 0.0f, 0.0f);
 
+    // for animation
+    protected Animator anim;
+
     // Use this for initialization
 	protected void Start () {
         //temp passive list
@@ -124,6 +127,8 @@ public class Denigen : MonoBehaviour {
         normalShader = Shader.Find("Sprites/Default");
 
         if (statusState == Status.dead || statusState == Status.overkill) { sr.color = new Color(0.0f, 0.0f, 0.0f, 0.0f); }
+
+        anim = GetComponent<Animator>();
 	}
     protected void LevelUp(int lvl)
     {
@@ -276,4 +281,11 @@ public class Denigen : MonoBehaviour {
         //fade away if fallen
         if (statusState == Status.dead || statusState == Status.overkill) { sr.color -= fade * Time.deltaTime; }
 	}
+    protected IEnumerator PlayAnimation(string animation)
+    {
+        anim.Play(animation);
+        print(anim.GetCurrentAnimatorClipInfo(0).Length);     
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
+    }
+
 }

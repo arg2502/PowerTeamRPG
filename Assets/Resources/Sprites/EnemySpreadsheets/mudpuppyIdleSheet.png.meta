@@ -1,0 +1,244 @@
+fileFormatVersion: 2
+guid: 21d270a0fa908dc4284f69212d726149
+timeCreated: 1502938144
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: mudpuppyIdleSheet_0
+    21300002: mudpuppyIdleSheet_1
+    21300004: mudpuppyIdleSheet_2
+    21300006: mudpuppyIdleSheet_3
+    21300008: mudpuppyIdleSheet_4
+    21300010: mudpuppyIdleSheet_5
+    21300012: mudpuppyIdleSheet_6
+    21300014: mudpuppyIdleSheet_7
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: mudpuppyIdleSheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -116, y: 62.012}
+        - {x: -120, y: 12.012001}
+        - {x: -120, y: 7.012001}
+        - {x: -114, y: 2.012001}
+        - {x: -120, y: -13.987999}
+        - {x: -120, y: -68.988}
+        - {x: 120, y: -68.988}
+        - {x: 120, y: 62.012}
+    - name: mudpuppyIdleSheet_1
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -82, y: 61.012}
+        - {x: -110, y: 39.012}
+        - {x: -121, y: 20.012001}
+        - {x: -121, y: -0.98799896}
+        - {x: -69, y: -68.988}
+        - {x: 65, y: -68.988}
+        - {x: 107, y: -56.988}
+        - {x: 119, y: -23.987999}
+        - {x: 119, y: 61.012}
+    - name: mudpuppyIdleSheet_2
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 55, y: 11.012001}
+        - {x: -4, y: 49.012}
+        - {x: -30, y: 59.012}
+        - {x: -59, y: 63.012}
+        - {x: -83, y: 63.012}
+        - {x: -88, y: 62.012}
+        - {x: -122, y: 38.012}
+        - {x: -122, y: -39.988}
+        - {x: -106, y: -68.988}
+        - {x: 89, y: -68.988}
+        - {x: 99, y: -66.988}
+        - {x: 117, y: -40.988}
+        - {x: 117, y: 58.012}
+        - {x: 64, y: 47.012}
+    - name: mudpuppyIdleSheet_3
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 60.00006, y: 68.012}
+        - {x: -98.99994, y: 68.012}
+        - {x: -121.99994, y: 36.012}
+        - {x: -121.99994, y: -22.987999}
+        - {x: -87.99994, y: -68.988}
+        - {x: 65.00006, y: -68.988}
+        - {x: 121.00006, y: -41.988}
+        - {x: 121.00006, y: 37.012}
+        - {x: 114.00006, y: 59.012}
+    - name: mudpuppyIdleSheet_4
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 63, y: 42.012}
+        - {x: 56, y: 23.012001}
+        - {x: 60, y: 6.012001}
+        - {x: -17, y: 50.012}
+        - {x: -29, y: 53.012}
+        - {x: -47, y: 53.012}
+        - {x: -50, y: 52.012}
+        - {x: -76, y: 68.012}
+        - {x: -79, y: 70.012}
+        - {x: -88, y: 70.012}
+        - {x: -122, y: 47.012}
+        - {x: -122, y: -11.987999}
+        - {x: -85, y: -68.988}
+        - {x: 74, y: -68.988}
+        - {x: 107, y: -60.988}
+        - {x: 120, y: -23.987999}
+        - {x: 120, y: 35.012}
+        - {x: 112, y: 47.012}
+    - name: mudpuppyIdleSheet_5
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 49, y: 36.012}
+        - {x: -12, y: 57.012}
+        - {x: -57, y: 69.012}
+        - {x: -91, y: 69.012}
+        - {x: -122, y: 32.012}
+        - {x: -122, y: -11.987999}
+        - {x: -85, y: -57.988}
+        - {x: -62, y: -66.988}
+        - {x: -46, y: -65.988}
+        - {x: -33, y: -68.988}
+        - {x: 57, y: -68.988}
+        - {x: 114, y: -60.988}
+        - {x: 117, y: -39.988}
+        - {x: 117, y: 43.012}
+        - {x: 76, y: 55.012}
+    - name: mudpuppyIdleSheet_6
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 79.50012, y: 70.012}
+        - {x: -101.49988, y: 70.012}
+        - {x: -122.49988, y: 61.012}
+        - {x: -122.49988, y: -66.988}
+        - {x: -119.49988, y: -68.988}
+        - {x: 87.50012, y: -68.988}
+        - {x: 113.50012, y: -62.988}
+        - {x: 118.50012, y: -24.987999}
+        - {x: 118.50012, y: 45.012}
+        - {x: 103.50012, y: 56.012}
+    - name: mudpuppyIdleSheet_7
+      rect:
+        serializedVersion: 2
+        x: 3500
+        y: 1
+        width: 500
+        height: 270
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -107.99988, y: 68.012}
+        - {x: -119.99988, y: 30.012001}
+        - {x: -119.99988, y: -23.987999}
+        - {x: -65.99988, y: -68.988}
+        - {x: 77.00012, y: -68.988}
+        - {x: 119.00012, y: -63.988}
+        - {x: 119.00012, y: 65.012}
+        - {x: 114.00012, y: 68.012}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

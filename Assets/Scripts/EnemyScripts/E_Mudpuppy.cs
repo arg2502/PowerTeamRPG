@@ -45,7 +45,7 @@ public class E_Mudpuppy : Enemy {
 	}
 
     //Attack method for bite -- straight forward physical attack
-    void Bite()
+    IEnumerator Bite()
     {
         // code for choosing the target of this attack
         // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
@@ -61,15 +61,22 @@ public class E_Mudpuppy : Enemy {
 
         //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
         float damage = CalcDamage("Bite", 0.8f, 0.15f, 0.95f, false);
-        
+
+        // play bite animation
+        yield return StartCoroutine(PlayAnimation("Bite"));
+
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(this, damage, false);
     }
 
-    void Frenzy()
+    IEnumerator Frenzy()
     {
         atkBat += (int)(atkBat * 0.1f);
         calcDamageText.Add(name + " used frenzy!");
+
+        // play frenzy animation
+        yield return StartCoroutine(PlayAnimation("Frenzy"));
+
         calcDamageText.Add("It's atk power has increased!");
     }
 
@@ -103,13 +110,13 @@ public class E_Mudpuppy : Enemy {
         switch (atkChoice)
         {
             case "Bite":
-                Bite();
+                StartCoroutine(Bite());
                 break;
             case "Frenzy":
-                Frenzy();
+                StartCoroutine(Frenzy());
                 break;
             default:
-                Bite();
+                StartCoroutine(Bite());
                 break;
         }
     }
