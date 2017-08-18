@@ -283,9 +283,10 @@ public class Denigen : MonoBehaviour {
 	}
     protected IEnumerator PlayAnimation(string animation)
     {
-        anim.Play(animation);
-        print(anim.GetCurrentAnimatorClipInfo(0).Length);     
+        GameControl.control.isAnimating = true;
+        anim.Play(animation); 
         yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
+        GameControl.control.isAnimating = false;
     }
 
 }

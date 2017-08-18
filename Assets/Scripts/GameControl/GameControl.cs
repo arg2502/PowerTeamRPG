@@ -72,6 +72,9 @@ public class GameControl : MonoBehaviour {
 	public KeyCode pauseKey;
 	public KeyCode runKey;
 
+    // check if an attack animation is playing
+    public bool isAnimating = false;
+
 	//awake gets called before start
 	void Awake () {
 		if (control == null)

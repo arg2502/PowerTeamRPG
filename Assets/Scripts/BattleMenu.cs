@@ -584,6 +584,9 @@ public class BattleMenu : Menu {
     }
     void Update()
     {
+        // don't update if a denigen is performing a battle animation
+        if (GameControl.control.isAnimating) return;
+
         // check for inactive buttons
         CheckForInactive();
 
@@ -765,7 +768,9 @@ public class BattleMenu : Menu {
        
        
         //press space to advance the battle phase
-		if (commandIndex < commands.Count && (Input.GetKeyUp(GameControl.control.selectKey) /*&& (commandIndex <= commands.Count - 1 && denigenArray[commandIndex].statusState != Denigen.Status.dead))*/ || (commandIndex == 0 && textIndex == 0))/* && !(commandIndex >= commands.Count)*/)
+		if (commandIndex < commands.Count 
+            && (Input.GetKeyUp(GameControl.control.selectKey) 
+            || (commandIndex == 0 && textIndex == 0)))
         {
             while (commandIndex < denigenArray.Count && (failedFlee && denigenArray[commandIndex].GetComponent<Hero>() != null))
             {
@@ -809,16 +814,6 @@ public class BattleMenu : Menu {
                     {
                         battleTextList.Add(denigenArray[commandIndex].CalcDamageText[i]);
                     }
-                    //foreach (Denigen d in denigenArray[commandIndex].Targets)
-                   // {
-                        //this causes an error when the target is dead. hopefully ending the battle when all heroes are dead will avoid this
-						//if (d.TakeDamageText != null)
-                       /* for (int i = 0; i < d.TakeDamageText.Count; i ++ )
-                        {
-                            battleTextList.Add(d.TakeDamageText[i]);
-                        }
-                        d.TakeDamageText.Clear();*/
-                   // }
                 }
 
                 //make sure there is text to display
@@ -827,17 +822,10 @@ public class BattleMenu : Menu {
                     battleText.GetComponent<TextMesh>().text = FormatText(battleTextList[textIndex]);
                 }
                 else { textIndex++; }
-
-               // if (battleText.GetComponent<TextMesh>().text.Contains("damage!")) //this hopefully only updates the HUD when damage is dealt
-                //{
-					// check if heroes/enemies are dead
-					// checks after attack to break out as soon as all enemies are dead
-					fallenHeroes = 0;
-					fallenEnemies = 0;
-                    if (CheckForDead()) { return; }
-                    
-				//}
-
+                
+				fallenHeroes = 0;
+				fallenEnemies = 0;
+                if (CheckForDead()) { return; }
 
             }
             if (textIndex < (battleTextList.Count - 1))
