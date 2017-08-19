@@ -74,6 +74,7 @@ public class GameControl : MonoBehaviour {
 
     // check if an attack animation is playing
     public bool isAnimating = false;
+    public bool isDying = false;
 
 	//awake gets called before start
 	void Awake () {

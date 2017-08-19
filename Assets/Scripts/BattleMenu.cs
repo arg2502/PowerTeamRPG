@@ -585,7 +585,8 @@ public class BattleMenu : Menu {
     void Update()
     {
         // don't update if a denigen is performing a battle animation
-        if (GameControl.control.isAnimating) return;
+        if (GameControl.control.isAnimating || GameControl.control.isDying)
+            return;
 
         // check for inactive buttons
         CheckForInactive();

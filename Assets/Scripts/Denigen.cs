@@ -271,7 +271,12 @@ public class Denigen : MonoBehaviour {
         }
 
         // check for dead
-        if (hp <= 0) { hp = 0; takeDamageText.Add( name + " falls!"); statusState = Status.dead; }
+        if (hp <= 0)
+        {
+            hp = 0;
+            takeDamageText.Add( name + " falls!");
+            statusState = Status.dead;
+        }
     }
 
 	// Update is called once per frame
@@ -279,14 +284,25 @@ public class Denigen : MonoBehaviour {
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
 
         //fade away if fallen
-        if (statusState == Status.dead || statusState == Status.overkill) { sr.color -= fade * Time.deltaTime; }
+        if (statusState == Status.dead || statusState == Status.overkill)
+        {
+            if (sr.color.a > 0 && !GameControl.control.isDying)
+                GameControl.control.isDying = true;
+
+            sr.color -= fade * Time.deltaTime;
+
+            if (sr.color.a <= 0 && GameControl.control.isDying)
+                GameControl.control.isDying = false;
+        }
 	}
+   
     protected IEnumerator PlayAnimation(string animation)
     {
         GameControl.control.isAnimating = true;
         anim.Play(animation); 
         yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
         GameControl.control.isAnimating = false;
+        StopCoroutine("PlayAnimation");
     }
 
 }

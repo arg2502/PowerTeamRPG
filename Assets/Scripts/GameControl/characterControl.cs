@@ -84,7 +84,7 @@ public class characterControl : OverworldObject {
                 RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                 RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
 
-                
+
                 // if not colliding with object, move
                 if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
                 {
@@ -95,11 +95,6 @@ public class characterControl : OverworldObject {
                     transform.Translate(speed);
                     desiredSpeed = Vector2.zero;
                 }
-                else
-                {
-                    isMoving = false;
-                }
-                
 
             }
 
@@ -113,60 +108,62 @@ public class characterControl : OverworldObject {
                     if (//transform.position.y <= topHit.transform.position.y &&
                         !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.upKey))) // up - W
+                        && ((Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f))) // up - W
                     {
-                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
+                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") / 2)) == false)
                         {
-                            if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime, movableMask))
+                            if (!CheckCollision(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime, movableMask))
                             {
-                                topHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
-                                speed += new Vector2(0, moveSpeed) * Time.deltaTime;
+                                topHit.transform.Translate(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") / 2) * Time.deltaTime);
+                                speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime;
+                                isMoving = true;
                             }
                         }
                     }
-                    else if (//transform.position.y >= topHit.transform.position.y &&
-                        !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                        (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.downKey))) // down - S
-                    {
-                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
-                        {
-                            if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime, mask)) 
-                            {
-                                topHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
-                                speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
-                            }
-                        }
-                    }
+                    //else if (//transform.position.y >= topHit.transform.position.y &&
+                    //    !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    //    (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    //    && (Input.GetKey(GameControl.control.downKey))) // down - S
+                    //{
+                    //    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
+                    //    {
+                    //        if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime, mask)) 
+                    //        {
+                    //            topHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
+                    //            speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
+                    //        }
+                    //    }
+                    //}
 
                     else if (//transform.position.x <= topHit.transform.position.x &&
                         !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.rightKey))) // right - D
+                        && ((Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f))) // right - D
                     {
-                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
+                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") / 2, 0)) == false)
                         {
-                            if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime, movableMask))
+                            if (!CheckCollision(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0) * Time.deltaTime, movableMask))
                             {
-                                topHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
-                                speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
+                                topHit.transform.Translate(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") / 2, 0) * Time.deltaTime);
+                                speed += new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0) * Time.deltaTime;
+                                isMoving = true;
                             }
                         }
                     }
-                    else if (//transform.position.x >= topHit.transform.position.x &&
-                        !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                        (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.leftKey))) // left - A
-                    {
-                        if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
-                        {
-                            if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime, mask))
-                            {
-                                topHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
-                                speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
-                            }
-                        }
-                    }
+                    //else if (//transform.position.x >= topHit.transform.position.x &&
+                    //    !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    //    (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    //    && (Input.GetKey(GameControl.control.leftKey))) // left - A
+                    //{
+                    //    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
+                    //    {
+                    //        if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime, mask))
+                    //        {
+                    //            topHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
+                    //            speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                    //        }
+                    //    }
+                    //}
 
                     topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                     bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
@@ -177,60 +174,62 @@ public class characterControl : OverworldObject {
                     if (//transform.position.y >= bottomHit.transform.position.y &&
                         !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.downKey))) // down - S
+                        && (Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)) // down - S
                     {
-                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
+                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical") / 2)) == false)
                         {
-                            if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime, movableMask))
+                            if (!CheckCollision(new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime, movableMask))
                             {
-                                bottomHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
-                                speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
+                                bottomHit.transform.Translate(new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical") / 2) * Time.deltaTime);
+                                speed += new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime;
+                                isMoving = true;
                             }
                         }
                     }
-                    else if (//transform.position.y <= bottomHit.transform.position.y &&
-                        !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                        (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.upKey))) // up - W
-                    {
-                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
-                        {
-                            if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime, mask))
-                            {
-                                bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
-                                speed += new Vector2(0, moveSpeed) * Time.deltaTime;
-                            }
-                        }
-                    }
+                    //else if (//transform.position.y <= bottomHit.transform.position.y &&
+                    //    !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    //    (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    //    && (Input.GetKey(GameControl.control.upKey))) // up - W
+                    //{
+                    //    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
+                    //    {
+                    //        if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime, mask))
+                    //        {
+                    //            bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
+                    //            speed += new Vector2(0, moveSpeed) * Time.deltaTime;
+                    //        }
+                    //    }
+                    //}
 
                     else if (//transform.position.x >= bottomHit.transform.position.x &&
                         !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.leftKey))) // left - A
+                        && (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)) // left - A
                     {
-                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
+                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") / 2, 0)) == false)
                         {
-                            if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime, movableMask))
+                            if (!CheckCollision(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0) * Time.deltaTime, movableMask))
                             {
-                                bottomHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
-                                speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
+                                bottomHit.transform.Translate(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") / 2, 0) * Time.deltaTime);
+                                speed += new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0) * Time.deltaTime;
+                                isMoving = true;
                             }
                         }
                     }
-                    else if (//transform.position.x <= bottomHit.transform.position.x &&
-                        !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                        (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                        && (Input.GetKey(GameControl.control.rightKey))) // right - D
-                    {
-                        if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
-                        {
-                            if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime, mask))
-                            {
-                                bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
-                                speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
-                            }
-                        }
-                    }
+                    //else if (//transform.position.x <= bottomHit.transform.position.x &&
+                    //    !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
+                    //    (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
+                    //    && (Input.GetKey(GameControl.control.rightKey))) // right - D
+                    //{
+                    //    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
+                    //    {
+                    //        if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime, mask))
+                    //        {
+                    //            bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
+                    //            speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
+                    //        }
+                    //    }
+                    //}
 
                     topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
                     bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
@@ -240,8 +239,8 @@ public class characterControl : OverworldObject {
 		}
 
         // set values for animator to determine movement/idle animations
-        anim.SetFloat("vSpeed", speed.y);
-        anim.SetFloat("hSpeed", speed.x);
+        anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
+        anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
         anim.SetBool("isMoving", isMoving);
         anim.SetFloat("lastHSpeed", lastMovement.x);
         anim.SetFloat("lastVSpeed", lastMovement.y);
