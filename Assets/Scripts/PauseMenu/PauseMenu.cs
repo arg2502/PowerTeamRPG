@@ -44,7 +44,7 @@ public class PauseMenu : Menu {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
             MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(player.transform.position.x - 600, player.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
+            buttonArray[i].transform.position = new Vector2(player.transform.position.x - 9f, player.transform.position.y + (4f + b.height) + (i * -(b.height + b.height / 2)));
             b.GetComponent<Renderer>().sortingOrder = 9900;
 
             // assign text
@@ -73,7 +73,7 @@ public class PauseMenu : Menu {
         //Create the description text object
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
         descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
-        descriptionText.transform.position = new Vector2(player.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
+        descriptionText.transform.position = new Vector2(player.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.25f);
         descriptionText.GetComponent<Renderer>().sortingOrder = 9900;
 
         //call change text method to correctly size text and avoid a certain bug
@@ -247,9 +247,9 @@ public class PauseMenu : Menu {
         for (int i = 0; i < contentArray.Count; i++)
         {
             MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(player.transform.position.x - 600, player.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
+            buttonArray[i].transform.position = new Vector2(player.transform.position.x - 9f, player.transform.position.y + (4f + b.height) + (i * -(b.height + b.height / 2)));
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
         }
-        descriptionText.transform.position = new Vector2(player.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
+        descriptionText.transform.position = new Vector2(player.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.25f);
 	}
 }

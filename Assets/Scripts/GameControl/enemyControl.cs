@@ -6,9 +6,9 @@ public class enemyControl : OverworldObject {
 
     //attributes
     float moveSpeed = 0;
-    float walkSpeed = 200;
-    float coolDownSpeed = 150;
-    float runSpeed = 375;
+    float walkSpeed = 3f;
+    float coolDownSpeed = 2f;
+    float runSpeed = 5.5f;
     Vector2 speed;
 
     public Transform player;
@@ -34,7 +34,7 @@ public class enemyControl : OverworldObject {
     int numOfEnemies; // number of enemies this object carries
     public List<Enemy> enemies; // the enemies this object carries
     public List<RaycastHit2D> raycastHits = new List<RaycastHit2D>();
-    float distance = 100.0f;
+    float distance = 1.5f;
 
     Animator anim;
 
@@ -42,6 +42,10 @@ public class enemyControl : OverworldObject {
 	public bool beenBattled; // true if you battled/fleed this enemy - all normal enemies should be set back to false when player dies
 
 	public Vector3 currentPosition;
+
+    float sideHitFloat = 0.25f;
+    float topHitFloat = 0.07f;
+    float bottomHitFloat = 0.035f;
 
 	// Use this for initialization
 	void Start () {
@@ -54,7 +58,7 @@ public class enemyControl : OverworldObject {
         waitTimer = 2.0f;
         pursueTimer = 5.0f;
         coolDownTimer = 1.5f;
-        safeDistance = 500.0f;
+        safeDistance = 8.0f;
 
         rc = GameObject.FindObjectOfType<roomControl>();
 
@@ -66,7 +70,7 @@ public class enemyControl : OverworldObject {
 		
 		// set enabled state if you battled and close to it
 		// mainly for coming out of pause sub menus
-		if (beenBattled && dist <= safeDistance + 100.0f) {
+		if (beenBattled && dist <= safeDistance + 1.5f) {
 			sr.enabled = false;
 			enabled = false;
 		} 
@@ -74,7 +78,7 @@ public class enemyControl : OverworldObject {
         //check player's distance from enemy
         if (!GameControl.control.isPaused)
         {
-			if (dist <= safeDistance + 100.0f) {
+			if (dist <= safeDistance + 1.5f) {
 				// if the enemy has been arbitrarily place, destroy it
 				if (beenPlaced) {
 					sr.enabled = false;
@@ -82,8 +86,8 @@ public class enemyControl : OverworldObject {
 				}
 				// if it's a random enemy, push it somewhere else
 				else {
-					while (dist <= safeDistance + 100.0f) {
-						transform.position = new Vector2 (Random.Range (-1000.0f, 1000.0f), Random.Range (-1000.0f, 1000.0f));
+					while (dist <= safeDistance + 1.5f) {
+						transform.position = new Vector2 (Random.Range (-15.0f, 15.0f), Random.Range (-15.0f, 15.0f));
 						dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
 							+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
 					}
@@ -102,8 +106,8 @@ public class enemyControl : OverworldObject {
 						int loopCounter = 0; // keep track of the number of loops
 						while ((raycastHits [0].collider != null//owo.GetComponent<Collider2D>()
 						                     || raycastHits [1].collider != null)//owo.GetComponent<Collider2D>()) 
-						                     || (dist <= safeDistance + 100.0f)) {
-							transform.position = new Vector2 (Random.Range (-1000.0f, 1000.0f), Random.Range (-1000.0f, 1000.0f));
+						                     || (dist <= safeDistance + 1.5f)) {
+							transform.position = new Vector2 (Random.Range (-15.0f, 15.0f), Random.Range (-15.0f, 15.0f));
 							print ("hit");
 							dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
 							+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
@@ -206,10 +210,10 @@ public class enemyControl : OverworldObject {
             {
                 speed = Vector2.zero;
 
-                if (player.position.x < transform.position.x - 5.0f) { speed += directions[1] * runSpeed * Time.deltaTime; }
-                else if (player.position.x > transform.position.x + 5.0f) { speed += directions[0] * runSpeed * Time.deltaTime; }
-                if (player.position.y < transform.position.y - 5.0f) { speed += directions[3] * runSpeed * Time.deltaTime; }
-                else if (player.position.y > transform.position.y + 5.0f) { speed += directions[2] * runSpeed * Time.deltaTime; }
+                if (player.position.x < transform.position.x - 0.1f) { speed += directions[1] * runSpeed * Time.deltaTime; }
+                else if (player.position.x > transform.position.x + 0.1f) { speed += directions[0] * runSpeed * Time.deltaTime; }
+                if (player.position.y < transform.position.y - 0.1f) { speed += directions[3] * runSpeed * Time.deltaTime; }
+                else if (player.position.y > transform.position.y + 0.1f) { speed += directions[2] * runSpeed * Time.deltaTime; }
 
                 CheckCollision();
                 CheckForBattle();
@@ -228,8 +232,8 @@ public class enemyControl : OverworldObject {
 
     void CheckCollision()
     {
-        RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y + 5.0f, transform.position.z), speed, 30.0f, mask);
-        RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 10.0f, transform.position.z), speed, 30.0f, mask);
+        RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
+        RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
         if (topHit.collider == null && bottomHit.collider == null)
         {
             transform.Translate(speed);
@@ -246,7 +250,7 @@ public class enemyControl : OverworldObject {
 
     void CheckForBattle()
     {
-        if (dist <= 15.0f)
+        if (dist <= 0.25f)
         {
             GameControl.control.currentPosition = player.position; //record the player's position before entering battle
             GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene

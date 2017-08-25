@@ -13,7 +13,7 @@ public class InventorySubMenu : SubMenu {
     {
         switch (label)
         {
-            case "Consumable Items":
+            case "Consumables":
                 GameControl.control.whichInventory = "consumables";
                 GameControl.control.currentPosition = pm.player.transform.position; //record the player's position
                 GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene

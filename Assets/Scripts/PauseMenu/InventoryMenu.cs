@@ -43,7 +43,7 @@ public class InventoryMenu : Menu {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
             MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 600, camera.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
+            buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y + (3.9f + b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -65,7 +65,7 @@ public class InventoryMenu : Menu {
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
         if (selectedIndex + scrollIndex < itemList.Count)
         { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity; }
-        descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
+        descriptionText.transform.position = new Vector2(camera.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.25f);
 
         // set selected button
         buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;

@@ -48,7 +48,7 @@ public class ConfirmPurchaseShopKeeperSub : SubMenu {
 			} else {
 				// selling
 				// remove items
-				if (parent.shopMenu.whichInventory == "Consumable Items") {
+				if (parent.shopMenu.whichInventory == "Consumables") {
 					if (parent.item.quantity - parent.quantity > 0) {
 						//parent.item.quantity -= parent.quantity; // this may not affect the actual item, just the menu's version. WE'll see
 						GameControl.control.consumables[parent.sellerParent.inventoryPos].GetComponent<Item>().quantity -= parent.quantity;

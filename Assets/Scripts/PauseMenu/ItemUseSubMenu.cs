@@ -55,7 +55,7 @@ public class ItemUseSubMenu : SubMenu {
         for (int i = 0; i < 11; i++)
         {
             statChanges.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
-            statChanges[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(200.0f, -(i * 35.0f), 0.0f);
+            statChanges[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(3.125f, -(i * 0.55f), 0.0f);
             statChanges[i].GetComponent<Renderer>().enabled = false;
         }
 	}
@@ -68,7 +68,7 @@ public class ItemUseSubMenu : SubMenu {
         // Create all of the text Objs necessary
         for (int i = 0; i < (11 + h.passiveList.Count); i++) {
             heroInfo.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
-            heroInfo[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(0.0f, -(i * 35.0f), 0.0f);
+            heroInfo[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(0.0f, -(i * 0.55f), 0.0f);
         }
         heroInfo[0].GetComponent<TextMesh>().text = h.name;
         heroInfo[1].GetComponent<TextMesh>().text = "Status: " + h.statusState;

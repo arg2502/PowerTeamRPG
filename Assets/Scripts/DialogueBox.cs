@@ -58,12 +58,12 @@ public class DialogueBox : MonoBehaviour {
 
 		//Create the text objects
 		titleTextGO = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-		titleTextGO.GetComponent<TextMesh> ().fontSize = 100;
-		titleTextGO.GetComponent<TextMesh> ().alignment = TextAlignment.Left;
+		//titleTextGO.GetComponent<TextMesh> ().fontSize = 100;
+		//titleTextGO.GetComponent<TextMesh> ().alignment = TextAlignment.Left;
 
 		spokenTextGO = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-		spokenTextGO.GetComponent<TextMesh>().fontSize = 100;
-		spokenTextGO.GetComponent<TextMesh>().alignment = TextAlignment.Left;
+		//spokenTextGO.GetComponent<TextMesh>().fontSize = 100;
+		//spokenTextGO.GetComponent<TextMesh>().alignment = TextAlignment.Left;
 
 		// set text
 		titleText = titleTextGO.GetComponent<TextMesh>();
@@ -97,16 +97,16 @@ public class DialogueBox : MonoBehaviour {
         }
 
 		// display at correct location - initially
-        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
-        else { dialogueOffset = new Vector2(-600, -250);}
-		titleOffset = new Vector2 (0, 70);
-		textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
 		spokenTextGO.transform.position = textPosition;
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-7f, -4f); }
+        else { dialogueOffset = new Vector2(-9.5f, -4f);}
+		titleOffset = new Vector2 (0, 1);
+		textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -1.5f);
 
 		titlePosition = new Vector3 (textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
 		titleTextGO.transform.position = titlePosition;
 
-		transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+		transform.position = new Vector3 (mainCamera.transform.position.x, mainCamera.transform.position.y - 5, -14);
 
 		isTyping = false;
 		cancelTyping = false;
@@ -144,26 +144,26 @@ public class DialogueBox : MonoBehaviour {
 
         // change text position
         // if the portrait exists, make room for it
-        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
-        else { dialogueOffset = new Vector2(-600, -250); }
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-7f, -4f); }
+        else { dialogueOffset = new Vector2(-9f, -4f); }
 
         titleText.text = npc.npcDialogue.title[outerListPosition];
         
             // display at correct locationif (titleText.text == "")
         if(titleText.text == "")
         {
-            textPosition = new Vector3(mainCamera.transform.position.x + (dialogueOffset.x + titleOffset.x), mainCamera.transform.position.y + (dialogueOffset.y + titleOffset.y), -100);
+            textPosition = new Vector3(mainCamera.transform.position.x + (dialogueOffset.x + titleOffset.x), mainCamera.transform.position.y + (dialogueOffset.y + titleOffset.y), -1.5f);
         }
         else
         {
-            textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+            textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -1.5f);
         }
         spokenTextGO.transform.position = textPosition;
 
         titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
         titleTextGO.transform.position = titlePosition;
 
-        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 5f, -14f);
 
         // turn on renderer
         // if (sr.enabled == false) { sr.enabled = true; }
@@ -225,26 +225,26 @@ public class DialogueBox : MonoBehaviour {
 
         // change text position
         // if the portrait exists, make room for it
-        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
-        else { dialogueOffset = new Vector2(-600, -250); }
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-7f, -4f); }
+        else { dialogueOffset = new Vector2(-9f, -4f); }
 
         titleText.text = npc.npcDialogue.responseTitle;
 
         // display at correct location
         if (titleText.text == "")
         {
-            textPosition = new Vector3(mainCamera.transform.position.x + (dialogueOffset.x + titleOffset.x), mainCamera.transform.position.y + (dialogueOffset.y + titleOffset.y), -100);
+            textPosition = new Vector3(mainCamera.transform.position.x + (dialogueOffset.x + titleOffset.x), mainCamera.transform.position.y + (dialogueOffset.y + titleOffset.y), -1.5f);
         }
         else
         {
-            textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -100);
+            textPosition = new Vector3(mainCamera.transform.position.x + dialogueOffset.x, mainCamera.transform.position.y + dialogueOffset.y, -1.5f);
         }
         spokenTextGO.transform.position = textPosition;
 
         titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
         titleTextGO.transform.position = titlePosition;
 
-        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 5f, -14f);
 
         if (Input.GetKeyUp(GameControl.control.selectKey))
         {
@@ -356,8 +356,8 @@ public class DialogueBox : MonoBehaviour {
         {
             portraitSr.sprite = npc.npcDialogue.dialogueList[outerListPosition].charImages[innerListPosition]; // draw correct portrait
         }
-        if (portraitSr.sprite) { dialogueOffset = new Vector2(-450, -250); }
-        else { dialogueOffset = new Vector2(-600, -250); }
+        if (portraitSr.sprite) { dialogueOffset = new Vector2(-7f, -4f); }
+        else { dialogueOffset = new Vector2(-9f, -4f); }
 
 
         titleText.text = npc.npcDialogue.title[outerListPosition];
@@ -367,7 +367,7 @@ public class DialogueBox : MonoBehaviour {
         titlePosition = new Vector3(textPosition.x + titleOffset.x, textPosition.y + titleOffset.y, -100);
         titleTextGO.transform.position = titlePosition;
 
-        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 325, -900);
+        transform.position = new Vector3(mainCamera.transform.position.x, mainCamera.transform.position.y - 5f, -14f);
 
 
         // now that the items are in the right position,

@@ -78,7 +78,7 @@ public class SkillTree : MonoBehaviour {
         {
             whichButton[i] = (GameObject)Instantiate(Resources.Load("Prefabs/SkillTreeButton"));
             ButtonSkillTree b = whichButton[i].GetComponent<ButtonSkillTree>();
-            whichButton[i].transform.position = new Vector2(camera.transform.position.x - 600 + (i * (b.width + b.width / 4)), camera.transform.position.y + 300);
+            whichButton[i].transform.position = new Vector2(camera.transform.position.x - 9.375f + (i * (b.width + b.width / 4)), camera.transform.position.y + 4.7f);
 
             // display technique's name - for right now
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -106,7 +106,7 @@ public class SkillTree : MonoBehaviour {
             {                
                 button2DArray[col, row] = (GameObject)Instantiate(Resources.Load("Prefabs/SkillTreeButton"));
                 ButtonSkillTree b = button2DArray[col, row].GetComponent<ButtonSkillTree>();
-                button2DArray[col, row].transform.position = new Vector2(camera.transform.position.x - 600 + (col * (b.width + b.width / 4)), camera.transform.position.y + (250 - b.height) + (row * -(b.height + b.height / 2)));
+                button2DArray[col, row].transform.position = new Vector2(camera.transform.position.x - 9.375f + (col * (b.width + b.width / 4)), camera.transform.position.y + (3.9f - b.height) + (row * -(b.height + b.height / 2)));
 
                 // display technique's name - for right now
                 b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -159,7 +159,7 @@ public class SkillTree : MonoBehaviour {
         // add on Done button at the very end
         button2DArray[0, maxRows] = (GameObject)Instantiate(Resources.Load("Prefabs/SkillTreeButton"));
         ButtonSkillTree button = button2DArray[0, currentTree.numOfRow].GetComponent<ButtonSkillTree>();
-        button2DArray[0, maxRows].transform.position = new Vector2(camera.transform.position.x - 600, camera.transform.position.y - 400);
+        button2DArray[0, maxRows].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y - 6.25f);
 
         // display "Done" text
         button.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -179,11 +179,11 @@ public class SkillTree : MonoBehaviour {
         // description text
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
         descriptionText.GetComponent<TextMesh>().text = ""; // FormatText(button2DArray[columnIndex,rowIndex].GetComponent<ButtonSkillTree>().Technique.Description);
-        descriptionText.transform.position = new Vector2(button2DArray[currentTree.numOfColumn - 1, 0].transform.position.x + 400, button2DArray[currentTree.numOfColumn - 1, 0].transform.position.y + 50);
+        descriptionText.transform.position = new Vector2(button2DArray[currentTree.numOfColumn - 1, 0].transform.position.x + 6.25f, button2DArray[currentTree.numOfColumn - 1, 0].transform.position.y + 0.78f);
 
         remainingPts = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
         remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
-        remainingPts.transform.position = new Vector2(camera.transform.position.x - 700, button2DArray[0, currentTree.numOfRow].transform.position.y + 450);
+        remainingPts.transform.position = new Vector2(camera.transform.position.x - 10.9f, button2DArray[0, currentTree.numOfRow].transform.position.y + 7f);
         
         
     }

@@ -18,7 +18,7 @@ public class SellerSubMenu : SubMenu {
 		contentArray = new List<string> ();
 		sellingPrice = 0;
 		// set up content array based on shopkeeper menu choice
-		if (parent.whichInventory == "Consumable Items") {
+		if (parent.whichInventory == "Consumables") {
 			for (int i = 0; i < GameControl.control.consumables.Count; i++) {
 				contentArray.Add (GameControl.control.consumables [i].GetComponent<Item>().name);
 			}
@@ -64,7 +64,7 @@ public class SellerSubMenu : SubMenu {
 		child.parentPos = buttonArray [selectedIndex].transform;
 
 		// determine which inventory for the item
-		if (parent.whichInventory == "Consumable Items") {
+		if (parent.whichInventory == "Consumables") {
 			child.item = GameControl.control.consumables [selectedIndex + scrollIndex].GetComponent<Item> ();
 		}
 		else if (parent.whichInventory == "Weapons") {
@@ -94,7 +94,7 @@ public class SellerSubMenu : SubMenu {
 
 		if (isVisible) {
 			// determine selling price
-			if (parent.whichInventory == "Consumable Items") {
+			if (parent.whichInventory == "Consumables") {
 				//print (GameControl.control.consumables [selectedIndex + scrollIndex].GetComponent<Item> ().price);
 				//print(parent.shopKeeper.consumablesPerc);
 				sellingPrice = (int)(GameControl.control.consumables [selectedIndex + scrollIndex].GetComponent<Item> ().price * parent.shopKeeper.consumablesPerc);

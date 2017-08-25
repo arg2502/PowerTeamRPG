@@ -44,7 +44,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
-  compressionQuality: 50
+  compressionQuality: -1
   allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 1
+  spritePixelsToUnits: 64
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
@@ -103,13 +103,8 @@ TextureImporter:
       - - {x: -32, y: 32}
         - {x: -32, y: -32}
         - {x: 32, y: -32}
-        - {x: 32, y: 28}
-        - {x: 25, y: 32}
-      - - {x: 25, y: 32}
-        - {x: 26, y: 29}
-        - {x: 29, y: 29}
-        - {x: 31, y: 31}
-        - {x: 31, y: 32}
+        - {x: 32, y: 31}
+        - {x: 17, y: 32}
     - name: waterTopEdgeSheet_3
       rect:
         serializedVersion: 2
@@ -121,11 +116,12 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -17, y: 32}
+      - - {x: -14, y: 32}
         - {x: -32, y: 28}
         - {x: -32, y: -32}
         - {x: 32, y: -32}
-        - {x: 32, y: 32}
+        - {x: 32, y: 28}
+        - {x: 12, y: 32}
     - name: waterTopEdgeSheet_4
       rect:
         serializedVersion: 2
@@ -137,17 +133,12 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -18, y: 32}
-        - {x: -32, y: 27}
+      - - {x: -9, y: 32}
+        - {x: -32, y: 28}
         - {x: -32, y: -32}
         - {x: 32, y: -32}
-        - {x: 32, y: 26}
-        - {x: 19, y: 32}
-      - - {x: 19, y: 32}
-        - {x: 20, y: 29}
-        - {x: 23, y: 29}
-        - {x: 25, y: 31}
-        - {x: 25, y: 32}
+        - {x: 32, y: 27}
+        - {x: 22, y: 32}
     - name: waterTopEdgeSheet_5
       rect:
         serializedVersion: 2
@@ -176,7 +167,8 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -32, y: 32}
+      - - {x: -18, y: 32}
+        - {x: -32, y: 31}
         - {x: -32, y: -32}
         - {x: 32, y: -32}
         - {x: 32, y: 32}

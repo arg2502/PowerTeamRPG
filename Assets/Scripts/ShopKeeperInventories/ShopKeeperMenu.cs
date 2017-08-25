@@ -40,7 +40,7 @@ public class ShopKeeperMenu : Menu {
 		// list of inventory
 		else{
 			numOfRow = 4;
-			contentArray.Add ("Consumable Items");
+			contentArray.Add ("Consumables");
 			contentArray.Add ("Weapons");
 			contentArray.Add ("Armor");
 			contentArray.Add ("Key Items");
@@ -61,7 +61,7 @@ public class ShopKeeperMenu : Menu {
 			// create a button
 			buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
 			MyButton b = buttonArray[i].GetComponent<MyButton>();
-			buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 600, camera.transform.position.y + (250 + b.height) + (i * -(b.height + b.height / 2)));
+			buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y + (3.9f + b.height) + (i * -(b.height + b.height / 2)));
 
 			// assign text
 			b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -92,7 +92,7 @@ public class ShopKeeperMenu : Menu {
 		//Create the description text object
 		descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
 
-		descriptionText.transform.position = new Vector2(camera.transform.position.x + 200, buttonArray[0].transform.position.y + 15);
+		descriptionText.transform.position = new Vector2(camera.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.23f);
 
 
 

@@ -44,7 +44,7 @@ public class TeamSubMenu : SubMenu {
         for (int i = 0; i < 11; i++)
         {
             statChanges.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
-            statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(200.0f, -(i * 35.0f), 0.0f);
+            statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(3.125f, -(i * 0.55f), 0.0f);
             statChanges[i].GetComponent<Renderer>().enabled = false;
         }
 
@@ -62,7 +62,7 @@ public class TeamSubMenu : SubMenu {
         // create the text objects that will show the hero's stats
         SetStatChanges(0);
         InstantiateHeroInfo();
-        for (int i = 0; i < statChanges.Count; i++) { statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(200.0f, -(i * 35.0f), 0.0f); }
+        for (int i = 0; i < statChanges.Count; i++) { statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(3.125f, -(i * 0.55f), 0.0f); }
             //UpdateStatChanges(GameControl.control.heroList[selectedIndex]);
             foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = true; }
         foreach (GameObject go in statChanges) { go.GetComponent<Renderer>().enabled = true; }
@@ -112,7 +112,7 @@ public class TeamSubMenu : SubMenu {
         for (int i = 0; i < (11 + GameControl.control.heroList[selectedIndex].passiveList.Count); i++)
         {
             heroInfo.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
-            heroInfo[i].transform.position = pm.descriptionText.transform.position + new Vector3(0.0f, -(i * 35.0f), 0.0f);
+            heroInfo[i].transform.position = pm.descriptionText.transform.position + new Vector3(0.0f, -(i * 1f), 0.0f);
         }
         heroInfo[0].GetComponent<TextMesh>().text = GameControl.control.heroList[selectedIndex].name;
         heroInfo[1].GetComponent<TextMesh>().text = "Status: " + GameControl.control.heroList[selectedIndex].statusState;
@@ -229,7 +229,7 @@ public class TeamSubMenu : SubMenu {
             for (int i = 0; i < contentArray.Count; i++)
             {
                 MyButton b = buttonArray[i].GetComponent<MyButton>();
-                buttonArray[i].transform.position = new Vector2(parentPos.position.x + b.width + 50, parentPos.position.y + (i * -(b.height + b.height / 2)));
+                buttonArray[i].transform.position = new Vector2(parentPos.position.x + b.width + 0.78f, parentPos.position.y + (i * -(b.height + b.height / 2)));
                 b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
             }
 

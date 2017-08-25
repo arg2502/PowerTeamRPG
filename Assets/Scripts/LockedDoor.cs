@@ -6,7 +6,7 @@ public class LockedDoor : NPCObject {
     void Start()
     {
         base.Start();
-        distToTalk = 180.0f;
+        distToTalk = 3.0f;
     }
 	protected override void SetDialogue()
     {

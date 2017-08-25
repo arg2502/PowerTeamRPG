@@ -28,10 +28,10 @@ public class BattleMenu : Menu {
     // array of the heroes, mainly useful for enemy targeting, but everyone can use it
     public List<Denigen> heroList = new List<Denigen>() { };
     public List<Denigen> enemyList = new List<Denigen>() { };
-    public List<Vector2> enemyPositions = new List<Vector2>() {new Vector2(480.0f, -90.0f), new Vector2(702.0f, 33.0f),
-                                    new Vector2(361.0f, 104.0f), new Vector2(580.0f, 231.0f), new Vector2(262.0f, 286.0f)};
-    public List<Vector2> heroPositions = new List<Vector2>() {new Vector2(-480.0f, -90.0f), new Vector2(-702.0f, 33.0f),
-                                    new Vector2(-361.0f, 104.0f), new Vector2(-580.0f, 231.0f), new Vector2(-262.0f, 286.0f)};
+    public List<Vector2> enemyPositions = new List<Vector2>() {new Vector2(7.5f, -1.4f), new Vector2(11.0f, 0.5f),
+                                    new Vector2(5.65f, 1.625f), new Vector2(9f, 3.6f), new Vector2(4.1f, 4.5f)};
+    public List<Vector2> heroPositions = new List<Vector2>() {new Vector2(-7.5f, -1.4f), new Vector2(-11.0f, 0.5f),
+                                    new Vector2(-5.65f, 1.625f), new Vector2(-9f, 3.6f), new Vector2(-4.1f, 4.5f)};
 
     //The HUD to display stats, for now just text prefabs
     public List<GameObject> heroCards = new List<GameObject>() { };
@@ -183,7 +183,7 @@ public class BattleMenu : Menu {
             // create a button
 			buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
             MyButton b = buttonArray[i].GetComponent<MyButton>();
-            buttonArray[i].transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y - (210 - b.height) + (i * -(b.height + b.height / 2)));
+            buttonArray[i].transform.position = new Vector2(transform.position.x, transform.position.y + (b.height*2) + (i * -(b.height + b.height / 2)));
 
             // assign text
 			b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
@@ -196,11 +196,11 @@ public class BattleMenu : Menu {
         // Create the text object for the top of the menu which says whose turn it is
         menuLabel = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
         menuLabel.GetComponent<TextMesh>().color = Color.black;
-        menuLabel.transform.position = buttonArray[0].transform.position + new Vector3(0.0f, 50.0f, 0.0f);
+        menuLabel.transform.position = buttonArray[0].transform.position + new Vector3(0.0f, 0.8f, 0.0f);
 
         // Create the description box and its text
         descriptionBox = (GameObject)Instantiate(Resources.Load("Prefabs/DescriptionBoxPrefab"));
-        descriptionBox.transform.position = transform.position + new Vector3(0.0f, -195.0f, 0.0f);
+        descriptionBox.transform.position = transform.position + new Vector3(0.0f, -3.0f, 0.0f);
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
         descriptionText.GetComponent<TextMesh>().color = Color.black;
         descriptionText.transform.position = descriptionBox.transform.position;
@@ -214,9 +214,9 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            heroList[i].Card.GetComponent<TextMesh>().fontSize = 40;
-            if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 775), (0)); }
-            else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 775), ((225 / heroList.Count) * (i * 3) - 225)); }
+            //heroList[i].Card.GetComponent<TextMesh>().fontSize = 40;
+            if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 15f), (0)); }
+            else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 15f), ((3.5f / heroList.Count) * (i * 3) - 3.5f)); }
             heroList[i].Card.GetComponent<TextMesh>().text = heroList[i].name + "\nLvl: " + heroList[i].Level + "\nHP: " + heroList[i].hp + " / " + heroList[i].hpMax
                 + "\nPM: " + heroList[i].pm + " / " + heroList[i].pmMax;
 
@@ -227,9 +227,9 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-            enemyList[i].Card.GetComponent<TextMesh>().fontSize = 40;
-            if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 775), ( 0 )); }
-            else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 775), ((225 / enemyList.Count) * (i * 3) - 225)); }
+            //enemyList[i].Card.GetComponent<TextMesh>().fontSize = 40;
+            if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 15f), ( 0 )); }
+            else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 15f), ((3.5f / enemyList.Count) * (i * 3) - 3.5f)); }
             enemyList[i].Card.GetComponent<TextMesh>().text = enemyList[i].name + "\nLvl: " + enemyList[i].Level + "\nHP: " + enemyList[i].hp + " / " + enemyList[i].hpMax
                 + "\nPM: " + enemyList[i].pm + " / " + enemyList[i].pmMax;
 
@@ -246,9 +246,9 @@ public class BattleMenu : Menu {
         
         //Create the text object for the battle phase
         battleText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
-        battleText.GetComponent<TextMesh>().fontSize = 60;
+        //battleText.GetComponent<TextMesh>().fontSize = 60;
         battleText.GetComponent<TextMesh>().alignment = TextAlignment.Left;
-        battleText.transform.position = transform.position + new Vector3(0.0f, -195.0f, 0.0f);
+        battleText.transform.position = transform.position + new Vector3(0.0f, -3.0f, 0.0f);
         battleText.GetComponent<TextMesh>().color = Color.black;
         
         

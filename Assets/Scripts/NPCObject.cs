@@ -36,7 +36,7 @@ public class NPCObject : OverworldObject {
         }
         numOfTimesTalked = 0;
         npcDialogue = dialogueList[numOfTimesTalked];
-        distToTalk = 120.0f;
+        distToTalk = 2.0f;
         
 	}
 

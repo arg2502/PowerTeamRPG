@@ -3,8 +3,8 @@ using System.Collections;
 
 public class characterControl : OverworldObject {
     float moveSpeed = 0;
-    float walkSpeed = 300;
-    float runSpeed = 450;
+    float walkSpeed = 4.5f;
+    float runSpeed = 7f;
     public Vector2 speed;
     public Vector2 desiredSpeed;
     PauseMenu pm;
@@ -14,6 +14,10 @@ public class characterControl : OverworldObject {
 
     RaycastHit2D topHitCheck;
     RaycastHit2D bottomHitCheck;
+
+    float sideHitFloat = 0.25f;
+    float topHitFloat = 0.5f;
+    float bottomHitFloat = 0.75f;
 
     Animator anim;
 
@@ -33,8 +37,8 @@ public class characterControl : OverworldObject {
 
     public bool CheckCollision(Vector2 dir, LayerMask _mask)
     {
-        topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), dir, 32.0f, _mask);
-        bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), dir, 32.0f, _mask);
+        topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), dir, 0.5f, _mask);
+        bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), dir, 0.5f, _mask);
         if (topHitCheck.collider == null && bottomHitCheck.collider == null) { return false; }
         else { return true; }
     }
@@ -81,10 +85,9 @@ public class characterControl : OverworldObject {
                     isMoving = true;
                     lastMovement = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
                 }
-                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
-                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
-
-
+                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
+                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
+                
                 // if not colliding with object, move
                 if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
                 {
@@ -101,8 +104,8 @@ public class characterControl : OverworldObject {
             // If pushing or pulling
             if (Input.GetKey(GameControl.control.selectKey))
             {
-                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), desiredSpeed, 32.0f, mask);
-                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), desiredSpeed, 32.0f, mask);
+                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), desiredSpeed, 0.5f, mask);
+                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), desiredSpeed, 0.5f, mask);
                 if (topHit.collider != null && topHit.collider.tag == "Movable")
                 {
                     if (//transform.position.y <= topHit.transform.position.y &&
@@ -165,8 +168,8 @@ public class characterControl : OverworldObject {
                     //    }
                     //}
 
-                    topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
-                    bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
+                    topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), speed, 0.5f, mask);
+                    bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
                     if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed / 2); }
                 }
                 else if (bottomHit.collider != null && bottomHit.collider.tag == "Movable")
@@ -231,8 +234,8 @@ public class characterControl : OverworldObject {
                     //    }
                     //}
 
-                    topHit = Physics2D.Raycast(new Vector3(transform.position.x + 15.0f, transform.position.y - 32.0f, transform.position.z), speed, 32.0f, mask);
-                    bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - 15.0f, transform.position.y - 48.0f, transform.position.z), speed, 32.0f, mask);
+                    topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), speed, 0.5f, mask);
+                    bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
                     if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed / 2); }
                 }
             }

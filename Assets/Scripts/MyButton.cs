@@ -8,8 +8,8 @@ public class MyButton : MonoBehaviour {
     //public Rect position;
     public enum MyButtonTextureState { normal, hover, active, disabled, inactive, inactiveHover, disabledHover};
     public MyButtonTextureState state = MyButtonTextureState.normal;
-    public int width;
-    public int height;
+    public float width;
+    public float height;
     public TextMesh labelMesh;
     public GameObject textObject;
     public GameObject textPrefab;

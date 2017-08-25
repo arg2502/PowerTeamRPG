@@ -13,6 +13,7 @@ public class Hole : OverworldObject {
     float timer = 0.0f; // a timer to make sure the collider disappears when the block is fully in the hole
 
     public float distFromBlock;
+    float distUntilFilled = 1.25f;
 
     Animator anim;
 
@@ -31,9 +32,9 @@ public class Hole : OverworldObject {
             foreach (MovableOverworldObject m in relevantBlocks)
             {
                 distFromBlock = Mathf.Abs(Mathf.Sqrt(((transform.position.x - m.transform.position.x) * (transform.position.x - m.transform.position.x))
-                + ((transform.position.y - (m.transform.position.y - 30.0f)) * (transform.position.y - (m.transform.position.y - 30.0f)))));
+                + ((transform.position.y - (m.transform.position.y - 0.5f)) * (transform.position.y - (m.transform.position.y - 0.5f)))));
 
-                if (distFromBlock < 80) { isFull = true; anim.SetBool("isFull", true); m.gameObject.SetActive(false); }
+                if (distFromBlock < distUntilFilled) { isFull = true; anim.SetBool("isFull", true); m.gameObject.SetActive(false); }
             }
         }
         
