@@ -44,8 +44,14 @@ public class characterControl : OverworldObject {
     }
 	
 	// Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
+        // DEBUG - change time rate
+        if (Input.GetKeyDown(KeyCode.Minus) && Time.timeScale > 0.0f)
+            Time.timeScale -= 0.1f;
+        if (Input.GetKeyDown(KeyCode.Plus) && Time.timeScale < 1.0f)
+            Time.timeScale += 0.1f;
+
         sr.sortingOrder = (int)-transform.position.y;
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;

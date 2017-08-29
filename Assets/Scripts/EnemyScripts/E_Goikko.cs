@@ -45,7 +45,7 @@ public class E_Goikko : Enemy {
 	}
 
     //Attack method for bite -- straight forward physical attack
-    void Tackle()
+    IEnumerator Tackle()
     {
         // code for choosing the target of this attack
         // because goikko is an early enemy, let's have it randomly select a target
@@ -60,11 +60,17 @@ public class E_Goikko : Enemy {
 
         //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
         float damage = CalcDamage("Tackle", 0.65f, 0.25f, 0.9f, false);
-        
+
+        yield return StartCoroutine(PlayAnimation("Attack"));
+
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(this, damage, false);
     }
-
+    IEnumerator Frenzy()
+    {
+        calcDamageText.Add(name + " used frenzy");
+        yield return StartCoroutine(PlayAnimation("Poison"));
+    }
     public override string ChooseAttack()
     {
         //CLEAR the targets list
@@ -95,13 +101,13 @@ public class E_Goikko : Enemy {
         switch (atkChoice)
         {
             case "Tackle":
-                Tackle();
+                StartCoroutine(Tackle());
                 break;
             case "Frenzy":
-                calcDamageText.Add(name + " used frenzy");
+                StartCoroutine(Frenzy());
                 break;
             default:
-                Tackle();
+                StartCoroutine(Tackle());
                 break;
         }
     }
