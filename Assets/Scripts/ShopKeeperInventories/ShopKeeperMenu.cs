@@ -60,11 +60,13 @@ public class ShopKeeperMenu : Menu {
 		{
 			// create a button
 			buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+            buttonArray[i].name = "ShopKeeperButton" + i;
 			MyButton b = buttonArray[i].GetComponent<MyButton>();
 			buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y + (3.9f + b.height) + (i * -(b.height + b.height / 2)));
 
 			// assign text
 			b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "ShopKeeperText" + i;
 			b.labelMesh = b.textObject.GetComponent<TextMesh>();
 			// if there are not as many items as there are buttons
 			if (i >= contentArray.Count)
@@ -84,6 +86,7 @@ public class ShopKeeperMenu : Menu {
 
 		// sub menus
 		GameObject go = (GameObject)Instantiate (Resources.Load ("Prefabs/NumItemsShopKeeperSubMenu"));
+        go.name = "NumItemsShopKeeperSubMenu";
 		subMenu = go.GetComponent<NumItemsShopKeeperSubMenu> ();
 		subMenu.parentPos = buttonArray [0].transform;
 
@@ -91,17 +94,19 @@ public class ShopKeeperMenu : Menu {
 
 		//Create the description text object
 		descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
-
+        descriptionText.name = "DescriptionText";
 		descriptionText.transform.position = new Vector2(camera.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.23f);
 
 
 
 		// state how much gold player has
 		goldText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        goldText.name = "GoldText";
 		goldText.GetComponent<TextMesh> ().text = "Gold: " + GameControl.control.totalGold;
 		goldText.transform.position = new Vector2 (buttonArray [0].transform.position.x - buttonArray[0].GetComponent<MyButton>().width/2, buttonArray [0].transform.position.y + buttonArray [0].GetComponent<MyButton> ().height*2);
 
 		descriptionTitle = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        descriptionTitle.name = "DescriptionTitle";
 		descriptionTitle.GetComponent<TextMesh> ().text = "Item Description";
 		descriptionTitle.transform.position = new Vector2 (descriptionText.transform.position.x, goldText.transform.position.y);
 
@@ -179,6 +184,7 @@ public class ShopKeeperMenu : Menu {
 
 			// create seller sub menu now
 			GameObject sellerGo = (GameObject)Instantiate (Resources.Load ("Prefabs/SellerSubMenuPrefab"));
+            sellerGo.name = "SellerSubMenu";
 			sellerSub = sellerGo.GetComponent<SellerSubMenu> ();
 			//sellerSub.parent = this;
 			sellerSub.parentPos = buttonArray [selectedIndex + scrollIndex].transform;

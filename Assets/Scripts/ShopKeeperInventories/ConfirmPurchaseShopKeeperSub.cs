@@ -39,6 +39,7 @@ public class ConfirmPurchaseShopKeeperSub : SubMenu {
 				// add the items
 				for (int i = 0; i < parent.quantity; i++) {
 					GameObject temp = (GameObject)Instantiate (parent.item.gameObject);
+                    temp.name = "ParentItem";
 					GameControl.control.AddItem (temp);
 				}
 

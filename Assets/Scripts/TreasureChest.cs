@@ -41,6 +41,7 @@ public class TreasureChest : NPCObject {
                 if (GameObject.FindObjectOfType<DialogueBox>() == null)
                 {
                     dBoxGO = (GameObject)Instantiate(Resources.Load("Prefabs/DialogueBoxPrefab"));
+                    dBoxGO.name = "TreasureChestDialogueBox";
                     dBox = dBoxGO.GetComponent<DialogueBox>();
                     dBox.npc = this;
                 }
@@ -86,6 +87,7 @@ public class TreasureChest : NPCObject {
         {
             // add item to GameControl
             temp = (GameObject)Instantiate(chestItem);
+            temp.name = "ChestItem";
             GameControl.control.AddItem(temp);
             chestDialogue.dialogue.Add("You got " + chestItem.GetComponent<Item>().name + ".");
         }

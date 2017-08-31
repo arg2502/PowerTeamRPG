@@ -21,6 +21,7 @@ public class ConsumableItemSubMenu : SubMenu {
 
         // Create the use sub menu
         GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ItemUseSubMenu"));
+        temp.name = "ItemUseSubMenu";
         use = temp.GetComponent<ItemUseSubMenu>();
         use.parentPos = buttonArray[selectedIndex].transform;
     }

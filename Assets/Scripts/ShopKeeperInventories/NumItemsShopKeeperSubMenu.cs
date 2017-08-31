@@ -32,17 +32,20 @@ public class NumItemsShopKeeperSubMenu : SubMenu {
 
 		// create submenu
 		GameObject go = (GameObject)Instantiate(Resources.Load("Prefabs/ConfirmPurchaseShopKeeperSub"));
+        go.name = "ConfirmPurchaseShopKeeperSub";
 		sub = go.GetComponent<ConfirmPurchaseShopKeeperSub> ();
 		sub.parentPos = buttonArray [0].transform;
 
 
 		// total cost of purchase
 		costText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        costText.name = "CostText";
 		costText.GetComponent<TextMesh>().GetComponent<Renderer> ().enabled = false;
 		costText.GetComponent<TextMesh> ().text = "";
 		costText.transform.position = new Vector2 (shopMenu.descriptionText.transform.position.x - (buttonArray [0].GetComponent<MyButton> ().width*1.3f), shopMenu.goldText.transform.position.y);
 
 		costTitle = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        costTitle.name = "CostTitle";
 		costTitle.GetComponent<TextMesh>().GetComponent<Renderer> ().enabled = false;
 		costTitle.GetComponent<TextMesh> ().text = "Total: ";
 		costTitle.transform.position = new Vector2 (shopMenu.descriptionTitle.transform.position.x - (buttonArray [0].GetComponent<MyButton> ().width*2.0f), shopMenu.goldText.transform.position.y);

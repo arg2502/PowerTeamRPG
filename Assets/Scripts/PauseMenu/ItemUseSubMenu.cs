@@ -55,6 +55,7 @@ public class ItemUseSubMenu : SubMenu {
         for (int i = 0; i < 11; i++)
         {
             statChanges.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
+            statChanges[i].name = "StatChanges" + i;
             statChanges[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(3.125f, -(i * 0.55f), 0.0f);
             statChanges[i].GetComponent<Renderer>().enabled = false;
         }
@@ -68,6 +69,7 @@ public class ItemUseSubMenu : SubMenu {
         // Create all of the text Objs necessary
         for (int i = 0; i < (11 + h.passiveList.Count); i++) {
             heroInfo.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
+            heroInfo[i].name = "HeroInfo" + i;
             heroInfo[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(0.0f, -(i * 0.55f), 0.0f);
         }
         heroInfo[0].GetComponent<TextMesh>().text = h.name;
@@ -219,6 +221,9 @@ public class ItemUseSubMenu : SubMenu {
     // deal with the button pressed
     public override void ButtonAction(string label)
     {
+        // if there are none available, don't activate
+        if(currentItem.quantity - currentItem.uses <= 0) return;
+
         if (GameControl.control.whichInventory == "consumables") { currentItem.GetComponent<ConsumableItem>().Use(GameControl.control.heroList[selectedIndex]); }
         else if (GameControl.control.whichInventory == "weapons") { currentItem.GetComponent<WeaponItem>().Use(GameControl.control.heroList[selectedIndex]); }
         else if (GameControl.control.whichInventory == "armor") { currentItem.GetComponent<ArmorItem>().Use(GameControl.control.heroList[selectedIndex]); }

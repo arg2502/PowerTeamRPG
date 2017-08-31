@@ -59,6 +59,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     if (target.hp <= (target.hpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
                     else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
                 }
@@ -70,6 +71,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     if (target.hp <= (target.hpMax - 40)) { be.GetComponent<Effect>().damage = 40 + "hp"; }
                     else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
                 }
@@ -81,6 +83,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     if (target.hp <= (target.hpMax - 60)) { be.GetComponent<Effect>().damage = 60 + "hp"; }
                     else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
                 }
@@ -92,6 +95,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp";
                 }
                 target.hp = target.hpMax;
@@ -101,6 +105,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     if (target.pm <= (target.pmMax - 20)) { be.GetComponent<Effect>().damage = 20 + "pm"; }
                     else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
                 }
@@ -112,6 +117,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     if (target.pm <= (target.pmMax - 40)) { be.GetComponent<Effect>().damage = 40 + "pm"; }
                     else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
                 }
@@ -123,6 +129,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     if (target.pm <= (target.pmMax - 60)) { be.GetComponent<Effect>().damage = 60 + "pm"; }
                     else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
                 }
@@ -134,6 +141,7 @@ public class ConsumableItem : Item {
                 if (GameObject.FindObjectOfType<BattleMenu>() != null)
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    be.name = "HealEffect";
                     be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm";
                 }
                 target.pm = target.pmMax;

@@ -25,6 +25,7 @@ public class TeamSubMenu : SubMenu {
 
         //set up the description obj
         heroDescription = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        heroDescription.gameObject.name = "HeroDescription";
         heroDescription.GetComponent<Renderer>().sortingOrder = 900;
         //heroDescription.transform.position = pm.descriptionText.transform.position;
 
@@ -44,12 +45,14 @@ public class TeamSubMenu : SubMenu {
         for (int i = 0; i < 11; i++)
         {
             statChanges.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
+            statChanges[i].name = "StatChanges" + i.ToString();
             statChanges[i].transform.position = pm.descriptionText.transform.position + new Vector3(3.125f, -(i * 0.55f), 0.0f);
             statChanges[i].GetComponent<Renderer>().enabled = false;
         }
 
         // Create the hero sub menu
         GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/HeroSubMenu"));
+        temp.name = "HeroSubMenu";
         heroSub = temp.GetComponent<HeroSubMenu>();
         heroSub.parentPos = buttonArray[selectedIndex].transform;
 	}
@@ -112,6 +115,7 @@ public class TeamSubMenu : SubMenu {
         for (int i = 0; i < (11 + GameControl.control.heroList[selectedIndex].passiveList.Count); i++)
         {
             heroInfo.Add((GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab")));
+            heroInfo[i].name = "HeroInfo" + i.ToString();
             heroInfo[i].transform.position = pm.descriptionText.transform.position + new Vector3(0.0f, -(i * 1f), 0.0f);
         }
         heroInfo[0].GetComponent<TextMesh>().text = GameControl.control.heroList[selectedIndex].name;

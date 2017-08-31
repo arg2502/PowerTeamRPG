@@ -73,22 +73,31 @@ public class testSceneChanger : MonoBehaviour {
         if (GUI.Button(new Rect(10, 10, 150, 100), "Add Items"))
         {
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            temp.name = "LesserRestorative";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            temp.name = "LesserRestorative";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
+            temp.name = "Restorative";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            temp.name = "LesserRestorative";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+            temp.name = "LesserElixir";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
+            temp.name = "Elixir";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+            temp.name = "SpareSword";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
+            temp.name = "TomeOfPractical";
             GameControl.control.AddItem(temp);
             temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
+            temp.name = "HelmetOfFortitude";
             GameControl.control.AddItem(temp);
         }
 	}

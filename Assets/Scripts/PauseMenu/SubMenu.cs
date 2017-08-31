@@ -44,11 +44,13 @@ public class SubMenu : Menu {
         {
             // create a button
 			buttonArray [i] = (GameObject)Instantiate (Resources.Load (buttonPrefab));
+            buttonArray[i].name = "SubMenuButton" + i.ToString();
 			MyButton b = buttonArray [i].GetComponent<MyButton> ();
 			buttonArray [i].transform.position = new Vector2 (parentPos.position.x + (b.width * offsetPercent), parentPos.position.y + (i * -(b.height + b.height / 2)));
 			
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "SubMenuText" + i.ToString();
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);

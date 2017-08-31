@@ -42,11 +42,13 @@ public class InventoryMenu : Menu {
         {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+            buttonArray[i].name = "InventoryButton";
             MyButton b = buttonArray[i].GetComponent<MyButton>();
             buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y + (3.9f + b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "InventoryText";
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             // if there are not as many items as there are buttons
             if (i >= contentArray.Count)
@@ -63,8 +65,14 @@ public class InventoryMenu : Menu {
 
         //Create the description text object
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        descriptionText.name = "DescriptionText";
         if (selectedIndex + scrollIndex < itemList.Count)
-        { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity; }
+        {
+            if(GameControl.control.whichInventory == "consumables")
+                descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + itemList[selectedIndex + scrollIndex].quantity;
+            else
+                descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses) + "/" + itemList[selectedIndex + scrollIndex].quantity;
+        }
         descriptionText.transform.position = new Vector2(camera.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.25f);
 
         // set selected button
@@ -72,6 +80,7 @@ public class InventoryMenu : Menu {
 
         // Create the appropriate sub menu
         GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/ConsumableItemSubMenu"));
+        temp.name = "ConsumableItemSubMenu";
         consumeSub = temp.GetComponent<ConsumableItemSubMenu>();
         consumeSub.parentPos = buttonArray[selectedIndex].transform;
         consumeSub.itemName = contentArray[selectedIndex + scrollIndex];
@@ -131,6 +140,10 @@ public class InventoryMenu : Menu {
 
     public void UpdateMenu()
     {
+        // FOR RIGHT NOW, DISREGARD THIS METHOD, UNLESS IT'S CONSUMABLES
+        if (GameControl.control.whichInventory != "consumables") return;
+
+
         contentArray = new List<string>();
         itemList = new List<Item>();
 
@@ -189,7 +202,12 @@ public class InventoryMenu : Menu {
 
             // update the description text
             if (selectedIndex + scrollIndex < itemList.Count)
-            { descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses); }
+            {
+                if(GameControl.control.whichInventory == "consumables")
+                    descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses);
+                else
+                    descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses) + "/" + itemList[selectedIndex + scrollIndex].quantity;
+            }
 
             PressButton(GameControl.control.selectKey);
 

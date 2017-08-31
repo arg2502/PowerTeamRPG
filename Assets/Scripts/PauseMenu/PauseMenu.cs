@@ -43,12 +43,14 @@ public class PauseMenu : Menu {
         {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+            buttonArray[i].name = "PauseMenuButton" + i.ToString();
             MyButton b = buttonArray[i].GetComponent<MyButton>();
             buttonArray[i].transform.position = new Vector2(player.transform.position.x - 9f, player.transform.position.y + (4f + b.height) + (i * -(b.height + b.height / 2)));
             b.GetComponent<Renderer>().sortingOrder = 9900;
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "PauseMenuText" + i.ToString();
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
@@ -58,12 +60,15 @@ public class PauseMenu : Menu {
 
         //create sub menus
         GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/InventorySubMenu"));
+        temp.name = "InventorySubMenu";
         inventorySub = temp.GetComponent<InventorySubMenu>();
         inventorySub.parentPos = buttonArray[2].transform;
         temp = (GameObject)Instantiate(Resources.Load("Prefabs/LoadSubMenu"));
+        temp.name = "LoadSubMenu";
         loadSub = temp.GetComponent<LoadSubMenu>();
         loadSub.parentPos = buttonArray[4].transform;
         temp = (GameObject)Instantiate(Resources.Load("Prefabs/TeamSubMenu"));
+        temp.name = "TeamSubMenu";
         teamSub = temp.GetComponent<TeamSubMenu>();
         teamSub.parentPos = buttonArray[1].transform;
 
@@ -72,6 +77,7 @@ public class PauseMenu : Menu {
 
         //Create the description text object
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        descriptionText.name = "DescriptionText";
         descriptionText.GetComponent<TextMesh>().text = FormatText(buttonDescription[selectedIndex]);
         descriptionText.transform.position = new Vector2(player.transform.position.x + 3.125f, buttonArray[0].transform.position.y + 0.25f);
         descriptionText.GetComponent<Renderer>().sortingOrder = 9900;

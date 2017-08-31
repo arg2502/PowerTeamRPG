@@ -179,22 +179,31 @@ public class GameControl : MonoBehaviour {
 			GameControl.control.heroList[1].spellsList.Add(testtarget);
 
 			GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            temp.name = "LesserRestorative";
 			GameControl.control.AddItem(temp);
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-			GameControl.control.AddItem(temp);
+            temp.name = "LesserRestorative";
+            GameControl.control.AddItem(temp);
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
+            temp.name = "Restorative";
 			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+            temp.name = "LesserRestorative";
 			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+            temp.name = "LesserElixir";
 			GameControl.control.AddItem(temp);
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
+            temp.name = "Elixir";
 			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+            temp.name = "SpareSword";
 			GameControl.control.AddItem(temp);
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
+            temp.name = "TomeOfPractical";
 			GameControl.control.AddItem(temp);
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
+            temp.name = "HelmetOfFortitude";
 			GameControl.control.AddItem(temp);
 			//test code for creating Cole -- based on level 2 stats
 			//We will have these stats stored in HeroData objs for consistency between rooms
@@ -664,27 +673,35 @@ public class GameControl : MonoBehaviour {
 		{
 		case "Lesser Restorative":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+                temp.name = "LesserRestorative";
 			break;
 		case "Restorative":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
+                temp.name = "Restorative";
 			break;
 		case "Gratuitous Restorative":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousRestorative"));
+                temp.name = "GratuitousRestorative";
 			break;
 		case "Terminal Restorative":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalRestorative"));
+                temp.name = "TerminalRestorative";
 			break;
 		case "Lesser Elixir":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+                temp.name = "LesserElixir";
 			break;
 		case "Elixir":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
+                temp.name = "Elixir";
 			break;
 		case "Gratuitous Elixir":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousElixir"));
+                temp.name = "GratuitousElixir";
 			break;
 		case "Terminal Elixir":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalElixir"));
+                temp.name = "TerminalElixir";
 			break;
 		default:
 			print("Error: Incorrect item name - " + id.name);
@@ -717,21 +734,27 @@ public class GameControl : MonoBehaviour {
 		{
 		case "Helmet of Fortitude":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
+                temp.name = "HelmetOfFortitude";
 			break;
 		case "Iron Armor":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronArmor"));
+                temp.name = "IronArmor";
 			break;
 		case "Iron Helm":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronHelm"));
+                temp.name = "IronHelm";
 			break;
 		case "Steel Armor":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelArmor"));
+                temp.name = "SteelArmor";
 			break;
 		case "Steel Gauntlets":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelGauntlets"));
+                temp.name = "SteelGauntlets";
 			break;
 		case "Steel Helm":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelHelm"));
+                temp.name = "SteelHelm";
 			break;
 		default:
 			print("Error: Incorrect item name - " + id.name);
@@ -754,9 +777,11 @@ public class GameControl : MonoBehaviour {
 		{
 		case "Spare Sword":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+                temp.name = "SpareSword";
 			break;
 		case "Tome of Practical Spells":
 			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
+                temp.name = "TomeOfPractical";
 			break;
 		default:
 			print("Error: Incorrect item name - " + id.name);

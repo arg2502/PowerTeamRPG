@@ -56,6 +56,7 @@ public class NPCObject : OverworldObject {
 			if (dBox == null && dBoxGO == null) {				
 				if (GameObject.FindObjectOfType<DialogueBox> () == null) {
 					dBoxGO = (GameObject)Instantiate (Resources.Load ("Prefabs/DialogueBoxPrefab"));
+                    dBoxGO.name = "DialogueBox";
 					dBox = dBoxGO.GetComponent<DialogueBox> ();
 					dBox.npc = this;
 				} else {						

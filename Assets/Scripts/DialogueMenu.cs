@@ -84,11 +84,13 @@ public class DialogueMenu : Menu {
         {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+            buttonArray[i].name = "DialogueButton" + i;
             MyButton b = buttonArray[i].GetComponent<MyButton>();
             buttonArray[i].transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y - (6f - b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "DialogueText" + i;
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);

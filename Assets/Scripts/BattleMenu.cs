@@ -83,26 +83,31 @@ public class BattleMenu : Menu {
                 {
                     case 0:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/JethroPrefab"));
+                        temp.name = "Jethro";
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
                     case 1:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/ColePrefab"));
+                        temp.name = "Cole";
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
                     case 2:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/EleanorPrefab"));
+                        temp.name = "Eleanor";
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
                     case 3:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/JuliettePrefab"));
+                        temp.name = "Juliette";
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
-                    case 4:
-                        temp = (GameObject)Instantiate(Resources.Load("Prefabs/SelenePrefab"));
-                        denigenArray.Add(temp.GetComponent<Denigen>());
-                        break;
+                    //case 4:
+                    //    temp = (GameObject)Instantiate(Resources.Load("Prefabs/SelenePrefab"));
+                    //    denigenArray.Add(temp.GetComponent<Denigen>());
+                    //    break;
                     default:
                         temp = (GameObject)Instantiate(Resources.Load("Prefabs/JethroPrefab"));
+                        temp.name = "Jethro";
                         denigenArray.Add(temp.GetComponent<Denigen>());
                         break;
                 }
@@ -147,6 +152,7 @@ public class BattleMenu : Menu {
         for (int i = 0; i < GameControl.control.numOfEnemies; i++)
         {
             GameObject temp = (GameObject)Instantiate(GameControl.control.enemies[i].gameObject);
+            temp.name = "Enemy" + i.ToString();
             denigenArray.Add(temp.GetComponent<Denigen>());
         }
 
@@ -182,11 +188,13 @@ public class BattleMenu : Menu {
         {
             // create a button
 			buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+            buttonArray[i].name = "BattleMenuButton" + i.ToString();
             MyButton b = buttonArray[i].GetComponent<MyButton>();
             buttonArray[i].transform.position = new Vector2(transform.position.x, transform.position.y + (b.height*2) + (i * -(b.height + b.height / 2)));
 
             // assign text
 			b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "BattleMenuText" + i.ToString();
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
@@ -195,13 +203,16 @@ public class BattleMenu : Menu {
 
         // Create the text object for the top of the menu which says whose turn it is
         menuLabel = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        menuLabel.name = "MenuLabel";
         menuLabel.GetComponent<TextMesh>().color = Color.black;
         menuLabel.transform.position = buttonArray[0].transform.position + new Vector3(0.0f, 0.8f, 0.0f);
 
         // Create the description box and its text
         descriptionBox = (GameObject)Instantiate(Resources.Load("Prefabs/DescriptionBoxPrefab"));
+        descriptionBox.name = "DescriptionBox";
         descriptionBox.transform.position = transform.position + new Vector3(0.0f, -3.0f, 0.0f);
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        descriptionText.name = "DescriptionText";
         descriptionText.GetComponent<TextMesh>().color = Color.black;
         descriptionText.transform.position = descriptionBox.transform.position;
         GetComponent<SpriteRenderer>().sortingOrder = 9800;
@@ -214,6 +225,7 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             heroList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            heroList[i].Card.name = "HeroCard" + i.ToString();
             //heroList[i].Card.GetComponent<TextMesh>().fontSize = 40;
             if (heroList.Count == 1) { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.x + 15f), (0)); }
             else { heroList[i].Card.transform.position = new Vector2(-(camera.transform.position.y + 15f), ((3.5f / heroList.Count) * (i * 3) - 3.5f)); }
@@ -227,6 +239,7 @@ public class BattleMenu : Menu {
         {
             //Create a text prefab for now, we'll figure out the HUD later
             enemyList[i].Card = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            enemyList[i].name = "EnemyCard" + i.ToString();
             //enemyList[i].Card.GetComponent<TextMesh>().fontSize = 40;
             if (enemyList.Count == 1) { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 15f), ( 0 )); }
             else { enemyList[i].Card.transform.position = new Vector2((camera.transform.position.x + 15f), ((3.5f / enemyList.Count) * (i * 3) - 3.5f)); }
@@ -246,6 +259,7 @@ public class BattleMenu : Menu {
         
         //Create the text object for the battle phase
         battleText = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        battleText.name = "BattleText";
         //battleText.GetComponent<TextMesh>().fontSize = 60;
         battleText.GetComponent<TextMesh>().alignment = TextAlignment.Left;
         battleText.transform.position = transform.position + new Vector3(0.0f, -3.0f, 0.0f);

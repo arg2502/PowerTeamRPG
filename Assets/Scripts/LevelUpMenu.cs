@@ -79,23 +79,27 @@ public class LevelUpMenu : Menu {
         {
             // create a button
             buttonArray[i] = (GameObject)Instantiate(Resources.Load("Prefabs/LevelUpButtonPrefab"));
+            buttonArray[i].name = "LevelUpButton" + i;
             MyButton b = buttonArray[i].GetComponent<MyButton>();
             buttonArray[i].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y + (3.9f + b.height) + (i * -(b.height + b.height / 2)));
 
             // assign text
             b.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+            b.textObject.name = "LevelUpText" + i;
             b.labelMesh = b.textObject.GetComponent<TextMesh>();
             b.labelMesh.text = contentArray[i];
             b.labelMesh.transform.position = new Vector3(buttonArray[i].transform.position.x, buttonArray[i].transform.position.y, -1);
 
             // create the text objects that will display the hero's stats, as well as the points they are adding
             statNumbers.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
+            statNumbers[i].name = "StatNumbers" + i;
             statNumbers[i].GetComponent<TextMesh>().text = "" + originalStats[i];  // should initially be equal to the original stats
             statNumbers[i].GetComponent<TextMesh>().color = Color.black;
             statNumbers[i].transform.position = new Vector2(buttonArray[i].transform.position.x + 3.9f, buttonArray[i].transform.position.y);
 
             // create the text objects that will display the amount that the player is adding to the stats
             statBoosts.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
+            statBoosts[i].name = "StatBoosts" + i;
             statBoosts[i].GetComponent<TextMesh>().text = "( +" + (statBoostInts[i]) + ")";
             statBoosts[i].GetComponent<TextMesh>().color = Color.black;
             statBoosts[i].transform.position = new Vector2(buttonArray[i].transform.position.x + 7.8f, buttonArray[i].transform.position.y);
@@ -103,33 +107,39 @@ public class LevelUpMenu : Menu {
 
         // create the labels above the columns
         statNumbers.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
+        statNumbers[statNumbers.Count - 1].name = "StatPoints";
         statNumbers[statNumbers.Count - 1].GetComponent<TextMesh>().text = "Stat Points";
         statNumbers[statNumbers.Count - 1].GetComponent<TextMesh>().color = Color.black;
         statNumbers[statNumbers.Count - 1].transform.position = new Vector2(statNumbers[0].transform.position.x, statNumbers[0].transform.position.y + 1.2f);
 
         statBoosts.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
+        statBoosts[statBoosts.Count - 1].name = "AllocatedPoints";
         statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().text = "Allocated Points";
         statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().color = Color.black;
         statBoosts[statBoosts.Count - 1].transform.position = new Vector2(statBoosts[0].transform.position.x, statBoosts[0].transform.position.y + 1.2f);
 
         // create the label that shows remaining points
         statBoosts.Add((GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab")));
+        statBoosts[statBoosts.Count - 1].name = "RemainingPoints";
         statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().text = "Remaining Points: " + remainingPoints;
         statBoosts[statBoosts.Count - 1].GetComponent<TextMesh>().color = Color.black;
         statBoosts[statBoosts.Count - 1].transform.position = new Vector2(statBoosts[8].transform.position.x, statBoosts[8].transform.position.y - 1.95f);
 
         // create the final button
         buttonArray[buttonArray.Length - 1] = (GameObject)Instantiate(Resources.Load("Prefabs/ButtonPrefab"));
+        buttonArray[buttonArray.Length - 1].name = "FinalButton";
         MyButton bt = buttonArray[9].GetComponent<MyButton>();
         buttonArray[9].transform.position = new Vector2(buttonArray[8].transform.position.x, buttonArray[8].transform.position.y - 1.95f);
         // assign text
         bt.textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        bt.textObject.name = "FinalButtonText";
         bt.labelMesh = bt.textObject.GetComponent<TextMesh>();
         bt.labelMesh.text = contentArray[9];
         bt.labelMesh.transform.position = new Vector3(buttonArray[9].transform.position.x, buttonArray[9].transform.position.y, -1);
 
         //Create the description text object
         descriptionText = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        descriptionText.name = "DescriptionText";
         descriptionText.GetComponent<TextMesh>().text = FormatText(statDescription[selectedIndex]);
         descriptionText.transform.position = new Vector2(camera.transform.position.x + 3.125f, statNumbers[0].transform.position.y + 0.23f);
 

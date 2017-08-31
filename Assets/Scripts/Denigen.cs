@@ -266,6 +266,7 @@ public class Denigen : MonoBehaviour {
         if (statusState != Status.dead && statusState != Status.overkill)
         {
             GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
+            be.name = "DamageEffect";
             //be.GetComponent<Effect>().Start();
             be.GetComponent<Effect>().damage = (int)damage + "";
         }

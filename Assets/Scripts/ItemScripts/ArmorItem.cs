@@ -68,7 +68,7 @@ public class ArmorItem : Item {
         //quantity--;
         uses++;
         // if quantity hits 0, remove it from the inventory
-        if (quantity <= 0) { GameControl.control.equipment.Remove(this.gameObject); }
+        //if (quantity <= 0) { GameControl.control.equipment.Remove(this.gameObject); }
     }
 
     public void Remove(HeroData hero)

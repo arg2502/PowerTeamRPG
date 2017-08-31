@@ -59,10 +59,12 @@ public class DialogueBoxShopKeeper : MonoBehaviour {
 
 		//Create the text objects
 		titleTextGO = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        titleTextGO.name = "TitleText";
 		//titleTextGO.GetComponent<TextMesh> ().fontSize = 100;
 		//titleTextGO.GetComponent<TextMesh> ().alignment = TextAlignment.Left;
 
 		spokenTextGO = (GameObject)Instantiate(Resources.Load("Prefabs/LeftTextPrefab"));
+        spokenTextGO.name = "SpokenText";
 		//spokenTextGO.GetComponent<TextMesh>().fontSize = 100;
 		//spokenTextGO.GetComponent<TextMesh>().alignment = TextAlignment.Left;
 

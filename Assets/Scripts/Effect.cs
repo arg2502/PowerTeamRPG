@@ -20,11 +20,12 @@ public class Effect : MonoBehaviour {
         sr = gameObject.GetComponent<SpriteRenderer>();
         sr.sortingOrder = 1000;
         textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        textObject.name = "EffectText";
         textObject.GetComponent<MeshRenderer>().sortingOrder = 1000;
         labelMesh = textObject.GetComponent<TextMesh>();
 
         // give them a random offset for cases where multiple effects appear around the same time
-        transform.position += new Vector3(Random.Range(-1, 2) * 50.0f, Random.Range(-1, 2)* 50.0f);
+        transform.position += new Vector3(Random.Range(-1, 2) * 0.78f, Random.Range(-1, 2)* 0.78f);
 	}
 	
 	// Update is called once per frame
