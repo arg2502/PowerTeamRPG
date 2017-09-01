@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ConsumableItemSubMenu : SubMenu {
 
     public InventoryMenu im;
     ItemUseSubMenu use;
     public string itemName; // the name of an item in inventory
+    public Item currentItem;
 
     // Use this for initialization
     void Start()
@@ -15,7 +17,10 @@ public class ConsumableItemSubMenu : SubMenu {
 
         // check if the button's name needs to be changed
         if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
-        { contentArray[0] = "Equip"; buttonDescription[0] = "Equip this item to one of your teammates."; }
+        {
+            contentArray = new List<string>() { "Equip", "Remove" };
+            buttonDescription = new List<string>() { "Equip this item to one of your teammates.", "Remove this item from one of your teammates." };
+        }
 
         base.Start();
 
@@ -43,6 +48,7 @@ public class ConsumableItemSubMenu : SubMenu {
     public void EnableSubMenu()
     {
         im.DeactivateMenu();
+        CheckForInactive();
         base.EnableSubMenu();
     }
 
@@ -64,6 +70,10 @@ public class ConsumableItemSubMenu : SubMenu {
         {
             if (i != selectedIndex) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
         }
+
+        // deactive any buttons if necessary
+        CheckForInactive();
+
     }
 
     // Update is called once per frame
@@ -81,5 +91,39 @@ public class ConsumableItemSubMenu : SubMenu {
         //update which position the submenu should appear in
         use.parentPos = buttonArray[selectedIndex].transform;
         base.Update();
+    }
+
+    void CheckForInactive()
+    {
+        // set the current item based on the inventory type
+        if (GameControl.control.whichInventory == "consumables")
+            foreach (GameObject go in GameControl.control.consumables) { if (go.GetComponent<Item>().name == itemName) { currentItem = go.GetComponent<Item>(); } }
+        else if (GameControl.control.whichInventory == "weapons")
+            foreach (GameObject go in GameControl.control.weapons) { if (go.GetComponent<Item>().name == itemName) { currentItem = go.GetComponent<Item>(); } }
+        else if (GameControl.control.whichInventory == "armor")
+            foreach (GameObject go in GameControl.control.equipment) { if (go.GetComponent<Item>().name == itemName) { currentItem = go.GetComponent<Item>(); } }
+
+        // if the player can't use anymore of the object, set button to inactive
+        if (GameControl.control.whichInventory == "weapons" || GameControl.control.whichInventory == "armor")
+        {
+            // if player has used up all the items, deactivate equip button
+            if (currentItem.quantity - currentItem.uses <= 0)
+            {
+                // hover if in first position
+                if (selectedIndex == 0)
+                    buttonArray[0].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+                else
+                    buttonArray[0].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+            }
+            // if the player has not used the item at all, deactivate remove button
+            if(currentItem.uses == 0)
+            {
+                // hover if in second position
+                if (selectedIndex == 1)
+                    buttonArray[1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+                else
+                    buttonArray[1].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+            }
+        }
     }
 }

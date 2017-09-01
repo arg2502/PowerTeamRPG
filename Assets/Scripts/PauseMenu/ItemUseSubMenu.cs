@@ -8,7 +8,7 @@ public class ItemUseSubMenu : SubMenu {
     List<GameObject> heroInfo; // displays all manner of info for the hero - stats, passives, etc.
     List<int> statChangeNumbers; // stores the calculated stat changes an item will cause
     List<GameObject> statChanges; // displays any changes an item may cause
-    Item currentItem;
+    //Item parent.currentItem;
 
     Color myGreen = new Color(0.1f, 0.6f, 0.2f);
     Color myRed = new Color(5.0f, 0.1f, 0.2f);
@@ -92,88 +92,84 @@ public class ItemUseSubMenu : SubMenu {
         // draw the current item from the correct list of items
         if (GameControl.control.whichInventory == "consumables") 
         { 
-            //currentItem = GameControl.control.consumables[parent.itemIndex].GetComponent<Item>();
-            foreach (GameObject go in GameControl.control.consumables) { if (go.GetComponent<Item>().name == parent.itemName) { currentItem = go.GetComponent<Item>(); } }
+            //parent.currentItem = GameControl.control.consumables[parent.itemIndex].GetComponent<Item>();
+            
 
-            statChanges[0].GetComponent<TextMesh>().text = currentItem.statusChange;
-            statChangeNumbers[1] = currentItem.hpChange;
-            statChangeNumbers[2] = currentItem.pmChange;
-            statChangeNumbers[3] = currentItem.atkChange;
-            statChangeNumbers[4] = currentItem.defChange;
-            statChangeNumbers[5] = currentItem.mgkAtkChange;
-            statChangeNumbers[6] = currentItem.mgkDefChange;
-            statChangeNumbers[7] = currentItem.luckChange;
-            statChangeNumbers[8] = currentItem.evadeChange;
-            statChangeNumbers[9] = currentItem.spdChange;
+            statChanges[0].GetComponent<TextMesh>().text = parent.currentItem.statusChange;
+            statChangeNumbers[1] = parent.currentItem.hpChange;
+            statChangeNumbers[2] = parent.currentItem.pmChange;
+            statChangeNumbers[3] = parent.currentItem.atkChange;
+            statChangeNumbers[4] = parent.currentItem.defChange;
+            statChangeNumbers[5] = parent.currentItem.mgkAtkChange;
+            statChangeNumbers[6] = parent.currentItem.mgkDefChange;
+            statChangeNumbers[7] = parent.currentItem.luckChange;
+            statChangeNumbers[8] = parent.currentItem.evadeChange;
+            statChangeNumbers[9] = parent.currentItem.spdChange;
         }
-        //else if (GameControl.control.whichInventory == "reusables") { currentItem = GameControl.control.reusables[parent.itemIndex].GetComponent<Item>(); }
+        //else if (GameControl.control.whichInventory == "reusables") { parent.currentItem = GameControl.control.reusables[parent.itemIndex].GetComponent<Item>(); }
         else if (GameControl.control.whichInventory == "weapons") 
         { 
-            //currentItem = GameControl.control.weapons[parent.itemIndex].GetComponent<Item>();
-            foreach (GameObject go in GameControl.control.weapons) { if (go.GetComponent<Item>().name == parent.itemName) { currentItem = go.GetComponent<Item>(); } }
-
+            
             Item heroWeapon = null;
             if (h.weapon != null) { heroWeapon = h.weapon.GetComponent<Item>(); }
 
             if (h.weapon == null)
             {
-                statChangeNumbers[1] = currentItem.hpChange;
-                statChangeNumbers[2] = currentItem.pmChange;
-                statChangeNumbers[3] = currentItem.atkChange;
-                statChangeNumbers[4] = currentItem.defChange;
-                statChangeNumbers[5] = currentItem.mgkAtkChange;
-                statChangeNumbers[6] = currentItem.mgkDefChange;
-                statChangeNumbers[7] = currentItem.luckChange;
-                statChangeNumbers[8] = currentItem.evadeChange;
-                statChangeNumbers[9] = currentItem.spdChange;
+                statChangeNumbers[1] = parent.currentItem.hpChange;
+                statChangeNumbers[2] = parent.currentItem.pmChange;
+                statChangeNumbers[3] = parent.currentItem.atkChange;
+                statChangeNumbers[4] = parent.currentItem.defChange;
+                statChangeNumbers[5] = parent.currentItem.mgkAtkChange;
+                statChangeNumbers[6] = parent.currentItem.mgkDefChange;
+                statChangeNumbers[7] = parent.currentItem.luckChange;
+                statChangeNumbers[8] = parent.currentItem.evadeChange;
+                statChangeNumbers[9] = parent.currentItem.spdChange;
             }
             else
             {
-                statChangeNumbers[1] = currentItem.hpChange - heroWeapon.hpChange;
-                statChangeNumbers[2] = currentItem.pmChange - heroWeapon.pmChange;
-                statChangeNumbers[3] = currentItem.atkChange - heroWeapon.atkChange;
-                statChangeNumbers[4] = currentItem.defChange - heroWeapon.defChange;
-                statChangeNumbers[5] = currentItem.mgkAtkChange - heroWeapon.mgkAtkChange;
-                statChangeNumbers[6] = currentItem.mgkDefChange - heroWeapon.mgkDefChange;
-                statChangeNumbers[7] = currentItem.luckChange - heroWeapon.luckChange;
-                statChangeNumbers[8] = currentItem.evadeChange - heroWeapon.evadeChange;
-                statChangeNumbers[9] = currentItem.spdChange - heroWeapon.spdChange;
+                statChangeNumbers[1] = parent.currentItem.hpChange - heroWeapon.hpChange;
+                statChangeNumbers[2] = parent.currentItem.pmChange - heroWeapon.pmChange;
+                statChangeNumbers[3] = parent.currentItem.atkChange - heroWeapon.atkChange;
+                statChangeNumbers[4] = parent.currentItem.defChange - heroWeapon.defChange;
+                statChangeNumbers[5] = parent.currentItem.mgkAtkChange - heroWeapon.mgkAtkChange;
+                statChangeNumbers[6] = parent.currentItem.mgkDefChange - heroWeapon.mgkDefChange;
+                statChangeNumbers[7] = parent.currentItem.luckChange - heroWeapon.luckChange;
+                statChangeNumbers[8] = parent.currentItem.evadeChange - heroWeapon.evadeChange;
+                statChangeNumbers[9] = parent.currentItem.spdChange - heroWeapon.spdChange;
             }
         }
         else if (GameControl.control.whichInventory == "armor")
         { 
-            //currentItem = GameControl.control.equipment[parent.itemIndex].GetComponent<Item>();
-            foreach (GameObject go in GameControl.control.equipment) { if (go.GetComponent<Item>().name == parent.itemName) { currentItem = go.GetComponent<Item>(); } }
-
+            
             ArmorItem relevantItem = null; // this will need to be of the same type as the current item (Ex: helmet, gloves, etc)
             for (int i = 0; i < h.equipment.Count; i++) 
             {
-                if (h.equipment[i].GetComponent<ArmorItem>().type == currentItem.GetComponent<ArmorItem>().type) { relevantItem = h.equipment[i].GetComponent<ArmorItem>(); }
+                if (h.equipment[i].GetComponent<ArmorItem>().type == parent.currentItem.GetComponent<ArmorItem>().type) { relevantItem = h.equipment[i].GetComponent<ArmorItem>(); }
             }
 
             if (relevantItem == null)
             {
-                statChangeNumbers[1] = currentItem.hpChange;
-                statChangeNumbers[2] = currentItem.pmChange;
-                statChangeNumbers[3] = currentItem.atkChange;
-                statChangeNumbers[4] = currentItem.defChange;
-                statChangeNumbers[5] = currentItem.mgkAtkChange;
-                statChangeNumbers[6] = currentItem.mgkDefChange;
-                statChangeNumbers[7] = currentItem.luckChange;
-                statChangeNumbers[8] = currentItem.evadeChange;
-                statChangeNumbers[9] = currentItem.spdChange;
+                statChangeNumbers[1] = parent.currentItem.hpChange;
+                statChangeNumbers[2] = parent.currentItem.pmChange;
+                statChangeNumbers[3] = parent.currentItem.atkChange;
+                statChangeNumbers[4] = parent.currentItem.defChange;
+                statChangeNumbers[5] = parent.currentItem.mgkAtkChange;
+                statChangeNumbers[6] = parent.currentItem.mgkDefChange;
+                statChangeNumbers[7] = parent.currentItem.luckChange;
+                statChangeNumbers[8] = parent.currentItem.evadeChange;
+                statChangeNumbers[9] = parent.currentItem.spdChange;
             }
             else
             {
-                statChangeNumbers[1] = currentItem.hpChange - relevantItem.hpChange;
-                statChangeNumbers[2] = currentItem.pmChange - relevantItem.pmChange;
-                statChangeNumbers[3] = currentItem.atkChange - relevantItem.atkChange;
-                statChangeNumbers[4] = currentItem.defChange - relevantItem.defChange;
-                statChangeNumbers[5] = currentItem.mgkAtkChange - relevantItem.mgkAtkChange;
-                statChangeNumbers[6] = currentItem.mgkDefChange - relevantItem.mgkDefChange;
-                statChangeNumbers[7] = currentItem.luckChange - relevantItem.luckChange;
-                statChangeNumbers[8] = currentItem.evadeChange - relevantItem.evadeChange;
-                statChangeNumbers[9] = currentItem.spdChange - relevantItem.spdChange;
+                statChangeNumbers[1] = parent.currentItem.hpChange - relevantItem.hpChange;
+                statChangeNumbers[2] = parent.currentItem.pmChange - relevantItem.pmChange;
+                statChangeNumbers[3] = parent.currentItem.atkChange - relevantItem.atkChange;
+                statChangeNumbers[4] = parent.currentItem.defChange - relevantItem.defChange;
+                statChangeNumbers[5] = parent.currentItem.mgkAtkChange - relevantItem.mgkAtkChange;
+                statChangeNumbers[6] = parent.currentItem.mgkDefChange - relevantItem.mgkDefChange;
+                statChangeNumbers[7] = parent.currentItem.luckChange - relevantItem.luckChange;
+                statChangeNumbers[8] = parent.currentItem.evadeChange - relevantItem.evadeChange;
+                statChangeNumbers[9] = parent.currentItem.spdChange - relevantItem.spdChange;
             }
         }
     }
@@ -222,11 +218,11 @@ public class ItemUseSubMenu : SubMenu {
     public override void ButtonAction(string label)
     {
         // if there are none available, don't activate
-        if(currentItem.quantity - currentItem.uses <= 0) return;
+        if(parent.currentItem.quantity - parent.currentItem.uses <= 0) return;
 
-        if (GameControl.control.whichInventory == "consumables") { currentItem.GetComponent<ConsumableItem>().Use(GameControl.control.heroList[selectedIndex]); }
-        else if (GameControl.control.whichInventory == "weapons") { currentItem.GetComponent<WeaponItem>().Use(GameControl.control.heroList[selectedIndex]); }
-        else if (GameControl.control.whichInventory == "armor") { currentItem.GetComponent<ArmorItem>().Use(GameControl.control.heroList[selectedIndex]); }
+        if (GameControl.control.whichInventory == "consumables") { parent.currentItem.GetComponent<ConsumableItem>().Use(GameControl.control.heroList[selectedIndex]); }
+        else if (GameControl.control.whichInventory == "weapons") { parent.currentItem.GetComponent<WeaponItem>().Use(GameControl.control.heroList[selectedIndex]); }
+        else if (GameControl.control.whichInventory == "armor") { parent.currentItem.GetComponent<ArmorItem>().Use(GameControl.control.heroList[selectedIndex]); }
 
         // after item use, close all submenus
         parent.ActivateMenu();

@@ -65,19 +65,22 @@ public class InventorySubMenu : SubMenu {
                 int counter = 0;
                 for (int j = 0; j < GameControl.control.consumables.Count; j++)
                 { if (GameControl.control.consumables[j].GetComponent<Item>().uses != GameControl.control.consumables[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 0 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }
-                counter = 0;
-                for (int j = 0; j < GameControl.control.weapons.Count; j++)
-                { if (GameControl.control.weapons[j].GetComponent<Item>().uses != GameControl.control.weapons[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 1 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
-                counter = 0;
-                for (int j = 0; j < GameControl.control.equipment.Count; j++)
-                { if (GameControl.control.equipment[j].GetComponent<Item>().uses != GameControl.control.equipment[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 2 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
-                counter = 0;
-                for (int j = 0; j < GameControl.control.reusables.Count; j++)
-                { if (GameControl.control.reusables[j].GetComponent<Item>().uses != GameControl.control.reusables[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 3 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                if (i == 0 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                //counter = 0;
+                //for (int j = 0; j < GameControl.control.weapons.Count; j++)
+                //{ if (GameControl.control.weapons[j].GetComponent<Item>().uses != GameControl.control.weapons[j].GetComponent<Item>().quantity) { counter++; } }
+                //if (i == 1 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                //counter = 0;
+                //for (int j = 0; j < GameControl.control.equipment.Count; j++)
+                //{ if (GameControl.control.equipment[j].GetComponent<Item>().uses != GameControl.control.equipment[j].GetComponent<Item>().quantity) { counter++; } }
+                //if (i == 2 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                //counter = 0;
+                //for (int j = 0; j < GameControl.control.reusables.Count; j++)
+                //{ if (GameControl.control.reusables[j].GetComponent<Item>().uses != GameControl.control.reusables[j].GetComponent<Item>().quantity) { counter++; } }
+                //if (i == 3 && counter == 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                if (i == 1 && GameControl.control.weapons.Count <= 0) buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                if (i == 2 && GameControl.control.equipment.Count <= 0) buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                if (i == 3 && GameControl.control.reusables.Count <= 0) buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
             }
 
             else if (buttonArray[i].GetComponent<MyButton>().state != MyButton.MyButtonTextureState.normal &&
@@ -86,21 +89,31 @@ public class InventorySubMenu : SubMenu {
                 int counter = 0;
                 for (int j = 0; j < GameControl.control.consumables.Count; j++)
                 { if (GameControl.control.consumables[j].GetComponent<Item>().uses != GameControl.control.consumables[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 0 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover; }
-                counter = 0;
-                for (int j = 0; j < GameControl.control.weapons.Count; j++)
-                { if (GameControl.control.weapons[j].GetComponent<Item>().uses != GameControl.control.weapons[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 1 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
-                counter = 0;
-                for (int j = 0; j < GameControl.control.equipment.Count; j++)
-                { if (GameControl.control.equipment[j].GetComponent<Item>().uses != GameControl.control.equipment[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 2 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
-                counter = 0;
-                for (int j = 0; j < GameControl.control.reusables.Count; j++)
-                { if (GameControl.control.reusables[j].GetComponent<Item>().uses != GameControl.control.reusables[j].GetComponent<Item>().quantity) { counter++; } }
-                if (i == 3 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                if (i == 0 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                //counter = 0;
+                //for (int j = 0; j < GameControl.control.weapons.Count; j++)
+                //{ if (GameControl.control.weapons[j].GetComponent<Item>().uses != GameControl.control.weapons[j].GetComponent<Item>().quantity) { counter++; } }
+                //if (i == 1 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                //counter = 0;
+                //for (int j = 0; j < GameControl.control.equipment.Count; j++)
+                //{ if (GameControl.control.equipment[j].GetComponent<Item>().uses != GameControl.control.equipment[j].GetComponent<Item>().quantity) { counter++; } }
+                //if (i == 2 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                //counter = 0;
+                //for (int j = 0; j < GameControl.control.reusables.Count; j++)
+                //{ if (GameControl.control.reusables[j].GetComponent<Item>().uses != GameControl.control.reusables[j].GetComponent<Item>().quantity) { counter++; } }
+                //if (i == 3 && counter > 0) { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                if (i == 1 && GameControl.control.weapons.Count > 0) buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                if (i == 2 && GameControl.control.equipment.Count > 0) buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                if (i == 3 && GameControl.control.reusables.Count > 0) buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
             }
         }
+
+        // in the end, set whatever is selected to hover
+        if (buttonArray[selectedIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.normal)
+            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+        else if (buttonArray[selectedIndex].GetComponent<MyButton>().state == MyButton.MyButtonTextureState.inactive)
+            buttonArray[selectedIndex].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+
     }
 	
 	// Update is called once per frame
