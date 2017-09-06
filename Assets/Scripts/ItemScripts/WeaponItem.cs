@@ -78,6 +78,8 @@ public class WeaponItem : Item {
                 break;
         }
 
+        hero.weapon = null;
+
         // make it possible to use the item again
         //quantity++;
         uses--;

@@ -6,6 +6,7 @@ public class ConsumableItemSubMenu : SubMenu {
 
     public InventoryMenu im;
     ItemUseSubMenu use;
+    ItemRemoveSubMenu remove;
     public string itemName; // the name of an item in inventory
     public Item currentItem;
 
@@ -29,6 +30,13 @@ public class ConsumableItemSubMenu : SubMenu {
         temp.name = "ItemUseSubMenu";
         use = temp.GetComponent<ItemUseSubMenu>();
         use.parentPos = buttonArray[selectedIndex].transform;
+
+        // create remove sub menu
+        temp = Instantiate(new GameObject());
+        //temp.AddComponent<ItemRemoveSubMenu>();
+        temp.name = "ItemRemoveSubMenu";
+        remove = temp.AddComponent<ItemRemoveSubMenu>();
+        remove.parentPos = buttonArray[selectedIndex].transform;
     }
 
     // deal with the button pressed
@@ -39,6 +47,9 @@ public class ConsumableItemSubMenu : SubMenu {
             case "Use":
             case "Equip":
                 use.EnableSubMenu();
+                break;
+            case "Remove":
+                remove.EnableSubMenu();
                 break;
             default:
                 break;
@@ -89,7 +100,8 @@ public class ConsumableItemSubMenu : SubMenu {
             }
         }
         //update which position the submenu should appear in
-        use.parentPos = buttonArray[selectedIndex].transform;
+        use.parentPos = remove.parentPos = buttonArray[selectedIndex].transform;
+
         base.Update();
     }
 

@@ -104,6 +104,7 @@ public class ArmorItem : Item {
                 break;
         }
 
+        hero.equipment.Remove(this.gameObject);
         // make it possible to use the item again
         //quantity++;
         uses--;

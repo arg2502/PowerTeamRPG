@@ -139,10 +139,11 @@ public class SubMenu : Menu {
         }
         if(isVisible && frameDelay > 0)
         {
-            base.Update();
-
             if (isActive)
             {
+
+                base.Update();
+
                 PressButton(GameControl.control.selectKey);
 
                 // return to the previous menu
