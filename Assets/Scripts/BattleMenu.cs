@@ -598,6 +598,16 @@ public class BattleMenu : Menu {
     }
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            Time.timeScale -= 0.1f;
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            Time.timeScale += 0.1f;
+        }
+
+
         // don't update if a denigen is performing a battle animation
         if (GameControl.control.isAnimating || GameControl.control.isDying)
             return;
