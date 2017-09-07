@@ -59,10 +59,12 @@ public class ArmorItem : Item {
                 {
                     hero.equipment[i].GetComponent<ArmorItem>().Remove(hero);
                     hero.equipment[i] = this.gameObject;
+                    AddHeroAndSortList(hero);
+
                 }
             }
         }
-        else { hero.equipment.Add(this.gameObject); }
+        else { hero.equipment.Add(this.gameObject); AddHeroAndSortList(hero); }
         
         // Always decrease quantity by 1 to avoid multiple heroes sharing the same piece of armor
         //quantity--;
@@ -105,6 +107,7 @@ public class ArmorItem : Item {
         }
 
         hero.equipment.Remove(this.gameObject);
+        listOfHeroes.Remove(hero);
         // make it possible to use the item again
         //quantity++;
         uses--;

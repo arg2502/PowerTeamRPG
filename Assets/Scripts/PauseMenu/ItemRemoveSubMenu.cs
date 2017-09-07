@@ -224,7 +224,7 @@ public class ItemRemoveSubMenu : SubMenu {
             else if (GameControl.control.whichInventory == "armor")
             {
                 // if there's no equipment, no need to remove or continue checking
-                if(GameControl.control.heroList[i].equipment.Count <= 0)
+                if (GameControl.control.heroList[i].equipment.Count <= 0)
                 {
                     if (i == 0)
                         buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;

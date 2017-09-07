@@ -203,10 +203,45 @@ public class InventoryMenu : Menu {
             // update the description text
             if (selectedIndex + scrollIndex < itemList.Count)
             {
-                if(GameControl.control.whichInventory == "consumables")
+                if (GameControl.control.whichInventory == "consumables")
                     descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses);
                 else
+                {
                     descriptionText.GetComponent<TextMesh>().text = FormatText(itemList[selectedIndex + scrollIndex].description) + "\n\nQuantity: " + (itemList[selectedIndex + scrollIndex].quantity - itemList[selectedIndex + scrollIndex].uses) + "/" + itemList[selectedIndex + scrollIndex].quantity;
+
+                    // show who has the items equipped, if there are any
+                    if (itemList[selectedIndex + scrollIndex].listOfHeroes.Count > 0)
+                    {
+                        descriptionText.GetComponent<TextMesh>().text += "\n\nEquipped:\n\n";
+                        
+                        for(int i = 0; i < itemList[selectedIndex + scrollIndex].listOfHeroes.Count; i++)
+                        {
+                            //switch (itemList[selectedIndex + scrollIndex].listOfHeroes[i].identity)
+                            //{
+                            //    case 0:
+                            //        descriptionText.GetComponent<TextMesh>().color = Color.red;
+                            //        break;
+                            //    case 1:
+                            //        descriptionText.GetComponent<TextMesh>().color = Color.blue;
+                            //        break;
+                            //    case 2:
+                            //        descriptionText.GetComponent<TextMesh>().color = Color.green;
+                            //        break;
+                            //    case 3:
+                            //        descriptionText.GetComponent<TextMesh>().color = Color.yellow;
+                            //        break;
+                            //    default:
+                            //        descriptionText.GetComponent<TextMesh>().color = Color.black;
+                            //        break;
+
+                            //}
+                            descriptionText.GetComponent<TextMesh>().text += itemList[selectedIndex + scrollIndex].listOfHeroes[i].name +"\n";
+                        }
+                        //descriptionText.GetComponent<TextMesh>().color = Color.black;
+
+                    }
+
+                }
             }
 
             PressButton(GameControl.control.selectKey);

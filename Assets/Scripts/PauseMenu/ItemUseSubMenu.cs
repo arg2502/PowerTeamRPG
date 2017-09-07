@@ -30,6 +30,8 @@ public class ItemUseSubMenu : SubMenu {
         }
         base.Start();
 
+        CheckForInactive();
+
         // disable the buttons for any fallen heroes unless item can be used on the dead
         if (GameControl.control.whichInventory == "consumables")
         {
@@ -208,6 +210,7 @@ public class ItemUseSubMenu : SubMenu {
         SetStatChanges(GameControl.control.heroList[selectedIndex]);
         InstantiateHeroInfo(GameControl.control.heroList[selectedIndex]);
         //UpdateStatChanges(GameControl.control.heroList[selectedIndex]);
+        CheckForInactive();
         foreach (GameObject go in heroInfo) { go.GetComponent<Renderer>().enabled = true; }
         foreach (GameObject go in statChanges) { go.GetComponent<Renderer>().enabled = true; }
 
@@ -250,4 +253,62 @@ public class ItemUseSubMenu : SubMenu {
         
         base.Update();
 	}
+
+    void CheckForInactive()
+    {
+        // deactivate the hero if they don't have the current item
+        for (int i = 0; i < buttonArray.Length; i++)
+        {
+            // check for same weapon
+            if (GameControl.control.whichInventory == "weapons")
+            {
+                if (GameControl.control.heroList[i].weapon == null
+                    || GameControl.control.heroList[i].weapon.GetComponent<Item>() == parent.currentItem)
+                {
+                    if (i == 0)
+                    { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }
+                    else
+                    { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive; }
+                }
+                else
+                {
+                    if (i == 0)
+                    { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover; }
+                    else
+                    { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal; }
+                }
+            }
+            // check if they have any of the equipment
+            else if (GameControl.control.whichInventory == "armor")
+            {
+                // if there's no equipment, no need to remove or continue checking
+                //if (GameControl.control.heroList[i].equipment.Count <= 0)
+                //{
+                //    if (i == 0)
+                //        buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+                //    else
+                //        buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                //    continue;
+                //}
+
+                for (int j = 0; j < GameControl.control.heroList[i].equipment.Count; j++)
+                {
+                    if (GameControl.control.heroList[i].equipment[j].GetComponent<Item>() == parent.currentItem)
+                    {
+                        if (i == 0)
+                            buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover;
+                        else
+                            buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
+                    }
+                    else
+                    {
+                        if (i == 0)
+                            buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.hover;
+                        else
+                            buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.normal;
+                    }
+                }
+            }
+        }
+    }
 }

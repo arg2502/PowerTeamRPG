@@ -43,6 +43,7 @@ public class WeaponItem : Item {
         }
         if (hero.weapon != null) { hero.weapon.GetComponent<WeaponItem>().Remove(hero); }
         hero.weapon = this.gameObject;
+        AddHeroAndSortList(hero);
 
         // Always decrease quantity by 1 to avoid multiple heroes sharing the same sword
         //quantity--;
@@ -79,7 +80,7 @@ public class WeaponItem : Item {
         }
 
         hero.weapon = null;
-
+        listOfHeroes.Remove(hero);
         // make it possible to use the item again
         //quantity++;
         uses--;

@@ -30,13 +30,43 @@ public class Item : MonoBehaviour {
     public int evadeChange;
     public int spdChange;
 
+    public List<HeroData> listOfHeroes = new List<HeroData>();
+
 	// Use this for initialization
 	protected void Start () {
-	
+	    
 	}
 
     public void Use()
     {
         // items will have their own overrides
+    }
+
+    protected void AddHeroAndSortList(HeroData hd)
+    {
+        // add hero to list
+        listOfHeroes.Add(hd);
+
+        // bubble sort through heroes to display them in identity order
+        // 
+        // NOTE: this is not the greatest sorting algorithm as it is O(n^2),
+        // but seeing as there will only ever be 4 elements max, this shouldn't be much cause for concern
+
+        bool wasSwapped;
+        do
+        {
+            wasSwapped = false;
+            for (int i = 0; i < listOfHeroes.Count - 1; i++)
+            {
+                if (listOfHeroes[i + 1].identity < listOfHeroes[i].identity)
+                {
+                    HeroData temp = listOfHeroes[i];
+                    listOfHeroes[i] = listOfHeroes[i + 1];
+                    listOfHeroes[i + 1] = temp;
+                    wasSwapped = true;
+                }
+            }
+        }
+        while (wasSwapped);
     }
 }
