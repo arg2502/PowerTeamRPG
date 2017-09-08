@@ -262,8 +262,8 @@ public class ItemUseSubMenu : SubMenu {
             // check for same weapon
             if (GameControl.control.whichInventory == "weapons")
             {
-                if (GameControl.control.heroList[i].weapon == null
-                    || GameControl.control.heroList[i].weapon.GetComponent<Item>() == parent.currentItem)
+                if (GameControl.control.heroList[i].weapon != null
+                    && GameControl.control.heroList[i].weapon.GetComponent<Item>() == parent.currentItem)
                 {
                     if (i == 0)
                     { buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactiveHover; }

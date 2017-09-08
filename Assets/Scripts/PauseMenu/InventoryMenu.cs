@@ -21,15 +21,15 @@ public class InventoryMenu : Menu {
         }
         else if (GameControl.control.whichInventory == "reusables")
         {
-            foreach (GameObject go in GameControl.control.reusables) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ReusableItem>()); } }
+            foreach (GameObject go in GameControl.control.reusables) { itemList.Add(go.GetComponent<ReusableItem>());  }
         }
         else if (GameControl.control.whichInventory == "weapons")
         {
-            foreach (GameObject go in GameControl.control.weapons) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<WeaponItem>()); } }
+            foreach (GameObject go in GameControl.control.weapons) { itemList.Add(go.GetComponent<WeaponItem>()); }
         }
         else if (GameControl.control.whichInventory == "armor")
         {
-            foreach (GameObject go in GameControl.control.equipment) { if (go.GetComponent<Item>().quantity != go.GetComponent<Item>().uses) { itemList.Add(go.GetComponent<ArmorItem>()); } }
+            foreach (GameObject go in GameControl.control.equipment) { itemList.Add(go.GetComponent<ArmorItem>()); }
         }
 
         // set the content array to the list of item names
