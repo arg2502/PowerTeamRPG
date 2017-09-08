@@ -271,7 +271,10 @@ public class SkillTree : MonoBehaviour {
     }
     void ScrollHorizontal(int col)
     {
-        // if col is greater, that means we're scrolling right, increase positive
+        // stop if on DONE button
+        if (rowIndex >= maxRows) return;
+
+        // if row is greater, that means we're scrolling up, increase positive
         int iterator = (col > columnIndex ? 1 : -1);
 
         while(col < maxCols && col >= 0)
@@ -284,6 +287,43 @@ public class SkillTree : MonoBehaviour {
             }
             else
             {
+                //int startingIndex = rowIndex; // start searching at this column
+                //bool goDown = false; // search starts by going right, then if one is not found, go back to start and search left
+                //for (int i = 0; i < maxCols; i++)
+                //{
+                //    if (button2DArray[col, startingIndex].GetComponent<SpriteRenderer>().enabled == true)
+                //    {
+                //        rowIndex = startingIndex;
+                //        columnIndex = col;
+                //        ScrollChangeButtonState();
+                //        return;
+                //    }
+
+                //    // no match - search the next column (to the right)
+                //    if (!goDown) startingIndex++;
+                //    // still no match, and now we're searching left - go to the next column to the left
+                //    else if (rowIndex != 0) startingIndex--;
+
+                //    // we've reached the end at the right, go back to starting and search the left side now
+                //    if (startingIndex >= maxRows && rowIndex != 0) { goDown = true; startingIndex = rowIndex - 1; }
+                //}
+
+                // just check immediately above or below, no further
+                if (rowIndex > 0 && button2DArray[col, rowIndex - 1].GetComponent<SpriteRenderer>().enabled == true)
+                {
+                    rowIndex--;
+                    columnIndex = col;
+                    ScrollChangeButtonState();
+                    return;
+                }
+                else if(rowIndex < maxRows - 1 && button2DArray[col, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == true)
+                {
+                    rowIndex++;
+                    columnIndex = col;
+                    ScrollChangeButtonState();
+                    return;
+                }
+
                 col += iterator;
             }
         }
@@ -300,14 +340,38 @@ public class SkillTree : MonoBehaviour {
 
         while (row < maxCols && row >= 0)
         {
+            // if the button directly above/below is enabled, go to that one
             if (button2DArray[columnIndex, row].GetComponent<SpriteRenderer>().enabled == true)
             {
                 rowIndex = row;
                 ScrollChangeButtonState();
                 return;
             }
+            // otherwise, check the rest of the row for the next available button
             else
             {
+                int startingIndex = columnIndex; // start searching at this column
+                bool goLeft = false; // search starts by going right, then if one is not found, go back to start and search left
+                for(int i = 0; i < maxRows; i++)
+                {
+                    if(button2DArray[startingIndex, row].GetComponent<SpriteRenderer>().enabled == true)
+                    {
+                        rowIndex = row;
+                        columnIndex = startingIndex;
+                        ScrollChangeButtonState();
+                        return;
+                    }
+
+                    // no match - search the next column (to the right)
+                    if (!goLeft) startingIndex++;
+                    // still no match, and now we're searching left - go to the next column to the left
+                    else if(columnIndex != 0) startingIndex--;
+
+                    // we've reached the end at the right, go back to starting and search the left side now
+                    if (startingIndex >= maxRows && columnIndex != 0) { goLeft = true; startingIndex = columnIndex - 1; }
+                }
+
+                // if the entire row is disabled, go to the next row and search again
                 row += iterator;
             }
         }
