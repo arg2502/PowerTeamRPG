@@ -15,20 +15,57 @@ public abstract class Passive : Technique {
 
     //public string Name { get { return name; } }
     //public string Description { get { return description; } }
-    public Passive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp)
+    public Passive(string[] list)
+        :base(list)
     {
-        name = nm;
-        cost = cst;
-        pm = powerMag;
-        colPos = cp;
-        rowPos = rp;
-        damage = dmg;
-        critical = crit;
-        accuracy = acc;
-        description = name + "\n" + descrip + "\nCost: " + cost + "\n\nDMG: " + damage + "\nCRIT: " + critical + "\nACC: " + accuracy;
-    }
+        for (int i = 1; i < list.Length; i++)
+        {
+            switch (i)
+            {
+                case 1:
+                    name = list[i];
+                    break;
 
+                case 2:
+                    description = list[i];
+                    break;
+
+                case 3:
+                    cost = int.Parse(list[i]);
+                    break;
+
+                case 4:
+                    pm = int.Parse(list[i]);
+                    break;
+
+                case 5:
+                    damage = int.Parse(list[i]);
+                    break;
+
+                case 6:
+                    critical = int.Parse(list[i]);
+                    break;
+
+                case 7:
+                    accuracy = int.Parse(list[i]);
+                    break;
+
+                case 8:
+                    colPos = int.Parse(list[i]);
+                    break;
+
+                case 9:
+                    rowPos = int.Parse(list[i]);
+                    break;
+
+                case 10:
+                    int.TryParse(list[i], out level);
+                    break;
+
+            }
+        }
+    }
+    
     public abstract void Start();
 
     //every passive should override this
@@ -42,8 +79,9 @@ public abstract class Passive : Technique {
 [Serializable]
 public abstract class CalcDamagePassive : Passive {
 
-    public CalcDamagePassive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+    public CalcDamagePassive(string[] list)
+        : base(list) { }
+    
     //public abstract int Use() { return 0; }
     //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
@@ -54,8 +92,8 @@ public abstract class CalcDamagePassive : Passive {
 [Serializable]
 public abstract class TakeDamagePassive : Passive
 {
-    public TakeDamagePassive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+    public TakeDamagePassive(string[] list)
+        :base(list) { }
     //public abstract int Use() { return 0; }
     //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
@@ -65,8 +103,8 @@ public abstract class TakeDamagePassive : Passive
 [Serializable]
 public abstract class PerTurnPassive : Passive
 {
-    public PerTurnPassive(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+    public PerTurnPassive(string[] list)
+        :base(list) { }
     //public abstract int Use() { return 0; }
     //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
@@ -75,8 +113,8 @@ public abstract class PerTurnPassive : Passive
 [Serializable]
 public class LightRegeneration : PerTurnPassive {
 
-    public LightRegeneration(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+    public LightRegeneration(string[] list)
+        :base(list) { }
 
     public override void Start()
     {
@@ -99,8 +137,8 @@ public class LightRegeneration : PerTurnPassive {
 [Serializable]
 public class SiegeBreaker : CalcDamagePassive
 {
-    public SiegeBreaker(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp) { }
+    public SiegeBreaker(string[] list)
+        :base(list) { }
 
     public override void Start()
     {
@@ -114,8 +152,65 @@ public class SiegeBreaker : CalcDamagePassive
 [Serializable]
 public class Duelist : CalcDamagePassive
 {
-    public Duelist(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp, int level)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp)
+    public Duelist(string[] list)
+        :base(list)
+    {
+        // the level will be passed in and all calculations can be based on that
+        // Duelist I : level = 1
+        // Duelist II : level = 2
+        // Duelist III : level = 3
+    }
+
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Resilience : PerTurnPassive
+{
+    public Resilience(string[] list)
+        :base(list)
+    {
+
+    }
+
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Unbreakable: TakeDamagePassive
+{
+    public Unbreakable(string[] list)
+        :base(list)
+    {
+
+    }
+
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Magician : CalcDamagePassive
+{
+    public Magician(string[] list)
+        : base(list)
     {
         // the level will be passed in and all calculations can be based on that
         // Duelist I : level = 1

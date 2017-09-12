@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class SkillTree : MonoBehaviour {
 
@@ -64,6 +65,9 @@ public class SkillTree : MonoBehaviour {
     // technique description
     protected GameObject descriptionText;
     protected GameObject remainingPts;
+
+    protected List<string[]> listOfTechniques;
+    protected StreamReader readIn;
 
     public void Start()
     {     
@@ -192,8 +196,8 @@ public class SkillTree : MonoBehaviour {
         remainingPts.name = "RemainingPointsText";
         remainingPts.GetComponent<TextMesh>().text = "Skill Points: " + hero.techPts;
         remainingPts.transform.position = new Vector2(camera.transform.position.x - 10.9f, button2DArray[0, currentTree.numOfRow].transform.position.y + 7f);
-        
-        
+
+
     }
     void NewTree()
     {
@@ -767,6 +771,97 @@ public class SkillTree : MonoBehaviour {
                 }
             }
         }
+    }
+    protected void ReadInfo(string path)
+    {
+        // read in info
+        listOfTechniques = new List<string[]>();
+
+        readIn = new StreamReader("./Assets/Scripts/SkillTrees/" + path);
+
+        string line = readIn.ReadLine();
+
+        // skip first line (contains "Key, Title, etc...")
+        line = readIn.ReadLine();
+
+        while (line != null)
+        {
+            listOfTechniques.Add(line.Split(',')); // makes each line a string array and adds to list
+            line = readIn.ReadLine();
+        }
+    }
+
+    protected string[] FindTechnique(string key)
+    {
+        // find the correct row
+        //int row = 0;
+        for (int i = 0; i < listOfTechniques.Count; i++)
+        {
+            if (listOfTechniques[i][0] == key)
+            {
+                //row = i;
+                return listOfTechniques[i];
+            }
+        }
+        return null;
+        
+        //string title = "", description = "";
+        //int cost = 0, pm = 0, dmg = 0, crit = 0, acc = 0, cp = 0, rp = 0, lvl = 0;
+        
+
+        //for(int i = 1; i < listOfTechniques[row].Length; i++)
+        //{
+        //    switch(i)
+        //    {
+        //        case 1:
+        //            title = listOfTechniques[row][i];
+        //            break;
+
+        //        case 2:
+        //            description = listOfTechniques[row][i];
+        //            break;
+
+        //        case 3:
+        //            cost = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 4:
+        //            pm = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 5:
+        //            dmg = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 6:
+        //            crit = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 7:
+        //            acc = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 8:
+        //            cp = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 9:
+        //            rp = int.Parse(listOfTechniques[row][i]);
+        //            break;
+
+        //        case 10:
+        //            int.TryParse(listOfTechniques[row][i], out lvl);
+        //            break;
+                    
+        //    }
+        //}
+
+        // return the technique
+        //if (lvl <= 0)
+        //    return new Technique(title, description, cost, pm, dmg, crit, acc, cp, rp);
+        //else
+        //    return new Technique(title, description, cost, pm, dmg, crit, acc, cp, rp, lvl);
+
     }
 }
 

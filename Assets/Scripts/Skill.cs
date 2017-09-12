@@ -9,17 +9,54 @@ using System.IO;
 public class Skill : Technique
 {
     public Skill() {}
-    public Skill(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
-        :base(nm, descrip, cst, powerMag, dmg, crit, acc, cp, rp)
-    {        
-        name = nm;
-        cost = cst;
-        pm = powerMag;
-        colPos = cp;
-        rowPos = rp;
-        damage = dmg;
-        critical = crit;
-        accuracy = acc;
-        description = name + "\n" + descrip + "\nCost: " + cost + "\n\nDMG: " + damage + "\nCRIT: " + critical + "\nACC: " + accuracy;
+    public Skill(string[] list)
+        :base(list)
+    {
+        for (int i = 1; i < list.Length; i++)
+        {
+            switch (i)
+            {
+                case 1:
+                    name = list[i];
+                    break;
+
+                case 2:
+                    description = list[i];
+                    break;
+
+                case 3:
+                    cost = int.Parse(list[i]);
+                    break;
+
+                case 4:
+                    pm = int.Parse(list[i]);
+                    break;
+
+                case 5:
+                    damage = int.Parse(list[i]);
+                    break;
+
+                case 6:
+                    critical = int.Parse(list[i]);
+                    break;
+
+                case 7:
+                    accuracy = int.Parse(list[i]);
+                    break;
+
+                case 8:
+                    colPos = int.Parse(list[i]);
+                    break;
+
+                case 9:
+                    rowPos = int.Parse(list[i]);
+                    break;
+
+                case 10:
+                    int.TryParse(list[i], out level);
+                    break;
+
+            }
+        }
     }
 }

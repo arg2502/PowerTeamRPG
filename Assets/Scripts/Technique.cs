@@ -32,6 +32,7 @@ public class Technique {
     protected int damage;
     protected int critical;
     protected int accuracy;
+    protected int level;
     
 
     public string Name { get { return name; } set { name = value; } }
@@ -47,25 +48,63 @@ public class Technique {
     public ButtonSkillTree Button { get { return button; } set { button = value; } }
 
     public Technique() {}
-    public Technique(string nm, string descrip, int cst, int powerMag, int dmg, int crit, int acc, int cp, int rp)
+    public Technique(string[] list)
     {
-        name = nm;
-        cost = cst;
-        pm = powerMag;
-        colPos = cp;
-        rowPos = rp;
-        damage = dmg;
-        critical = crit;
-        accuracy = acc;
-        description = name + "\n" + descrip + "\nCost: " + cost + "\n\nDMG: " + damage + "\nCRIT: " + critical + "\nACC: " + accuracy;
+        for (int i = 1; i < list.Length; i++)
+        {
+            switch (i)
+            {
+                case 1:
+                    name = list[i];
+                    break;
+
+                case 2:
+                    description = list[i];
+                    break;
+
+                case 3:
+                    cost = int.Parse(list[i]);
+                    break;
+
+                case 4:
+                    pm = int.Parse(list[i]);
+                    break;
+
+                case 5:
+                    damage = int.Parse(list[i]);
+                    break;
+
+                case 6:
+                    critical = int.Parse(list[i]);
+                    break;
+
+                case 7:
+                    accuracy = int.Parse(list[i]);
+                    break;
+
+                case 8:
+                    colPos = int.Parse(list[i]);
+                    break;
+
+                case 9:
+                    rowPos = int.Parse(list[i]);
+                    break;
+
+                case 10:
+                    int.TryParse(list[i], out level);
+                    break;
+
+            }
+        }
     }
+
     //// Use this for initialization
     //void Start () {
-	
+
     //}
-	
+
     //// Update is called once per frame
     //void Update () {
-	
+
     //}
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 public class JethroSkillTree : SkillTree {
 
@@ -33,11 +34,13 @@ public class JethroSkillTree : SkillTree {
     Passive magicianIII;
     Spell iceSpear;
     Spell frostBite;
+    Spell diamondPeak;
 
     
 
     // Trees
     MyTree basic;
+    MyTree magic;
 
     // FILL TREES DOWN BELOW, THEN TEST
 
@@ -46,22 +49,24 @@ public class JethroSkillTree : SkillTree {
 
         // set hero to jethro
         hero = GameControl.control.heroList[0];
-        whichContent = new List<string> { "Basic" };
-        
-        // create all techniques
-        helmsplitter = new Skill("Helmsplitter", "A powerful sword strike from above.", 1, 2, 75, 3, 90, 2, 0);
-        trinitySlice = new Skill("Trinity Slice", "Rapidly slash an opponent three times.", 1, 6, 40, 5, 80, 1, 1);
-        arcSlash = new Skill("Arc Slash", "A wide swing striking a row of opponents.", 2, 9, 50, 5, 100, 0, 1);
-        siegeBreaker = new SiegeBreaker("Siege Breaker", "Boosts all damage output at lower health.", 0, 0, 0, 0, 0, 1, 2);
-        frostEdge = new Spell("Frost Edge", "Increase chance of critical hit by 15% for 2 turns.", 1, 7, 0, 0, 100, 1, 3);
-        mordstreich = new Skill("Mordstreich", "Jump into the air for a deadly sword thrust.", 1, 15, 75, 60, 60, 0, 3);
-        riser = new Skill("Riser", "Jumping sword strike. Knocks opponent upward. 60% chance to decrease enemy's defense.", 1, 10, 75, 10, 95, 1, 4);
-        duelistI = new Duelist("Duelist I", "Boost physical damage output by 5%.", 1, 0, 0, 0, 100, 3, 1, 1);
-        duelistII = new Duelist("Duelist II", "Boost physical damage output by 10%.", 1, 0, 0, 0, 100, 3, 3, 2);
-        duelistIII = new Duelist("Duelist III", "Boost physical damage output by 15%.", 1, 0, 0, 0, 100, 4, 3, 3);
-        rally = new Skill("Rally", "Boost physical attack for the entire team.", 1, 5, 0, 0, 100, 3, 2);
-        goldSoul = new Skill("Gold Soul", "Boost stats of entire team slightly.", 1, 20, 0, 0, 100, 0, 3);
+        whichContent = new List<string> { "Basic", "Magic" };
 
+        // read in info
+        ReadInfo("techniquesJethro1.csv");
+
+        // create all techniques
+        helmsplitter = new Skill(FindTechnique("helmsplitter"));
+        trinitySlice = new Skill(FindTechnique("trinitySlice"));
+        arcSlash = new Skill(FindTechnique("arcSlash"));
+        siegeBreaker = new SiegeBreaker(FindTechnique("siegeBreaker"));
+        frostEdge = new Spell(FindTechnique("frostEdge"));
+        mordstreich = new Skill(FindTechnique("mordstreich"));
+        riser = new Skill(FindTechnique("riser"));
+        duelistI = new Duelist(FindTechnique("duelist1"));
+        duelistII = new Duelist(FindTechnique("duelist2"));
+        duelistIII = new Duelist(FindTechnique("duelist3"));
+        rally = new Skill(FindTechnique("rally"));
+        goldSoul = new Skill(FindTechnique("goldSoul"));
 
         // set nexts to create branches
         helmsplitter.ListNextTechnique = new List<Technique>();
@@ -123,7 +128,46 @@ public class JethroSkillTree : SkillTree {
 
         goldSoul.Prerequisites = new List<Technique>();
         goldSoul.Prerequisites.Add(duelistII);
-                      
+
+
+        // read in info for next tree
+        ReadInfo("techniquesJethro2.csv");
+
+        // TREE 2 STATS
+        //fog = new Spell("Fog", "Lowers enemy accuracy. Deals trifling damage over time", 1, 2, 0, 0, 100, 1, 0);
+        //frost = new Spell("Frost", "Weak single hit attack that substantially reduces enemy speed.", 1, 4, 50, 5, 100, 1, 1);
+        //iceArmor = new Spell("Ice Armor", "Gives Jethro armor reducing damage by ¾ for 2 turns.", 1, 5, 0, 0, 100, 1, 2);
+        //iceBarrier = new Spell("Ice Barrier", "Reduces damage to team by half for 2 turns.", 1, 10, 0, 0, 100, 0, 3);
+        //resilience = new Resilience("Resilience", "Makes status effects 1-2 rounds shorter.", 1, 0, 0, 0, 100, 0, 4);
+        //coldShoulder = new Spell("Cold Shoulder", "?", 1, 0, 0, 0, 100, 0, 5); // NOT IN PROPOSALS - MAY NOT BE A SPELL
+        //unbreakable = new Unbreakable("Unbreakable", "Cannot be killed by a critical hit, leaving him with 1 hp.", 1, 0, 0, 0, 100, 0, 6);
+        //magicianI = new Magician("Magician I", "Boost magic damage output by 5%.", 1, 0, 0, 0, 100, 2, 3, 1);
+        //magicianII = new Magician("Magician II", "Boost magic damage output by 10%.", 1, 0, 0, 0, 100, 3, 4, 2);
+        //magicianIII = new Magician("Magician III", "Boost magic damage output by 15%.", 1, 0, 0, 0, 100, 3, 5, 3);
+        //iceSpear = new Spell("Ice Spear", "Powerful single hit with a high critical chance.", 1, 8, 75, 15, 90, 2, 4);
+        //frostBite = new Spell("Frost Bite", "A primal magic attack of Crestian heritage. Strike your opponent with an intense ice attack that has a 60% chance of leaving your opponent petrified.", 1, 25, 100, 15, 90, 2, 5);
+        //diamondPeak = new Spell("Diamond Peak", "Conjure a rending pillar of ice, which deals heavy damage and inflicts bleeding on all opponents.", 1, 20, 90, 30, 100, 1, 7);
+        //fog = AssignTechnique("fog") as Spell;
+        //frost = AssignTechnique("frost") as Spell;
+        //iceArmor = AssignTechnique("iceArmor") as Spell;
+        //iceBarrier = AssignTechnique("iceBarrier") as Spell;
+        //resilience = AssignTechnique("resilience") as Resilience;
+        //coldShoulder = AssignTechnique("coldShoulder") as Spell;
+        //unbreakable = AssignTechnique("unbreakable") as Unbreakable;
+        //magicianI = AssignTechnique("magician1") as Magician;
+        //magicianII = AssignTechnique("magician2") as Magician;
+        //magicianIII = AssignTechnique("magician3") as Magician;
+        //iceSpear = AssignTechnique("iceSpear") as Spell;
+        //frostBite = AssignTechnique("frostBite") as Spell;
+        //diamondPeak = AssignTechnique("diamondPeak") as Spell;
+
+
+        // set nexts to create branches ------TODO
+
+
+        // prerequisites ------TODO
+
+
 
         // trees
         basic = new MyTree();
@@ -139,22 +183,19 @@ public class JethroSkillTree : SkillTree {
         basic.rootCol = 2;
         basic.rootRow = 0;
         
-        //foreach(List<Technique> t in basic.listOfContent)
-        //{
-           // if (basic.numOfRow < t.Count) basic.numOfRow = t.Count;
-
-            // add prerequisites to descriptions
-            foreach(Technique tq in basic.listOfContent)
+        
+        // add prerequisites to descriptions
+        foreach(Technique tq in basic.listOfContent)
+        {
+            if(tq != null && tq.Prerequisites != null)
             {
-                if(tq != null && tq.Prerequisites != null)
-                {
-                    tq.Description += "\n\nPrerequisites: ";
-                    foreach(Technique tqn in tq.Prerequisites)
-                    {                        
-                        tq.Description += "\n" + tqn.Name;
-                    }
+                tq.Description += "\n\nPrerequisites: ";
+                foreach(Technique tqn in tq.Prerequisites)
+                {                        
+                    tq.Description += "\n" + tqn.Name;
                 }
             }
+        }
 
         
         listOfTrees = new List<MyTree>();
