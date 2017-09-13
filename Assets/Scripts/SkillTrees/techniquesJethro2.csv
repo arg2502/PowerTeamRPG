@@ -1,14 +1,14 @@
 Key,Name,Description,Cost,Power Magic,Damage,Crit Chance,Accuracy,Column Pos,Row Pos,Level
-fog,Fog,Lowers enemy accuracy. Deals trifling damage over time.,1,2,0,0,100,1,0,
-frost,Frost,Weak single hit attack that substantially reduces enemy speed.,1,4,50,5,100,1,1,
-iceArmor,Ice Armor,Gives Jethro armor reducing damage by 3/4 for 2 turns.,1,5,0,0,100,1,2,
-iceBarrier,Ice Barrier,Reduces damage to team by half for 2 turns.,1,10,0,0,100,0,3,
-resilience,Resilience,Makes status effects 1-2 rounds shorter.,1,0,0,0,100,0,4,
-coldShoulder,Cold Shoulder,?,1,0,0,0,100,0,5,
-unbreakable,Unbreakable,"Cannot be killed by a critical hit, leaving him with 1 hp.",1,0,0,0,100,0,6,
-magician1,Magician I,Boosts magic damage output by 5%.,1,0,0,0,100,2,3,1
-magician2,Magician II,Boosts magic damage output by 10%.,1,0,0,0,100,3,4,2
-magician3,Magician III,Boosts magic damage output by 15%.,1,0,0,0,100,3,5,3
-iceSpear,Ice Spear,Powerful single hit with a high critical chance.,1,8,75,15,90,2,4,
-frostBite,Frost Bite,A primal magic attack of Crestian heritage. Strike your opponent with an intense ice attack that has a 60% chance of leaving your opponent petrified.,1,25,100,15,90,2,5,
-diamondPeak,Diamond Peak,"Conjure a rending pillar of ice, which deals heavy damage and inflicts bleeding on all opponents.",1,20,90,30,100,1,7,
+fog,Fog,Lowers enemy accuracy. Deals trifling damage over time.,1,2,0,0,100,2,0,
+frost,Frost,Weak single hit attack that substantially reduces enemy speed.,1,4,50,5,100,2,1,
+iceArmor,Ice Armor,Gives Jethro armor reducing damage by 3/4 for 2 turns.,1,5,0,0,100,2,2,
+iceBarrier,Ice Barrier,Reduces damage to team by half for 2 turns.,1,10,0,0,100,1,3,
+resilience,Resilience,Makes status effects 1-2 rounds shorter.,1,0,0,0,100,1,4,
+coldShoulder,Cold Shoulder,?,1,0,0,0,100,1,5,
+unbreakable,Unbreakable,Cannot be killed by a critical hit -- leaving him with 1 hp.,1,0,0,0,100,1,6,
+magician1,Magician I,Boosts magic damage output by 5%.,1,0,0,0,100,3,3,1
+magician2,Magician II,Boosts magic damage output by 10%.,1,0,0,0,100,4,4,2
+magician3,Magician III,Boosts magic damage output by 15%.,1,0,0,0,100,4,5,3
+iceSpear,Ice Spear,Powerful single hit with a high critical chance.,1,8,75,15,90,3,4,
+frostBite,Frost Bite,A primal magic attack of Crestian heritage. Strike your opponent with an intense ice attack that has a 60% chance of leaving your opponent petrified.,1,25,100,15,90,3,5,
+diamondPeak,Diamond Peak,Conjure a rending pillar of ice -- which deals heavy damage and inflicts bleeding on all opponents.,1,20,90,30,100,2,7,

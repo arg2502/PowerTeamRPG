@@ -167,7 +167,7 @@ public class SkillTree : MonoBehaviour {
         // add on Done button at the very end
         button2DArray[0, maxRows] = (GameObject)Instantiate(Resources.Load("Prefabs/SkillTreeButton"));
         button2DArray[0, maxRows].name = "DoneButton";
-        ButtonSkillTree button = button2DArray[0, currentTree.numOfRow].GetComponent<ButtonSkillTree>();
+        ButtonSkillTree button = button2DArray[0, maxRows].GetComponent<ButtonSkillTree>();
         button2DArray[0, maxRows].transform.position = new Vector2(camera.transform.position.x - 9.375f, camera.transform.position.y - 6.25f);
 
         // display "Done" text
@@ -862,6 +862,20 @@ public class SkillTree : MonoBehaviour {
         //else
         //    return new Technique(title, description, cost, pm, dmg, crit, acc, cp, rp, lvl);
 
+    }
+    protected void AddPrerequisites(List<Technique> content)
+    {
+        foreach (Technique tq in content)
+        {
+            if (tq != null && tq.Prerequisites != null)
+            {
+                tq.Description += "\n\nPrerequisites: ";
+                foreach (Technique tqn in tq.Prerequisites)
+                {
+                    tq.Description += "\n" + tqn.Name;
+                }
+            }
+        }
     }
 }
 

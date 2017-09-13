@@ -25,31 +25,31 @@ public class Skill : Technique
                     break;
 
                 case 3:
-                    cost = int.Parse(list[i]);
+                    int.TryParse(list[i], out cost);
                     break;
 
                 case 4:
-                    pm = int.Parse(list[i]);
+                    int.TryParse(list[i], out pm);
                     break;
 
                 case 5:
-                    damage = int.Parse(list[i]);
+                    int.TryParse(list[i], out damage);
                     break;
 
                 case 6:
-                    critical = int.Parse(list[i]);
+                    int.TryParse(list[i], out critical);
                     break;
 
                 case 7:
-                    accuracy = int.Parse(list[i]);
+                    int.TryParse(list[i], out accuracy);
                     break;
 
                 case 8:
-                    colPos = int.Parse(list[i]);
+                    int.TryParse(list[i], out colPos);
                     break;
 
                 case 9:
-                    rowPos = int.Parse(list[i]);
+                    int.TryParse(list[i], out rowPos);
                     break;
 
                 case 10:

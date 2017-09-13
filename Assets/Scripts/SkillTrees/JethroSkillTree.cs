@@ -133,73 +133,78 @@ public class JethroSkillTree : SkillTree {
         // read in info for next tree
         ReadInfo("techniquesJethro2.csv");
 
-        // TREE 2 STATS
-        //fog = new Spell("Fog", "Lowers enemy accuracy. Deals trifling damage over time", 1, 2, 0, 0, 100, 1, 0);
-        //frost = new Spell("Frost", "Weak single hit attack that substantially reduces enemy speed.", 1, 4, 50, 5, 100, 1, 1);
-        //iceArmor = new Spell("Ice Armor", "Gives Jethro armor reducing damage by ¾ for 2 turns.", 1, 5, 0, 0, 100, 1, 2);
-        //iceBarrier = new Spell("Ice Barrier", "Reduces damage to team by half for 2 turns.", 1, 10, 0, 0, 100, 0, 3);
-        //resilience = new Resilience("Resilience", "Makes status effects 1-2 rounds shorter.", 1, 0, 0, 0, 100, 0, 4);
-        //coldShoulder = new Spell("Cold Shoulder", "?", 1, 0, 0, 0, 100, 0, 5); // NOT IN PROPOSALS - MAY NOT BE A SPELL
-        //unbreakable = new Unbreakable("Unbreakable", "Cannot be killed by a critical hit, leaving him with 1 hp.", 1, 0, 0, 0, 100, 0, 6);
-        //magicianI = new Magician("Magician I", "Boost magic damage output by 5%.", 1, 0, 0, 0, 100, 2, 3, 1);
-        //magicianII = new Magician("Magician II", "Boost magic damage output by 10%.", 1, 0, 0, 0, 100, 3, 4, 2);
-        //magicianIII = new Magician("Magician III", "Boost magic damage output by 15%.", 1, 0, 0, 0, 100, 3, 5, 3);
-        //iceSpear = new Spell("Ice Spear", "Powerful single hit with a high critical chance.", 1, 8, 75, 15, 90, 2, 4);
-        //frostBite = new Spell("Frost Bite", "A primal magic attack of Crestian heritage. Strike your opponent with an intense ice attack that has a 60% chance of leaving your opponent petrified.", 1, 25, 100, 15, 90, 2, 5);
-        //diamondPeak = new Spell("Diamond Peak", "Conjure a rending pillar of ice, which deals heavy damage and inflicts bleeding on all opponents.", 1, 20, 90, 30, 100, 1, 7);
-        //fog = AssignTechnique("fog") as Spell;
-        //frost = AssignTechnique("frost") as Spell;
-        //iceArmor = AssignTechnique("iceArmor") as Spell;
-        //iceBarrier = AssignTechnique("iceBarrier") as Spell;
-        //resilience = AssignTechnique("resilience") as Resilience;
-        //coldShoulder = AssignTechnique("coldShoulder") as Spell;
-        //unbreakable = AssignTechnique("unbreakable") as Unbreakable;
-        //magicianI = AssignTechnique("magician1") as Magician;
-        //magicianII = AssignTechnique("magician2") as Magician;
-        //magicianIII = AssignTechnique("magician3") as Magician;
-        //iceSpear = AssignTechnique("iceSpear") as Spell;
-        //frostBite = AssignTechnique("frostBite") as Spell;
-        //diamondPeak = AssignTechnique("diamondPeak") as Spell;
+        // TREE 2 STATS        
+        fog = new Spell(FindTechnique("fog"));
+        frost = new Spell(FindTechnique("frost"));
+        iceArmor = new Spell(FindTechnique("iceArmor"));
+        iceBarrier = new Spell(FindTechnique("iceBarrier"));
+        resilience = new Resilience(FindTechnique("resilience"));
+        coldShoulder = new Spell(FindTechnique("coldShoulder"));
+        unbreakable = new Unbreakable(FindTechnique("unbreakable"));
+        magicianI = new Magician(FindTechnique("magician1"));
+        magicianII = new Magician(FindTechnique("magician2"));
+        magicianIII = new Magician(FindTechnique("magician3"));
+        iceSpear = new Spell(FindTechnique("iceSpear"));
+        frostBite = new Spell(FindTechnique("frostBite"));
+        diamondPeak = new Spell(FindTechnique("diamondPeak"));
 
 
-        // set nexts to create branches ------TODO
+        // set nexts to create branches
+        fog.ListNextTechnique = new List<Technique>() { frost };
+        frost.ListNextTechnique = new List<Technique>() { iceArmor };
+        iceArmor.ListNextTechnique = new List<Technique>() { iceBarrier, magicianI };
+        iceBarrier.ListNextTechnique = new List<Technique>() { resilience };
+        resilience.ListNextTechnique = new List<Technique>() { coldShoulder };
+        coldShoulder.ListNextTechnique = new List<Technique>() { unbreakable };
+        unbreakable.ListNextTechnique = new List<Technique>() { diamondPeak };
+        magicianI.ListNextTechnique = new List<Technique>() { iceSpear, magicianII };
+        iceSpear.ListNextTechnique = new List<Technique>() { frostBite };
+        magicianII.ListNextTechnique = new List<Technique>() { magicianIII };
 
-
-        // prerequisites ------TODO
-
+        // prerequisites
+        frost.Prerequisites = new List<Technique>() { fog };
+        iceArmor.Prerequisites = new List<Technique>() { frost };
+        iceBarrier.Prerequisites = new List<Technique>() { iceArmor };
+        resilience.Prerequisites = new List<Technique>() { iceBarrier };
+        coldShoulder.Prerequisites = new List<Technique>() { resilience };
+        unbreakable.Prerequisites = new List<Technique>() { coldShoulder };
+        diamondPeak.Prerequisites = new List<Technique>() { unbreakable };
+        magicianI.Prerequisites = new List<Technique>() { iceArmor };
+        iceSpear.Prerequisites = new List<Technique>() { magicianI };
+        frostBite.Prerequisites = new List<Technique>() { iceSpear };
+        magicianII.Prerequisites = new List<Technique>() { magicianI };
+        magicianIII.Prerequisites = new List<Technique>() { magicianII };
 
 
         // trees
         basic = new MyTree();
+        magic = new MyTree();
 
         // set content array
         basic.listOfContent = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, siegeBreaker, frostEdge, mordstreich, riser, duelistI, duelistII, duelistIII, rally, goldSoul };
+        magic.listOfContent = new List<Technique>() { fog, frost, iceArmor, iceBarrier, resilience, coldShoulder, unbreakable, magicianI, magicianII, magicianIII, iceSpear, frostBite, diamondPeak };
         
         // set sizes of columns and rows
         basic.numOfColumn = 5;
         basic.numOfRow = 5;
+        magic.numOfColumn = 5;
+        magic.numOfRow = 8;
 
         // set starting position
         basic.rootCol = 2;
         basic.rootRow = 0;
-        
-        
-        // add prerequisites to descriptions
-        foreach(Technique tq in basic.listOfContent)
-        {
-            if(tq != null && tq.Prerequisites != null)
-            {
-                tq.Description += "\n\nPrerequisites: ";
-                foreach(Technique tqn in tq.Prerequisites)
-                {                        
-                    tq.Description += "\n" + tqn.Name;
-                }
-            }
-        }
+        magic.rootCol = 2;
+        magic.rootRow = 0;
 
-        
+
+        // add prerequisites to descriptions
+        AddPrerequisites(basic.listOfContent);
+        AddPrerequisites(magic.listOfContent);
+
+
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(basic);
+        listOfTrees.Add(magic);
 
         base.Start();
 	}
