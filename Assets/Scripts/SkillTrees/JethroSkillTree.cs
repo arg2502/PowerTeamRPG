@@ -52,7 +52,7 @@ public class JethroSkillTree : SkillTree {
         whichContent = new List<string> { "Basic", "Magic" };
 
         // read in info
-        ReadInfo("techniquesJethro1.csv");
+        ReadInfo("techniquesJethro1.tsv");
 
         // create all techniques
         helmsplitter = new Skill(FindTechnique("helmsplitter"));
@@ -69,30 +69,29 @@ public class JethroSkillTree : SkillTree {
         goldSoul = new Skill(FindTechnique("goldSoul"));
 
         // set nexts to create branches
-        helmsplitter.ListNextTechnique = new List<Technique>();
-        helmsplitter.ListNextTechnique.Add(trinitySlice);
-        helmsplitter.ListNextTechnique.Add(duelistI);
+        //helmsplitter.ListNextTechnique = new List<Technique>();
+        //helmsplitter.ListNextTechnique.Add(trinitySlice);
+        //helmsplitter.ListNextTechnique.Add(duelistI);
 
-        trinitySlice.ListNextTechnique = new List<Technique>();
-        trinitySlice.ListNextTechnique.Add(arcSlash);
-        trinitySlice.ListNextTechnique.Add(siegeBreaker);
+        //trinitySlice.ListNextTechnique = new List<Technique>();
+        //trinitySlice.ListNextTechnique.Add(arcSlash);
+        //trinitySlice.ListNextTechnique.Add(siegeBreaker);
 
-        siegeBreaker.ListNextTechnique = new List<Technique>();
-        siegeBreaker.ListNextTechnique.Add(frostEdge);
+        //siegeBreaker.ListNextTechnique = new List<Technique>();
+        //siegeBreaker.ListNextTechnique.Add(frostEdge);
 
-        frostEdge.ListNextTechnique = new List<Technique>();
-        frostEdge.ListNextTechnique.Add(mordstreich);
-        frostEdge.ListNextTechnique.Add(riser);
+        //frostEdge.ListNextTechnique = new List<Technique>();
+        //frostEdge.ListNextTechnique.Add(mordstreich);
+        //frostEdge.ListNextTechnique.Add(riser);
 
-        duelistI.ListNextTechnique = new List<Technique>();
-        duelistI.ListNextTechnique.Add(rally);
+        //duelistI.ListNextTechnique = new List<Technique>();
+        //duelistI.ListNextTechnique.Add(rally);
 
-        rally.ListNextTechnique = new List<Technique>();
-        rally.ListNextTechnique.Add(duelistII);
+        //rally.ListNextTechnique = new List<Technique>();
+        //rally.ListNextTechnique.Add(duelistII);
 
-        duelistII.ListNextTechnique = new List<Technique>();
-        duelistII.ListNextTechnique.Add(duelistIII);
-        duelistII.ListNextTechnique.Add(goldSoul);
+        //duelistII.ListNextTechnique = new List<Technique>();
+        //duelistII.ListNextTechnique.Add(duelistIII);
         
 
         // prerequisites
@@ -131,7 +130,7 @@ public class JethroSkillTree : SkillTree {
 
 
         // read in info for next tree
-        ReadInfo("techniquesJethro2.csv");
+        ReadInfo("techniquesJethro2.tsv");
 
         // TREE 2 STATS        
         fog = new Spell(FindTechnique("fog"));

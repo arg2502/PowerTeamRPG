@@ -1,0 +1,13 @@
+Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level
+candleshot	Candleshot	Small fire orb, causing minimal damage	1	1	40	0	100	2	0	
+fireball	Fireball	The traditional fireball, more of a cliche than a weapon	1	2	52	5	93	2	1	
+caster1	Efficient Caster I	Spells cost marnially less to cast. 10% reduced mana cost.	1	0	0	0	100	2	2	1
+cauterize	Cauterize	Cures bleeding and heals minorly.	1	0	0	0	100	1	3	
+slowBurn	Slow Burn	???	1	0	0	0	100	1	4	
+grandFireball	Grand Fireball	Perfected fireball, with increased damage and critical chance. Engulfs foes.	1	4	75	10	90	2	3	
+caster2	Efficient Caster II	Spells cost marnially less to cast. 20% reduced mana cost.	1	0	0	0	100	2	4	2
+splashFlame	Splash Flame	An explosive fireball that deals light damage to enemies adjacent to the target.	1	3	60	5	85	2	5	
+caster3	Efficient Caster III	Spells cost marnially less to cast. 30% reduced mana cost.	1	0	0	0	100	2	6	3
+firewall	Firewall	Flames spread across the field to deal damage to all enemies.	1	5	22	6	100	3	3	
+hellfire	Hellfire	An all-encompassing spell with considerable power and accuracy.	1	8	40	3	100	3	4	
+coleFusion	Cole Fusion	The amount of your remaining pm becomes the attack strength of this spell.	1	0	0	0	100	2	8	

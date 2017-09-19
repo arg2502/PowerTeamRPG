@@ -26,6 +26,12 @@ public class SkillTreeManager : MonoBehaviour {
                     case 1:
                         gameObject.AddComponent<ColeSkillTree>();
                         break;
+                    case 2:
+                        gameObject.AddComponent<EleanorSkillTree>();
+                        break;
+                    case 3:
+                        gameObject.AddComponent<JulietteSkillTree>();
+                        break;
                     default:
                         break;
                 }

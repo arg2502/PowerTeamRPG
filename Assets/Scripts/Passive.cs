@@ -227,3 +227,93 @@ public class Magician : CalcDamagePassive
 
     }
 }
+[Serializable]
+public class Caster : PerTurnPassive
+{
+    public Caster(string[] list)
+        :base(list)
+    { }
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Karmaic : CalcDamagePassive
+{
+    public Karmaic(string[] list)
+        : base(list)
+    { }
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Disciple : CalcDamagePassive
+{
+    public Disciple(string[] list)
+        : base(list)
+    { }
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Conductor : CalcDamagePassive
+{
+    public Conductor(string[] list)
+        : base(list)
+    { }
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Rushdown : CalcDamagePassive
+{
+    public Rushdown(string[] list)
+        : base(list)
+    { }
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class Untouchable : TakeDamagePassive
+{
+    public Untouchable(string[] list)
+        : base(list)
+    { }
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}

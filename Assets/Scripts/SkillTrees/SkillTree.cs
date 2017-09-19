@@ -138,7 +138,7 @@ public class SkillTree : MonoBehaviour {
             t.Button = b;
             b.Technique = t;
             // setup next list
-            t.Button.ListNextButton = new List<ButtonSkillTree>();
+            //t.Button.ListNextButton = new List<ButtonSkillTree>();
 
             // check if the denigen has already learned the technique
             for (int i = 0; i < hero.skillsList.Count; i++)
@@ -162,7 +162,7 @@ public class SkillTree : MonoBehaviour {
         prevTree = currentTree;
 
         // set the next button states
-        UpdateButtons();
+       // UpdateButtons();
 
         // add on Done button at the very end
         button2DArray[0, maxRows] = (GameObject)Instantiate(Resources.Load("Prefabs/SkillTreeButton"));
@@ -225,8 +225,8 @@ public class SkillTree : MonoBehaviour {
             b.Technique = t;
 
             // setup next list
-            if (t.Button.ListNextButton == null)
-            { t.Button.ListNextButton = new List<ButtonSkillTree>(); }
+            //if (t.Button.ListNextButton == null)
+           // { t.Button.ListNextButton = new List<ButtonSkillTree>(); }
 
 
 
@@ -485,30 +485,14 @@ public class SkillTree : MonoBehaviour {
 
                 // if you have enough skill points, and you have all the prerequistites, add the technique
                 if(hero.techPts >= button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique.Cost && pass)
-                {
-                    // check what kind of technique
-                    if(button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique is Skill)
-                    {
-                        hero.skillsList.Add((Skill)button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique);
-                    }
-                    else if (button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique is Spell)
-                    {
-                        hero.spellsList.Add((Spell)button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique);
-                    }
-                    else if (button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique is Passive)
-                    {
-                        hero.passiveList.Add((Passive)button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique);
-                    }
-                    else
-                    {
-                        print("Technique not added.");
-                        return;
-                    }
+                {                    
+                    AddTechnique(hero, button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique);
+
                     // set button state to hover (normal)
                     button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.hover;
                     button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique.Active = true;
                     hero.techPts -= button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().Technique.Cost;
-                    UpdateButtons();
+                    //UpdateButtons();
                 }
                 // change text to display failure
                 // change button back to inactiveHover
@@ -522,98 +506,98 @@ public class SkillTree : MonoBehaviour {
         }
     
     }
-    public void UpdateButtons()
-    {        
-        foreach(Technique t in currentTree.listOfContent)
-        {
-            // loop through all the nexts and add to the buttons next to keep track of states
-            // if not already added
-            if (t.ListNextTechnique != null)
-            {
-                if (t.Button.ListNextButton.Count <= 0)
-                {
-                    foreach (Technique next in t.ListNextTechnique)
-                    {
-                        t.Button.ListNextButton.Add(next.Button);
-                    }
-                }
+    //public void UpdateButtons()
+    //{        
+    //    foreach(Technique t in currentTree.listOfContent)
+    //    {
+    //        // loop through all the nexts and add to the buttons next to keep track of states
+    //        // if not already added
+    //        if (t.ListNextTechnique != null)
+    //        {
+    //            if (t.Button.ListNextButton.Count <= 0)
+    //            {
+    //                foreach (Technique next in t.ListNextTechnique)
+    //                {
+    //                    t.Button.ListNextButton.Add(next.Button);
+    //                }
+    //            }
 
-                // temp
-                ButtonSkillTree curButton = t.Button;
+    //            // temp
+    //            ButtonSkillTree curButton = t.Button;
 
-                // loop through all next buttons
-                for (int i = 0; i < t.Button.ListNextButton.Count; i++)
-                {
-                    // temp
-                    ButtonSkillTree nextButton = t.Button.ListNextButton[i];
+    //            // loop through all next buttons
+    //            for (int i = 0; i < t.Button.ListNextButton.Count; i++)
+    //            {
+    //                // temp
+    //                ButtonSkillTree nextButton = t.Button.ListNextButton[i];
 
-                    if (t.Active && !t.ListNextTechnique[i].Active)
-                    {
-                        nextButton.state = ButtonSkillTree.MyButtonTextureState.inactive;
-                    }
-                    // if the hero does not know the technique but can learn it (inactive), set next to disabled
-                    else if (curButton.state == ButtonSkillTree.MyButtonTextureState.inactive
-                        || curButton.state == ButtonSkillTree.MyButtonTextureState.inactiveHover)
-                    {
-                        nextButton.state = ButtonSkillTree.MyButtonTextureState.disabled;
-                    }
-                    // if the button is disabled, the rest should also be disabled
-                    else if (curButton.state == ButtonSkillTree.MyButtonTextureState.disabled)
-                    {
-                        nextButton.state = ButtonSkillTree.MyButtonTextureState.disabled;
-                    }
-                }
+    //                if (t.Active && !t.ListNextTechnique[i].Active)
+    //                {
+    //                    nextButton.state = ButtonSkillTree.MyButtonTextureState.inactive;
+    //                }
+    //                // if the hero does not know the technique but can learn it (inactive), set next to disabled
+    //                else if (curButton.state == ButtonSkillTree.MyButtonTextureState.inactive
+    //                    || curButton.state == ButtonSkillTree.MyButtonTextureState.inactiveHover)
+    //                {
+    //                    nextButton.state = ButtonSkillTree.MyButtonTextureState.disabled;
+    //                }
+    //                // if the button is disabled, the rest should also be disabled
+    //                else if (curButton.state == ButtonSkillTree.MyButtonTextureState.disabled)
+    //                {
+    //                    nextButton.state = ButtonSkillTree.MyButtonTextureState.disabled;
+    //                }
+    //            }
 
-                // temp
-                ButtonSkillTree b = t.Button;
+    //            // temp
+    //            ButtonSkillTree b = t.Button;
 
-                if (b.NextLine == null)
-                {
-                    b.NextLine = new List<GameObject>();
-                    for (int i = 0; i < b.ListNextButton.Count; i++)
-                    {
-                        b.NextLine.Add((GameObject)Instantiate(Resources.Load("Prefabs/NextLine")));
-                        b.NextLine[i].name = "NextLine" + i.ToString();
-                        // check if need to rotate
-                        // rotate right
-                        if (b.ListNextButton[i].transform.position.x > b.transform.position.x)
-                        {
-                            b.NextLine[i].transform.position = new Vector2(b.transform.position.x + b.width / 2, b.transform.position.y);
-                            b.NextLine[i].transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), 90.0f);
-                        }
-                        // rotate left
-                        else if (b.ListNextButton[i].transform.position.x < b.transform.position.x)
-                        {
-                            b.NextLine[i].transform.position = new Vector2(b.transform.position.x - b.width / 2, b.transform.position.y);
-                            b.NextLine[i].transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), 90.0f);
-                        }
-                        // stay straight down
-                        else
-                        {
-                            b.NextLine[i].transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
-                        }
+    //            if (b.NextLine == null)
+    //            {
+    //                b.NextLine = new List<GameObject>();
+    //                for (int i = 0; i < b.ListNextButton.Count; i++)
+    //                {
+    //                    b.NextLine.Add((GameObject)Instantiate(Resources.Load("Prefabs/NextLine")));
+    //                    b.NextLine[i].name = "NextLine" + i.ToString();
+    //                    // check if need to rotate
+    //                    // rotate right
+    //                    if (b.ListNextButton[i].transform.position.x > b.transform.position.x)
+    //                    {
+    //                        b.NextLine[i].transform.position = new Vector2(b.transform.position.x + b.width / 2, b.transform.position.y);
+    //                        b.NextLine[i].transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), 90.0f);
+    //                    }
+    //                    // rotate left
+    //                    else if (b.ListNextButton[i].transform.position.x < b.transform.position.x)
+    //                    {
+    //                        b.NextLine[i].transform.position = new Vector2(b.transform.position.x - b.width / 2, b.transform.position.y);
+    //                        b.NextLine[i].transform.Rotate(new Vector3(0.0f, 0.0f, 1.0f), 90.0f);
+    //                    }
+    //                    // stay straight down
+    //                    else
+    //                    {
+    //                        b.NextLine[i].transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
+    //                    }
 
-                        b.NextLine[i].GetComponent<SpriteRenderer>().sortingOrder = 0;
-                    }
-                }//b.NextLine = (GameObject)Instantiate(Resources.Load("Prefabs/NextLine")); }
-                 //b.NextLine.transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
-                 //b.NextLine.GetComponent<SpriteRenderer>().sortingOrder = 0;
+    //                    b.NextLine[i].GetComponent<SpriteRenderer>().sortingOrder = 0;
+    //                }
+    //            }//b.NextLine = (GameObject)Instantiate(Resources.Load("Prefabs/NextLine")); }
+    //             //b.NextLine.transform.position = new Vector2(b.transform.position.x, b.transform.position.y - b.height / 2);
+    //             //b.NextLine.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
-                for (int i = 0; i < b.ListNextButton.Count; i++)
-                {
-                    if (b.ListNextButton[i].state == ButtonSkillTree.MyButtonTextureState.inactive)
-                    {
-                        b.NextLine[i].GetComponent<SpriteRenderer>().sprite = b.SolidLine;
-                    }
-                    else if (b.ListNextButton[i].state == ButtonSkillTree.MyButtonTextureState.disabled)
-                    {
-                        b.NextLine[i].GetComponent<SpriteRenderer>().sprite = b.DottedLine;
-                        //print(nextButton.labelMesh.text + " is disabled");
-                    }
-                }
-            }
-        }
-    }
+    //            for (int i = 0; i < b.ListNextButton.Count; i++)
+    //            {
+    //                if (b.ListNextButton[i].state == ButtonSkillTree.MyButtonTextureState.inactive)
+    //                {
+    //                    b.NextLine[i].GetComponent<SpriteRenderer>().sprite = b.SolidLine;
+    //                }
+    //                else if (b.ListNextButton[i].state == ButtonSkillTree.MyButtonTextureState.disabled)
+    //                {
+    //                    b.NextLine[i].GetComponent<SpriteRenderer>().sprite = b.DottedLine;
+    //                    //print(nextButton.labelMesh.text + " is disabled");
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     public void EndScene()
     {
         foreach (HeroData hd in GameControl.control.heroList)
@@ -772,7 +756,7 @@ public class SkillTree : MonoBehaviour {
             }
         }
     }
-    protected void ReadInfo(string path)
+    public void ReadInfo(string path)
     {
         // read in info
         listOfTechniques = new List<string[]>();
@@ -786,12 +770,12 @@ public class SkillTree : MonoBehaviour {
 
         while (line != null)
         {
-            listOfTechniques.Add(line.Split(',')); // makes each line a string array and adds to list
+            listOfTechniques.Add(line.Split('\t')); // makes each line a string array and adds to list
             line = readIn.ReadLine();
         }
     }
 
-    protected string[] FindTechnique(string key)
+    public string[] FindTechnique(string key)
     {
         // find the correct row
         //int row = 0;
@@ -803,66 +787,9 @@ public class SkillTree : MonoBehaviour {
                 return listOfTechniques[i];
             }
         }
-        return null;
-        
-        //string title = "", description = "";
-        //int cost = 0, pm = 0, dmg = 0, crit = 0, acc = 0, cp = 0, rp = 0, lvl = 0;
-        
-
-        //for(int i = 1; i < listOfTechniques[row].Length; i++)
-        //{
-        //    switch(i)
-        //    {
-        //        case 1:
-        //            title = listOfTechniques[row][i];
-        //            break;
-
-        //        case 2:
-        //            description = listOfTechniques[row][i];
-        //            break;
-
-        //        case 3:
-        //            cost = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 4:
-        //            pm = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 5:
-        //            dmg = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 6:
-        //            crit = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 7:
-        //            acc = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 8:
-        //            cp = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 9:
-        //            rp = int.Parse(listOfTechniques[row][i]);
-        //            break;
-
-        //        case 10:
-        //            int.TryParse(listOfTechniques[row][i], out lvl);
-        //            break;
-                    
-        //    }
-        //}
-
-        // return the technique
-        //if (lvl <= 0)
-        //    return new Technique(title, description, cost, pm, dmg, crit, acc, cp, rp);
-        //else
-        //    return new Technique(title, description, cost, pm, dmg, crit, acc, cp, rp, lvl);
-
+        return null;        
     }
+
     protected void AddPrerequisites(List<Technique> content)
     {
         foreach (Technique tq in content)
@@ -875,6 +802,28 @@ public class SkillTree : MonoBehaviour {
                     tq.Description += "\n" + tqn.Name;
                 }
             }
+        }
+    }
+
+    public void AddTechnique(HeroData heroToAddTo, Technique techniqueToAdd)
+    {
+        // check what kind of technique
+        if (techniqueToAdd is Skill)
+        {
+            heroToAddTo.skillsList.Add((Skill)techniqueToAdd);
+        }
+        else if (techniqueToAdd is Spell)
+        {
+            heroToAddTo.spellsList.Add((Spell)techniqueToAdd);
+        }
+        else if (techniqueToAdd is Passive)
+        {
+            heroToAddTo.passiveList.Add((Passive)techniqueToAdd);
+        }
+        else
+        {
+            print("Technique not added.");
+            return;
         }
     }
 }
