@@ -141,22 +141,7 @@ public class SkillTree : MonoBehaviour {
             //t.Button.ListNextButton = new List<ButtonSkillTree>();
 
             // check if the denigen has already learned the technique
-            for (int i = 0; i < hero.skillsList.Count; i++)
-            {
-                if (t.Name == hero.skillsList[i].Name)
-                {
-                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                    t.Active = true;
-                }
-            }
-            for (int i = 0; i < hero.spellsList.Count; i++)
-            {
-                if (t.Name == hero.spellsList[i].Name)
-                {
-                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                    t.Active = true;
-                }
-            }
+            CheckForTechniques(t, b);
         }
 
         prevTree = currentTree;
@@ -199,6 +184,44 @@ public class SkillTree : MonoBehaviour {
 
 
     }
+    void CheckForTechniques(Technique t, ButtonSkillTree b)
+    {
+        for (int i = 0; i < hero.skillsList.Count; i++)
+        {
+            if (t.Name == hero.skillsList[i].Name)
+            {
+                b.state = ButtonSkillTree.MyButtonTextureState.normal;
+                t.Active = true;
+                break;
+            }
+        }
+        // if we still haven't found the technique, check spells
+        if (b.state != MyButton.MyButtonTextureState.normal)
+        {
+            for (int i = 0; i < hero.spellsList.Count; i++)
+            {
+                if (t.Name == hero.spellsList[i].Name)
+                {
+                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
+                    t.Active = true;
+                    break;
+                }
+            }
+        }
+        // still no luck? check passives
+        if (b.state != MyButton.MyButtonTextureState.normal)
+        {
+            for (int i = 0; i < hero.passiveList.Count; i++)
+            {
+                if (t.Name == hero.passiveList[i].Name)
+                {
+                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
+                    t.Active = true;
+                    break;
+                }
+            }
+        }
+    }
     void NewTree()
     {
         ButtonSkillTree b;
@@ -226,27 +249,12 @@ public class SkillTree : MonoBehaviour {
 
             // setup next list
             //if (t.Button.ListNextButton == null)
-           // { t.Button.ListNextButton = new List<ButtonSkillTree>(); }
+            // { t.Button.ListNextButton = new List<ButtonSkillTree>(); }
 
 
 
             // check if the denigen has already learned the technique
-            for (int i = 0; i < hero.skillsList.Count; i++)
-            {
-                if (t.Name == hero.skillsList[i].Name)
-                {
-                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                    t.Active = true;
-                }
-            }
-            for (int i = 0; i < hero.spellsList.Count; i++)
-            {
-                if (t.Name == hero.spellsList[i].Name)
-                {
-                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                    t.Active = true;
-                }
-            }   
+            CheckForTechniques(t, b);
         }
     }
     string FormatText(string str)
@@ -275,6 +283,9 @@ public class SkillTree : MonoBehaviour {
     }
     void ScrollHorizontal(int col)
     {
+        // save original column value
+        int originalCol = col;
+
         // stop if on DONE button
         if (rowIndex >= maxRows) return;
 
@@ -289,60 +300,66 @@ public class SkillTree : MonoBehaviour {
                 ScrollChangeButtonState();
                 return;
             }
-            else
-            {
-                //int startingIndex = rowIndex; // start searching at this column
-                //bool goDown = false; // search starts by going right, then if one is not found, go back to start and search left
-                //for (int i = 0; i < maxCols; i++)
-                //{
-                //    if (button2DArray[col, startingIndex].GetComponent<SpriteRenderer>().enabled == true)
-                //    {
-                //        rowIndex = startingIndex;
-                //        columnIndex = col;
-                //        ScrollChangeButtonState();
-                //        return;
-                //    }
+            //else
+            //{
+            //    // just check immediately above or below, no further
+            //    if (rowIndex > 0 && button2DArray[col, rowIndex - 1].GetComponent<SpriteRenderer>().enabled == true)
+            //    {
+            //        rowIndex--;
+            //        columnIndex = col;
+            //        ScrollChangeButtonState();
+            //        return;
+            //    }
+            //    else if(rowIndex < maxRows - 1 && button2DArray[col, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == true)
+            //    {
+            //        rowIndex++;
+            //        columnIndex = col;
+            //        ScrollChangeButtonState();
+            //        return;
+            //    }
 
-                //    // no match - search the next column (to the right)
-                //    if (!goDown) startingIndex++;
-                //    // still no match, and now we're searching left - go to the next column to the left
-                //    else if (rowIndex != 0) startingIndex--;
-
-                //    // we've reached the end at the right, go back to starting and search the left side now
-                //    if (startingIndex >= maxRows && rowIndex != 0) { goDown = true; startingIndex = rowIndex - 1; }
-                //}
-
-                // just check immediately above or below, no further
-                if (rowIndex > 0 && button2DArray[col, rowIndex - 1].GetComponent<SpriteRenderer>().enabled == true)
-                {
-                    rowIndex--;
-                    columnIndex = col;
-                    ScrollChangeButtonState();
-                    return;
-                }
-                else if(rowIndex < maxRows - 1 && button2DArray[col, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == true)
-                {
-                    rowIndex++;
-                    columnIndex = col;
-                    ScrollChangeButtonState();
-                    return;
-                }
-
-                col += iterator;
-            }
+            //    col += iterator;
+            //}
+            col += iterator;
         }
         // if we have reached this point, this is the last in the row
         // TODO: figure out where else to go
-            // Maybe look at the rows above and below and keep track of how far the next button is in that row,
-            // Choose the row that requires the least distance to move
-        
-    }
+        // Maybe look at the rows above and below and keep track of how far the next button is in that row,
+        // Choose the row that requires the least distance to move
+
+        // if there is nothing else in the row, go either below or above
+        col = originalCol;
+
+        while (col < maxCols && col >= 0)
+        {
+            if (rowIndex + 1 < maxRows
+                && button2DArray[col, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == true)
+            {
+                rowIndex++;
+                columnIndex = col;
+                ScrollChangeButtonState();
+                return;
+            }
+            else if(rowIndex - 1 >= 0
+                && button2DArray[col, rowIndex - 1].GetComponent<SpriteRenderer>().enabled == true)
+            {
+                rowIndex--;
+                columnIndex = col;
+                ScrollChangeButtonState();
+                return;
+            }
+
+            col += iterator;
+        }
+
+
+        }
     void ScrollVertical(int row)
     {
         // if col is greater, that means we're scrolling right, increase positive
         int iterator = (row > rowIndex ? 1 : -1);
 
-        while (row < maxCols && row >= 0)
+        while (row < maxRows && row >= 0)
         {
             // if the button directly above/below is enabled, go to that one
             if (button2DArray[columnIndex, row].GetComponent<SpriteRenderer>().enabled == true)
@@ -354,33 +371,56 @@ public class SkillTree : MonoBehaviour {
             // otherwise, check the rest of the row for the next available button
             else
             {
-                int startingIndex = columnIndex; // start searching at this column
-                bool goLeft = false; // search starts by going right, then if one is not found, go back to start and search left
-                for(int i = 0; i < maxRows; i++)
+                //int startingIndex = columnIndex; // start searching at this column
+                //bool goLeft = false; // search starts by going right, then if one is not found, go back to start and search left
+                //for(int i = 0; i < maxRows; i++)
+                //{
+                //    if(button2DArray[startingIndex, row].GetComponent<SpriteRenderer>().enabled == true)
+                //    {
+                //        rowIndex = row;
+                //        columnIndex = startingIndex;
+                //        ScrollChangeButtonState();
+                //        return;
+                //    }
+
+                //    // no match - search the next column (to the right)
+                //    if (!goLeft) startingIndex++;
+                //    // still no match, and now we're searching left - go to the next column to the left
+                //    else if(columnIndex != 0) startingIndex--;
+
+                //    // we've reached the end at the right, go back to starting and search the left side now
+                //    if (startingIndex >= maxRows && columnIndex != 0) { goLeft = true; startingIndex = columnIndex - 1; }
+                //}
+
+                //// if the entire row is disabled, go to the next row and search again
+                //row += iterator;
+
+                // search immediate left and immediate right, no further
+                if(columnIndex + 1 < maxCols
+                    && button2DArray[columnIndex + 1, row].GetComponent<SpriteRenderer>().enabled == true)
                 {
-                    if(button2DArray[startingIndex, row].GetComponent<SpriteRenderer>().enabled == true)
-                    {
-                        rowIndex = row;
-                        columnIndex = startingIndex;
-                        ScrollChangeButtonState();
-                        return;
-                    }
-
-                    // no match - search the next column (to the right)
-                    if (!goLeft) startingIndex++;
-                    // still no match, and now we're searching left - go to the next column to the left
-                    else if(columnIndex != 0) startingIndex--;
-
-                    // we've reached the end at the right, go back to starting and search the left side now
-                    if (startingIndex >= maxRows && columnIndex != 0) { goLeft = true; startingIndex = columnIndex - 1; }
+                    columnIndex++;
+                    rowIndex = row;
+                    ScrollChangeButtonState();
+                    return;
                 }
-
-                // if the entire row is disabled, go to the next row and search again
-                row += iterator;
+                else if(columnIndex - 1 >= 0
+                    && button2DArray[columnIndex - 1, row].GetComponent<SpriteRenderer>().enabled == true)
+                {
+                    columnIndex--;
+                    rowIndex = row;
+                    ScrollChangeButtonState();
+                    return;
+                }
             }
+            row += iterator;
         }
-        if (button2DArray[columnIndex, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == false
-                        || rowIndex + 1 == currentTree.numOfRow)
+
+        // if row is 0, we want to exit the tree
+        if(row <= 0) ExitTree();
+
+        // if the next row button is false, we want to go to done
+        if (row >= maxRows)
         {
             // automatically send them to DONE
             columnIndex = 0;
@@ -708,54 +748,38 @@ public class SkillTree : MonoBehaviour {
             {
                 if (insideTree)
                 {
-                    if (rowIndex > 0)
+                    if (rowIndex >= 0)
                     {
-                        // if on done button, find the next active button
-                        //if (rowIndex == maxRows)
-                        //{
-                            ScrollVertical(rowIndex - 1);
-                           // ScrollHorizontal(columnIndex);
-                            
-                        //}
-                        //// if next button is disabled or nonexistant, don't go anywhere
-                        //else 
-                        //if (button2DArray[columnIndex, rowIndex - 1] == null)
-                        //|| button2DArray[columnIndex, rowIndex - 1].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.disabled)
-                        //{
-                        //  return;
-                        //}
-                    }
-                    else if(rowIndex == 0)
-                    {
-                        if (button2DArray[columnIndex,rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.inactiveHover)
-                        {
-                            button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.inactive;
-                        }
-                        // if it's disabled hover, set back to disabled
-                        else if (button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.disabledHover)
-                        {
-                            button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.disabled;
-                        }
-                        insideTree = false;
-                        descriptionText.GetComponent<TextMesh>().text = "";
-                        // set all tree option buttons to inactive
-                        foreach (GameObject g in whichButton)
-                        {
-                            g.GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.normal;
-                        }
-
-                        // set chosen tree button to inactive hover
-                        columnIndex = whichTree;
-                        whichButton[columnIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.hover;
-                        
-
-                        
-                        
-                    }
+                       ScrollVertical(rowIndex - 1);
+                    }                    
                 }
             }
         }
     }
+    void ExitTree()
+    {
+        if (button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.inactiveHover)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.inactive;
+        }
+        // if it's disabled hover, set back to disabled
+        else if (button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.disabledHover)
+        {
+            button2DArray[columnIndex, rowIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.disabled;
+        }
+        insideTree = false;
+        descriptionText.GetComponent<TextMesh>().text = "";
+        // set all tree option buttons to inactive
+        foreach (GameObject g in whichButton)
+        {
+            g.GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.normal;
+        }
+
+        // set chosen tree button to inactive hover
+        columnIndex = whichTree;
+        whichButton[columnIndex].GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.hover;
+    }
+
     public void ReadInfo(string path)
     {
         // read in info
