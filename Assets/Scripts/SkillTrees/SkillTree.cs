@@ -50,6 +50,10 @@ public class SkillTree : MonoBehaviour {
     int columnIndex;
     int rowIndex;
 
+    // keep track of the last place you were --- mainly for going to DONE and back
+    int prevCol;
+    int prevRow;
+
     // access to camera 
     protected GameObject camera;
 
@@ -328,29 +332,29 @@ public class SkillTree : MonoBehaviour {
         // Choose the row that requires the least distance to move
 
         // if there is nothing else in the row, go either below or above
-        col = originalCol;
+        //col = originalCol;
 
-        while (col < maxCols && col >= 0)
-        {
-            if (rowIndex + 1 < maxRows
-                && button2DArray[col, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == true)
-            {
-                rowIndex++;
-                columnIndex = col;
-                ScrollChangeButtonState();
-                return;
-            }
-            else if(rowIndex - 1 >= 0
-                && button2DArray[col, rowIndex - 1].GetComponent<SpriteRenderer>().enabled == true)
-            {
-                rowIndex--;
-                columnIndex = col;
-                ScrollChangeButtonState();
-                return;
-            }
+        //while (col < maxCols && col >= 0)
+        //{
+        //    if (rowIndex + 1 < maxRows
+        //        && button2DArray[col, rowIndex + 1].GetComponent<SpriteRenderer>().enabled == true)
+        //    {
+        //        rowIndex++;
+        //        columnIndex = col;
+        //        ScrollChangeButtonState();
+        //        return;
+        //    }
+        //    else if(rowIndex - 1 >= 0
+        //        && button2DArray[col, rowIndex - 1].GetComponent<SpriteRenderer>().enabled == true)
+        //    {
+        //        rowIndex--;
+        //        columnIndex = col;
+        //        ScrollChangeButtonState();
+        //        return;
+        //    }
 
-            col += iterator;
-        }
+        //    col += iterator;
+        //}
 
 
         }
@@ -396,22 +400,22 @@ public class SkillTree : MonoBehaviour {
                 //row += iterator;
 
                 // search immediate left and immediate right, no further
-                if(columnIndex + 1 < maxCols
-                    && button2DArray[columnIndex + 1, row].GetComponent<SpriteRenderer>().enabled == true)
-                {
-                    columnIndex++;
-                    rowIndex = row;
-                    ScrollChangeButtonState();
-                    return;
-                }
-                else if(columnIndex - 1 >= 0
-                    && button2DArray[columnIndex - 1, row].GetComponent<SpriteRenderer>().enabled == true)
-                {
-                    columnIndex--;
-                    rowIndex = row;
-                    ScrollChangeButtonState();
-                    return;
-                }
+                //if(columnIndex + 1 < maxCols
+                //    && button2DArray[columnIndex + 1, row].GetComponent<SpriteRenderer>().enabled == true)
+                //{
+                //    columnIndex++;
+                //    rowIndex = row;
+                //    ScrollChangeButtonState();
+                //    return;
+                //}
+                //else if(columnIndex - 1 >= 0
+                //    && button2DArray[columnIndex - 1, row].GetComponent<SpriteRenderer>().enabled == true)
+                //{
+                //    columnIndex--;
+                //    rowIndex = row;
+                //    ScrollChangeButtonState();
+                //    return;
+                //}
             }
             row += iterator;
         }
@@ -423,6 +427,8 @@ public class SkillTree : MonoBehaviour {
         if (row >= maxRows)
         {
             // automatically send them to DONE
+            prevCol = columnIndex;
+            prevRow = rowIndex;
             columnIndex = 0;
             rowIndex = maxRows;
             ScrollChangeButtonState();
@@ -490,7 +496,8 @@ public class SkillTree : MonoBehaviour {
     public void ButtonAction() 
     {
         // show selected (or "active") sprite if inactive or "DONE" on KeyDown
-        if(((button2DArray[columnIndex,rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.inactiveHover
+        if((rowIndex < maxRows && rowIndex >= 0 && columnIndex < maxCols && columnIndex >= 0)
+            && ((button2DArray[columnIndex,rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.inactiveHover
             || button2DArray[columnIndex,rowIndex].GetComponent<ButtonSkillTree>().state == ButtonSkillTree.MyButtonTextureState.disabledHover)
             || (columnIndex == 0 && rowIndex == currentTree.numOfRow))
             && Input.GetKeyDown(GameControl.control.selectKey))
@@ -748,10 +755,17 @@ public class SkillTree : MonoBehaviour {
             {
                 if (insideTree)
                 {
-                    if (rowIndex >= 0)
+                    if (rowIndex >= 0 && rowIndex < maxRows)
                     {
                        ScrollVertical(rowIndex - 1);
-                    }                    
+                    }              
+                    // if DONE, go back to the option you were at previously      
+                    else if (rowIndex >= maxRows)
+                    {
+                        columnIndex = prevCol;
+                        rowIndex = prevRow;
+                        ScrollChangeButtonState();
+                    }
                 }
             }
         }
@@ -769,11 +783,14 @@ public class SkillTree : MonoBehaviour {
         }
         insideTree = false;
         descriptionText.GetComponent<TextMesh>().text = "";
+        
         // set all tree option buttons to inactive
         foreach (GameObject g in whichButton)
         {
             g.GetComponent<ButtonSkillTree>().state = ButtonSkillTree.MyButtonTextureState.normal;
         }
+        // set DONE to normal just in case
+        button2DArray[0, maxRows].GetComponent<ButtonSkillTree>().state = MyButton.MyButtonTextureState.normal;
 
         // set chosen tree button to inactive hover
         columnIndex = whichTree;

@@ -2,16 +2,16 @@ Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row
 purge	Purge	Cure one character of status effects.	1	3	0	0	100	2	0	
 karmaic	Karmaic Justice	For every healing spell performed, increase power magic by 1.	1	0	0	0	100	0	0	
 tears	Morttimer's Tears	Basic healing for one character.	1	3	0	0	100	2	1	
-peace	Morttimer's Peace	Regenerates health a little bit for 3 rounds on one hero.	1	0	0	0	100	1	2	
-gaze	Gaze of Morttimer	Heals team.	1	0	0	0	100	1	3	
-sharedBlood	Shared Blood	Heal team for a 25% of your hp.	1	0	0	0	100	0	3	
-disciple1	Disciple of Morttimer I	Healing allies is 10% better.	1	0	0	0	100	1	4	1
-disciple2	Disciple of Morttimer II	Healing allies is 20% better.	1	0	0	0	100	0	5	2
-disciple3	Disciple of Morttimer III	Healing allies is 30% better.	1	0	0	0	100	0	6	3
-blessing	Blessing	Bless one ally, allowing them to survive one attack that would kill them.	1	8	0	0	100	2	5	
-ressurection1	Ressurection 1	Revive a fallen ally, with 20% of their max HP. Status effects before death do not apply.	1	0	0	0	100	2	6	1
-ressurection2	Ressurection 2	Revive a fallen ally, with 45% of their max HP. Status effects before death do not apply.	1	0	0	0	100	3	6	2
-ressurection3	Ressurection 3	Revive a fallen ally, with 75% of their max HP. Status effects before death do not apply.	1	0	0	0	100	4	6	3
-rejoice	Rejoice	Boosts team defense and magic defense slightly.	1	0	0	0	100	3	2	
+peace	Morttimer's Peace	Regenerates health a little bit for 3 rounds on one hero.	1	0	0	0	100	1	1	
+gaze	Gaze of Morttimer	Heals team.	1	0	0	0	100	1	2	
+sharedBlood	Shared Blood	Heal team for a 25% of your hp.	1	0	0	0	100	0	2	
+disciple1	Disciple of Morttimer I	Healing allies is 10% better.	1	0	0	0	100	1	3	1
+disciple2	Disciple of Morttimer II	Healing allies is 20% better.	1	0	0	0	100	1	4	2
+disciple3	Disciple of Morttimer III	Healing allies is 30% better.	1	0	0	0	100	1	5	3
+blessing	Blessing	Bless one ally, allowing them to survive one attack that would kill them.	1	8	0	0	100	2	3	
+ressurection1	Ressurection 1	Revive a fallen ally, with 20% of their max HP. Status effects before death do not apply.	1	0	0	0	100	2	4	1
+ressurection2	Ressurection 2	Revive a fallen ally, with 45% of their max HP. Status effects before death do not apply.	1	0	0	0	100	3	4	2
+ressurection3	Ressurection 3	Revive a fallen ally, with 75% of their max HP. Status effects before death do not apply.	1	0	0	0	100	4	4	3
+rejoice	Rejoice	Boosts team defense and magic defense slightly.	1	0	0	0	100	3	1	
 eyesOfDarkness	Eyes of Darkness	Drastically increases the accuracy of one's character's attacks.	1	0	0	0	100	3	2	
-salvation	Salvation	Eleanor's trump card. Completely heals and removes the status effects of one ally, and boosts their stats substantially. Very high power cost, and has a cooldown turn.	1	35	0	0	100	1	8	
+salvation	Salvation	Eleanor's trump card. Completely heals and removes the status effects of one ally, and boosts their stats substantially. Very high power cost, and has a cooldown turn.	1	35	0	0	100	2	7	
