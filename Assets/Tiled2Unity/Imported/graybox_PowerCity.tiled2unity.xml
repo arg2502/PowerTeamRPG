@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Tiled2Unity generated xml data-->
 <!--Do not modify by hand-->
-<!--Last exported: 9/21/2017 10:44:03 PM-->
+<!--Last exported: 9/23/2017 12:38:18 PM-->
 <Tiled2Unity version="1.0.8.0">
   <AssignMaterial mesh="mesh_0001" material="grayBoxTiles" />
   <Prefab name="graybox_PowerCity" orientation="Orthogonal" staggerAxis="Y" staggerIndex="Odd" hexSideLength="0" numLayers="1" numTilesWide="90" numTilesHigh="90" tileWidth="64" tileHeight="64" exportScale="0.015625" mapWidthInPixels="5760" mapHeightInPixels="5760">
