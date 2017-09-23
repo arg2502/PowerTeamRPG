@@ -15,7 +15,7 @@ public class characterControl : OverworldObject {
     RaycastHit2D topHitCheck;
     RaycastHit2D bottomHitCheck;
 
-    float sideHitFloat = 0.25f;
+    float sideHitFloat = 0.3f; // 0.25
     float topHitFloat = 0.5f;
     float bottomHitFloat = 0.75f;
 
@@ -35,12 +35,24 @@ public class characterControl : OverworldObject {
         base.Start();
 	}
 
+    //void OnCollisionEnter2D(Collision2D otherCollider2d)
+    //{
+    //    print("ENTER");
+    //    canMove = false;
+    //}
+    //void OnCollisionExit2D(Collision2D otherCollider2d)
+    //{
+    //    print("EXIT");
+    //    canMove = true;
+    //}
+
     public bool CheckCollision(Vector2 dir, LayerMask _mask)
     {
         topHitCheck = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), dir, 0.5f, _mask);
         bottomHitCheck = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), dir, 0.5f, _mask);
         if (topHitCheck.collider == null && bottomHitCheck.collider == null) { return false; }
         else { return true; }
+
     }
 	
 	// Update is called once per frame
@@ -91,11 +103,12 @@ public class characterControl : OverworldObject {
                     isMoving = true;
                     lastMovement = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
                 }
-                RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
-                RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
+
+                //RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
+                //RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
                 
                 // if not colliding with object, move
-                if (topHit.collider == null && bottomHit.collider == null && speed != Vector2.zero)
+                if (speed != Vector2.zero && !CheckCollision(speed, mask))
                 {
                     // normalize speed and mult by moveSpeed to prevent super fastness
                     speed.Normalize();
@@ -129,21 +142,6 @@ public class characterControl : OverworldObject {
                             }
                         }
                     }
-                    //else if (//transform.position.y >= topHit.transform.position.y &&
-                    //    !((transform.position.x > topHit.transform.position.x + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    //    (transform.position.x < topHit.transform.position.x - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    //    && (Input.GetKey(GameControl.control.downKey))) // down - S
-                    //{
-                    //    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, -moveSpeed / 2)) == false)
-                    //    {
-                    //        if (!CheckCollision(new Vector2(0, -moveSpeed) * Time.deltaTime, mask)) 
-                    //        {
-                    //            topHit.transform.Translate(new Vector2(0, -moveSpeed / 2) * Time.deltaTime);
-                    //            speed += new Vector2(0, -moveSpeed) * Time.deltaTime;
-                    //        }
-                    //    }
-                    //}
-
                     else if (//transform.position.x <= topHit.transform.position.x &&
                         !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
@@ -159,21 +157,6 @@ public class characterControl : OverworldObject {
                             }
                         }
                     }
-                    //else if (//transform.position.x >= topHit.transform.position.x &&
-                    //    !((transform.position.y > topHit.transform.position.y + topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    //    (transform.position.y < topHit.transform.position.y - topHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    //    && (Input.GetKey(GameControl.control.leftKey))) // left - A
-                    //{
-                    //    if (topHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(-moveSpeed / 2, 0)) == false)
-                    //    {
-                    //        if (!CheckCollision(new Vector2(-moveSpeed, 0) * Time.deltaTime, mask))
-                    //        {
-                    //            topHit.transform.Translate(new Vector2(-moveSpeed / 2, 0) * Time.deltaTime);
-                    //            speed += new Vector2(-moveSpeed, 0) * Time.deltaTime;
-                    //        }
-                    //    }
-                    //}
-
                     topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), speed, 0.5f, mask);
                     bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
                     if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed / 2); }
@@ -195,21 +178,6 @@ public class characterControl : OverworldObject {
                             }
                         }
                     }
-                    //else if (//transform.position.y <= bottomHit.transform.position.y &&
-                    //    !((transform.position.x > bottomHit.transform.position.x + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    //    (transform.position.x < bottomHit.transform.position.x - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    //    && (Input.GetKey(GameControl.control.upKey))) // up - W
-                    //{
-                    //    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(0, moveSpeed / 2)) == false)
-                    //    {
-                    //        if (!CheckCollision(new Vector2(0, moveSpeed) * Time.deltaTime, mask))
-                    //        {
-                    //            bottomHit.transform.Translate(new Vector2(0, moveSpeed / 2) * Time.deltaTime);
-                    //            speed += new Vector2(0, moveSpeed) * Time.deltaTime;
-                    //        }
-                    //    }
-                    //}
-
                     else if (//transform.position.x >= bottomHit.transform.position.x &&
                         !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
                         (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
@@ -225,21 +193,6 @@ public class characterControl : OverworldObject {
                             }
                         }
                     }
-                    //else if (//transform.position.x <= bottomHit.transform.position.x &&
-                    //    !((transform.position.y > bottomHit.transform.position.y + bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset) ||
-                    //    (transform.position.y < bottomHit.transform.position.y - bottomHit.collider.GetComponent<MovableOverworldObject>().collisionOffset))
-                    //    && (Input.GetKey(GameControl.control.rightKey))) // right - D
-                    //{
-                    //    if (bottomHit.collider.GetComponent<MovableOverworldObject>().CheckCollisions(new Vector2(moveSpeed / 2, 0)) == false)
-                    //    {
-                    //        if (!CheckCollision(new Vector2(moveSpeed, 0) * Time.deltaTime, mask))
-                    //        {
-                    //            bottomHit.transform.Translate(new Vector2(moveSpeed / 2, 0) * Time.deltaTime);
-                    //            speed += new Vector2(moveSpeed, 0) * Time.deltaTime;
-                    //        }
-                    //    }
-                    //}
-
                     topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y - topHitFloat, transform.position.z), speed, 0.5f, mask);
                     bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
                     if (topHit.collider == null && bottomHit.collider == null) { transform.Translate(speed / 2); }

@@ -13,6 +13,8 @@ public class OverworldObject : MonoBehaviour {
         sr.sortingOrder = (int)-transform.position.y;
 	}
 
+    // move this to gameManager
+    // change to just control this object's movement
     public void ToggleMovement()
     {
         foreach (OverworldObject o in GameObject.FindObjectsOfType<OverworldObject>())

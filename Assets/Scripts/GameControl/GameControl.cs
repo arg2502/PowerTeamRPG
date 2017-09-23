@@ -108,63 +108,9 @@ public class GameControl : MonoBehaviour {
 				keysObtainedInDungeons.Add(0);
 			}
 
-			//test code for creating Jethro -- based on level 1 stats
-			//We will have these stats stored in HeroData objs for consistency between rooms
-			heroList.Add(new HeroData());
-			heroList[0].name = playerName;
-			heroList[0].identity = 0;
-			heroList[0].level = 1;
-			heroList[0].exp = 0;
-			heroList[0].expToLvlUp = 10;
-			heroList[0].levelUpPts = 0;
-			heroList[0].techPts = 0;
-			heroList[0].hp = 11;
-			heroList[0].hpMax = 11;
-			heroList[0].pm = 3;
-			heroList[0].pmMax = 3;
-			heroList[0].atk = 6;
-			heroList[0].def = 6;
-			heroList[0].mgkAtk = 4;
-			heroList[0].mgkDef = 4;
-			heroList[0].luck = 6;
-			heroList[0].evasion = 4;
-			heroList[0].spd = 4;
-			heroList[0].skillsList = new List<Skill>();
-			heroList[0].spellsList = new List<Spell>();
-			heroList[0].passiveList = new List<Passive>();
-			// Passives are non serializable now because they inherit from something with a my button variable
-			//heroList[0].passiveList.Add(new LightRegeneration());
-			heroList[0].weapon = null;
-			heroList[0].equipment = new List<GameObject>();
 
-			heroList.Add(new HeroData());
-			heroList[1].identity = 1;
-			heroList[1].name = "Cole";
-			heroList[1].level = 2;
-			heroList[1].expToLvlUp = 19;
-			heroList[1].exp = 0;
-			heroList[1].levelUpPts = 0;
-			heroList[1].techPts = 0;
-			heroList[1].hp = 14;
-			heroList[1].hpMax = 14;
-			heroList[1].pm = 10;
-			heroList[1].pmMax = 10;
-			heroList[1].atk = 5;
-			heroList[1].def = 4;
-			heroList[1].mgkAtk = 11;
-			heroList[1].mgkDef = 8;
-			heroList[1].luck = 5;
-			heroList[1].evasion = 4;
-			heroList[1].spd = 5;
-			heroList[1].skillsList = new List<Skill>();
-			heroList[1].spellsList = new List<Spell>();
-			heroList[1].passiveList = new List<Passive>();
-			heroList[1].weapon = null;
-			heroList[1].equipment = new List<GameObject>();
 
-            // the below code would probably be found in the "Add Spell" functions
-            skillTreeAccessor.ReadInfo("techniquesCole1.tsv");
-            skillTreeAccessor.AddTechnique(heroList[1], new Spell(skillTreeAccessor.FindTechnique("candleshot")));
+
             //Spell hellfire = new Spell();
             //hellfire.Name = "HellFire";
             //hellfire.Pm = 8;
@@ -183,59 +129,15 @@ public class GameControl : MonoBehaviour {
             //testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
             //GameControl.control.heroList[1].spellsList.Add(testtarget);
 
-            // test eleanor -----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
-            heroList.Add(new HeroData());
-            heroList[2].identity = 2;
-            heroList[2].name = "Eleanor";
-            heroList[2].level = 2;
-            heroList[2].expToLvlUp = 19;
-            heroList[2].exp = 0;
-            heroList[2].levelUpPts = 0;
-            heroList[2].techPts = 0;
-            heroList[2].hp = 18;
-            heroList[2].hpMax = 18;
-            heroList[2].pm = 20;
-            heroList[2].pmMax = 20;
-            heroList[2].atk = 4;
-            heroList[2].def = 7;
-            heroList[2].mgkAtk = 15;
-            heroList[2].mgkDef = 9;
-            heroList[2].luck = 0;
-            heroList[2].evasion = 2;
-            heroList[2].spd = 8;
-            heroList[2].skillsList = new List<Skill>();
-            heroList[2].spellsList = new List<Spell>();
-            heroList[2].passiveList = new List<Passive>();
-            heroList[2].weapon = null;
-            heroList[2].equipment = new List<GameObject>();
+
+            // adding heroes - some if not all of these are temporary just to add them into the game for testing
+            AddJethro();
+            AddCole();
+            AddEleanor();
+            AddJuliette();
 
 
-            //// juliette test-----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
-            heroList.Add(new HeroData());
-            heroList[3].identity = 3;
-            heroList[3].name = "Juliette";
-            heroList[3].level = 5;
-            heroList[3].expToLvlUp = 30;
-            heroList[3].exp = 0;
-            heroList[3].levelUpPts = 0;
-            heroList[3].techPts = 0;
-            heroList[3].hp = 25;
-            heroList[3].hpMax = 25;
-            heroList[3].pm = 18;
-            heroList[3].pmMax = 18;
-            heroList[3].atk = 22;
-            heroList[3].def = 19;
-            heroList[3].mgkAtk = 15;
-            heroList[3].mgkDef = 18;
-            heroList[3].luck = 7;
-            heroList[3].evasion = 12;
-            heroList[3].spd = 20;
-            heroList[3].skillsList = new List<Skill>();
-            heroList[3].spellsList = new List<Spell>();
-            heroList[3].passiveList = new List<Passive>();
-            heroList[3].weapon = null;
-            heroList[3].equipment = new List<GameObject>();
-
+            
 
 
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
@@ -856,6 +758,127 @@ public class GameControl : MonoBehaviour {
 		}
 		else { hd.weapon = temp; DontDestroyOnLoad(temp); }
 	}
+    void AddJethro()
+    {
+        //test code for creating Jethro -- based on level 1 stats
+        //We will have these stats stored in HeroData objs for consistency between rooms
+        heroList.Add(new HeroData());
+        heroList[0].name = playerName;
+        heroList[0].identity = 0;
+        heroList[0].level = 1;
+        heroList[0].exp = 0;
+        heroList[0].expToLvlUp = 10;
+        heroList[0].levelUpPts = 0;
+        heroList[0].techPts = 0;
+        heroList[0].hp = 11;
+        heroList[0].hpMax = 11;
+        heroList[0].pm = 3;
+        heroList[0].pmMax = 3;
+        heroList[0].atk = 6;
+        heroList[0].def = 6;
+        heroList[0].mgkAtk = 4;
+        heroList[0].mgkDef = 4;
+        heroList[0].luck = 6;
+        heroList[0].evasion = 4;
+        heroList[0].spd = 4;
+        heroList[0].skillsList = new List<Skill>();
+        heroList[0].spellsList = new List<Spell>();
+        heroList[0].passiveList = new List<Passive>();
+        // Passives are non serializable now because they inherit from something with a my button variable
+        //heroList[0].passiveList.Add(new LightRegeneration());
+        heroList[0].weapon = null;
+        heroList[0].equipment = new List<GameObject>();
+    }
+    void AddCole()
+    {
+        heroList.Add(new HeroData());
+        heroList[1].identity = 1;
+        heroList[1].name = "Cole";
+        heroList[1].level = 2;
+        heroList[1].expToLvlUp = 19;
+        heroList[1].exp = 0;
+        heroList[1].levelUpPts = 0;
+        heroList[1].techPts = 0;
+        heroList[1].hp = 14;
+        heroList[1].hpMax = 14;
+        heroList[1].pm = 10;
+        heroList[1].pmMax = 10;
+        heroList[1].atk = 5;
+        heroList[1].def = 4;
+        heroList[1].mgkAtk = 11;
+        heroList[1].mgkDef = 8;
+        heroList[1].luck = 5;
+        heroList[1].evasion = 4;
+        heroList[1].spd = 5;
+        heroList[1].skillsList = new List<Skill>();
+        heroList[1].spellsList = new List<Spell>();
+        heroList[1].passiveList = new List<Passive>();
+        heroList[1].weapon = null;
+        heroList[1].equipment = new List<GameObject>();
+
+        // the below code would probably be found in the "Add Spell" functions
+        skillTreeAccessor.ReadInfo("techniquesCole1.tsv");
+        skillTreeAccessor.AddTechnique(heroList[1], new Spell(skillTreeAccessor.FindTechnique("candleshot")));
+    }
+    void AddEleanor()
+    {
+        // test eleanor -----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
+        heroList.Add(new HeroData());
+        heroList[2].identity = 2;
+        heroList[2].name = "Eleanor";
+        heroList[2].level = 2;
+        heroList[2].expToLvlUp = 19;
+        heroList[2].exp = 0;
+        heroList[2].levelUpPts = 0;
+        heroList[2].techPts = 0;
+        heroList[2].hp = 18;
+        heroList[2].hpMax = 18;
+        heroList[2].pm = 20;
+        heroList[2].pmMax = 20;
+        heroList[2].atk = 4;
+        heroList[2].def = 7;
+        heroList[2].mgkAtk = 15;
+        heroList[2].mgkDef = 9;
+        heroList[2].luck = 0;
+        heroList[2].evasion = 2;
+        heroList[2].spd = 8;
+        heroList[2].skillsList = new List<Skill>();
+        heroList[2].spellsList = new List<Spell>();
+        heroList[2].passiveList = new List<Passive>();
+        heroList[2].weapon = null;
+        heroList[2].equipment = new List<GameObject>();
+    }
+    void AddJuliette()
+    {
+        //// juliette test-----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
+        heroList.Add(new HeroData());
+        heroList[3].identity = 3;
+        heroList[3].name = "Juliette";
+        heroList[3].level = 5;
+        heroList[3].expToLvlUp = 30;
+        heroList[3].exp = 0;
+        heroList[3].levelUpPts = 0;
+        heroList[3].techPts = 0;
+        heroList[3].hp = 25;
+        heroList[3].hpMax = 25;
+        heroList[3].pm = 18;
+        heroList[3].pmMax = 18;
+        heroList[3].atk = 22;
+        heroList[3].def = 19;
+        heroList[3].mgkAtk = 15;
+        heroList[3].mgkDef = 18;
+        heroList[3].luck = 7;
+        heroList[3].evasion = 12;
+        heroList[3].spd = 20;
+        heroList[3].skillsList = new List<Skill>();
+        heroList[3].spellsList = new List<Spell>();
+        heroList[3].passiveList = new List<Passive>();
+        heroList[3].weapon = null;
+        heroList[3].equipment = new List<GameObject>();
+
+    }
+
+
 }
 
 //this class is where all of our data will be sent in order to be saved
