@@ -35,6 +35,13 @@ public class characterControl : OverworldObject {
         base.Start();
 	}
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.GetComponent<Gateway>())
+        {
+            other.GetComponent<Gateway>().NextScene();
+        }
+    }
     //void OnCollisionEnter2D(Collision2D otherCollider2d)
     //{
     //    print("ENTER");

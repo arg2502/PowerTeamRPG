@@ -7,6 +7,7 @@ public class roomControl : MonoBehaviour {
 	// store the default entrance of the room
 	// this is where the player will be sent when they die if no statue has been tagged
 	public Vector2 entrance;
+    public List<Gateway> gatewaysInRoom = new List<Gateway>();
 
 	// Attributes dealing with enemies
 	public int areaIDNumber; // helps the gameControl obj know what data to synch
@@ -28,10 +29,9 @@ public class roomControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//tell the gameControl object what it needs to know
-		GameControl.control.areaEntrance = entrance;
 
 		// convert arrays to lists
+        
 		foreach(MovableOverworldObject m in GameObject.FindObjectsOfType<MovableOverworldObject>())
 		{
 			movables.Add(m);
@@ -242,7 +242,52 @@ public class roomControl : MonoBehaviour {
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.y = enemies [i].transform.position.y;
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.z = enemies [i].transform.position.z;
 		}
-	}
 
+
+        AssignCurrentPosition();
+    }
+
+    void OnLevelWasLoaded(int level)
+    {
+        foreach (Gateway g in GameObject.FindObjectsOfType<Gateway>())
+        {
+            gatewaysInRoom.Add(g);
+        }
+
+        AssignCurrentPosition();
+
+    }
+
+    public Vector2 AssignEntrance(string exitedGatewayName)
+    {
+        // if string is null, then we did not enter through a gateway -- set to saved statue or an inspector set entrance
+        if(string.IsNullOrEmpty(exitedGatewayName))
+        {
+            if (GameControl.control.taggedStatue) return entrance = GameControl.control.savedStatue;
+            //else return entrance;
+        }
+
+        foreach (Gateway gateway in gatewaysInRoom)
+        {
+            if (string.Compare(gateway.gatewayName, exitedGatewayName) == 0)
+            {
+                return entrance = gateway.entrancePos;                
+            }
+        }
+        // if we reached this point, we haven't found the gateway's twin -- so set it to first in list, just in case
+        if (gatewaysInRoom.Count > 0)
+        {
+            return entrance = gatewaysInRoom[0].entrancePos;
+        }
+        else
+            return entrance;
+
+    }
+    void AssignCurrentPosition()
+    {
+        //tell the gameControl object what it needs to know
+        GameControl.control.areaEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
+        GameControl.control.currentPosition = GameControl.control.areaEntrance;
+    }
 }
 

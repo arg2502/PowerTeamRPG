@@ -16,8 +16,9 @@ public class GameControl : MonoBehaviour {
 	//the player's name (Jethro)
 	public string playerName = "Jethro";
 
-	//Info to be saved and used throughout the game
-	public int totalGold; // the player's total gold
+    
+    //Info to be saved and used throughout the game
+    public int totalGold; // the player's total gold
 	public int totalKeys;
 	public List<int> keysObtainedInDungeons = new List<int>();
 	public int numOfDungeons;
@@ -79,8 +80,16 @@ public class GameControl : MonoBehaviour {
     // variable to access skill tree functions
     SkillTree skillTreeAccessor = new SkillTree();
 
-	//awake gets called before start
-	void Awake () {
+    // var for keeping track of gateways between scenes
+    public string sceneStartGateName;
+    public void AssignEntrance(string gatewayName)
+    {
+        sceneStartGateName = gatewayName;
+    }
+
+
+    //awake gets called before start
+    void Awake () {
 		if (control == null)
 		{
 			//this keeps the game object from being destroyed between scenes
@@ -191,6 +200,7 @@ public class GameControl : MonoBehaviour {
 			teamSub = new tempMenu();
 			heroSub = new tempMenu();
 			inventSub = new tempMenu();
+
 		}
 		else if (control != this)
 		{
@@ -198,8 +208,8 @@ public class GameControl : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
-
-	public void AddItem(GameObject item)
+   
+    public void AddItem(GameObject item)
 	{
 		// loop through the inventory to see if the player already has this type of item
 		// if so, increase the quantity of that item
