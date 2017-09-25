@@ -242,18 +242,13 @@ public class roomControl : MonoBehaviour {
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.y = enemies [i].transform.position.y;
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.z = enemies [i].transform.position.z;
 		}
-
-
+        
         AssignCurrentPosition();
     }
 
     void OnLevelWasLoaded(int level)
     {
-        foreach (Gateway g in GameObject.FindObjectsOfType<Gateway>())
-        {
-            gatewaysInRoom.Add(g);
-        }
-
+        
         AssignCurrentPosition();
 
     }
@@ -285,6 +280,14 @@ public class roomControl : MonoBehaviour {
     }
     void AssignCurrentPosition()
     {
+        if (gatewaysInRoom.Count <= 0)
+        {
+            foreach (Gateway g in GameObject.FindObjectsOfType<Gateway>())
+            {
+                gatewaysInRoom.Add(g);
+            }
+        }
+
         //tell the gameControl object what it needs to know
         GameControl.control.areaEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
         GameControl.control.currentPosition = GameControl.control.areaEntrance;

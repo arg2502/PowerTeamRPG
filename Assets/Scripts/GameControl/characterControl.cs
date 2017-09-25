@@ -144,6 +144,7 @@ public class characterControl : OverworldObject {
                             if (!CheckCollision(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime, movableMask))
                             {
                                 topHit.transform.Translate(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") / 2) * Time.deltaTime);
+                                print(Input.GetAxisRaw("Vertical"));
                                 speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime;
                                 isMoving = true;
                             }
@@ -179,8 +180,8 @@ public class characterControl : OverworldObject {
                         {
                             if (!CheckCollision(new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime, movableMask))
                             {
-                                bottomHit.transform.Translate(new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical") / 2) * Time.deltaTime);
-                                speed += new Vector2(0, -moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime;
+                                bottomHit.transform.Translate(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") / 2) * Time.deltaTime);
+                                speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")) * Time.deltaTime;
                                 isMoving = true;
                             }
                         }
