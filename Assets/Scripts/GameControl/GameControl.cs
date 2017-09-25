@@ -85,7 +85,19 @@ public class GameControl : MonoBehaviour {
     public void AssignEntrance(string gatewayName)
     {
         sceneStartGateName = gatewayName;
+        //if (string.IsNullOrEmpty(gatewayName))
+        //{
+        //    roomState = RoomTransitionState.menu;
+        //}
+        //else
+        //{
+        //    roomState = RoomTransitionState.gateway;
+        //}
     }
+
+    // room transition state --- to tell RoomControl how to handle positioning with loading the scene
+    //public enum RoomTransitionState { menu, gateway }
+    //public RoomTransitionState roomState;
 
 
     //awake gets called before start
@@ -142,8 +154,8 @@ public class GameControl : MonoBehaviour {
             // adding heroes - some if not all of these are temporary just to add them into the game for testing
             AddJethro();
             AddCole();
-            AddEleanor();
-            AddJuliette();
+            //AddEleanor();
+            //AddJuliette();
 
 
             

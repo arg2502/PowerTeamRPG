@@ -35,13 +35,13 @@ public class MorttimerStatue : NPCObject {
             GameControl.control.taggedStatue = true;
             if (!side)
             {
-                GameControl.control.savedStatue = new Vector2(this.transform.position.x, this.transform.position.y - 100.0f);
-                GameControl.control.currentPosition = new Vector2(this.transform.position.x, this.transform.position.y - 100.0f);
+                GameControl.control.savedStatue = new Vector2(this.transform.position.x, this.transform.position.y - 1.5f);
+                GameControl.control.currentPosition = new Vector2(this.transform.position.x, this.transform.position.y - 1.5f);
             }
             if (side)
             {
-                GameControl.control.savedStatue = new Vector2(this.transform.position.x - (100.0f * mult), this.transform.position.y);
-                GameControl.control.currentPosition = new Vector2(this.transform.position.x - (100.0f * mult), this.transform.position.y);
+                GameControl.control.savedStatue = new Vector2(this.transform.position.x - (1.5f * mult), this.transform.position.y);
+                GameControl.control.currentPosition = new Vector2(this.transform.position.x - (1.5f * mult), this.transform.position.y);
             }
 
             GameControl.control.RecordRoom();

@@ -243,7 +243,7 @@ public class roomControl : MonoBehaviour {
 			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.z = enemies [i].transform.position.z;
 		}
         
-        AssignCurrentPosition();
+        //AssignCurrentPosition();
     }
 
     void OnLevelWasLoaded(int level)
@@ -256,26 +256,34 @@ public class roomControl : MonoBehaviour {
     public Vector2 AssignEntrance(string exitedGatewayName)
     {
         // if string is null, then we did not enter through a gateway -- set to saved statue or an inspector set entrance
-        if(string.IsNullOrEmpty(exitedGatewayName))
+        //if(string.IsNullOrEmpty(exitedGatewayName))
+        //{
+        //    if (GameControl.control.taggedStatue) return entrance = GameControl.control.savedStatue;
+        //    //else return entrance;
+        //}
+        if (string.IsNullOrEmpty(exitedGatewayName))
         {
-            if (GameControl.control.taggedStatue) return entrance = GameControl.control.savedStatue;
-            //else return entrance;
+            return entrance = GameControl.control.currentPosition;
         }
 
-        foreach (Gateway gateway in gatewaysInRoom)
-        {
-            if (string.Compare(gateway.gatewayName, exitedGatewayName) == 0)
-            {
-                return entrance = gateway.entrancePos;                
-            }
-        }
-        // if we reached this point, we haven't found the gateway's twin -- so set it to first in list, just in case
-        if (gatewaysInRoom.Count > 0)
-        {
-            return entrance = gatewaysInRoom[0].entrancePos;
-        }
         else
-            return entrance;
+        {
+            foreach (Gateway gateway in gatewaysInRoom)
+            {
+                if (string.Compare(gateway.gatewayName, exitedGatewayName) == 0)
+                {
+                    return entrance = gateway.entrancePos;
+                }
+            }
+            // if we reached this point, we haven't found the gateway's twin -- so set it to first in list, just in case
+            if (gatewaysInRoom.Count > 0)
+            {
+                return entrance = gatewaysInRoom[0].entrancePos;
+            }
+            else
+                return entrance = GameControl.control.currentPosition;
+        }
+        
 
     }
     void AssignCurrentPosition()
@@ -291,6 +299,7 @@ public class roomControl : MonoBehaviour {
         //tell the gameControl object what it needs to know
         GameControl.control.areaEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
         GameControl.control.currentPosition = GameControl.control.areaEntrance;
+        GameControl.control.sceneStartGateName = "";
     }
 }
 
