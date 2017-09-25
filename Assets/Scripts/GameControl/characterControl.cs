@@ -209,11 +209,18 @@ public class characterControl : OverworldObject {
 		}
 
         // set values for animator to determine movement/idle animations
-        anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
-        anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
-        anim.SetBool("isMoving", isMoving);
-        anim.SetFloat("lastHSpeed", lastMovement.x);
-        anim.SetFloat("lastVSpeed", lastMovement.y);
+        if (canMove)
+        {
+            anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
+            anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
+            anim.SetBool("isMoving", isMoving);
+            anim.SetFloat("lastHSpeed", lastMovement.x);
+            anim.SetFloat("lastVSpeed", lastMovement.y);
+        }
+        else
+        {
+            anim.SetBool("isMoving", canMove);
+        }
     }
 
 }
