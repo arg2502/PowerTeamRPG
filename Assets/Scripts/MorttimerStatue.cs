@@ -8,18 +8,24 @@ public class MorttimerStatue : NPCObject {
     public bool flip = false;
     public bool side = false;
     float mult = 1.0f;
+    float distanceToSave = 2.5f;
+    float distanceToSpawn = 1.5f;
+    bool canPlayerMove;
 
 	// Use this for initialization
 	void Start () {
         if (flip) { mult *= -1; }
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
+        
         base.Start();
-	}
+
+        canPlayerMove = player.GetComponent<characterControl>().canMove;
+    }
 
     void Update()
     {
         if (flip) { mult = -1.0f; }
-        if (distFromPlayer < 150.0f && Input.GetKeyUp(GameControl.control.selectKey) && canTalk)
+        if (distFromPlayer < distanceToSave && Input.GetKeyUp(GameControl.control.selectKey) && canTalk && !canPlayerMove)
         {
             // set the current scene variable
             GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
@@ -35,13 +41,13 @@ public class MorttimerStatue : NPCObject {
             GameControl.control.taggedStatue = true;
             if (!side)
             {
-                GameControl.control.savedStatue = new Vector2(this.transform.position.x, this.transform.position.y - 1.5f);
-                GameControl.control.currentPosition = new Vector2(this.transform.position.x, this.transform.position.y - 1.5f);
+                GameControl.control.savedStatue = new Vector2(this.transform.position.x, this.transform.position.y - distanceToSpawn);
+                GameControl.control.currentPosition = new Vector2(this.transform.position.x, this.transform.position.y - distanceToSpawn);
             }
             if (side)
             {
-                GameControl.control.savedStatue = new Vector2(this.transform.position.x - (1.5f * mult), this.transform.position.y);
-                GameControl.control.currentPosition = new Vector2(this.transform.position.x - (1.5f * mult), this.transform.position.y);
+                GameControl.control.savedStatue = new Vector2(this.transform.position.x - (distanceToSpawn * mult), this.transform.position.y);
+                GameControl.control.currentPosition = new Vector2(this.transform.position.x - (distanceToSpawn * mult), this.transform.position.y);
             }
 
             GameControl.control.RecordRoom();
