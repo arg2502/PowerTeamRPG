@@ -26,52 +26,66 @@ public class roomControl : MonoBehaviour {
 	public List<ColorBridge> colorBridgesInRoom = new List<ColorBridge>();
 	public List<Drawbridge> drawbridgesInRoom = new List<Drawbridge>();
 
+    // room size limits
+    public RoomLimits roomLimits;
+    public struct RoomLimits
+    {
+        public int minX, minY, maxX, maxY; // ints because the tilemap's position and size should always be whole numbers (??? right ???)
+    }
 
 	// Use this for initialization
 	void Start () {
 
 		// convert arrays to lists
         
-		foreach(MovableOverworldObject m in GameObject.FindObjectsOfType<MovableOverworldObject>())
+		foreach(MovableOverworldObject m in FindObjectsOfType<MovableOverworldObject>())
 		{
 			movables.Add(m);
 		}
-		foreach(TreasureChest tc in GameObject.FindObjectsOfType<TreasureChest>())
+		foreach(TreasureChest tc in FindObjectsOfType<TreasureChest>())
 		{
 			treasureChests.Add(tc);
 		}
-		foreach(DoorQuestion dq in GameControl.FindObjectsOfType<DoorQuestion>())
+		foreach(DoorQuestion dq in FindObjectsOfType<DoorQuestion>())
 		{
 			doorsInRoom.Add(dq);
 		}
-		foreach (Switch s in GameControl.FindObjectsOfType<Switch>()) {
+		foreach (Switch s in FindObjectsOfType<Switch>()) {
 			switchesInRoom.Add (s);
 		}
-		foreach (ColorBridge sb in GameControl.FindObjectsOfType<ColorBridge>()) {
+		foreach (ColorBridge sb in FindObjectsOfType<ColorBridge>()) {
 			colorBridgesInRoom.Add (sb);
 		}
-		foreach (Drawbridge db in GameControl.FindObjectsOfType<Drawbridge>()) {
+		foreach (Drawbridge db in FindObjectsOfType<Drawbridge>()) {
 			drawbridgesInRoom.Add (db);
 		}
 		// add any manually placed enemies first
-		foreach (enemyControl e in GameObject.FindObjectsOfType<enemyControl>()) {
+		foreach (enemyControl e in FindObjectsOfType<enemyControl>()) {
 			enemies.Add (e);
 		}
+
+        // find the room's limits
+        roomLimits = new RoomLimits();
+        var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
+        roomLimits.minX = (int)tilemap.transform.position.x;
+        roomLimits.minY = (int)tilemap.transform.position.y;
+        roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
+        roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
+
 
 		//create the appropriate amount of enemies
 		if (!GameControl.control.isPaused)
 		{
-
-
-			for (int i = 0; i < numOfEnemies; i++)
-			{
-				GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-                temp.name = "EnemyControl";
-				temp.transform.position = new Vector2(Random.Range(-1000.0f, 1000.0f), Random.Range(-1000.0f, 1000.0f)); // hopefully we will have a better way of placing enemies
-				if(temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
-				if(temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
-				enemies.Add(temp.GetComponent<enemyControl>());
-			}
+            // TEMP COMMENTED
+			//for (int i = 0; i < numOfEnemies; i++)
+			//{
+			//	GameObject temp = GameObject.Instantiate(enemyControlPrefab);
+   //             temp.name = "EnemyControl";
+			//	temp.transform.position = new Vector2(Random.Range(-16.0f, 16.0f), Random.Range(-16.0f, 16.0f)); // hopefully we will have a better way of placing enemies
+			//	if(temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
+			//	if(temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
+			//	enemies.Add(temp.GetComponent<enemyControl>());
+			//}
 		}
 		/*else if (GameControl.control.isPaused)
         {
@@ -185,65 +199,70 @@ public class roomControl : MonoBehaviour {
 					GameControl.control.totalKeys = GameControl.control.keysObtainedInDungeons[dungeonID];
 				}
 
+                // set the room limits
+                roomLimits = rc.roomLimits;
 
 				return;
 			}
 		}
 		// if we're here, this room must not be currently tracked. Lets add it
 		GameControl.control.rooms.Add(new RoomControlData());
-		GameControl.control.rooms[GameControl.control.rooms.Count - 1].areaIDNumber = areaIDNumber;
-		GameControl.control.rooms[GameControl.control.rooms.Count - 1].dungeonID = dungeonID;
+        var newRoom = GameControl.control.rooms[GameControl.control.rooms.Count - 1];
+
+        newRoom.areaIDNumber = areaIDNumber;
+		newRoom.dungeonID = dungeonID;
 
 		// add the necessary data to store all movable object positions
 		for(int i = 0; i < movables.Count; i++)
 		{
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].blockData.Add(new BlockData());
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].blockName = movables [i].name;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].isActivated = movables [i].isActivated;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].position.x = movables [i].transform.position.x;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].position.y = movables [i].transform.position.y;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].blockData [i].position.z = movables [i].transform.position.z;
+			newRoom.blockData.Add(new BlockData());
+			newRoom.blockData [i].blockName = movables [i].name;
+			newRoom.blockData [i].isActivated = movables [i].isActivated;
+			newRoom.blockData [i].position.x = movables [i].transform.position.x;
+			newRoom.blockData [i].position.y = movables [i].transform.position.y;
+			newRoom.blockData [i].position.z = movables [i].transform.position.z;
 
 		}
 		for(int i = 0; i < treasureChests.Count; i++)
 		{
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData[i].isChestOpen = treasureChests[i].isOpen;
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].chestData[i].chestName = treasureChests[i].name;
+			newRoom.chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
+			newRoom.chestData[i].isChestOpen = treasureChests[i].isOpen;
+			newRoom.chestData[i].chestName = treasureChests[i].name;
 		}
 		for(int i = 0; i < doorsInRoom.Count; i++)
 		{
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData.Add(new DoorData());
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData[i].isLocked = doorsInRoom[i].gameObject.activeSelf;
-			GameControl.control.rooms[GameControl.control.rooms.Count - 1].doorData[i].doorName = doorsInRoom[i].name;
+			newRoom.doorData.Add(new DoorData());
+			newRoom.doorData[i].isLocked = doorsInRoom[i].gameObject.activeSelf;
+			newRoom.doorData[i].doorName = doorsInRoom[i].name;
 
 		}
 		for(int i = 0; i < switchesInRoom.Count; i++){
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].switchData.Add (new SwitchData ());
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].switchData [i].isActivated = switchesInRoom [i].isActivated;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].switchData [i].switchName = switchesInRoom [i].name;
+			newRoom.switchData.Add (new SwitchData ());
+			newRoom.switchData [i].isActivated = switchesInRoom [i].isActivated;
+			newRoom.switchData [i].switchName = switchesInRoom [i].name;
 		}
 		for(int i = 0; i < colorBridgesInRoom.Count; i++){
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData.Add (new ColorBridgeData ());
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData [i].rotationZ = colorBridgesInRoom [i].transform.Find("Bridge").transform.eulerAngles.z;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].colorBridgeData [i].bridgeName = colorBridgesInRoom [i].name;
+			newRoom.colorBridgeData.Add (new ColorBridgeData ());
+			newRoom.colorBridgeData [i].rotationZ = colorBridgesInRoom [i].transform.Find("Bridge").transform.eulerAngles.z;
+			newRoom.colorBridgeData [i].bridgeName = colorBridgesInRoom [i].name;
 		}
 		for (int i = 0; i < drawbridgesInRoom.Count; i++) {
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData.Add (new DrawbridgeData ());
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].bridgeName = drawbridgesInRoom [i].name;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
-			//GameControl.control.rooms [GameControl.control.rooms.Count - 1].drawbridgeData [i].isActive = drawbridgesInRoom [i].isActive;
+			newRoom.drawbridgeData.Add (new DrawbridgeData ());
+			newRoom.drawbridgeData [i].bridgeName = drawbridgesInRoom [i].name;
+			newRoom.drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
+			//newRoom.drawbridgeData [i].isActive = drawbridgesInRoom [i].isActive;
 		}
 		for (int i = 0; i < enemies.Count; i++) {
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData.Add (new EnemyControlData ());
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].enemyName = enemies [i].name;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].battledState = enemies [i].beenBattled;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.x = enemies [i].transform.position.x;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.y = enemies [i].transform.position.y;
-			GameControl.control.rooms [GameControl.control.rooms.Count - 1].enemyData [i].position.z = enemies [i].transform.position.z;
+			newRoom.enemyData.Add (new EnemyControlData ());
+			newRoom.enemyData [i].enemyName = enemies [i].name;
+			newRoom.enemyData [i].battledState = enemies [i].beenBattled;
+			newRoom.enemyData [i].position.x = enemies [i].transform.position.x;
+			newRoom.enemyData [i].position.y = enemies [i].transform.position.y;
+			newRoom.enemyData [i].position.z = enemies [i].transform.position.z;
 		}
-        
-        //AssignCurrentPosition();
+
+        newRoom.roomLimits = roomLimits;
+        AssignCurrentPosition();
     }
 
     void OnLevelWasLoaded(int level)
@@ -297,9 +316,13 @@ public class roomControl : MonoBehaviour {
         }
 
         //tell the gameControl object what it needs to know
+        GameControl.control.currentRoom = this;
         GameControl.control.areaEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
         GameControl.control.currentPosition = GameControl.control.areaEntrance;
         GameControl.control.sceneStartGateName = "";
+
+        var camera = FindObjectOfType<CameraController>();
+        camera.StayWithinRoomAtStart();
     }
 }
 

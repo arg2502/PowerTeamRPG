@@ -28,7 +28,8 @@ public class GameControl : MonoBehaviour {
 	public List<GameObject> weapons;
 	public List<GameObject> reusables;
 
-	//room information
+    //room information
+    public roomControl currentRoom; // keep track of the literal room object where the player currently is
 	public string currentScene; // the place where the player currently is (outside of battle)
 	public string previousScene; // the place where the player is coming from (outside of battle)
 	public string savedScene; // the room where the player last saved
@@ -983,6 +984,7 @@ public class RoomControlData
 	public List<ColorBridgeData> colorBridgeData = new List<ColorBridgeData>();
 	public List<DrawbridgeData> drawbridgeData = new List<DrawbridgeData>();
 	public List<EnemyControlData> enemyData = new List<EnemyControlData>();
+    public roomControl.RoomLimits roomLimits = new roomControl.RoomLimits();
 }
 [Serializable]
 public class BlockData

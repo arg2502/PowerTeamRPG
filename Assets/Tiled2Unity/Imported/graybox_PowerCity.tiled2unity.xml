@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <!--Tiled2Unity generated xml data-->
 <!--Do not modify by hand-->
-<!--Last exported: 9/23/2017 6:13:19 PM-->
+<!--Last exported: 10/4/2017 8:51:59 PM-->
 <Tiled2Unity version="1.0.8.0">
   <AssignMaterial mesh="mesh_0001" material="grayBoxTiles" />
   <AssignMaterial mesh="mesh_0002" material="grayBoxTiles" />
@@ -13,11 +13,20 @@
       <GameObject name="grayBoxTiles" copy="mesh_0002" sortingLayerName="" sortingOrder="2" opacity="1" />
     </GameObject>
     <GameObject name="Collisions" x="0" y="0" z="0">
+      <GameObject name="RectangleObject" x="-0.06439391" y="1.07954526" rotation="0" layer="">
+        <BoxCollider2D width="73.06438" height="0.9545453" />
+      </GameObject>
+      <GameObject name="RectangleObject" x="82.0075" y="1.04166722" rotation="0" layer="">
+        <BoxCollider2D width="7.907203" height="0.9943187" />
+      </GameObject>
       <GameObject name="RectangleObject" x="5" y="0.0208332818" rotation="0" layer="">
         <BoxCollider2D width="0.958332837" height="31.02078" />
       </GameObject>
       <GameObject name="RectangleObject" x="4.5" y="0.0104166716" rotation="0" layer="">
         <BoxCollider2D width="1.51302028" height="31.0078125" />
+      </GameObject>
+      <GameObject name="RectangleObject" x="90.125" y="-0.125" rotation="0" layer="">
+        <BoxCollider2D width="1.125" height="48.875" />
       </GameObject>
       <GameObject name="RectangleObject" x="37.99344" y="-11.5009527" rotation="0" layer="">
         <BoxCollider2D width="24.89875" height="9.894891" />
