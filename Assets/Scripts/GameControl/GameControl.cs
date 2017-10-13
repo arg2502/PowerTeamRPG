@@ -27,7 +27,7 @@ public class GameControl : MonoBehaviour {
 	public List<GameObject> equipment;
 	public List<GameObject> weapons;
 	public List<GameObject> reusables;
-
+    
     //room information
     public roomControl currentRoom; // keep track of the literal room object where the player currently is
 	public string currentScene; // the place where the player currently is (outside of battle)
@@ -37,6 +37,7 @@ public class GameControl : MonoBehaviour {
 	public Vector2 savedStatue; // the position of where the player last saved -- dungeon entrance as default
 	public Vector2 currentPosition; // the exact spot the player is in a room before a battle
 	public Vector2 areaEntrance; // where the player will be kicked back to if they die
+    public Gateway currentEntranceGateway;
 
 	public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
 
@@ -205,6 +206,7 @@ public class GameControl : MonoBehaviour {
 			teamSub = new tempMenu();
 			heroSub = new tempMenu();
 			inventSub = new tempMenu();
+            
 
 		}
 		else if (control != this)

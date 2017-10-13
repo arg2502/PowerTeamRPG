@@ -1,7 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class characterControl : OverworldObject {
+
+    public CharacterState characterState;
+    public enum CharacterState
+    {
+        Transition,
+        Normal
+    }
+
+
     float moveSpeed = 0;
     float walkSpeed = 4.5f;
     float runSpeed = 7f;
@@ -24,8 +34,14 @@ public class characterControl : OverworldObject {
     bool isMoving;
     Vector2 lastMovement;
 
-	// Use this for initialization
-	void Start () {
+    // for room transition
+    float xIncrementTransition = 0, yIncrementTransition = 0;
+    Vector2 desiredPos;
+    Action OnDesiredPos;
+    Gateway currentGateway;
+
+    // Use this for initialization
+    void Start () {
 
         pm = GetComponentInChildren<PauseMenu>();
 
@@ -33,13 +49,22 @@ public class characterControl : OverworldObject {
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
 		canMove = true;
         base.Start();
-	}
+
+        //canMove = false;
+        var gateway = GameControl.control.currentEntranceGateway;
+        EnterRoom(gateway.transform.position, gateway.entrancePos);
+        characterState = CharacterState.Transition;
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.GetComponent<Gateway>())
+        if (characterState == CharacterState.Normal)
         {
-            other.GetComponent<Gateway>().NextScene();
+            if (other.GetComponent<Gateway>())
+            {
+                currentGateway = other.GetComponent<Gateway>();
+                ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
+            }
         }
     }
     //void OnCollisionEnter2D(Collision2D otherCollider2d)
@@ -66,15 +91,42 @@ public class characterControl : OverworldObject {
     void Update()
     {
         // DEBUG - change time rate
-        if (Input.GetKeyDown(KeyCode.Minus) && Time.timeScale > 0.0f)
+        if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.1f)
             Time.timeScale -= 0.1f;
-        if (Input.GetKeyDown(KeyCode.Plus) && Time.timeScale < 1.0f)
+        if (Input.GetKeyDown(KeyCode.P) && Time.timeScale < 1.0f)
             Time.timeScale += 0.1f;
 
         sr.sortingOrder = (int)-transform.position.y;
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 
+        if (characterState == CharacterState.Transition)
+        {
+            anim.SetBool("isMoving", true);
+            anim.SetFloat("vSpeed", yIncrementTransition);
+            anim.SetFloat("hSpeed", xIncrementTransition);
+
+            if (!MoveToRoomTransitionSpot(desiredPos, xIncrementTransition, yIncrementTransition))
+            {
+                var transitionSpeed = new Vector2(xIncrementTransition, yIncrementTransition);
+                transitionSpeed.Normalize();
+                transitionSpeed *= walkSpeed * Time.deltaTime;
+
+                transform.Translate(transitionSpeed);
+
+                return;
+            }
+            else
+            {
+                OnDesiredPos.Invoke();
+                
+            }
+
+        }
+
+
+
+        // STATE == NORMAL
 		if (canMove) {
             isMoving = false;
 
@@ -222,5 +274,132 @@ public class characterControl : OverworldObject {
             anim.SetBool("isMoving", canMove);
         }
     }
+    void OnLevelWasLoaded(int level)
+    {
+        if (GameControl.control.currentEntranceGateway == null) return;
 
+        //canMove = false;
+        var gateway = GameControl.control.currentEntranceGateway;
+        EnterRoom(gateway.transform.position, gateway.entrancePos);
+    }
+    void EnterRoom(Vector2 startPos, Vector2 endPos)
+    {
+        FindIncrementTransitionValues(startPos, endPos);
+        desiredPos = endPos;
+        OnDesiredPos = null;
+        OnDesiredPos += FinishEntrance;
+        characterState = CharacterState.Transition;
+    }
+    void ExitRoom(Vector2 startPos, Vector2 endPos)
+    {
+        FindIncrementTransitionValues(startPos, endPos);
+
+        // determine the desiredPos value based on the increment transition values
+        Vector2 newDesiredPos;
+
+        // if xIncrement is not 0, then we're moving left/right
+        // alter value of y
+        if(xIncrementTransition != 0)
+        {
+            newDesiredPos = new Vector2(endPos.x, transform.position.y);
+        }
+        // otherwise, alter x
+        else
+        {
+            newDesiredPos = new Vector2(transform.position.x, endPos.y);
+        }
+
+        // set desired value
+        desiredPos = newDesiredPos;
+
+        OnDesiredPos = null;
+        OnDesiredPos += FinishExit;
+
+        characterState = CharacterState.Transition;
+
+    }
+
+    public void FindIncrementTransitionValues(Vector2 startPos, Vector2 endPos)
+    {
+        // reset transition values
+        xIncrementTransition = 0;
+        yIncrementTransition = 0;
+                
+        // determine which direction Jethro will move
+        // if x's are equal, then we need to move in y
+        if (startPos.x == endPos.x)
+        {
+            // determine whether we're moving in positive or negative
+            // if gate is less, than we're moving up
+            if (startPos.y < endPos.y)
+                yIncrementTransition = 1;
+            // otherwise, we're going down
+            else
+                yIncrementTransition = -1;
+        }
+        // otherwise we need to move in x
+        else
+        {
+            // determine whether we're moving in positive or negative
+            // if gate is less, than we're moving right
+            if (startPos.x < endPos.x)
+                xIncrementTransition = 1;
+            // otherwise, we're going left
+            else
+                xIncrementTransition = -1;
+        }
+
+        // continuously call the Move function until we are at the entrance position       
+        //StartCoroutine(MoveToEntrance(entrancePos, xIncrementTransition, yIncrementTransition));
+
+    }
+
+
+    /// <summary>
+    /// Called when entering a room. Moves Jethro from the Gateway entrance to the entrancePos.
+    /// </summary>
+    /// <param name="startPos">Position Jethro will start that frame.</param>
+    /// <param name="endPos">The entrancePos and final destination. Never changes</param>
+    /// <param name="xIncrement">How far Jethro will move in X direction. Either +, -, or 0.</param>
+    /// <param name="yIncrement">How far Jethro will move in Y direction. Either +, -, or 0.</param>
+    /// <returns></returns>
+    bool MoveToRoomTransitionSpot(Vector3 endPos, float xIncrement, float yIncrement)
+    {
+        float position, finalPos;
+
+        if (xIncrement != 0)
+        {
+            position = transform.position.x;
+            finalPos = endPos.x;
+        }
+        else
+        {
+            position = transform.position.y;
+            finalPos = endPos.y;
+        }
+
+        if((int)position != (int)finalPos)
+        {
+            
+            //if (xIncrement != 0)
+            //    position = transform.position.x;
+            //else
+            //    position = transform.position.y;
+            return false;
+        }
+        //canMove = true;
+        //characterState = CharacterState.Normal;
+        return true;
+    }
+
+    void FinishEntrance()
+    {
+        lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
+        characterState = CharacterState.Normal;
+    }
+    void FinishExit()
+    {
+        currentGateway.GetComponent<Gateway>().NextScene();
+        currentGateway = null;
+    }
 }

@@ -272,7 +272,7 @@ public class roomControl : MonoBehaviour {
 
     }
 
-    public Vector2 AssignEntrance(string exitedGatewayName)
+    public Gateway AssignEntrance(string exitedGatewayName)
     {
         // if string is null, then we did not enter through a gateway -- set to saved statue or an inspector set entrance
         //if(string.IsNullOrEmpty(exitedGatewayName))
@@ -282,7 +282,13 @@ public class roomControl : MonoBehaviour {
         //}
         if (string.IsNullOrEmpty(exitedGatewayName))
         {
-            return entrance = GameControl.control.currentPosition;
+            // default send to the first gateway in the room's position
+            if (gatewaysInRoom.Count > 0) return gatewaysInRoom[0];
+
+            // if there are no gateways for some reason, set to default current position
+            //else return entrance = GameControl.control.currentPosition;
+            else return null;
+
         }
 
         else
@@ -291,16 +297,17 @@ public class roomControl : MonoBehaviour {
             {
                 if (string.Compare(gateway.gatewayName, exitedGatewayName) == 0)
                 {
-                    return entrance = gateway.entrancePos;
+                    return gateway;
                 }
             }
             // if we reached this point, we haven't found the gateway's twin -- so set it to first in list, just in case
             if (gatewaysInRoom.Count > 0)
             {
-                return entrance = gatewaysInRoom[0].entrancePos;
+                return gatewaysInRoom[0];
             }
             else
-                return entrance = GameControl.control.currentPosition;
+                //return entrance = GameControl.control.currentPosition;
+                return null;
         }
         
 
@@ -309,7 +316,7 @@ public class roomControl : MonoBehaviour {
     {
         if (gatewaysInRoom.Count <= 0)
         {
-            foreach (Gateway g in GameObject.FindObjectsOfType<Gateway>())
+            foreach (Gateway g in FindObjectsOfType<Gateway>())
             {
                 gatewaysInRoom.Add(g);
             }
@@ -317,12 +324,29 @@ public class roomControl : MonoBehaviour {
 
         //tell the gameControl object what it needs to know
         GameControl.control.currentRoom = this;
-        GameControl.control.areaEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
+
+        var gatewayEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
+        if (gatewayEntrance != null)
+        {
+            GameControl.control.currentEntranceGateway = gatewayEntrance;
+            GameControl.control.areaEntrance = gatewayEntrance.transform.position;
+        }
+        else
+        {
+            GameControl.control.currentEntranceGateway = null; 
+            GameControl.control.areaEntrance = GameControl.control.currentPosition;
+        }
+
+
+        //GameControl.control.characterControl.canMove = false;
         GameControl.control.currentPosition = GameControl.control.areaEntrance;
         GameControl.control.sceneStartGateName = "";
-
+        
         var camera = FindObjectOfType<CameraController>();
         camera.StayWithinRoomAtStart();
+
+        //GameControl.control.characterControl.RoomTransition(gatewayEntrance.transform.position, gatewayEntrance.entrancePos);
+
     }
 }
 

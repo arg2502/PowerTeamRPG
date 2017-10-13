@@ -10,8 +10,11 @@ public class Gateway : MonoBehaviour {
     // the scene that will load when the player enters the gateway
     public string sceneName;
 
-    // place where the player will end up at
+    // place where the player will end up upon entering
     public Vector2 entrancePos;
+
+    // place where the player will end up upon exiting
+    public Vector2 exitPos;
 
     public void NextScene()
     {
