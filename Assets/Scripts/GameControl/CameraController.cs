@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour {
 
     public GameObject followTarget;
     Vector3 targetPos;
-    public float moveSpeed;
+    public float moveSpeed, origMoveSpeed;
     Camera myCamera;
 
     // camera size calculation specific
@@ -17,9 +17,15 @@ public class CameraController : MonoBehaviour {
 
     float currentX, currentY;
 
+    SpriteRenderer blackCanvas;
+    Color black;
+    Color clear;
+    float timeToFade;
+
     // jump immediately to player position at beginning
     void Start()
     {
+        origMoveSpeed = moveSpeed;
         myCamera = GetComponent<Camera>();
 
         // first we need to figure out how to know when the edge of the camera
@@ -31,7 +37,17 @@ public class CameraController : MonoBehaviour {
         // to get the horizontal size, we need to do some math with the screen's dimensions
 
         verticalSize = myCamera.orthographicSize;
-        horizontalSize = verticalSize * Screen.width / Screen.height;        
+        horizontalSize = verticalSize * Screen.width / Screen.height;
+        //transform.position = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
+        StayWithinRoomAtStart();
+        
+
+        blackCanvas = GetComponentInChildren<SpriteRenderer>();
+        black = new Color(0, 0, 0, 1);
+        clear = new Color(0, 0, 0, 0);
+        timeToFade = 1f;
+        blackCanvas.color = black;
+        StartCoroutine(Fade());
     }
 
 	// Update is called once per frame
@@ -43,12 +59,21 @@ public class CameraController : MonoBehaviour {
 
     void FollowTarget()
     {
+        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+            return;
+
         if (!outOfBoundsX)
             currentX = followTarget.transform.position.x;
         if (!outOfBoundsY)
             currentY = followTarget.transform.position.y;
 
         targetPos = new Vector3(currentX, currentY, transform.position.z);
+
+        //if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+        //    moveSpeed = 100;
+        //else if(moveSpeed != origMoveSpeed)
+        //    moveSpeed = origMoveSpeed;
+
         transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
     }
 
@@ -98,33 +123,69 @@ public class CameraController : MonoBehaviour {
 
     public void StayWithinRoomAtStart()
     {
-        transform.position = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
-        var currentPos = transform.position;
+        if (GameControl.control.currentEntranceGateway == null) return;
+
+        Vector3 entrance = GameControl.control.currentEntranceGateway.entrancePos;
+
+        transform.position = new Vector3(entrance.x, entrance.y, transform.position.z);
+        Vector3 currentPosition = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
         var currentRoom = GameControl.control.currentRoom;
 
-        if (currentPos.x - horizontalSize <= currentRoom.roomLimits.minX)
+        if (currentPosition.x - horizontalSize <= currentRoom.roomLimits.minX)
         {
-            transform.Translate(new Vector3(horizontalSize, 0));
+            //transform.Translate(new Vector3(horizontalSize, 0));
             currentX = currentRoom.roomLimits.minX + horizontalSize;
+            transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
             outOfBoundsX = true;
         }
-        if (currentPos.x + horizontalSize >= currentRoom.roomLimits.maxX)
+        else if (currentPosition.x + horizontalSize >= currentRoom.roomLimits.maxX)
         {
-            transform.Translate(new Vector3(-horizontalSize, 0));
+            //transform.Translate(new Vector3(-horizontalSize, 0));
             currentX = currentRoom.roomLimits.maxX - horizontalSize;
+            transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
             outOfBoundsX = true;
         }
-        if (currentPos.y + verticalSize >= currentRoom.roomLimits.minY)
+        if (currentPosition.y + verticalSize >= currentRoom.roomLimits.minY)
         {
-            transform.Translate(new Vector3(-verticalSize, 0));
+            //transform.Translate(new Vector3(0, -verticalSize));
             currentY = currentRoom.roomLimits.minY - verticalSize;
+            transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
             outOfBoundsY = true;
         }
-        if (currentPos.y - verticalSize <= currentRoom.roomLimits.maxY)
+        else if (currentPosition.y - verticalSize <= currentRoom.roomLimits.maxY)
         {
-            transform.Translate(new Vector3(verticalSize, 0));
+            //transform.Translate(new Vector3(0, verticalSize));
             currentY = currentRoom.roomLimits.maxY + verticalSize;
+            transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
             outOfBoundsY = true;
         }
+
+    }
+
+    public IEnumerator Fade()
+    {
+        if (blackCanvas.color.a <= 0)
+        {
+            blackCanvas.color = clear;
+            while (blackCanvas.color.a < 1)
+            {
+                //blackCanvas.color = Color.Lerp(clear, black, 2f);
+                blackCanvas.color += black * (Time.deltaTime / timeToFade);
+                yield return null;
+            }
+            blackCanvas.color = black;
+        }
+        else if (blackCanvas.color.a >= 1)
+        {
+            blackCanvas.color = black;
+            while (blackCanvas.color.a > 0)
+            {
+                //blackCanvas.color = Color.Lerp(clear, black, 2f);
+                blackCanvas.color -= black * (Time.deltaTime / timeToFade);
+                yield return null;
+            }
+            blackCanvas.color = clear;
+        }
+            //blackCanvas.color = Color.Lerp(black, clear, 2f);
     }
 }

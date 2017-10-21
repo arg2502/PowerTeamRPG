@@ -4,11 +4,13 @@ using System;
 
 public class characterControl : OverworldObject {
 
-    public CharacterState characterState;
+    
     public enum CharacterState
     {
         Transition,
-        Normal
+        Normal,
+        Battle,
+        Defeat
     }
 
 
@@ -39,30 +41,40 @@ public class characterControl : OverworldObject {
     Vector2 desiredPos;
     Action OnDesiredPos;
     Gateway currentGateway;
-
+    CameraController myCamera;
     // Use this for initialization
     void Start () {
 
         pm = GetComponentInChildren<PauseMenu>();
-
+        myCamera = FindObjectOfType<CameraController>();
         anim = GetComponent<Animator>();
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
 		canMove = true;
         base.Start();
 
         //canMove = false;
-        var gateway = GameControl.control.currentEntranceGateway;
-        EnterRoom(gateway.transform.position, gateway.entrancePos);
-        characterState = CharacterState.Transition;
+        
+        // if the character is transitioning through a gateway, call EnterRoom
+        if (GameControl.control.currentCharacterState == CharacterState.Transition)
+        {
+            Debug.Log(GameControl.control.currentEntranceGateway);
+            var gateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
+
+            if (gateway != null && !GameControl.control.taggedStatue)
+                EnterRoom(gateway.transform.position, gateway.entrancePos);
+            else
+                GameControl.control.currentCharacterState = CharacterState.Normal;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (characterState == CharacterState.Normal)
+        if (GameControl.control.currentCharacterState == CharacterState.Normal)
         {
             if (other.GetComponent<Gateway>())
             {
                 currentGateway = other.GetComponent<Gateway>();
+                StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
             }
         }
@@ -100,7 +112,7 @@ public class characterControl : OverworldObject {
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 
-        if (characterState == CharacterState.Transition)
+        if (GameControl.control.currentCharacterState == CharacterState.Transition)
         {
             anim.SetBool("isMoving", true);
             anim.SetFloat("vSpeed", yIncrementTransition);
@@ -274,21 +286,13 @@ public class characterControl : OverworldObject {
             anim.SetBool("isMoving", canMove);
         }
     }
-    void OnLevelWasLoaded(int level)
-    {
-        if (GameControl.control.currentEntranceGateway == null) return;
-
-        //canMove = false;
-        var gateway = GameControl.control.currentEntranceGateway;
-        EnterRoom(gateway.transform.position, gateway.entrancePos);
-    }
+    
     void EnterRoom(Vector2 startPos, Vector2 endPos)
     {
         FindIncrementTransitionValues(startPos, endPos);
         desiredPos = endPos;
-        OnDesiredPos = null;
-        OnDesiredPos += FinishEntrance;
-        characterState = CharacterState.Transition;
+        OnDesiredPos = FinishEntrance;
+        GameControl.control.currentCharacterState = CharacterState.Transition;
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
     {
@@ -311,11 +315,10 @@ public class characterControl : OverworldObject {
 
         // set desired value
         desiredPos = newDesiredPos;
+        
+        OnDesiredPos = FinishExit;
 
-        OnDesiredPos = null;
-        OnDesiredPos += FinishExit;
-
-        characterState = CharacterState.Transition;
+        GameControl.control.currentCharacterState = CharacterState.Transition;
 
     }
 
@@ -378,24 +381,16 @@ public class characterControl : OverworldObject {
             finalPos = endPos.y;
         }
 
-        if((int)position != (int)finalPos)
-        {
-            
-            //if (xIncrement != 0)
-            //    position = transform.position.x;
-            //else
-            //    position = transform.position.y;
+        if((int)position != (int)finalPos)        
             return false;
-        }
-        //canMove = true;
-        //characterState = CharacterState.Normal;
+
         return true;
     }
 
     void FinishEntrance()
     {
         lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
-        characterState = CharacterState.Normal;
+        GameControl.control.currentCharacterState = CharacterState.Normal;
     }
     void FinishExit()
     {

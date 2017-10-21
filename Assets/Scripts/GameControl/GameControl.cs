@@ -88,11 +88,11 @@ public class GameControl : MonoBehaviour {
     {
         sceneStartGateName = gatewayName;
     }
-    
+
     // room transition state --- to tell RoomControl how to handle positioning with loading the scene
     //public enum RoomTransitionState { menu, gateway }
     //public RoomTransitionState roomState;
-
+    public characterControl.CharacterState currentCharacterState;
 
     //awake gets called before start
     void Awake () {
@@ -206,7 +206,8 @@ public class GameControl : MonoBehaviour {
 			teamSub = new tempMenu();
 			heroSub = new tempMenu();
 			inventSub = new tempMenu();
-            
+
+            currentCharacterState = characterControl.CharacterState.Transition;
 
 		}
 		else if (control != this)

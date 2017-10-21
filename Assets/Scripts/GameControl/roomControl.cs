@@ -26,12 +26,14 @@ public class roomControl : MonoBehaviour {
 	public List<ColorBridge> colorBridgesInRoom = new List<ColorBridge>();
 	public List<Drawbridge> drawbridgesInRoom = new List<Drawbridge>();
 
-    // room size limits
+    // room size limits    
     public RoomLimits roomLimits;
+    [System.Serializable]
     public struct RoomLimits
     {
         public int minX, minY, maxX, maxY; // ints because the tilemap's position and size should always be whole numbers (??? right ???)
     }
+    bool roomWasLoaded;
 
 	// Use this for initialization
 	void Start () {
@@ -262,13 +264,32 @@ public class roomControl : MonoBehaviour {
 		}
 
         newRoom.roomLimits = roomLimits;
-        AssignCurrentPosition();
+        Debug.Log(GameControl.control.currentCharacterState);
+
+        if (!roomWasLoaded)
+            AssignCurrentPosition();
     }
 
     void OnLevelWasLoaded(int level)
     {
-        
+        roomWasLoaded = true;
+
+        if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle) return;
+        if (GameControl.control.isPaused) return;
+
+        // find the room's limits
+        roomLimits = new RoomLimits();
+        var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
+        roomLimits.minX = (int)tilemap.transform.position.x;
+        roomLimits.minY = (int)tilemap.transform.position.y;
+        roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
+        roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
+
         AssignCurrentPosition();
+        Debug.Log(GameControl.control.currentCharacterState);
+
+        
+        GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
 
     }
 
@@ -280,6 +301,8 @@ public class roomControl : MonoBehaviour {
         //    if (GameControl.control.taggedStatue) return entrance = GameControl.control.savedStatue;
         //    //else return entrance;
         //}
+
+       
         if (string.IsNullOrEmpty(exitedGatewayName))
         {
             // default send to the first gateway in the room's position
@@ -325,6 +348,13 @@ public class roomControl : MonoBehaviour {
         //tell the gameControl object what it needs to know
         GameControl.control.currentRoom = this;
 
+        // if player is coming back from battle, then there is no entrance
+        if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle
+            || GameControl.control.currentCharacterState == characterControl.CharacterState.Defeat)
+        {
+            return;
+        }
+        
         var gatewayEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
         if (gatewayEntrance != null)
         {
@@ -343,10 +373,21 @@ public class roomControl : MonoBehaviour {
         GameControl.control.sceneStartGateName = "";
         
         var camera = FindObjectOfType<CameraController>();
-        camera.StayWithinRoomAtStart();
-
+        //camera.StayWithinRoomAtStart();
         //GameControl.control.characterControl.RoomTransition(gatewayEntrance.transform.position, gatewayEntrance.entrancePos);
 
+    }
+
+    // when you leave and reenter a scene from battle, Gateway becomes null
+    // find the correct gateway based off of the area entrance
+    public Gateway FindCurrentGateway(Vector2 areaEntrance)
+    {
+        foreach(Gateway g in gatewaysInRoom)
+        {
+            if (areaEntrance.x == g.transform.position.x && areaEntrance.y == g.transform.position.y)
+                return g;
+        }
+        return null;
     }
 }
 

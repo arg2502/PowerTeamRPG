@@ -52,7 +52,7 @@ public class enemyControl : OverworldObject {
 		canMove = true;
         anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer> ();
-        player = GameObject.FindObjectOfType<characterControl>().transform;
+        player = FindObjectOfType<characterControl>().transform;
         state = State.wait;
         walkTimer = 3.0f;
         waitTimer = 2.0f;
@@ -252,6 +252,7 @@ public class enemyControl : OverworldObject {
     {
         if (dist <= 0.25f)
         {
+            GameControl.control.currentCharacterState = characterControl.CharacterState.Battle;
             GameControl.control.currentPosition = player.position; //record the player's position before entering battle
             GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
 

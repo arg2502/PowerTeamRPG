@@ -1001,6 +1001,7 @@ public class BattleMenu : Menu {
                 // reset the "uses" variable for any items that didn't get used by the battle's end
                 foreach (GameObject i in GameControl.control.consumables) { i.GetComponent<ConsumableItem>().uses = 0; }
 
+                GameControl.control.currentCharacterState = characterControl.CharacterState.Defeat;
                 // Go to the last saved location of the dungeon
                 if (GameControl.control.taggedStatue)
                 {
