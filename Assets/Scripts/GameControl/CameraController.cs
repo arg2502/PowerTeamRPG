@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour {
         blackCanvas = GetComponentInChildren<SpriteRenderer>();
         black = new Color(0, 0, 0, 1);
         clear = new Color(0, 0, 0, 0);
-        timeToFade = 1f;
+        timeToFade = 0.5f;
         blackCanvas.color = black;
         StartCoroutine(Fade());
     }
@@ -164,7 +164,7 @@ public class CameraController : MonoBehaviour {
 
     public IEnumerator Fade()
     {
-        if (blackCanvas.color.a <= 0)
+        if (blackCanvas.color.a < 1)
         {
             blackCanvas.color = clear;
             while (blackCanvas.color.a < 1)
@@ -175,7 +175,7 @@ public class CameraController : MonoBehaviour {
             }
             blackCanvas.color = black;
         }
-        else if (blackCanvas.color.a >= 1)
+        else
         {
             blackCanvas.color = black;
             while (blackCanvas.color.a > 0)
