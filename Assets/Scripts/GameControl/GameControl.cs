@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UI;
 
 public class GameControl : MonoBehaviour {
 
@@ -16,7 +17,8 @@ public class GameControl : MonoBehaviour {
 	//the player's name (Jethro)
 	public string playerName = "Jethro";
 
-    
+    public static UIManager UIManager;
+
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
 	public int totalKeys;
@@ -101,6 +103,8 @@ public class GameControl : MonoBehaviour {
 			//this keeps the game object from being destroyed between scenes
 			DontDestroyOnLoad(gameObject);
 			control = this;
+
+            UIManager = new UIManager();
 
 			// default KeyCodes
 			// possibly have them loaded in from somewhere based off user settings
