@@ -11,17 +11,57 @@ public class Gateway : MonoBehaviour {
     public string sceneName;
 
     // place where the player will end up upon entering
-    public Vector2 entrancePos;
+    internal Vector2 entrancePos;
 
     // place where the player will end up upon exiting
-    public Vector2 exitPos;
+    internal Vector2 exitPos;
+
+    float transitionDist = 5.0f;
+
+    public enum Direction
+    {
+        North,
+        South,
+        East,
+        West
+    }
+    public Direction direction;
+
+    void Awake()
+    {
+        SetPositions();
+    }
 
     public void NextScene()
     {
         GameControl.control.AssignEntrance(gatewayName);
         GameControl.control.RecordRoom();
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-
     }
+
+    public void SetPositions()
+    {
+        if(direction == Direction.North)
+        {
+            entrancePos = new Vector2(transform.position.x, transform.position.y - transitionDist);
+            exitPos = new Vector2(transform.position.x, transform.position.y + transitionDist);
+        }
+        else if (direction == Direction.South)
+        {
+            entrancePos = new Vector2(transform.position.x, transform.position.y + transitionDist);
+            exitPos = new Vector2(transform.position.x, transform.position.y - transitionDist);
+        }
+        else if (direction == Direction.East)
+        {
+            entrancePos = new Vector2(transform.position.x - transitionDist, transform.position.y);
+            exitPos = new Vector2(transform.position.x + transitionDist, transform.position.y);
+        }
+        else if (direction == Direction.West)
+        {
+            entrancePos = new Vector2(transform.position.x + transitionDist, transform.position.y);
+            exitPos = new Vector2(transform.position.x - transitionDist, transform.position.y);
+        }
+    }
+
 
 }
