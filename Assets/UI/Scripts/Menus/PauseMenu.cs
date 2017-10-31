@@ -4,7 +4,8 @@
     using UnityEngine.UI;
     using System;
     using System.Collections;
-    
+    using System.Collections.Generic;
+
     public class PauseMenu : Menu
     {
         public Button exitMenuButton, teamInfoButton, inventoryButton, saveButton, loadButton;
@@ -19,16 +20,10 @@
         }
         protected override void AddButtons()
         {
-            base.AddButtons();
-
-            listOfButtons.Add(exitMenuButton);
-            listOfButtons.Add(teamInfoButton);
-            listOfButtons.Add(inventoryButton);
-            listOfButtons.Add(saveButton);
-            listOfButtons.Add(loadButton);
+            listOfButtons = new List<Button>() { exitMenuButton, teamInfoButton, inventoryButton, saveButton, loadButton };
         }
 
-        public override Button AssignFirstButton() { return exitMenuButton; }
+        public override Button AssignRootButton() { return exitMenuButton; }
 
         void OnExit()
         {
@@ -42,7 +37,7 @@
 
         void OnInventory()
         {
-            //uiManager.PushMenu(uiDatabase.InventorySub);
+            uiManager.PushMenu(uiDatabase.InventorySub, this);
         }
 
         void OnSave()

@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="menuPrefab"></param>
 
-        public void EnableMenu(GameObject menuPrefab)
+        public void EnableMenu(GameObject menuPrefab, bool sub = false)
         {
             var menuToEnable = menuPrefab.GetComponent<Menu>();
 
@@ -39,7 +39,8 @@
             if(dictionary_existingMenus.ContainsKey(menuToEnable))
             {
                 menuObj = dictionary_existingMenus[menuToEnable];
-                menuObj.SetActive(true);
+                menuObj.GetComponent<Menu>().TurnOnMenu();
+                if (sub) AssignSubPosition(menuObj);
                 list_currentMenus.Add(menuObj);
             }
             // if we don't already have one, create it
@@ -48,10 +49,12 @@
                 menuObj = GameObject.Instantiate(menuPrefab);
                 menuObj.transform.SetParent(canvas.transform, false);
                 menuObj.transform.localPosition = Vector3.zero;
+                if (sub) AssignSubPosition(menuObj); 
                 dictionary_existingMenus.Add(menuToEnable, menuObj);
                 list_currentMenus.Add(menuObj);
+
+                menuObj.GetComponent<Menu>().Init();
             }
-            menuObj.GetComponent<Menu>().Init();
             // set this menu as the one in focus (currently on)
             menuInFocus = menuObj;
             
@@ -72,6 +75,8 @@
 
             // set focus to null
             menuInFocus = null;
+
+            Debug.Log("disable all");
         }
 
         /// <summary>
@@ -80,24 +85,31 @@
         /// </summary>
         public void PushMenu(GameObject menuPrefab, Menu parentMenu = null)
         {
-            if(parentMenu)
+            if (parentMenu)
             {
-                parentMenu.FirstButton = EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.Button>();
+                parentMenu.RootButton = EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.Button>();
                 parentMenu.ToggleButtonState(false);
+                EnableMenu(menuPrefab, true);
             }
-            EnableMenu(menuPrefab);
+            else
+            {
+                EnableMenu(menuPrefab);
+            }
         }
         public void PopMenu()
         {
             if (list_currentMenus.Count > 1)
             {
                 var lastPos = list_currentMenus.Count - 1;
+                Debug.Log("Pop: " + list_currentMenus[lastPos]);
                 list_currentMenus[lastPos].SetActive(false);
+                var menu = list_currentMenus[lastPos].GetComponent<Menu>();
+                menu.RootButton = menu.AssignRootButton();
                 list_currentMenus.RemoveAt(lastPos);
                 lastPos = list_currentMenus.Count - 1;
                 menuInFocus = list_currentMenus[lastPos];
-                var menu = menuInFocus.GetComponent<Menu>();
-                EventSystem.current.SetSelectedGameObject(menu.FirstButton.gameObject);
+                menu = menuInFocus.GetComponent<Menu>();
+                EventSystem.current.SetSelectedGameObject(menu.RootButton.gameObject);
                 menu.ToggleButtonState(true);
             }
             else
@@ -107,7 +119,20 @@
         public void LogError(Object nullObject)
         {
             Debug.LogError(nullObject.name + " is null. Be sure you assigned the variable properly. Or make sure there is an object of type: " + nullObject.GetType() + ", in the scene.");
-        }        
+        }
+
+        void AssignSubPosition(GameObject menuObj)
+        {
+            // if the menu is a sub menu, base it's position off of the parent's button that 
+            var parentMenu = list_currentMenus[list_currentMenus.Count - 1].GetComponent<Menu>();
+            menuObj.transform.SetParent(parentMenu.transform);
+            menuObj.transform.localPosition = Vector3.zero;
+
+            var rootButtonPos = parentMenu.RootButton.transform.position;
+            var buttonWidth = parentMenu.RootButton.GetComponent<RectTransform>().rect.width;
+            menuObj.transform.position = new Vector3(rootButtonPos.x + buttonWidth, rootButtonPos.y);
+            
+        }
         
 
     }

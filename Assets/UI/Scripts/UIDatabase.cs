@@ -6,6 +6,7 @@
     [CreateAssetMenu(fileName = "UIDatabase", menuName = "UI/Database", order = 1)]
     public class UIDatabase : ScriptableObject
     {
+        [Header("Pause Menu")]
         public GameObject PauseMenu;
         public GameObject TeamInfoSub;
         public GameObject HeroInfoSub;

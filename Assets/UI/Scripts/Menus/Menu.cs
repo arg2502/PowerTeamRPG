@@ -11,8 +11,8 @@
         protected GameControl gameControl;
         protected UIManager uiManager;
         protected UIDatabase uiDatabase;
-        protected Button firstButton;
-        public List<Button> listOfButtons;
+        protected Button rootButton;
+        protected List<Button> listOfButtons;
 
         public virtual void Init()
         {
@@ -22,30 +22,34 @@
             uiDatabase = uiManager.UIDatabase;
             AddListeners();
             AddButtons();
-            firstButton = AssignFirstButton();
-            gameObject.SetActive(true);
-            AssignEventToFirst();
+            rootButton = AssignRootButton();
+            TurnOnMenu();
         } 
+        public void TurnOnMenu()
+        {
+            gameObject.SetActive(true);
+            AssignEventToRoot();
+        }
         protected virtual void AddListeners() { }
-        protected virtual void AddButtons() { listOfButtons = new List<Button>(); }
+        protected virtual void AddButtons() { }
         public void ToggleButtonState(bool isInteractable)
         {
             foreach (var button in listOfButtons)
                 button.interactable = isInteractable;
         }
-        public virtual Button AssignFirstButton() { return firstButton; }
-        public Button FirstButton { get { return firstButton; } set { firstButton = value; } }
-        protected void AssignEventToFirst()
+        public virtual Button AssignRootButton() { return rootButton; }
+        public Button RootButton { get { return rootButton; } set { rootButton = value; } }
+        protected void AssignEventToRoot()
         {
-            if(firstButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }
+            if(rootButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }
             //uiManager.eventSystem.firstSelectedGameObject = firstButton.gameObject;
-            EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
+            EventSystem.current.SetSelectedGameObject(rootButton.gameObject);
             print(EventSystem.current);
         }
         void Update()
         {
             //if (Input.GetKeyUp(gameControl.backKey))
-            if(Input.GetKeyUp(KeyCode.Backspace))
+            if(Input.GetKeyUp(KeyCode.Backspace) && uiManager.menuInFocus == this.gameObject)
                 uiManager.PopMenu();
         }   
     }

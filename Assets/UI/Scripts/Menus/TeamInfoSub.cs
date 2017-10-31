@@ -3,7 +3,7 @@
     using UnityEngine;
     using UnityEngine.UI;
     using System.Collections;
-    using System;
+    using System.Collections.Generic;
 
     public class TeamInfoSub : Menu
     {
@@ -18,13 +18,9 @@
         }
         protected override void AddButtons()
         {
-            base.AddButtons();
-            listOfButtons.Add(jethroButton);
-            listOfButtons.Add(coleButton);
-            listOfButtons.Add(eleanorButton);
-            listOfButtons.Add(julietteButton);
+            listOfButtons = new List<Button>() { jethroButton, coleButton, eleanorButton, julietteButton };
         }
-        public override Button AssignFirstButton()
+        public override Button AssignRootButton()
         {
             return jethroButton;
         }
@@ -32,21 +28,31 @@
         private void OnJethro()
         {
             // open HeroInfoSub but with Jethro stats
+            uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
         private void OnCole()
         {
             // open HeroInfoSub but with Cole stats
+            uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
         private void OnEleanor()
         {
             // open HeroInfoSub but with Eleanor stats
+            uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
         private void OnJuliette()
         {
             // open HeroInfoSub but with Juliette stats
+            uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
+
+        // TODO:
+        // When this menu system gets integrated into the game,
+        // create a function to only activate the buttons 
+        // for the team members you currently have
+
     }
 }
