@@ -5,12 +5,14 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class TeamInfoSub : Menu
+    public class TeamInfoSub : SubMenu
     {
         public Button jethroButton, coleButton, eleanorButton, julietteButton;
-
+        
         protected override void AddListeners()
         {
+            base.AddListeners();
+
             jethroButton.onClick.AddListener(OnJethro);
             coleButton.onClick.AddListener(OnCole);
             eleanorButton.onClick.AddListener(OnEleanor);

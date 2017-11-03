@@ -5,12 +5,13 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class HeroInfoSub : Menu
+    public class HeroInfoSub : SubMenu
     {
         public Button skillTree, statPoints;
-
+        
         protected override void AddListeners()
         {
+            base.AddListeners();
             skillTree.onClick.AddListener(OnSkillTree);
             statPoints.onClick.AddListener(OnStatPoints);
         }

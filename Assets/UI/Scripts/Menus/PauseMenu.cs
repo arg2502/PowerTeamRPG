@@ -9,9 +9,10 @@
     public class PauseMenu : Menu
     {
         public Button exitMenuButton, teamInfoButton, inventoryButton, saveButton, loadButton;
-
         protected override void AddListeners()
         {
+            base.AddListeners();
+
             exitMenuButton.onClick.AddListener(OnExit);
             teamInfoButton.onClick.AddListener(OnTeamInfo);
             inventoryButton.onClick.AddListener(OnInventory);

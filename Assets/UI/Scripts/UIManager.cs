@@ -21,7 +21,7 @@
 
             // assign canvas and eventsystem, but make sure they exist
             canvas = GameObject.FindObjectOfType<Canvas>(); // this should probably be set in scene or another way. What if we can multiple canvases for some reason?
-            if (canvas == null) LogError(canvas);
+            if (canvas == null) Debug.LogError("You need to add a canvas to the scene.");
             
         }
 
@@ -75,8 +75,6 @@
 
             // set focus to null
             menuInFocus = null;
-
-            Debug.Log("disable all");
         }
 
         /// <summary>
@@ -101,7 +99,6 @@
             if (list_currentMenus.Count > 1)
             {
                 var lastPos = list_currentMenus.Count - 1;
-                Debug.Log("Pop: " + list_currentMenus[lastPos]);
                 list_currentMenus[lastPos].SetActive(false);
                 var menu = list_currentMenus[lastPos].GetComponent<Menu>();
                 menu.RootButton = menu.AssignRootButton();
@@ -114,12 +111,7 @@
             }
             else
                 DisableAllMenus();
-        }
-        
-        public void LogError(Object nullObject)
-        {
-            Debug.LogError(nullObject.name + " is null. Be sure you assigned the variable properly. Or make sure there is an object of type: " + nullObject.GetType() + ", in the scene.");
-        }
+        }        
 
         void AssignSubPosition(GameObject menuObj)
         {

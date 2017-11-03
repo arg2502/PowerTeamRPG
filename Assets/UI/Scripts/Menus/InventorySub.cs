@@ -6,10 +6,10 @@
     using UnityEngine.UI;
     using System;
 
-    public class InventorySub : Menu
+    public class InventorySub : SubMenu
     {
         public Button consumablesButton, weaponsButton, equipmentButton, keyItemsButton;
-
+        
         protected override void AddButtons()
         {
             listOfButtons = new List<Button>() { consumablesButton, weaponsButton, equipmentButton, keyItemsButton };
@@ -17,6 +17,8 @@
 
         protected override void AddListeners()
         {
+            base.AddListeners();
+
             consumablesButton.onClick.AddListener(OnConsumables);
             weaponsButton.onClick.AddListener(OnWeapons);
             equipmentButton.onClick.AddListener(OnEquipment);
