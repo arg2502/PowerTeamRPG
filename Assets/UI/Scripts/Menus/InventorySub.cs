@@ -33,25 +33,25 @@
         private void OnConsumables()
         {
             // open inventory with focus on consumables
-            // uiManager.Push(uiDatabase.InventoryMenu);
+            uiManager.PushMenu(uiDatabase.InventoryMenu);
         }
 
         private void OnWeapons()
         {
             // open inventory with focus on weapons
-            // uiManager.Push(uiDatabase.InventoryMenu);
+            uiManager.PushMenu(uiDatabase.InventoryMenu);
         }
 
         private void OnEquipment()
         {
             // open inventory with focus on equipment
-            // uiManager.Push(uiDatabase.InventoryMenu);        
+            uiManager.PushMenu(uiDatabase.InventoryMenu);        
         }
 
         private void OnKeyItems()
         {
             // open inventory with focus on key items
-            // uiManager.Push(uiDatabase.InventoryMenu);        
+            uiManager.PushMenu(uiDatabase.InventoryMenu);        
         }        
     }
 }

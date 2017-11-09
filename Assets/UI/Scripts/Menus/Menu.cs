@@ -25,6 +25,7 @@
             AddButtons();
             AddListeners();
             rootButton = AssignRootButton();
+            SetButtonNavigation();
             TurnOnMenu();
         } 
         public void TurnOnMenu()
@@ -34,6 +35,7 @@
         }
         protected virtual void AddListeners()
         {
+            if (listOfButtons == null) return;
             foreach(Button button in listOfButtons)
             {
                 // ADD AN EVENT TRIGGER AND SET FUNCTION UP HERE
@@ -73,11 +75,31 @@
                 descriptionText.text = button.GetComponent<Description>().GetDescription(); //button.name;
         }
 
-        void Update()
+        void SetButtonNavigation()
+        {
+            for(int i = 0; i < listOfButtons.Count; i++)
+            {
+                var navigation = listOfButtons[i].navigation;
+                navigation.mode = Navigation.Mode.Explicit;
+                
+                // set where the menu will go when 
+                if (i > 0)
+                    navigation.selectOnUp = listOfButtons[i - 1];
+                if (i < listOfButtons.Count - 1)
+                    navigation.selectOnDown = listOfButtons[i + 1];
+                
+
+                listOfButtons[i].navigation = navigation;
+            }
+        }
+
+        protected void Update()
         {
             //if (Input.GetKeyUp(gameControl.backKey))
             if(Input.GetKeyUp(KeyCode.Backspace) && uiManager.menuInFocus == this.gameObject)
                 uiManager.PopMenu();
+
+
         }        
     }
 }

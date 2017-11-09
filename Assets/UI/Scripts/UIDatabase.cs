@@ -11,5 +11,8 @@
         public GameObject TeamInfoSub;
         public GameObject HeroInfoSub;
         public GameObject InventorySub;
+
+        [Header("Inventory")]
+        public GameObject InventoryMenu;
     }
 }
