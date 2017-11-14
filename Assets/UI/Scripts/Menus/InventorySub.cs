@@ -33,24 +33,28 @@
         private void OnConsumables()
         {
             // open inventory with focus on consumables
+            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Consumables;
             uiManager.PushMenu(uiDatabase.InventoryMenu);
         }
 
         private void OnWeapons()
         {
             // open inventory with focus on weapons
+            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Weapons;
             uiManager.PushMenu(uiDatabase.InventoryMenu);
         }
 
         private void OnEquipment()
         {
             // open inventory with focus on equipment
+            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Equipment;
             uiManager.PushMenu(uiDatabase.InventoryMenu);        
         }
 
         private void OnKeyItems()
         {
             // open inventory with focus on key items
+            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.KeyItems;
             uiManager.PushMenu(uiDatabase.InventoryMenu);        
         }        
     }

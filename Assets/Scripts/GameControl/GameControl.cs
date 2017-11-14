@@ -60,12 +60,15 @@ public class GameControl : MonoBehaviour {
 	public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
 
 	// for telling the pause menu which list of items to use
-	public string whichInventory; 
+	public string whichInventory;
 
-	// tells shopkeeper whether to open buy or sell menu
-	// false - buy
-	// true - sell
-	public bool isSellMenu;
+    public enum WhichInventory { Consumables, Weapons, Equipment, KeyItems }
+    internal WhichInventory whichInventoryEnum;
+
+    // tells shopkeeper whether to open buy or sell menu
+    // false - buy
+    // true - sell
+    public bool isSellMenu;
 
 	// Keycodes
 	public KeyCode upKey;
@@ -152,11 +155,11 @@ public class GameControl : MonoBehaviour {
             // adding heroes - some if not all of these are temporary just to add them into the game for testing
             AddJethro();
             AddCole();
-            //AddEleanor();
-            //AddJuliette();
+            AddEleanor();
+            AddJuliette();
 
 
-            
+
 
 
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
@@ -792,17 +795,17 @@ public class GameControl : MonoBehaviour {
         heroList[0].expToLvlUp = 10;
         heroList[0].levelUpPts = 0;
         heroList[0].techPts = 0;
-        heroList[0].hp = 11;
-        heroList[0].hpMax = 11;
-        heroList[0].pm = 3;
-        heroList[0].pmMax = 3;
-        heroList[0].atk = 6;
-        heroList[0].def = 6;
-        heroList[0].mgkAtk = 4;
-        heroList[0].mgkDef = 4;
-        heroList[0].luck = 6;
-        heroList[0].evasion = 4;
-        heroList[0].spd = 4;
+        //heroList[0].hp = 11;
+        //heroList[0].hpMax = 11;
+        //heroList[0].pm = 3;
+        //heroList[0].pmMax = 3;
+        //heroList[0].atk = 6;
+        //heroList[0].def = 6;
+        //heroList[0].mgkAtk = 4;
+        //heroList[0].mgkDef = 4;
+        //heroList[0].luck = 6;
+        //heroList[0].evasion = 4;
+        //heroList[0].spd = 4;
         heroList[0].skillsList = new List<Skill>();
         heroList[0].spellsList = new List<Spell>();
         heroList[0].passiveList = new List<Passive>();
@@ -821,17 +824,17 @@ public class GameControl : MonoBehaviour {
         heroList[1].exp = 0;
         heroList[1].levelUpPts = 0;
         heroList[1].techPts = 0;
-        heroList[1].hp = 14;
-        heroList[1].hpMax = 14;
-        heroList[1].pm = 10;
-        heroList[1].pmMax = 10;
-        heroList[1].atk = 5;
-        heroList[1].def = 4;
-        heroList[1].mgkAtk = 11;
-        heroList[1].mgkDef = 8;
-        heroList[1].luck = 5;
-        heroList[1].evasion = 4;
-        heroList[1].spd = 5;
+        //heroList[1].hp = 14;
+        //heroList[1].hpMax = 14;
+        //heroList[1].pm = 10;
+        //heroList[1].pmMax = 10;
+        //heroList[1].atk = 5;
+        //heroList[1].def = 4;
+        //heroList[1].mgkAtk = 11;
+        //heroList[1].mgkDef = 8;
+        //heroList[1].luck = 5;
+        //heroList[1].evasion = 4;
+        //heroList[1].spd = 5;
         heroList[1].skillsList = new List<Skill>();
         heroList[1].spellsList = new List<Spell>();
         heroList[1].passiveList = new List<Passive>();
@@ -848,22 +851,22 @@ public class GameControl : MonoBehaviour {
         heroList.Add(new HeroData());
         heroList[2].identity = 2;
         heroList[2].name = "Eleanor";
-        heroList[2].level = 2;
+        heroList[2].level = 1;
         heroList[2].expToLvlUp = 19;
         heroList[2].exp = 0;
         heroList[2].levelUpPts = 0;
         heroList[2].techPts = 0;
-        heroList[2].hp = 18;
-        heroList[2].hpMax = 18;
-        heroList[2].pm = 20;
-        heroList[2].pmMax = 20;
-        heroList[2].atk = 4;
-        heroList[2].def = 7;
-        heroList[2].mgkAtk = 15;
-        heroList[2].mgkDef = 9;
-        heroList[2].luck = 0;
-        heroList[2].evasion = 2;
-        heroList[2].spd = 8;
+        //heroList[2].hp = 18;
+        //heroList[2].hpMax = 18;
+        //heroList[2].pm = 20;
+        //heroList[2].pmMax = 20;
+        //heroList[2].atk = 4;
+        //heroList[2].def = 7;
+        //heroList[2].mgkAtk = 15;
+        //heroList[2].mgkDef = 9;
+        //heroList[2].luck = 0;
+        //heroList[2].evasion = 2;
+        //heroList[2].spd = 8;
         heroList[2].skillsList = new List<Skill>();
         heroList[2].spellsList = new List<Spell>();
         heroList[2].passiveList = new List<Passive>();
@@ -876,22 +879,22 @@ public class GameControl : MonoBehaviour {
         heroList.Add(new HeroData());
         heroList[3].identity = 3;
         heroList[3].name = "Juliette";
-        heroList[3].level = 5;
+        heroList[3].level = 1;
         heroList[3].expToLvlUp = 30;
         heroList[3].exp = 0;
         heroList[3].levelUpPts = 0;
         heroList[3].techPts = 0;
-        heroList[3].hp = 25;
-        heroList[3].hpMax = 25;
-        heroList[3].pm = 18;
-        heroList[3].pmMax = 18;
-        heroList[3].atk = 22;
-        heroList[3].def = 19;
-        heroList[3].mgkAtk = 15;
-        heroList[3].mgkDef = 18;
-        heroList[3].luck = 7;
-        heroList[3].evasion = 12;
-        heroList[3].spd = 20;
+        //heroList[3].hp = 25;
+        //heroList[3].hpMax = 25;
+        //heroList[3].pm = 18;
+        //heroList[3].pmMax = 18;
+        //heroList[3].atk = 22;
+        //heroList[3].def = 19;
+        //heroList[3].mgkAtk = 15;
+        //heroList[3].mgkDef = 18;
+        //heroList[3].luck = 7;
+        //heroList[3].evasion = 12;
+        //heroList[3].spd = 20;
         heroList[3].skillsList = new List<Skill>();
         heroList[3].spellsList = new List<Spell>();
         heroList[3].passiveList = new List<Passive>();
