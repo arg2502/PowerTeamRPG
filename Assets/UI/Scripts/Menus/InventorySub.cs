@@ -41,6 +41,8 @@
         {
             // open inventory with focus on weapons
             GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Weapons;
+            //if (tempControl.UIManager.dictionary_existingMenus.ContainsKey(uiDatabase.InventoryMenu.GetComponent<InventoryMenu>()))
+              //  tempControl.UIManager.dictionary_existingMenus[uiDatabase.InventoryMenu.GetComponent<InventoryMenu>()].GetComponent<InventoryMenu>().CreateButtons();
             uiManager.PushMenu(uiDatabase.InventoryMenu);
         }
 

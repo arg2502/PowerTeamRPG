@@ -32,29 +32,8 @@
         {
             base.AddButtons();
             listOfButtons = new System.Collections.Generic.List<Button>();
-
-            List<GameObject> inventoryList;
-
-            if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Consumables)
-                inventoryList = gameControl.consumables;
-            else if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Weapons)
-                inventoryList = gameControl.weapons;
-            else if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Equipment)
-                inventoryList = gameControl.equipment;
-            else
-                inventoryList = gameControl.reusables;
-
-            // create the inventory list and set the appropriate text based on which inventory
-            for(int i = 0; i < inventoryList.Count; i++)
-            {
-                var item = Instantiate(itemPrefab);
-                item.transform.SetParent(itemSlotsContainer.transform);
-                item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * buttonDistance);
-
-                var button = item.GetComponent<Button>();
-                button.GetComponentInChildren<Text>().text = inventoryList[i].GetComponent<Item>().name;
-                listOfButtons.Add(button);
-            }
+            CreateButtons();
+            
 
             //foreach (var button in itemSlotsContainer.GetComponentsInChildren<Button>())
             //    listOfButtons.Add(button);
@@ -73,6 +52,62 @@
         public override Button AssignRootButton()
         {
             return listOfButtons[0];
+
+        }
+
+        public void CreateButtons()
+        {
+            List<GameObject> inventoryList;
+
+            if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Consumables)
+                inventoryList = gameControl.consumables;
+            else if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Weapons)
+                inventoryList = gameControl.weapons;
+            else if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Equipment)
+                inventoryList = gameControl.equipment;
+            else
+                inventoryList = gameControl.reusables;
+
+            // create the inventory list and set the appropriate text based on which inventory
+            for (int i = 0; i < inventoryList.Count; i++)
+            {
+                GameObject item;
+
+                // if we are beyond the existing list of buttons we need to create more
+                // on first creation, this statement should always be true
+                if (i >= listOfButtons.Count)
+                {
+                    item = Instantiate(itemPrefab);
+                    item.transform.SetParent(itemSlotsContainer.transform);
+                    item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * buttonDistance);
+                }
+                // if we are returning to the menu, or to a new category, there should normally be at least one button already created
+                // set it to that one before creating more
+                else
+                {
+                    listOfButtons[i].gameObject.SetActive(true);
+                    item = listOfButtons[i].gameObject;
+                }
+
+                var button = item.GetComponent<Button>();
+                button.GetComponentInChildren<Text>().text = inventoryList[i].GetComponent<Item>().name;
+
+                // add button to the list, if the list does not already contain it
+                if (!listOfButtons.Contains(button))
+                    listOfButtons.Add(button);
+            }
+
+
+            EventSystem.current.SetSelectedGameObject(AssignRootButton().gameObject);
+
+            // hide any leftover buttons
+            if (listOfButtons.Count > inventoryList.Count)
+            {
+                for (int i = inventoryList.Count; i < listOfButtons.Count; i++)
+                {
+                    listOfButtons[i].gameObject.SetActive(false);
+                }
+            }
 
         }
 
@@ -178,9 +213,30 @@
                 downScroll.SetActive(false);
         }
 
+        public override void TurnOnMenu()
+        {
+            CreateButtons();
+
+            base.TurnOnMenu();
+        }
+
         new void Update()
         {
             base.Update();
+
+            if (Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                if (gameControl.whichInventoryEnum == GameControl.WhichInventory.KeyItems) return;
+
+                gameControl.whichInventoryEnum++;
+                CreateButtons();
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Consumables) return;
+                gameControl.whichInventoryEnum--;
+                CreateButtons();
+            }
 
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
@@ -190,6 +246,7 @@
 
             if(CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
+
             
         }
     }

@@ -28,7 +28,7 @@
             SetButtonNavigation();
             TurnOnMenu();
         } 
-        public void TurnOnMenu()
+        public virtual void TurnOnMenu()
         {
             gameObject.SetActive(true);
             AssignEventToRoot();
