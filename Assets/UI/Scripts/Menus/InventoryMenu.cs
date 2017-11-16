@@ -11,9 +11,7 @@
     {
         public GameObject itemSlotsContainer;
         public GameObject itemPrefab;
-        public GameObject invisiblePrefab;
-        float buttonDistance = 55f;
-        float listDistance = 200f;
+        public GameObject invisiblePrefab;        
         public GameObject upScroll, downScroll;
         Rect screen = new Rect(0,0, Screen.width, Screen.height);
         bool moving;
@@ -22,6 +20,11 @@
         Vector3[] objectCorners;
         GameObject currentObj;
         int currentListPosition;
+
+        float buttonDistance = 55f;
+        float listDistance = 1000f;
+        float lerpTimeVertical = 10f;
+        float lerpTimeHorizontal = 5f;
 
 
         public override void Init()
@@ -123,41 +126,74 @@
             // if below screen, set the button above it as the desired position
             Vector3 desiredPosition = buttonObj.transform.position;
            // bool belowScreen = false;
+
+            // vertical movement
             if (objectCorners[0].y < itemSlotsWorld.yMin)
             {
                 if (ourButtonListPosition <= 0) return;                
-                desiredPosition = listOfButtons[ourButtonListPosition - 1].transform.position;
+                desiredPosition = buttonGrid[currentListPosition][ourButtonListPosition - 1].transform.position;
                 //belowScreen = true;
             }
             else if(objectCorners[2].y > itemSlotsWorld.yMax)
             {
-                if (ourButtonListPosition >= listOfButtons.Count - 1) return;
-                desiredPosition = listOfButtons[ourButtonListPosition + 1].transform.position;
+                if (ourButtonListPosition >= buttonGrid[currentListPosition].Count - 1) return;
+                desiredPosition = buttonGrid[currentListPosition][ourButtonListPosition + 1].transform.position;
                // belowScreen = false;
             }
-            var distance = desiredPosition.y - buttonObj.transform.position.y;
-            var newPosition = new Vector2(itemSlotsContainer.transform.position.x, itemSlotsContainer.transform.position.y + distance);
+
+            // horizontal movement
+            if(objectCorners[0].x > itemSlotsWorld.xMax)
+            {
+                desiredPosition = buttonGrid[currentListPosition - 1][0].transform.position;
+            }
+            else if (objectCorners[2].x < itemSlotsWorld.xMin)
+            {
+                desiredPosition = buttonGrid[currentListPosition + 1][0].transform.position;
+            }
+
+            // determine distance and new position based on difference in either x or y
+            float distance;
+            Vector2 newPosition;
+            float lerpTime;
+            if (desiredPosition.x != buttonObj.transform.position.x)
+            {
+                distance = desiredPosition.x - buttonObj.transform.position.x;
+                newPosition = new Vector2(itemSlotsContainer.transform.position.x + distance, itemSlotsContainer.transform.position.y);
+                lerpTime = lerpTimeHorizontal;
+            }
+            else
+            {
+                distance = desiredPosition.y - buttonObj.transform.position.y;
+                newPosition = new Vector2(itemSlotsContainer.transform.position.x, itemSlotsContainer.transform.position.y + distance);
+                lerpTime = lerpTimeVertical;
+            }
+            Debug.Log("ready to move");
             if (!moving)
             {
+                Debug.Log("not moving: move the button");
                 moving = true;
                 startTime = Time.time;
-                StartCoroutine(MoveButtonOntoScreen(newPosition));
+                StartCoroutine(MoveButtonOntoScreen(newPosition, lerpTime));
             }
         }
 
-        private IEnumerator MoveButtonOntoScreen(Vector3 newPosition)
+        private IEnumerator MoveButtonOntoScreen(Vector3 newPosition, float lerpTime)
         {
             var original = new Vector3();
             original = itemSlotsContainer.transform.position;
             while (itemSlotsContainer.transform.position != newPosition)
             {
-                itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * 10);
-                Debug.Log(newPosition);
+                itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);
+                //Debug.Log(newPosition);
                 //itemSlotsContainer.transform.Translate(0, distance, 0);
                 yield return null;
             }
             moving = false;
-            CheckIfListOffScreen();
+            //CheckIfListOffScreen();
+            if (CheckIfOffScreen(EventSystem.current.currentSelectedGameObject))
+                OutsideOfView(EventSystem.current.currentSelectedGameObject);
+            else
+                CheckIfListOffScreen();
         }
 
         void CheckIfListOffScreen()
@@ -189,17 +225,21 @@
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
-            
+
             // set current list position by finding the new current button
+            //var prevPos = currentListPosition;
             for(int i = 0; i < buttonGrid.Count; i++)
             {
                 if (buttonGrid[i].Count > 0 && currentObj == buttonGrid[i][0].gameObject)
                 {
                     currentListPosition = i;
-                    Debug.Log("Current list pos: " + currentListPosition);
+                    //Debug.Log("Current list pos: " + currentListPosition);
+                    //Debug.Log("Prev pos: " + prevPos);
                     break;
                 }
             }
+            //if (prevPos != currentListPosition)
+                //CheckIfListOffScreen();
 
             if(CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
