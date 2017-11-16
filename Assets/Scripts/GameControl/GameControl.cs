@@ -107,7 +107,7 @@ public class GameControl : MonoBehaviour {
 			DontDestroyOnLoad(gameObject);
 			control = this;
 
-            //UIManager = new UIManager();
+            UIManager = new UIManager();
 
 			// default KeyCodes
 			// possibly have them loaded in from somewhere based off user settings

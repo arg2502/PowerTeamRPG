@@ -19,8 +19,8 @@
         public virtual void Init()
         {
             gameControl = GameControl.control;
-            //uiManager = GameControl.UIManager;
-            uiManager = tempControl.UIManager;
+            uiManager = GameControl.UIManager;
+            //uiManager = tempControl.UIManager;
             uiDatabase = uiManager.UIDatabase;
             AddButtons();
             AddListeners();
@@ -75,7 +75,7 @@
                 descriptionText.text = button.GetComponent<Description>().GetDescription(); //button.name;
         }
 
-        void SetButtonNavigation()
+        protected virtual void SetButtonNavigation()
         {
             for(int i = 0; i < listOfButtons.Count; i++)
             {

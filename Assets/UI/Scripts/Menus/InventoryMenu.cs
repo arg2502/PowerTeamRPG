@@ -7,11 +7,13 @@
     using System;
     using System.Collections.Generic;
 
-    public class InventoryMenu : Menu
+    public class InventoryMenu : GridMenu
     {
         public GameObject itemSlotsContainer;
         public GameObject itemPrefab;
-        float buttonDistance = -55f;
+        public GameObject invisiblePrefab;
+        float buttonDistance = 55f;
+        float listDistance = 200f;
         public GameObject upScroll, downScroll;
         Rect screen = new Rect(0,0, Screen.width, Screen.height);
         bool moving;
@@ -19,6 +21,7 @@
         Rect itemSlotsWorld;
         Vector3[] objectCorners;
         GameObject currentObj;
+        int currentListPosition;
 
 
         public override void Init()
@@ -30,49 +33,43 @@
 
         protected override void AddButtons()
         {
-            base.AddButtons();
-            listOfButtons = new System.Collections.Generic.List<Button>();
+            // create grid with 4 lists --- for the 4 categories of the inventory
+            buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
 
-            List<GameObject> inventoryList;
+            FillList(gameControl.consumables, 0);
+            FillList(gameControl.weapons, 1);
+            FillList(gameControl.equipment, 2);
+            FillList(gameControl.reusables, 3);
+        }
 
-            if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Consumables)
-                inventoryList = gameControl.consumables;
-            else if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Weapons)
-                inventoryList = gameControl.weapons;
-            else if (gameControl.whichInventoryEnum == GameControl.WhichInventory.Equipment)
-                inventoryList = gameControl.equipment;
-            else
-                inventoryList = gameControl.reusables;
-
-            // create the inventory list and set the appropriate text based on which inventory
-            for(int i = 0; i < inventoryList.Count; i++)
+        void FillList(List<GameObject> category, int listPosition)
+        {
+            for (int i = 0; i < category.Count; i++)
             {
                 var item = Instantiate(itemPrefab);
                 item.transform.SetParent(itemSlotsContainer.transform);
-                item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * buttonDistance);
+                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
 
                 var button = item.GetComponent<Button>();
-                button.GetComponentInChildren<Text>().text = inventoryList[i].GetComponent<Item>().name;
-                listOfButtons.Add(button);
+                button.GetComponentInChildren<Text>().text = category[i].GetComponent<Item>().name;
+                buttonGrid[listPosition].Add(button);
             }
+            if (category.Count <= 0)
+            {
+                var item = Instantiate(invisiblePrefab);
+                item.transform.SetParent(itemSlotsContainer.transform);
+                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, 0);
 
-            //foreach (var button in itemSlotsContainer.GetComponentsInChildren<Button>())
-            //    listOfButtons.Add(button);
-            
-            //for(int i = 0; i < listOfButtons.Count; i++)// GameControl.control.consumables.Count; i++)
-            //{
-            //    if(i >= GameControl.control.consumables.Count)
-            //    {
-            //        //listOfButtons[i].gameObject.SetActive(false);
-            //        continue;
-            //    }
-            //    listOfButtons[i].GetComponentInChildren<Text>().text = GameControl.control.consumables[i].GetComponent<Item>().name;
-            //}
+                var button = item.GetComponent<Button>();
+                button.GetComponentInChildren<Text>().text = "";
+                buttonGrid[listPosition].Add(button);
+            }
         }
 
         public override Button AssignRootButton()
         {
-            return listOfButtons[0];
+            currentListPosition = 0; // TEMP
+            return buttonGrid[currentListPosition][0];
 
         }
 
@@ -113,9 +110,9 @@
             // bring it on screen
             // find the button
             int ourButtonListPosition = 0;
-            for (int i = 0; i < listOfButtons.Count; i++)
+            for (int i = 0; i < buttonGrid[currentListPosition].Count; i++)
             {
-                if (buttonObj == listOfButtons[i].gameObject)
+                if (buttonObj == buttonGrid[currentListPosition][i].gameObject)
                 {
                     ourButtonListPosition = i;
                     break;
@@ -165,17 +162,24 @@
 
         void CheckIfListOffScreen()
         {
+            var currentList = buttonGrid[currentListPosition];
+
             // if the first item in the list is off screen, then turn on the up scroll notifier
-            if (CheckIfOffScreen(listOfButtons[0].gameObject))
+            if (CheckIfOffScreen(currentList[0].gameObject))
                 upScroll.SetActive(true);
             else
                 upScroll.SetActive(false);
 
             // if the last item in the list is off screen, then turn on the down scroll notifier
-            if (CheckIfOffScreen(listOfButtons[listOfButtons.Count - 1].gameObject))
+            if (CheckIfOffScreen(currentList[currentList.Count - 1].gameObject))
                 downScroll.SetActive(true);
             else
                 downScroll.SetActive(false);
+        }
+
+        void OnEnable()
+        {
+            currentObj = EventSystem.current.currentSelectedGameObject;
         }
 
         new void Update()
@@ -185,8 +189,17 @@
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
-
-            if (listOfButtons.Count <= 0) return;
+            
+            // set current list position by finding the new current button
+            for(int i = 0; i < buttonGrid.Count; i++)
+            {
+                if (buttonGrid[i].Count > 0 && currentObj == buttonGrid[i][0].gameObject)
+                {
+                    currentListPosition = i;
+                    Debug.Log("Current list pos: " + currentListPosition);
+                    break;
+                }
+            }
 
             if(CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
