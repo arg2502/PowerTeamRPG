@@ -71,11 +71,16 @@
 
         public override Button AssignRootButton()
         {
-            currentListPosition = 0; // TEMP
+            currentListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
+            Debug.Log("Inventory menu: assign root: " + currentListPosition);
             return buttonGrid[currentListPosition][0];
 
         }
-
+        public override void TurnOnMenu()
+        {
+            rootButton = AssignRootButton();
+            base.TurnOnMenu();
+        }
         bool CheckIfOffScreen(GameObject buttonObj)
         {
             // find the Item Slots Container's rect in world coordinates
