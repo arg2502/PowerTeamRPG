@@ -50,6 +50,7 @@
             for (int i = 0; i < category.Count; i++)
             {
                 var item = Instantiate(itemPrefab);
+                item.name = category[i].GetComponent<Item>().name + "_Button";
                 item.transform.SetParent(itemSlotsContainer.transform);
                 item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
 
@@ -79,6 +80,12 @@
         public override void TurnOnMenu()
         {
             rootButton = AssignRootButton();
+            currentObj = rootButton.gameObject;
+            if (CheckIfOffScreen(currentObj))
+            {
+                OutsideOfViewInstant(currentObj);
+            }
+
             base.TurnOnMenu();
         }
         bool CheckIfOffScreen(GameObject buttonObj)
@@ -108,6 +115,32 @@
             }
 
             return true;
+        }
+
+        void OutsideOfViewInstant(GameObject desiredObj)
+        {
+            var desiredPosition = desiredObj.transform.position;
+
+            // horizontal movement
+            if (objectCorners[0].x > itemSlotsWorld.xMax)
+            {
+                desiredPosition = buttonGrid[currentListPosition - 1][0].transform.position;
+            }
+            else if (objectCorners[2].x < itemSlotsWorld.xMin)
+            {
+                desiredPosition = buttonGrid[currentListPosition + 1][0].transform.position;
+            }
+            float distance;
+            Vector2 newPosition = Vector2.zero;
+            if (desiredPosition.x != desiredObj.transform.position.x)
+            {
+                distance = desiredPosition.x - desiredObj.transform.position.x;
+                newPosition = new Vector2(itemSlotsContainer.transform.position.x + distance, itemSlotsContainer.transform.position.y);
+            }
+
+            itemSlotsContainer.transform.position = newPosition;
+            if (CheckIfOffScreen(desiredObj))
+                OutsideOfViewInstant(desiredObj);
         }
 
         void OutsideOfView(GameObject buttonObj)
@@ -173,6 +206,7 @@
                 lerpTime = lerpTimeVertical;
             }
             Debug.Log("ready to move");
+            
             if (!moving)
             {
                 Debug.Log("not moving: move the button");
@@ -188,6 +222,7 @@
             original = itemSlotsContainer.transform.position;
             while (itemSlotsContainer.transform.position != newPosition)
             {
+                //Debug.Log("new: " + newPosition);
                 itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);
                 //Debug.Log(newPosition);
                 //itemSlotsContainer.transform.Translate(0, distance, 0);
