@@ -27,6 +27,14 @@
         float lerpTimeHorizontal = 5f;
 
 
+        [Serializable]
+        public struct WhichInventoryToggles
+        {
+            public Toggle consumables, weapons, equipment, keyItems;
+        }
+
+        public WhichInventoryToggles InventoryToggles;
+
         public override void Init()
         {
             base.Init();
@@ -73,7 +81,8 @@
         public override Button AssignRootButton()
         {
             currentListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
-            Debug.Log("Inventory menu: assign root: " + currentListPosition);
+            ToggleTextChange();
+            //Debug.Log("Inventory menu: assign root: " + currentListPosition);
             return buttonGrid[currentListPosition][0];
 
         }
@@ -205,11 +214,9 @@
                 newPosition = new Vector2(itemSlotsContainer.transform.position.x, itemSlotsContainer.transform.position.y + distance);
                 lerpTime = lerpTimeVertical;
             }
-            Debug.Log("ready to move");
             
             if (!moving)
             {
-                Debug.Log("not moving: move the button");
                 moving = true;
                 startTime = Time.time;
                 StartCoroutine(MoveButtonOntoScreen(newPosition, lerpTime));
@@ -258,6 +265,25 @@
             currentObj = EventSystem.current.currentSelectedGameObject;
         }
 
+        void ToggleTextChange()
+        {
+            switch(currentListPosition)
+            {
+                case 0:
+                    InventoryToggles.consumables.isOn = true;
+                    break;
+                case 1:
+                    InventoryToggles.weapons.isOn = true;
+                    break;
+                case 2:
+                    InventoryToggles.equipment.isOn = true;
+                    break;
+                case 3:
+                    InventoryToggles.keyItems.isOn = true;
+                    break;
+            }
+        }
+
         new void Update()
         {
             base.Update();
@@ -265,23 +291,20 @@
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
-
+            
             // set current list position by finding the new current button
-            //var prevPos = currentListPosition;
             for(int i = 0; i < buttonGrid.Count; i++)
             {
                 if (buttonGrid[i].Count > 0 && currentObj == buttonGrid[i][0].gameObject)
                 {
                     currentListPosition = i;
-                    //Debug.Log("Current list pos: " + currentListPosition);
-                    //Debug.Log("Prev pos: " + prevPos);
                     break;
                 }
             }
-            //if (prevPos != currentListPosition)
-                //CheckIfListOffScreen();
 
-            if(CheckIfOffScreen(currentObj))
+            ToggleTextChange();
+
+            if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
             
         }
