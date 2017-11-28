@@ -63,8 +63,11 @@
                 item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
 
                 var button = item.GetComponent<Button>();
-                button.GetComponentInChildren<Text>().text = category[i].GetComponent<Item>().name;
+                var itemInfo = category[i].GetComponent<Item>();
+                button.GetComponentInChildren<Text>().text = itemInfo.name;
                 buttonGrid[listPosition].Add(button);
+
+                item.GetComponent<Description>().description = itemInfo.description;
             }
             if (category.Count <= 0)
             {
@@ -74,7 +77,7 @@
 
                 var button = item.GetComponent<Button>();
                 button.GetComponentInChildren<Text>().text = "";
-                buttonGrid[listPosition].Add(button);
+                buttonGrid[listPosition].Add(button);                
             }
         }
 
@@ -267,7 +270,12 @@
 
         void ToggleTextChange()
         {
-            switch(currentListPosition)
+            InventoryToggles.consumables.isOn = false;
+            InventoryToggles.weapons.isOn = false;
+            InventoryToggles.equipment.isOn = false;
+            InventoryToggles.keyItems.isOn = false;
+
+            switch (currentListPosition)
             {
                 case 0:
                     InventoryToggles.consumables.isOn = true;
@@ -303,6 +311,13 @@
             }
 
             ToggleTextChange();
+
+            // set description text if applicable
+            // (invisible buttons do not have descriptions)
+            if (currentObj.GetComponent<Description>() != null)
+                descriptionText.text = currentObj.GetComponent<Description>().description;
+            else
+                descriptionText.text = "";
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
