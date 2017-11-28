@@ -85,6 +85,12 @@
         {
             currentListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
             ToggleTextChange();
+
+            if (buttonGrid[currentListPosition][0].GetComponent<Description>() != null)
+                descriptionText.text = buttonGrid[currentListPosition][0].GetComponent<Description>().description;
+            else
+                descriptionText.text = "";
+
             //Debug.Log("Inventory menu: assign root: " + currentListPosition);
             return buttonGrid[currentListPosition][0];
 
@@ -292,6 +298,16 @@
             }
         }
 
+        void SetDescription()
+        {
+            // set description text if applicable
+            // (invisible buttons do not have descriptions)
+            if (currentObj.GetComponent<Description>() != null)
+                descriptionText.text = currentObj.GetComponent<Description>().description;
+            else
+                descriptionText.text = "";
+        }
+
         new void Update()
         {
             base.Update();
@@ -312,12 +328,7 @@
 
             ToggleTextChange();
 
-            // set description text if applicable
-            // (invisible buttons do not have descriptions)
-            if (currentObj.GetComponent<Description>() != null)
-                descriptionText.text = currentObj.GetComponent<Description>().description;
-            else
-                descriptionText.text = "";
+            SetDescription();
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
