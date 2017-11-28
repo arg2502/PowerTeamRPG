@@ -62,12 +62,15 @@
                 item.transform.SetParent(itemSlotsContainer.transform);
                 item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
 
-                var button = item.GetComponent<Button>();
+                var button = item.GetComponentInChildren<Button>();
                 var itemInfo = category[i].GetComponent<Item>();
                 button.GetComponentInChildren<Text>().text = itemInfo.name;
                 buttonGrid[listPosition].Add(button);
 
                 item.GetComponent<Description>().description = itemInfo.description;
+
+                if (itemInfo.sprite != null)
+                    item.GetComponent<ItemSlot>().SetIcon(itemInfo.sprite); 
             }
             if (category.Count <= 0)
             {
@@ -75,7 +78,7 @@
                 item.transform.SetParent(itemSlotsContainer.transform);
                 item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, 0);
 
-                var button = item.GetComponent<Button>();
+                var button = item.GetComponentInChildren<Button>();
                 button.GetComponentInChildren<Text>().text = "";
                 buttonGrid[listPosition].Add(button);                
             }
@@ -236,16 +239,13 @@
         {
             var original = new Vector3();
             original = itemSlotsContainer.transform.position;
-            while (itemSlotsContainer.transform.position != newPosition)
+            while ((itemSlotsContainer.transform.position - newPosition).magnitude >= 0.1f)
             {
-                //Debug.Log("new: " + newPosition);
-                itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);
-                //Debug.Log(newPosition);
-                //itemSlotsContainer.transform.Translate(0, distance, 0);
+                itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);                
                 yield return null;
             }
             moving = false;
-            //CheckIfListOffScreen();
+
             if (CheckIfOffScreen(EventSystem.current.currentSelectedGameObject))
                 OutsideOfView(EventSystem.current.currentSelectedGameObject);
             else
@@ -307,7 +307,7 @@
             else
                 descriptionText.text = "";
         }
-
+        
         new void Update()
         {
             base.Update();
@@ -327,7 +327,6 @@
             }
 
             ToggleTextChange();
-
             SetDescription();
 
             if (CheckIfOffScreen(currentObj))
