@@ -89,8 +89,8 @@
             currentListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
             ToggleTextChange();
 
-            if (buttonGrid[currentListPosition][0].GetComponent<Description>() != null)
-                descriptionText.text = buttonGrid[currentListPosition][0].GetComponent<Description>().description;
+            if (buttonGrid[currentListPosition][0].GetComponentInParent<Description>() != null)
+                descriptionText.text = buttonGrid[currentListPosition][0].GetComponentInParent<Description>().description;
             else
                 descriptionText.text = "";
 
@@ -302,8 +302,8 @@
         {
             // set description text if applicable
             // (invisible buttons do not have descriptions)
-            if (currentObj.GetComponent<Description>() != null)
-                descriptionText.text = currentObj.GetComponent<Description>().description;
+            if (currentObj.GetComponentInParent<Description>() != null)
+                descriptionText.text = currentObj.GetComponentInParent<Description>().description;
             else
                 descriptionText.text = "";
         }
