@@ -78,6 +78,9 @@
 
                 // quantity
                 itemSlot.SetQuantity(itemInfo.quantity);
+
+                // add listener
+                button.onClick.AddListener(OnSelect);
             }
             if (category.Count <= 0)
             {
@@ -315,6 +318,11 @@
                 descriptionText.text = "";
         }
         
+        void OnSelect()
+        {
+            uiManager.PushMenu(uiDatabase.ConfirmUseSub);
+        }
+
         new void Update()
         {
             base.Update();
