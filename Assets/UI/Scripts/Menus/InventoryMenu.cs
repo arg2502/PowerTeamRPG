@@ -67,10 +67,17 @@
                 button.GetComponentInChildren<Text>().text = itemInfo.name;
                 buttonGrid[listPosition].Add(button);
 
+                // description
                 item.GetComponent<Description>().description = itemInfo.description;
 
+                var itemSlot = item.GetComponent<ItemSlot>();
+
+                // icon
                 if (itemInfo.sprite != null)
-                    item.GetComponent<ItemSlot>().SetIcon(itemInfo.sprite); 
+                    itemSlot.SetIcon(itemInfo.sprite);
+
+                // quantity
+                itemSlot.SetQuantity(itemInfo.quantity);
             }
             if (category.Count <= 0)
             {
