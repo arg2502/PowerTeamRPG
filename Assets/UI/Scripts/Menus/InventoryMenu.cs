@@ -68,16 +68,12 @@
                 buttonGrid[listPosition].Add(button);
 
                 // description
-                item.GetComponent<Description>().description = itemInfo.description;
+                item.GetComponentInChildren<Description>().description = itemInfo.description;
 
                 var itemSlot = item.GetComponent<ItemSlot>();
 
-                // icon
-                if (itemInfo.sprite != null)
-                    itemSlot.SetIcon(itemInfo.sprite);
-
-                // quantity
-                itemSlot.SetQuantity(itemInfo.quantity);
+                // set item to item slot so it's connected to the button
+                itemSlot.SetItem(itemInfo);
 
                 // add listener
                 button.onClick.AddListener(OnSelect);
@@ -320,7 +316,18 @@
         
         void OnSelect()
         {
+            // save the item you wish to use/equip
+            var chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
+            
+            // open the ConfirmUse menu
             uiManager.PushMenu(uiDatabase.ConfirmUseSub);
+
+            // set the Item Use menu's item to the one chosen
+            var count = uiManager.list_currentMenus.Count;
+            var confirmUse = uiManager.list_currentMenus[count - 1].GetComponent<ConfirmUseSub>();
+            confirmUse.item = chosenItem;
+            confirmUse.descriptionText = descriptionText;
+            confirmUse.icon.sprite = chosenItem.sprite;
         }
 
         new void Update()

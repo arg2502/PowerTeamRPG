@@ -49,6 +49,7 @@
         protected virtual void AddButtons() { }
         public void ToggleButtonState(bool isInteractable)
         {
+            if (listOfButtons == null) return;
             foreach (var button in listOfButtons)
                 button.interactable = isInteractable;
         }
