@@ -14,6 +14,7 @@
 
         [Header("Inventory")]
         public GameObject InventoryMenu;
-        public GameObject ConfirmUseSub;
+        public GameObject ConfirmUseMenu;
+        public GameObject UseItemMenu;
     }
 }

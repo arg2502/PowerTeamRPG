@@ -6,12 +6,15 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class ConfirmUseSub : Menu
+    public class UseItemMenu : Menu
     {
         public Button jethro, cole, eleanor, juliette;
         internal Item item;
         public Image icon;
         GameObject currentObj;
+
+        public enum MenuState { Use, Equip, Remove };
+        public MenuState menuState;
 
         public override void Init()
         {

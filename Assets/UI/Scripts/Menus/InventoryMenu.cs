@@ -20,6 +20,7 @@
         Vector3[] objectCorners;
         GameObject currentObj;
         int currentListPosition;
+        internal Item chosenItem;
 
         float buttonDistance = 55f;
         float listDistance = 1000f;
@@ -317,17 +318,23 @@
         void OnSelect()
         {
             // save the item you wish to use/equip
-            var chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
-            
-            // open the ConfirmUse menu
-            uiManager.PushMenu(uiDatabase.ConfirmUseSub);
+            chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
 
-            // set the Item Use menu's item to the one chosen
-            var count = uiManager.list_currentMenus.Count;
-            var confirmUse = uiManager.list_currentMenus[count - 1].GetComponent<ConfirmUseSub>();
-            confirmUse.item = chosenItem;
-            confirmUse.descriptionText = descriptionText;
-            confirmUse.icon.sprite = chosenItem.sprite;
+            // open the ConfirmUse menu
+            uiManager.PushMenu(uiDatabase.ConfirmUseMenu);
+
+            //var count = uiManager.list_currentMenus.Count;
+            //var confirmUse = uiManager.list_currentMenus[count - 1].GetComponent<ConfirmUseMenu>();
+            //confirmUse.item = chosenItem;
+            //confirmUse.descriptionText = descriptionText;
+            //uiManager.PushMenu(uiDatabase.UseItemMenu);
+
+            //// set the Item Use menu's item to the one chosen
+            //var count = uiManager.list_currentMenus.Count;
+            //var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
+            //useItem.item = chosenItem;
+            //useItem.descriptionText = descriptionText;
+            //useItem.icon.sprite = chosenItem.sprite;
         }
 
         new void Update()
@@ -344,6 +351,7 @@
                 if (buttonGrid[i].Count > 0 && currentObj == buttonGrid[i][0].gameObject)
                 {
                     currentListPosition = i;
+                    gameControl.whichInventoryEnum = (GameControl.WhichInventory) currentListPosition;
                     break;
                 }
             }
