@@ -25,6 +25,38 @@
             
         }
 
+        public Menu CurrentMenu
+        {
+            get
+            {
+                var list = list_currentMenus;
+                var count = list.Count;
+                var latestMenu = list[count - 1].GetComponent<Menu>();
+                return latestMenu;
+            }
+            
+        }
+
+        public Menu FindMenu(GameObject databaseMenuToFind)
+        {
+            var tempMenu = databaseMenuToFind.GetComponent<Menu>();
+            var menuToReturn = dictionary_existingMenus[tempMenu].GetComponent<Menu>();
+
+            if (menuToReturn != null)
+                return menuToReturn;
+            else
+            {
+                if (databaseMenuToFind.GetComponent<Menu>() == null)
+                    Debug.LogError("Menu not found in Database");
+                else if (!dictionary_existingMenus.ContainsKey(tempMenu))
+                    Debug.LogError("Menu not found in Dictionary");
+                else
+                    Debug.LogError("Unknown error. Returned null menu");
+
+                return null;
+            }
+        }
+
         /// <summary>
         /// For turning menus on and off (visible/invisible). Ex: Pausing and Unpausing the game 
         /// </summary>
@@ -108,6 +140,7 @@
                 menu = menuInFocus.GetComponent<Menu>();
                 EventSystem.current.SetSelectedGameObject(menu.RootButton.gameObject);
                 menu.ToggleButtonState(true);
+                menu.TurnOnMenu();
             }
             else
                 DisableAllMenus();

@@ -17,17 +17,18 @@
             var list = uiManager.list_currentMenus;
             var count = list.Count;
             //inventory = list[count - 2].GetComponent<InventoryMenu>();
-            var menuObj = uiDatabase.InventoryMenu;
-            var menu = menuObj.GetComponent<InventoryMenu>();
-            inventory = uiManager.dictionary_existingMenus[menu].GetComponent<InventoryMenu>();
+            //var menuObj = uiDatabase.InventoryMenu;
+            //var menu = menuObj.GetComponent<InventoryMenu>();
+            inventory = uiManager.FindMenu(uiDatabase.InventoryMenu) as InventoryMenu;//uiManager.dictionary_existingMenus[menu].GetComponent<InventoryMenu>();
 
             // assign variables from inventory
-            Debug.Log("inventory: " + inventory);
-            descriptionText = inventory.descriptionText;
+            this.descriptionText = inventory.descriptionText;
+            this.descriptionText.text = inventory.currentDescription;
             item = inventory.chosenItem;
 
             AssignBasedOnCategory();
             SetButtonNavigation(); // reset button navigation
+                        
             base.TurnOnMenu();
         }
         protected override void AddButtons()
@@ -126,6 +127,10 @@
             // set middle button to pop the menu
             middleButton.onClick.AddListener(OnCancel);
 
+            topButton.interactable = true;
+            middleButton.interactable = true;
+            bottomButton.interactable = true;
+
         }
 
         /// <summary>
@@ -181,18 +186,15 @@
 
         void OnUse()
         {
-            var useItem = PushUseItem();
-            useItem.menuState = UseItemMenu.MenuState.Use;
+            var useItem = PushUseItem(UseItemMenu.MenuState.Use);
         }
         void OnEquip()
         {
-            var useItem = PushUseItem();
-            useItem.menuState = UseItemMenu.MenuState.Equip;
+            var useItem = PushUseItem(UseItemMenu.MenuState.Equip);
         }
         void OnRemove()
         {
-            var useItem = PushUseItem();
-            useItem.menuState = UseItemMenu.MenuState.Remove;
+            var useItem = PushUseItem(UseItemMenu.MenuState.Remove);
         }
         void OnCancel()
         {
@@ -200,7 +202,7 @@
         }
 
 
-        UseItemMenu PushUseItem()
+        UseItemMenu PushUseItem(UseItemMenu.MenuState menuState)
         {
             // open the ConfirmUse menu
             uiManager.PushMenu(uiDatabase.UseItemMenu);
@@ -211,6 +213,9 @@
             useItem.item = item;
             useItem.descriptionText = descriptionText;
             useItem.icon.sprite = item.sprite;
+            useItem.itemName.text = item.name;
+            useItem.menuState = menuState;
+            useItem.AssignTitleText();
 
             return useItem;
         }

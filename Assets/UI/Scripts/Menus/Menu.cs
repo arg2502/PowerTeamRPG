@@ -71,8 +71,8 @@
             else
                 button = bed.selectedObject;
 
-
-            if (descriptionText != null && button != null && !button.GetComponent<Description>().noDescription)                
+            var descriptionComponent = button.GetComponent<Description>();
+            if (descriptionText != null && button != null && descriptionComponent != null && !descriptionComponent.noDescription)                
                 descriptionText.text = button.GetComponent<Description>().GetDescription(); //button.name;
         }
 
@@ -96,8 +96,9 @@
 
         protected void Update()
         {
-            //if (Input.GetKeyUp(gameControl.backKey))
-            if(Input.GetKeyUp(KeyCode.Backspace) && uiManager.menuInFocus == this.gameObject)
+            if (this.gameObject != uiManager.menuInFocus) return;
+
+            if (Input.GetKeyUp(KeyCode.Backspace))
                 uiManager.PopMenu();
 
 

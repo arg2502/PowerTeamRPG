@@ -11,6 +11,8 @@
         public Button jethro, cole, eleanor, juliette;
         internal Item item;
         public Image icon;
+        public Text itemName;
+        public Text titleText;
         GameObject currentObj;
 
         public enum MenuState { Use, Equip, Remove };
@@ -19,7 +21,21 @@
         public override void Init()
         {
             base.Init();
-            
+        }
+        public void AssignTitleText()
+        {
+            switch (menuState)
+            {
+                case MenuState.Use:
+                    titleText.text = "Use on...";
+                    break;
+                case MenuState.Equip:
+                    titleText.text = "Equip to...";
+                    break;
+                case MenuState.Remove:
+                    titleText.text = "Remove from...";
+                    break;
+            }
         }
         protected override void AddButtons()
         {
@@ -43,22 +59,18 @@
         void SetDescription()
         {
             if (currentObj == jethro.gameObject)
-                //descriptionText.text = "Jethro";
                 StatChangeDescription(gameControl.heroList[0]);
             else if (currentObj == cole.gameObject)
-                //descriptionText.text = "Cole";
                 StatChangeDescription(gameControl.heroList[1]);
             else if (currentObj == eleanor.gameObject)
-                //descriptionText.text = "Eleanor";
                 StatChangeDescription(gameControl.heroList[2]);
-            else
-                //descriptionText.text = "Juliette";
+            else if (currentObj == juliette.gameObject)
                 StatChangeDescription(gameControl.heroList[3]);
         }
 
         void StatChangeDescription(HeroData currentHero)
         {
-            descriptionText.text = currentHero.name;
+            descriptionText.text = "<b>" + currentHero.name + "</b>";
 
             // status
             descriptionText.text += "\n\nStatus: " + currentHero.statusState;

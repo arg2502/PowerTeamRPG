@@ -21,6 +21,7 @@
         GameObject currentObj;
         int currentListPosition;
         internal Item chosenItem;
+        internal string currentDescription;
 
         float buttonDistance = 55f;
         float listDistance = 1000f;
@@ -69,7 +70,7 @@
                 buttonGrid[listPosition].Add(button);
 
                 // description
-                item.GetComponentInChildren<Description>().description = itemInfo.description;
+                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
 
                 var itemSlot = item.GetComponent<ItemSlot>();
 
@@ -96,10 +97,15 @@
             currentListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
             ToggleTextChange();
 
-            if (buttonGrid[currentListPosition][0].GetComponentInParent<Description>() != null)
-                descriptionText.text = buttonGrid[currentListPosition][0].GetComponentInParent<Description>().description;
+            var buttonObj = buttonGrid[currentListPosition][0];
+            var descriptionObj = buttonObj.GetComponentInParent<Description>();
+
+            if (descriptionObj != null)
+                descriptionText.text = descriptionObj.description;
             else
                 descriptionText.text = "";
+
+            currentDescription = descriptionText.text;
 
             //Debug.Log("Inventory menu: assign root: " + currentListPosition);
             return buttonGrid[currentListPosition][0];
@@ -309,10 +315,13 @@
         {
             // set description text if applicable
             // (invisible buttons do not have descriptions)
-            if (currentObj.GetComponentInParent<Description>() != null)
-                descriptionText.text = currentObj.GetComponentInParent<Description>().description;
+            var descriptionObj = currentObj.GetComponentInParent<Description>();
+            if (descriptionObj != null)
+                descriptionText.text = descriptionObj.description;
             else
                 descriptionText.text = "";
+
+            currentDescription = descriptionText.text;
         }
         
         void OnSelect()
@@ -340,6 +349,8 @@
         new void Update()
         {
             base.Update();
+
+            if (this.gameObject != uiManager.menuInFocus) return;
 
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
