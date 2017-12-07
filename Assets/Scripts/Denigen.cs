@@ -83,7 +83,7 @@ public class Denigen : MonoBehaviour {
     protected Animator anim;
 
     // Use this for initialization
-	protected void Start () {
+	protected void Awake () {
         //temp passive list
         passivesList = new List<Passive>();
 
@@ -95,6 +95,7 @@ public class Denigen : MonoBehaviour {
         // setting up stats
         if (hpMax == 0)// checking if they already exist, so they're not overwritten
         {
+            level = 1;
             hp = (int)(baseTotal * hpPer);
             pm = (int)(baseTotal * pmPer);
             atkBat = atk = (int)(baseTotal * atkPer);
@@ -108,27 +109,30 @@ public class Denigen : MonoBehaviour {
             pmMax = pm;
         }
         
+        // COMMENTED OUT ON 12/6/2017
+        // BATTLE MENU WILL BE REDONE AT A LATER TIME
+        // -AG
 
         //get a reference to the battleMenu object in the scene
-        if (GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>())
-        {
-            battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
-        }
+        //if (GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>())
+        //{
+        //    battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
+        //}
 
-        battleMenu.SortDenigens();
-        //highlight the current denigen
-        // set the current denigen
-        battleMenu.currentDenigen = battleMenu.denigenArray[0];
-        battleMenu.currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
-        //statusState = Status.normal;
+        //battleMenu.SortDenigens();
+        ////highlight the current denigen
+        //// set the current denigen
+        //battleMenu.currentDenigen = battleMenu.denigenArray[0];
+        //battleMenu.currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
+        ////statusState = Status.normal;
 
-        sr = gameObject.GetComponent<SpriteRenderer>();
-        targetShader = Shader.Find("GUI/Text Shader");
-        normalShader = Shader.Find("Sprites/Default");
+        //sr = gameObject.GetComponent<SpriteRenderer>();
+        //targetShader = Shader.Find("GUI/Text Shader");
+        //normalShader = Shader.Find("Sprites/Default");
 
-        if (statusState == Status.dead || statusState == Status.overkill) { sr.color = new Color(0.0f, 0.0f, 0.0f, 0.0f); }
+        //if (statusState == Status.dead || statusState == Status.overkill) { sr.color = new Color(0.0f, 0.0f, 0.0f, 0.0f); }
 
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
 	}
     protected void LevelUp(int lvl)
     {

@@ -28,7 +28,7 @@ public class Enemy : Denigen {
 	// Use this for initialization
 	protected void Start () {
         //set the base stats for the enemy
-        base.Start();
+        base.Awake();
 
         //get the areaLevel from the gameControl obj -- ADD LATER
         areaLevel = 3;

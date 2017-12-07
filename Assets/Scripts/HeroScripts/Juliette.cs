@@ -4,7 +4,8 @@ using System.Collections;
 public class Juliette : Hero {
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+        startingLevel = 4;
         // stats - should total to 1.00f
         hpPer = 0.19f;
         pmPer = 0.07f;
@@ -16,7 +17,7 @@ public class Juliette : Hero {
         evasionPer = 0.13f;
         spdPer = 0.19f;
 
-        base.Start();	
+        base.Awake();	
 	}
 	
 	// Update is called once per frame

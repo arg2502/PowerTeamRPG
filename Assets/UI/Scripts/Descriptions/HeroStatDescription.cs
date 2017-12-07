@@ -15,7 +15,8 @@
             if (currentHero == null) return;
 
             description = currentHero.name +
-                "\n\nStatus: " + currentHero.statusState +
+                "\n\nLevel: " + currentHero.level +
+                "\nStatus: " + currentHero.statusState +
                 "\nHP: " + currentHero.hp + " / " + currentHero.hpMax +
                 "\nPM: " + currentHero.pm + " / " + currentHero.pmMax +
                 "\nAtk: " + currentHero.atk +

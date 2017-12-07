@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Cole : Hero {
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         
         // if this is the first time the hero is made, create the lists
         if(skillsList == null)
@@ -40,6 +40,8 @@ public class Cole : Hero {
             passivesList = new List<Passive>();
         }
 
+        startingLevel = 2;
+
         // stats - should total to 1.00f
         hpPer = 0.21f;
         pmPer = 0.16f;
@@ -53,7 +55,7 @@ public class Cole : Hero {
 
         growthSpeed = 0.95f;
 
-        base.Start();
+        base.Awake();
 	}
 
     public override void Attack(string atkChoice)
