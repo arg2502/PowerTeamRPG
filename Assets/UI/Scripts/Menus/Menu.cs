@@ -58,6 +58,7 @@
         protected void AssignEventToRoot()
         {
             if(rootButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }
+            if (rootButton.gameObject == EventSystem.current.currentSelectedGameObject) return;
             EventSystem.current.SetSelectedGameObject(rootButton.gameObject);
         }
 
@@ -93,6 +94,12 @@
                 listOfButtons[i].navigation = navigation;
             }
         }
+
+        /// <summary>
+        /// for when you left a menu and returned to it, but it was never turned off
+        ///some values may need to be reset -- refocus on this current menu
+        /// </summary>
+        public virtual void Refocus() { }
 
         protected void Update()
         {

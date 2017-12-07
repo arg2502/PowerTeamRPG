@@ -19,7 +19,8 @@
         Rect itemSlotsWorld;
         Vector3[] objectCorners;
         GameObject currentObj;
-        int currentListPosition;
+        int outerListPosition;
+        int innerListPosition;
         internal Item chosenItem;
         internal string currentDescription;
 
@@ -40,7 +41,6 @@
         public override void Init()
         {
             base.Init();
-
             CheckIfListOffScreen();
         }
 
@@ -94,10 +94,10 @@
 
         public override Button AssignRootButton()
         {
-            currentListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
+            outerListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
             ToggleTextChange();
 
-            var buttonObj = buttonGrid[currentListPosition][0];
+            var buttonObj = buttonGrid[outerListPosition][innerListPosition];
             var descriptionObj = buttonObj.GetComponentInParent<Description>();
 
             if (descriptionObj != null)
@@ -108,19 +108,27 @@
             currentDescription = descriptionText.text;
 
             //Debug.Log("Inventory menu: assign root: " + currentListPosition);
-            return buttonGrid[currentListPosition][0];
+            return buttonGrid[outerListPosition][innerListPosition];
 
         }
         public override void TurnOnMenu()
         {
+            innerListPosition = 0;
             rootButton = AssignRootButton();
             currentObj = rootButton.gameObject;
             if (CheckIfOffScreen(currentObj))
             {
                 OutsideOfViewInstant(currentObj);
             }
-
             base.TurnOnMenu();
+        }
+        public override void Refocus()
+        {
+            base.Refocus();
+            rootButton = AssignRootButton();
+            currentObj = rootButton.gameObject;
+            EventSystem.current.SetSelectedGameObject(currentObj);
+            
         }
         bool CheckIfOffScreen(GameObject buttonObj)
         {
@@ -158,11 +166,11 @@
             // horizontal movement
             if (objectCorners[0].x > itemSlotsWorld.xMax)
             {
-                desiredPosition = buttonGrid[currentListPosition - 1][0].transform.position;
+                desiredPosition = buttonGrid[outerListPosition - 1][0].transform.position;
             }
             else if (objectCorners[2].x < itemSlotsWorld.xMin)
             {
-                desiredPosition = buttonGrid[currentListPosition + 1][0].transform.position;
+                desiredPosition = buttonGrid[outerListPosition + 1][0].transform.position;
             }
             float distance;
             Vector2 newPosition = Vector2.zero;
@@ -185,9 +193,9 @@
             // bring it on screen
             // find the button
             int ourButtonListPosition = 0;
-            for (int i = 0; i < buttonGrid[currentListPosition].Count; i++)
+            for (int i = 0; i < buttonGrid[outerListPosition].Count; i++)
             {
-                if (buttonObj == buttonGrid[currentListPosition][i].gameObject)
+                if (buttonObj == buttonGrid[outerListPosition][i].gameObject)
                 {
                     ourButtonListPosition = i;
                     break;
@@ -203,24 +211,24 @@
             if (objectCorners[0].y < itemSlotsWorld.yMin)
             {
                 if (ourButtonListPosition <= 0) return;                
-                desiredPosition = buttonGrid[currentListPosition][ourButtonListPosition - 1].transform.position;
+                desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition - 1].transform.position;
                 //belowScreen = true;
             }
             else if(objectCorners[2].y > itemSlotsWorld.yMax)
             {
-                if (ourButtonListPosition >= buttonGrid[currentListPosition].Count - 1) return;
-                desiredPosition = buttonGrid[currentListPosition][ourButtonListPosition + 1].transform.position;
+                if (ourButtonListPosition >= buttonGrid[outerListPosition].Count - 1) return;
+                desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition + 1].transform.position;
                // belowScreen = false;
             }
 
             // horizontal movement
             if(objectCorners[0].x > itemSlotsWorld.xMax)
             {
-                desiredPosition = buttonGrid[currentListPosition - 1][0].transform.position;
+                desiredPosition = buttonGrid[outerListPosition - 1][0].transform.position;
             }
             else if (objectCorners[2].x < itemSlotsWorld.xMin)
             {
-                desiredPosition = buttonGrid[currentListPosition + 1][0].transform.position;
+                desiredPosition = buttonGrid[outerListPosition + 1][0].transform.position;
             }
 
             // determine distance and new position based on difference in either x or y
@@ -267,7 +275,7 @@
 
         void CheckIfListOffScreen()
         {
-            var currentList = buttonGrid[currentListPosition];
+            var currentList = buttonGrid[outerListPosition];
 
             // if the first item in the list is off screen, then turn on the up scroll notifier
             if (CheckIfOffScreen(currentList[0].gameObject))
@@ -294,7 +302,7 @@
             InventoryToggles.equipment.isOn = false;
             InventoryToggles.keyItems.isOn = false;
 
-            switch (currentListPosition)
+            switch (outerListPosition)
             {
                 case 0:
                     InventoryToggles.consumables.isOn = true;
@@ -361,8 +369,17 @@
             {
                 if (buttonGrid[i].Count > 0 && currentObj == buttonGrid[i][0].gameObject)
                 {
-                    currentListPosition = i;
-                    gameControl.whichInventoryEnum = (GameControl.WhichInventory) currentListPosition;
+                    outerListPosition = i;
+                    gameControl.whichInventoryEnum = (GameControl.WhichInventory) outerListPosition;
+                    break;
+                }
+            }
+            // find position within the column
+            for(int i = 0; i < buttonGrid[outerListPosition].Count; i++)
+            {
+                if(currentObj == buttonGrid[outerListPosition][i].gameObject)
+                {
+                    innerListPosition = i;
                     break;
                 }
             }

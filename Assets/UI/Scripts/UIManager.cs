@@ -72,6 +72,7 @@
             {
                 menuObj = dictionary_existingMenus[menuToEnable];
                 menuObj.GetComponent<Menu>().TurnOnMenu();
+                //menuObj.GetComponent<Menu>().Init();
                 if (sub) AssignSubPosition(menuObj);
                 list_currentMenus.Add(menuObj);
             }
@@ -140,7 +141,7 @@
                 menu = menuInFocus.GetComponent<Menu>();
                 EventSystem.current.SetSelectedGameObject(menu.RootButton.gameObject);
                 menu.ToggleButtonState(true);
-                menu.TurnOnMenu();
+                menu.Refocus();
             }
             else
                 DisableAllMenus();

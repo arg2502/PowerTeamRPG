@@ -31,6 +31,12 @@
                         
             base.TurnOnMenu();
         }
+        public override void Refocus()
+        {
+            base.Refocus();
+
+            this.descriptionText.text = inventory.currentDescription;
+        }
         protected override void AddButtons()
         {
             base.AddButtons();
