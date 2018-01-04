@@ -9,7 +9,7 @@
     {
         protected List<List<Button>> buttonGrid;
                 
-        protected override void SetButtonNavigation()
+        public override void SetButtonNavigation()
         {
             for (int listIterator = 0; listIterator < buttonGrid.Count; listIterator++)
             {               

@@ -53,65 +53,7 @@
             else
                 return bottomButton;
         }
-
-        protected override void SetButtonNavigation()
-        {
-            base.SetButtonNavigation();
-
-            // check for any inactive buttons
-            for (int i = 0; i < listOfButtons.Count; i++)
-            {
-                if (!listOfButtons[i].interactable)
-                {
-                    Debug.Log(i + ": not interactable");
-                    // if button is at top
-                    if(i <= 0)
-                    {
-                        var navigation = listOfButtons[i + 1].navigation;
-                        navigation.mode = Navigation.Mode.Explicit;
-
-                        navigation.selectOnUp = null;
-
-                        listOfButtons[i + 1].navigation = navigation;
-                    }
-
-                    // if button is at bottom
-                    else if(i >= listOfButtons.Count - 1)
-                    {
-                        var navigation = listOfButtons[i - 1].navigation;
-                        navigation.mode = Navigation.Mode.Explicit;
-
-                        navigation.selectOnUp = null;
-
-                        listOfButtons[i - 1].navigation = navigation;
-                    }
-
-                    // if button is in middle of menu
-                    //if ((i - 1) >= 0 && (i + 1) <= listOfButtons.Count - 1)
-                    else
-                    {
-                        // set navigation for button above
-                        var navigation = listOfButtons[i - 1].navigation;
-                        navigation.mode = Navigation.Mode.Explicit;
-
-                        navigation.selectOnDown = listOfButtons[i + 1];
-
-                        listOfButtons[i - 1].navigation = navigation;
-                    //}
-                    //if((i + 1) <= listOfButtons.Count - 1 && (i-1) >= 0)
-                    //{
-                        // set navigation for button below
-                        navigation = listOfButtons[i + 1].navigation;
-                        navigation.mode = Navigation.Mode.Explicit;
-
-                        navigation.selectOnUp = listOfButtons[i - 1];
-
-                        listOfButtons[i + 1].navigation = navigation;
-                    }
-                }
-            }
-        }
-
+        
         // class specific functions
 
         void AssignBasedOnCategory()
@@ -248,6 +190,7 @@
             useItem.menuState = menuState;
             useItem.AssignTitleText();
             useItem.CheckIfHeroesAreElligible(); // called here after all the variables are set up
+            useItem.SetButtonNavigation();
 
             return useItem;
         }

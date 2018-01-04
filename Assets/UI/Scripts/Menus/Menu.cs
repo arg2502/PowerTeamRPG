@@ -77,7 +77,7 @@
                 descriptionText.text = button.GetComponent<Description>().GetDescription(); //button.name;
         }
 
-        protected virtual void SetButtonNavigation()
+        public virtual void SetButtonNavigation()
         {
             for(int i = 0; i < listOfButtons.Count; i++)
             {
@@ -93,6 +93,8 @@
 
                 listOfButtons[i].navigation = navigation;
             }
+
+            CheckForInactiveButtons();
         }
 
         /// <summary>
@@ -109,6 +111,80 @@
                 uiManager.PopMenu();
 
 
-        }        
+        }
+
+        void CheckForInactiveButtons()
+        {
+            // check for any inactive buttons
+            for (int i = 0; i < listOfButtons.Count; i++)
+            {
+                if (!listOfButtons[i].interactable)
+                {
+                    Debug.Log(i + ": not interactable");
+                    // if button is at top
+                    if (i <= 0)
+                    {
+                        var navigation = listOfButtons[i + 1].navigation;
+                        navigation.mode = Navigation.Mode.Explicit;
+
+                        navigation.selectOnUp = null;
+
+                        listOfButtons[i + 1].navigation = navigation;
+                    }
+
+                    // if button is at bottom
+                    else if (i >= listOfButtons.Count - 1)
+                    {
+                        var navigation = listOfButtons[i - 1].navigation;
+                        navigation.mode = Navigation.Mode.Explicit;
+
+                        navigation.selectOnUp = null;
+
+                        listOfButtons[i - 1].navigation = navigation;
+                    }
+
+                    // if button is in middle of menu
+                    //if ((i - 1) >= 0 && (i + 1) <= listOfButtons.Count - 1)
+                    else
+                    {
+                        // set navigation for button above
+                        var navigation = listOfButtons[i - 1].navigation;
+                        navigation.mode = Navigation.Mode.Explicit;
+
+                        var button = FindNextActiveButton(i, +1);
+                        navigation.selectOnDown = button;
+
+                        listOfButtons[i - 1].navigation = navigation;
+                        //}
+                        //if((i + 1) <= listOfButtons.Count - 1 && (i-1) >= 0)
+                        //{
+                        // set navigation for button below
+                        navigation = listOfButtons[i + 1].navigation;
+                        navigation.mode = Navigation.Mode.Explicit;
+
+                        button = FindNextActiveButton(i, -1);
+                        navigation.selectOnUp = button;
+
+                        listOfButtons[i + 1].navigation = navigation;
+                    }
+                }
+            }
+        }   
+        
+        Button FindNextActiveButton(int origin, int increment)
+        {
+            var index = origin + increment;
+            
+            while(index >= 0 && index <= listOfButtons.Count - 1)
+            {
+                if (listOfButtons[index].interactable)
+                    return listOfButtons[index];
+                else
+                    index += increment;
+            }
+
+            return null;
+
+        }  
     }
 }
