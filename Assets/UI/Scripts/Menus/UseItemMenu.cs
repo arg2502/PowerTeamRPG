@@ -240,10 +240,10 @@
                         item.GetComponent<ArmorItem>().Remove(hero);
                     break;
             }
-            Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);
+            Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);            
             uiManager.PopMenu();
             uiManager.PopMenu();
-            
+            currentObj = null;
         }
 
 
