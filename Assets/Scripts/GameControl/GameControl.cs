@@ -907,6 +907,22 @@ public class HeroData
 	// Need a creative way to store which items are equipped since items are non-serializable
 	public GameObject weapon;
 	public List<GameObject> equipment;
+
+    /// <summary>
+    /// Searches through the hero's equipment/armor and returns true if the hero already the item.
+    /// </summary>
+    /// <param name="itemToCheck"></param>
+    /// <returns></returns>
+    public bool EquipmentContainsItem(Item itemToCheck)
+    {
+        foreach(var itemObj in equipment)
+        {
+            if (itemObj.GetComponent<Item>() == itemToCheck)
+                return true;
+        }
+
+        return false;
+    }
 }
 
 // this class exists to save the hero item

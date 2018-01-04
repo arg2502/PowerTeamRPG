@@ -20,6 +20,7 @@ public class WeaponItem : Item {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform
         //the item's specific effect
+        if (quantity <= 0 ) return;
 
         hero.hpMax += hpChange;
         hero.pmMax += pmChange;

@@ -51,11 +51,15 @@
         {
             base.AddListeners();
 
-            //TEMP
-            foreach (var button in listOfButtons)
-                button.onClick.AddListener(() => Debug.Log(item.name));
+            jethro.onClick.AddListener(OnJethro);
+            cole.onClick.AddListener(OnCole);
+            eleanor.onClick.AddListener(OnEleanor);
+            juliette.onClick.AddListener(OnJuliette);
         }
-
+        public override void TurnOnMenu()
+        {
+            base.TurnOnMenu();
+        }
         void SetDescription()
         {
             if (currentObj == jethro.gameObject)
@@ -108,6 +112,9 @@
         }
         void CheckIfChange(int herostat, int change)
         {
+            if (menuState == MenuState.Remove)
+                change *= -1;
+
             if (change != 0)
             {
                 if (change > 0)
@@ -149,6 +156,97 @@
                 }
             }
         }
+
+        public void CheckIfHeroesAreElligible()
+        {
+            foreach (var hero in gameControl.heroList)
+            {
+                if (menuState == MenuState.Equip)
+                {
+                    if (item.GetComponent<WeaponItem>()
+                        && hero.weapon != null
+                       && item == hero.weapon.GetComponent<WeaponItem>())
+                        ToggleHero(hero, false);
+
+                    else if (item.GetComponent<ArmorItem>()
+                        && hero.EquipmentContainsItem(item))
+                        ToggleHero(hero, false);
+
+                    else
+                        ToggleHero(hero, true);
+                }
+                else if (menuState == MenuState.Remove)
+                {
+                    if (item.GetComponent<WeaponItem>()
+                        && hero.weapon != null
+                       && item == hero.weapon.GetComponent<WeaponItem>())
+                        ToggleHero(hero, true);
+
+                    else if (item.GetComponent<ArmorItem>()
+                        && hero.EquipmentContainsItem(item))
+                        ToggleHero(hero, true);
+
+                    else
+                        ToggleHero(hero, false);
+                }
+                
+            }
+        }
+        void ToggleHero(HeroData hero, bool state)
+        {
+            if (hero == gameControl.heroList[0])
+                ToggleButton(jethro, state);
+            else if (hero == gameControl.heroList[1])
+                ToggleButton(cole, state);
+            else if (hero == gameControl.heroList[2])
+                ToggleButton(eleanor, state);
+            else if (hero == gameControl.heroList[3])
+                ToggleButton(juliette, state);
+            else
+                Debug.LogError("Hero: " + hero.name + ", does not exist");
+        }
+        void ToggleButton(Button button, bool state)
+        {
+            button.interactable = state;
+        }
+
+        // button functions
+        void OnJethro() { UseItem(gameControl.heroList[0]); }
+        void OnCole() { UseItem(gameControl.heroList[1]); }
+        void OnEleanor() { UseItem(gameControl.heroList[2]); }
+        void OnJuliette() { UseItem(gameControl.heroList[3]); }
+
+        void UseItem(HeroData hero)
+        {
+            Debug.Log("Before use -- quantity: " + item.quantity + ", uses: " + item.uses);
+            switch (menuState)
+            {
+                case MenuState.Use:
+                    if (item.quantity > 0)
+                        item.GetComponent<ConsumableItem>().Use(hero);
+                    break;
+
+                case MenuState.Equip:
+                    if (item.GetComponent<WeaponItem>())
+                        item.GetComponent<WeaponItem>().Use(hero);
+                    else if (item.GetComponent<ArmorItem>())
+                        item.GetComponent<ArmorItem>().Use(hero);
+                    break;
+
+                case MenuState.Remove:
+                    if (item.GetComponent<WeaponItem>())
+                        item.GetComponent<WeaponItem>().Remove(hero);
+                    else if (item.GetComponent<ArmorItem>())
+                        item.GetComponent<ArmorItem>().Remove(hero);
+                    break;
+            }
+            Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);
+            uiManager.PopMenu();
+            uiManager.PopMenu();
+            
+        }
+
+
 
         new void Update()
         {
