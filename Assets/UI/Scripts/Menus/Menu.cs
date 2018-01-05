@@ -55,7 +55,7 @@
         }
         public virtual Button AssignRootButton() { return rootButton; }
         public Button RootButton { get { return rootButton; } set { rootButton = value; } }
-        protected void AssignEventToRoot()
+        public void AssignEventToRoot()
         {
             if(rootButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }
             if (rootButton.gameObject == EventSystem.current.currentSelectedGameObject) return;

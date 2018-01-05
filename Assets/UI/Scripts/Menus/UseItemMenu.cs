@@ -45,7 +45,14 @@
         }
         public override Button AssignRootButton()
         {
-            return jethro;
+            if (jethro.interactable)
+                return jethro;
+            else if (cole.interactable)
+                return cole;
+            else if (eleanor.interactable)
+                return eleanor;
+            else
+                return juliette;
         }
         protected override void AddListeners()
         {
@@ -243,10 +250,21 @@
             Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);            
             uiManager.PopMenu();
             uiManager.PopMenu();
-            currentObj = null;
+            currentObj = null; // for resetting the description text when we return to this menu
         }
 
-
+        /// <summary>
+        /// Sets up necessary variables after all the other init functions (Init(), TurnOnMenu(), Refocus())
+        /// Needs to be independently called
+        /// </summary>
+        public void Setup()
+        {
+            AssignTitleText();
+            CheckIfHeroesAreElligible();
+            SetButtonNavigation();
+            RootButton = AssignRootButton();
+            AssignEventToRoot();
+        }
 
         new void Update()
         {

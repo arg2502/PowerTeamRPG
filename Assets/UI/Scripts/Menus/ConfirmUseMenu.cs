@@ -188,9 +188,7 @@
             useItem.icon.sprite = item.sprite;
             useItem.itemName.text = item.name;
             useItem.menuState = menuState;
-            useItem.AssignTitleText();
-            useItem.CheckIfHeroesAreElligible(); // called here after all the variables are set up
-            useItem.SetButtonNavigation();
+            useItem.Setup();     
 
             return useItem;
         }
