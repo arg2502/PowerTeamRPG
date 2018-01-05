@@ -46,6 +46,20 @@
 
         protected override void AddButtons()
         {
+            // delete anything in button grid
+            if (buttonGrid != null)
+            {
+                for (int i = 0; i < buttonGrid.Count; i++)
+                {
+                    for (int j = 0; j < buttonGrid[i].Count; j++)
+                    {
+                        Destroy(buttonGrid[i][j].transform.parent.gameObject);
+                    }
+                }
+
+                buttonGrid.Clear();
+            }
+
             // create grid with 4 lists --- for the 4 categories of the inventory
             buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
 
@@ -53,6 +67,9 @@
             FillList(gameControl.weapons, 1);
             FillList(gameControl.equipment, 2);
             FillList(gameControl.reusables, 3);
+
+            SetButtonNavigation(); // reset button navigation
+            gameControl.itemAdded = false; // reset flag to false
         }
 
         void FillList(List<GameObject> category, int listPosition)
@@ -82,13 +99,7 @@
             }
             if (category.Count <= 0)
             {
-                var item = Instantiate(invisiblePrefab);
-                item.transform.SetParent(itemSlotsContainer.transform);
-                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, 0);
-
-                var button = item.GetComponentInChildren<Button>();
-                button.GetComponentInChildren<Text>().text = "";
-                buttonGrid[listPosition].Add(button);                
+                CreateInvisibleButton(listPosition);      
             }
         }
 
@@ -113,6 +124,10 @@
         }
         public override void TurnOnMenu()
         {
+            // update the items displayed if a new item has been added to the inventory
+            if (gameControl.itemAdded) // TEST THIS WHEN YOU CAN ADD ITEMS
+            { Debug.Log("item has been added -- update"); AddButtons(); }
+
             innerListPosition = 0;
             rootButton = AssignRootButton();
             currentObj = rootButton.gameObject;
@@ -120,16 +135,29 @@
             {
                 OutsideOfViewInstant(currentObj);
             }
+            
             base.TurnOnMenu();
         }
         public override void Refocus()
         {
             base.Refocus();
             rootButton = AssignRootButton();
-            currentObj = rootButton.gameObject;
-            EventSystem.current.SetSelectedGameObject(currentObj);
-            
+            SetSelectedObjectToRoot();
+            UpdateItemQuantity();
+
         }
+
+        void CreateInvisibleButton(int position)
+        {
+            var item = Instantiate(invisiblePrefab);
+            item.transform.SetParent(itemSlotsContainer.transform);
+            item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * position, 0);
+
+            var button = item.GetComponentInChildren<Button>();
+            button.GetComponentInChildren<Text>().text = "";
+            buttonGrid[position].Add(button);
+        }
+
         bool CheckIfOffScreen(GameObject buttonObj)
         {
             // find the Item Slots Container's rect in world coordinates
@@ -352,6 +380,49 @@
             //useItem.item = chosenItem;
             //useItem.descriptionText = descriptionText;
             //useItem.icon.sprite = chosenItem.sprite;
+        }
+
+        void UpdateItemQuantity()
+        {
+            var itemSlot = currentObj.GetComponentInParent<ItemSlot>();
+            itemSlot.UpdateQuantity();
+            
+            // check if consumable & zero
+            if(itemSlot.item.GetComponent<ConsumableItem>()
+                && itemSlot.item.quantity - itemSlot.item.uses <= 0)
+            {
+                // remove item button from grid and delete
+                // but first save the index position
+                var index = buttonGrid[outerListPosition].IndexOf(currentObj.GetComponent<Button>());//Find(currentObj.GetComponent<Button>())
+                buttonGrid[outerListPosition].Remove(currentObj.GetComponent<Button>());
+                Destroy(currentObj.transform.parent.gameObject);
+                gameControl.RemoveItem(itemSlot.item.gameObject);                
+
+                // add an invisible button if there are no more items in the list
+                if(buttonGrid[outerListPosition].Count <= 0)
+                {
+                    CreateInvisibleButton(outerListPosition);
+                }
+
+                // move any buttons below up
+                //item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
+                if (index < buttonGrid[outerListPosition].Count)
+                {
+                    for(int i = index; i < buttonGrid[outerListPosition].Count; i++)
+                        buttonGrid[outerListPosition][i].transform.parent.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * outerListPosition, i * -buttonDistance);
+
+                    // reset navigation
+                    SetButtonNavigation();
+                    rootButton = buttonGrid[outerListPosition][index];
+
+                    EventSystem.current.SetSelectedGameObject(rootButton.gameObject);
+                }
+                // if not buttons below (last in column), just set eventsystem
+                else
+                {
+                    EventSystem.current.SetSelectedGameObject(buttonGrid[outerListPosition][buttonGrid[outerListPosition].Count - 1].gameObject);
+                }
+            }
         }
 
         new void Update()

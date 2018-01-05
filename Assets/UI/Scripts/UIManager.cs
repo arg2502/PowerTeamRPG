@@ -139,7 +139,7 @@
                 lastPos = list_currentMenus.Count - 1;
                 menuInFocus = list_currentMenus[lastPos];
                 menu = menuInFocus.GetComponent<Menu>();
-                EventSystem.current.SetSelectedGameObject(menu.RootButton.gameObject);
+                menu.SetSelectedObjectToRoot();
                 menu.ToggleButtonState(true);
                 menu.Refocus();
             }

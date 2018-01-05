@@ -263,7 +263,7 @@
             CheckIfHeroesAreElligible();
             SetButtonNavigation();
             RootButton = AssignRootButton();
-            AssignEventToRoot();
+            SetSelectedObjectToRoot();
         }
 
         new void Update()

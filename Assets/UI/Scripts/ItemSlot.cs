@@ -12,11 +12,11 @@ public class ItemSlot : MonoBehaviour {
     {
         item = _item;
         icon.sprite = item.sprite;
-        quantity.text = "X " + item.quantity;
+        quantity.text = "X " + (item.quantity - item.uses);
     }
 
     public void UpdateQuantity()
     {
-        quantity.text = "X " + item.quantity;
+        quantity.text = "X " + (item.quantity - item.uses);
     }
 }

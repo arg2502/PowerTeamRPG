@@ -29,6 +29,7 @@ public class GameControl : MonoBehaviour {
 	public List<GameObject> equipment;
 	public List<GameObject> weapons;
 	public List<GameObject> reusables;
+    public bool itemAdded;
     
     //room information
     public roomControl currentRoom; // keep track of the literal room object where the player currently is
@@ -273,7 +274,25 @@ public class GameControl : MonoBehaviour {
 			DontDestroyOnLoad(weapons[weapons.Count - 1]);
 		}
 
+        // flag the inventory that an item was added and needs to be updated
+        itemAdded = true;
+
 	}
+
+    public void RemoveItem(GameObject item)
+    {
+        if (item.GetComponent<ReusableItem>() != null)
+            reusables.Remove(item);
+
+        if (item.GetComponent<ConsumableItem>() != null)
+            consumables.Remove(item);
+
+        if (item.GetComponent<ArmorItem>() != null)
+            equipment.Remove(item);
+
+        if (item.GetComponent<WeaponItem>() != null)
+            weapons.Remove(item);
+    }
 
 	//this will save our game data to an external, persistent file
 	public void Save()

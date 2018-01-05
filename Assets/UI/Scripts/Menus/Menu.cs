@@ -31,7 +31,7 @@
         public virtual void TurnOnMenu()
         {
             gameObject.SetActive(true);
-            AssignEventToRoot();
+            SetSelectedObjectToRoot();
         }
         protected virtual void AddListeners()
         {
@@ -55,9 +55,9 @@
         }
         public virtual Button AssignRootButton() { return rootButton; }
         public Button RootButton { get { return rootButton; } set { rootButton = value; } }
-        public void AssignEventToRoot()
+        public void SetSelectedObjectToRoot()
         {
-            if(rootButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }
+            if(rootButton == null) { /*Debug.LogError("You forgot to set FirstButton.");*/ return; }
             if (rootButton.gameObject == EventSystem.current.currentSelectedGameObject) return;
             EventSystem.current.SetSelectedGameObject(rootButton.gameObject);
         }
