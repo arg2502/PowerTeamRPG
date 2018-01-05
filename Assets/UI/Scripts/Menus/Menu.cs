@@ -138,7 +138,7 @@
                         var navigation = listOfButtons[i - 1].navigation;
                         navigation.mode = Navigation.Mode.Explicit;
 
-                        navigation.selectOnUp = null;
+                        navigation.selectOnDown = null;
 
                         listOfButtons[i - 1].navigation = navigation;
                     }
