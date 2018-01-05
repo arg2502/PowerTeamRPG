@@ -16,7 +16,7 @@ public class Selene : Hero {
         evasionPer = 0.18f;
         spdPer = 0.13f;
 
-        base.Start();	
+        base.Awake();	
 	
 	}
 	

@@ -10,6 +10,7 @@ public class Hero: Denigen {
 
     //the amount of experience required to level up
     protected int expToLvlUp;
+    protected int startingLevel;
     protected float growthSpeed;
     public bool statBoost = false;
     public bool skillTree = false;
@@ -38,13 +39,14 @@ public class Hero: Denigen {
     //property for items and equipment -- ADD LATER
 
 	// Use this for initialization
-	protected void Start () {
+	protected void Awake () {
         // all heroes have 3 stars
-        stars = 2;    
-        base.Start();
-	}
+        stars = 2;
+        base.Awake();
+        LevelUpOnAwake(startingLevel);
+    }
 
-    public void LevelUp( int rollover)
+    public void LevelUp(int rollover = 0)
     {
         base.LevelUp(level);
         level++;
@@ -61,7 +63,17 @@ public class Hero: Denigen {
         expToLvlUp = CalcExpToLvlUp(rollover);
     }
 
-    protected int CalcExpToLvlUp( int rollover)
+    protected void LevelUpOnAwake(int startingLevel)
+    {
+        // minus 1 because it will level up "startingLevel" number of times
+        // we already start at 1, so we wanna start at (startingLevel-1)
+        for (int i = 0; i < startingLevel - 1; i++)
+        {
+            LevelUp();
+        }
+    }
+
+    protected int CalcExpToLvlUp(int rollover = 0)
     {
         float expToGo = 0;
         expToGo = level * growthSpeed * 10;

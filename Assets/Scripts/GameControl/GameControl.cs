@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UI;
 
 public class GameControl : MonoBehaviour {
 
@@ -16,7 +17,8 @@ public class GameControl : MonoBehaviour {
 	//the player's name (Jethro)
 	public string playerName = "Jethro";
 
-    
+    public static UIManager UIManager;
+
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
 	public int totalKeys;
@@ -58,12 +60,15 @@ public class GameControl : MonoBehaviour {
 	public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
 
 	// for telling the pause menu which list of items to use
-	public string whichInventory; 
+	public string whichInventory;
 
-	// tells shopkeeper whether to open buy or sell menu
-	// false - buy
-	// true - sell
-	public bool isSellMenu;
+    public enum WhichInventory { Consumables, Weapons, Equipment, KeyItems }
+    internal WhichInventory whichInventoryEnum;
+
+    // tells shopkeeper whether to open buy or sell menu
+    // false - buy
+    // true - sell
+    public bool isSellMenu;
 
 	// Keycodes
 	public KeyCode upKey;
@@ -101,6 +106,8 @@ public class GameControl : MonoBehaviour {
 			//this keeps the game object from being destroyed between scenes
 			DontDestroyOnLoad(gameObject);
 			control = this;
+
+            UIManager = new UIManager();
 
 			// default KeyCodes
 			// possibly have them loaded in from somewhere based off user settings
@@ -148,11 +155,11 @@ public class GameControl : MonoBehaviour {
             // adding heroes - some if not all of these are temporary just to add them into the game for testing
             AddJethro();
             AddCole();
-            //AddEleanor();
-            //AddJuliette();
+            AddEleanor();
+            AddJuliette();
 
 
-            
+
 
 
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
@@ -776,63 +783,58 @@ public class GameControl : MonoBehaviour {
 		}
 		else { hd.weapon = temp; DontDestroyOnLoad(temp); }
 	}
+    void AssignHeroStats(HeroData dataToSet, Hero hero)
+    {
+        dataToSet.level = hero.Level;
+        dataToSet.exp = hero.Exp;
+        dataToSet.expToLvlUp = hero.ExpToLevelUp;
+        dataToSet.levelUpPts = hero.LevelUpPts;
+        dataToSet.techPts = hero.TechPts;
+        dataToSet.hp = hero.hp;
+        dataToSet.hpMax = hero.hpMax;
+        dataToSet.pm = hero.pm;
+        dataToSet.pmMax = hero.pmMax;
+        dataToSet.atk = hero.Atk;
+        dataToSet.def = hero.Def;
+        dataToSet.mgkAtk = hero.MgkAtk;
+        dataToSet.mgkDef = hero.MgkDef;
+        dataToSet.luck = hero.Luck;
+        dataToSet.evasion = hero.Evasion;
+        dataToSet.spd = hero.Spd;
+        dataToSet.skillsList = hero.SkillsList;
+        dataToSet.spellsList = hero.SpellsList;
+        dataToSet.passiveList = hero.PassivesList;
+        // Passives are non serializable now because they inherit from something with a my button variable
+        //heroList[0].passiveList.Add(new LightRegeneration());
+        dataToSet.weapon = null;
+        dataToSet.equipment = new List<GameObject>();
+    }
     void AddJethro()
     {
         //test code for creating Jethro -- based on level 1 stats
         //We will have these stats stored in HeroData objs for consistency between rooms
+
+        // since the hero stats are set in the Hero/Denigen classes, 
+        // the quickest solution is to create a hero object, save the data with hero data, then destroy the object
+        // same situation with the other heroes
+        var jethroObj = (GameObject)Instantiate(Resources.Load("Prefabs/JethroPrefab"));
+        var jethro = jethroObj.GetComponent<Jethro>();
         heroList.Add(new HeroData());
         heroList[0].name = playerName;
         heroList[0].identity = 0;
-        heroList[0].level = 1;
-        heroList[0].exp = 0;
-        heroList[0].expToLvlUp = 10;
-        heroList[0].levelUpPts = 0;
-        heroList[0].techPts = 0;
-        heroList[0].hp = 11;
-        heroList[0].hpMax = 11;
-        heroList[0].pm = 3;
-        heroList[0].pmMax = 3;
-        heroList[0].atk = 6;
-        heroList[0].def = 6;
-        heroList[0].mgkAtk = 4;
-        heroList[0].mgkDef = 4;
-        heroList[0].luck = 6;
-        heroList[0].evasion = 4;
-        heroList[0].spd = 4;
-        heroList[0].skillsList = new List<Skill>();
-        heroList[0].spellsList = new List<Spell>();
-        heroList[0].passiveList = new List<Passive>();
-        // Passives are non serializable now because they inherit from something with a my button variable
-        //heroList[0].passiveList.Add(new LightRegeneration());
-        heroList[0].weapon = null;
-        heroList[0].equipment = new List<GameObject>();
+        AssignHeroStats(heroList[0], jethro);
+        Destroy(jethroObj);
+        
     }
     void AddCole()
     {
+        var coleObj = (GameObject)Instantiate(Resources.Load("Prefabs/ColePrefab"));
+        var cole = coleObj.GetComponent<Cole>();
         heroList.Add(new HeroData());
         heroList[1].identity = 1;
         heroList[1].name = "Cole";
-        heroList[1].level = 2;
-        heroList[1].expToLvlUp = 19;
-        heroList[1].exp = 0;
-        heroList[1].levelUpPts = 0;
-        heroList[1].techPts = 0;
-        heroList[1].hp = 14;
-        heroList[1].hpMax = 14;
-        heroList[1].pm = 10;
-        heroList[1].pmMax = 10;
-        heroList[1].atk = 5;
-        heroList[1].def = 4;
-        heroList[1].mgkAtk = 11;
-        heroList[1].mgkDef = 8;
-        heroList[1].luck = 5;
-        heroList[1].evasion = 4;
-        heroList[1].spd = 5;
-        heroList[1].skillsList = new List<Skill>();
-        heroList[1].spellsList = new List<Spell>();
-        heroList[1].passiveList = new List<Passive>();
-        heroList[1].weapon = null;
-        heroList[1].equipment = new List<GameObject>();
+        AssignHeroStats(heroList[1], cole);
+        Destroy(coleObj);
 
         // the below code would probably be found in the "Add Spell" functions
         skillTreeAccessor.ReadInfo("techniquesCole1.tsv");
@@ -841,59 +843,24 @@ public class GameControl : MonoBehaviour {
     void AddEleanor()
     {
         // test eleanor -----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
+        var eleanorObj = (GameObject)Instantiate(Resources.Load("Prefabs/EleanorPrefab"));
+        var eleanor = eleanorObj.GetComponent<Eleanor>();
         heroList.Add(new HeroData());
         heroList[2].identity = 2;
         heroList[2].name = "Eleanor";
-        heroList[2].level = 2;
-        heroList[2].expToLvlUp = 19;
-        heroList[2].exp = 0;
-        heroList[2].levelUpPts = 0;
-        heroList[2].techPts = 0;
-        heroList[2].hp = 18;
-        heroList[2].hpMax = 18;
-        heroList[2].pm = 20;
-        heroList[2].pmMax = 20;
-        heroList[2].atk = 4;
-        heroList[2].def = 7;
-        heroList[2].mgkAtk = 15;
-        heroList[2].mgkDef = 9;
-        heroList[2].luck = 0;
-        heroList[2].evasion = 2;
-        heroList[2].spd = 8;
-        heroList[2].skillsList = new List<Skill>();
-        heroList[2].spellsList = new List<Spell>();
-        heroList[2].passiveList = new List<Passive>();
-        heroList[2].weapon = null;
-        heroList[2].equipment = new List<GameObject>();
+        AssignHeroStats(heroList[2], eleanor);
+        Destroy(eleanorObj);
     }
     void AddJuliette()
     {
         //// juliette test-----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
+        var julietteObj = (GameObject)Instantiate(Resources.Load("Prefabs/JuliettePrefab"));
+        var juliette = julietteObj.GetComponent<Juliette>();
         heroList.Add(new HeroData());
         heroList[3].identity = 3;
         heroList[3].name = "Juliette";
-        heroList[3].level = 5;
-        heroList[3].expToLvlUp = 30;
-        heroList[3].exp = 0;
-        heroList[3].levelUpPts = 0;
-        heroList[3].techPts = 0;
-        heroList[3].hp = 25;
-        heroList[3].hpMax = 25;
-        heroList[3].pm = 18;
-        heroList[3].pmMax = 18;
-        heroList[3].atk = 22;
-        heroList[3].def = 19;
-        heroList[3].mgkAtk = 15;
-        heroList[3].mgkDef = 18;
-        heroList[3].luck = 7;
-        heroList[3].evasion = 12;
-        heroList[3].spd = 20;
-        heroList[3].skillsList = new List<Skill>();
-        heroList[3].spellsList = new List<Spell>();
-        heroList[3].passiveList = new List<Passive>();
-        heroList[3].weapon = null;
-        heroList[3].equipment = new List<GameObject>();
-
+        AssignHeroStats(heroList[3], juliette);
+        Destroy(julietteObj);
     }
 
 
@@ -940,6 +907,22 @@ public class HeroData
 	// Need a creative way to store which items are equipped since items are non-serializable
 	public GameObject weapon;
 	public List<GameObject> equipment;
+
+    /// <summary>
+    /// Searches through the hero's equipment/armor and returns true if the hero already the item.
+    /// </summary>
+    /// <param name="itemToCheck"></param>
+    /// <returns></returns>
+    public bool EquipmentContainsItem(Item itemToCheck)
+    {
+        foreach(var itemObj in equipment)
+        {
+            if (itemObj.GetComponent<Item>() == itemToCheck)
+                return true;
+        }
+
+        return false;
+    }
 }
 
 // this class exists to save the hero item

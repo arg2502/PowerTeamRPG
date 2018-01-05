@@ -4,7 +4,8 @@ using System.Collections;
 public class Eleanor : Hero {
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+        startingLevel = 2;
         // stats - should total to 1.00f
         hpPer = 0.17f;
         pmPer = 0.18f;
@@ -16,7 +17,7 @@ public class Eleanor : Hero {
         evasionPer = 0.13f;
         spdPer = 0.14f;
 
-        base.Start();	
+        base.Awake();	
 	}
 	
 	// Update is called once per frame

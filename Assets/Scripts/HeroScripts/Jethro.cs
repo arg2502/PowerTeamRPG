@@ -5,8 +5,10 @@ using System.Collections.Generic;
 public class Jethro : Hero {
     
 	// Use this for initialization
-	void Start () {
-        
+	void Awake () {
+
+        startingLevel = 1;
+
         // stats - should total to 1.00f
         hpPer = 0.24f;
         pmPer = 0.08f;
@@ -19,19 +21,14 @@ public class Jethro : Hero {
         spdPer = 0.10f;
 
         growthSpeed = 0.85f;
-
-        base.Start();
-        /*for (int i = 0; i < 3; i++)
-        {
-            level = i + 1;
-            base.LevelUp();
-        }*/
+                
+        base.Awake();
 
         // test of passive
         //LightRegeneration lr = new LightRegeneration();
         //lr.Start();
         //passivesList.Add(lr);
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
