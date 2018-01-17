@@ -16,5 +16,8 @@
         public GameObject InventoryMenu;
         public GameObject ConfirmUseMenu;
         public GameObject UseItemMenu;
+
+        [Header("Skill Tree")]
+        public GameObject SkillTreeMenu;
     }
 }

@@ -26,6 +26,7 @@
         void OnSkillTree()
         {
             // open skill tree for this character
+            uiManager.PushMenu(uiDatabase.SkillTreeMenu);
         }
         void OnStatPoints()
         {

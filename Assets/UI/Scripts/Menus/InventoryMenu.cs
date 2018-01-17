@@ -43,7 +43,14 @@
             base.Init();
             CheckIfListOffScreen();
         }
-
+        protected override void SetHorizontalNavigation(int buttonIterator, int listIterator)
+        {
+            // setting horizontal movement between each list                    
+            if (listIterator > 0 && buttonGrid[listIterator - 1].Count > 0)
+                navigation.selectOnLeft = buttonGrid[listIterator - 1][0];
+            if (listIterator < buttonGrid.Count - 1 && buttonGrid[listIterator + 1].Count > 0)
+                navigation.selectOnRight = buttonGrid[listIterator + 1][0];
+        }
         protected override void AddButtons()
         {
             // delete anything in button grid
