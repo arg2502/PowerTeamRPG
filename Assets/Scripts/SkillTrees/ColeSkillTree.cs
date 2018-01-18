@@ -35,7 +35,7 @@ public class ColeSkillTree : SkillTree {
     MyTree basic2;
 
 	// Use this for initialization
-	void Start () {
+	public ColeSkillTree () {
         // set hero to Cole
         hero = GameControl.control.heroList[1];
 
@@ -118,13 +118,7 @@ public class ColeSkillTree : SkillTree {
 
         listOfTrees = new List<MyTree>() { basic, basic2 };
         
-
-        base.Start();
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        base.Update();
-	}
 }

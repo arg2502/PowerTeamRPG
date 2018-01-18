@@ -24,7 +24,7 @@ public class Technique {
     [NonSerialized]
     List<Technique> prerequisites;
     //[NonSerialized]
-    //Sprite treeImage; // image to display on the button in the skill tree
+    Sprite treeImage; // image to display on the button in the skill tree
     protected int cost; // number of skill points required to unlock
     bool active; // if true, the hero has this technique
     [NonSerialized]
@@ -43,12 +43,12 @@ public class Technique {
     public List<Technique> ListNextTechnique { get { return listNextTechnique; } set { listNextTechnique = value; } }
     public int Cost { get { return cost; } set { cost = value; } }
     public bool Active { get { return active; } set { active = value; } }
-    //public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    
+    public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    
     public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
     public ButtonSkillTree Button { get { return button; } set { button = value; } }
 
     public Technique() {}
-    public Technique(string[] list)
+    public Technique(string[] list, Sprite icon = null)
     {
         for (int i = 1; i < list.Length; i++)
         {
@@ -96,6 +96,9 @@ public class Technique {
 
             }
         }
+
+        if (icon != null)
+            treeImage = icon;
     }
 
     //// Use this for initialization

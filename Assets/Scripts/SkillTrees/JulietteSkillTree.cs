@@ -42,7 +42,7 @@ public class JulietteSkillTree : SkillTree
     // FILL TREES DOWN BELOW, THEN TEST
 
     // Use this for initialization
-    void Start()
+    public JulietteSkillTree()
     {
 
         // set hero to jethro
@@ -137,13 +137,6 @@ public class JulietteSkillTree : SkillTree
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
-
-        base.Start();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        base.Update();
-    }
+        
+    }    
 }

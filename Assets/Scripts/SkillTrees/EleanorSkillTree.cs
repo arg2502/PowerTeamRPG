@@ -44,7 +44,7 @@ public class EleanorSkillTree : SkillTree
     // FILL TREES DOWN BELOW, THEN TEST
 
     // Use this for initialization
-    void Start()
+    public EleanorSkillTree()
     {
 
         // set hero to jethro
@@ -140,13 +140,6 @@ public class EleanorSkillTree : SkillTree
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
-
-        base.Start();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        base.Update();
-    }
+             
+    }    
 }

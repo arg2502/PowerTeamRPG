@@ -45,7 +45,7 @@ public class JethroSkillTree : SkillTree {
     // FILL TREES DOWN BELOW, THEN TEST
 
 	// Use this for initialization
-	void Start () {
+	public JethroSkillTree() {
 
         // set hero to jethro
         hero = GameControl.control.heroList[0];
@@ -204,12 +204,7 @@ public class JethroSkillTree : SkillTree {
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(basic);
         listOfTrees.Add(magic);
-
-        base.Start();
+        
 	}
     
-	// Update is called once per frame
-	void Update () {
-        base.Update();
-	}
 }
