@@ -36,6 +36,9 @@
 
                 buttonGrid.Add(list);
             }
+
+            foreach(var b in treeOptionsList)
+                AddDescriptionEvent(b);
         }
 
         public override Button AssignRootButton()
@@ -77,7 +80,8 @@
                 var button = buttonGrid[technique.ColPos][technique.RowPos];
 
                 // set description
-                button.GetComponent<Description>().description = technique.Description;
+                button.GetComponent<Description>().description = 
+                    "<b>" + technique.Name + "</b>\n\n" + technique.Description;
 
                 // set image
                 var icon = button.GetComponentsInChildren<Image>()[1];

@@ -2,6 +2,7 @@
 {
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.EventSystems;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -10,6 +11,17 @@
         protected List<List<Button>> buttonGrid;
         protected Navigation navigation;
 
+        protected override void AddListeners()
+        {
+            base.AddListeners();
+            foreach(var list in buttonGrid)
+            {
+                foreach(var b in list)
+                {
+                    AddDescriptionEvent(b);
+                }
+            }
+        }
         public override void SetButtonNavigation()
         {
             for (int listIterator = 0; listIterator < buttonGrid.Count; listIterator++)

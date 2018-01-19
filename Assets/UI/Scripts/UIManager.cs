@@ -120,7 +120,7 @@
             {
                 parentMenu.RootButton = EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.Button>();
                 parentMenu.ToggleButtonState(false);
-                EnableMenu(menuPrefab, true);
+                EnableMenu(menuPrefab);
             }
             else
             {

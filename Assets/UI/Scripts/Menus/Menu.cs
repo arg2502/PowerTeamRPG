@@ -38,14 +38,20 @@
             if (listOfButtons == null) return;
             foreach(Button button in listOfButtons)
             {
-                // ADD AN EVENT TRIGGER AND SET FUNCTION UP HERE
-                var trigger = button.gameObject.AddComponent<EventTrigger>();
-                var entry = new EventTrigger.Entry();
-                entry.eventID = EventTriggerType.Select;
-                entry.callback.AddListener((baseEventData)=>AssignDescription(baseEventData));
-                trigger.triggers.Add(entry);
+                AddDescriptionEvent(button);
             }
         }
+
+        protected void AddDescriptionEvent(Button button)
+        {
+            // ADD AN EVENT TRIGGER AND SET FUNCTION UP HERE
+            var trigger = button.gameObject.AddComponent<EventTrigger>();
+            var entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.Select;
+            entry.callback.AddListener((baseEventData) => AssignDescription(baseEventData));
+            trigger.triggers.Add(entry);
+        }
+
         protected virtual void AddButtons() { }
         public void ToggleButtonState(bool isInteractable)
         {

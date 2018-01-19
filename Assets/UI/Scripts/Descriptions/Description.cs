@@ -16,6 +16,6 @@
             return description;
         }
 
-        protected virtual void SetDescription() { }
+        protected virtual void SetDescription() { description = ""; }
     }
 }
