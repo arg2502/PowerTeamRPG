@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SkillTreeManager : MonoBehaviour {
+public class SkillTreeManager {
 
     //HeroData hero;
     //bool skillTree;

@@ -11,15 +11,19 @@
         public List<GameObject> rowParentList;
         SkillTreeManager treeManager;
         SkillTree.MyTree currentTree;
+        public int currentHero;
         int currentTreeIndex;
         public List<Button> treeOptionsList;
+        public GameObject treeLineObj;
+        List<GameObject> linesList = new List<GameObject>();
 
         public override void Init()
         {
             base.Init();
 
             treeManager = new SkillTreeManager();
-            AssignTree(0);
+            currentHero = 0; // TEMP
+            AssignTree(0, currentHero);
         }
 
         protected override void AddButtons()
@@ -46,10 +50,11 @@
             return buttonGrid[0][0]; // TEMP
         }
 
-        void AssignTree(int index)
+        void AssignTree(int treeIndex, int hero)
         {
-            currentTreeIndex = index;
-            treeManager.SetHero(0); // TEMP
+            currentTreeIndex = treeIndex;
+            currentHero = hero;
+            treeManager.SetHero(hero); // TEMP
             Debug.Log(treeManager.currentSkillTree);
             currentTree = treeManager.currentSkillTree.listOfTrees[currentTreeIndex];
 
@@ -72,6 +77,13 @@
                     button.gameObject.SetActive(false);
             }
 
+            // deactivate all lines too, if any
+            foreach(var line in linesList)
+            {
+                line.SetActive(false);
+            }
+
+
             foreach(var technique in currentTree.listOfContent)
             {
                 // activate buttons that we need
@@ -89,6 +101,38 @@
                     icon.sprite = technique.TreeImage;
                 else
                     icon.sprite = treeManager.imageDatabase.defaultSprite;
+
+
+                // find NEXT techniques
+                if (technique.ListNextTechnique != null)
+                {
+                    foreach (var t in technique.ListNextTechnique)
+                    {
+                        if (technique.treeLinesDictionary.ContainsKey(t))
+                        {
+                            technique.treeLinesDictionary[t].SetActive(true);
+                        }
+                        else
+                        {
+                            var nextPos = buttonGrid[t.ColPos][t.RowPos].transform.position;
+                            //Debug.DrawLine(button.transform.position, nextPos, Color.red, 10f);
+                            var line = (GameObject)Instantiate(treeLineObj, button.transform.position, Quaternion.identity);
+                            line.transform.SetParent(transform.Find("TreeGrid").GetChild(0));
+                            //line.GetComponent<LineRenderer>().SetPositions(new Vector3[] { button.transform.position, nextPos });
+                            Vector3 differenceVector = nextPos - button.transform.position;
+                            var imageRectTransform = line.GetComponent<Image>().rectTransform;
+                            var lineWidth = 1f;
+                            imageRectTransform.sizeDelta = new Vector2(differenceVector.magnitude, lineWidth);
+                            imageRectTransform.pivot = new Vector2(0, 0.5f);
+                            imageRectTransform.position = button.transform.position;
+                            float angle = Mathf.Atan2(differenceVector.y, differenceVector.x) * Mathf.Rad2Deg;
+                            imageRectTransform.rotation = Quaternion.Euler(0, 0, angle);
+
+                            technique.treeLinesDictionary.Add(t, line);
+                            linesList.Add(line);
+                        }
+                    }
+                }
             }
 
             // reset new navigation
@@ -201,11 +245,45 @@
             }
         }
 
+        /// <summary>
+        /// Called when switching between a hero's 2 skill trees
+        /// </summary>
+        /// <param name="whichTree"></param>
         public void TreeOptionSelect(int whichTree)
         {
             if (whichTree != currentTreeIndex)
-                AssignTree(whichTree);
+                AssignTree(whichTree, currentHero);
         }
 
+        /// <summary>
+        /// Called when switching between heroes
+        /// </summary>
+        /// <param name="hero">GameControl hero index</param>
+        void HeroSelect(int hero)
+        {
+            AssignTree(0, hero);
+            SetSelectedObjectToRoot();
+        }
+
+        void IncreaseHero()
+        {
+            if (currentHero < gameControl.heroList.Count - 1)
+                HeroSelect(currentHero + 1);
+        }
+        void DecreaseHero()
+        {
+            if (currentHero > 0)
+                HeroSelect(currentHero - 1);
+        }
+
+        new void Update()
+        {
+            base.Update();
+
+            if (Input.GetKeyDown(KeyCode.RightBracket))
+                IncreaseHero();
+            else if (Input.GetKeyDown(KeyCode.LeftBracket))
+                DecreaseHero();
+        }
     }
 }

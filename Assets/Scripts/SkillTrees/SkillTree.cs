@@ -38,7 +38,9 @@ public class SkillTree {
 
         // starting root node
         public int rootCol;
-        public int rootRow;  
+        public int rootRow;
+
+        public Dictionary<Technique, List<Technique>> treeLinesDictionary;
               
     }
 

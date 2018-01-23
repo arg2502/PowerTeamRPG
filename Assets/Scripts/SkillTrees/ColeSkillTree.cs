@@ -58,6 +58,15 @@ public class ColeSkillTree : SkillTree {
         hellfire = new Spell(FindTechnique("hellfire"));
         coleFusion = new Spell(FindTechnique("coleFusion"));
 
+        // next
+        candleshot.ListNextTechnique = new List<Technique>() { fireball };
+        fireball.ListNextTechnique = new List<Technique>() { caster1 };
+        caster1.ListNextTechnique = new List<Technique>() { firewall, cauterize, grandFireball };
+        cauterize.ListNextTechnique = new List<Technique>() { slowBurn };
+        grandFireball.ListNextTechnique = new List<Technique>() { caster2 };
+        caster2.ListNextTechnique = new List<Technique>() { splashFlame, caster3 };
+        firewall.ListNextTechnique = new List<Technique>() { hellfire };
+
         // prerequisites
         fireball.Prerequisites = new List<Technique>() { candleshot };
         caster1.Prerequisites = new List<Technique>() { fireball };
@@ -84,6 +93,15 @@ public class ColeSkillTree : SkillTree {
         eclipse = new Spell(FindTechnique("eclipse"));
         bonecrush = new Spell(FindTechnique("bonecrush"));
         reaperGaze = new Spell(FindTechnique("reaperGaze"));
+
+        // next
+        anathema.ListNextTechnique = new List<Technique>() { bucket, twilight };
+        twilight.ListNextTechnique = new List<Technique>() { hollow, eclipse };
+        hollow.ListNextTechnique = new List<Technique>() { resist };
+        resist.ListNextTechnique = new List<Technique>() { study };
+        study.ListNextTechnique = new List<Technique>() { resiviction };
+        eclipse.ListNextTechnique = new List<Technique>() { bonecrush };
+        bonecrush.ListNextTechnique = new List<Technique>() { reaperGaze };
 
         // prereq
         twilight.Prerequisites = new List<Technique>() { anathema };

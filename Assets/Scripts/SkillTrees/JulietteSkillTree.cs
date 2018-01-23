@@ -65,6 +65,16 @@ public class JulietteSkillTree : SkillTree
         armorRush = new Skill(FindTechnique("armorRush"));
         doubleDash = new Spell(FindTechnique("doubleDash"));
 
+        // next
+        pivotKick.ListNextTechnique = new List<Technique>() { scorpio, climax, headDash };
+        scorpio.ListNextTechnique = new List<Technique>() { tempest };
+        tempest.ListNextTechnique = new List<Technique>() { conduct };
+        conduct.ListNextTechnique = new List<Technique>() { conductor };
+        climax.ListNextTechnique = new List<Technique>() { drill };
+        drill.ListNextTechnique = new List<Technique>() { doubleCut };
+        headDash.ListNextTechnique = new List<Technique>() { armorRush };
+        armorRush.ListNextTechnique = new List<Technique>() { doubleDash };
+
         // prerequisites
         scorpio.Prerequisites = new List<Technique>() { pivotKick };
         tempest.Prerequisites = new List<Technique>() { scorpio };
@@ -93,6 +103,17 @@ public class JulietteSkillTree : SkillTree
         flickerCounter = new Skill(FindTechnique("flickerCounter"));
         polarize = new Skill(FindTechnique("polarize"));
         flickerAssault = new Skill(FindTechnique("flickerAssault"));
+
+        // next
+        taunt.ListNextTechnique = new List<Technique>() { boast };
+        boast.ListNextTechnique = new List<Technique>() { rushdown1, flickerDodge };
+        rushdown1.ListNextTechnique = new List<Technique>() { rushdown2, heckle };
+        rushdown2.ListNextTechnique = new List<Technique>() { rushdown3 };
+        heckle.ListNextTechnique = new List<Technique>() { untouchable };
+        untouchable.ListNextTechnique = new List<Technique>() { misdirection };
+        flickerDodge.ListNextTechnique = new List<Technique>() { flickerCounter };
+        flickerCounter.ListNextTechnique = new List<Technique>() { polarize };
+        polarize.ListNextTechnique = new List<Technique>() { flickerAssault };
 
         // prerequisites
         boast.Prerequisites = new List<Technique>() { taunt };

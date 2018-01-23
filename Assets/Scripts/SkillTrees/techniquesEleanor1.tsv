@@ -14,4 +14,4 @@ ressurection2	Ressurection 2	Revive a fallen ally, with 45% of their max HP. Sta
 ressurection3	Ressurection 3	Revive a fallen ally, with 75% of their max HP. Status effects before death do not apply.	1	0	0	0	100	4	4	3
 rejoice	Rejoice	Boosts team defense and magic defense slightly.	1	0	0	0	100	3	1	
 eyesOfDarkness	Eyes of Darkness	Drastically increases the accuracy of one's character's attacks.	1	0	0	0	100	3	2	
-salvation	Salvation	Eleanor's trump card. Completely heals and removes the status effects of one ally, and boosts their stats substantially. Very high power cost, and has a cooldown turn.	1	35	0	0	100	2	7	
+salvation	Salvation	Eleanor's trump card. Completely heals and removes the status effects of one ally, and boosts their stats substantially. Very high power cost, and has a cooldown turn.	1	35	0	0	100	2	6	

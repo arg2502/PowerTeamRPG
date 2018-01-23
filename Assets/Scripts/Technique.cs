@@ -33,14 +33,14 @@ public class Technique {
     protected int critical;
     protected int accuracy;
     protected int level;
-    
+    public Dictionary<Technique, GameObject> treeLinesDictionary = new Dictionary<Technique, GameObject>();
 
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
     public int Pm { get { return pm; } set { pm = value; } }
     public int ColPos { get { return colPos; } set { colPos = value; } }
     public int RowPos { get { return rowPos; } set { rowPos = value; } }
-    public List<Technique> ListNextTechnique { get { return listNextTechnique; } set { listNextTechnique = value; } }
+    public List<Technique> ListNextTechnique { get { return listNextTechnique; } set { listNextTechnique = value; } }    
     public int Cost { get { return cost; } set { cost = value; } }
     public bool Active { get { return active; } set { active = value; } }
     public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    

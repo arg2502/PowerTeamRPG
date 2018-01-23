@@ -71,7 +71,19 @@ public class EleanorSkillTree : SkillTree
         rejoice = new Spell(FindTechnique("rejoice"));
         eyesOfDarkness = new Spell(FindTechnique("eyesOfDarkness"));
         salvation = new Spell(FindTechnique("salvation"));
-                
+
+        // next
+        purge.ListNextTechnique = new List<Technique>() { karmaic, tears };
+        tears.ListNextTechnique = new List<Technique>() { peace, rejoice };
+        peace.ListNextTechnique = new List<Technique>() { gaze };
+        gaze.ListNextTechnique = new List<Technique>() { sharedBlood, disciple1 };
+        disciple1.ListNextTechnique = new List<Technique>() { disciple2, blessing };
+        disciple2.ListNextTechnique = new List<Technique>() { disciple3 };
+        blessing.ListNextTechnique = new List<Technique>() { ressurection1 };
+        ressurection1.ListNextTechnique = new List<Technique>() { ressurection2 };
+        ressurection2.ListNextTechnique = new List<Technique>() { ressurection3 };
+        rejoice.ListNextTechnique = new List<Technique>() { eyesOfDarkness };        
+
         // prerequisites
         tears.Prerequisites = new List<Technique>() { purge };
         peace.Prerequisites = new List<Technique>() { tears };
@@ -100,6 +112,13 @@ public class EleanorSkillTree : SkillTree
         passing = new Spell(FindTechnique("passing"));
         staffStrike = new Skill(FindTechnique("staffStrike"));
         staffSlam = new Skill(FindTechnique("staffSlam"));
+
+        // next
+        weep.ListNextTechnique = new List<Technique>() { staffStrike, drawBlood };
+        staffStrike.ListNextTechnique = new List<Technique>() { staffSlam };
+        drawBlood.ListNextTechnique = new List<Technique>() { borrowed, antiheal };
+        antiheal.ListNextTechnique = new List<Technique>() { distress };
+        distress.ListNextTechnique = new List<Technique>() { passing };
 
         // prerequisites
         drawBlood.Prerequisites = new List<Technique>() { weep };

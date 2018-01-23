@@ -69,30 +69,13 @@ public class JethroSkillTree : SkillTree {
         goldSoul = new Skill(FindTechnique("goldSoul"));
 
         // set nexts to create branches
-        //helmsplitter.ListNextTechnique = new List<Technique>();
-        //helmsplitter.ListNextTechnique.Add(trinitySlice);
-        //helmsplitter.ListNextTechnique.Add(duelistI);
-
-        //trinitySlice.ListNextTechnique = new List<Technique>();
-        //trinitySlice.ListNextTechnique.Add(arcSlash);
-        //trinitySlice.ListNextTechnique.Add(siegeBreaker);
-
-        //siegeBreaker.ListNextTechnique = new List<Technique>();
-        //siegeBreaker.ListNextTechnique.Add(frostEdge);
-
-        //frostEdge.ListNextTechnique = new List<Technique>();
-        //frostEdge.ListNextTechnique.Add(mordstreich);
-        //frostEdge.ListNextTechnique.Add(riser);
-
-        //duelistI.ListNextTechnique = new List<Technique>();
-        //duelistI.ListNextTechnique.Add(rally);
-
-        //rally.ListNextTechnique = new List<Technique>();
-        //rally.ListNextTechnique.Add(duelistII);
-
-        //duelistII.ListNextTechnique = new List<Technique>();
-        //duelistII.ListNextTechnique.Add(duelistIII);
-        
+        helmsplitter.ListNextTechnique = new List<Technique>() { trinitySlice, duelistI };
+        trinitySlice.ListNextTechnique = new List<Technique>() { arcSlash, siegeBreaker };
+        siegeBreaker.ListNextTechnique = new List<Technique>() { frostEdge };
+        frostEdge.ListNextTechnique = new List<Technique>() { mordstreich, riser };
+        duelistI.ListNextTechnique = new List<Technique>() { rally };
+        rally.ListNextTechnique = new List<Technique>() { duelistII };
+        duelistII.ListNextTechnique = new List<Technique>() { duelistIII, goldSoul };
 
         // prerequisites
         trinitySlice.Prerequisites = new List<Technique>();
@@ -183,6 +166,7 @@ public class JethroSkillTree : SkillTree {
         basic.listOfContent = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, siegeBreaker, frostEdge, mordstreich, riser, duelistI, duelistII, duelistIII, rally, goldSoul };
         magic.listOfContent = new List<Technique>() { fog, frost, iceArmor, iceBarrier, resilience, coldShoulder, unbreakable, magicianI, magicianII, magicianIII, iceSpear, frostBite, diamondPeak };
         
+
         // set sizes of columns and rows
         basic.numOfColumn = 5;
         basic.numOfRow = 5;
