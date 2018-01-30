@@ -16,6 +16,21 @@
         public List<Button> treeOptionsList;
         public GameObject treeLineObj;
         List<GameObject> linesList = new List<GameObject>();
+        public ButtonSprites buttonSprites;
+
+        [Serializable]
+        public struct ButtonSprites
+        {
+            [Header("Normal")]
+            public Sprite normal;
+            public Sprite hover;
+            public Sprite pressed;
+
+            [Header("Disabled")]
+            public Sprite dis_normal;
+            public Sprite dis_hover;
+            public Sprite dis_pressed;
+        }
 
         public override void Init()
         {
@@ -49,7 +64,7 @@
         {
             return buttonGrid[0][0]; // TEMP
         }
-
+        
         void AssignTree(int treeIndex, int hero)
         {
             currentTreeIndex = treeIndex;
@@ -102,7 +117,30 @@
                 else
                     icon.sprite = treeManager.imageDatabase.defaultSprite;
 
+                // TECHNIQUE STATES
+                // if we have the technique in our lists, mark it as Active & show appropriate sprites                                
+                if (treeManager.HasTechnique(gameControl.heroList[currentHero], technique))
+                {
+                    SetButtonState(button, technique, true);
+                }
+                // otherwise -- we don't have it yet, mark as inactive
+                else
+                {
+                    SetButtonState(button, technique, false);
+                }
 
+                // LISTENERS
+                // instead of adding the listeners through `override AddListeners()`,
+                // we can add the listeners here and pass in the technique (while we have the info)..
+                // to link the button and technique together
+
+                // IMPORTANT -- variable needs to be copied before passing into lambda. 
+                // If `technique` is passed directly, it would only refer to the last technique in the list
+                // *A weird quirk of lambda functions*
+                var tech = technique; 
+                button.onClick.AddListener(() => OnPurchaseTech(tech, button));
+
+                // LINES
                 // find NEXT techniques
                 if (technique.ListNextTechnique != null)
                 {
@@ -276,6 +314,68 @@
                 HeroSelect(currentHero - 1);
         }
 
+        void SetButtonState(Button button, Technique technique, bool active)
+        {
+            if(active)
+            {
+                button.GetComponent<Image>().sprite = buttonSprites.normal;
+                var spriteState = button.spriteState;
+                spriteState.highlightedSprite = buttonSprites.hover;
+                spriteState.pressedSprite = buttonSprites.pressed;
+                spriteState.disabledSprite = buttonSprites.pressed;
+                button.spriteState = spriteState;
+                technique.Active = true;
+            }
+            else
+            {
+                button.GetComponent<Image>().sprite = buttonSprites.dis_normal;
+                var spriteState = button.spriteState;
+                spriteState.highlightedSprite = buttonSprites.dis_hover;
+                spriteState.pressedSprite = buttonSprites.dis_pressed;
+                spriteState.disabledSprite = buttonSprites.dis_pressed;
+                button.spriteState = spriteState;
+                technique.Active = false;
+            }
+        }
+
+        void OnPurchaseTech(Technique tech, Button button)
+        {
+            Debug.Log("Want to purchase: " + tech.Name);
+            // if the technique is already active, there's nothing else to do
+            if (tech.Active) return;
+
+            // if the hero doesn't have all the prerequisites, ignore (and display message)
+            if (tech.Prerequisites != null)
+            {
+                var prereqCount = 0;
+                foreach (var prereq in tech.Prerequisites)
+                {
+                    if (treeManager.HasTechnique(gameControl.heroList[currentHero], prereq))
+                        prereqCount++;
+                }
+                if (prereqCount < tech.Prerequisites.Count)
+                {
+                    Debug.LogError("MISSING PREREQUISITES");
+                    return;
+                }
+            }
+
+            // if the hero does not have enough tech points, ignore (and display message)
+            if(gameControl.heroList[currentHero].techPts < tech.Cost)
+            {
+                // just debug log for now
+                Debug.LogError("YOU DO NOT HAVE ENOUGH POINTS");
+                Debug.Log("Hero points: " + gameControl.heroList[currentHero].techPts);
+                Debug.Log("Technique cost: " + tech.Cost);
+                return;
+            }
+
+            // otherwise, we're good to buy the technique
+            treeManager.AddTechnique(gameControl.heroList[currentHero], tech);
+            gameControl.heroList[currentHero].techPts -= tech.Cost; // reduce points
+            SetButtonState(button, tech, true); // change button appearance
+        }
+
         new void Update()
         {
             base.Update();
@@ -284,6 +384,13 @@
                 IncreaseHero();
             else if (Input.GetKeyDown(KeyCode.LeftBracket))
                 DecreaseHero();
+
+            if (Input.GetKeyUp(KeyCode.T))
+            {
+                Debug.Log("YOU PRESSED 'T' AND GOT A TECH POINT. YOU CHEATING BASTARD");
+                gameControl.heroList[currentHero].techPts++;
+                Debug.Log(gameControl.heroList[currentHero].name + " tech points: " + gameControl.heroList[currentHero].techPts);
+            }
         }
     }
 }

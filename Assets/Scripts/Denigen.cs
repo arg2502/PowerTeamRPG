@@ -85,6 +85,8 @@ public class Denigen : MonoBehaviour {
     // Use this for initialization
 	protected void Awake () {
         //temp passive list
+        skillsList = new List<Skill>();
+        spellsList = new List<Spell>();
         passivesList = new List<Passive>();
 
         takeDamageText = new List<string>();
