@@ -17,6 +17,9 @@
         public GameObject treeLineObj;
         List<GameObject> linesList = new List<GameObject>();
         public ButtonSprites buttonSprites;
+        public GameObject heroListGroup;
+        public Toggle[] heroListToggles;
+        bool canSwitchCharacters = true;
 
         [Serializable]
         public struct ButtonSprites
@@ -39,6 +42,7 @@
             treeManager = new SkillTreeManager();
             currentHero = 0; // TEMP
             AssignTree(0, currentHero);
+            ToggleTextChange();
         }
 
         protected override void AddButtons()
@@ -176,6 +180,45 @@
             // reset new navigation
             SetButtonNavigation();
         }
+
+        void OnPurchaseTech(Technique tech, Button button)
+        {
+            Debug.Log("Want to purchase: " + tech.Name);
+            // if the technique is already active, there's nothing else to do
+            if (tech.Active) return;
+
+            // if the hero doesn't have all the prerequisites, ignore (and display message)
+            if (tech.Prerequisites != null)
+            {
+                var prereqCount = 0;
+                foreach (var prereq in tech.Prerequisites)
+                {
+                    if (treeManager.HasTechnique(gameControl.heroList[currentHero], prereq))
+                        prereqCount++;
+                }
+                if (prereqCount < tech.Prerequisites.Count)
+                {
+                    Debug.LogError("MISSING PREREQUISITES");
+                    return;
+                }
+            }
+
+            // if the hero does not have enough tech points, ignore (and display message)
+            if (gameControl.heroList[currentHero].techPts < tech.Cost)
+            {
+                // just debug log for now
+                Debug.LogError("YOU DO NOT HAVE ENOUGH POINTS");
+                Debug.Log("Hero points: " + gameControl.heroList[currentHero].techPts);
+                Debug.Log("Technique cost: " + tech.Cost);
+                return;
+            }
+
+            // otherwise, we're good to buy the technique
+            treeManager.AddTechnique(gameControl.heroList[currentHero], tech);
+            gameControl.heroList[currentHero].techPts -= tech.Cost; // reduce points
+            SetButtonState(button, tech, true); // change button appearance
+        }
+
         public override void SetButtonNavigation()
         {
             base.SetButtonNavigation();
@@ -299,8 +342,18 @@
         /// <param name="hero">GameControl hero index</param>
         void HeroSelect(int hero)
         {
+            if (!canSwitchCharacters) return;
+
+            // move hero list before changing currentHero
+            MoveHeroList(hero);
+
+            // change the tree grid
             AssignTree(0, hero);
             SetSelectedObjectToRoot();
+            
+            // show hero list change
+            ToggleTextChange();
+
         }
 
         void IncreaseHero()
@@ -337,43 +390,45 @@
                 technique.Active = false;
             }
         }
-
-        void OnPurchaseTech(Technique tech, Button button)
+        
+        void ToggleTextChange()
         {
-            Debug.Log("Want to purchase: " + tech.Name);
-            // if the technique is already active, there's nothing else to do
-            if (tech.Active) return;
+            foreach (var toggle in heroListToggles)
+                toggle.isOn = false;
 
-            // if the hero doesn't have all the prerequisites, ignore (and display message)
-            if (tech.Prerequisites != null)
+            heroListToggles[currentHero].isOn = true;
+        }
+
+        void MoveHeroList(int newHeroPos)
+        {
+            // find where the text needs to go next
+            var desiredPosition = heroListToggles[newHeroPos].transform.position;
+            var currentPosition = heroListToggles[currentHero].transform.position;
+            var differenceX = -(desiredPosition.x - currentPosition.x);
+            var newPosition = new Vector3(heroListGroup.transform.position.x + differenceX, heroListGroup.transform.position.y);
+
+            // while we're moving the text, disable the ability to switch to another character's tree
+            // this is to avoid a bug where the text gets stuck and doesn't move
+            canSwitchCharacters = false;
+
+            // move the text over a short period of time -- lerp it
+            StartCoroutine(LerpText(newPosition));
+            
+        }
+        
+        IEnumerator LerpText(Vector3 newPosition)
+        {
+            var startTime = Time.time;
+            var lerpTime = 10f;
+            var originalPosition = heroListGroup.transform.position;
+            while ((newPosition - heroListGroup.transform.position).magnitude >= 0.1f)
             {
-                var prereqCount = 0;
-                foreach (var prereq in tech.Prerequisites)
-                {
-                    if (treeManager.HasTechnique(gameControl.heroList[currentHero], prereq))
-                        prereqCount++;
-                }
-                if (prereqCount < tech.Prerequisites.Count)
-                {
-                    Debug.LogError("MISSING PREREQUISITES");
-                    return;
-                }
+                heroListGroup.transform.position = Vector3.Lerp(originalPosition, newPosition, (Time.time - startTime) * lerpTime);
+                yield return null;
             }
 
-            // if the hero does not have enough tech points, ignore (and display message)
-            if(gameControl.heroList[currentHero].techPts < tech.Cost)
-            {
-                // just debug log for now
-                Debug.LogError("YOU DO NOT HAVE ENOUGH POINTS");
-                Debug.Log("Hero points: " + gameControl.heroList[currentHero].techPts);
-                Debug.Log("Technique cost: " + tech.Cost);
-                return;
-            }
-
-            // otherwise, we're good to buy the technique
-            treeManager.AddTechnique(gameControl.heroList[currentHero], tech);
-            gameControl.heroList[currentHero].techPts -= tech.Cost; // reduce points
-            SetButtonState(button, tech, true); // change button appearance
+            // now that the text is where it needs to be, reenable the ability to switch between trees
+            canSwitchCharacters = true;
         }
 
         new void Update()
