@@ -87,6 +87,7 @@
                 item.name = category[i].GetComponent<Item>().name + "_Button";
                 item.transform.SetParent(itemSlotsContainer.transform);
                 item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
+                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
 
                 var button = item.GetComponentInChildren<Button>();
                 var itemInfo = category[i].GetComponent<Item>();
@@ -159,6 +160,7 @@
             var item = Instantiate(invisiblePrefab);
             item.transform.SetParent(itemSlotsContainer.transform);
             item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * position, 0);
+            item.GetComponent<RectTransform>().localScale = Vector3.one;
 
             var button = item.GetComponentInChildren<Button>();
             button.GetComponentInChildren<Text>().text = "";
