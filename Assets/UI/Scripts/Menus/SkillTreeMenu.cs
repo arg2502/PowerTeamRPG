@@ -2,12 +2,16 @@
 {
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.EventSystems;
     using System;
     using System.Collections;
     using System.Collections.Generic;
 
     public class SkillTreeMenu : GridMenu
     {
+        public Text costText;
+        public Text prereqText;
+        public Text heroTechText;
         public List<GameObject> rowParentList;
         SkillTreeManager treeManager;
         SkillTree.MyTree currentTree;
@@ -20,6 +24,14 @@
         public GameObject heroListGroup;
         public Toggle[] heroListToggles;
         bool canSwitchCharacters = true;
+        Dictionary<Button, Technique> buttonTechniqueLinker = new Dictionary<Button, Technique>();
+        TeamInfoSub teamInfoSub;
+        Button currentButton;
+
+        [Header("Warning Texts")]
+        public GameObject costWarning;
+        public GameObject prereqWarning;
+        float warningTime = 3f;
 
         [Serializable]
         public struct ButtonSprites
@@ -34,14 +46,22 @@
             public Sprite dis_hover;
             public Sprite dis_pressed;
         }
-
-        public override void Init()
+        
+        public override void TurnOnMenu()
         {
-            base.Init();
+            base.TurnOnMenu();
 
             treeManager = new SkillTreeManager();
-            currentHero = 0; // TEMP
+
+            // the hero to show first is stored inside TeamInfoSub where you selected the hero
+            teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;
+
+
+            MoveHeroList(teamInfoSub.currentHero, true); // move list before new currentHero is assigned
+
+            currentHero = teamInfoSub.currentHero; // kinda redundant cause currentHero is set inside AssignTree, but oh whale
             AssignTree(0, currentHero);
+            SetSelectedObjectToRoot();
             ToggleTextChange();
         }
 
@@ -73,11 +93,12 @@
         {
             currentTreeIndex = treeIndex;
             currentHero = hero;
-            treeManager.SetHero(hero); // TEMP
-            Debug.Log(treeManager.currentSkillTree);
+            treeManager.SetHero(hero);
+            //Debug.Log(treeManager.currentSkillTree);
             currentTree = treeManager.currentSkillTree.listOfTrees[currentTreeIndex];
 
             RootButton = buttonGrid[currentTree.rootCol][currentTree.rootRow];
+            currentButton = RootButton;
 
             foreach (var b in treeOptionsList)
                 b.transform.localScale = Vector3.one;
@@ -85,15 +106,21 @@
 
 
             SetTechniquesToButtons();
+
+            // set tech points text
+            SetHeroTechText();
         }
 
         void SetTechniquesToButtons()
         {
-            // deactivate all buttons first
+            // deactivate all buttons first -- AND REMOVE THEIR LISTENERS
             foreach(var list in buttonGrid)
             {
                 foreach (var button in list)
+                {
+                    button.onClick.RemoveAllListeners();
                     button.gameObject.SetActive(false);
+                }
             }
 
             // deactivate all lines too, if any
@@ -102,6 +129,8 @@
                 line.SetActive(false);
             }
 
+            // clear linker dictionary
+            buttonTechniqueLinker.Clear();
 
             foreach(var technique in currentTree.listOfContent)
             {
@@ -143,6 +172,7 @@
                 // *A weird quirk of lambda functions*
                 var tech = technique; 
                 button.onClick.AddListener(() => OnPurchaseTech(tech, button));
+                buttonTechniqueLinker.Add(button, tech);
 
                 // LINES
                 // find NEXT techniques
@@ -198,7 +228,7 @@
                 }
                 if (prereqCount < tech.Prerequisites.Count)
                 {
-                    Debug.LogError("MISSING PREREQUISITES");
+                    StartCoroutine(ShowWarning(prereqWarning));
                     return;
                 }
             }
@@ -206,17 +236,21 @@
             // if the hero does not have enough tech points, ignore (and display message)
             if (gameControl.heroList[currentHero].techPts < tech.Cost)
             {
-                // just debug log for now
-                Debug.LogError("YOU DO NOT HAVE ENOUGH POINTS");
-                Debug.Log("Hero points: " + gameControl.heroList[currentHero].techPts);
-                Debug.Log("Technique cost: " + tech.Cost);
+                StartCoroutine(ShowWarning(costWarning));
                 return;
             }
 
             // otherwise, we're good to buy the technique
+            string messageText = "<i>You want to buy:</i>\n\t<b>" + tech.Name + "</b>\n<i>Cost:</i><b>\t" + tech.Cost + "</b>";
+            uiManager.PushConfirmationMenu(messageText, () => PurchaseTechnique(tech, button));
+        }
+
+        void PurchaseTechnique(Technique tech, Button button)
+        {
             treeManager.AddTechnique(gameControl.heroList[currentHero], tech);
             gameControl.heroList[currentHero].techPts -= tech.Cost; // reduce points
             SetButtonState(button, tech, true); // change button appearance
+            SetHeroTechText();
         }
 
         public override void SetButtonNavigation()
@@ -350,7 +384,15 @@
             // change the tree grid
             AssignTree(0, hero);
             SetSelectedObjectToRoot();
-            
+
+            // refresh button -- to refresh button sprite state
+            var buttonObj = EventSystem.current.currentSelectedGameObject;
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(buttonObj);
+
+            // deactivate warnings
+            DeactivateWarningTexts();
+
             // show hero list change
             ToggleTextChange();
 
@@ -399,7 +441,7 @@
             heroListToggles[currentHero].isOn = true;
         }
 
-        void MoveHeroList(int newHeroPos)
+        void MoveHeroList(int newHeroPos, bool instant = false)
         {
             // find where the text needs to go next
             var desiredPosition = heroListToggles[newHeroPos].transform.position;
@@ -407,17 +449,20 @@
             var differenceX = -(desiredPosition.x - currentPosition.x);
             var newPosition = new Vector3(heroListGroup.transform.position.x + differenceX, heroListGroup.transform.position.y);
 
-            // while we're moving the text, disable the ability to switch to another character's tree
-            // this is to avoid a bug where the text gets stuck and doesn't move
-            canSwitchCharacters = false;
-
             // move the text over a short period of time -- lerp it
-            StartCoroutine(LerpText(newPosition));
+            if (!instant)
+                StartCoroutine(LerpText(newPosition));
+            else
+                heroListGroup.transform.position = newPosition;
             
         }
         
         IEnumerator LerpText(Vector3 newPosition)
         {
+            // while we're moving the text, disable the ability to switch to another character's tree
+            // this is to avoid a bug where the text gets stuck and doesn't move
+            canSwitchCharacters = false;
+
             var startTime = Time.time;
             var lerpTime = 10f;
             var originalPosition = heroListGroup.transform.position;
@@ -431,9 +476,75 @@
             canSwitchCharacters = true;
         }
 
+        void SetHeroTechText()
+        {
+            heroTechText.text = "Tech Pts: <b>" + gameControl.heroList[currentHero].techPts + "</b>";
+        }
+
+        void UpdateText()
+        {
+            // turn off warnings if we've switched to a different button
+            if(currentButton != EventSystem.current.currentSelectedGameObject.GetComponent<Button>())
+            {
+                DeactivateWarningTexts();
+                currentButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+            }
+
+            // if we're not on a tree button, set all text to null
+            if (!buttonTechniqueLinker.ContainsKey(EventSystem.current.currentSelectedGameObject.GetComponent<Button>()))
+            {
+                costText.text = "";
+                prereqText.text = "";
+                return;
+            }
+
+            // save technique
+            var tech = buttonTechniqueLinker[EventSystem.current.currentSelectedGameObject.GetComponent<Button>()];
+
+            // refresh description
+            descriptionText.text = "<b>" + tech.Name + "</b>\n\n" + tech.Description;
+
+            // set cost text
+            costText.text = "Cost: " + tech.Cost;
+
+            // set prerequites, if there are any
+            if (tech.Prerequisites != null && tech.Prerequisites.Count > 0)
+            {
+                prereqText.text = "<b>Prerequisites:</b>";
+
+                foreach (var prereq in tech.Prerequisites)
+                    prereqText.text += "\n" + prereq.Name;
+            }
+            else
+                prereqText.text = "";
+            
+        }
+        
+        IEnumerator ShowWarning(GameObject textObj)
+        {
+            // stop if object is already active
+            if (textObj.activeSelf) yield break;
+
+            // show warning, wait a couple seconds, then hide again
+            textObj.SetActive(true);
+            yield return new WaitForSeconds(warningTime);
+            textObj.SetActive(false);
+        }
+
+        void DeactivateWarningTexts()
+        {
+            costWarning.SetActive(false);
+            prereqWarning.SetActive(false);
+        }
+
         new void Update()
         {
             base.Update();
+
+            if (this.gameObject != uiManager.menuInFocus) return;
+
+            UpdateText();
+            
 
             if (Input.GetKeyDown(KeyCode.RightBracket))
                 IncreaseHero();

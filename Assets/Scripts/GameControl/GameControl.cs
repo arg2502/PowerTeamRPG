@@ -61,10 +61,10 @@ public class GameControl : MonoBehaviour {
 	public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
 
 	// for telling the pause menu which list of items to use
-	public string whichInventory;
-
+	internal string whichInventory;    
     public enum WhichInventory { Consumables, Weapons, Equipment, KeyItems }
     internal WhichInventory whichInventoryEnum;
+    
 
     // tells shopkeeper whether to open buy or sell menu
     // false - buy

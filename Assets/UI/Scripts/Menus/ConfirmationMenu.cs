@@ -1,0 +1,53 @@
+﻿namespace UI
+{
+    using UnityEngine;
+    using UnityEngine.UI;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    public class ConfirmationMenu : Menu
+    {
+        public Text specificText;
+        public Button yesButton, noButton;
+        public Action yesAction, noAction;
+        
+        public override void TurnOnMenu()
+        {
+            RootButton = AssignRootButton();
+            //SetSelectedObjectToRoot();
+            
+            base.TurnOnMenu();
+        }
+        public override Button AssignRootButton()
+        {
+            return yesButton;
+        }
+
+        protected override void AddButtons()
+        {
+            base.AddButtons();
+            listOfButtons = new List<Button>() { yesButton, noButton };
+        }
+        protected override void AddListeners()
+        {
+            base.AddListeners();
+
+            yesButton.onClick.RemoveAllListeners();
+            noButton.onClick.RemoveAllListeners();
+            
+            yesButton.onClick.AddListener(yesAction.Invoke);
+
+            if (noAction != null)
+                noButton.onClick.AddListener(noAction.Invoke);
+
+            yesButton.onClick.AddListener(CloseMenu);
+            noButton.onClick.AddListener(CloseMenu);
+        }
+
+        void CloseMenu()
+        {
+            uiManager.PopMenu();
+        }
+    }
+}

@@ -2,12 +2,13 @@
 {
     using UnityEngine;
     using UnityEngine.EventSystems;
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
     public class UIManager
     {
-        public UIDatabase UIDatabase;
+        public UIDatabase uiDatabase;
         public Dictionary<Menu, GameObject> dictionary_existingMenus;
         public List<GameObject> list_currentMenus;
         public GameObject menuInFocus; // the menu the player is currently on
@@ -15,7 +16,7 @@
 
         public UIManager()
         {
-            UIDatabase = Resources.Load<UIDatabase>("Databases/UIDatabase");
+            uiDatabase = Resources.Load<UIDatabase>("Databases/UIDatabase");
             dictionary_existingMenus = new Dictionary<Menu, GameObject>();
             list_currentMenus = new List<GameObject>();
 
@@ -57,11 +58,16 @@
             }
         }
 
+        public void ActivateMenu(GameObject menuPrefab, bool sub = false)
+        {
+            EnableMenu(menuPrefab, sub);
+            InitMenu(menuPrefab.GetComponent<Menu>());            
+        }
+
         /// <summary>
         /// For turning menus on and off (visible/invisible). Ex: Pausing and Unpausing the game 
         /// </summary>
         /// <param name="menuPrefab"></param>
-
         public void EnableMenu(GameObject menuPrefab, bool sub = false)
         {
             var menuToEnable = menuPrefab.GetComponent<Menu>();
@@ -71,10 +77,11 @@
             if(dictionary_existingMenus.ContainsKey(menuToEnable))
             {
                 menuObj = dictionary_existingMenus[menuToEnable];
-                menuObj.GetComponent<Menu>().TurnOnMenu();
                 //menuObj.GetComponent<Menu>().Init();
                 if (sub) AssignSubPosition(menuObj);
                 list_currentMenus.Add(menuObj);
+                
+                //menuObj.GetComponent<Menu>().TurnOnMenu();
             }
             // if we don't already have one, create it
             else
@@ -86,11 +93,17 @@
                 dictionary_existingMenus.Add(menuToEnable, menuObj);
                 list_currentMenus.Add(menuObj);
 
-                menuObj.GetComponent<Menu>().Init();
+                //menuObj.GetComponent<Menu>().Init();
             }
             // set this menu as the one in focus (currently on)
             menuInFocus = menuObj;
             
+        }
+
+        void InitMenu(Menu menu)
+        {
+            var menuObj = dictionary_existingMenus[menu];
+            menuObj.GetComponent<Menu>().Init();
         }
 
         /// <summary>
@@ -120,11 +133,13 @@
             {
                 parentMenu.RootButton = EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.Button>();
                 parentMenu.ToggleButtonState(false);
-                EnableMenu(menuPrefab);
+                //EnableMenu(menuPrefab);
+                ActivateMenu(menuPrefab);
             }
             else
             {
-                EnableMenu(menuPrefab);
+                //EnableMenu(menuPrefab);
+                ActivateMenu(menuPrefab);
             }
         }
         public void PopMenu()
@@ -146,7 +161,7 @@
             else
                 DisableAllMenus();
         }        
-
+        
         void AssignSubPosition(GameObject menuObj)
         {
             // if the menu is a sub menu, base it's position off of the parent's button that 
@@ -160,6 +175,15 @@
             
         }
         
-
+        public void PushConfirmationMenu(string messageText, Action yesAction, Action noAction = null)
+        {
+            EnableMenu(uiDatabase.ConfirmationMenu);
+            var confirmMenu = list_currentMenus[list_currentMenus.Count - 1].GetComponent<ConfirmationMenu>();
+            confirmMenu.specificText.text = messageText;
+            confirmMenu.yesAction = yesAction;
+            confirmMenu.noAction = noAction;
+            //InitMenu(confirmMenu);
+            confirmMenu.Init();
+        }
     }
 }

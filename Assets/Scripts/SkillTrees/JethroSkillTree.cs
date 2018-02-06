@@ -179,12 +179,7 @@ public class JethroSkillTree : SkillTree {
         magic.rootCol = 2;
         magic.rootRow = 0;
 
-
-        // add prerequisites to descriptions
-        AddPrerequisites(basic.listOfContent);
-        AddPrerequisites(magic.listOfContent);
-
-
+        
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(basic);
         listOfTrees.Add(magic);

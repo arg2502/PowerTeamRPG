@@ -130,10 +130,7 @@ public class ColeSkillTree : SkillTree {
         basic.rootRow = 0;
         basic2.rootCol = 2;
         basic2.rootRow = 0;
-
-        AddPrerequisites(basic.listOfContent);
-        AddPrerequisites(basic2.listOfContent);
-
+        
         listOfTrees = new List<MyTree>() { basic, basic2 };
         
 	

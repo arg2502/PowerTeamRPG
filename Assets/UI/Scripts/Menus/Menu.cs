@@ -16,23 +16,36 @@
         protected List<Button> listOfButtons;
         public Text descriptionText;
 
+        /// <summary>
+        /// When first instantiating a menu
+        /// </summary>
         public virtual void Init()
         {
+            if(gameControl != null)
+            {
+                TurnOnMenu();
+                return;
+            }
+            
             gameControl = GameControl.control;
             uiManager = GameControl.UIManager;
-            //uiManager = tempControl.UIManager;
-            uiDatabase = uiManager.UIDatabase;
+            uiDatabase = uiManager.uiDatabase;
             AddButtons();
             AddListeners();
             rootButton = AssignRootButton();
             SetButtonNavigation();
             TurnOnMenu();
         } 
+
+        /// <summary>
+        /// When the menu is already created and you just want to turn it back on
+        /// </summary>
         public virtual void TurnOnMenu()
         {
             gameObject.SetActive(true);
-            SetSelectedObjectToRoot();
+            SetSelectedObjectToRoot();            
         }
+
         protected virtual void AddListeners()
         {
             if (listOfButtons == null) return;

@@ -836,21 +836,21 @@ public class SkillTree {
         }
         return null;        
     }
-
-    protected void AddPrerequisites(List<Technique> content)
-    {
-        foreach (Technique tq in content)
-        {
-            if (tq != null && tq.Prerequisites != null)
-            {
-                tq.Description += "\n\nPrerequisites: ";
-                foreach (Technique tqn in tq.Prerequisites)
-                {
-                    tq.Description += "\n" + tqn.Name;
-                }
-            }
-        }
-    }
+    
+    //protected void AddPrerequisites(List<Technique> content)
+    //{
+    //    foreach (Technique tq in content)
+    //    {
+    //        if (tq != null && tq.Prerequisites != null)
+    //        {
+    //            tq.Description += "\n\nPrerequisites: ";
+    //            foreach (Technique tqn in tq.Prerequisites)
+    //            {
+    //                tq.Description += "\n" + tqn.Name;
+    //            }
+    //        }
+    //    }
+    //}
 
     public void AddTechnique(HeroData heroToAddTo, Technique techniqueToAdd)
     {

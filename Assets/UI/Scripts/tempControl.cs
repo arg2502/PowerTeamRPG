@@ -9,7 +9,7 @@
         {
             if(Input.GetKeyUp(KeyCode.Q))
             {
-                GameControl.UIManager.PushMenu(GameControl.UIManager.UIDatabase.PauseMenu);
+                GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
             }
         }
 

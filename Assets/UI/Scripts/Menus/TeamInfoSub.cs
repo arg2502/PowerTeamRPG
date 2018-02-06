@@ -8,7 +8,8 @@
     public class TeamInfoSub : SubMenu
     {
         public Button jethroButton, coleButton, eleanorButton, julietteButton;
-        
+        internal int currentHero;
+
         protected override void AddListeners()
         {
             base.AddListeners();
@@ -30,24 +31,28 @@
         private void OnJethro()
         {
             // open HeroInfoSub but with Jethro stats
+            currentHero = 0;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
         private void OnCole()
         {
             // open HeroInfoSub but with Cole stats
+            currentHero = 1;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
         private void OnEleanor()
         {
             // open HeroInfoSub but with Eleanor stats
+            currentHero = 2;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
         private void OnJuliette()
         {
             // open HeroInfoSub but with Juliette stats
+            currentHero = 3;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 

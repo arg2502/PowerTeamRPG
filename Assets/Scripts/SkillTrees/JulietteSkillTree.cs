@@ -148,13 +148,7 @@ public class JulietteSkillTree : SkillTree
         tree1.rootRow = 0;
         tree2.rootCol = 3;
         tree2.rootRow = 0;
-
-
-        // add prerequisites to descriptions
-        AddPrerequisites(tree1.listOfContent);
-        AddPrerequisites(tree2.listOfContent);
-
-
+        
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
