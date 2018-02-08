@@ -18,6 +18,7 @@ public class GameControl : MonoBehaviour {
 	public string playerName = "Jethro";
 
     public static UIManager UIManager;
+    public static SkillTreeManager skillTreeManager;
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
@@ -108,7 +109,13 @@ public class GameControl : MonoBehaviour {
 			DontDestroyOnLoad(gameObject);
 			control = this;
 
+            AddJethro();
+            AddCole();
+            AddEleanor();
+            AddJuliette();
+
             UIManager = new UIManager();
+            skillTreeManager = new SkillTreeManager();
 
 			// default KeyCodes
 			// possibly have them loaded in from somewhere based off user settings
@@ -151,18 +158,7 @@ public class GameControl : MonoBehaviour {
             //testtarget.Pm = 0;
             //testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
             //GameControl.control.heroList[1].spellsList.Add(testtarget);
-
-
-            // adding heroes - some if not all of these are temporary just to add them into the game for testing
-            AddJethro();
-            AddCole();
-            AddEleanor();
-            AddJuliette();
-
-
-
-
-
+            
             GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
             temp.name = "LesserRestorative";
 			GameControl.control.AddItem(temp);
@@ -856,8 +852,9 @@ public class GameControl : MonoBehaviour {
         Destroy(coleObj);
 
         // the below code would probably be found in the "Add Spell" functions
-        skillTreeAccessor.ReadInfo("techniquesCole1.tsv");
-        skillTreeAccessor.AddTechnique(heroList[1], new Spell(skillTreeAccessor.FindTechnique("candleshot")));
+        //skillTreeAccessor.ReadInfo("techniquesCole1.tsv");
+        //skillTreeAccessor.AddTechnique(heroList[1], new Spell(skillTreeAccessor.FindTechnique("candleshot")));
+        //skillTreeManager.AddColeStartingTechniques();
     }
     void AddEleanor()
     {

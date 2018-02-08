@@ -51,7 +51,7 @@
         {
             base.TurnOnMenu();
 
-            treeManager = new SkillTreeManager();
+            treeManager = GameControl.skillTreeManager;
 
             // the hero to show first is stored inside TeamInfoSub where you selected the hero
             teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;

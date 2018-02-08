@@ -34,6 +34,8 @@ public class ColeSkillTree : SkillTree {
     MyTree basic;
     MyTree basic2;
 
+    public List<Technique> startingTechs;
+
 	// Use this for initialization
 	public ColeSkillTree () {
         // set hero to Cole
@@ -132,7 +134,9 @@ public class ColeSkillTree : SkillTree {
         basic2.rootRow = 0;
         
         listOfTrees = new List<MyTree>() { basic, basic2 };
-        
+
+        // techniques that the character start out with
+        startingTechs = new List<Technique>() { candleshot }; 
 	
 	}
 	
