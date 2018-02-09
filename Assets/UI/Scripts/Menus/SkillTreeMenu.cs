@@ -33,6 +33,9 @@
         public GameObject prereqWarning;
         float warningTime = 3f;
 
+        Technique techniqueToAdd;
+        Button buttonToChange;
+
         [Serializable]
         public struct ButtonSprites
         {
@@ -242,15 +245,21 @@
 
             // otherwise, we're good to buy the technique
             string messageText = "<i>You want to buy:</i>\n\t<b>" + tech.Name + "</b>\n<i>Cost:</i><b>\t" + tech.Cost + "</b>";
-            uiManager.PushConfirmationMenu(messageText, () => PurchaseTechnique(tech, button));
+            techniqueToAdd = tech;
+            buttonToChange = button;
+            RootButton = buttonToChange;
+            uiManager.PushConfirmationMenu(messageText, PurchaseTechnique);
         }
 
-        void PurchaseTechnique(Technique tech, Button button)
+        void PurchaseTechnique()
         {
-            treeManager.AddTechnique(gameControl.heroList[currentHero], tech);
-            gameControl.heroList[currentHero].techPts -= tech.Cost; // reduce points
-            SetButtonState(button, tech, true); // change button appearance
+            treeManager.AddTechnique(gameControl.heroList[currentHero], techniqueToAdd);
+            print("you now have " + techniqueToAdd.Name);
+            gameControl.heroList[currentHero].techPts -= techniqueToAdd.Cost; // reduce points
+            SetButtonState(buttonToChange, techniqueToAdd, true); // change button appearance
             SetHeroTechText();
+            techniqueToAdd = null;
+            buttonToChange = null;
         }
 
         public override void SetButtonNavigation()
