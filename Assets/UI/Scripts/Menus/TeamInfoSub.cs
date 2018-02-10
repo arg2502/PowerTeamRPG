@@ -9,6 +9,7 @@
     {
         public Button jethroButton, coleButton, eleanorButton, julietteButton;
         internal int currentHero;
+        internal Button currentButton; // to know the Y position
 
         protected override void AddListeners()
         {
@@ -32,6 +33,7 @@
         {
             // open HeroInfoSub but with Jethro stats
             currentHero = 0;
+            currentButton = jethroButton;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
@@ -39,6 +41,7 @@
         {
             // open HeroInfoSub but with Cole stats
             currentHero = 1;
+            currentButton = coleButton;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
@@ -46,6 +49,7 @@
         {
             // open HeroInfoSub but with Eleanor stats
             currentHero = 2;
+            currentButton = eleanorButton;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
@@ -53,6 +57,7 @@
         {
             // open HeroInfoSub but with Juliette stats
             currentHero = 3;
+            currentButton = julietteButton;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 

@@ -8,7 +8,21 @@
     public class HeroInfoSub : SubMenu
     {
         public Button skillTree, statPoints;
-        
+        public GameObject buttonsGroup;
+        TeamInfoSub teamInfoSub;
+
+        public override void TurnOnMenu()
+        {
+            base.TurnOnMenu();
+
+            teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;
+
+            var yPos = teamInfoSub.currentButton.transform.position.y;
+            buttonsGroup.transform.position = new Vector3(buttonsGroup.transform.position.x, yPos, buttonsGroup.transform.position.z);
+
+
+        }
+
         protected override void AddListeners()
         {
             base.AddListeners();

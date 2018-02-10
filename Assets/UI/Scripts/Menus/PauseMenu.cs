@@ -9,6 +9,15 @@
     public class PauseMenu : Menu
     {
         public Button exitMenuButton, teamInfoButton, inventoryButton, saveButton, loadButton;
+
+        public override void TurnOnMenu()
+        {
+            base.TurnOnMenu();
+
+            RootButton = AssignRootButton();
+            SetSelectedObjectToRoot();
+        }
+
         protected override void AddListeners()
         {
             base.AddListeners();
