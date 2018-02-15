@@ -30,12 +30,12 @@ public class MorttimerStatue : NPCObject {
             // set the current scene variable
             GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             // heal the heroes
-            foreach(HeroData hd in GameControl.control.heroList)
+            foreach(DenigenData hd in GameControl.control.heroList)
             {
                 hd.hp = hd.hpMax;
                 hd.pm = hd.pmMax;
                 //get rid of status effects -- add later
-                hd.statusState = HeroData.Status.normal;
+                hd.statusState = DenigenData.Status.normal;
             }
             // set this as the saved statue
             GameControl.control.taggedStatue = true;

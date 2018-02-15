@@ -65,7 +65,7 @@ public class SkillTree {
     protected GameObject camera;
 
     // denigen obj to access specific techniques
-    protected HeroData hero;
+    protected DenigenData hero;
 
     // previous button object to keep track of which button to set back to normal
     ButtonSkillTree prevButton;
@@ -271,7 +271,7 @@ public class SkillTree {
     
     public void EndScene()
     {
-        foreach (HeroData hd in GameControl.control.heroList)
+        foreach (DenigenData hd in GameControl.control.heroList)
         {
             if (hd.identity == hero.identity)
             {

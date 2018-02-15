@@ -30,9 +30,9 @@ public class TeamSubMenu : SubMenu {
         //heroDescription.transform.position = pm.descriptionText.transform.position;
 
         // make the content array reflect the heroes in your party
-        foreach (HeroData hd in GameControl.control.heroList)
+        foreach (DenigenData hd in GameControl.control.heroList)
         {
-            contentArray.Add(hd.name);
+            contentArray.Add(hd.denigenName);
             buttonDescription.Add("O_o");
         }
         base.Start();
@@ -118,7 +118,7 @@ public class TeamSubMenu : SubMenu {
             heroInfo[i].name = "HeroInfo" + i.ToString();
             heroInfo[i].transform.position = pm.descriptionText.transform.position + new Vector3(0.0f, -(i * 1f), 0.0f);
         }
-        heroInfo[0].GetComponent<TextMesh>().text = GameControl.control.heroList[selectedIndex].name;
+        heroInfo[0].GetComponent<TextMesh>().text = GameControl.control.heroList[selectedIndex].denigenName;
         heroInfo[1].GetComponent<TextMesh>().text = "Status: " + GameControl.control.heroList[selectedIndex].statusState;
         heroInfo[2].GetComponent<TextMesh>().text = "Hp: " + Mathf.Clamp((GameControl.control.heroList[selectedIndex].hp + statChangeNumbers[1]), 0,
             GameControl.control.heroList[selectedIndex].hpMax) + " / " + GameControl.control.heroList[selectedIndex].hpMax;

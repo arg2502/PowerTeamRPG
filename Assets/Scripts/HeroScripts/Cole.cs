@@ -5,55 +5,22 @@ using System.Collections.Generic;
 public class Cole : Hero {
 
 	// Use this for initialization
-	void Awake () {
+	new void Awake () {
         
-        // if this is the first time the hero is made, create the lists
-        if(skillsList == null)
-        {
-            skillsList = new List<Skill>();
-        }
-        if (spellsList == null)
-        {            
-            spellsList = new List<Spell>();
-
-            // the below code would probably be found in the "Add Spell" functions
-            Spell hellfire = new Spell();
-            hellfire.Name = "HellFire";
-            hellfire.Pm = 8;
-            hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \nCost 8pm, Str 40, Crit 03, Acc 100";
-            spellsList.Add(hellfire);
-
-            Spell splashflame = new Spell();
-            splashflame.Name = "Splash Flame";
-            splashflame.Pm = 3;
-            splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \nCost 3pm, Str 60, Crit 05, Acc 85";
-            spellsList.Add(splashflame);
-
-            //Spell testtarget = new Spell();
-            //testtarget.Name = "Test Target";
-            //testtarget.Pm = 0;
-            //testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
-            //spellsList.Add(testtarget);
-        }
-        if(passivesList == null)
-        {
-            passivesList = new List<Passive>();
-        }
-
-        startingLevel = 2;
+        //startingLevel = 2; // SET ELSEWHERE ??
 
         // stats - should total to 1.00f
-        hpPer = 0.21f;
-        pmPer = 0.16f;
-        atkPer = 0.09f;
-        defPer = 0.07f;
-        mgkAtkPer = 0.17f;
-        mgkDefPer = 0.13f;
-        luckPer = 0.10f;
-        evasionPer = 0.08f;
-        spdPer = 0.09f;
+        //hpPer = 0.21f;
+        //pmPer = 0.16f;
+        //atkPer = 0.09f;
+        //defPer = 0.07f;
+        //mgkAtkPer = 0.17f;
+        //mgkDefPer = 0.13f;
+        //luckPer = 0.10f;
+        //evasionPer = 0.08f;
+        //spdPer = 0.09f;
 
-        growthSpeed = 0.95f;
+        //growthSpeed = 0.95f;
 
         base.Awake();
 	}

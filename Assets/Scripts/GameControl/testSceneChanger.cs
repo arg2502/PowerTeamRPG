@@ -17,7 +17,7 @@ public class testSceneChanger : MonoBehaviour {
         {
             GameControl.control.heroList.Add(new HeroData());
             GameControl.control.heroList[1].identity = 1;
-            GameControl.control.heroList[1].name = "Cole";
+            GameControl.control.heroList[1].denigenName = "Cole";
             GameControl.control.heroList[1].level = 2;
             GameControl.control.heroList[1].expToLvlUp = 19;
             GameControl.control.heroList[1].exp = 0;
@@ -67,7 +67,7 @@ public class testSceneChanger : MonoBehaviour {
         nameList = null;
         for (int i = 0; i < GameControl.control.heroList.Count; i++)
         {
-            nameList += " " + GameControl.control.heroList[i].name;
+            nameList += " " + GameControl.control.heroList[i].denigenName;
         }
         GUI.Label(new Rect(10, 600, 1000, 1000), nameList);
         if (GUI.Button(new Rect(10, 10, 150, 100), "Add Items"))

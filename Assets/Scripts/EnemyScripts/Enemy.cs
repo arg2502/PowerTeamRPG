@@ -34,16 +34,16 @@ public class Enemy : Denigen {
         areaLevel = 3;
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
-        level = Random.Range((areaLevel - 2), (areaLevel + 2));
+        Level = Random.Range((areaLevel - 2), (areaLevel + 2));
         //level up until desired level is hit
-        for (int i = 0; i < level; i++)
+        for (int i = 0; i < Level; i++)
         {
-            base.LevelUp(i + 1);
+            data.LevelUp(i + 1);
         }
 
         // Calculate the experience and gold this enemy should award
-        exp = stars * expMultiplier * level;
-        gold = stars * goldMultiplier;
+        exp = Stars * expMultiplier * Level;
+        gold = Stars * goldMultiplier;
 
         Rename();
 	}
@@ -54,9 +54,9 @@ public class Enemy : Denigen {
         base.TakeDamage(this, damage, isMagic);
 
         //after loss of health, a change of healthStatus may be required
-        if (hp >= hpMax * 0.8f) { healthState = Health.high; }
-        else if (hp < hpMax * 0.8f && hp >= hpMax * 0.5f) { healthState = Health.average; }
-        else if (hp < hpMax * 0.5f && hp >= hpMax * 0.2f) { healthState = Health.low; }
+        if (Hp >= HpMax * 0.8f) { healthState = Health.high; }
+        else if (Hp < HpMax * 0.8f && Hp >= HpMax * 0.5f) { healthState = Health.average; }
+        else if (Hp < HpMax * 0.5f && Hp >= HpMax * 0.2f) { healthState = Health.low; }
         else { healthState = Health.dangerous; }
     }
 
@@ -77,11 +77,13 @@ public class Enemy : Denigen {
     protected void Rename()
     {
         int i = 0;
-        foreach (Enemy e in battleMenu.enemyList)
-        {
-            if (e != this && e.name.Contains(name)) { i++; }
-            if (e == this) { break; }
-        }
+        // COME BACK LATER
+        // -AG
+        //foreach (Enemy e in battleMenu.enemyList)
+        //{
+        //    if (e != this && e.name.Contains(name)) { i++; }
+        //    if (e == this) { break; }
+        //}
         if (i == 1) { name += " B"; }
         if (i == 2) { name += " C"; }
         if (i == 3) { name += " D"; }

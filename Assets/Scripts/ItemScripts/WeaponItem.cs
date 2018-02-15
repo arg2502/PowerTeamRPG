@@ -15,7 +15,7 @@ public class WeaponItem : Item {
 
     }
 
-    public void Use(HeroData hero)
+    public void Use(DenigenData hero)
     {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform
@@ -53,7 +53,7 @@ public class WeaponItem : Item {
         //if (quantity <= 0) { GameControl.control.weapons.Remove(this.gameObject); }
     }
 
-    public void Remove(HeroData hero)
+    public void Remove(DenigenData hero)
     {
         // functions similarly to the use method, but this method will remove
         // passives or boost stats when called. It may require passing in

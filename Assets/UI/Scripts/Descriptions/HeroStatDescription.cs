@@ -7,14 +7,14 @@
     {
         public enum HeroStat { Jethro, Cole, Eleanor, Juliette }
         public HeroStat hero;
-        HeroData currentHero;
+        DenigenData currentHero;
        
         protected override void SetDescription()
         {
             SetHero();
             if (currentHero == null) return;
 
-            description = currentHero.name +
+            description = currentHero.denigenName +
                 "\n\nLevel: " + currentHero.level +
                 "\nStatus: " + currentHero.statusState +
                 "\nHP: " + currentHero.hp + " / " + currentHero.hpMax +

@@ -564,7 +564,7 @@
             {
                 Debug.Log("YOU PRESSED 'T' AND GOT A TECH POINT. YOU CHEATING BASTARD");
                 gameControl.heroList[currentHero].techPts++;
-                Debug.Log(gameControl.heroList[currentHero].name + " tech points: " + gameControl.heroList[currentHero].techPts);
+                Debug.Log(gameControl.heroList[currentHero].denigenName + " tech points: " + gameControl.heroList[currentHero].techPts);
             }
         }
     }

@@ -15,7 +15,7 @@ public class ArmorItem : Item {
 	
 	}
 
-    public void Use(HeroData hero)
+    public void Use(DenigenData hero)
     {
         //this method will use the name of the item in a switch
         //to determine the appropriate method to call to perform
@@ -73,7 +73,7 @@ public class ArmorItem : Item {
         //if (quantity <= 0) { GameControl.control.equipment.Remove(this.gameObject); }
     }
 
-    public void Remove(HeroData hero)
+    public void Remove(DenigenData hero)
     {
 
         hero.hpMax -= hpChange;

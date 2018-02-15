@@ -32,7 +32,7 @@ public class Item : MonoBehaviour {
     public int evadeChange;
     public int spdChange;
 
-    public List<HeroData> listOfHeroes = new List<HeroData>();
+    public List<DenigenData> listOfHeroes = new List<DenigenData>();
 
 	// Use this for initialization
 	protected void Start () {
@@ -44,7 +44,7 @@ public class Item : MonoBehaviour {
         // items will have their own overrides
     }
 
-    protected void AddHeroAndSortList(HeroData hd)
+    protected void AddHeroAndSortList(DenigenData hd)
     {
         // add hero to list
         listOfHeroes.Add(hd);
@@ -62,7 +62,7 @@ public class Item : MonoBehaviour {
             {
                 if (listOfHeroes[i + 1].identity < listOfHeroes[i].identity)
                 {
-                    HeroData temp = listOfHeroes[i];
+                    DenigenData temp = listOfHeroes[i];
                     listOfHeroes[i] = listOfHeroes[i + 1];
                     listOfHeroes[i + 1] = temp;
                     wasSwapped = true;

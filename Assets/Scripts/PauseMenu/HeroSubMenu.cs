@@ -6,7 +6,7 @@ public class HeroSubMenu : SubMenu {
 
     TeamSubMenu tsm;
     public int heroID = 0;
-    HeroData activeHero;
+    DenigenData activeHero;
 
     
 
@@ -72,7 +72,7 @@ public class HeroSubMenu : SubMenu {
     {
         tsm.DeactivateMenu();
         // find the hero we're working with
-        foreach (HeroData h in GameControl.control.heroList)
+        foreach (DenigenData h in GameControl.control.heroList)
         {
             if (h.identity == heroID) { activeHero = h; }
         }

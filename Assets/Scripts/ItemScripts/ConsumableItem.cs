@@ -13,7 +13,7 @@ public class ConsumableItem : Item {
 	}
 
     // out of battle use method
-    public void Use(HeroData target)
+    public void Use(DenigenData target)
     {
         target.hp += hpChange;
         target.pm += pmChange;
@@ -60,11 +60,11 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    if (target.hp <= (target.hpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
-                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
+                    if (target.Hp <= (target.HpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
+                    else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
                 }
-                target.hp += 20;
-                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
+                target.Hp += 20;
+                if (target.Hp > target.HpMax) { target.Hp = target.HpMax; }
                 break;
             case "Restorative":
                 // if you are in battle, make a healing effect object
@@ -72,11 +72,11 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    if (target.hp <= (target.hpMax - 40)) { be.GetComponent<Effect>().damage = 40 + "hp"; }
-                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
+                    if (target.Hp <= (target.HpMax - 40)) { be.GetComponent<Effect>().damage = 40 + "hp"; }
+                    else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
                 }
-                target.hp += 40;
-                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
+                target.Hp += 40;
+                if (target.Hp > target.HpMax) { target.Hp = target.HpMax; }
                 break;
             case "Gratuitous Restorative":
                 // if you are in battle, make a healing effect object
@@ -84,11 +84,11 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    if (target.hp <= (target.hpMax - 60)) { be.GetComponent<Effect>().damage = 60 + "hp"; }
-                    else { be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp"; }
+                    if (target.Hp <= (target.HpMax - 60)) { be.GetComponent<Effect>().damage = 60 + "hp"; }
+                    else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
                 }
-                target.hp += 60;
-                if (target.hp > target.hpMax) { target.hp = target.hpMax; }
+                target.Hp += 60;
+                if (target.Hp > target.HpMax) { target.Hp = target.HpMax; }
                 break;
             case "Terminal Restorative":
                 // if you are in battle, make a healing effect object
@@ -96,9 +96,9 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    be.GetComponent<Effect>().damage = (target.hpMax - target.hp) + "hp";
+                    be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp";
                 }
-                target.hp = target.hpMax;
+                target.Hp = target.HpMax;
                 break;
             case "Lesser Elixir":
                 // if you are in battle, make a healing effect object
@@ -106,11 +106,11 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    if (target.pm <= (target.pmMax - 20)) { be.GetComponent<Effect>().damage = 20 + "pm"; }
-                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
+                    if (target.Pm <= (target.PmMax - 20)) { be.GetComponent<Effect>().damage = 20 + "pm"; }
+                    else { be.GetComponent<Effect>().damage = (target.PmMax - target.Pm) + "pm"; }
                 }
-                target.pm += 20;
-                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                target.Pm += 20;
+                if (target.Pm > target.PmMax) { target.Pm = target.PmMax; }
                 break;
             case "Elixir":
                 // if you are in battle, make a healing effect object
@@ -118,11 +118,11 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    if (target.pm <= (target.pmMax - 40)) { be.GetComponent<Effect>().damage = 40 + "pm"; }
-                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
+                    if (target.Pm <= (target.PmMax - 40)) { be.GetComponent<Effect>().damage = 40 + "pm"; }
+                    else { be.GetComponent<Effect>().damage = (target.PmMax - target.Pm) + "pm"; }
                 }
-                target.pm += 40;
-                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                target.Pm += 40;
+                if (target.Pm > target.PmMax) { target.Pm = target.PmMax; }
                 break;
             case "Gratuitous Elixir":
                 // if you are in battle, make a healing effect object
@@ -130,11 +130,11 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    if (target.pm <= (target.pmMax - 60)) { be.GetComponent<Effect>().damage = 60 + "pm"; }
-                    else { be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm"; }
+                    if (target.Pm <= (target.PmMax - 60)) { be.GetComponent<Effect>().damage = 60 + "pm"; }
+                    else { be.GetComponent<Effect>().damage = (target.PmMax - target.Pm) + "pm"; }
                 }
-                target.pm += 60;
-                if (target.pm > target.pmMax) { target.pm = target.pmMax; }
+                target.Pm += 60;
+                if (target.Pm > target.PmMax) { target.Pm = target.PmMax; }
                 break;
             case "Terminal Elixir":
                 // if you are in battle, make a healing effect object
@@ -142,9 +142,9 @@ public class ConsumableItem : Item {
                 {
                     GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
                     be.name = "HealEffect";
-                    be.GetComponent<Effect>().damage = (target.pmMax - target.pm) + "pm";
+                    be.GetComponent<Effect>().damage = (target.PmMax - target.PmMax) + "pm";
                 }
-                target.pm = target.pmMax;
+                target.Pm = target.PmMax;
                 break;
             default:
                 print(name + " does not have a case!");

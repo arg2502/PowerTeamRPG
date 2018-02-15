@@ -45,7 +45,7 @@ public class SkillTreeManager {
         }
     }
 
-    public void AddTechnique(HeroData hero, Technique tech)
+    public void AddTechnique(DenigenData hero, Technique tech)
     {
         // check what kind of technique
         if (tech is Skill)
@@ -67,7 +67,7 @@ public class SkillTreeManager {
         }
     }
 
-    public bool HasTechnique(HeroData hero, Technique tech)
+    public bool HasTechnique(DenigenData hero, Technique tech)
     {
         if (tech is Skill)
             return HasSkill(hero, tech as Skill);
@@ -82,21 +82,21 @@ public class SkillTreeManager {
         }
     }
 
-    bool HasSkill(HeroData hero, Skill skill)
+    bool HasSkill(DenigenData hero, Skill skill)
     {
         if (hero.skillsList.Contains(skill))
             return true;
         else
             return false;
     }
-    bool HasSpell(HeroData hero, Spell spell)
+    bool HasSpell(DenigenData hero, Spell spell)
     {
         if (hero.spellsList.Contains(spell))
             return true;
         else
             return false;
     }
-    bool HasPassive(HeroData hero, Passive passive)
+    bool HasPassive(DenigenData hero, Passive passive)
     {
         if (hero.passiveList.Contains(passive))
             return true;

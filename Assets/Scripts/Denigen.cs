@@ -3,16 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Denigen : MonoBehaviour {
-
-    // attributes
-    // stats
-    protected int atk, def, mgkAtk, mgkDef, luck, evasion, spd;
-
-    // stat percentages
-    protected float hpPer, pmPer, atkPer, defPer, mgkAtkPer, mgkDefPer, luckPer, evasionPer, spdPer;
-
-    // in-battle/temporary stats -- made public so combatants can view and alter in battle stats
-    public int hp, pm, hpMax, pmMax, atkBat, defBat, mgkAtkBat, mgkDefBat, luckBat, evasionBat, spdBat;
+    
+    // in-battle stats -- these variables will hold any temporary changes made to the Denigen's stats during battle
+    // Ex: a move temporarily increases Attack stat by 5 but only for a few turns, or for the rest of the battle
+    // so atkChange would be set to +5, and set back to zero after x amount of turns and/or at the end of the battle
+    private int hpMaxChange, pmMaxChange, atkChange, defChange, mgkAtkChange, mgkDefChange, luckChange, evasionChange, spdChange;
 
     //Boolean to block attacks
     protected bool isBlocking = false;
@@ -21,44 +16,58 @@ public class Denigen : MonoBehaviour {
     //List for storing targets of Denigen's attacks and spells
     protected List<Denigen> targets = new List<Denigen>() { };
     public List<Denigen> Targets { get { return targets; } }
-
-    // ratings/leveling up
-    protected int stars;
-    protected int level;
-   // public int Level { get { return level; } }
-    protected int baseTotal;
-    protected float multiplier;
-    protected float boostTotal;
-
+    
     //Battle menu object
     protected BattleMenu battleMenu;
     protected List<string> takeDamageText, calcDamageText;
 
+    protected DenigenData data;
+
     public List<string> TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
     public List<string> CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
+    
+    // Changes to stats
+    //public int HpChange { get { return hpChange; } set { hpChange = value; } } // HP & PM shouldn't ever temporarily change
+    //public int PmChange { get { return pmChange; } set { pmChange = value; } }
+    public int HpMaxChange { get { return hpMaxChange; } set { hpMaxChange = value; } }
+    public int PmMaxChange { get { return pmMaxChange; } set { pmMaxChange = value; } }
+    public int AtkChange { get { return atkChange; } set { atkChange = value; } }
+    public int DefChange { get { return defChange; } set { defChange = value; } }
+    public int MgkAtkChange { get { return mgkAtkChange; } set { mgkAtkChange = value; } }
+    public int MgkDefChange { get { return mgkDefChange; } set { mgkDefChange = value; } }
+    public int LuckChange { get { return luckChange; } set { luckChange = value; } }
+    public int EvasionChange { get { return evasionChange; } set { evasionChange = value; } }
+    public int SpdChange { get { return spdChange; } set { spdChange = value; } }
 
-    // arrays of techniques
-    //protected List<string> skillsList, skillsDescription, spellsList, spellsDescription; 
-    protected List<Skill> skillsList;
-    protected List<Spell> spellsList;
-    protected List<Passive> passivesList; // List of passives, useful for enemies and heroes
-    // properties
-    public int Stars { get { return stars; } }
-    public int Level { get { return level; } set { level = value; } }
-    public int Atk { get { return atk; } set { atk = value; } }
-    public int Def { get { return def; } set { def = value; } }
-    public int MgkAtk { get { return mgkAtk; } set { mgkAtk = value; } }
-    public int MgkDef { get { return mgkDef; } set { mgkDef = value; } }
-    public int Luck { get {return luck; } set { luck = value; } }
-    public int Evasion { get { return evasion; } set { evasion = value; } }
-    public int Spd { get { return spd; } set { spd = value; } }
-    public List<Passive> PassivesList { get { return passivesList; } set { passivesList = value; } }
-    public List<Skill> SkillsList { get { return skillsList; } set { skillsList = value; } }
-    public List<Spell> SpellsList { get { return spellsList; } set { spellsList = value; } }
+    // DenigenData linkers
+    // fighting stats (with in-battle changes
+    public int Hp { get { return data.hp; } set { data.hp = value; } }
+    public int Pm { get { return data.pm; } set { data.pm = value; } }
+    public int HpMax { get { return data.hpMax + hpMaxChange; } }
+    public int PmMax { get { return data.pmMax + pmMaxChange; } }
+    public int Atk { get { return data.atk + atkChange; } }
+    public int Def { get { return data.def + defChange; } }
+    public int MgkAtk { get { return data.mgkAtk + mgkAtkChange; } }
+    public int MgkDef { get { return data.mgkDef + mgkDefChange; } }
+    public int Luck { get { return data.luck + luckChange; } }
+    public int Evasion { get { return data.evasion + evasionChange; } }
+    public int Spd { get { return data.spd + spdChange; } }
 
+    // leveling stats
+    public int Level { get { return data.level; } set { data.level = value; } }
+    public int Stars { get { return data.stars; } }
+    public float Multiplier { get { return data.multiplier; } }
+    public int Exp { get { return data.exp; } set { data.exp = value; } }
+    public int ExpToLevelUp { get { return data.expToLvlUp; } set { data.expToLvlUp = value; } }
+
+    // techniques
+    public List<Passive> PassivesList { get { return data.passiveList; } }
+    public List<Skill> SkillsList { get { return data.skillsList; } }
+    public List<Spell> SpellsList { get { return data.spellsList; } }
+    
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
-    public Status statusState;// = Status.normal;
+    private Status statusState;// = Status.normal;
 
     public Status StatusState { get { return statusState; } set { statusState = value; } }
 
@@ -84,32 +93,9 @@ public class Denigen : MonoBehaviour {
 
     // Use this for initialization
 	protected void Awake () {
-        //temp passive list
-        skillsList = new List<Skill>();
-        spellsList = new List<Spell>();
-        passivesList = new List<Passive>();
 
         takeDamageText = new List<string>();
         calcDamageText = new List<string>();
-
-        baseTotal = 24 + (12 * stars);
-
-        // setting up stats
-        if (hpMax == 0)// checking if they already exist, so they're not overwritten
-        {
-            level = 1;
-            hp = (int)(baseTotal * hpPer);
-            pm = (int)(baseTotal * pmPer);
-            atkBat = atk = (int)(baseTotal * atkPer);
-            defBat = def = (int)(baseTotal * defPer);
-            mgkAtkBat = mgkAtk = (int)(baseTotal * mgkAtkPer);
-            mgkDefBat = mgkDef = (int)(baseTotal * mgkDefPer);
-            luckBat = luck = (int)(baseTotal * luckPer);
-            evasionBat = evasion = (int)(baseTotal * evasionPer);
-            spdBat = spd = (int)(baseTotal * spdPer);
-            hpMax = hp;
-            pmMax = pm;
-        }
         
         // COMMENTED OUT ON 12/6/2017
         // BATTLE MENU WILL BE REDONE AT A LATER TIME
@@ -136,34 +122,34 @@ public class Denigen : MonoBehaviour {
 
         //anim = GetComponent<Animator>();
 	}
-    protected void LevelUp(int lvl)
-    {
-        multiplier = (lvl / 10.0f) + 1.0f;
-        boostTotal = stars * 9 * multiplier; // 9 = number of stats
+    //protected void LevelUp(int lvl)
+    //{
+    //    multiplier = (lvl / 10.0f) + 1.0f;
+    //    boostTotal = stars * 9 * multiplier; // 9 = number of stats
 
-        // increase stats
-        hp += (int)(boostTotal * hpPer);
-        pm += (int)(boostTotal * pmPer);
-        hpMax += (int)(boostTotal * hpPer);
-        pmMax += (int)(boostTotal * pmPer);
-        atk += (int)(boostTotal * atkPer);
-        def += (int)(boostTotal * defPer);
-        mgkAtk += (int)(boostTotal * mgkAtkPer);
-        mgkDef += (int)(boostTotal * mgkDefPer);
-        luck += (int)(boostTotal * luckPer);
-        evasion += (int)(boostTotal * evasionPer);
-        spd += (int)(boostTotal * spdPer);
+    //    // increase stats
+    //    hpChange += (int)(boostTotal * hpPer);
+    //    pmChange += (int)(boostTotal * pmPer);
+    //    hpMaxChange += (int)(boostTotal * hpPer);
+    //    pmMaxChange += (int)(boostTotal * pmPer);
+    //    atk += (int)(boostTotal * atkPer);
+    //    def += (int)(boostTotal * defPer);
+    //    mgkAtk += (int)(boostTotal * mgkAtkPer);
+    //    mgkDef += (int)(boostTotal * mgkDefPer);
+    //    luck += (int)(boostTotal * luckPer);
+    //    evasion += (int)(boostTotal * evasionPer);
+    //    spd += (int)(boostTotal * spdPer);
 
-        //just in case we're in battle when we level up, let's also increase the bsttle stats
-        atkBat += (int)(boostTotal * atkPer);
-        defBat += (int)(boostTotal * defPer);
-        mgkAtkBat += (int)(boostTotal * mgkAtkPer);
-        mgkDefBat += (int)(boostTotal * mgkDefPer);
-        luckBat += (int)(boostTotal * luckPer);
-        evasionBat += (int)(boostTotal * evasionPer);
-        spdBat += (int)(boostTotal * spdPer);
+    //    //just in case we're in battle when we level up, let's also increase the bsttle stats
+    //    atkChange += (int)(boostTotal * atkPer);
+    //    defChange += (int)(boostTotal * defPer);
+    //    mgkAtkChange += (int)(boostTotal * mgkAtkPer);
+    //    mgkDefChange += (int)(boostTotal * mgkDefPer);
+    //    luckChange += (int)(boostTotal * luckPer);
+    //    evasionChange += (int)(boostTotal * evasionPer);
+    //    spdChange += (int)(boostTotal * spdPer);
         
-    }
+    //}
 
     public virtual void Attack(string atkChoice)
     {
@@ -192,12 +178,12 @@ public class Denigen : MonoBehaviour {
             // if its a magic attack, use magic variables
             if (isMagic)
             {
-                atkStat = mgkAtkBat;
+                atkStat = mgkAtkChange;
             }
             // if not magic, use physical variables
             else
             {
-                atkStat = atkBat;
+                atkStat = atkChange;
             }
 
             // calculate damage
@@ -207,14 +193,14 @@ public class Denigen : MonoBehaviour {
             num = Random.Range(0.0f, 1.0f);
 
             // use luck to increase crit chance
-            float chance = Mathf.Pow((float)(luckBat), 2.0f / 3.0f); // luck ^ 2/3
+            float chance = Mathf.Pow((float)(luckChange), 2.0f / 3.0f); // luck ^ 2/3
             chance /= 100; // make percentage
 
             // add chance to crit to increase the probability of num being the smaller one
             if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); }
 
             // check for attack based passivesList
-            foreach (Passive cdp in passivesList)
+            foreach (Passive cdp in PassivesList)
             {
                 if (cdp is CalcDamagePassive) { cdp.Use(this, null); }
             }
@@ -237,11 +223,11 @@ public class Denigen : MonoBehaviour {
         int defStat;
         if (isMagic)
         {
-            defStat = mgkDefBat;
+            defStat = mgkDefChange;
         }
         else
         {
-            defStat = defBat;
+            defStat = defChange;
         }
 
         // divide damage by the defensive stat
@@ -257,13 +243,13 @@ public class Denigen : MonoBehaviour {
         if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); }
 
         // check for passivesList
-        foreach (Passive tdp in passivesList)
+        foreach (Passive tdp in PassivesList)
         {
             if (tdp is TakeDamagePassive) { tdp.Use(attackingDen, this); }
         }
 
         // decrease hp based off of damage
-        hp -= (int)damage;
+        Hp -= (int)damage;
 
         //Now record appropriate text
         takeDamageText.Add(name + " takes " + (int)damage + " damage!");
@@ -278,9 +264,9 @@ public class Denigen : MonoBehaviour {
         }
 
         // check for dead
-        if (hp <= 0)
+        if (Hp <= 0)
         {
-            hp = 0;
+            Hp = 0;
             takeDamageText.Add( name + " falls!");
             statusState = Status.dead;
         }

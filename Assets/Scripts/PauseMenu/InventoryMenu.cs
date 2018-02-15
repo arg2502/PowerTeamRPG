@@ -235,7 +235,7 @@ public class InventoryMenu : Menu {
                             //        break;
 
                             //}
-                            descriptionText.GetComponent<TextMesh>().text += itemList[selectedIndex + scrollIndex].listOfHeroes[i].name +"\n";
+                            descriptionText.GetComponent<TextMesh>().text += itemList[selectedIndex + scrollIndex].listOfHeroes[i].denigenName +"\n";
                         }
                         //descriptionText.GetComponent<TextMesh>().color = Color.black;
 

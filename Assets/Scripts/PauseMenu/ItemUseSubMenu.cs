@@ -20,9 +20,9 @@ public class ItemUseSubMenu : SubMenu {
         statChangeNumbers = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
         // make the content array reflect the heroes in your party
-        foreach (HeroData hd in GameControl.control.heroList)
+        foreach (DenigenData hd in GameControl.control.heroList)
         {
-            contentArray.Add(hd.name);
+            contentArray.Add(hd.denigenName);
             //buttonDescription.Add("Use on:\n" + hd.name + "\nStatus: " + hd.statusState
             //    + "\nHp: " + hd.hp + " / " + hd.hpMax
             //    + "\nPm: " + hd.pm + " / " + hd.pmMax);
@@ -43,7 +43,7 @@ public class ItemUseSubMenu : SubMenu {
                 default:
                     for (int i = 0; i < GameControl.control.heroList.Count; i++)
                     {
-                        if (GameControl.control.heroList[i].statusState == HeroData.Status.dead || GameControl.control.heroList[i].statusState == HeroData.Status.overkill)
+                        if (GameControl.control.heroList[i].statusState == DenigenData.Status.dead || GameControl.control.heroList[i].statusState == DenigenData.Status.overkill)
                         {
                             buttonArray[i].GetComponent<MyButton>().state = MyButton.MyButtonTextureState.inactive;
                         }
@@ -63,7 +63,7 @@ public class ItemUseSubMenu : SubMenu {
         }
 	}
 
-    public void InstantiateHeroInfo(HeroData h)
+    public void InstantiateHeroInfo(DenigenData h)
     {
         if (heroInfo == null) { heroInfo = new List<GameObject>(); }
         else { foreach (GameObject go in heroInfo) { Destroy(go); } heroInfo.Clear(); }
@@ -74,7 +74,7 @@ public class ItemUseSubMenu : SubMenu {
             heroInfo[i].name = "HeroInfo" + i;
             heroInfo[i].transform.position = parent.im.descriptionText.transform.position + new Vector3(0.0f, -(i * 0.55f), 0.0f);
         }
-        heroInfo[0].GetComponent<TextMesh>().text = h.name;
+        heroInfo[0].GetComponent<TextMesh>().text = h.denigenName;
         heroInfo[1].GetComponent<TextMesh>().text = "Status: " + h.statusState;
         heroInfo[2].GetComponent<TextMesh>().text = "Hp: " + Mathf.Clamp((h.hp + statChangeNumbers[1]), 0, h.hpMax) + " / " + h.hpMax;
         heroInfo[3].GetComponent<TextMesh>().text = "Pm: " + Mathf.Clamp((h.pm + statChangeNumbers[2]), 0, h.pmMax) + " / " + h.pmMax;
@@ -89,7 +89,7 @@ public class ItemUseSubMenu : SubMenu {
     }
 
     // this method exists to be more efficient with memory - all items minimally have these 10 attributes
-    public void SetStatChanges(HeroData h)
+    public void SetStatChanges(DenigenData h)
     {
         // draw the current item from the correct list of items
         if (GameControl.control.whichInventory == "consumables") 

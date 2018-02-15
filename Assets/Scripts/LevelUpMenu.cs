@@ -11,7 +11,7 @@ public class LevelUpMenu : Menu {
     protected List<int> statBoostInts; // stores how much the player wants to increase each stat by
     protected List<string> statDescription; // explanation of the stat
     protected GameObject descriptionText;
-    protected HeroData hero; // the current hero who is leveling up. This will be provided by the GameControl obj
+    protected DenigenData hero; // the current hero who is leveling up. This will be provided by the GameControl obj
     protected int remainingPoints;// = 10; // this should be determined by the hero thsat is passed in by GameControl
 
     // Bool for knowing if we should continue with the level up menu -- this should probably be found in the skill tree section
@@ -51,24 +51,24 @@ public class LevelUpMenu : Menu {
         remainingPoints = hero.levelUpPts;
 
         // fill the stat description list with a description for each stat
-        statDescription.Add(hero.name + "'s maximum health points. This stat determines how much damage " + hero.name
+        statDescription.Add(hero.denigenName + "'s maximum health points. This stat determines how much damage " + hero.denigenName
             + " can take before falling in combat.");
-        statDescription.Add(hero.name + "'s maximum Power Magic points. This is a pool of magical strength that " +
-            hero.name + " calls upon to use skills and spells. When depleted, " + hero.name + " must rely solely on their ability to strike.");
-        statDescription.Add(hero.name + "'s physical strength. " + hero.name + "'s skills will inflict more damage as this" +
+        statDescription.Add(hero.denigenName + "'s maximum Power Magic points. This is a pool of magical strength that " +
+            hero.denigenName + " calls upon to use skills and spells. When depleted, " + hero.denigenName + " must rely solely on their ability to strike.");
+        statDescription.Add(hero.denigenName + "'s physical strength. " + hero.denigenName + "'s skills will inflict more damage as this" +
             " stat increases.");
-        statDescription.Add(hero.name + "'s physical defense. " + hero.name + " will become more resistant to physical damage" +
+        statDescription.Add(hero.denigenName + "'s physical defense. " + hero.denigenName + " will become more resistant to physical damage" +
             " as this stat increases.");
-        statDescription.Add(hero.name + "'s magical might. " + hero.name + "'s spells will become more effective as" +
+        statDescription.Add(hero.denigenName + "'s magical might. " + hero.denigenName + "'s spells will become more effective as" +
             " this stat increases. Attack spells will deal more damage and healing spells will restore more health.");
-        statDescription.Add(hero.name + "'s magical defense. " + hero.name + " will become more resistant to magical damage" +
+        statDescription.Add(hero.denigenName + "'s magical defense. " + hero.denigenName + " will become more resistant to magical damage" +
             " as this stat increases.");
-        statDescription.Add(hero.name + "'s luck. " + hero.name + "'s chances of landing a critical hit increases" +
+        statDescription.Add(hero.denigenName + "'s luck. " + hero.denigenName + "'s chances of landing a critical hit increases" +
             " as this stat increases. Critical hits deal 1.5 times the usual damage.");
-        statDescription.Add(hero.name + "'s evasiveness. " + hero.name + "'s ability to avoid enemy attacks increases" +
+        statDescription.Add(hero.denigenName + "'s evasiveness. " + hero.denigenName + "'s ability to avoid enemy attacks increases" +
             " as this stat increases.");
-        statDescription.Add(hero.name + "'s speed. This stat determines the turn order in battle.");
-        statDescription.Add("Finalize the changes made to " + hero.name + "'s stats and proceed to skill trees.");
+        statDescription.Add(hero.denigenName + "'s speed. This stat determines the turn order in battle.");
+        statDescription.Add("Finalize the changes made to " + hero.denigenName + "'s stats and proceed to skill trees.");
 
         numOfRow = 9; // the number of stats - 9
 
@@ -162,7 +162,7 @@ public class LevelUpMenu : Menu {
         if (label == "Allocate Stat Points")
         {
             // Actually add the allocated points and move on to the next step of leveling up -- skills
-            foreach (HeroData hd in GameControl.control.heroList)
+            foreach (DenigenData hd in GameControl.control.heroList)
             {
                 if (hd.identity == hero.identity)
                 {

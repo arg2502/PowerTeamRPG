@@ -7,20 +7,20 @@ public class Jethro : Hero {
 	// Use this for initialization
 	void Awake () {
 
-        startingLevel = 1;
+        //startingLevel = 1;
 
         // stats - should total to 1.00f
-        hpPer = 0.24f;
-        pmPer = 0.08f;
-        atkPer = 0.145f;
-        defPer = 0.125f;
-        mgkAtkPer = 0.10f;
-        mgkDefPer = 0.09f;
-        luckPer = 0.13f;
-        evasionPer = 0.09f;
-        spdPer = 0.10f;
+        //hpPer = 0.24f;
+        //pmPer = 0.08f;
+        //atkPer = 0.145f;
+        //defPer = 0.125f;
+        //mgkAtkPer = 0.10f;
+        //mgkDefPer = 0.09f;
+        //luckPer = 0.13f;
+        //evasionPer = 0.09f;
+        //spdPer = 0.10f;
 
-        growthSpeed = 0.85f;
+        //growthSpeed = 0.85f;
                 
         base.Awake();
 
@@ -30,11 +30,6 @@ public class Jethro : Hero {
         //passivesList.Add(lr);
     }
 	
-	// Update is called once per frame
-	void Update () {
-        base.Update();
-	}
-
     public override void SelectTarget(string attack)
     {
         //clear any previously selected targets from other turns

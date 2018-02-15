@@ -79,9 +79,9 @@
                 StatChangeDescription(gameControl.heroList[3]);
         }
 
-        void StatChangeDescription(HeroData currentHero)
+        void StatChangeDescription(DenigenData currentHero)
         {
-            descriptionText.text = "<b>" + currentHero.name + "</b>";
+            descriptionText.text = "<b>" + currentHero.denigenName + "</b>";
 
             // status
             descriptionText.text += "\n\nStatus: " + currentHero.statusState;
@@ -199,7 +199,7 @@
                 
             }
         }
-        void ToggleHero(HeroData hero, bool state)
+        void ToggleHero(DenigenData hero, bool state)
         {
             if (hero == gameControl.heroList[0])
                 ToggleButton(jethro, state);
@@ -210,7 +210,7 @@
             else if (hero == gameControl.heroList[3])
                 ToggleButton(juliette, state);
             else
-                Debug.LogError("Hero: " + hero.name + ", does not exist");
+                Debug.LogError("Hero: " + hero.denigenName + ", does not exist");
         }
         void ToggleButton(Button button, bool state)
         {
@@ -223,7 +223,7 @@
         void OnEleanor() { UseItem(gameControl.heroList[2]); }
         void OnJuliette() { UseItem(gameControl.heroList[3]); }
 
-        void UseItem(HeroData hero)
+        void UseItem(DenigenData hero)
         {
             Debug.Log("Before use -- quantity: " + item.quantity + ", uses: " + item.uses);
             switch (menuState)
