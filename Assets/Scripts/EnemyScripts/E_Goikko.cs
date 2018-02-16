@@ -7,8 +7,8 @@ public class E_Goikko : Enemy {
 	// Use this for initialization -- goikko is basically mudpuppy, other than stats
 	void Start () {
         //stars = 1; // SET ELSEWHERE
-        expMultiplier = 1;
-        goldMultiplier = 1;
+        //ExpMultiplier = 1;
+        //GoldMultiplier = 1;
 
         //Skills and spells will probably be static for enemies
         //skillsList = new List<string>() { "Tackle" };
@@ -41,9 +41,9 @@ public class E_Goikko : Enemy {
         //evasionPer = 0.14f;
         //spdPer = 0.18f;
 
-        name = "Goikko";
+        //name = "Goikko";
 
-        base.Start();	
+        //base.Start();	
 	}
 
     //Attack method for bite -- straight forward physical attack

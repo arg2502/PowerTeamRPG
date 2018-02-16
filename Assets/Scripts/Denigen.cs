@@ -22,6 +22,7 @@ public class Denigen : MonoBehaviour {
     protected List<string> takeDamageText, calcDamageText;
 
     protected DenigenData data;
+    public DenigenData Data { get { return data; } set { data = value; } }
 
     public List<string> TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
     public List<string> CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }

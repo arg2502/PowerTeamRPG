@@ -7,8 +7,8 @@ public class E_Mudpuppy : Enemy {
 	// Use this for initialization
 	void Start () {
         //stars = 1; // SET ELSEWHERE
-        expMultiplier = 2;
-        goldMultiplier = 2;
+        //ExpMultiplier = 2;
+        //GoldMultiplier = 2;
         
         // TEMPORARY
         Skill bite = new Skill();
@@ -34,9 +34,9 @@ public class E_Mudpuppy : Enemy {
         //evasionPer = 0.12f;
         //spdPer = 0.06f;
 
-        name = "Mudpuppy";
+        //name = "Mudpuppy";
 
-        base.Start();	
+        //base.Start();	
 	}
 
     //Attack method for bite -- straight forward physical attack

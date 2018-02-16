@@ -6,14 +6,14 @@ public class Enemy : Denigen {
     //Amount of experience awarded for defeating this enemy
     int exp;
     // A number for tweaking the amount of experience rewarded, based on species
-    protected int expMultiplier;
+    //protected int expMultiplier;
 
-    public int Exp { get { return gold; } }
+    public int ExpGiven { get { return exp; } }
 
     //amount of gold awarded for defeating this enemy
     int gold;
     //a number for tweaking the amount of gold awarded, based on species
-    protected int goldMultiplier;
+    //protected int goldMultiplier;
 
     public int Gold { get { return gold; } }
 
@@ -25,10 +25,17 @@ public class Enemy : Denigen {
     protected enum Health { high, average, low, dangerous};
     protected Health healthState = Health.high;
 
+    EnemyData enemyData;
+    public int ExpMultiplier { get { return enemyData.expMultiplier; } set { enemyData.expMultiplier = value; } }
+    public int GoldMultiplier { get { return enemyData.goldMultiplier; } set { enemyData.goldMultiplier = value; } }
+
 	// Use this for initialization
-	protected void Start () {
+	public void Init () {
         //set the base stats for the enemy
         base.Awake();
+
+        // cast as EnemyData to get enemy-specific variables
+        enemyData = data as EnemyData;
 
         //get the areaLevel from the gameControl obj -- ADD LATER
         areaLevel = 3;
@@ -42,8 +49,8 @@ public class Enemy : Denigen {
         }
 
         // Calculate the experience and gold this enemy should award
-        exp = Stars * expMultiplier * Level;
-        gold = Stars * goldMultiplier;
+        exp = Stars * ExpMultiplier * Level;
+        gold = Stars * GoldMultiplier;
 
         Rename();
 	}
@@ -67,12 +74,7 @@ public class Enemy : Denigen {
     {
         return null;
     }
-
-	// Update is called once per frame
-	protected void Update () {
-        base.Update();
-	}
-
+    
     // This method will make it easier to distinguish the enemies
     protected void Rename()
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 
 
-[CreateAssetMenu(fileName = "UIDatabase", menuName = "Database/HeroData", order = 2)]
+[CreateAssetMenu(fileName = "UIDatabase", menuName = "Database/HeroData", order = 3)]
 public class HeroData : DenigenData {
 
 

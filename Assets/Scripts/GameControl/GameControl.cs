@@ -842,7 +842,7 @@ public class GameControl : MonoBehaviour {
         //AssignHeroStats(heroList[0], jethro);
         //Destroy(jethroObj);
 
-        var jethro = Resources.Load<HeroData>("Data/Start_Jethro");
+        var jethro = Resources.Load<HeroData>("Data/Heroes/Start_Jethro");
         jethro.denigenName = playerName;
         //jethro.Init();
         heroList.Add(jethro);
@@ -858,7 +858,7 @@ public class GameControl : MonoBehaviour {
         //AssignHeroStats(heroList[1], cole);
         //Destroy(coleObj);
 
-        var cole = Resources.Load<HeroData>("Data/Start_Cole");
+        var cole = Resources.Load<HeroData>("Data/Heroes/Start_Cole");
         heroList.Add(cole);
 
         // the below code would probably be found in the "Add Spell" functions
@@ -877,7 +877,7 @@ public class GameControl : MonoBehaviour {
         //AssignHeroStats(heroList[2], eleanor);
         //Destroy(eleanorObj);
 
-        var eleanor = Resources.Load<HeroData>("Data/Start_Eleanor");
+        var eleanor = Resources.Load<HeroData>("Data/Heroes/Start_Eleanor");
         heroList.Add(eleanor);
     }
     void AddJuliette()
@@ -891,7 +891,7 @@ public class GameControl : MonoBehaviour {
         //AssignHeroStats(heroList[3], juliette);
         //Destroy(julietteObj);
 
-        var jouliette = Resources.Load<HeroData>("Data/Start_Jouliette");
+        var jouliette = Resources.Load<HeroData>("Data/Heroes/Start_Jouliette");
         heroList.Add(jouliette);
     }
 
