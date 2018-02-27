@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -18,7 +19,7 @@ public class Denigen : MonoBehaviour {
     public List<Denigen> Targets { get { return targets; } }
     
     //Battle menu object
-    protected BattleMenu battleMenu;
+    protected BattleManager battleManager;
     protected List<string> takeDamageText, calcDamageText;
 
     protected DenigenData data;
@@ -42,6 +43,7 @@ public class Denigen : MonoBehaviour {
 
     // DenigenData linkers
     // fighting stats (with in-battle changes
+    public string DenigenName { get { return data.denigenName; } }
     public int Hp { get { return data.hp; } set { data.hp = value; } }
     public int Pm { get { return data.pm; } set { data.pm = value; } }
     public int HpMax { get { return data.hpMax + hpMaxChange; } }
@@ -92,12 +94,21 @@ public class Denigen : MonoBehaviour {
     // for animation
     protected Animator anim;
 
+    // the name of the attack the denigen plans on making this turn
+    private string currentAttack;
+    public string CurrentAttack { get { return currentAttack; } set { currentAttack = value; } }
+
+    // reference to UI text
+    public Text statsText;
+
     // Use this for initialization
 	protected void Awake () {
 
         takeDamageText = new List<string>();
         calcDamageText = new List<string>();
-        
+
+        battleManager = FindObjectOfType<BattleManager>();
+
         // COMMENTED OUT ON 12/6/2017
         // BATTLE MENU WILL BE REDONE AT A LATER TIME
         // -AG
@@ -170,21 +181,22 @@ public class Denigen : MonoBehaviour {
     protected float CalcDamage(string atkChoice, float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
         calcDamageText.Add(name + " uses " + atkChoice + "!");
+        //print(name + " uses " + atkChoice + "!");
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
-        if (num > accuracy) { calcDamageText.Add("The attack misses..."); return 0.0f; }
+        if (num > accuracy) { calcDamageText.Add("The attack misses..."); print(name + " MISSES"); return 0.0f; }
         else
         {
             int atkStat;
             // if its a magic attack, use magic variables
             if (isMagic)
             {
-                atkStat = mgkAtkChange;
+                atkStat = MgkAtk;
             }
             // if not magic, use physical variables
             else
             {
-                atkStat = atkChange;
+                atkStat = Atk;
             }
 
             // calculate damage
@@ -194,11 +206,11 @@ public class Denigen : MonoBehaviour {
             num = Random.Range(0.0f, 1.0f);
 
             // use luck to increase crit chance
-            float chance = Mathf.Pow((float)(luckChange), 2.0f / 3.0f); // luck ^ 2/3
-            chance /= 100; // make percentage
+            float chance = Mathf.Pow((float)(Luck), 2.0f / 3.0f); // luck ^ 2/3
+            chance /= 100f; // make percentage
 
             // add chance to crit to increase the probability of num being the smaller one
-            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); }
+            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); print(name + " strikes a weak spot!"); }
 
             // check for attack based passivesList
             foreach (Passive cdp in PassivesList)
@@ -224,24 +236,24 @@ public class Denigen : MonoBehaviour {
         int defStat;
         if (isMagic)
         {
-            defStat = mgkDefChange;
+            defStat = MgkDef;
         }
         else
         {
-            defStat = defChange;
+            defStat = Def;
         }
 
         // divide damage by the defensive stat
         //damage /= defStat;
 
         // reduce damage by half the defensive stat
-        damage -= (defStat/2);
+        damage -= (defStat/2f);
 
         // if negative damage, set it to zero -- just in case
         if (damage < 0) { damage = 0; }
         
         // check if this denigen is blocking -- if so, halve the damage received
-        if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); }
+        if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); print(name + " blocks the attack!"); }
 
         // check for passivesList
         foreach (Passive tdp in PassivesList)
@@ -254,40 +266,49 @@ public class Denigen : MonoBehaviour {
 
         //Now record appropriate text
         takeDamageText.Add(name + " takes " + (int)damage + " damage!");
-
+        print(name + " takes " + (int)damage + " damage!");
         // create the damage effect, but onlu if the denigen is not dead
-        if (statusState != Status.dead && statusState != Status.overkill)
-        {
+        //if (statusState != Status.dead && statusState != Status.overkill)
+        //{
             GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
             be.name = "DamageEffect";
             //be.GetComponent<Effect>().Start();
             be.GetComponent<Effect>().damage = (int)damage + "";
-        }
+        //}
 
         // check for dead
+        print(name + " HP: " + Hp);
         if (Hp <= 0)
         {
             Hp = 0;
             takeDamageText.Add( name + " falls!");
             statusState = Status.dead;
+            battleManager.KillOff(this);
+
+            print("He's dead, Jim. " + name + "'s dead.");
         }
+
+        // Update UI
+        battleManager.battleUI.UpdateStats(this); // eh....kinda ugly
     }
 
 	// Update is called once per frame
 	protected void Update () {
         gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
 
+        if (this.Hp <= 0 && !this.IsDead)
+            print(name + " IS DEAD");
         //fade away if fallen
-        if (statusState == Status.dead || statusState == Status.overkill)
-        {
-            if (sr.color.a > 0 && !GameControl.control.isDying)
-                GameControl.control.isDying = true;
+        //if (statusState == Status.dead || statusState == Status.overkill)
+        //{
+        //    if (sr.color.a > 0 && !GameControl.control.isDying)
+        //        GameControl.control.isDying = true;
 
-            sr.color -= fade * Time.deltaTime;
+        //    sr.color -= fade * Time.deltaTime;
 
-            if (sr.color.a <= 0 && GameControl.control.isDying)
-                GameControl.control.isDying = false;
-        }
+        //    if (sr.color.a <= 0 && GameControl.control.isDying)
+        //        GameControl.control.isDying = false;
+        //}
 	}
    
     protected IEnumerator PlayAnimation(string animation)
@@ -299,4 +320,21 @@ public class Denigen : MonoBehaviour {
         StopCoroutine("PlayAnimation");
     }
 
+    /// <summary>
+    /// Returns true if the denigen's status is either "dead" or "overkill"
+    /// A simpler solution to writing if(dead || overkill) all the time
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDead
+    {
+        get
+        {
+            if (statusState == Status.dead)
+                return true;
+            else if (statusState == Status.overkill)
+                return true;
+            else
+                return false;
+        }
+    }
 }

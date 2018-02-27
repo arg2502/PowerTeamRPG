@@ -79,13 +79,12 @@ public class Enemy : Denigen {
     protected void Rename()
     {
         int i = 0;
-        // COME BACK LATER
-        // -AG
-        //foreach (Enemy e in battleMenu.enemyList)
-        //{
-        //    if (e != this && e.name.Contains(name)) { i++; }
-        //    if (e == this) { break; }
-        //}
+
+        foreach (Enemy e in battleManager.enemyList)
+        {
+            if (e != this && e.name.Contains(name)) { i++; }
+            if (e == this) { break; }
+        }
         if (i == 1) { name += " B"; }
         if (i == 2) { name += " C"; }
         if (i == 3) { name += " D"; }

@@ -4,23 +4,46 @@ using System.Collections.Generic;
 
 public class BattleManager : MonoBehaviour {
 
-    List<Denigen> denigenList = new List<Denigen>();
+    int currentDenigen = 0;
+
+    public List<Denigen> denigenList = new List<Denigen>();
+    //List<Denigen> availableDenigens = new List<Denigen>();
+    public List<Hero> heroList = new List<Hero>();
+    public List<Enemy> enemyList = new List<Enemy>();
+
+    List<string> enemiesToAdd = new List<string>();
+    int numOfEnemies;
 
     public Transform heroContainer;
+    public Transform enemyContainer;
 
     // starting positions
     Vector3 jethroStart = new Vector3(1.5f, -3f);
     Vector3 coleStart = new Vector3(-3f, -1f);
     Vector3 eleanorStart = new Vector3(0f, 3f);
     Vector3 joulietteStart = new Vector3(4.5f, 1f);
-    List<Vector3> startingPositions;
+    List<Vector3> heroStartingPositions;
+
+    // Battle states
+    public enum BattleState
+    {
+        TARGET,
+        ATTACK,
+        VICTORY,
+        FAILURE
+    }
+    public BattleState battleState;
+
+    public UI.BattleUI battleUI;
 
 	void Start ()
     {
-        startingPositions = new List<Vector3>() { jethroStart, coleStart, eleanorStart, joulietteStart };
+        heroStartingPositions = new List<Vector3>() { jethroStart, coleStart, eleanorStart, joulietteStart };
         AddHeroes();
-        CreateEnemies();
-        PrintHeroes();
+        AddEnemies();
+        battleUI.Init();
+        SortBySpeed();
+        //PrintHeroes();
 	}
 
     void AddHeroes()
@@ -41,33 +64,72 @@ public class BattleManager : MonoBehaviour {
         heroObj.transform.SetParent(heroContainer);
         var hero = heroObj.GetComponent<Hero>();
         hero.Data = GameControl.control.heroList[index];
-        hero.transform.localPosition = startingPositions[index];
+        hero.transform.localPosition = heroStartingPositions[index];
         denigenList.Add(hero);
+        heroList.Add(hero);
     }
     
-    void CreateEnemies()
+    void AddEnemies()
     {
-        // TEST TEST TEST OMG THIS IS JUST TO SEE IF THIS WORKS
-        // THE CREATION OF ENEMIES AND THEIR DATA SHOULD BE HANDLED SEPARATELY INSIDE AN ENEMYMANAGER OF SORTS
-        // THIS IS ONLY TO TEMPORARILY CREATE A GOIKKO ON THE SPOT -- PLEASE MOVE THIS LATER
+        // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
+        // this could probably be stored inside GameControl to transfer the data over to the battle
+        // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
+        int numOfGoikkos = 3;
+        for (int i = 0; i < numOfGoikkos; i++)
+            enemiesToAdd.Add("Goikko");
 
+        // call CreateEnemies on each enemy to add to create the enemies
+        foreach (var enemy in enemiesToAdd)
+            CreateEnemy(enemy);
+    }
+
+    void CreateEnemy(string enemyName)
+    {
         // create Enemy object
-        var enemyObj = Instantiate(Resources.Load("Prefabs/EnemiesBattle/Goikko")) as GameObject;
+        var enemyObj = Instantiate(Resources.Load("Prefabs/EnemiesBattle/" + enemyName)) as GameObject;
+        enemyObj.transform.SetParent(enemyContainer);
         var enemy = enemyObj.GetComponent<Enemy>();
 
-        // create data obj
-        var enemyData = Resources.Load<EnemyData>("Data/Enemies/Goikko");
+        var enemyData = GameObject.Instantiate(Resources.Load<EnemyData>("Data/Enemies/" + enemyName));
 
-        // set Enemy's data obj to enemyData
         enemy.Data = enemyData;
-
-        // set up enemy stats
         enemy.Init();
-
-        // set position -- LATER
-
-        // add to denigen list
+        if(numOfEnemies < heroStartingPositions.Count)
+            enemy.transform.localPosition = heroStartingPositions[numOfEnemies];
+        numOfEnemies++;
         denigenList.Add(enemy);
+        enemyList.Add(enemy);
+    }
+
+    void SortBySpeed()
+    {
+        Denigen temp;
+        for (int j = 0; j < denigenList.Count; j++)
+        {
+            for (int i = 0; i < denigenList.Count - 1; i++)
+            {
+                if (denigenList[i].Spd < denigenList[i + 1].Spd)
+                {
+                    temp = denigenList[i + 1];
+                    denigenList[i + 1] = denigenList[i];
+                    denigenList[i] = temp;
+                }
+            }
+        }
+
+        Hero tempHero;
+        for (int j = 0; j < heroList.Count; j++)
+        {
+            for (int i = 0; i < heroList.Count - 1; i++)
+            {
+                if (heroList[i].Spd < heroList[i + 1].Spd)
+                {
+                    tempHero = heroList[i + 1];
+                    heroList[i + 1] = heroList[i];
+                    heroList[i] = tempHero;
+                }
+            }
+        }
     }
 
     void PrintHeroes()
@@ -75,7 +137,164 @@ public class BattleManager : MonoBehaviour {
         foreach(var denigen in denigenList)
         {
             print("object: " + denigen.name);
-            print("data: " + denigen.Data.denigenName);
+            print("speed: " + denigen.Data.spd);
         }
     }
+
+    public void TestTarget()
+    {
+        if (battleState != BattleState.TARGET)
+        {
+            print("We're not targeting right now");
+            return;
+        }
+
+        //if (denigenList[currentDenigen] is Hero)
+        //{
+        //Hero hero = denigenList[currentDenigen] as Hero;
+        Hero hero = heroList[currentDenigen];
+            hero.CurrentAttack = "Strike";
+            hero.SelectTarget(hero.CurrentAttack);
+            print(hero.name + "'s target is " + hero.Targets[0].name);
+        //}
+
+        // find the next hero that can target -- if no more, end phase
+        do
+        {
+            if (currentDenigen < heroList.Count - 1)
+                currentDenigen++;
+            else
+                ChangeBattleState(BattleState.ATTACK);
+        } while (/*!(denigenList[currentDenigen] is Hero) || */heroList[currentDenigen].IsDead);
+
+        //print("TARGET -- AFTER WHILE");
+    }
+
+    void ChangeBattleState(BattleState state)
+    {
+        // set the new battle state
+        battleState = state;
+        print("STATE CHANGE -- " + battleState);
+        
+        // reset current denigen to traverse through list during attacks
+        currentDenigen = 0;
+
+        // determine what happens now in this new state
+        if (battleState == BattleState.ATTACK)
+        {
+            StartAttackPhase();
+        }
+
+        else if(battleState == BattleState.VICTORY)
+        {
+            print("VICTORY SCREECH");
+        }
+
+        else if(battleState == BattleState.FAILURE)
+        {
+            print("*smash announcer voice* FAILURE");
+        }
+    }
+
+    void StartAttackPhase()
+    {
+        // have enemies decide their attack
+        foreach(var enemy in enemyList)
+        {
+            enemy.CurrentAttack = enemy.ChooseAttack();
+        }
+
+        // resort in case there have been speed changes
+        SortBySpeed();
+
+        // make sure the first denigen to attack is alive
+        FindNextAlive();
+
+    }
+
+    public void TestAttack()
+    {
+        if(battleState != BattleState.ATTACK)
+        {
+            print("We're not attacking right now");
+            return;
+        }
+
+        var denigen = denigenList[currentDenigen];
+        //print(denigen.name + " uses " + denigen.CurrentAttack);
+        denigen.Attack(denigen.CurrentAttack);
+
+        //print(denigen.name + " state: " + denigen.StatusState);
+
+        // increment up list -- if the next one is dead, continue to the next
+        currentDenigen++;
+        if (currentDenigen < denigenList.Count)
+            FindNextAlive();
+        // if we're at the end, end the phase
+        else
+            ChangeBattleState(BattleState.TARGET);
+
+        //print("ATTACK -- AFTER WHILE");
+    }
+
+    void FindNextAlive()
+    {
+        while (denigenList[currentDenigen].IsDead)
+        {
+            currentDenigen++;
+            if (currentDenigen >= denigenList.Count)
+            {
+                // FOR NOW -- JUST GO BACK TO TARGETING
+                ChangeBattleState(BattleState.TARGET);
+                break;
+            }
+        }
+        if (currentDenigen < denigenList.Count)
+            print("NEXT UP -- " + denigenList[currentDenigen].name);
+    }
+
+    public void KillOff(Denigen deadDenigen)
+    {
+        // what to do with a denigen that has been killed
+        // FOR NOW -- JUST SET THEIR ALPHA TO ZERO
+        var color = deadDenigen.GetComponent<SpriteRenderer>().color;
+        color.a = 0f;
+        deadDenigen.GetComponent<SpriteRenderer>().color = color;
+
+        //availableDenigens.Remove(deadDenigen);
+
+        // check for victory or loss
+        if (deadDenigen is Hero)
+        {
+            if (AreAllHeroesDead())
+                ChangeBattleState(BattleState.FAILURE);
+        }
+        else
+        {
+            if (AreAllEnemiesDead())
+                ChangeBattleState(BattleState.VICTORY);
+        }
+    }
+
+    bool AreAllHeroesDead()
+    {
+        foreach(var hero in heroList)
+        {
+            if (hero.StatusState != Denigen.Status.dead && hero.StatusState != Denigen.Status.overkill)
+                return false;
+        }
+
+        return true;
+    }
+    bool AreAllEnemiesDead()
+    {
+        foreach (var enemy in enemyList)
+        {
+            if (enemy.StatusState != Denigen.Status.dead && enemy.StatusState != Denigen.Status.overkill)
+                return false;
+        }
+
+        return true;
+    }
+
 }

@@ -71,7 +71,7 @@ public class DenigenData : ScriptableObject
 
         LevelUpOnAwake(startingLevel);
 
-        Debug.Log("Inside Awake() -- my hp is " + hp);
+        //Debug.Log("Inside Awake() -- my hp is " + hp);
     }
 
 

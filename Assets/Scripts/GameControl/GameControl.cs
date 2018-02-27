@@ -114,7 +114,7 @@ public class GameControl : MonoBehaviour {
             AddEleanor();
             AddJuliette();
 
-            Debug.Log(heroList);
+            //Debug.Log(heroList);
 
             UIManager = new UIManager();
             skillTreeManager = new SkillTreeManager();

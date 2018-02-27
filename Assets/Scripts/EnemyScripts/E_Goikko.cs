@@ -47,34 +47,33 @@ public class E_Goikko : Enemy {
 	}
 
     //Attack method for bite -- straight forward physical attack
-    IEnumerator Tackle()
+    //IEnumerator Tackle()
+    void Tackle()
     {
         // code for choosing the target of this attack
         // because goikko is an early enemy, let's have it randomly select a target
+        int random = 0;
+        do
+        {
+            random = Random.Range(0, battleManager.heroList.Count);
+        } while (battleManager.heroList[random].StatusState == Status.dead);
 
-        // COMMENT FOR NOW
-        // -AG
-        //int random = 0;
-        //do
-        //{
-        //    random = Random.Range(0, battleMenu.heroList.Count);
-        //} while (battleMenu.heroList[random].statusState == Status.dead);
+        targets.Add(battleManager.heroList[random]);
 
-        //targets.Add(battleMenu.heroList[random]);
-        
 
         //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
         float damage = CalcDamage("Tackle", 0.65f, 0.25f, 0.9f, false);
 
-        yield return StartCoroutine(PlayAnimation("Attack"));
+        //yield return StartCoroutine(PlayAnimation("Attack"));
 
         //Using index 0 because there is only one target for this attack
         targets[0].TakeDamage(this, damage, false);
     }
-    IEnumerator Frenzy()
+    void Frenzy()
     {
         calcDamageText.Add(name + " used frenzy");
-        yield return StartCoroutine(PlayAnimation("Poison"));
+        print(name + " used frenzy");
+        //yield return StartCoroutine(PlayAnimation("Poison"));
     }
     public override string ChooseAttack()
     {
@@ -106,19 +105,17 @@ public class E_Goikko : Enemy {
         switch (atkChoice)
         {
             case "Tackle":
-                StartCoroutine(Tackle());
+                //StartCoroutine(Tackle());
+                Tackle();
                 break;
             case "Frenzy":
-                StartCoroutine(Frenzy());
+                //StartCoroutine(Frenzy());
+                Frenzy();
                 break;
             default:
-                StartCoroutine(Tackle());
+                //StartCoroutine(Tackle());
+                Tackle();
                 break;
         }
-    }
-
-	// Update is called once per frame
-	void Update () {
-        base.Update();
-	}
+    }    
 }

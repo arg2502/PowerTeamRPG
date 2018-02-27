@@ -63,12 +63,6 @@ public class Jethro : Hero {
 
 		// attacks specific to the character
 		switch (atkChoice) {
-            case "Strike":
-                if (targets[0].StatusState != Status.dead && targets[0].StatusState != Status.overkill) Strike();
-                break;
-            case "Block":
-                base.Block();
-                break;
 			case "Helmsplitter":
 				if (targets [0].StatusState != Status.dead)
 					Helmsplitter ();
