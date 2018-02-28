@@ -18,11 +18,14 @@ public class BattleManager : MonoBehaviour {
     public Transform enemyContainer;
 
     // starting positions
-    Vector3 jethroStart = new Vector3(1.5f, -3f);
-    Vector3 coleStart = new Vector3(-3f, -1f);
-    Vector3 eleanorStart = new Vector3(0f, 3f);
-    Vector3 joulietteStart = new Vector3(4.5f, 1f);
+    public List<GameObject> heroPositions;
+    public List<GameObject> enemyPositions;
+    //Vector3 jethroStart;// = new Vector3(1.5f, -3f);
+    //Vector3 coleStart;// = new Vector3(-3f, -1f);
+    //Vector3 eleanorStart;// = new Vector3(0f, 3f);
+    //Vector3 joulietteStart;// = new Vector3(4.5f, 1f);
     List<Vector3> heroStartingPositions;
+    List<Vector3> enemyStartingPositions;
 
     // Battle states
     public enum BattleState
@@ -37,8 +40,7 @@ public class BattleManager : MonoBehaviour {
     public UI.BattleUI battleUI;
 
 	void Start ()
-    {
-        heroStartingPositions = new List<Vector3>() { jethroStart, coleStart, eleanorStart, joulietteStart };
+    {        
         AddHeroes();
         AddEnemies();
         battleUI.Init();
@@ -48,7 +50,16 @@ public class BattleManager : MonoBehaviour {
 
     void AddHeroes()
     {
-        foreach(var hero in GameControl.control.heroList)
+        // set hero positions
+        heroStartingPositions = new List<Vector3>();// { jethroStart, coleStart, eleanorStart, joulietteStart };
+        foreach (var go in heroPositions)
+        {
+            heroStartingPositions.Add(go.transform.localPosition);
+            go.GetComponent<SpriteRenderer>().enabled = false; // turn off placeholder renderer
+        }
+
+        // create the heroes that we currently have in our party
+        foreach (var hero in GameControl.control.heroList)
         {
             CreateHero(hero.denigenName, hero.identity);
         }
@@ -71,6 +82,14 @@ public class BattleManager : MonoBehaviour {
     
     void AddEnemies()
     {
+        // set enemy positions
+        enemyStartingPositions = new List<Vector3>();
+        foreach (var go in enemyPositions)
+        {
+            enemyStartingPositions.Add(go.transform.localPosition);
+            go.GetComponent<SpriteRenderer>().enabled = false; // turn off placeholder renderer
+        }
+
         // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
         // this could probably be stored inside GameControl to transfer the data over to the battle
         // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
@@ -90,12 +109,12 @@ public class BattleManager : MonoBehaviour {
         enemyObj.transform.SetParent(enemyContainer);
         var enemy = enemyObj.GetComponent<Enemy>();
 
-        var enemyData = GameObject.Instantiate(Resources.Load<EnemyData>("Data/Enemies/" + enemyName));
+        var enemyData = Instantiate(Resources.Load<EnemyData>("Data/Enemies/" + enemyName));
 
         enemy.Data = enemyData;
         enemy.Init();
-        if(numOfEnemies < heroStartingPositions.Count)
-            enemy.transform.localPosition = heroStartingPositions[numOfEnemies];
+        if(numOfEnemies < enemyStartingPositions.Count)
+            enemy.transform.localPosition = enemyStartingPositions[numOfEnemies];
         numOfEnemies++;
         denigenList.Add(enemy);
         enemyList.Add(enemy);
