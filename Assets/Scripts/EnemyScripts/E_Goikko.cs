@@ -56,7 +56,7 @@ public class E_Goikko : Enemy {
         do
         {
             random = Random.Range(0, battleManager.heroList.Count);
-        } while (battleManager.heroList[random].StatusState == Status.dead);
+        } while (battleManager.heroList[random].IsDead);
 
         targets.Add(battleManager.heroList[random]);
 

@@ -42,40 +42,40 @@ public class Cole : Hero {
     }
 
     //select the target for your attack
-    public override void SelectTarget(string attack)
-    {
-        //clear any previously selected targets from other turns
-        if (targets != null)
-        {
-            targets.Clear();
-        }
+    //public override void SelectTarget(List<Denigen> targetsFromCursors)
+    //{
+    //    //clear any previously selected targets from other turns
+    //    if (targets != null)
+    //    {
+    //        targets.Clear();
+    //    }
 
 
-        //this will use a switch statement to determine the type of
-        //targeting required, and then pass off to a more specific method
-        switch (attack)
-        {
-            case "Block":
-                SelectSelfTarget(attack);
-                break;
-            case "Strike":
-                SelectSingleTarget();
-                break;
-            case "Splash Flame":
-                SelectSplashTarget();
-                break;
-            case "HellFire":
-                SelectAllTargets();
-                break;
-            case "Test Target":
-                SelectAllTeamTargets(attack);
-                break;
-            default:
-                // if there is no case for this action, then it must be treated as an item
-                SelectSingleTeamTarget(attack);
-                break;
-        }
-    }
+    //    //this will use a switch statement to determine the type of
+    //    //targeting required, and then pass off to a more specific method
+    //    //switch (attack)
+    //    //{
+    //    //    case "Block":
+    //    //        SelectSelfTarget(attack);
+    //    //        break;
+    //    //    case "Strike":
+    //    //        SelectSingleTarget();
+    //    //        break;
+    //    //    case "Splash Flame":
+    //    //        SelectSplashTarget();
+    //    //        break;
+    //    //    case "HellFire":
+    //    //        SelectAllTargets();
+    //    //        break;
+    //    //    case "Test Target":
+    //    //        SelectAllTeamTargets(attack);
+    //    //        break;
+    //    //    default:
+    //    //        // if there is no case for this action, then it must be treated as an item
+    //    //        SelectSingleTeamTarget(attack);
+    //    //        break;
+    //    //}
+    //}
 
     public void HellFire()
     {

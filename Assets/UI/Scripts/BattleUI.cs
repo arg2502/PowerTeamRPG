@@ -16,6 +16,9 @@
 
         BattleManager battleManager;
 
+        public List<GameObject> heroCursors;
+        public List<GameObject> enemyCursors;
+
         public void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
@@ -42,6 +45,9 @@
             }
             
             AssignStats();
+
+            // turn off cursors
+            TurnOffAllCursors();
         }
 
         void AssignStats()
@@ -60,5 +66,14 @@
                     "PM: " + d.Pm + " / " + d.PmMax;
         }
 
+        void TurnOffAllCursors()
+        {
+            foreach (var cursor in heroCursors)
+                cursor.SetActive(false);
+            foreach (var cursor in enemyCursors)
+                cursor.SetActive(false);
+        }
+
+        
     }
 }

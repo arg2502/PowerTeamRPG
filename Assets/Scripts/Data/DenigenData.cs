@@ -28,7 +28,7 @@ public class DenigenData : ScriptableObject
     internal List<Spell> spellsList;
     internal List<Passive> passiveList;
     // status effect
-    internal enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
+    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
     internal Status statusState;
     
 
@@ -133,5 +133,23 @@ public class DenigenData : ScriptableObject
         float expToGo = 0;
         expToGo = level * growthSpeed * 10;
         return ((int)expToGo - rollover);
+    }
+
+    /// <summary>
+    /// Returns true if the denigen's status is either "dead" or "overkill"
+    /// A simpler solution to writing if(dead || overkill) all the time
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDead
+    {
+        get
+        {
+            if (statusState == Status.dead)
+                return true;
+            else if (statusState == Status.overkill)
+                return true;
+            else
+                return false;
+        }
     }
 }

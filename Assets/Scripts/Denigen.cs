@@ -69,10 +69,10 @@ public class Denigen : MonoBehaviour {
     public List<Spell> SpellsList { get { return data.spellsList; } }
     
     // status effect
-    public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
-    private Status statusState;// = Status.normal;
+    //public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
+    //private Status statusState;// = Status.normal;
 
-    public Status StatusState { get { return statusState; } set { statusState = value; } }
+    public DenigenData.Status StatusState { get { return data.statusState; } set { data.statusState = value; } }
 
     protected GameObject card;
     public GameObject Card { get { return card; } set { card = value; } }
@@ -282,7 +282,7 @@ public class Denigen : MonoBehaviour {
         {
             Hp = 0;
             takeDamageText.Add( name + " falls!");
-            statusState = Status.dead;
+            StatusState = DenigenData.Status.dead;
             battleManager.KillOff(this);
 
             print("He's dead, Jim. " + name + "'s dead.");
@@ -320,21 +320,8 @@ public class Denigen : MonoBehaviour {
         StopCoroutine("PlayAnimation");
     }
 
-    /// <summary>
-    /// Returns true if the denigen's status is either "dead" or "overkill"
-    /// A simpler solution to writing if(dead || overkill) all the time
-    /// </summary>
-    /// <returns></returns>
     public bool IsDead
     {
-        get
-        {
-            if (statusState == Status.dead)
-                return true;
-            else if (statusState == Status.overkill)
-                return true;
-            else
-                return false;
-        }
+        get { return data.IsDead; }
     }
 }

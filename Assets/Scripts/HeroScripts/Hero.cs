@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Hero : Denigen {
     // this variable makes the hero unique (more than a name), and will be used for maintaining persistency
@@ -32,7 +33,9 @@ public class Hero : Denigen {
     public int TargetIndex { get { return targetIndex; } set { targetIndex = value; } }
     public int LevelUpPts { get { return levelUpPts; } set { levelUpPts = value; } }
     public int TechPts { get { return techPts; } set { techPts = value; } }
-    
+
+    public TargetType currentTargetType;
+
     // add skill to list
     protected void AddSkill(string skill, string descrip)
     {
@@ -56,7 +59,7 @@ public class Hero : Denigen {
         switch (itemName)
         {
             default:
-                if (targets[0].StatusState != Status.dead && targets[0].StatusState != Status.overkill)
+                if (!targets[0].IsDead)
                 {
                     if (targets.Count > 1 || name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
                     else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
@@ -80,8 +83,21 @@ public class Hero : Denigen {
         }
     }
 
+    public virtual void DecideTypeOfTarget()
+    {
+        switch(CurrentAttack)
+        {
+            case "Strike":
+                currentTargetType = TargetType.ENEMY_SINGLE;
+                break;
+            case "Block":
+                currentTargetType = TargetType.HERO_SELF;
+                break;
+        }
+    }
+
     //select the target for your attack
-    public virtual void SelectTarget(string attack)
+    public virtual void SelectTarget(List<Denigen> targetsFromCursors)
     {
         //clear any previously selected targets from other turns
         if (targets != null)
@@ -89,21 +105,23 @@ public class Hero : Denigen {
             targets.Clear();
         }
 
+        foreach (var d in targetsFromCursors)
+            targets.Add(d);
 
-        //this will use a switch statement to determine the type of
-        //targeting required, and then pass off to a more specific method
-        switch (attack)
-        {
-            case "Strike":
-                SelectSingleTarget();
-                break;
-            case "Block":
-                SelectSelfTarget(attack);
-                break;
-            default:
-                // the default cases will be used for items
-                break;
-        }
+        ////this will use a switch statement to determine the type of
+        ////targeting required, and then pass off to a more specific method
+        //switch (attack)
+        //{
+        //    case "Strike":
+        //        SelectSingleTarget();
+        //        break;
+        //    case "Block":
+        //        SelectSelfTarget(attack);
+        //        break;
+        //    default:
+        //        // the default cases will be used for items
+        //        break;
+        //}
     }
 
     //a generic, single target selecting method
@@ -111,10 +129,10 @@ public class Hero : Denigen {
     public void SelectSingleTarget()
     {
         // TEST -- RANDOMLY PICK FOR NOW
-        int num = 0;
-        num = Random.Range(0, battleManager.enemyList.Count);
-        targetIndex = num;
-        targets.Add(battleManager.enemyList[targetIndex]);        
+        //int num = 0;
+        //num = Random.Range(0, battleManager.enemyList.Count);
+        //targetIndex = num;
+        //targets.Add(battleManager.enemyList[targetIndex]);        
     }
 
     // this is a 3 target attack

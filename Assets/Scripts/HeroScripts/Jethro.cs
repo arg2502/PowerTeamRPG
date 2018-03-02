@@ -30,31 +30,31 @@ public class Jethro : Hero {
         //passivesList.Add(lr);
     }
 	
-    public override void SelectTarget(string attack)
-    {
-        //clear any previously selected targets from other turns
-        if (targets != null)
-        {
-            targets.Clear();
-        }
+    //public override void SelectTarget(List<Denigen> targetsFromCursors)
+    //{
+    //    //clear any previously selected targets from other turns
+    //    if (targets != null)
+    //    {
+    //        targets.Clear();
+    //    }
 
         //this will use a switch statement to determine the type of
         //targeting required, and then pass off to a more specific method
-        switch (attack)
-        {
-            case "Block":
-                SelectSelfTarget(attack);
-                break;
-            case "Helmsplitter":
-            case "Strike":
-                SelectSingleTarget();
-                break;
-            default:
-                // if there is no case for this action, then it must be treated as an item
-                SelectSingleTeamTarget(attack);
-                break;
-        }
-    }
+        //switch (attack)
+        //{
+        //    case "Block":
+        //        SelectSelfTarget(attack);
+        //        break;
+        //    case "Helmsplitter":
+        //    case "Strike":
+        //        SelectSingleTarget();
+        //        break;
+        //    default:
+        //        // if there is no case for this action, then it must be treated as an item
+        //        SelectSingleTeamTarget(attack);
+        //        break;
+        //}
+    //}
 
 	public override void Attack (string atkChoice)
 	{
@@ -64,7 +64,7 @@ public class Jethro : Hero {
 		// attacks specific to the character
 		switch (atkChoice) {
 			case "Helmsplitter":
-				if (targets [0].StatusState != Status.dead)
+				if (!targets [0].IsDead)
 					Helmsplitter ();
 				break;
 			default:

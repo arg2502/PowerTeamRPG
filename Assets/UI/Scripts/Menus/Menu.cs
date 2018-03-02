@@ -126,10 +126,23 @@
         {
             if (this.gameObject != uiManager.menuInFocus) return;
 
-            if (Input.GetKeyUp(KeyCode.Backspace))
+            if (Input.GetKeyUp(KeyCode.Backspace)
+                && !ExceptionMenus())
                 uiManager.PopMenu();
 
 
+        }
+
+        /// <summary>
+        /// If true, then this menu cannot be popped. Ex: You cannot back out of the battle menu
+        /// </summary>
+        /// <returns></returns>
+        bool ExceptionMenus()
+        {
+            if (this.gameObject.GetComponent<BattleMenu>())
+                return true;
+            else
+                return false;
         }
 
         void CheckForInactiveButtons()

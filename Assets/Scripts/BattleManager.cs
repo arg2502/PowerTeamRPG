@@ -37,10 +37,17 @@ public class BattleManager : MonoBehaviour {
     }
     public BattleState battleState;
 
+    
+    public TargetType targetState;
+
     public UI.BattleUI battleUI;
 
+    //UI.UIManager uiManager;
+    UI.BattleMenu battleMenu;
+
 	void Start ()
-    {        
+    {
+        CreateBattleMenu();
         AddHeroes();
         AddEnemies();
         battleUI.Init();
@@ -48,6 +55,13 @@ public class BattleManager : MonoBehaviour {
         //PrintHeroes();
 	}
 
+    void CreateBattleMenu()
+    {
+        var uiManager = GameControl.UIManager;
+        var battleMenuObj = uiManager.uiDatabase.BattleMenu;
+        uiManager.PushMenu(battleMenuObj);
+        battleMenu = uiManager.FindMenu(battleMenuObj) as UI.BattleMenu;
+    }
     void AddHeroes()
     {
         // set hero positions
@@ -173,7 +187,7 @@ public class BattleManager : MonoBehaviour {
         //Hero hero = denigenList[currentDenigen] as Hero;
         Hero hero = heroList[currentDenigen];
             hero.CurrentAttack = "Strike";
-            hero.SelectTarget(hero.CurrentAttack);
+            //hero.SelectTarget(hero.CurrentAttack);
             print(hero.name + "'s target is " + hero.Targets[0].name);
         //}
 
@@ -184,7 +198,7 @@ public class BattleManager : MonoBehaviour {
                 currentDenigen++;
             else
                 ChangeBattleState(BattleState.ATTACK);
-        } while (/*!(denigenList[currentDenigen] is Hero) || */heroList[currentDenigen].IsDead);
+        } while (heroList[currentDenigen].IsDead);
 
         //print("TARGET -- AFTER WHILE");
     }
@@ -299,7 +313,8 @@ public class BattleManager : MonoBehaviour {
     {
         foreach(var hero in heroList)
         {
-            if (hero.StatusState != Denigen.Status.dead && hero.StatusState != Denigen.Status.overkill)
+            //if (hero.StatusState != Denigen.Status.dead && hero.StatusState != Denigen.Status.overkill)
+            if(hero.IsDead)
                 return false;
         }
 
@@ -309,11 +324,78 @@ public class BattleManager : MonoBehaviour {
     {
         foreach (var enemy in enemyList)
         {
-            if (enemy.StatusState != Denigen.Status.dead && enemy.StatusState != Denigen.Status.overkill)
+            //if (enemy.StatusState != Denigen.Status.dead && enemy.StatusState != Denigen.Status.overkill)
+            if(enemy.IsDead)
                 return false;
         }
 
         return true;
     }
 
+    public void DetermineTargetType(string attackName)
+    {
+        Hero hero = heroList[currentDenigen];
+        hero.CurrentAttack = attackName;
+        hero.DecideTypeOfTarget();
+        //SetUpTarget();
+    }
+    //public void SetUpTarget()
+    //{
+    //    switch (targetState)
+    //    {
+    //        case TargetType.ENEMY_SINGLE:                
+    //            AssignSingle();
+    //            break;
+    //    }
+    //}
+
+    //void AssignSingle()
+    //{
+    //    // find first living denigen
+
+
+    //}
+    public void TargetDenigen(List<Denigen> targets)
+    {
+        Hero hero = heroList[currentDenigen];
+        hero.SelectTarget(targets);
+        print(hero.name + "'s target is " + hero.Targets[0].name);
+
+        do
+        {
+            if (currentDenigen < heroList.Count - 1)
+                currentDenigen++;
+            else
+                ChangeBattleState(BattleState.ATTACK);
+        } while (heroList[currentDenigen].IsDead);
+    }
+
+    public bool IsTargetEnemy
+    {
+        get
+        {
+            switch(targetState)
+            {
+                case TargetType.ENEMY_SINGLE:
+                case TargetType.ENEMY_SPLASH:
+                case TargetType.ENEMY_TEAM:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
+}
+// Target type
+// for determining what kind and how many targets a denigen can affect depending on their chosen attack
+public enum TargetType
+{
+    ENEMY_SINGLE,
+    ENEMY_SPLASH,
+    ENEMY_TEAM,
+    HERO_SELF,
+    HERO_SINGLE,
+    HERO_SPLASH,
+    HERO_TEAM
 }

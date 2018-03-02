@@ -112,9 +112,7 @@
         /// <param name="menuPrefab"></param>
         public void DisableAllMenus()
         {
-            // turn off all menus
-            foreach (var menu in list_currentMenus)
-                menu.SetActive(false);
+            HideAllMenus();
 
             // clear list
             list_currentMenus.Clear();
@@ -184,6 +182,13 @@
             confirmMenu.noAction = noAction;
             //InitMenu(confirmMenu);
             confirmMenu.Init();
+        }
+
+        public void HideAllMenus()
+        {
+            // turn off all menus
+            foreach (var menu in list_currentMenus)
+                menu.SetActive(false);
         }
     }
 }
