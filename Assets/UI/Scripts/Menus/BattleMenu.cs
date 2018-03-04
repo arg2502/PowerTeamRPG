@@ -32,7 +32,7 @@
         void OnAttack()
         {
             //print("Whoa, there. This function isn't done yet, sonny.");
-            uiManager.PushMenu(uiDatabase.AttackSub, this);
+            uiManager.PushMenu(uiDatabase.AttackSub);
         }
         void OnBlock()
         {

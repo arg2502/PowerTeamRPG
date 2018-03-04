@@ -27,8 +27,6 @@ public class Cole : Hero {
 
     public override void Attack(string atkChoice)
     {
-        base.Attack(atkChoice);
-
         // attacks specific to the character
         switch (atkChoice)
         {            
@@ -39,6 +37,11 @@ public class Cole : Hero {
                 SplashFlame();
                 break;
         }
+
+        // check parent function to take care of reducing pm
+        // also check if the attack is a general hero attack (Strike, Block) or an item use
+        base.Attack(atkChoice);
+
     }
 
     //select the target for your attack

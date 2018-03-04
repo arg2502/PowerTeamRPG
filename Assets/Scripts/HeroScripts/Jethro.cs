@@ -58,23 +58,21 @@ public class Jethro : Hero {
 
 	public override void Attack (string atkChoice)
 	{
-		base.Attack (atkChoice);
-
-
 		// attacks specific to the character
 		switch (atkChoice) {
 			case "Helmsplitter":
 				if (!targets [0].IsDead)
 					Helmsplitter ();
 				break;
-			default:
-                // if there is no case for this action, then it must be treated as an item
-                ItemUse(atkChoice);
-				break;
-
 		}
-	}
-	public void Helmsplitter()
+
+        // check parent function to take care of reducing pm
+        // also check if the attack is a general hero attack (Strike, Block) or an item use
+        base.Attack(atkChoice);
+
+
+    }
+    public void Helmsplitter()
 	{
 		float damage;
 		damage = CalcDamage("Helmsplitter", 0.5f, 0.03f, 0.9f, false);

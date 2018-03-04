@@ -312,7 +312,7 @@ public class Hero : Denigen {
                 break;
             default:
                 // if there is no case for this action, then it must be treated as an item
-                //ItemUse(atkChoice);
+                ItemUse(atkChoice);
                 break;
         }
 
@@ -326,6 +326,9 @@ public class Hero : Denigen {
         {
             if (SpellsList[i].Name == atkChoice) { Pm -= SpellsList[i].Pm; break; }
         }
+
+        // Denigen attack -- tells BattleManager that this denigen's attack phase is over
+        base.Attack(atkChoice);
     }
     //Strike is standard attack with 50% power
     //It uses no mana, and its magic properties are determined by the stat breakdown

@@ -74,7 +74,12 @@ public class Enemy : Denigen {
     {
         return null;
     }
-    
+
+    public override void Attack(string atkChoice)
+    {
+        base.Attack(atkChoice);
+    }
+
     // This method will make it easier to distinguish the enemies
     protected void Rename()
     {

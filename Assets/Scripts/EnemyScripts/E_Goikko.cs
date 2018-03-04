@@ -117,5 +117,7 @@ public class E_Goikko : Enemy {
                 Tackle();
                 break;
         }
+
+        base.Attack(atkChoice);
     }    
 }

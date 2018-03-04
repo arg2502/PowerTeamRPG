@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UI;
 
 public class BattleManager : MonoBehaviour {
 
@@ -40,10 +41,10 @@ public class BattleManager : MonoBehaviour {
     
     public TargetType targetState;
 
-    public UI.BattleUI battleUI;
+    public BattleUI battleUI;
 
-    //UI.UIManager uiManager;
-    UI.BattleMenu battleMenu;
+    UIManager uiManager;
+    public UI.BattleMenu battleMenu;
 
 	void Start ()
     {
@@ -57,7 +58,7 @@ public class BattleManager : MonoBehaviour {
 
     void CreateBattleMenu()
     {
-        var uiManager = GameControl.UIManager;
+        uiManager = GameControl.UIManager;
         var battleMenuObj = uiManager.uiDatabase.BattleMenu;
         uiManager.PushMenu(battleMenuObj);
         battleMenu = uiManager.FindMenu(battleMenuObj) as UI.BattleMenu;
@@ -173,7 +174,7 @@ public class BattleManager : MonoBehaviour {
             print("speed: " + denigen.Data.spd);
         }
     }
-
+    
     public void TestTarget()
     {
         if (battleState != BattleState.TARGET)
@@ -203,6 +204,11 @@ public class BattleManager : MonoBehaviour {
         //print("TARGET -- AFTER WHILE");
     }
 
+    void ShowBattleMenu()
+    {
+        uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
+    }
+
     void ChangeBattleState(BattleState state)
     {
         // set the new battle state
@@ -213,6 +219,10 @@ public class BattleManager : MonoBehaviour {
         currentDenigen = 0;
 
         // determine what happens now in this new state
+        if(battleState == BattleState.TARGET)
+        {
+            StartTargetPhase();
+        }
         if (battleState == BattleState.ATTACK)
         {
             StartAttackPhase();
@@ -227,6 +237,11 @@ public class BattleManager : MonoBehaviour {
         {
             print("*smash announcer voice* FAILURE");
         }
+    }
+
+    void StartTargetPhase()
+    {
+        ShowBattleMenu();
     }
 
     void StartAttackPhase()
@@ -284,6 +299,7 @@ public class BattleManager : MonoBehaviour {
         }
         if (currentDenigen < denigenList.Count)
             print("NEXT UP -- " + denigenList[currentDenigen].name);
+        AttackDenigen();
     }
 
     public void KillOff(Denigen deadDenigen)
@@ -296,6 +312,11 @@ public class BattleManager : MonoBehaviour {
 
         //availableDenigens.Remove(deadDenigen);
 
+        CheckTheDead(deadDenigen);
+    }
+
+    void CheckTheDead(Denigen deadDenigen)
+    {
         // check for victory or loss
         if (deadDenigen is Hero)
         {
@@ -314,7 +335,7 @@ public class BattleManager : MonoBehaviour {
         foreach(var hero in heroList)
         {
             //if (hero.StatusState != Denigen.Status.dead && hero.StatusState != Denigen.Status.overkill)
-            if(hero.IsDead)
+            if(!hero.IsDead)
                 return false;
         }
 
@@ -325,11 +346,23 @@ public class BattleManager : MonoBehaviour {
         foreach (var enemy in enemyList)
         {
             //if (enemy.StatusState != Denigen.Status.dead && enemy.StatusState != Denigen.Status.overkill)
-            if(enemy.IsDead)
+            if(!enemy.IsDead)
                 return false;
         }
 
         return true;
+    }
+
+    bool IsBattleOver
+    {
+        get
+        {
+            if (battleState == BattleState.VICTORY)
+                return true;
+            else if (battleState == BattleState.FAILURE)
+                return true;
+            else return false;
+        }
     }
 
     public void DetermineTargetType(string attackName)
@@ -337,44 +370,12 @@ public class BattleManager : MonoBehaviour {
         Hero hero = heroList[currentDenigen];
         hero.CurrentAttack = attackName;
         hero.DecideTypeOfTarget();
-        //SetUpTarget();
     }
-    //public void SetUpTarget()
-    //{
-    //    switch (targetState)
-    //    {
-    //        case TargetType.ENEMY_SINGLE:                
-    //            AssignSingle();
-    //            break;
-    //    }
-    //}
-
-    //void AssignSingle()
-    //{
-    //    // find first living denigen
-
-
-    //}
-    public void TargetDenigen(List<Denigen> targets)
-    {
-        Hero hero = heroList[currentDenigen];
-        hero.SelectTarget(targets);
-        print(hero.name + "'s target is " + hero.Targets[0].name);
-
-        do
-        {
-            if (currentDenigen < heroList.Count - 1)
-                currentDenigen++;
-            else
-                ChangeBattleState(BattleState.ATTACK);
-        } while (heroList[currentDenigen].IsDead);
-    }
-
     public bool IsTargetEnemy
     {
         get
         {
-            switch(targetState)
+            switch (targetState)
             {
                 case TargetType.ENEMY_SINGLE:
                 case TargetType.ENEMY_SPLASH:
@@ -385,7 +386,56 @@ public class BattleManager : MonoBehaviour {
             }
         }
     }
+    public void TargetDenigen(List<Denigen> targets)
+    {
+        Hero hero = heroList[currentDenigen];
+        hero.SelectTarget(targets);
+        print(hero.name + "'s target is " + hero.Targets[0].name);
 
+        // disable all menus
+        uiManager.DisableAllMenus();
+        do
+        {
+            if (currentDenigen < heroList.Count - 1)
+                NextDenigen();
+            else
+                GoToAttackState();
+        }
+        while (heroList[currentDenigen].IsDead);
+    }
+
+    void NextDenigen()
+    {
+        currentDenigen++;
+
+        // go back to BattleMenu
+        ShowBattleMenu();
+    }
+    void GoToAttackState()
+    {
+        ChangeBattleState(BattleState.ATTACK);
+    }
+
+    void AttackDenigen()
+    {
+        var denigen = denigenList[currentDenigen];
+        denigen.Attack(denigen.CurrentAttack);
+    }
+    public void NextAttack()
+    {
+        // if the battle is over, break the cycle
+        // JUST RETURN FOR NOW
+        if (IsBattleOver)
+            return;
+
+        // increment up list -- if the next one is dead, continue to the next
+        currentDenigen++;
+        if (currentDenigen < denigenList.Count)
+            FindNextAlive();
+        // if we're at the end, end the phase
+        else
+            ChangeBattleState(BattleState.TARGET);
+    }
 }
 // Target type
 // for determining what kind and how many targets a denigen can affect depending on their chosen attack

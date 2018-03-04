@@ -73,6 +73,7 @@
             base.TurnOnMenu();
 
             rootButton = AssignRootButton();
+            SetSelectedObjectToRoot();
 
             CheckForDead();
         }
@@ -95,10 +96,6 @@
             }
 
             battleManager.TargetDenigen(targets);
-
-            // disable all menus and go back to BattleMenu
-            uiManager.DisableAllMenus();
-            uiManager.PushMenu(uiDatabase.BattleMenu);
         }
 
         void CheckForDead()

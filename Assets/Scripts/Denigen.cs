@@ -166,6 +166,10 @@ public class Denigen : MonoBehaviour {
     public virtual void Attack(string atkChoice)
     {
         // specific denigens will pick attack methods based off of user choice
+
+        // always called at the end of specific denigens' Attack()s
+        // Signals the end of their attack phase
+        battleManager.NextAttack();
         
     }
 

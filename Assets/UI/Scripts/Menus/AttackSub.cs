@@ -34,6 +34,11 @@
         {
             return strike;
         }
+        public override void Refocus()
+        {
+            base.Refocus();
+            uiManager.ShowAllMenus();
+        }
         void OnStrike()
         {
             //print("Whoa, there. This function isn't done yet, sonny.");
@@ -53,18 +58,18 @@
         void PushTargetMenu()
         {
             if (battleManager.IsTargetEnemy)
-                uiManager.PushMenu(uiDatabase.EnemyTargetMenu);
+                PushEnemyTargetMenu();
             else
-                uiManager.PushMenu(uiDatabase.HeroTargetMenu);
+                PushHeroTargetMenu();
         }
 
         void PushHeroTargetMenu()
         {
-            //uiManager.PushMenu(uiDatabase.HeroTarget);
+            uiManager.PushMenu(uiDatabase.HeroTargetMenu);
         }
         void PushEnemyTargetMenu()
         {
-            //uiManager.PushMenu(uiDatabase.EnemyTarget);
+            uiManager.PushMenu(uiDatabase.EnemyTargetMenu);
         }
     }
 }

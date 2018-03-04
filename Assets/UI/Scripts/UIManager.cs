@@ -152,6 +152,7 @@
                 lastPos = list_currentMenus.Count - 1;
                 menuInFocus = list_currentMenus[lastPos];
                 menu = menuInFocus.GetComponent<Menu>();
+                menu.gameObject.SetActive(true);
                 menu.SetSelectedObjectToRoot();
                 menu.ToggleButtonState(true);
                 menu.Refocus();
@@ -189,6 +190,11 @@
             // turn off all menus
             foreach (var menu in list_currentMenus)
                 menu.SetActive(false);
+        }
+        public void ShowAllMenus()
+        {
+            foreach (var menu in list_currentMenus)
+                menu.SetActive(true);
         }
     }
 }
