@@ -36,6 +36,9 @@ public class Denigen : MonoBehaviour {
     public enum AttackType { NORMAL, MISS, CRIT, BLOCKED };
     public AttackType attackType;
 
+    protected string attackAnimation;
+    public string AttackAnimation { get { return attackAnimation; } }
+
     // Changes to stats
     //public int HpChange { get { return hpChange; } set { hpChange = value; } } // HP & PM shouldn't ever temporarily change
     //public int PmChange { get { return pmChange; } set { pmChange = value; } }
@@ -345,14 +348,14 @@ public class Denigen : MonoBehaviour {
         //}
 	}
    
-    protected IEnumerator PlayAnimation(string animation)
-    {
-        GameControl.control.isAnimating = true;
-        anim.Play(animation); 
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
-        GameControl.control.isAnimating = false;
-        StopCoroutine("PlayAnimation");
-    }
+    //protected IEnumerator PlayAnimation(string animation)
+    //{
+    //    GameControl.control.isAnimating = true;
+    //    anim.Play(animation); 
+    //    yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
+    //    GameControl.control.isAnimating = false;
+    //    StopCoroutine("PlayAnimation");
+    //}
 
     public bool IsDead
     {

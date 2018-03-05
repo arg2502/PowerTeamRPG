@@ -110,9 +110,14 @@
                 // also, check if alive
                 if (i >= battleManager.enemyList.Count || battleManager.enemyList[i].IsDead)
                 {
+                    enemyCursors[i].gameObject.SetActive(false);
                     enemyCursors[i].interactable = false;
                     SetButtonNavigation();
-                    continue;
+                }
+                else
+                {
+                    enemyCursors[i].gameObject.SetActive(true);
+                    enemyCursors[i].interactable = true;
                 }
             }
         }

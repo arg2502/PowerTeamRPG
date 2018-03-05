@@ -450,7 +450,21 @@ public class BattleManager : MonoBehaviour {
         // show attack
         battleUI.battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttack;
         battleCamera.MoveTo(attacker.transform.position);
-        yield return new WaitForSeconds(1f);
+
+        var anim = attacker.GetComponent<Animator>();
+        if (anim != null && !string.IsNullOrEmpty(attacker.AttackAnimation))
+        {
+            // time before and after the animation to give some time to watch the transitions to and from Idle
+            var bufferTime = 0.25f;
+
+            yield return new WaitForSeconds(bufferTime);
+            anim.Play(attacker.AttackAnimation);
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + bufferTime);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+        }
 
         // show damage
         var messagesToDisplay = new List<string>();

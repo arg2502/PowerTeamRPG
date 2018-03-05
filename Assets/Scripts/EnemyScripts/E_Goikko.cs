@@ -107,14 +107,17 @@ public class E_Goikko : Enemy {
             case "Tackle":
                 //StartCoroutine(Tackle());
                 Tackle();
+                attackAnimation = "Tackle";
                 break;
             case "Frenzy":
                 //StartCoroutine(Frenzy());
                 Frenzy();
+                attackAnimation = "Poison";
                 break;
             default:
                 //StartCoroutine(Tackle());
                 Tackle();
+                attackAnimation = "Tackle";
                 break;
         }
 
