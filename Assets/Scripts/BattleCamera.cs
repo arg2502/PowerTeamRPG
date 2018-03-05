@@ -3,10 +3,10 @@ using System.Collections;
 
 public class BattleCamera : MonoBehaviour {
 
-    float movementRate = 3f;
+    float movementRate = 4f;
     float zoomRate = 3f;
     float originalZoom;
-    float attackZoom = 7.5f;
+    float attackZoom = 8f;
     Vector3 originalPos;
 
     Vector3 desiredPos;
@@ -29,6 +29,12 @@ public class BattleCamera : MonoBehaviour {
     {
         transform.position = Vector3.Lerp(transform.position, desiredPos, movementRate * Time.deltaTime);
         thisCamera.orthographicSize = Mathf.Lerp(thisCamera.orthographicSize, desiredZoom, zoomRate * Time.deltaTime);
+
+        // just so we're not travelling into infinity, if the position and zoom get really close to their desired positions, just set them
+        if (Vector3.Magnitude(transform.position - desiredPos) < 0.01f)
+            transform.position = desiredPos;
+        if ((thisCamera.orthographicSize - desiredZoom) < 0.01f)
+            thisCamera.orthographicSize = desiredZoom;
     }
 
     public void MoveTo(Vector3 position)
