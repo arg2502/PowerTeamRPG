@@ -120,31 +120,15 @@ public class Denigen : MonoBehaviour {
 
         battleManager = FindObjectOfType<BattleManager>();
 
-        // COMMENTED OUT ON 12/6/2017
-        // BATTLE MENU WILL BE REDONE AT A LATER TIME
-        // -AG
 
-        //get a reference to the battleMenu object in the scene
-        //if (GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>())
-        //{
-        //    battleMenu = GameObject.FindObjectOfType<BattleMenu>().GetComponent<BattleMenu>();
-        //}
-
-        //battleMenu.SortDenigens();
-        ////highlight the current denigen
-        //// set the current denigen
-        //battleMenu.currentDenigen = battleMenu.denigenArray[0];
-        //battleMenu.currentDenigen.Card.GetComponent<TextMesh>().color = Color.yellow;
-        ////statusState = Status.normal;
-
-        //sr = gameObject.GetComponent<SpriteRenderer>();
-        //targetShader = Shader.Find("GUI/Text Shader");
-        //normalShader = Shader.Find("Sprites/Default");
-
-        //if (statusState == Status.dead || statusState == Status.overkill) { sr.color = new Color(0.0f, 0.0f, 0.0f, 0.0f); }
-
-        //anim = GetComponent<Animator>();
-	}
+        // start IDLE animation at random frame, so that if there are multiple of this denigen, they don't all look the same
+        anim = GetComponent<Animator>();
+        if (anim != null)
+        {
+            AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);//could replace 0 by any other animation layer index
+            anim.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
+        }
+    }
     //protected void LevelUp(int lvl)
     //{
     //    multiplier = (lvl / 10.0f) + 1.0f;
