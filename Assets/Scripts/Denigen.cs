@@ -27,7 +27,15 @@ public class Denigen : MonoBehaviour {
 
     public List<string> TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
     public List<string> CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
-    
+
+    // store damage variables
+    int calculatedDamage;
+    //Denigen attacker;
+    public int CalculatedDamage { get { return calculatedDamage; } }
+    //public Denigen Attacker { get { return attacker; } }
+    public enum AttackType { NORMAL, MISS, CRIT, BLOCKED };
+    public AttackType attackType;
+
     // Changes to stats
     //public int HpChange { get { return hpChange; } set { hpChange = value; } } // HP & PM shouldn't ever temporarily change
     //public int PmChange { get { return pmChange; } set { pmChange = value; } }
@@ -169,7 +177,8 @@ public class Denigen : MonoBehaviour {
 
         // always called at the end of specific denigens' Attack()s
         // Signals the end of their attack phase
-        battleManager.NextAttack();
+        //battleManager.NextAttack();
+        StartCoroutine(battleManager.ShowAttack(this, targets));
         
     }
 
@@ -184,53 +193,65 @@ public class Denigen : MonoBehaviour {
 
     protected float CalcDamage(string atkChoice, float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
+        attackType = AttackType.NORMAL; // set to normal at start
+
         calcDamageText.Add(name + " uses " + atkChoice + "!");
         //print(name + " uses " + atkChoice + "!");
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
-        if (num > accuracy) { calcDamageText.Add("The attack misses..."); print(name + " MISSES"); return 0.0f; }
+        if (num > accuracy)
+        {
+            calcDamageText.Add("The attack misses...");
+            print(name + " MISSES");
+            attackType = AttackType.MISS;
+            return 0.0f;
+        }
+        int atkStat;
+        // if its a magic attack, use magic variables
+        if (isMagic)
+        {
+            atkStat = MgkAtk;
+        }
+        // if not magic, use physical variables
         else
         {
-            int atkStat;
-            // if its a magic attack, use magic variables
-            if (isMagic)
-            {
-                atkStat = MgkAtk;
-            }
-            // if not magic, use physical variables
-            else
-            {
-                atkStat = Atk;
-            }
-
-            // calculate damage
-            float damage = power * atkStat;
-
-            // check for crit
-            num = Random.Range(0.0f, 1.0f);
-
-            // use luck to increase crit chance
-            float chance = Mathf.Pow((float)(Luck), 2.0f / 3.0f); // luck ^ 2/3
-            chance /= 100f; // make percentage
-
-            // add chance to crit to increase the probability of num being the smaller one
-            if (num <= (crit + chance)) { damage *= 1.5f; calcDamageText.Add( name + " strikes a weak spot!"); print(name + " strikes a weak spot!"); }
-
-            // check for attack based passivesList
-            foreach (Passive cdp in PassivesList)
-            {
-                if (cdp is CalcDamagePassive) { cdp.Use(this, null); }
-            }
-
-            //Clear the target's previous text, to avoid a build up 
-            for (int i = 0; i < targets.Count; i++)
-            {
-                targets[i].TakeDamageText.Clear();
-            }
-               
-            // return final damage amount
-            return damage;
+            atkStat = Atk;
         }
+
+        // calculate damage
+        float damage = power * atkStat;
+
+        // check for crit
+        num = Random.Range(0.0f, 1.0f);
+
+        // use luck to increase crit chance
+        float chance = Mathf.Pow((float)(Luck), 2.0f / 3.0f); // luck ^ 2/3
+        chance /= 100f; // make percentage
+
+        // add chance to crit to increase the probability of num being the smaller one
+        if (num <= (crit + chance))
+        {
+            damage *= 1.5f;
+            calcDamageText.Add(name + " strikes a weak spot!");
+            print(name + " strikes a weak spot!");
+            attackType = AttackType.CRIT;
+        }
+
+        // check for attack based passivesList
+        foreach (Passive cdp in PassivesList)
+        {
+            if (cdp is CalcDamagePassive) { cdp.Use(this, null); }
+        }
+
+        //Clear the target's previous text, to avoid a build up 
+        for (int i = 0; i < targets.Count; i++)
+        {
+            targets[i].TakeDamageText.Clear();
+        }
+
+        // return final damage amount
+        return damage;
+
     }
 
     //Made public to allow other denigens to deal damage
@@ -257,7 +278,13 @@ public class Denigen : MonoBehaviour {
         if (damage < 0) { damage = 0; }
         
         // check if this denigen is blocking -- if so, halve the damage received
-        if (isBlocking) { damage = damage / 2.0f; takeDamageText.Add(name + " blocks the attack!"); print(name + " blocks the attack!"); }
+        if (isBlocking)
+        {
+            damage = damage / 2.0f;
+            takeDamageText.Add(name + " blocks the attack!");
+            print(name + " blocks the attack!");
+            attackingDen.attackType = AttackType.BLOCKED;
+        }
 
         // check for passivesList
         foreach (Passive tdp in PassivesList)
@@ -265,35 +292,38 @@ public class Denigen : MonoBehaviour {
             if (tdp is TakeDamagePassive) { tdp.Use(attackingDen, this); }
         }
 
-        // decrease hp based off of damage
-        Hp -= (int)damage;
+        //attacker = attackingDen;
+        calculatedDamage = (int)damage;
+        // MOVED TO BATTLEMANAGER
+        //// decrease hp based off of damage
+        //Hp -= (int)damage;
 
-        //Now record appropriate text
-        takeDamageText.Add(name + " takes " + (int)damage + " damage!");
-        print(name + " takes " + (int)damage + " damage!");
-        // create the damage effect, but onlu if the denigen is not dead
-        //if (statusState != Status.dead && statusState != Status.overkill)
+        ////Now record appropriate text
+        //takeDamageText.Add(name + " takes " + (int)damage + " damage!");
+        //print(name + " takes " + (int)damage + " damage!");
+        //// create the damage effect, but onlu if the denigen is not dead
+        ////if (statusState != Status.dead && statusState != Status.overkill)
+        ////{
+        //    GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
+        //    be.name = "DamageEffect";
+        //    //be.GetComponent<Effect>().Start();
+        //    be.GetComponent<Effect>().damage = (int)damage + "";
+        ////}
+
+        //// check for dead
+        //print(name + " HP: " + Hp);
+        //if (Hp <= 0)
         //{
-            GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
-            be.name = "DamageEffect";
-            //be.GetComponent<Effect>().Start();
-            be.GetComponent<Effect>().damage = (int)damage + "";
+        //    Hp = 0;
+        //    takeDamageText.Add( name + " falls!");
+        //    StatusState = DenigenData.Status.dead;
+        //    battleManager.KillOff(this);
+
+        //    print("He's dead, Jim. " + name + "'s dead.");
         //}
 
-        // check for dead
-        print(name + " HP: " + Hp);
-        if (Hp <= 0)
-        {
-            Hp = 0;
-            takeDamageText.Add( name + " falls!");
-            StatusState = DenigenData.Status.dead;
-            battleManager.KillOff(this);
-
-            print("He's dead, Jim. " + name + "'s dead.");
-        }
-
-        // Update UI
-        battleManager.battleUI.UpdateStats(this); // eh....kinda ugly
+        //// Update UI
+        //battleManager.battleUI.UpdateStats(this); // eh....kinda ugly
     }
 
 	// Update is called once per frame

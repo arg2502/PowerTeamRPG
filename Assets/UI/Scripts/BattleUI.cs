@@ -19,6 +19,8 @@
         public List<GameObject> heroCursors;
         public List<GameObject> enemyCursors;
 
+        public Text battleMessage;
+
         public void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
@@ -73,7 +75,6 @@
             foreach (var cursor in enemyCursors)
                 cursor.SetActive(false);
         }
-
-        
+                
     }
 }

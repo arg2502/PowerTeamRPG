@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviour {
     public TargetType targetState;
 
     public BattleUI battleUI;
-
+    public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
 
@@ -206,6 +206,7 @@ public class BattleManager : MonoBehaviour {
 
     void ShowBattleMenu()
     {
+        battleUI.battleMessage.text = "";
         uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
     }
 
@@ -242,12 +243,16 @@ public class BattleManager : MonoBehaviour {
     void StartTargetPhase()
     {
         ShowBattleMenu();
+        battleCamera.BackToStart();
+        battleCamera.ZoomTarget();
     }
 
     void StartAttackPhase()
     {
+        battleCamera.ZoomAttack();
+
         // have enemies decide their attack
-        foreach(var enemy in enemyList)
+        foreach (var enemy in enemyList)
         {
             enemy.CurrentAttack = enemy.ChooseAttack();
         }
@@ -397,14 +402,14 @@ public class BattleManager : MonoBehaviour {
         do
         {
             if (currentDenigen < heroList.Count - 1)
-                NextDenigen();
+                NextTarget();
             else
                 GoToAttackState();
         }
         while (heroList[currentDenigen].IsDead);
     }
 
-    void NextDenigen()
+    void NextTarget()
     {
         currentDenigen++;
 
@@ -421,12 +426,15 @@ public class BattleManager : MonoBehaviour {
         var denigen = denigenList[currentDenigen];
         denigen.Attack(denigen.CurrentAttack);
     }
+    
     public void NextAttack()
     {
-        // if the battle is over, break the cycle
-        // JUST RETURN FOR NOW
+        // if the battle is over, break the cycle        
         if (IsBattleOver)
+        {
+            EndBattle();
             return;
+        }
 
         // increment up list -- if the next one is dead, continue to the next
         currentDenigen++;
@@ -435,6 +443,88 @@ public class BattleManager : MonoBehaviour {
         // if we're at the end, end the phase
         else
             ChangeBattleState(BattleState.TARGET);
+    }
+
+    public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
+    {
+        // show attack
+        battleUI.battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttack;
+        battleCamera.MoveTo(attacker.transform.position);
+        yield return new WaitForSeconds(1f);
+
+        // show damage
+        var messagesToDisplay = new List<string>();
+
+        if (targeted.Count > 0)
+            battleCamera.MoveTo(targeted[0].transform.position);
+
+        foreach (var target in targeted)
+        {
+            // decrease hp based off of damage
+            target.Hp -= target.CalculatedDamage;
+
+            //Now record appropriate text
+            //takeDamageText.Add(name + " takes " + (int)damage + " damage!");
+            var message = "";
+            switch(attacker.attackType)
+            {
+                case Denigen.AttackType.NORMAL:
+                    message = "";
+                    break;
+                case Denigen.AttackType.BLOCKED:
+                    message = target.DenigenName + " blocked the attack\n";
+                    break;
+                case Denigen.AttackType.CRIT:
+                    message = attacker.DenigenName + " hit a weak spot!\n";
+                    break;
+                case Denigen.AttackType.MISS:
+                    message = attacker.DenigenName + " missed\n";
+                    break;
+            }
+
+
+            message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
+            messagesToDisplay.Add(message);
+
+            print(name + " takes " + target.CalculatedDamage + " damage!");
+            // create the damage effect, but onlu if the denigen is not dead
+            //if (statusState != Status.dead && statusState != Status.overkill)
+            //{
+            GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+            be.name = "DamageEffect";
+            //be.GetComponent<Effect>().Start();
+            be.GetComponent<Effect>().damage = target.CalculatedDamage + "";
+            //}
+
+            // check for dead
+            print(name + " HP: " + target.Hp);
+            if (target.Hp <= 0)
+            {
+                target.Hp = 0;
+                //takeDamageText.Add(name + " falls!");
+                print(target.DenigenName + " falls!");
+                messagesToDisplay.Add(target.DenigenName + " falls!");
+                target.StatusState = DenigenData.Status.dead;
+                KillOff(target);
+            }
+
+            // Update UI
+            battleUI.UpdateStats(target);
+        }
+        for (int i = 0; i < messagesToDisplay.Count; i++)
+        {
+            battleUI.battleMessage.text = messagesToDisplay[i];
+            yield return new WaitForSeconds(1f);
+        }
+        NextAttack();
+    }
+
+    void EndBattle()
+    {
+        if (battleState == BattleState.VICTORY)
+            battleUI.battleMessage.text = "VICTORY!";
+        else
+            battleUI.battleMessage.text = "FAILURE";
     }
 }
 // Target type
