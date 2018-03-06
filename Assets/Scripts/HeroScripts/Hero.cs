@@ -91,7 +91,11 @@ public class Hero : Denigen {
                 currentTargetType = TargetType.ENEMY_SINGLE;
                 break;
             case "Block":
+                // special case -- do all blocking code here
                 currentTargetType = TargetType.HERO_SELF;
+                isBlocking = true;
+                var targets = new List<Denigen>() { this };
+                battleManager.TargetDenigen(targets);
                 break;
         }
     }
@@ -151,17 +155,17 @@ public class Hero : Denigen {
     // This is used for self buffs, self healing, item use, and blocking
     public void SelectSelfTarget(string attack)
     {
-        sr.material.shader = targetShader;
-        sr.color = targetGreen;
-        card.GetComponent<TextMesh>().color = Color.green;
+        //sr.material.shader = targetShader;
+        //sr.color = targetGreen;
+        //card.GetComponent<TextMesh>().color = Color.green;
 
-        if (Input.GetKeyUp(GameControl.control.selectKey))
-        {
-            if (attack == "Block") { isBlocking = true; }
-            else { targets[0] = this; }
-            sr.material.shader = normalShader;
-            sr.color = Color.white;
-        }
+        //if (Input.GetKeyUp(GameControl.control.selectKey))
+        //{
+        //    if (attack == "Block") { isBlocking = true; }
+        //    else { targets[0] = this; }
+        //    sr.material.shader = normalShader;
+        //    sr.color = Color.white;
+        //}
     }
 
     //a generic, single target selecting method

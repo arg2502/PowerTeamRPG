@@ -7,25 +7,26 @@
 
     public class EnemyTargetMenu : Menu
     {        
-        List<Button> enemyCursors = new List<Button>();
+        List<Button> targetCursors = new List<Button>();
+        List<Denigen> currentTargets = new List<Denigen>();
 
         BattleManager battleManager;
 
         protected override void AddButtons()
         {
             base.AddButtons();
-
+            
             // add buttons programmatically rather than through inspector -- simpler
             var array = GetComponentsInChildren<Button>();
             foreach (var b in array)
-                enemyCursors.Add(b);
+                targetCursors.Add(b);
 
             // order from top to bottom -- for button navigation purposes
             listOfButtons = new List<Button>();
 
-            for(int i = enemyCursors.Count - 1; i >= 0; i--)
+            for(int i = targetCursors.Count - 1; i >= 0; i--)
             {
-                listOfButtons.Add(enemyCursors[i]);
+                listOfButtons.Add(targetCursors[i]);
             }
         }
 
@@ -33,19 +34,19 @@
         {
             base.AddListeners();
 
-            for (int i = 0; i < enemyCursors.Count; i++)
+            for (int i = 0; i < targetCursors.Count; i++)
             {
                 var tempNum = i;
-                enemyCursors[i].onClick.AddListener(() => OnEnemy(tempNum));
+                targetCursors[i].onClick.AddListener(() => OnTarget(tempNum));
             }
         }
 
         public override Button AssignRootButton()
         {
-            for(int i = 0; i < battleManager.enemyList.Count; i++)
+            for(int i = 0; i < currentTargets.Count; i++)
             {
-                if (!battleManager.enemyList[i].IsDead)
-                    return enemyCursors[i];
+                if (!currentTargets[i].IsDead)
+                    return targetCursors[i];
             }
             return null;
         }
@@ -63,7 +64,7 @@
             {
                 var pos = RectTransformUtility.WorldToScreenPoint(Camera.main, battleManager.enemyPositions[i].transform.position);
                 //screenPos.Add(pos);
-                enemyCursors[i].transform.position = pos;
+                targetCursors[i].transform.position = pos;
             }
             
         }
@@ -72,25 +73,38 @@
         {
             base.TurnOnMenu();
 
+            currentTargets.Clear();
+
+            if (battleManager.IsTargetEnemy)
+            {
+                foreach (var enemy in battleManager.enemyList)
+                    currentTargets.Add(enemy);
+            }
+            else
+            {
+                foreach (var hero in battleManager.heroList)
+                    currentTargets.Add(hero);
+            }
+
             rootButton = AssignRootButton();
             SetSelectedObjectToRoot();
 
             CheckForDead();
         }
         
-        void OnEnemy(int pos)
+        void OnTarget(int pos)
         {
             //print("Whoa, there. This function isn't done yet, sonny.");
             List<Denigen> targets = new List<Denigen>();
-            var mainTarget = battleManager.enemyList[pos];
+            var mainTarget = currentTargets[pos];
             targets.Add(mainTarget);
 
             // determine if we need multiple targets
-            if(battleManager.targetState == TargetType.ENEMY_SPLASH)
+            if(battleManager.targetState == TargetType.ENEMY_SPLASH || battleManager.targetState == TargetType.HERO_SPLASH)
             {
                 print("You gotta do splash stuff here! Sorry, not programmed yet");
             }
-            if(battleManager.targetState == TargetType.ENEMY_TEAM)
+            if(battleManager.targetState == TargetType.ENEMY_TEAM || battleManager.targetState == TargetType.HERO_TEAM)
             {
                 print("You gotta do team stuff here! Sorry, not programmed yet");
             }
@@ -104,20 +118,20 @@
             // check if the cursors are even linked to an enemy
             // i.e. if there's only one enemy in the battle, 3 cursors aren't pointing anywhere
             // if they are linked, check if the enemy is even alive
-            for (int i = 0; i < enemyCursors.Count; i++)
+            for (int i = 0; i < targetCursors.Count; i++)
             {
                 // if we're out of range, turn off the cursor
                 // also, check if alive
-                if (i >= battleManager.enemyList.Count || battleManager.enemyList[i].IsDead)
+                if (i >= currentTargets.Count || currentTargets[i].IsDead)
                 {
-                    enemyCursors[i].gameObject.SetActive(false);
-                    enemyCursors[i].interactable = false;
+                    targetCursors[i].gameObject.SetActive(false);
+                    targetCursors[i].interactable = false;
                     SetButtonNavigation();
                 }
                 else
                 {
-                    enemyCursors[i].gameObject.SetActive(true);
-                    enemyCursors[i].interactable = true;
+                    targetCursors[i].gameObject.SetActive(true);
+                    targetCursors[i].interactable = true;
                 }
             }
         }

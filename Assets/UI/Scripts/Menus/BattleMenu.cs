@@ -8,6 +8,13 @@
     public class BattleMenu : Menu
     {
         public Button attack, block, items, flee;
+        BattleManager battleManager;
+
+        public override void Init()
+        {
+            base.Init();
+            battleManager = FindObjectOfType<BattleManager>();
+        }
 
         protected override void AddButtons()
         {
@@ -36,7 +43,10 @@
         }
         void OnBlock()
         {
-            print("Whoa, there. This function isn't done yet, sonny.");
+            //print("Whoa, there. This function isn't done yet, sonny.");
+            uiManager.HideAllMenus();
+            battleManager.DetermineTargetType("Block");
+
         }
         void OnItems()
         {

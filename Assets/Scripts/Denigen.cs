@@ -171,7 +171,8 @@ public class Denigen : MonoBehaviour {
 
     protected void Block()
     {
-        calcDamageText.Add(name + " is blocking!");
+        //isBlocking = true;
+        //calcDamageText.Add(name + " is blocking!");
     }
 
     // NEEDED for crits

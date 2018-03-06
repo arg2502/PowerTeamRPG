@@ -245,6 +245,7 @@ public class BattleManager : MonoBehaviour {
         ShowBattleMenu();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
+        ResetBlocking();
     }
 
     void StartAttackPhase()
@@ -466,6 +467,13 @@ public class BattleManager : MonoBehaviour {
             yield return new WaitForSeconds(1f);
         }
 
+        // we don't need to show any target info if the attacker is just blocking
+        if (attacker.IsBlocking)
+        {
+            NextAttack();
+            yield break;
+        }
+
         // show damage
         var messagesToDisplay = new List<string>();
 
@@ -473,7 +481,7 @@ public class BattleManager : MonoBehaviour {
             battleCamera.MoveTo(targeted[0].transform.position);
 
         foreach (var target in targeted)
-        {
+        {                        
             // decrease hp based off of damage
             target.Hp -= target.CalculatedDamage;
 
@@ -539,6 +547,18 @@ public class BattleManager : MonoBehaviour {
             battleUI.battleMessage.text = "VICTORY!";
         else
             battleUI.battleMessage.text = "FAILURE";
+    }
+
+    /// <summary>
+    /// Called after the end of the attack phase -- resets blocking to false for next round
+    /// </summary>
+    void ResetBlocking()
+    {
+        foreach(var denigen in denigenList)
+        {
+            if (denigen.IsBlocking)
+                denigen.IsBlocking = false;
+        }
     }
 }
 // Target type
