@@ -110,7 +110,8 @@ public class Denigen : MonoBehaviour {
     public string CurrentAttack { get { return currentAttack; } set { currentAttack = value; } }
 
     // reference to UI text
-    public Text statsText;
+    public struct StatsText { public Text NAME, HP, PM; }
+    public StatsText statsText;
 
     // Use this for initialization
 	protected void Awake () {

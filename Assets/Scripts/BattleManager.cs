@@ -48,9 +48,9 @@ public class BattleManager : MonoBehaviour {
 
 	void Start ()
     {
-        CreateBattleMenu();
         AddHeroes();
         AddEnemies();
+        CreateBattleMenu();
         battleUI.Init();
         SortBySpeed();
         //PrintHeroes();
@@ -531,7 +531,8 @@ public class BattleManager : MonoBehaviour {
             }
 
             // Update UI
-            battleUI.UpdateStats(target);
+            if (target is Hero)
+                battleUI.UpdateStats(target);
         }
         for (int i = 0; i < messagesToDisplay.Count; i++)
         {

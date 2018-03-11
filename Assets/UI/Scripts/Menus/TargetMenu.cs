@@ -5,7 +5,7 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class EnemyTargetMenu : Menu
+    public class TargetMenu : Menu
     {        
         List<Button> targetCursors = new List<Button>();
         List<Denigen> currentTargets = new List<Denigen>();

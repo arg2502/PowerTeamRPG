@@ -9,6 +9,7 @@
     {
         public Button strike, skills, spells;
         BattleManager battleManager;
+        public Image dimmer;
 
         public override void Init()
         {
@@ -34,10 +35,18 @@
         {
             return strike;
         }
+
+        public override void TurnOnMenu()
+        {
+            base.TurnOnMenu();
+            dimmer.gameObject.SetActive(false);
+        }
+
         public override void Refocus()
         {
             base.Refocus();
             uiManager.ShowAllMenus();
+            dimmer.gameObject.SetActive(false);
         }
         void OnStrike()
         {

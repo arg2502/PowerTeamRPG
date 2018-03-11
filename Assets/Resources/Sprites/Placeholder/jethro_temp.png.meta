@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: b2441293680161f488bfe38ac8c0899b
-timeCreated: 1519175326
+guid: 1f43518377b326544b319abaf9f49bf1
+timeCreated: 1520480806
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: Jouliette_Portrait_0
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -39,33 +38,18 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites:
-    - name: Jouliette_Portrait_0
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 13
-        width: 530
-        height: 450
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -265, y: 225}
-        - {x: -265, y: -225}
-        - {x: 265, y: -225}
-        - {x: 265, y: 225}
+    sprites: []
     outline: []
   spritePackingTag: 
   userData: 

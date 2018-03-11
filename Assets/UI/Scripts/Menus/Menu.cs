@@ -152,7 +152,7 @@
             {
                 if (!listOfButtons[i].interactable)
                 {
-                    Debug.Log(i + ": not interactable");
+                    //Debug.Log(i + ": not interactable");
                     // if button is at top
                     if (i <= 0)
                     {

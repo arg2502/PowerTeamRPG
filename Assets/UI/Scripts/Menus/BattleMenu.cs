@@ -9,11 +9,12 @@
     {
         public Button attack, block, items, flee;
         BattleManager battleManager;
+        public Image dimmer;
 
         public override void Init()
         {
-            base.Init();
             battleManager = FindObjectOfType<BattleManager>();
+            base.Init();
         }
 
         protected override void AddButtons()
@@ -36,14 +37,27 @@
             return attack;
         }
 
+        public override void TurnOnMenu()
+        {
+            base.TurnOnMenu();
+
+            dimmer.gameObject.SetActive(false);
+            //battleManager.battleUI.transform.SetAsLastSibling(); // <- ugly line
+        }
+
+        public override void Refocus()
+        {
+            base.Refocus();
+            dimmer.gameObject.SetActive(false);
+        }
+
         void OnAttack()
         {
-            //print("Whoa, there. This function isn't done yet, sonny.");
+            dimmer.gameObject.SetActive(true);
             uiManager.PushMenu(uiDatabase.AttackSub);
         }
         void OnBlock()
         {
-            //print("Whoa, there. This function isn't done yet, sonny.");
             uiManager.HideAllMenus();
             battleManager.DetermineTargetType("Block");
 
@@ -55,8 +69,6 @@
         void OnFlee()
         {
             print("Whoa, there. This function isn't done yet, sonny.");
-        }
-        
-        
+        }        
     }
 }

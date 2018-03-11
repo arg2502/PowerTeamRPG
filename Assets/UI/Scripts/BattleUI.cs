@@ -7,13 +7,6 @@
 
     public class BattleUI : MonoBehaviour
     {
-        public Text jethroText;
-        public Text coleText;
-        public Text eleanorText;
-        public Text joulietteText;
-
-        public List<Text> enemyTextList;
-
         BattleManager battleManager;
 
         public List<GameObject> heroCursors;
@@ -21,53 +14,28 @@
 
         public Text battleMessage;
 
+        // UI ELEMENTS
+        [Header("Names")]
+        public Text jethroName;
+        public Text coleName, eleanorName, joulietteName;
+        [Header("HP")]
+        public Text jethroHP;
+        public Text coleHP, eleanorHP, joulietteHP;
+        [Header("PM")]
+        public Text jethroPM;
+        public Text colePM, eleanorPM, jouliettePM;
+        int statsLength = 3;
+
         public void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
 
-            // assign text to denigens
-
-            // HEROES
-            // (this function is called before the denigens are sorted by speed)
-            battleManager.heroList[0].statsText = jethroText;
-            battleManager.heroList[1].statsText = coleText;
-            battleManager.heroList[2].statsText = eleanorText;
-            battleManager.heroList[3].statsText = joulietteText;
-
-            // ENEMIES
-            for(int i = 0; i < battleManager.enemyList.Count; i++)
-            {
-                battleManager.enemyList[i].statsText = enemyTextList[i];
-            }
-
-            // disable any unassigned enemy UIs
-            for(int i = battleManager.enemyList.Count; i < enemyTextList.Count; i++)
-            {
-                enemyTextList[i].gameObject.SetActive(false);
-            }
-            
-            AssignStats();
+            InitUIStats();
 
             // turn off cursors
             TurnOffAllCursors();
         }
-
-        void AssignStats()
-        {
-            foreach(var d in battleManager.denigenList)
-            {
-                UpdateStats(d);
-            }
-        }
-
-        public void UpdateStats(Denigen d)
-        {
-            d.statsText.text =
-                    d.DenigenName + "\n" +
-                    "HP: " + d.Hp + " / " + d.HpMax + "\n" +
-                    "PM: " + d.Pm + " / " + d.PmMax;
-        }
-
+                
         void TurnOffAllCursors()
         {
             foreach (var cursor in heroCursors)
@@ -75,6 +43,73 @@
             foreach (var cursor in enemyCursors)
                 cursor.SetActive(false);
         }
-                
+
+        void InitUIStats()
+        {
+            // assign text to denigens
+
+            // HEROES
+            // (this function is called before the denigens are sorted by speed)
+            var jethroText = new Denigen.StatsText();
+            jethroText.NAME = jethroName;
+            jethroText.HP = jethroHP;
+            jethroText.PM = jethroPM;
+            battleManager.heroList[0].statsText.NAME = jethroName;//jethroText;
+            battleManager.heroList[0].statsText.HP = jethroHP;
+            battleManager.heroList[0].statsText.PM = jethroPM;
+
+            var coleText = new Denigen.StatsText();
+            coleText.NAME = coleName;
+            coleText.HP = coleHP;
+            coleText.PM = colePM;
+            battleManager.heroList[1].statsText = coleText;
+
+            var eleanorText = new Denigen.StatsText();
+            eleanorText.NAME = eleanorName;
+            eleanorText.HP = eleanorHP;
+            eleanorText.PM = eleanorPM;
+            battleManager.heroList[2].statsText = eleanorText;
+
+            var joulietteText = new Denigen.StatsText();
+            joulietteText.NAME = joulietteName;
+            joulietteText.HP = joulietteHP;
+            joulietteText.PM = jouliettePM;
+            battleManager.heroList[3].statsText = joulietteText;
+
+            AssignStats();
+        }
+
+        void AssignStats()
+        {
+            foreach (var d in battleManager.heroList)
+            {
+                UpdateStats(d);
+            }
+        }
+
+        public void UpdateStats(Denigen d)
+        {
+            d.statsText.NAME.text = d.DenigenName;
+            d.statsText.HP.text = "HP: " + StatsToString(d.Hp) + " / " + StatsToString(d.HpMax);
+            d.statsText.PM.text = "PM: " + StatsToString(d.Pm) + " / " + StatsToString(d.PmMax);
+        }
+
+        /// <summary>
+        /// converts a stats to a string, and adds appropriate spaces beforehand for formatting purposes
+        /// </summary>
+        /// <param name="stat"></param>
+        /// <returns></returns>
+        string StatsToString(int stat)
+        {
+            var statString = stat.ToString();
+
+            // add empty spaces at beginning if less than the desired length of string
+            for (int strLength = statString.Length; strLength < statsLength; strLength++)
+            {
+                statString = " " + statString;
+            }
+
+            return statString;
+        }
     }
 }
