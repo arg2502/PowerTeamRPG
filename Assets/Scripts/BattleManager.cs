@@ -242,6 +242,7 @@ public class BattleManager : MonoBehaviour {
 
     void StartTargetPhase()
     {
+        battleUI.HeroStats.SetActive(true);
         ShowBattleMenu();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
@@ -250,6 +251,7 @@ public class BattleManager : MonoBehaviour {
 
     void StartAttackPhase()
     {
+        battleUI.HeroStats.SetActive(false);
         battleCamera.ZoomAttack();
 
         // have enemies decide their attack

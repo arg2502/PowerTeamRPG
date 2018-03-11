@@ -14,6 +14,8 @@
 
         public Text battleMessage;
 
+        public GameObject HeroStats;
+
         // UI ELEMENTS
         [Header("Names")]
         public Text jethroName;
