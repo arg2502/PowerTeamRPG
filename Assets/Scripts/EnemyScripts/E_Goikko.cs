@@ -62,7 +62,7 @@ public class E_Goikko : Enemy {
 
 
         //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage("Tackle", 0.65f, 0.25f, 0.9f, false);
+        float damage = CalcDamage(0.65f, 0.25f, 0.9f, false);
 
         //yield return StartCoroutine(PlayAnimation("Attack"));
 

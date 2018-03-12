@@ -60,7 +60,7 @@ public class E_Mudpuppy : Enemy {
         //targets.Add(tempTarget);
 
         //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage("Bite", 0.8f, 0.15f, 0.95f, false);
+        float damage = CalcDamage(0.8f, 0.15f, 0.95f, false);
 
         // play bite animation
         //yield return StartCoroutine(PlayAnimation("Bite"));

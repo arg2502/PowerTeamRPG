@@ -47,6 +47,7 @@ public class BattleManager : MonoBehaviour {
     public UI.BattleMenu battleMenu;
 
     public Hero CurrentHero { get { return heroList[currentDenigen]; } }
+    public int CurrentIndex { get { return currentDenigen; } }
 
 	void Start ()
     {
@@ -516,7 +517,7 @@ public class BattleManager : MonoBehaviour {
             message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
             messagesToDisplay.Add(message);
 
-            print(name + " takes " + target.CalculatedDamage + " damage!");
+            print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
             // create the damage effect, but onlu if the denigen is not dead
             //if (statusState != Status.dead && statusState != Status.overkill)
             //{
@@ -527,7 +528,7 @@ public class BattleManager : MonoBehaviour {
             //}
 
             // check for dead
-            print(name + " HP: " + target.Hp);
+            print(target.DenigenName + " HP: " + target.Hp);
             if (target.Hp <= 0)
             {
                 target.Hp = 0;

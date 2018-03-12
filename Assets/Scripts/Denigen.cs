@@ -180,11 +180,10 @@ public class Denigen : MonoBehaviour {
     // CalcDamage
     // TakeDamage
 
-    protected float CalcDamage(string atkChoice, float power, float crit, float accuracy, bool isMagic) // all floats are percentages
+    protected float CalcDamage(float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
         attackType = AttackType.NORMAL; // set to normal at start
-
-        calcDamageText.Add(name + " uses " + atkChoice + "!");
+        
         //print(name + " uses " + atkChoice + "!");
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
