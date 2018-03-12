@@ -85,7 +85,7 @@ public class Hero : Denigen {
 
     public virtual void DecideTypeOfTarget()
     {
-        switch(CurrentAttack)
+        switch(CurrentAttackName)
         {
             case "Strike":
                 currentTargetType = TargetType.ENEMY_SINGLE;
@@ -322,14 +322,14 @@ public class Hero : Denigen {
 
         //subtract the appropriate pm from the attacker -- this value will remain 0 for strike and block
         //go through all techniques to find the correct value
-        for (int i = 0; i < SkillsList.Count; i++ )
-        {
-            if (SkillsList[i].Name == atkChoice) { Pm -= SkillsList[i].Pm; break; }
-        }
-        for (int i = 0; i < SpellsList.Count; i++)
-        {
-            if (SpellsList[i].Name == atkChoice) { Pm -= SpellsList[i].Pm; break; }
-        }
+        //for (int i = 0; i < SkillsList.Count; i++ )
+        //{
+        //    if (SkillsList[i].Name == atkChoice) { Pm -= SkillsList[i].Pm; break; }
+        //}
+        //for (int i = 0; i < SpellsList.Count; i++)
+        //{
+        //    if (SpellsList[i].Name == atkChoice) { Pm -= SpellsList[i].Pm; break; }
+        //}
 
         // Denigen attack -- tells BattleManager that this denigen's attack phase is over
         base.Attack(atkChoice);

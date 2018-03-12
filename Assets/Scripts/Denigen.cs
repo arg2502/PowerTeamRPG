@@ -106,8 +106,21 @@ public class Denigen : MonoBehaviour {
     protected Animator anim;
 
     // the name of the attack the denigen plans on making this turn
-    private string currentAttack;
-    public string CurrentAttack { get { return currentAttack; } set { currentAttack = value; } }
+    private Technique currentAttack;
+    public Technique CurrentAttack { get { return currentAttack; } } // ONLY GETTER -- the current attack should only be set when the attack name is set below
+    private string currentAttackName;
+    public string CurrentAttackName
+    {
+        get
+        {
+            return currentAttackName;
+        }
+        set
+        {
+            currentAttackName = value;
+            currentAttack = GameControl.skillTreeManager.FindTechnique(data, value);
+        }
+    }
 
     // reference to UI text
     public struct StatsText { public Text NAME, HP, PM; }
@@ -130,34 +143,6 @@ public class Denigen : MonoBehaviour {
             anim.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
         }
     }
-    //protected void LevelUp(int lvl)
-    //{
-    //    multiplier = (lvl / 10.0f) + 1.0f;
-    //    boostTotal = stars * 9 * multiplier; // 9 = number of stats
-
-    //    // increase stats
-    //    hpChange += (int)(boostTotal * hpPer);
-    //    pmChange += (int)(boostTotal * pmPer);
-    //    hpMaxChange += (int)(boostTotal * hpPer);
-    //    pmMaxChange += (int)(boostTotal * pmPer);
-    //    atk += (int)(boostTotal * atkPer);
-    //    def += (int)(boostTotal * defPer);
-    //    mgkAtk += (int)(boostTotal * mgkAtkPer);
-    //    mgkDef += (int)(boostTotal * mgkDefPer);
-    //    luck += (int)(boostTotal * luckPer);
-    //    evasion += (int)(boostTotal * evasionPer);
-    //    spd += (int)(boostTotal * spdPer);
-
-    //    //just in case we're in battle when we level up, let's also increase the bsttle stats
-    //    atkChange += (int)(boostTotal * atkPer);
-    //    defChange += (int)(boostTotal * defPer);
-    //    mgkAtkChange += (int)(boostTotal * mgkAtkPer);
-    //    mgkDefChange += (int)(boostTotal * mgkDefPer);
-    //    luckChange += (int)(boostTotal * luckPer);
-    //    evasionChange += (int)(boostTotal * evasionPer);
-    //    spdChange += (int)(boostTotal * spdPer);
-        
-    //}
 
     public virtual void Attack(string atkChoice)
     {
@@ -172,13 +157,8 @@ public class Denigen : MonoBehaviour {
 
     protected void Block()
     {
-        //isBlocking = true;
-        //calcDamageText.Add(name + " is blocking!");
+        
     }
-
-    // NEEDED for crits
-    // CalcDamage
-    // TakeDamage
 
     protected float CalcDamage(float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
@@ -256,9 +236,6 @@ public class Denigen : MonoBehaviour {
             defStat = Def;
         }
 
-        // divide damage by the defensive stat
-        //damage /= defStat;
-
         // reduce damage by half the defensive stat
         damage -= (defStat/2f);
 
@@ -282,36 +259,15 @@ public class Denigen : MonoBehaviour {
 
         //attacker = attackingDen;
         calculatedDamage = (int)damage;
-        // MOVED TO BATTLEMANAGER
-        //// decrease hp based off of damage
-        //Hp -= (int)damage;
+    }
 
-        ////Now record appropriate text
-        //takeDamageText.Add(name + " takes " + (int)damage + " damage!");
-        //print(name + " takes " + (int)damage + " damage!");
-        //// create the damage effect, but onlu if the denigen is not dead
-        ////if (statusState != Status.dead && statusState != Status.overkill)
-        ////{
-        //    GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), transform.position, Quaternion.identity);
-        //    be.name = "DamageEffect";
-        //    //be.GetComponent<Effect>().Start();
-        //    be.GetComponent<Effect>().damage = (int)damage + "";
-        ////}
-
-        //// check for dead
-        //print(name + " HP: " + Hp);
-        //if (Hp <= 0)
-        //{
-        //    Hp = 0;
-        //    takeDamageText.Add( name + " falls!");
-        //    StatusState = DenigenData.Status.dead;
-        //    battleManager.KillOff(this);
-
-        //    print("He's dead, Jim. " + name + "'s dead.");
-        //}
-
-        //// Update UI
-        //battleManager.battleUI.UpdateStats(this); // eh....kinda ugly
+    public void PayPowerMagic()
+    {
+        if (currentAttack != null)
+        {
+            Pm -= currentAttack.Pm;
+            print(DenigenName + " pays " + currentAttack.Pm + " to use " + currentAttack.Name);
+        }
     }
 
 	// Update is called once per frame
@@ -345,5 +301,61 @@ public class Denigen : MonoBehaviour {
     public bool IsDead
     {
         get { return data.IsDead; }
+    }
+
+    // ATTACK METHODS
+
+    /// <summary>
+    /// General Attack methods -- parameters will be divided by 100f.
+    /// Use this method for an attack that just targets one enemy.
+    /// </summary>
+    /// <param name="power"></param>
+    /// <param name="crit"></param>
+    /// <param name="accuracy"></param>
+    /// <param name="isMagic"></param>
+    protected void SingleAttack(float power, float crit, float accuracy, bool isMagic)
+    {
+        var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
+        targets[0].TakeDamage(this, damage, isMagic);
+    }
+
+    /// <summary>
+    /// General Attack methods -- parameters will be divided by 100f.
+    /// Use this method for an attack that mainly targets one enemy, but cause splash damage to other enemies as well.
+    /// </summary>
+    /// <param name="power"></param>
+    /// <param name="crit"></param>
+    /// <param name="accuracy"></param>
+    /// <param name="isMagic"></param>
+    /// <param name="splashDivider">Default 2f -- sets attack for splash damage half as strong as the original attack</param>
+    protected void SplashAttack(float power, float crit, float accuracy, bool isMagic, float splashDivider = 2.0f)
+    {
+        var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
+
+        //full damage to the main target
+        targets[0].TakeDamage(this, damage, isMagic);
+
+        // half damage to the surrounding targets
+        for (int i = 1; i < targets.Count; i++)
+        {
+            targets[i].TakeDamage(this, damage / splashDivider, isMagic);
+        }
+    }
+
+    /// <summary>
+    /// General Attack methods -- parameters will be divided by 100f.
+    /// Use this method for an attack that targets an entire team with the same attack power for all.
+    /// </summary>
+    /// <param name="power"></param>
+    /// <param name="crit"></param>
+    /// <param name="accuracy"></param>
+    /// <param name="isMagic"></param>
+    protected void TeamAttack(float power, float crit, float accuracy, bool isMagic)
+    {
+        var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            targets[i].TakeDamage(this, damage, true);
+        }
     }
 }

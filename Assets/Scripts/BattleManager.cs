@@ -190,7 +190,7 @@ public class BattleManager : MonoBehaviour {
         //{
         //Hero hero = denigenList[currentDenigen] as Hero;
         Hero hero = heroList[currentDenigen];
-            hero.CurrentAttack = "Strike";
+            hero.CurrentAttackName = "Strike";
             //hero.SelectTarget(hero.CurrentAttack);
             print(hero.name + "'s target is " + hero.Targets[0].name);
         //}
@@ -259,7 +259,7 @@ public class BattleManager : MonoBehaviour {
         // have enemies decide their attack
         foreach (var enemy in enemyList)
         {
-            enemy.CurrentAttack = enemy.ChooseAttack();
+            enemy.CurrentAttackName = enemy.ChooseAttack();
         }
 
         // resort in case there have been speed changes
@@ -280,7 +280,7 @@ public class BattleManager : MonoBehaviour {
 
         var denigen = denigenList[currentDenigen];
         //print(denigen.name + " uses " + denigen.CurrentAttack);
-        denigen.Attack(denigen.CurrentAttack);
+        denigen.Attack(denigen.CurrentAttackName);
 
         //print(denigen.name + " state: " + denigen.StatusState);
 
@@ -344,7 +344,6 @@ public class BattleManager : MonoBehaviour {
     {
         foreach(var hero in heroList)
         {
-            //if (hero.StatusState != Denigen.Status.dead && hero.StatusState != Denigen.Status.overkill)
             if(!hero.IsDead)
                 return false;
         }
@@ -355,7 +354,6 @@ public class BattleManager : MonoBehaviour {
     {
         foreach (var enemy in enemyList)
         {
-            //if (enemy.StatusState != Denigen.Status.dead && enemy.StatusState != Denigen.Status.overkill)
             if(!enemy.IsDead)
                 return false;
         }
@@ -378,7 +376,7 @@ public class BattleManager : MonoBehaviour {
     public void DetermineTargetType(string attackName)
     {
         Hero hero = heroList[currentDenigen];
-        hero.CurrentAttack = attackName;
+        hero.CurrentAttackName = attackName;
         hero.DecideTypeOfTarget();
     }
     public bool IsTargetEnemy
@@ -429,7 +427,7 @@ public class BattleManager : MonoBehaviour {
     void AttackDenigen()
     {
         var denigen = denigenList[currentDenigen];
-        denigen.Attack(denigen.CurrentAttack);
+        denigen.Attack(denigen.CurrentAttackName);
     }
     
     public void NextAttack()
@@ -453,9 +451,16 @@ public class BattleManager : MonoBehaviour {
     public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
     {
         // show attack
-        battleUI.battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttack;
+        battleUI.battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
         battleCamera.MoveTo(attacker.transform.position);
         battleCamera.ZoomAttack();
+
+        // reduce power magic points at the moment of attack
+        attacker.PayPowerMagic();
+
+        // Update UI
+        if (attacker is Hero)
+            battleUI.UpdateStats(attacker);
 
         var anim = attacker.GetComponent<Animator>();
         if (anim != null && !string.IsNullOrEmpty(attacker.AttackAnimation))

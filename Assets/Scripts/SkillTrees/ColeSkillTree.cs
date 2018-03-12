@@ -136,7 +136,7 @@ public class ColeSkillTree : SkillTree {
         listOfTrees = new List<MyTree>() { basic, basic2 };
 
         // techniques that the character start out with
-        startingTechs = new List<Technique>() { candleshot }; 
+        startingTechs = new List<Technique>() { candleshot, fireball, grandFireball, splashFlame, firewall, hellfire }; 
 	
 	}
 	

@@ -115,4 +115,31 @@ public class SkillTreeManager {
         foreach (var tech in cole.startingTechs)
             AddTechnique(GameControl.control.heroList[1], tech);
     }
+
+    public Technique FindTechnique(DenigenData data, string techName)
+    {
+        // check skills list first
+        foreach(var tech in data.skillsList)
+        {
+            if (string.Compare(techName, tech.Name) == 0)
+                return tech;
+        }
+
+        // if no luck yet, check spells
+        foreach(var tech in data.spellsList)
+        {
+            if (string.Compare(techName, tech.Name) == 0)
+                return tech;
+        }
+
+        // if we're trying to find a passive, try that
+        foreach(var tech in data.passiveList)
+        {
+            if (string.Compare(techName, tech.Name) == 0)
+                return tech;
+        }
+
+        // at this point, we don't have the technique we're looking for, return null
+        return null;
+    }
 }

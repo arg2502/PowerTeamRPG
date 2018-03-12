@@ -33,11 +33,20 @@ public class Cole : Hero {
             case "Candleshot":
                 Candleshot();
                 break;
-            case "HellFire":
-                HellFire();
+            case "Fireball":
+                Fireball();
+                break;
+            case "Grand Fireball":
+                GrandFireball();
+                break;
+            case "Firewall":
+                Firewall();
                 break;
             case "Splash Flame":
                 SplashFlame();
+                break;
+            case "HellFire":
+                HellFire();
                 break;
         }
 
@@ -49,36 +58,31 @@ public class Cole : Hero {
     
     void Candleshot()
     {
-        var damage = CalcDamage(0.4f, 0f, 100f, true);
-        targets[0].TakeDamage(this, damage, true);
+        SingleAttack(40f, 0f, 100f, true);
     }
 
-    public void HellFire()
+    void Fireball()
     {
-        float damage;
-        damage = CalcDamage(0.40f, 0.03f, 1.0f, true);
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targets[i].TakeDamage(this, damage, true);
-        }
+        SingleAttack(55f, 5f, 95f, true);
+    }
+
+    void GrandFireball()
+    {
+        SingleAttack(75f, 10f, 90f, true);
     }
 
     public void SplashFlame()
     {
-        float damage;
-        damage = CalcDamage(0.60f, 0.05f, 0.85f, true);
-        //full damage to the main target
-        targets[0].TakeDamage(this, damage, true);
-
-        // half damage to the surrounding targets
-        for (int i = 1; i < targets.Count; i++)
-        {
-            targets[i].TakeDamage(this, damage/2.0f, true);
-        }
+        SplashAttack(60f, 5f, 85f, true);
     }
 
-	// Update is called once per frame
-	void Update () {
-        base.Update();
-	}
+    void Firewall()
+    {
+        TeamAttack(20f, 6f, 100f, true);
+    }
+
+    public void HellFire()
+    {
+        TeamAttack(40f, 3f, 100f, true);
+    }
 }
