@@ -13,8 +13,8 @@
 
         public override void Init()
         {
-            base.Init();
             battleManager = FindObjectOfType<BattleManager>();
+            base.Init();
         }
 
         protected override void AddButtons()
@@ -40,6 +40,8 @@
         {
             base.TurnOnMenu();
             dimmer.gameObject.SetActive(false);
+
+            CheckTechniques(); 
         }
 
         public override void Refocus()
@@ -53,7 +55,7 @@
             //print("Whoa, there. This function isn't done yet, sonny.");
             uiManager.HideAllMenus();
             battleManager.DetermineTargetType("Strike");
-            PushTargetMenu();
+            uiManager.PushMenu(uiDatabase.TargetMenu);
         }
         void OnSkills()
         {
@@ -61,24 +63,23 @@
         }
         void OnSpells()
         {
-            print("Whoa, there. This function isn't done yet, sonny.");
+            //print("Whoa, there. This function isn't done yet, sonny.");
+            uiManager.PushMenu(uiDatabase.ListSub);            
         }
+        
+        /// <summary>
+        /// Determines whether or not to disable the current denigens skills and/or spells buttons
+        /// </summary>
+        void CheckTechniques()
+        {
+            var hero = battleManager.CurrentHero;
+            
+            // sets buttons to false if lists are empty
+            skills.interactable = hero.SkillsList.Count > 0;
+            spells.interactable = hero.SpellsList.Count > 0;
 
-        void PushTargetMenu()
-        {
-            if (battleManager.IsTargetEnemy)
-                PushEnemyTargetMenu();
-            else
-                PushHeroTargetMenu();
-        }
-
-        void PushHeroTargetMenu()
-        {
-            uiManager.PushMenu(uiDatabase.HeroTargetMenu);
-        }
-        void PushEnemyTargetMenu()
-        {
-            uiManager.PushMenu(uiDatabase.EnemyTargetMenu);
+            // reset buttons
+            SetButtonNavigation();
         }
     }
 }

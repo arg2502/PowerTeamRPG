@@ -27,7 +27,6 @@
         public GameObject BattleMenu;
         public GameObject AttackSub;
         public GameObject ListSub;
-        public GameObject HeroTargetMenu;
-        public GameObject EnemyTargetMenu;
+        public GameObject TargetMenu;
     }
 }

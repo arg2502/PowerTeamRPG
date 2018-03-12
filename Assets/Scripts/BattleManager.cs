@@ -46,6 +46,8 @@ public class BattleManager : MonoBehaviour {
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
 
+    public Hero CurrentHero { get { return heroList[currentDenigen]; } }
+
 	void Start ()
     {
         AddHeroes();
@@ -252,7 +254,6 @@ public class BattleManager : MonoBehaviour {
     void StartAttackPhase()
     {
         battleUI.HeroStats.SetActive(false);
-        battleCamera.ZoomAttack();
 
         // have enemies decide their attack
         foreach (var enemy in enemyList)
@@ -453,6 +454,7 @@ public class BattleManager : MonoBehaviour {
         // show attack
         battleUI.battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttack;
         battleCamera.MoveTo(attacker.transform.position);
+        battleCamera.ZoomAttack();
 
         var anim = attacker.GetComponent<Animator>();
         if (anim != null && !string.IsNullOrEmpty(attacker.AttackAnimation))
@@ -479,8 +481,12 @@ public class BattleManager : MonoBehaviour {
         // show damage
         var messagesToDisplay = new List<string>();
 
-        if (targeted.Count > 0)
-            battleCamera.MoveTo(targeted[0].transform.position);
+        //if (targeted.Count > 0)
+        //    battleCamera.MoveTo(targeted[0].transform.position);
+        battleCamera.BackToStart();
+        battleCamera.ZoomTarget();
+        // wait for camera to get back
+        yield return new WaitForSeconds(0.25f);
 
         foreach (var target in targeted)
         {                        

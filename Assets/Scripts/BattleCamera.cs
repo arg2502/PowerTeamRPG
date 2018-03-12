@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BattleCamera : MonoBehaviour {
 
-    float movementRate = 4f;
-    float zoomRate = 3f;
+    float movementRate = 5f;
+    float zoomRate = 5f;
     float originalZoom;
     float attackZoom = 9f;
     Vector3 originalPos;
@@ -33,7 +33,7 @@ public class BattleCamera : MonoBehaviour {
         // just so we're not travelling into infinity, if the position and zoom get really close to their desired positions, just set them
         if (Vector3.Magnitude(transform.position - desiredPos) < 0.01f)
             transform.position = desiredPos;
-        if ((thisCamera.orthographicSize - desiredZoom) < 0.01f)
+        if (Mathf.Abs(thisCamera.orthographicSize - desiredZoom) < 0.01f)
             thisCamera.orthographicSize = desiredZoom;
     }
 
