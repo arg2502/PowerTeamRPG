@@ -288,7 +288,7 @@ public class Denigen : MonoBehaviour {
         //        GameControl.control.isDying = false;
         //}
 	}
-   
+
     //protected IEnumerator PlayAnimation(string animation)
     //{
     //    GameControl.control.isAnimating = true;
@@ -297,6 +297,17 @@ public class Denigen : MonoBehaviour {
     //    GameControl.control.isAnimating = false;
     //    StopCoroutine("PlayAnimation");
     //}
+
+    public IEnumerator PlayAnimation()
+    {
+        var anim = GetComponent<Animator>();
+        anim.Play(attackAnimation, -1, 0f);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + 0.25f);
+        //anim.Play("Idle", -1, 0f);
+
+        //yield return new WaitForSeconds(0.5f);
+        //yield return null;
+    }
 
     public bool IsDead
     {

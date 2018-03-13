@@ -60,23 +60,33 @@
             battleManager.heroList[0].statsText.HP = jethroHP;
             battleManager.heroList[0].statsText.PM = jethroPM;
 
-            var coleText = new Denigen.StatsText();
-            coleText.NAME = coleName;
-            coleText.HP = coleHP;
-            coleText.PM = colePM;
-            battleManager.heroList[1].statsText = coleText;
+            if (battleManager.heroList.Count > 1)
+            {
+                var coleText = new Denigen.StatsText();
+                coleText.NAME = coleName;
+                coleText.HP = coleHP;
+                coleText.PM = colePM;
+                battleManager.heroList[1].statsText = coleText;
 
-            var eleanorText = new Denigen.StatsText();
-            eleanorText.NAME = eleanorName;
-            eleanorText.HP = eleanorHP;
-            eleanorText.PM = eleanorPM;
-            battleManager.heroList[2].statsText = eleanorText;
+                if (battleManager.heroList.Count > 2)
+                {
+                    var eleanorText = new Denigen.StatsText();
+                    eleanorText.NAME = eleanorName;
+                    eleanorText.HP = eleanorHP;
+                    eleanorText.PM = eleanorPM;
+                    battleManager.heroList[2].statsText = eleanorText;
 
-            var joulietteText = new Denigen.StatsText();
-            joulietteText.NAME = joulietteName;
-            joulietteText.HP = joulietteHP;
-            joulietteText.PM = jouliettePM;
-            battleManager.heroList[3].statsText = joulietteText;
+                    if (battleManager.heroList.Count > 3)
+                    {
+                        var joulietteText = new Denigen.StatsText();
+                        joulietteText.NAME = joulietteName;
+                        joulietteText.HP = joulietteHP;
+                        joulietteText.PM = jouliettePM;
+                        battleManager.heroList[3].statsText = joulietteText;
+                    }
+                }
+            }
+            
 
             AssignStats();
         }

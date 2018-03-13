@@ -77,10 +77,13 @@ public class BattleManager : MonoBehaviour {
         }
 
         // create the heroes that we currently have in our party
-        foreach (var hero in GameControl.control.heroList)
-        {
-            CreateHero(hero.denigenName, hero.identity);
-        }
+        //foreach (var hero in GameControl.control.heroList)
+        //{
+        //    CreateHero(hero.denigenName, hero.identity);
+        //}
+
+        // TEST ONLY JETHRO
+        CreateHero(GameControl.control.heroList[0].denigenName, GameControl.control.heroList[0].identity);
     }
     
     void CreateHero(string heroName, int index) 
@@ -111,7 +114,7 @@ public class BattleManager : MonoBehaviour {
         // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
         // this could probably be stored inside GameControl to transfer the data over to the battle
         // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
-        int numOfGoikkos = 3;
+        int numOfGoikkos = 1;
         for (int i = 0; i < numOfGoikkos; i++)
             enemiesToAdd.Add("Goikko");
 
@@ -469,8 +472,13 @@ public class BattleManager : MonoBehaviour {
             var bufferTime = 0.25f;
 
             yield return new WaitForSeconds(bufferTime);
-            anim.Play(attacker.AttackAnimation);
-            yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + bufferTime);
+            //if (attacker is Hero)
+                //Debug.Break();
+                //Time.timeScale = 0.5f;
+            //anim.Play(attacker.AttackAnimation);
+            yield return attacker.PlayAnimation();
+            //yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + bufferTime);
+            Time.timeScale = 1f;
         }
         else
         {
