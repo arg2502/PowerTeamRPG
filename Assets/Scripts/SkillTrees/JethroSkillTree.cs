@@ -183,7 +183,8 @@ public class JethroSkillTree : SkillTree {
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(basic);
         listOfTrees.Add(magic);
-        
+
+        startingTechs = new List<Technique>() { helmsplitter };
 	}
     
 }

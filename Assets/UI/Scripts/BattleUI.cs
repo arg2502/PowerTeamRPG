@@ -56,37 +56,33 @@
             jethroText.NAME = jethroName;
             jethroText.HP = jethroHP;
             jethroText.PM = jethroPM;
-            battleManager.heroList[0].statsText.NAME = jethroName;//jethroText;
-            battleManager.heroList[0].statsText.HP = jethroHP;
-            battleManager.heroList[0].statsText.PM = jethroPM;
 
-            if (battleManager.heroList.Count > 1)
+            var coleText = new Denigen.StatsText();
+            coleText.NAME = coleName;
+            coleText.HP = coleHP;
+            coleText.PM = colePM;
+
+            var eleanorText = new Denigen.StatsText();
+            eleanorText.NAME = eleanorName;
+            eleanorText.HP = eleanorHP;
+            eleanorText.PM = eleanorPM;
+
+            var joulietteText = new Denigen.StatsText();
+            joulietteText.NAME = joulietteName;
+            joulietteText.HP = joulietteHP;
+            joulietteText.PM = jouliettePM;
+
+            foreach(var hero in battleManager.heroList)
             {
-                var coleText = new Denigen.StatsText();
-                coleText.NAME = coleName;
-                coleText.HP = coleHP;
-                coleText.PM = colePM;
-                battleManager.heroList[1].statsText = coleText;
-
-                if (battleManager.heroList.Count > 2)
-                {
-                    var eleanorText = new Denigen.StatsText();
-                    eleanorText.NAME = eleanorName;
-                    eleanorText.HP = eleanorHP;
-                    eleanorText.PM = eleanorPM;
-                    battleManager.heroList[2].statsText = eleanorText;
-
-                    if (battleManager.heroList.Count > 3)
-                    {
-                        var joulietteText = new Denigen.StatsText();
-                        joulietteText.NAME = joulietteName;
-                        joulietteText.HP = joulietteHP;
-                        joulietteText.PM = jouliettePM;
-                        battleManager.heroList[3].statsText = joulietteText;
-                    }
-                }
+                if (hero is Jethro)
+                    hero.statsText = jethroText;
+                else if (hero is Cole)
+                    hero.statsText = coleText;
+                else if (hero is Eleanor)
+                    hero.statsText = eleanorText;
+                else if (hero is Juliette)
+                    hero.statsText = joulietteText;
             }
-            
 
             AssignStats();
         }

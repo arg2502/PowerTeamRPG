@@ -15,7 +15,7 @@
             eleanorSkillsContainers, eleanorSpellsContainers,
             joulietteSkillsContainers, joulietteSpellsContainers;
 
-        float slotDistance = 55f;
+        float slotDistance = 65f;
 
         public override void Init()
         {
@@ -71,8 +71,11 @@
                     item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * -slotDistance);
                     item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
 
+                    // assign variables of UI
+                    item.GetComponent<ListButton>().SetTechnique(category[i]);
+
                     var button = item.GetComponentInChildren<Button>();
-                    button.GetComponentInChildren<Text>().text = category[i].Name;
+                    //button.GetComponentInChildren<Text>().text = category[i].Name;
                     listOfButtons.Add(button);
 
                     // assign attacks
@@ -81,6 +84,7 @@
                     var attack = category[i].Name;
                     button.onClick.AddListener(() => OnSelect(attack));
                 }
+                SetButtonNavigation();
             }
         }
 

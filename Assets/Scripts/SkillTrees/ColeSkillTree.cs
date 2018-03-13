@@ -33,9 +33,7 @@ public class ColeSkillTree : SkillTree {
     // trees
     MyTree basic;
     MyTree basic2;
-
-    public List<Technique> startingTechs;
-
+    
 	// Use this for initialization
 	public ColeSkillTree () {
         // set hero to Cole

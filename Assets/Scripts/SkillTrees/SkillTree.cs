@@ -79,6 +79,8 @@ public class SkillTree {
 
     protected List<string[]> listOfTechniques;
     protected StreamReader readIn;
+    
+    public List<Technique> startingTechs;
 
     //public void Start()
     //{     

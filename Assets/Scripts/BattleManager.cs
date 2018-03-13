@@ -82,8 +82,12 @@ public class BattleManager : MonoBehaviour {
         //    CreateHero(hero.denigenName, hero.identity);
         //}
 
-        // TEST ONLY JETHRO
-        CreateHero(GameControl.control.heroList[0].denigenName, GameControl.control.heroList[0].identity);
+        
+        // TEST ONLY CERTAIN HEROES
+        for(int i = 0; i < 2; i++)
+        {
+            CreateHero(GameControl.control.heroList[i].denigenName, GameControl.control.heroList[i].identity);
+        }
     }
     
     void CreateHero(string heroName, int index) 
