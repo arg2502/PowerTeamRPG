@@ -12,6 +12,8 @@
 
         BattleManager battleManager;
 
+        ListSub listSub;
+
         protected override void AddButtons()
         {
             base.AddButtons();
@@ -54,7 +56,6 @@
         public override void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
-
             base.Init();
 
             // set positions of cursors
@@ -66,7 +67,8 @@
                 //screenPos.Add(pos);
                 targetCursors[i].transform.position = pos;
             }
-            
+
+            //listSub = uiManager.FindMenu(uiDatabase.ListSub).GetComponent<ListSub>();
         }
 
         public override void TurnOnMenu()
@@ -94,7 +96,6 @@
         
         void OnTarget(int pos)
         {
-            //print("Whoa, there. This function isn't done yet, sonny.");
             List<Denigen> targets = new List<Denigen>();
             var mainTarget = currentTargets[pos];
             targets.Add(mainTarget);

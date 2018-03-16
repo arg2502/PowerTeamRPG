@@ -64,7 +64,8 @@
         void OnSpells()
         {
             //print("Whoa, there. This function isn't done yet, sonny.");
-            uiManager.PushMenu(uiDatabase.ListSub);            
+            uiManager.PushMenu(uiDatabase.ListSub);
+            dimmer.gameObject.SetActive(true);      
         }
         
         /// <summary>
