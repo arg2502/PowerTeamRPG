@@ -19,7 +19,7 @@
         float slotDistance = 65f;
 
         // move button variables
-        float lerpTime = 10f;
+        float defaultLerpTime = 10f;
         float startTime = 0f;
         Rect itemSlotsWorld;
         Vector3[] objectCorners;
@@ -43,18 +43,14 @@
             base.TurnOnMenu();
             listOfButtons = new List<Button>();
             FillList(battleManager.CurrentHero);
-
-            if (currentContainer != lastContainer)
-            {
-                rootButton = listOfButtons[0];
-                SetSelectedObjectToRoot();
-                currentContainer.transform.localPosition = originalContainerPos;
-            }
-            //currentObj = rootButton.gameObject;
-            //if (CheckIfOffScreen(currentObj))
+            
+            //if (currentContainer != lastContainer)
             //{
-            //    OutsideOfViewInstant(currentObj);
-            //}
+                rootButton = listOfButtons[0];
+                currentContainer.transform.localPosition = originalContainerPos;
+                //lastContainer = currentContainer;
+            //}   
+            SetSelectedObjectToRoot();
         }
         protected override void AddButtons()
         {
@@ -65,8 +61,7 @@
         public override void Refocus()
         {
             base.Refocus();
-            uiManager.ShowAllMenus();
-            //dimmer.gameObject.SetActive(false);
+            uiManager.ShowAllMenus();            
         }
 
         void FillList(Hero currentHero) // SPELL IS TEMPORARY -- SHOULD BE ABLE TO HANDLE ANY TECHNIQUE
@@ -121,18 +116,15 @@
 
         void OnSelect(string attack)
         {
-            SetLastContainer();
             uiManager.HideAllMenus();
             battleManager.DetermineTargetType(attack);
             uiManager.PushMenu(uiDatabase.TargetMenu);
-        }
+        }        
 
-        public void SetLastContainer()
+        public void SetContainersToNull()
         {
-            lastContainer = currentContainer;
-            var button = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
-            print(button.name);
-            rootButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+            //currentContainer = null;
+            //lastContainer = null;
         }
 
         // SCOLLING METHODS
@@ -195,8 +187,10 @@
             //    OutsideOfViewInstant(desiredObj);
         }
 
-        void OutsideOfView(GameObject buttonObj)
+        void OutsideOfView(GameObject buttonObj, float lerpTime = -1f)
         {
+            if (lerpTime < 0)
+                lerpTime = defaultLerpTime;
             //Debug.Log("outside");
 
             // if we reach this point, that means we are off screen
@@ -252,6 +246,7 @@
             while ((currentContainer.transform.position - newPosition).magnitude >= 0.1f)
             {
                 currentContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);
+                print("in loop");
                 yield return null;
             }
             moving = false;
@@ -286,6 +281,7 @@
                 return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
+            rootButton = currentObj.GetComponent<Button>();
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);

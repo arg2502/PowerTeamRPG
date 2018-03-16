@@ -155,7 +155,7 @@
                 menu = menuInFocus.GetComponent<Menu>();
                 menu.gameObject.SetActive(true);
                 menu.SetSelectedObjectToRoot();
-                menu.ToggleButtonState(true);
+                //menu.ToggleButtonState(true);
                 menu.Refocus();
             }
             else

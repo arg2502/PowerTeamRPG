@@ -4,6 +4,7 @@
     using UnityEngine.UI;
     using System.Collections;
     using System.Collections.Generic;
+    using UnityEngine.EventSystems;
 
     public class AttackSub : Menu
     {
@@ -40,7 +41,8 @@
         {
             base.TurnOnMenu();
             dimmer.gameObject.SetActive(false);
-
+            rootButton = listOfButtons[0];
+            SetSelectedObjectToRoot();
             CheckTechniques(); 
         }
 
@@ -81,6 +83,18 @@
 
             // reset buttons
             SetButtonNavigation();
+        }
+
+        new void Update()
+        {
+            base.Update();
+
+            if (rootButton == EventSystem.current.currentSelectedGameObject.GetComponent<Button>()
+                || uiManager.menuInFocus != this.gameObject
+                || !gameObject.activeSelf)
+                return;
+
+            rootButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
         }
     }
 }

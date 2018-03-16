@@ -68,7 +68,7 @@
                 targetCursors[i].transform.position = pos;
             }
 
-            //listSub = uiManager.FindMenu(uiDatabase.ListSub).GetComponent<ListSub>();
+            listSub = uiManager.FindMenu(uiDatabase.ListSub) as ListSub;
         }
 
         public override void TurnOnMenu()
@@ -111,6 +111,8 @@
             }
 
             battleManager.TargetDenigen(targets);
+
+            listSub.SetContainersToNull();
         }
 
         void CheckForDead()
