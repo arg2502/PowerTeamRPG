@@ -13,6 +13,7 @@
         public List<GameObject> list_currentMenus;
         public GameObject menuInFocus; // the menu the player is currently on
         Canvas canvas;
+        public bool poppable;
 
         public UIManager()
         {

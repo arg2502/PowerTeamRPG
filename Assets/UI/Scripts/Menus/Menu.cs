@@ -124,12 +124,18 @@
 
         protected void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+                uiManager.poppable = true;
+
             if (this.gameObject != uiManager.menuInFocus) return;
-
+            
             if (Input.GetKeyUp(KeyCode.Backspace)
-                && !ExceptionMenus())
+                && !ExceptionMenus()
+                && uiManager.poppable)
+            {
                 uiManager.PopMenu();
-
+                uiManager.poppable = false;
+            }
 
         }
 
