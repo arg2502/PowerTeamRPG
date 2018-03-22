@@ -40,12 +40,7 @@ public class StatsCard : MonoBehaviour {
         hpShort.text = denigen.Hp.ToString();
         pmShort.text = denigen.Pm.ToString();
     }
-
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
+    
     public void ShowFullCard()
     {
         StartCoroutine(ToFull());
