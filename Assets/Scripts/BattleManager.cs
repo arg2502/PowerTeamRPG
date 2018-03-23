@@ -27,6 +27,9 @@ public class BattleManager : MonoBehaviour {
     //Vector3 joulietteStart;// = new Vector3(4.5f, 1f);
     List<Vector3> heroStartingPositions;
     List<Vector3> enemyStartingPositions;
+    
+    public List<StatsCard> heroStatsList;
+
 
     // Battle states
     public enum BattleState
@@ -41,11 +44,11 @@ public class BattleManager : MonoBehaviour {
     
     public TargetType targetState;
 
-    public BattleUI battleUI;
+    //public BattleUI battleUI;
     public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
-
+    public UnityEngine.UI.Text battleMessage;
     public Hero CurrentHero { get { return heroList[currentDenigen]; } }
     public int CurrentIndex { get { return currentDenigen; } }
 
@@ -53,11 +56,11 @@ public class BattleManager : MonoBehaviour {
     {
         AddHeroes();
         AddEnemies();
+        AssignStatsCards();
         CreateBattleMenu();
-        battleUI.Init();
         SortBySpeed();
-        //PrintHeroes();
-	}
+        ShowCurrentFullCard();
+    }
 
     void CreateBattleMenu()
     {
@@ -118,7 +121,7 @@ public class BattleManager : MonoBehaviour {
         // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
         // this could probably be stored inside GameControl to transfer the data over to the battle
         // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
-        int numOfGoikkos = 1;
+        int numOfGoikkos = 3;
         for (int i = 0; i < numOfGoikkos; i++)
             enemiesToAdd.Add("Goikko");
 
@@ -143,6 +146,23 @@ public class BattleManager : MonoBehaviour {
         numOfEnemies++;
         denigenList.Add(enemy);
         enemyList.Add(enemy);
+    }
+
+    void AssignStatsCards()
+    {
+        // assign heroes their cards and set the stats
+        for(int i = 0; i < heroList.Count; i++)
+        {
+            var hero = heroList[i];
+            hero.statsCard = heroStatsList[i];
+            hero.statsCard.SetInitStats(hero);
+        }
+
+        // turn off any unused cards
+        for(int i = heroList.Count; i < 4; i++)
+        {
+            heroStatsList[i].gameObject.SetActive(false);
+        }
     }
 
     void SortBySpeed()
@@ -216,7 +236,7 @@ public class BattleManager : MonoBehaviour {
 
     void ShowBattleMenu()
     {
-        battleUI.battleMessage.text = "";
+        battleMessage.text = "";
         uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
     }
 
@@ -252,8 +272,9 @@ public class BattleManager : MonoBehaviour {
 
     void StartTargetPhase()
     {
-        battleUI.HeroStats.SetActive(true);
+        //ToggleAllStatCards(true);
         ShowBattleMenu();
+        ShowCurrentFullCard();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
         ResetBlocking();
@@ -261,7 +282,7 @@ public class BattleManager : MonoBehaviour {
 
     void StartAttackPhase()
     {
-        battleUI.HeroStats.SetActive(false);
+        //ToggleAllStatCards(false);
 
         // have enemies decide their attack
         foreach (var enemy in enemyList)
@@ -409,6 +430,7 @@ public class BattleManager : MonoBehaviour {
 
         // disable all menus
         uiManager.DisableAllMenus();
+        ShowCurrentShortCard();
         do
         {
             if (currentDenigen < heroList.Count - 1)
@@ -422,6 +444,7 @@ public class BattleManager : MonoBehaviour {
     void NextTarget()
     {
         currentDenigen++;
+        ShowCurrentFullCard();
 
         // go back to BattleMenu
         ShowBattleMenu();
@@ -458,16 +481,20 @@ public class BattleManager : MonoBehaviour {
     public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
     {
         // show attack
-        battleUI.battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
+        battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
         battleCamera.MoveTo(attacker.transform.position);
         battleCamera.ZoomAttack();
 
         // reduce power magic points at the moment of attack
         attacker.PayPowerMagic();
 
-        // Update UI
+        // Update UI -- FOR NOW JUST HEROES
         if (attacker is Hero)
-            battleUI.UpdateStats(attacker);
+        {
+            //ToggleDenigenStatCard(attacker, true);
+            attacker.statsCard.UpdateStats();
+        }
+        
 
         var anim = attacker.GetComponent<Animator>();
         if (anim != null && !string.IsNullOrEmpty(attacker.AttackAnimation))
@@ -488,6 +515,10 @@ public class BattleManager : MonoBehaviour {
         {
             yield return new WaitForSeconds(1f);
         }
+
+        // hide attacker's stats card
+        //if (attacker is Hero)
+        //    ToggleDenigenStatCard(attacker, false);
 
         // we don't need to show any target info if the attacker is just blocking
         if (attacker.IsBlocking)
@@ -558,22 +589,33 @@ public class BattleManager : MonoBehaviour {
 
             // Update UI
             if (target is Hero)
-                battleUI.UpdateStats(target);
+            {
+                //ToggleDenigenStatCard(target, true);
+                target.statsCard.UpdateStats();
+            }
         }
         for (int i = 0; i < messagesToDisplay.Count; i++)
         {
-            battleUI.battleMessage.text = messagesToDisplay[i];
+            battleMessage.text = messagesToDisplay[i];
             yield return new WaitForSeconds(1f);
         }
+
+        // hide target's cards
+        //foreach (var target in targeted)
+        //{
+        //    if (target is Hero)
+        //        ToggleDenigenStatCard(target, false);
+        //}
+
         NextAttack();
     }
 
     void EndBattle()
     {
         if (battleState == BattleState.VICTORY)
-            battleUI.battleMessage.text = "VICTORY!";
+            battleMessage.text = "VICTORY!";
         else
-            battleUI.battleMessage.text = "FAILURE";
+            battleMessage.text = "FAILURE";
     }
 
     /// <summary>
@@ -586,6 +628,35 @@ public class BattleManager : MonoBehaviour {
             if (denigen.IsBlocking)
                 denigen.IsBlocking = false;
         }
+    }
+
+    void ShowCurrentFullCard()
+    {
+        var card = heroList[currentDenigen].statsCard;
+        card.gameObject.SetActive(true);
+        card.ShowFullCard();
+    }
+    void ShowCurrentShortCard()
+    {
+        var card = heroList[currentDenigen].statsCard;
+        card.gameObject.SetActive(true);
+        card.ShowShortCard();
+    }
+    void ToggleAllStatCards(bool show)
+    {
+        for (int i = 0; i < heroList.Count; i++)
+        {
+            //heroStatsList[i].gameObject.SetActive(show);
+            heroStatsList[i].ShowShortCard();
+        }
+    }
+    void ToggleDenigenStatCard(Denigen denigen, bool show)
+    {
+        //denigen.statsCard.gameObject.SetActive(show);
+        if (show)
+            denigen.statsCard.ShowFullCard();
+        else
+            denigen.statsCard.ShowShortCard();
     }
 }
 // Target type

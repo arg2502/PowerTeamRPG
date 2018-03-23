@@ -7,6 +7,7 @@ public class StatsCard : MonoBehaviour {
     public Image background;
     Animator bgAnimator;
     public AnimationClip bgAnimation;
+    Denigen currentDenigen;
 
     [Header("Full Group")]
     public GameObject fullGroup;
@@ -17,51 +18,117 @@ public class StatsCard : MonoBehaviour {
     public Text hpMax;
     public Text pmCurrent;
     public Text pmMax;
+    public Image hpBarFull;
+    public Image pmBarFull;
 
     [Header("Short Group")]
     public GameObject shortGroup;
     public Text hpShort;
     public Text pmShort;
-    
-    void Start()
+    public Image hpBarShort;
+    public Image pmBarShort;
+
+    void Awake()
     {
         bgAnimator = background.GetComponent<Animator>();
     }
 
     public void SetInitStats(Denigen denigen)
     {
-        denigenName.text = denigen.DenigenName;
-        level.text = "Lvl " + denigen.Level;
-        hpCurrent.text = denigen.Hp.ToString();
-        hpMax.text = denigen.HpMax.ToString();
-        pmCurrent.text = denigen.Pm.ToString();
-        pmMax.text = denigen.PmMax.ToString();
-
-        hpShort.text = denigen.Hp.ToString();
-        pmShort.text = denigen.Pm.ToString();
+        currentDenigen = denigen;
+        UpdateStats();
+        JumpToShort();
     }
     
+    public void UpdateStats()
+    {
+        denigenName.text = currentDenigen.DenigenName;
+        level.text = "Lvl " + currentDenigen.Level;
+        hpCurrent.text = currentDenigen.Hp.ToString();
+        hpMax.text = currentDenigen.HpMax.ToString();
+        pmCurrent.text = currentDenigen.Pm.ToString();
+        pmMax.text = currentDenigen.PmMax.ToString();
+
+        hpShort.text = currentDenigen.Hp.ToString();
+        pmShort.text = currentDenigen.Pm.ToString();
+
+        UpdateHealthBars();
+        UpdatePowerMagicBars();
+    }
+
+    void UpdateHealthBars()
+    {
+        var healthPercent = (float.Parse(hpCurrent.text) / float.Parse(hpMax.text));
+        StartCoroutine(ChangeBarValue(hpBarFull, healthPercent));
+        StartCoroutine(ChangeBarValue(hpBarShort, healthPercent));
+    }
+
+    void UpdatePowerMagicBars()
+    {
+        var pmPercent = (float.Parse(pmCurrent.text) / float.Parse(pmMax.text));
+        StartCoroutine(ChangeBarValue(pmBarFull, pmPercent));
+        StartCoroutine(ChangeBarValue(pmBarShort, pmPercent));
+    }
+
+    IEnumerator ChangeBarValue(Image bar, float desiredAmount)
+    {
+        // decrease bar value
+        if (bar.fillAmount > desiredAmount)
+        {
+            while (bar.fillAmount > desiredAmount)
+            {
+                bar.fillAmount -= Time.deltaTime;
+                yield return null;
+            }
+        }
+        // increase bar value
+        else
+        {
+            while (bar.fillAmount < desiredAmount)
+            {
+                bar.fillAmount += Time.deltaTime;
+                yield return null;
+            }
+        }
+        bar.fillAmount = desiredAmount;
+    }
+
     public void ShowFullCard()
     {
-        StartCoroutine(ToFull());
+        // only play the animation if the full group is not already active
+        //if (!fullGroup.activeSelf)
+            StartCoroutine(ToFull());
     }
     IEnumerator ToFull()
     {
         shortGroup.SetActive(false);
+        bgAnimator.speed = 1f;
         bgAnimator.Play("Grow", -1, 0);
-        yield return new WaitForSeconds(bgAnimator.GetCurrentAnimatorClipInfo(0).Length); // CHANGE THIS WHEN UPDATING TO NEW UNITY
+        yield return new WaitForSeconds(0.2f); // CHANGE THIS
         fullGroup.SetActive(true);
     }
     
     public void ShowShortCard()
     {
-        StartCoroutine(ToShort());
+        // only play the animation if the short group is not already active
+        //if (!shortGroup.activeSelf)
+            StartCoroutine(ToShort());
     }
     IEnumerator ToShort()
     {
         fullGroup.SetActive(false);
+        bgAnimator.speed = 1f;
         bgAnimator.Play("Shrink", -1, 0);
-        yield return new WaitForSeconds(bgAnimator.GetCurrentAnimatorClipInfo(0).Length); // CHANGE THIS WHEN UPDATING TO NEW UNITY
+        yield return new WaitForSeconds(0.2f); // CHANGE THIS
         shortGroup.SetActive(true);
+    }
+
+    public void JumpToShort()
+    {
+        fullGroup.SetActive(false);
+        shortGroup.SetActive(true);
+
+        bgAnimator.speed = 0;
+        bgAnimator.Play("Shrink", -1, 1);
     }
 }

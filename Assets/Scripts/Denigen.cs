@@ -123,8 +123,10 @@ public class Denigen : MonoBehaviour {
     }
 
     // reference to UI text
-    public struct StatsText { public Text NAME, HP, PM; }
-    public StatsText statsText;
+    //public struct StatsText { public Text NAME, HP, PM; }
+    //public StatsText statsText;
+
+    public StatsCard statsCard;
 
     // Use this for initialization
 	protected void Awake () {
