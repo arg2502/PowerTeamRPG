@@ -320,6 +320,9 @@ public class Hero : Denigen {
                 break;
         }
 
+        // just set all attacks with this attack animation for now
+        attackAnimation = "Attack";
+
         //subtract the appropriate pm from the attacker -- this value will remain 0 for strike and block
         //go through all techniques to find the correct value
         //for (int i = 0; i < SkillsList.Count; i++ )

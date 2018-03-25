@@ -66,9 +66,6 @@ public class Jethro : Hero {
 				break;
 		}
 
-        // just set all attacks with this attack animation for now
-        attackAnimation = "Attack";
-
         // check parent function to take care of reducing pm
         // also check if the attack is a general hero attack (Strike, Block) or an item use
         base.Attack(atkChoice);
