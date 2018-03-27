@@ -29,6 +29,7 @@ public class BattleManager : MonoBehaviour {
     List<Vector3> enemyStartingPositions;
     
     public List<StatsCard> heroStatsList;
+    public List<StatsCard> enemyStatsList;
 
 
     // Battle states
@@ -159,9 +160,21 @@ public class BattleManager : MonoBehaviour {
         }
 
         // turn off any unused cards
-        for(int i = heroList.Count; i < 4; i++)
+        for(int i = heroList.Count; i < heroStatsList.Count; i++)
         {
             heroStatsList[i].gameObject.SetActive(false);
+        }
+
+        // ENEMIES
+        for(int i = 0; i < enemyList.Count; i++)
+        {
+            var enemy = enemyList[i];
+            enemy.statsCard = enemyStatsList[i];
+            enemy.statsCard.SetInitStats(enemy);
+        }
+        for(int i = enemyList.Count; i < enemyStatsList.Count; i++)
+        {
+            enemyStatsList[i].gameObject.SetActive(false);
         }
     }
 
@@ -489,11 +502,11 @@ public class BattleManager : MonoBehaviour {
         attacker.PayPowerMagic();
 
         // Update UI -- FOR NOW JUST HEROES
-        if (attacker is Hero)
-        {
+//if (attacker is Hero)
+        //{
             //ToggleDenigenStatCard(attacker, true);
             attacker.statsCard.UpdateStats();
-        }
+        //}
         
 
         var anim = attacker.GetComponent<Animator>();
@@ -588,11 +601,11 @@ public class BattleManager : MonoBehaviour {
             }
 
             // Update UI
-            if (target is Hero)
-            {
+            //if (target is Hero)
+            //{
                 //ToggleDenigenStatCard(target, true);
                 target.statsCard.UpdateStats();
-            }
+            //}
         }
         for (int i = 0; i < messagesToDisplay.Count; i++)
         {

@@ -44,13 +44,17 @@ public class StatsCard : MonoBehaviour {
     {
         denigenName.text = currentDenigen.DenigenName;
         level.text = "Lvl " + currentDenigen.Level;
-        hpCurrent.text = currentDenigen.Hp.ToString();
-        hpMax.text = currentDenigen.HpMax.ToString();
-        pmCurrent.text = currentDenigen.Pm.ToString();
-        pmMax.text = currentDenigen.PmMax.ToString();
 
-        hpShort.text = currentDenigen.Hp.ToString();
-        pmShort.text = currentDenigen.Pm.ToString();
+        if (currentDenigen is Hero)
+        {
+            hpCurrent.text = currentDenigen.Hp.ToString();
+            hpMax.text = currentDenigen.HpMax.ToString();
+            pmCurrent.text = currentDenigen.Pm.ToString();
+            pmMax.text = currentDenigen.PmMax.ToString();
+
+            hpShort.text = currentDenigen.Hp.ToString();
+            pmShort.text = currentDenigen.Pm.ToString();
+        }
 
         UpdateHealthBars();
         UpdatePowerMagicBars();
@@ -58,14 +62,14 @@ public class StatsCard : MonoBehaviour {
 
     void UpdateHealthBars()
     {
-        var healthPercent = (float.Parse(hpCurrent.text) / float.Parse(hpMax.text));
+        var healthPercent = currentDenigen.Hp / (float) currentDenigen.HpMax;
         StartCoroutine(ChangeBarValue(hpBarFull, healthPercent));
         StartCoroutine(ChangeBarValue(hpBarShort, healthPercent));
     }
 
     void UpdatePowerMagicBars()
     {
-        var pmPercent = (float.Parse(pmCurrent.text) / float.Parse(pmMax.text));
+        var pmPercent = currentDenigen.Pm / (float) currentDenigen.PmMax;
         StartCoroutine(ChangeBarValue(pmBarFull, pmPercent));
         StartCoroutine(ChangeBarValue(pmBarShort, pmPercent));
     }
@@ -106,6 +110,7 @@ public class StatsCard : MonoBehaviour {
         bgAnimator.Play("Grow", -1, 0);
         yield return new WaitForSeconds(0.2f); // CHANGE THIS
         fullGroup.SetActive(true);
+        shortGroup.SetActive(false); // double check
     }
     
     public void ShowShortCard()
@@ -121,6 +126,7 @@ public class StatsCard : MonoBehaviour {
         bgAnimator.Play("Shrink", -1, 0);
         yield return new WaitForSeconds(0.2f); // CHANGE THIS
         shortGroup.SetActive(true);
+        fullGroup.SetActive(false); // double check
     }
 
     public void JumpToShort()

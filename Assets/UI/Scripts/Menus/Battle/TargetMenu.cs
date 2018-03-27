@@ -14,6 +14,11 @@
 
         ListSub listSub;
 
+        Button currentButton;
+        Button prevButton;
+        int currentIndex = -1;
+        int prevIndex = -1;
+
         protected override void AddButtons()
         {
             base.AddButtons();
@@ -48,7 +53,11 @@
             for(int i = 0; i < currentTargets.Count; i++)
             {
                 if (!currentTargets[i].IsDead)
+                {
+                    currentIndex = i;
+                    prevIndex = i;
                     return targetCursors[i];
+                }
             }
             return null;
         }
@@ -92,6 +101,8 @@
             SetSelectedObjectToRoot();
 
             CheckForDead();
+
+            currentButton = rootButton;
         }
         
         void OnTarget(int pos)
@@ -112,7 +123,12 @@
 
             battleManager.TargetDenigen(targets);
 
+            HideCards();
+            prevButton = null;
+            
             listSub.SetContainersToNull();
+
+
         }
 
         void CheckForDead()
@@ -137,6 +153,44 @@
                     targetCursors[i].interactable = true;
                 }
             }
+        }
+
+        Denigen FindDenigenFromButton(Button button)
+        {
+            for(int i = 0; i < targetCursors.Count; i++)
+            {
+                if (button == targetCursors[i])
+                    return currentTargets[i];
+            }
+
+            Debug.LogError("Could not find Denigen from button provided: " + button.name);
+            return null;
+        }
+        void SwitchCards()
+        {
+            if (prevButton != null)
+                FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
+            FindDenigenFromButton(currentButton).statsCard.ShowFullCard();
+        }
+        void HideCards()
+        {
+            if (prevButton != null)
+                FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
+            FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
+        }
+
+        new void Update()
+        {
+            base.Update();
+
+            currentButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+            if (currentButton == prevButton) return;
+
+            SwitchCards();
+
+            prevButton = currentButton;
+
+
         }
     }
 }
