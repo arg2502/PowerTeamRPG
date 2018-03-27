@@ -6,7 +6,7 @@ public class Cole : Hero {
 
 	// Use this for initialization
 	new void Awake () {
-        
+
         //startingLevel = 2; // SET ELSEWHERE ??
 
         // stats - should total to 1.00f
@@ -21,7 +21,6 @@ public class Cole : Hero {
         //spdPer = 0.09f;
 
         //growthSpeed = 0.95f;
-
         base.Awake();
 	}
 
@@ -45,7 +44,7 @@ public class Cole : Hero {
             case "Splash Flame":
                 SplashFlame();
                 break;
-            case "HellFire":
+            case "Hellfire":
                 HellFire();
                 break;
         }
@@ -55,7 +54,28 @@ public class Cole : Hero {
         base.Attack(atkChoice);
 
     }
-    
+
+    public override void DecideTypeOfTarget()
+    {
+        switch(CurrentAttackName)
+        {
+            case "Splash Flame":
+                currentTargetType = TargetType.ENEMY_SPLASH;
+                break;
+            case "Firewall":
+            case "Hellfire":
+                currentTargetType = TargetType.ENEMY_TEAM;
+                break;
+            default:
+                currentTargetType = TargetType.ENEMY_SINGLE;
+                break;
+
+        }
+
+
+        base.DecideTypeOfTarget();
+    }
+
     void Candleshot()
     {
         SingleAttack(40f, 0f, 100f, true);

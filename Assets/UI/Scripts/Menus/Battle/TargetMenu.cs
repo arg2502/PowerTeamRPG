@@ -114,11 +114,24 @@
             // determine if we need multiple targets
             if(battleManager.targetState == TargetType.ENEMY_SPLASH || battleManager.targetState == TargetType.HERO_SPLASH)
             {
-                print("You gotta do splash stuff here! Sorry, not programmed yet");
+                // add denigen below if not at very bottom
+                if (pos > 0)
+                    targets.Add(currentTargets[pos - 1]);
+
+                // add denigen above if not at very top
+                if (pos < currentTargets.Count - 1)
+                    targets.Add(currentTargets[pos + 1]);
+            
             }
             if(battleManager.targetState == TargetType.ENEMY_TEAM || battleManager.targetState == TargetType.HERO_TEAM)
             {
-                print("You gotta do team stuff here! Sorry, not programmed yet");
+                // add the rest of the group to the target list
+                for(int i = 0; i < currentTargets.Count; i++)
+                {
+                    // make sure we don't add the main target twice
+                    if (i != pos)
+                        targets.Add(currentTargets[i]);
+                }
             }
 
             battleManager.TargetDenigen(targets);

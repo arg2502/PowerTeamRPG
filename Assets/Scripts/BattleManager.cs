@@ -419,6 +419,7 @@ public class BattleManager : MonoBehaviour {
         Hero hero = heroList[currentDenigen];
         hero.CurrentAttackName = attackName;
         hero.DecideTypeOfTarget();
+        targetState = hero.currentTargetType;
     }
     public bool IsTargetEnemy
     {
