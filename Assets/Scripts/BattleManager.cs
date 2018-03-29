@@ -21,16 +21,13 @@ public class BattleManager : MonoBehaviour {
     // starting positions
     public List<GameObject> heroPositions;
     public List<GameObject> enemyPositions;
-    //Vector3 jethroStart;// = new Vector3(1.5f, -3f);
-    //Vector3 coleStart;// = new Vector3(-3f, -1f);
-    //Vector3 eleanorStart;// = new Vector3(0f, 3f);
-    //Vector3 joulietteStart;// = new Vector3(4.5f, 1f);
     List<Vector3> heroStartingPositions;
     List<Vector3> enemyStartingPositions;
     
     public List<StatsCard> heroStatsList;
     public List<StatsCard> enemyStatsList;
 
+    //bool fleeFailed = false;
 
     // Battle states
     public enum BattleState
@@ -38,7 +35,8 @@ public class BattleManager : MonoBehaviour {
         TARGET,
         ATTACK,
         VICTORY,
-        FAILURE
+        FAILURE,
+        FLEE
     }
     public BattleState battleState;
 
@@ -281,11 +279,15 @@ public class BattleManager : MonoBehaviour {
         {
             print("*smash announcer voice* FAILURE");
         }
+        else if (battleState == BattleState.FLEE)
+        {
+            EndBattle();
+        }
     }
 
     void StartTargetPhase()
     {
-        //ToggleAllStatCards(true);
+        //fleeFailed = false;
         ShowBattleMenu();
         ShowCurrentFullCard();
         battleCamera.BackToStart();
@@ -338,14 +340,14 @@ public class BattleManager : MonoBehaviour {
 
     void FindNextAlive()
     {
-        while (denigenList[currentDenigen].IsDead)
+        while (denigenList[currentDenigen].IsDead || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
         {
             currentDenigen++;
             if (currentDenigen >= denigenList.Count)
             {
                 // FOR NOW -- JUST GO BACK TO TARGETING
                 ChangeBattleState(BattleState.TARGET);
-                break;
+                return;
             }
         }
         if (currentDenigen < denigenList.Count)
@@ -409,6 +411,8 @@ public class BattleManager : MonoBehaviour {
             if (battleState == BattleState.VICTORY)
                 return true;
             else if (battleState == BattleState.FAILURE)
+                return true;
+            else if (battleState == BattleState.FLEE)
                 return true;
             else return false;
         }
@@ -494,6 +498,13 @@ public class BattleManager : MonoBehaviour {
 
     public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
     {
+        // first check if we have failed a flee. If we have, then skip all heroes
+        //if (fleeFailed && attacker is Hero)
+        //{
+        //    //NextAttack();
+        //    yield break;
+        //}
+
         // show attack
         battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
         battleCamera.MoveTo(attacker.transform.position);
@@ -628,8 +639,10 @@ public class BattleManager : MonoBehaviour {
     {
         if (battleState == BattleState.VICTORY)
             battleMessage.text = "VICTORY!";
-        else
+        else if (battleState == BattleState.FAILURE)
             battleMessage.text = "FAILURE";
+        else if (battleState == BattleState.FLEE)
+            battleMessage.text = "Flee successful";
     }
 
     /// <summary>
@@ -644,6 +657,48 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
+    public bool CalcFlee()
+    {
+        // calculate the likelihood of flight
+        int enemyMight = 0;
+        int heroMight = 0;
+        foreach (Enemy e in enemyList)
+        {
+            if (!e.IsDead) enemyMight += e.Level * e.Stars;
+        }
+        foreach (Hero h in heroList)
+        {
+            if (!h.IsDead) heroMight += h.Level * h.Stars;
+        }
+        float likelihood = (60 + heroMight - enemyMight) / 100.0f;
+
+        //see if the player succeeds or fails
+        float num = Random.Range(0.0f, 1.0f);
+        if (num > likelihood) return true;
+        else return false;
+    }
+
+    public void FleeBattle()
+    {
+        ChangeBattleState(BattleState.FLEE);
+    }
+
+    public void FleeFailed()
+    {
+        StartCoroutine(ShowFleeFailed());
+    }
+    IEnumerator ShowFleeFailed()
+    {
+        battleMessage.text = "Failed to flee";
+        //fleeFailed = true;
+        foreach (var hero in heroList)
+            hero.CurrentAttackName = "";
+
+        yield return new WaitForSeconds(1f);
+        StartAttackPhase();
+    }
+
+    // STATS CARDS
     void ShowCurrentFullCard()
     {
         var card = heroList[currentDenigen].statsCard;
