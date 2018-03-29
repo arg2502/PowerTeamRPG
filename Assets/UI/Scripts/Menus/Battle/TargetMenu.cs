@@ -175,7 +175,7 @@
                     return i;
             }
             Debug.LogError("Could not find index");
-            return -1;
+            return 0;
         }
 
         Denigen FindDenigenFromButton(Button button)
@@ -188,15 +188,60 @@
         }
         void SwitchCards()
         {
+            switch(battleManager.targetState)
+            {
+                case TargetType.ENEMY_SPLASH:
+                case TargetType.HERO_SPLASH:
+                    ShowSplashCards();
+                    break;
+                case TargetType.ENEMY_TEAM:
+                case TargetType.HERO_TEAM:
+                    ShowTeamCards();
+                    break;
+                default:
+                    ShowNormalCards();
+                    break;
+            }
+        }
+
+        void ShowNormalCards()
+        {
             if (prevButton != null)
                 FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
             FindDenigenFromButton(currentButton).statsCard.ShowFullCard();
         }
+
+        void ShowSplashCards()
+        {
+            var low = currentIndex - 1;
+            var high = currentIndex + 1;
+
+            for(int i = 0; i < currentTargets.Count; i++)
+            {
+                if(i >= low && i <= high)
+                {
+                    currentTargets[i].statsCard.ShowFullCard();
+                }
+                else
+                {
+                    currentTargets[i].statsCard.ShowShortCard();
+                }
+            }
+        }
+
+        void ShowTeamCards()
+        {
+            foreach (var denigen in currentTargets)
+                denigen.statsCard.ShowFullCard();
+        }
+
         void HideCards()
         {
-            if (prevButton != null)
-                FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
-            FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
+            //if (prevButton != null)
+            //    FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
+            //FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
+            foreach (var denigen in currentTargets)
+                denigen.statsCard.ShowShortCard();
         }
 
         void CheckTargetState()

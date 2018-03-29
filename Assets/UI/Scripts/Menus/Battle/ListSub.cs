@@ -246,7 +246,6 @@
             while ((currentContainer.transform.position - newPosition).magnitude >= 0.1f)
             {
                 currentContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);
-                print("in loop");
                 yield return null;
             }
             moving = false;
