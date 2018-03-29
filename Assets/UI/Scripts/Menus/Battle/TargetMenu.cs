@@ -17,7 +17,6 @@
         Button currentButton;
         Button prevButton;
         int currentIndex = -1;
-        int prevIndex = -1;
 
         protected override void AddButtons()
         {
@@ -54,8 +53,6 @@
             {
                 if (!currentTargets[i].IsDead)
                 {
-                    currentIndex = i;
-                    prevIndex = i;
                     return targetCursors[i];
                 }
             }
@@ -103,6 +100,8 @@
             CheckForDead();
 
             currentButton = rootButton;
+
+            //CheckTargetState();
         }
         
         void OnTarget(int pos)
@@ -168,16 +167,24 @@
             }
         }
 
-        Denigen FindDenigenFromButton(Button button)
+        int FindIndexInButtonArray(Button button)
         {
-            for(int i = 0; i < targetCursors.Count; i++)
+            for (int i = 0; i < targetCursors.Count; i++)
             {
                 if (button == targetCursors[i])
-                    return currentTargets[i];
+                    return i;
             }
+            Debug.LogError("Could not find index");
+            return -1;
+        }
 
-            Debug.LogError("Could not find Denigen from button provided: " + button.name);
-            return null;
+        Denigen FindDenigenFromButton(Button button)
+        {
+            currentIndex = FindIndexInButtonArray(button);
+            return currentTargets[currentIndex];
+
+            //Debug.LogError("Could not find Denigen from button provided: " + button.name);
+            //return null;
         }
         void SwitchCards()
         {
@@ -192,11 +199,74 @@
             FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
         }
 
+        void CheckTargetState()
+        {
+            // find index of the button we are currently on
+            currentIndex = FindIndexInButtonArray(currentButton);
+            int low;
+            int high;
+            float alpha = 0.5f;
+
+            switch (battleManager.targetState)
+            {
+                case TargetType.HERO_SPLASH:
+                case TargetType.ENEMY_SPLASH:
+                    low = currentIndex - 1;
+                    high = currentIndex + 1;
+                    break;
+                case TargetType.HERO_TEAM:
+                case TargetType.ENEMY_TEAM:
+                    low = 0;
+                    high = targetCursors.Count - 1;
+                    alpha = 1f;
+                    break;
+                default:
+                    low = currentIndex;
+                    high = currentIndex;
+                    break;
+            }
+
+            ChangeButtonColors(low, high, alpha);
+        }
+
+        void ChangeButtonColors(int low, int high, float alpha)
+        {
+            // tell the buttons we want, to show their highlighted sprites
+            // all others to show disabled
+            for (int i = 0; i < targetCursors.Count; i++)
+            {
+                var button = targetCursors[i];
+                if (i >= low && i <= high)
+                {
+                    var color = button.colors.highlightedColor;
+
+                    // always have the current main target at full opacity
+                    if (i == currentIndex)
+                        color.a = 1f;
+                    // if there are others, set their alphas accordingly:
+                    // splash -- slightly transparent
+                    // team -- fully opaque
+                    else
+                        color.a = alpha;
+
+                    button.GetComponent<Image>().color = color;
+                }
+                else
+                {
+                    // turn all other cursor options invisible
+                    var color = button.colors.normalColor;
+                    color.a = 0f;
+                    button.GetComponent<Image>().color = color;
+                }
+
+            }
+        }
         new void Update()
         {
             base.Update();
 
             currentButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+            CheckTargetState();
             if (currentButton == prevButton) return;
 
             SwitchCards();
