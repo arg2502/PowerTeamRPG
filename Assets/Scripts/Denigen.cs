@@ -78,7 +78,9 @@ public class Denigen : MonoBehaviour {
     public List<Passive> PassivesList { get { return data.passiveList; } }
     public List<Skill> SkillsList { get { return data.skillsList; } }
     public List<Spell> SpellsList { get { return data.spellsList; } }
-    
+        
+    public Sprite Portrait { get { return data.portrait; } }
+
     // status effect
     //public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
     //private Status statusState;// = Status.normal;

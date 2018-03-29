@@ -23,6 +23,7 @@ public class StatsCard : MonoBehaviour {
 
     [Header("Short Group")]
     public GameObject shortGroup;
+    public Image portraitShort;
     public Text hpShort;
     public Text pmShort;
     public Image hpBarShort;
@@ -54,6 +55,8 @@ public class StatsCard : MonoBehaviour {
 
             hpShort.text = currentDenigen.Hp.ToString();
             pmShort.text = currentDenigen.Pm.ToString();
+            portrait.sprite = currentDenigen.Portrait;
+            portraitShort.sprite = currentDenigen.Portrait;
         }
 
         UpdateHealthBars();

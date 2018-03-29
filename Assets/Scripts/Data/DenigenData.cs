@@ -14,6 +14,8 @@ public class DenigenData : ScriptableObject
     // stat percentages
     public float hpPer, pmPer, atkPer, defPer, mgkAtkPer, mgkDefPer, luckPer, evasionPer, spdPer;
 
+    public Sprite portrait;
+
     // Need a creative way to store which items are equipped since items are non-serializable
     public GameObject weapon;
     public List<GameObject> equipment;
