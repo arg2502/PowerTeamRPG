@@ -86,7 +86,7 @@ public class BattleManager : MonoBehaviour {
 
         
         // TEST ONLY CERTAIN HEROES
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < 3; i++)
         {
             CreateHero(GameControl.control.heroList[i].denigenName, GameControl.control.heroList[i].identity);
         }
