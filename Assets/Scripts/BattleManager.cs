@@ -696,7 +696,7 @@ public class BattleManager : MonoBehaviour {
             hero.CurrentAttackName = "";
 
         yield return new WaitForSeconds(1f);
-        StartAttackPhase();
+        GoToAttackState();
     }
 
     // STATS CARDS
