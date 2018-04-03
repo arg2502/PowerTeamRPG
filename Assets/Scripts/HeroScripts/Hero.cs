@@ -97,6 +97,23 @@ public class Hero : Denigen {
                 var targets = new List<Denigen>() { this };
                 battleManager.TargetDenigen(targets);
                 break;
+            default:
+                currentTargetType = DecideItemTarget(CurrentAttackName);
+                break;
+        }
+    }
+
+    TargetType DecideItemTarget(string itemName)
+    {
+        switch(itemName)
+        {
+            // THIS IS WHERE WE WILL HAVE A LIST OF ALL ITEMS AND WHAT KIND OF TARGET TYPE THEY NEED TO BE
+            // PERHAPS WE SHOULD HAVE A SEPARATE ITEMMANAGER CLASS OR SOMETHING TO HANDLE THIS INSTEAD OF HAVING IT INSIDE HERO
+            // AT LEAST IN DENIGEN SO THAT ENEMIES COULD POTENTALLY USE ITEMS AS WELL
+
+            // JUST RETURN ONE RESULT FOR NOW
+            default:
+                return TargetType.HERO_SINGLE;
         }
     }
 

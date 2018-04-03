@@ -54,18 +54,19 @@
         }
         void OnStrike()
         {
-            //print("Whoa, there. This function isn't done yet, sonny.");
             uiManager.HideAllMenus();
             battleManager.DetermineTargetType("Strike");
             uiManager.PushMenu(uiDatabase.TargetMenu);
         }
         void OnSkills()
         {
-            print("Whoa, there. This function isn't done yet, sonny.");
+            battleManager.SetMenuState(MenuState.SKILLS);
+            uiManager.PushMenu(uiDatabase.ListSub);
+            dimmer.gameObject.SetActive(true);
         }
         void OnSpells()
         {
-            //print("Whoa, there. This function isn't done yet, sonny.");
+            battleManager.SetMenuState(MenuState.SPELLS);
             uiManager.PushMenu(uiDatabase.ListSub);
             dimmer.gameObject.SetActive(true);      
         }

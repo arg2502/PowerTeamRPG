@@ -40,7 +40,8 @@ public class BattleManager : MonoBehaviour {
     }
     public BattleState battleState;
 
-    
+    public MenuState menuState;
+
     public TargetType targetState;
 
     //public BattleUI battleUI;
@@ -738,6 +739,12 @@ public class BattleManager : MonoBehaviour {
         ToggleAllStatCards(false);
     }
 
+    // menu states
+    public void SetMenuState(MenuState state)
+    {
+        menuState = state;
+    }
+
 }
 // Target type
 // for determining what kind and how many targets a denigen can affect depending on their chosen attack
@@ -750,4 +757,13 @@ public enum TargetType
     HERO_SINGLE,
     HERO_SPLASH,
     HERO_TEAM
+}
+
+// Battle Menu state
+// mainly to determine what "List Sub" should show
+public enum MenuState
+{
+    SKILLS,
+    SPELLS,
+    ITEMS
 }

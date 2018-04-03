@@ -19,4 +19,14 @@ public class ListButton : MonoBehaviour {
         typeIcon.gameObject.SetActive(false);
 
     }
+
+    public void SetItem(Item item)
+    {
+        techName.text = item.name;
+        pmCost.text = item.quantity.ToString();
+        techIcon.sprite = item.sprite;
+        typeIcon.gameObject.SetActive(false);
+
+
+    }
 }

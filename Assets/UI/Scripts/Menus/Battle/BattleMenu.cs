@@ -64,7 +64,10 @@
         }
         void OnItems()
         {
-            print("Whoa, there. This function isn't done yet, sonny.");
+            //print("Whoa, there. This function isn't done yet, sonny.");
+            dimmer.gameObject.SetActive(true);
+            battleManager.SetMenuState(MenuState.ITEMS);
+            uiManager.PushMenu(uiDatabase.ListSub);
         }
         void OnFlee()
         {

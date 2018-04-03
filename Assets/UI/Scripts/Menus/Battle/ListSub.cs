@@ -11,7 +11,8 @@
         BattleManager battleManager;
 
         public GameObject slotPrefab;
-        public GameObject jethroSkillsContainers, jethroSpellsContainers,
+        public GameObject itemsContainers,
+            jethroSkillsContainers, jethroSpellsContainers,
             coleSkillsContainers, coleSpellsContainers,
             eleanorSkillsContainers, eleanorSpellsContainers,
             joulietteSkillsContainers, joulietteSpellsContainers;
@@ -42,7 +43,7 @@
         {
             base.TurnOnMenu();
             listOfButtons = new List<Button>();
-            FillList(battleManager.CurrentHero);
+            FillList();
             
             //if (currentContainer != lastContainer)
             //{
@@ -64,20 +65,28 @@
             uiManager.ShowAllMenus();            
         }
 
-        void FillList(Hero currentHero) // SPELL IS TEMPORARY -- SHOULD BE ABLE TO HANDLE ANY TECHNIQUE
+        void FillList()
         {
-            // set/find container
-            if (currentHero is Jethro)
-                currentContainer = jethroSpellsContainers;
-            else if (currentHero is Cole)
-                currentContainer = coleSpellsContainers;
-            else if (currentHero is Eleanor)
-                currentContainer = eleanorSpellsContainers;
+            // Items
+            if (battleManager.menuState == MenuState.ITEMS)
+            {
+                currentContainer = itemsContainers;
+                FillItems();
+            }
+            // Skills or Spells
             else
-                currentContainer = joulietteSpellsContainers;
+            {
+               
+                FillTechniques();
+            }
 
             currentContainer.SetActive(true);
 
+            
+        }
+
+        void FillItems()
+        {
             // if we already created this hero's specific technique buttons, just add them to the buttons list
             if (currentContainer.GetComponentsInChildren<Button>().Length > 0)
             {
@@ -87,12 +96,87 @@
             else
             {
 
-                var category = currentHero.SpellsList;
+                var category = gameControl.consumables;
 
                 for (int i = 0; i < category.Count; i++)
                 {
                     var item = Instantiate(slotPrefab);
-                    item.name = category[i].Name + "_Button";
+                    item.name = category[i].GetComponent<Item>().name + "_Button";
+                    item.transform.SetParent(currentContainer.transform);
+                    item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * -slotDistance);
+                    item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+
+                    // assign variables of UI
+                    item.GetComponent<ListButton>().SetItem(category[i].GetComponent<Item>());
+
+                    var button = item.GetComponentInChildren<Button>();
+                    button.GetComponentInChildren<Text>().text = category[i].GetComponent<Item>().name;
+                    listOfButtons.Add(button);
+
+                    // assign attacks
+                    //// remove spaces from attack name
+                    button.onClick.RemoveAllListeners();
+                    var itemName = "Item";
+                    button.onClick.AddListener(() => OnSelect(itemName));
+                    
+                }
+                SetButtonNavigation();
+            }
+        }
+
+        void FillTechniques()
+        {
+            var currentHero = battleManager.CurrentHero;
+
+            // set/find container
+            if (battleManager.menuState == MenuState.SPELLS)
+            {
+                if (currentHero is Jethro)
+                    currentContainer = jethroSpellsContainers;
+                else if (currentHero is Cole)
+                    currentContainer = coleSpellsContainers;
+                else if (currentHero is Eleanor)
+                    currentContainer = eleanorSpellsContainers;
+                else
+                    currentContainer = joulietteSpellsContainers;
+            }
+            else if(battleManager.menuState == MenuState.SKILLS)
+            {
+                if (currentHero is Jethro)
+                    currentContainer = jethroSkillsContainers;
+                else if (currentHero is Cole)
+                    currentContainer = coleSkillsContainers;
+                else if (currentHero is Eleanor)
+                    currentContainer = eleanorSkillsContainers;
+                else
+                    currentContainer = joulietteSkillsContainers;
+            }
+
+            // if we already created this hero's specific technique buttons, just add them to the buttons list
+            if (currentContainer.GetComponentsInChildren<Button>().Length > 0)
+            {
+                foreach (var b in currentContainer.GetComponentsInChildren<Button>())
+                    listOfButtons.Add(b);
+            }
+            else
+            {
+                List<Technique> category = new List<Technique>();// = currentHero.SpellsList;
+
+                if(battleManager.menuState == MenuState.SKILLS)
+                {
+                    foreach (var skill in currentHero.SkillsList)
+                        category.Add(skill);
+                }
+                else if(battleManager.menuState == MenuState.SPELLS)
+                {
+                    foreach (var spell in currentHero.SpellsList)
+                        category.Add(spell);
+                }
+
+                for (int i = 0; i < category.Count; i++)
+                {
+                    var item = Instantiate(slotPrefab);
+                    //item.name = category[i].Name + "_Button";
                     item.transform.SetParent(currentContainer.transform);
                     item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * -slotDistance);
                     item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
@@ -101,12 +185,11 @@
                     item.GetComponent<ListButton>().SetTechnique(category[i]);
 
                     var button = item.GetComponentInChildren<Button>();
-                    //button.GetComponentInChildren<Text>().text = category[i].Name;
+                    button.GetComponentInChildren<Text>().text = category[i].Name;
                     listOfButtons.Add(button);
 
                     // assign attacks
-                    //// remove spaces from attack name
-                    //var attack = category[i].Name.Replace(" ", string.Empty);
+                    button.onClick.RemoveAllListeners();
                     var attack = category[i].Name;
                     button.onClick.AddListener(() => OnSelect(attack));
                 }
