@@ -70,19 +70,19 @@
         {
             // flee successful
             // end the battle
-            //if (battleManager.CalcFlee())
-            //{
-            //    uiManager.HideAllMenus();
-            //    battleManager.FleeBattle();
-            //}
-            //// flee failed
-            //// skip to Attack state
-            //else
-            //{
+            if (battleManager.CalcFlee())
+            {
+                uiManager.HideAllMenus();
+                battleManager.FleeBattle();
+            }
+            // flee failed
+            // skip to Attack state
+            else
+            {
                 //print("...flee failed...");
                 uiManager.HideAllMenus();
                 battleManager.FleeFailed();
-            //}
+            }
         }        
     }
 }

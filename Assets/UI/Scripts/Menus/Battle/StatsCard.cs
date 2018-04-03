@@ -103,7 +103,7 @@ public class StatsCard : MonoBehaviour {
     public void ShowFullCard()
     {
         // only play the animation if the full group is not already active
-        //if (!fullGroup.activeSelf)
+        if (!fullGroup.activeSelf)
             StartCoroutine(ToFull());
     }
     IEnumerator ToFull()
@@ -119,7 +119,7 @@ public class StatsCard : MonoBehaviour {
     public void ShowShortCard()
     {
         // only play the animation if the short group is not already active
-        //if (!shortGroup.activeSelf)
+        if (!shortGroup.activeSelf)
             StartCoroutine(ToShort());
     }
     IEnumerator ToShort()

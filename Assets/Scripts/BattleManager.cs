@@ -685,6 +685,7 @@ public class BattleManager : MonoBehaviour {
 
     public void FleeFailed()
     {
+        ShowAllShortCards();
         StartCoroutine(ShowFleeFailed());
     }
     IEnumerator ShowFleeFailed()
@@ -718,6 +719,10 @@ public class BattleManager : MonoBehaviour {
             //heroStatsList[i].gameObject.SetActive(show);
             heroStatsList[i].ShowShortCard();
         }
+        for(int i = 0; i < enemyList.Count; i++)
+        {
+            enemyStatsList[i].ShowShortCard();
+        }
     }
     void ToggleDenigenStatCard(Denigen denigen, bool show)
     {
@@ -727,6 +732,12 @@ public class BattleManager : MonoBehaviour {
         else
             denigen.statsCard.ShowShortCard();
     }
+
+    void ShowAllShortCards()
+    {
+        ToggleAllStatCards(false);
+    }
+
 }
 // Target type
 // for determining what kind and how many targets a denigen can affect depending on their chosen attack

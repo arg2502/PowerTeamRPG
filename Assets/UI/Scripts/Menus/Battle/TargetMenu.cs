@@ -137,8 +137,9 @@
 
             HideCards();
             prevButton = null;
-            
-            listSub.SetContainersToNull();
+
+            if (listSub != null)
+                listSub.SetContainersToNull();
 
 
         }
@@ -174,14 +175,18 @@
                 if (button == targetCursors[i])
                     return i;
             }
-            Debug.LogError("Could not find index");
-            return 0;
+            //Debug.LogError("Could not find index");
+            return -1;
         }
 
         Denigen FindDenigenFromButton(Button button)
         {
             currentIndex = FindIndexInButtonArray(button);
-            return currentTargets[currentIndex];
+
+            if (currentIndex >= 0)
+                return currentTargets[currentIndex];
+            else
+                return null;
 
             //Debug.LogError("Could not find Denigen from button provided: " + button.name);
             //return null;
@@ -206,9 +211,17 @@
 
         void ShowNormalCards()
         {
+            Denigen denigen;
             if (prevButton != null)
-                FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
-            FindDenigenFromButton(currentButton).statsCard.ShowFullCard();
+            {
+                denigen = FindDenigenFromButton(prevButton);
+
+                if(denigen != null)
+                    denigen.statsCard.ShowShortCard();
+            }
+            denigen = FindDenigenFromButton(currentButton);
+            if (denigen != null)
+                denigen.statsCard.ShowFullCard();
         }
 
         void ShowSplashCards()
@@ -309,7 +322,6 @@
         new void Update()
         {
             base.Update();
-
             currentButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
             CheckTargetState();
             if (currentButton == prevButton) return;

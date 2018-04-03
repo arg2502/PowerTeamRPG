@@ -42,6 +42,11 @@
         public Menu FindMenu(GameObject databaseMenuToFind)
         {
             var tempMenu = databaseMenuToFind.GetComponent<Menu>();
+
+            // back out if we don't have the menu yet
+            if (!dictionary_existingMenus.ContainsKey(tempMenu))
+                return null;
+            
             var menuToReturn = dictionary_existingMenus[tempMenu].GetComponent<Menu>();
 
             if (menuToReturn != null)
