@@ -102,9 +102,14 @@ public class StatsCard : MonoBehaviour {
 
     public void ShowFullCard()
     {
+        print("show full");
         // only play the animation if the full group is not already active
         if (!fullGroup.activeSelf)
+        {
+            print("inside full group is not active");
+            StopAllCoroutines();
             StartCoroutine(ToFull());
+        }
     }
     IEnumerator ToFull()
     {
@@ -120,7 +125,10 @@ public class StatsCard : MonoBehaviour {
     {
         // only play the animation if the short group is not already active
         if (!shortGroup.activeSelf)
+        {
+            StopAllCoroutines();
             StartCoroutine(ToShort());
+        }
     }
     IEnumerator ToShort()
     {

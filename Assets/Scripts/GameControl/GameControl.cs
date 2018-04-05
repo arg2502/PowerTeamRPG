@@ -109,10 +109,7 @@ public class GameControl : MonoBehaviour {
 			DontDestroyOnLoad(gameObject);
 			control = this;
 
-            AddJethro();
-            AddCole();
-            AddEleanor();
-            AddJuliette();
+            InitHeroes();
 
             //Debug.Log(heroList);
 
@@ -618,6 +615,7 @@ public class GameControl : MonoBehaviour {
 				temp.spellsList = data.heroList[i].spellsList;
 				temp.passiveList = data.heroList[i].passiveList;
 				temp.statusState = (DenigenData.Status)data.heroList[i].statusState;
+                print("LOADED");
 
 				if (data.heroList[i].weapon != null) 
 				{ 
@@ -826,6 +824,21 @@ public class GameControl : MonoBehaviour {
         //dataToSet.weapon = null;
         //dataToSet.equipment = new List<GameObject>();
     }
+
+    /// <summary>
+    /// This function is purely for testing purposes. 
+    /// The heroes should only be created and added from their Start scriptable object once AND ONLY ONCE -- right when they're added to the party
+    /// Any other subsequent time, their data will be read in from elsewhere, perhaps another HeroData scriptableObject???    /// 
+    /// </summary>
+    void InitHeroes()
+    {
+        AddJethro();
+        AddCole();
+        AddEleanor();
+        AddJuliette();
+        SetHeroesToLiving();
+    }
+
     void AddJethro()
     {
         //test code for creating Jethro -- based on level 1 stats
@@ -895,7 +908,11 @@ public class GameControl : MonoBehaviour {
         heroList.Add(jouliette);
     }
 
-
+    void SetHeroesToLiving()
+    {
+        foreach (var hero in heroList)
+            hero.statusState = DenigenData.Status.normal;
+    }
 }
 
 //this class is where all of our data will be sent in order to be saved

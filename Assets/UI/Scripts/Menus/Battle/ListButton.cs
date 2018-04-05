@@ -23,10 +23,14 @@ public class ListButton : MonoBehaviour {
     public void SetItem(Item item)
     {
         techName.text = item.name;
-        pmCost.text = item.quantity.ToString();
+        RefreshItemQuantity(item);
         techIcon.sprite = item.sprite;
-        typeIcon.gameObject.SetActive(false);
+        typeIcon.gameObject.SetActive(false);        
+    }
 
-
+    public void RefreshItemQuantity(Item item)
+    {
+        print("refresh quantity to: " + item.quantity);
+        pmCost.text = (item.quantity - item.GetComponent<ConsumableItem>().inUse).ToString();
     }
 }

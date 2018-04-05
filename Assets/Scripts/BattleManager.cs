@@ -60,6 +60,10 @@ public class BattleManager : MonoBehaviour {
         CreateBattleMenu();
         SortBySpeed();
         ShowCurrentFullCard();
+        //foreach(var d in denigenList)
+        //{
+        //    print(d.DenigenName + ": " + d.Hp);
+        //}
     }
 
     void CreateBattleMenu()
@@ -106,6 +110,7 @@ public class BattleManager : MonoBehaviour {
         hero.transform.localPosition = heroStartingPositions[index];
         denigenList.Add(hero);
         heroList.Add(hero);
+        print(hero.DenigenName + ": " + hero.StatusState);
     }
     
     void AddEnemies()
@@ -567,6 +572,11 @@ public class BattleManager : MonoBehaviour {
         {                        
             // decrease hp based off of damage
             target.Hp -= target.CalculatedDamage;
+            print("target calc: " + target.CalculatedDamage);
+            if (target.Hp < 0)
+                target.Hp = 0;
+            else if (target.Hp > target.HpMax)
+                target.Hp = target.HpMax;
 
             //Now record appropriate text
             //takeDamageText.Add(name + " takes " + (int)damage + " damage!");
@@ -595,10 +605,23 @@ public class BattleManager : MonoBehaviour {
             // create the damage effect, but onlu if the denigen is not dead
             //if (statusState != Status.dead && statusState != Status.overkill)
             //{
-            GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
-            be.name = "DamageEffect";
-            //be.GetComponent<Effect>().Start();
-            be.GetComponent<Effect>().damage = target.CalculatedDamage + "";
+
+            // show damage effect
+            if (target.CalculatedDamage >= 0)
+            {
+                GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+                be.name = "DamageEffect";
+                //be.GetComponent<Effect>().Start();
+                be.GetComponent<Effect>().damage = target.CalculatedDamage + "";
+            }
+            // show healing effect
+            else
+            {
+                GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                be.name = "HealEffect";
+                if (target.Hp <= (target.HpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
+                else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
+            }
             //}
 
             // check for dead
@@ -701,32 +724,36 @@ public class BattleManager : MonoBehaviour {
     }
 
     // STATS CARDS
-    void ShowCurrentFullCard()
+    public void ShowCurrentFullCard()
     {
-        var card = heroList[currentDenigen].statsCard;
-        card.gameObject.SetActive(true);
-        card.ShowFullCard();
+        ToggleDenigenStatCard(heroList[currentDenigen], true);
+        //var card = heroList[currentDenigen].statsCard;
+        //if(!card.gameObject.activeSelf)
+        //    card.gameObject.SetActive(true);
+        //card.ShowFullCard();
     }
-    void ShowCurrentShortCard()
+    public void ShowCurrentShortCard()
     {
-        var card = heroList[currentDenigen].statsCard;
-        card.gameObject.SetActive(true);
-        card.ShowShortCard();
+        ToggleDenigenStatCard(heroList[currentDenigen], false);
+        //var card = heroList[currentDenigen].statsCard;
+        //card.gameObject.SetActive(true);
+        //card.ShowShortCard();
     }
-    void ToggleAllStatCards(bool show)
+    void ToggleAllCards(bool showFull)
     {
         for (int i = 0; i < heroList.Count; i++)
         {
             //heroStatsList[i].gameObject.SetActive(show);
-            heroStatsList[i].ShowShortCard();
+            ToggleDenigenStatCard(heroList[i], showFull);
         }
         for(int i = 0; i < enemyList.Count; i++)
         {
-            enemyStatsList[i].ShowShortCard();
+            ToggleDenigenStatCard(enemyList[i], showFull);
         }
     }
     void ToggleDenigenStatCard(Denigen denigen, bool show)
     {
+        print("current: " + currentDenigen +", showFull: " + show);
         //denigen.statsCard.gameObject.SetActive(show);
         if (show)
             denigen.statsCard.ShowFullCard();
@@ -734,9 +761,27 @@ public class BattleManager : MonoBehaviour {
             denigen.statsCard.ShowShortCard();
     }
 
-    void ShowAllShortCards()
+    public void ShowAllShortCards()
     {
-        ToggleAllStatCards(false);
+        ToggleAllCards(showFull : false);
+    }
+
+    public void ShowAllShortCardsExceptCurrent()
+    {
+        for (int i = 0; i < heroList.Count; i++)
+        {
+            if (i == currentDenigen)
+            {
+                ToggleDenigenStatCard(heroList[i], true);
+                continue;
+            }
+
+            ToggleDenigenStatCard(heroList[i], false);
+        }
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            ToggleDenigenStatCard(enemyList[i], false);
+        }
     }
 
     // menu states

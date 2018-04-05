@@ -31,7 +31,7 @@ public class DenigenData : ScriptableObject
     internal List<Passive> passiveList;
     // status effect
     public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
-    internal Status statusState;
+    public Status statusState;
     
 
 

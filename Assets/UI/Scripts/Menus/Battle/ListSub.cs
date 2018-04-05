@@ -62,7 +62,8 @@
         public override void Refocus()
         {
             base.Refocus();
-            uiManager.ShowAllMenus();            
+            uiManager.ShowAllMenus();
+            battleManager.ShowAllShortCardsExceptCurrent();
         }
 
         void FillList()
@@ -87,41 +88,94 @@
 
         void FillItems()
         {
-            // if we already created this hero's specific technique buttons, just add them to the buttons list
-            if (currentContainer.GetComponentsInChildren<Button>().Length > 0)
+            var containerButtons = currentContainer.GetComponentsInChildren<ListButton>();
+            print("length: " + containerButtons.Length);
+
+            // check if we've already created the list
+            // check and see if we have the right number of buttons that we need -- if we used the last of an item in the last round, then we would have more buttons than we need
+            // check if the quanity - inUse of any item is 0
+            if (containerButtons.Length > 0
+                && containerButtons.Length == gameControl.consumables.Count
+                && AllItemsAboveZero())
             {
+
+                // now we can add the buttons we have to our button list
                 foreach (var b in currentContainer.GetComponentsInChildren<Button>())
-                    listOfButtons.Add(b);
-            }
-            else
-            {
-
-                var category = gameControl.consumables;
-
-                for (int i = 0; i < category.Count; i++)
                 {
-                    var item = Instantiate(slotPrefab);
-                    item.name = category[i].GetComponent<Item>().name + "_Button";
-                    item.transform.SetParent(currentContainer.transform);
-                    item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * -slotDistance);
-                    item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
-
-                    // assign variables of UI
-                    item.GetComponent<ListButton>().SetItem(category[i].GetComponent<Item>());
-
-                    var button = item.GetComponentInChildren<Button>();
-                    button.GetComponentInChildren<Text>().text = category[i].GetComponent<Item>().name;
-                    listOfButtons.Add(button);
-
-                    // assign attacks
-                    //// remove spaces from attack name
-                    button.onClick.RemoveAllListeners();
-                    var itemName = "Item";
-                    button.onClick.AddListener(() => OnSelect(itemName));
-                    
+                    listOfButtons.Add(b);
                 }
-                SetButtonNavigation();
+
+                // but we also need to update the item quantity
+                for (int i = 0; i < containerButtons.Length; i++)
+                {
+                    var listButton = containerButtons[i];
+                    listButton.RefreshItemQuantity(gameControl.consumables[i].GetComponent<Item>());
+                }
+                // we're all set, now we can leave
+                return;
+                
             }
+
+            // if the num of buttons does not match the num of consumables, then we need to start all over
+            for (int i = 0; i < containerButtons.Length; i++)
+            {
+                Destroy(containerButtons[i].gameObject);
+            }
+            CreateItemList();
+            
+        }
+        void CreateItemList()
+        {
+            var category = gameControl.consumables;
+
+            // search for any unavailable items (items where the remaining are chosen to be used up in battle by other heroes)
+            for(int i = 0; i < category.Count; i++)
+            {
+                var item = category[i].GetComponent<ConsumableItem>();
+                // if there are no more of this item available, skip it
+                if (!item.Available)
+                    category.RemoveAt(i);
+            }
+
+            for (int i = 0; i < category.Count; i++)
+            {
+                var consumableItem = category[i].GetComponent<ConsumableItem>();
+
+                var itemObj = Instantiate(slotPrefab);
+                itemObj.name = consumableItem.name + "_Button";
+                itemObj.transform.SetParent(currentContainer.transform);
+                itemObj.GetComponent<RectTransform>().localPosition = new Vector2(0, i * -slotDistance);
+                itemObj.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+
+                // assign variables of UI
+                itemObj.GetComponent<ListButton>().SetItem(consumableItem);
+
+                var button = itemObj.GetComponentInChildren<Button>();
+                button.GetComponentInChildren<Text>().text = consumableItem.name;
+                listOfButtons.Add(button);
+
+                // assign attacks
+                //// remove spaces from attack name
+                button.onClick.RemoveAllListeners();
+                var itemName = consumableItem.name;
+                button.onClick.AddListener(() => OnSelect(itemName));
+
+            }
+            SetButtonNavigation();
+        }
+
+        bool AllItemsAboveZero()
+        {
+            foreach(var itemObj in gameControl.consumables)
+            {
+                var item = itemObj.GetComponent<ConsumableItem>();
+                if (!item.Available)
+                {
+                    print("IS THIS ABOVE ZERO YO?: " + item.name + " " + (item.quantity - item.inUse));
+                    return false;
+                }
+            }
+            return true;
         }
 
         void FillTechniques()

@@ -5,13 +5,26 @@ using System;
 
 [Serializable]
 public class ConsumableItem : Item {
+
+    // keep track of how many other heroes plan on using this item in battle
+    // Ex: 
+    // * You have 3 Restoratives
+    // * Cole selects Restorative in battle
+    // * inUse++;
+    // * Jethro wants to use Restorative
+    // * You didn't use Cole's Restorative so you technically still have 3,
+    // * But we want to show (3 - inUse), so Jethro only sees 2
+    // This is purely for battle target phase, so it will reset to 0 when the item is used
+    public int inUse; 
+    public bool Available
+    {
+        get
+        {
+            return
+                (quantity - inUse > 0);
+        }
+    }
     
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-
     // out of battle use method
     public void Use(DenigenData target)
     {
@@ -56,15 +69,20 @@ public class ConsumableItem : Item {
         {
             case "Lesser Restorative":
                 // if you are in battle, make a healing effect object
-                if (GameObject.FindObjectOfType<BattleMenu>() != null)
-                {
-                    GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                    be.name = "HealEffect";
-                    if (target.Hp <= (target.HpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
-                    else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
-                }
-                target.Hp += 20;
-                if (target.Hp > target.HpMax) { target.Hp = target.HpMax; }
+                //if (GameObject.FindObjectOfType<BattleManager>() != null)
+                //{
+                    //GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+                    //be.name = "HealEffect";
+                    //if (target.Hp <= (target.HpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
+                    //else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
+                    target.SetHealingValue(20);
+                //}
+                //else
+                //{
+                //    target.Hp += 20;
+                //    print("HEAL MOTHER FUCKER: " + target.Hp + " / " + target.HpMax);
+                //    if (target.Hp > target.HpMax) { target.Hp = target.HpMax; }
+                //}
                 break;
             case "Restorative":
                 // if you are in battle, make a healing effect object
@@ -153,7 +171,11 @@ public class ConsumableItem : Item {
 
         // Always decrease quantity by 1 since this is the consumable item class
         quantity--;
+        print("new quantity: " + quantity);
         // if quantity hits 0, remove it from the inventory
         if (quantity <= 0) { GameControl.control.consumables.Remove(this.gameObject); }
+
+        // reset inUse
+        inUse = 0;
     }
 }

@@ -67,10 +67,12 @@ public class Hero : Denigen {
                     //search through all of the items
                     for (int j = 0; j < GameControl.control.consumables.Count; j++)
                     {
+                        var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
                         // Disable an item if the number of denigens commanded to use said item is >= its quantity
-                        if (itemName == GameControl.control.consumables[j].GetComponent<ConsumableItem>().name)
+                        if (itemName == item.name)
                         {
-                            GameControl.control.consumables[j].GetComponent<ConsumableItem>().Use(targets[0]);
+                            item.Use(targets[0]);
+                            break;
                         }
                     }
                 }

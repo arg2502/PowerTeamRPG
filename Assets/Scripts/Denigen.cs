@@ -32,6 +32,9 @@ public class Denigen : MonoBehaviour {
     int calculatedDamage;
     //Denigen attacker;
     public int CalculatedDamage { get { return calculatedDamage; } }
+    public void SetHealingValue(int heal) {
+        calculatedDamage = -heal; }
+
     //public Denigen Attacker { get { return attacker; } }
     public enum AttackType { NORMAL, MISS, CRIT, BLOCKED };
     public AttackType attackType;

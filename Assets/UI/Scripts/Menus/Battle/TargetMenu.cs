@@ -133,9 +133,20 @@
                 }
             }
 
-            battleManager.TargetDenigen(targets);
+            // increase item's inUse if we're using an item
+            if(battleManager.menuState == MenuState.ITEMS)
+            {
+                // we should have like a find item function ---- TODO
+                foreach(var item in gameControl.consumables)
+                {
+                    if (item.GetComponent<Item>().name == battleManager.CurrentHero.CurrentAttackName)
+                        item.GetComponent<ConsumableItem>().inUse++;
+                }
+            }
 
             HideCards();
+            battleManager.TargetDenigen(targets);
+
             prevButton = null;
 
             if (listSub != null)
@@ -193,7 +204,16 @@
         }
         void SwitchCards()
         {
-            switch(battleManager.targetState)
+            // if we targeting the heroes, hide their cards
+            if (!battleManager.IsTargetEnemy)
+            {
+                foreach (var hero in battleManager.heroList)
+                {
+                    hero.statsCard.ShowShortCard();
+                }
+            }
+
+            switch (battleManager.targetState)
             {
                 case TargetType.ENEMY_SPLASH:
                 case TargetType.HERO_SPLASH:
@@ -207,6 +227,7 @@
                     ShowNormalCards();
                     break;
             }
+            
         }
 
         void ShowNormalCards()
@@ -322,6 +343,8 @@
         new void Update()
         {
             base.Update();
+            if (uiManager.menuInFocus != this.gameObject) return;
+
             currentButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
             CheckTargetState();
             if (currentButton == prevButton) return;
