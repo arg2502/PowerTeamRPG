@@ -63,17 +63,7 @@
         {
             battleManager = FindObjectOfType<BattleManager>();
             base.Init();
-
-            // set positions of cursors
-            // convert world coordinates to screen coordinates for UI
-            //List<Vector2> screenPos = new List<Vector2>();
-            for (int i = 0; i < battleManager.enemyPositions.Count; i++)
-            {
-                var pos = RectTransformUtility.WorldToScreenPoint(Camera.main, battleManager.enemyPositions[i].transform.position);
-                //screenPos.Add(pos);
-                targetCursors[i].transform.position = pos;
-            }
-
+            
             listSub = uiManager.FindMenu(uiDatabase.ListSub) as ListSub;
         }
 
@@ -87,11 +77,18 @@
             {
                 foreach (var enemy in battleManager.enemyList)
                     currentTargets.Add(enemy);
+
+                SetCursorPositions(battleManager.enemyPositions);
             }
             else
             {
-                foreach (var hero in battleManager.heroList)
-                    currentTargets.Add(hero);
+                // heroes are backwards??? I forget why..
+                for(int i = battleManager.heroList.Count-1; i >= 0; i--)
+                {
+                    currentTargets.Add(battleManager.heroList[i]);
+                }
+
+                SetCursorPositions(battleManager.heroPositions);
             }
 
             rootButton = AssignRootButton();
@@ -101,9 +98,21 @@
 
             currentButton = rootButton;
 
-            //CheckTargetState();
+            
         }
         
+        void SetCursorPositions(List<GameObject> targets)
+        {
+            // set positions of cursors
+            // convert world coordinates to screen coordinates for UI
+            for (int i = 0; i < targets.Count; i++)
+            {
+                var pos = RectTransformUtility.WorldToScreenPoint(Camera.main, targets[i].transform.position);
+                //screenPos.Add(pos);
+                targetCursors[i].transform.position = pos;
+            }
+        }
+
         void OnTarget(int pos)
         {
             List<Denigen> targets = new List<Denigen>();
