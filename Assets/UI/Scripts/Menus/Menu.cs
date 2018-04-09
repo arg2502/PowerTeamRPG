@@ -43,7 +43,8 @@
         public virtual void TurnOnMenu()
         {
             gameObject.SetActive(true);
-            SetSelectedObjectToRoot();            
+            SetSelectedObjectToRoot();
+            transform.SetAsLastSibling();     
         }
 
         protected virtual void AddListeners()

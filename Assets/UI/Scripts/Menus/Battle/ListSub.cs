@@ -408,6 +408,16 @@
             //    downScroll.SetActive(false);
         }
 
+        void OnEnable()
+        {
+            if (currentContainer != null)
+                currentContainer.SetActive(true);
+        }
+        void OnDisable()
+        {
+            currentContainer.SetActive(false);
+        }
+
         new void Update()
         {
             base.Update();

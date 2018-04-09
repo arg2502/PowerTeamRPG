@@ -172,20 +172,67 @@
             // if they are linked, check if the enemy is even alive
             for (int i = 0; i < targetCursors.Count; i++)
             {
-                // if we're out of range, turn off the cursor
-                // also, check if alive
-                if (i >= currentTargets.Count || currentTargets[i].IsDead)
+                if (battleManager.menuState != MenuState.ITEMS)
                 {
-                    targetCursors[i].gameObject.SetActive(false);
-                    targetCursors[i].interactable = false;
-                    SetButtonNavigation();
+                    // if we're out of range, turn off the cursor
+                    // also, check if alive
+                    if (i >= currentTargets.Count || currentTargets[i].IsDead)
+                        ToggleCursorActivation(index: i, active: false);
+                    else
+                        ToggleCursorActivation(index: i, active: true);
                 }
                 else
                 {
-                    targetCursors[i].gameObject.SetActive(true);
-                    targetCursors[i].interactable = true;
+                    // deactivate if out of range
+                    if (i >= currentTargets.Count)
+                    {
+                        ToggleCursorActivation(index: i, active: false);
+                        continue;
+                    }
+                    // if dead, check if the item can be used on them
+                    var itemForTheLiving = ItemForLiving(battleManager.CurrentHero.CurrentAttackName);
+                    if (currentTargets[i].IsDead)
+                    {
+                        print("index: " + i + ", forLiving: " + itemForTheLiving);
+                        ToggleCursorActivation(i, !itemForTheLiving);
+                    }
+                    else
+                    {
+                        ToggleCursorActivation(i, itemForTheLiving);
+                    }
                 }
             }
+
+            // check if all are inactive
+            int active = 0;
+            for(int i = 0; i < targetCursors.Count; i++)
+            {
+                if (targetCursors[i].interactable)
+                    active++;
+            }
+
+            // if we don't have any active, GTFO
+            if (active <= 0)
+            {
+                print("THERE'S NO ONE TO USE THAT ON, YOU STUPID BITCH");
+                uiManager.PopMenu();
+            }
+        }
+
+        bool ItemForLiving(string item)
+        {
+            // ITEM MANAGER DESPERATELY NEEDED
+            // TEST FOR NOW
+            if (item == "Restorative")
+                return false;
+            return true;
+        }
+
+        void ToggleCursorActivation(int index, bool active)
+        {
+            targetCursors[index].gameObject.SetActive(active);
+            targetCursors[index].interactable = active;
+            SetButtonNavigation();
         }
 
         int FindIndexInButtonArray(Button button)
@@ -353,7 +400,7 @@
         {
             base.Update();
             if (uiManager.menuInFocus != this.gameObject) return;
-
+             
             currentButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
             CheckTargetState();
             if (currentButton == prevButton) return;
