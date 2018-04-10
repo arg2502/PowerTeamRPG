@@ -35,53 +35,28 @@ public class Hero : Denigen {
     public int TechPts { get { return techPts; } set { techPts = value; } }
 
     public TargetType currentTargetType;
-
-    // add skill to list
-    protected void AddSkill(string skill, string descrip)
-    {
-        //skillsList.Add(skill);
-        //skillsDescription.Add(descrip);
-    }
-
-    // add spell to list
-    protected void AddSpell(string spell, string descrip)
-    {
-        //spellsList.Add(spell);
-        //spellsDescription.Add(descrip);
-    }
-
+    
     // the method for handling item use
     public void ItemUse( string itemName)
     {
-        // this switch statement will separate items that can be used on fallen heroes from items which cannot
-        // the default case will handle every item not usable on fallen enemies
-        // all other cases will have the name of specific items (Ex: "Revive")
-        switch (itemName)
-        {
-            default:
-                if (!targets[0].IsDead)
-                {
-                    if (targets.Count > 1 || name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
-                    else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
+        // if the item is intended for living, but the target is dead, don't use the item -- skip the turn
+        var itemIsForLiving = GameControl.itemManager.ItemForLiving(itemName);
+        if (itemIsForLiving && targets[0].IsDead)
+            return;
 
-                    //search through all of the items
-                    for (int j = 0; j < GameControl.control.consumables.Count; j++)
-                    {
-                        var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
-                        // Disable an item if the number of denigens commanded to use said item is >= its quantity
-                        if (itemName == item.name)
-                        {
-                            item.Use(targets[0]);
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    calcDamageText.Add(name + " tried to use " + itemName + " on " + targets[0].name + ", but it would have no effect. "
-                        + name + " put the item away.");
-                }
+        //if (targets.Count > 1 || name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
+        //else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
+
+        //search through all of the items
+        for (int j = 0; j < GameControl.control.consumables.Count; j++)
+        {
+            var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
+            // Disable an item if the number of denigens commanded to use said item is >= its quantity
+            if (itemName == item.name)
+            {
+                item.Use(targets[0]);
                 break;
+            }
         }
     }
 
@@ -322,7 +297,9 @@ public class Hero : Denigen {
     public override void Attack(string atkChoice)
     {
         // check if the target is still alive, if not -- find a new one
-        IsTargetDead();
+        // if we're not using items
+        if (battleManager.menuState != MenuState.ITEMS)
+            IsTargetDead();
 
         // specific denigens will pick attack methods based off of user choice
         switch (atkChoice)
@@ -381,7 +358,7 @@ public class Hero : Denigen {
         // if they're not dead, stop right here
         if (!targets[0].IsDead)
             return;
-
+        
         print("Target is dead -- find new target");
 
         targets.Clear();

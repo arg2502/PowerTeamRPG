@@ -49,13 +49,14 @@
 
         public override Button AssignRootButton()
         {
-            for(int i = 0; i < currentTargets.Count; i++)
+            for (int i = 0; i < currentTargets.Count; i++)
             {
-                if (!currentTargets[i].IsDead)
+                if (targetCursors[i].interactable)
                 {
                     return targetCursors[i];
                 }
             }
+            Debug.LogError("AssignRootButton(): Cursor is null");
             return null;
         }
 
@@ -91,10 +92,11 @@
                 SetCursorPositions(battleManager.heroPositions);
             }
 
+            CheckForDead();
+
             rootButton = AssignRootButton();
             SetSelectedObjectToRoot();
 
-            CheckForDead();
 
             currentButton = rootButton;
 
@@ -149,7 +151,10 @@
                 foreach(var item in gameControl.consumables)
                 {
                     if (item.GetComponent<Item>().name == battleManager.CurrentHero.CurrentAttackName)
+                    {
                         item.GetComponent<ConsumableItem>().inUse++;
+                        battleManager.CurrentHero.UsingItem = true;
+                    }
                 }
             }
 
@@ -190,7 +195,7 @@
                         continue;
                     }
                     // if dead, check if the item can be used on them
-                    var itemForTheLiving = ItemForLiving(battleManager.CurrentHero.CurrentAttackName);
+                    var itemForTheLiving = GameControl.itemManager.ItemForLiving(battleManager.CurrentHero.CurrentAttackName);
                     if (currentTargets[i].IsDead)
                     {
                         print("index: " + i + ", forLiving: " + itemForTheLiving);
@@ -219,14 +224,7 @@
             }
         }
 
-        bool ItemForLiving(string item)
-        {
-            // ITEM MANAGER DESPERATELY NEEDED
-            // TEST FOR NOW
-            if (item == "Restorative")
-                return false;
-            return true;
-        }
+        
 
         void ToggleCursorActivation(int index, bool active)
         {

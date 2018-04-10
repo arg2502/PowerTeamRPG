@@ -32,8 +32,44 @@ public class Denigen : MonoBehaviour {
     int calculatedDamage;
     //Denigen attacker;
     public int CalculatedDamage { get { return calculatedDamage; } }
-    public void SetHealingValue(int heal) {
-        calculatedDamage = -heal; }
+
+    internal int healHP;
+    internal int healPM;
+    public void SetHPHealingValue(int heal) { healHP = heal; }
+    public void SetPMHealingValue(int heal) { healPM = heal; }
+    public void ResetHealing() { healHP = 0; healPM = 0; }
+    public int HealedByHPValue()
+    {
+        if (HpMax > Hp + healHP)
+            return healHP;
+        else
+            return HpMax - Hp;
+    }
+    public int HealedByPMValue()
+    {
+        if (PmMax > Pm + healPM)
+            return healPM;
+        else
+            return PmMax - Pm;
+    }
+
+    public void LimitHP()
+    {
+        if (Hp < 0)
+            Hp = 0;
+        else if (Hp > HpMax)
+            Hp = HpMax;
+    }
+    public void LimitPM()
+    {
+        if (Pm < 0)
+            Pm = 0;
+        else if (Pm > PmMax)
+            Pm = PmMax;
+    }
+
+    protected bool usingItem;
+    public bool UsingItem { get { return usingItem; } set { usingItem = value; } }
 
     //public Denigen Attacker { get { return attacker; } }
     public enum AttackType { NORMAL, MISS, CRIT, BLOCKED };

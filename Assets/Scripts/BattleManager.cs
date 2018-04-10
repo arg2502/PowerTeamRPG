@@ -126,7 +126,7 @@ public class BattleManager : MonoBehaviour {
         // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
         // this could probably be stored inside GameControl to transfer the data over to the battle
         // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
-        int numOfGoikkos = 3;
+        int numOfGoikkos = 1;
         for (int i = 0; i < numOfGoikkos; i++)
             enemiesToAdd.Add("Goikko");
 
@@ -558,9 +558,6 @@ public class BattleManager : MonoBehaviour {
             yield break;
         }
 
-        // show damage
-        var messagesToDisplay = new List<string>();
-
         //if (targeted.Count > 0)
         //    battleCamera.MoveTo(targeted[0].transform.position);
         battleCamera.BackToStart();
@@ -568,20 +565,73 @@ public class BattleManager : MonoBehaviour {
         // wait for camera to get back
         yield return new WaitForSeconds(0.25f);
 
+
+        // check if the attacker is using an item to determine which function to perform
+        if (attacker.UsingItem)
+            yield return UseChosenItem(attacker, targeted);
+        else
+            yield return PerformAttack(attacker, targeted);
+
+        
+        NextAttack();
+    }
+
+    IEnumerator UseChosenItem(Denigen attacker, List<Denigen> targeted)
+    {
+        // show damage
+        var messagesToDisplay = new List<string>();
         foreach (var target in targeted)
-        {                        
-            // decrease hp based off of damage
+        {            
+            var healedStatName = "";
+            var healedStatValue = 0;
+
+            if(target.healHP != 0)
+            {
+                healedStatValue = target.HealedByHPValue();
+                target.Hp += target.healHP;
+                target.LimitHP();                
+                healedStatName = "HP";
+            }
+
+            else if(target.healPM != 0)
+            {
+                healedStatValue = target.HealedByPMValue();
+                target.Pm += target.healPM;
+                target.LimitPM();
+                healedStatName = "PM";
+            }
+
+            ShowHealing(target, target.healHP);
+            var message = "";
+
+            if (!string.IsNullOrEmpty(healedStatName))
+                message = target.DenigenName + "'s " + healedStatName + " restored by " + healedStatValue;
+
+            messagesToDisplay.Add(message);
+            target.ResetHealing();
+            target.statsCard.UpdateStats();
+        }
+
+        DisplayMultiMessage(messagesToDisplay);
+        yield return new WaitForSeconds(1f);
+        attacker.UsingItem = false;
+    }
+
+    IEnumerator PerformAttack(Denigen attacker, List<Denigen> targeted)
+    {
+        // show damage
+        var messagesToDisplay = new List<string>();
+
+        foreach (var target in targeted)
+        {
+            // alter hp based off of damage
             target.Hp -= target.CalculatedDamage;
             print("target calc: " + target.CalculatedDamage);
-            if (target.Hp < 0)
-                target.Hp = 0;
-            else if (target.Hp > target.HpMax)
-                target.Hp = target.HpMax;
+            
 
             //Now record appropriate text
-            //takeDamageText.Add(name + " takes " + (int)damage + " damage!");
             var message = "";
-            switch(attacker.attackType)
+            switch (attacker.attackType)
             {
                 case Denigen.AttackType.NORMAL:
                     message = "";
@@ -602,61 +652,53 @@ public class BattleManager : MonoBehaviour {
             messagesToDisplay.Add(message);
 
             print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
+            
             // create the damage effect, but onlu if the denigen is not dead
-            //if (statusState != Status.dead && statusState != Status.overkill)
-            //{
-
-            // show damage effect
-            if (target.CalculatedDamage >= 0)
-            {
-                GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
-                be.name = "DamageEffect";
-                //be.GetComponent<Effect>().Start();
-                be.GetComponent<Effect>().damage = target.CalculatedDamage + "";
-            }
-            // show healing effect
-            else
-            {
-                GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
-                be.name = "HealEffect";
-                if (target.Hp <= (target.HpMax - 20)) { be.GetComponent<Effect>().damage = 20 + "hp"; }
-                else { be.GetComponent<Effect>().damage = (target.HpMax - target.Hp) + "hp"; }
-            }
-            //}
+            ShowDamage(target);
 
             // check for dead
             print(target.DenigenName + " HP: " + target.Hp);
             if (target.Hp <= 0)
             {
                 target.Hp = 0;
-                //takeDamageText.Add(name + " falls!");
                 print(target.DenigenName + " falls!");
                 messagesToDisplay.Add(target.DenigenName + " falls!");
                 target.StatusState = DenigenData.Status.dead;
                 KillOff(target);
             }
-
-            // Update UI
-            //if (target is Hero)
-            //{
-                //ToggleDenigenStatCard(target, true);
-                target.statsCard.UpdateStats();
-            //}
+            
+            target.statsCard.UpdateStats();
         }
-        for (int i = 0; i < messagesToDisplay.Count; i++)
+
+        DisplayMultiMessage(messagesToDisplay);
+        yield return new WaitForSeconds(1f);
+    }
+
+    void ShowDamage(Denigen target)
+    {
+        GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+        be.name = "DamageEffect";
+        //be.GetComponent<Effect>().Start();
+        be.GetComponent<Effect>().damage = target.CalculatedDamage.ToString();
+    }
+
+    void ShowHealing(Denigen target, int heal)
+    {
+        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+        be.name = "HealEffect";
+        be.GetComponent<Effect>().damage = heal.ToString();
+    }
+
+    void DisplayMultiMessage(List<string> messages)
+    {
+        if (messages.Count > 0)
         {
-            battleMessage.text = messagesToDisplay[i];
-            yield return new WaitForSeconds(1f);
+            battleMessage.text = messages[0];
+            for (int i = 1; i < messages.Count; i++)
+            {
+                battleMessage.text += "\n" + messages[i];
+            }
         }
-
-        // hide target's cards
-        //foreach (var target in targeted)
-        //{
-        //    if (target is Hero)
-        //        ToggleDenigenStatCard(target, false);
-        //}
-
-        NextAttack();
     }
 
     void EndBattle()

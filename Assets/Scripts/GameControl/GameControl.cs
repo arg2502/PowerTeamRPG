@@ -19,6 +19,7 @@ public class GameControl : MonoBehaviour {
 
     public static UIManager UIManager;
     public static SkillTreeManager skillTreeManager;
+    public static ItemManager itemManager;
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
@@ -115,6 +116,7 @@ public class GameControl : MonoBehaviour {
 
             UIManager = new UIManager();
             skillTreeManager = new SkillTreeManager();
+            itemManager = new ItemManager();
 
 			// default KeyCodes
 			// possibly have them loaded in from somewhere based off user settings
