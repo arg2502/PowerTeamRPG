@@ -264,7 +264,7 @@ public class BattleManager : MonoBehaviour {
         print("STATE CHANGE -- " + battleState);
         
         // reset current denigen to traverse through list during attacks
-        currentDenigen = 0;
+        currentDenigen = FindNextLivingIndex(0);
 
         // determine what happens now in this new state
         if(battleState == BattleState.TARGET)
@@ -455,19 +455,34 @@ public class BattleManager : MonoBehaviour {
         // disable all menus
         uiManager.DisableAllMenus();
         ShowCurrentShortCard();
-        do
-        {
-            if (currentDenigen < heroList.Count - 1)
-                NextTarget();
-            else
-                GoToAttackState();
-        }
-        while (heroList[currentDenigen].IsDead);
+
+        // make sure that the next denigen in the list is living
+        var nextDenigen = FindNextLivingIndex(currentDenigen + 1);
+        
+
+        if (nextDenigen < heroList.Count)
+            NextTarget(nextDenigen);
+        else
+            GoToAttackState();
     }
 
-    void NextTarget()
+    /// <summary>
+    /// Sort through the hero list and return the next living hero
+    /// </summary>
+    /// <param name="startingIndex">Where to start searching. If starting Target, 0. If finding next, current + 1.</param>
+    /// <returns></returns>
+    int FindNextLivingIndex(int startingIndex)
     {
-        currentDenigen++;
+        var nextDenigen = startingIndex;
+        while (nextDenigen < heroList.Count && heroList[nextDenigen].IsDead)
+            nextDenigen++;
+
+        return nextDenigen;
+    }
+
+    void NextTarget(int newIndex)
+    {
+        currentDenigen = newIndex;
         ShowCurrentFullCard();
 
         // go back to BattleMenu
@@ -843,7 +858,8 @@ public enum TargetType
     HERO_SELF,
     HERO_SINGLE,
     HERO_SPLASH,
-    HERO_TEAM
+    HERO_TEAM,
+    NULL
 }
 
 // Battle Menu state

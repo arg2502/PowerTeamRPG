@@ -57,6 +57,7 @@ public class Cole : Hero {
 
     public override void DecideTypeOfTarget()
     {
+        currentTargetType = TargetType.NULL;
         switch(CurrentAttackName)
         {
             case "Splash Flame":
@@ -66,14 +67,17 @@ public class Cole : Hero {
             case "Hellfire":
                 currentTargetType = TargetType.ENEMY_TEAM;
                 break;
-            default:
+            case "Candleshot":
+            case "Fireball":
+            case "Grand Fireball":
                 currentTargetType = TargetType.ENEMY_SINGLE;
                 break;
 
         }
 
-
-        base.DecideTypeOfTarget();
+        // still no target? check general hero
+        if (currentTargetType == TargetType.NULL)
+            base.DecideTypeOfTarget();
     }
 
     void Candleshot()
