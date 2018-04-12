@@ -616,7 +616,7 @@ public class BattleManager : MonoBehaviour {
                 healedStatName = "PM";
             }
 
-            ShowHealing(target, target.healHP);
+            ShowHealing(target, healedStatValue);
             var message = "";
 
             if (!string.IsNullOrEmpty(healedStatName))
