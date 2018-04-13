@@ -1,9 +1,9 @@
-Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level
-weep	Weep	Opposing team loses some magic defense.	1	0	0	0	100	2	0	
-drawBlood	Draw Blood	Drain an opponent for a small amount of health.	1	6	0	0	100	2	1	
-borrowed	Borrowed Life	Inflict minimal damage to opposing team, and heal team for a small amount.	1	25	0	0	100	1	1	
-antiheal	Antiheal	Inflicts bleeding or infection on one opponent.	1	5	0	0	100	2	2	
-distress	Distress Wound	Selected opponent cannot heal for 2 turns.	1	8	0	0	100	2	3	
-passing	Passing Sands	Causes an opponent with 15% hp or less to instantly lose all hp. Always goes first.	1	10	0	0	100	2	4	
-staffStrike	Staff Strike	Deliver a blow with the end of your staff.	1	0	0	0	100	3	0	
-staffSlam	Staff Slam	Slam staff into the ground, dealing physical damage to all opponents based on your magic stat.	1	0	0	0	100	4	0	
+Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level	Target Type
+weep	Weep	Opposing team loses some magic defense.	1	0	0	0	100	2	0		3
+drawBlood	Draw Blood	Drain an opponent for a small amount of health.	1	6	0	0	100	2	1		1
+borrowed	Borrowed Life	Inflict minimal damage to opposing team, and heal team for a small amount.	1	25	0	0	100	1	1		3
+antiheal	Antiheal	Inflicts bleeding or infection on one opponent.	1	5	0	0	100	2	2		1
+distress	Distress Wound	Selected opponent cannot heal for 2 turns.	1	8	0	0	100	2	3		1
+passing	Passing Sands	Causes an opponent with 15% hp or less to instantly lose all hp. Always goes first.	1	10	0	0	100	2	4		1
+staffStrike	Staff Strike	Deliver a blow with the end of your staff.	1	0	0	0	100	3	0		1
+staffSlam	Staff Slam	Slam staff into the ground, dealing physical damage to all opponents based on your magic stat.	1	0	0	0	100	4	0		3

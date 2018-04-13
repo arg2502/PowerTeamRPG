@@ -187,7 +187,7 @@ public class Denigen : MonoBehaviour {
         }
     }
 
-    public virtual void Attack(string atkChoice)
+    public virtual void Attack()
     {
         // specific denigens will pick attack methods based off of user choice
 
@@ -304,6 +304,11 @@ public class Denigen : MonoBehaviour {
         calculatedDamage = (int)damage;
     }
 
+    void Heal(float healEffect)
+    {
+        calculatedDamage = -(int)healEffect;
+    }
+
     public void PayPowerMagic()
     {
         if (currentAttack != null)
@@ -331,16 +336,7 @@ public class Denigen : MonoBehaviour {
         //        GameControl.control.isDying = false;
         //}
 	}
-
-    //protected IEnumerator PlayAnimation(string animation)
-    //{
-    //    GameControl.control.isAnimating = true;
-    //    anim.Play(animation); 
-    //    yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length);
-    //    GameControl.control.isAnimating = false;
-    //    StopCoroutine("PlayAnimation");
-    //}
-
+    
     public IEnumerator PlayAnimation()
     {
         var anim = GetComponent<Animator>();
@@ -410,6 +406,21 @@ public class Denigen : MonoBehaviour {
         for (int i = 0; i < targets.Count; i++)
         {
             targets[i].TakeDamage(this, damage, true);
+        }
+    }
+
+    protected void SingleHeal(float power, float crit, float accuracy)
+    {
+        var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic: true);
+        targets[0].Heal(healEffect);
+    }
+    
+    protected void TeamHeal(float power, float crit, float accuracy)
+    {
+        var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic: true);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            targets[i].Heal(healEffect);
         }
     }
 }

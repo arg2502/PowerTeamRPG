@@ -1,13 +1,13 @@
-Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level
-taunt	Taunt	Draws a single enemy's (single-hit) attack to Juliette	1	1	0	0	100	3	0	
-boast	Boast	Draw all enemy attacks to Juliette.	1	3	0	0	100	3	1	
-rushdown1	Rushdown Fighter I	Boosts Speed by 10%.	1	0	0	0	100	2	1	
-rushdown2	Rushdown Fighter II	Boosts Speed by 20%.	1	0	0	0	100	1	1	
-rushdown3	Rushdown Fighter III	Boosts Speed by 30%.	1	0	0	0	100	0	1	
-heckle	Heckle	Weak attack with a chance to daze.	1	4	10	1	100	2	2	
-untouchable	Untouchable	When Defense or Magic Defense are decreased, evasion is increased. Levels for amount of increase.	1	0	0	0	100	2	3	
-misdirection	Misdirection	Weak attack that decreases a target's accuracy by 10%.	1	0	20	5	90	1	3	
-flickerDodge	Flicker Dodge	Avoid an anticipated attack.	1	2	0	0	100	4	1	
-flickerCounter	Flicker Counter	If attacked, avoid and counterattack with a chance to daze. If no attack comes, suffer cooldown for a turn.	1	0	0	0	100	4	2	
-polarize	Polarize	Boosts Speed slightly for 3 rounds.	1	3	0	0	100	4	3	
-flickerAssault	Flicker Assault	Zigzag forward into a focused strike, knocking the target into the enemy behind it.	1	0	0	0	100	4	4	
+Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level	Target Type
+taunt	Taunt	Draws a single enemy's (single-hit) attack to Juliette	1	1	0	0	100	3	0		1
+boast	Boast	Draw all enemy attacks to Juliette.	1	3	0	0	100	3	1		3
+rushdown1	Rushdown Fighter I	Boosts Speed by 10%.	1	0	0	0	100	2	1		0
+rushdown2	Rushdown Fighter II	Boosts Speed by 20%.	1	0	0	0	100	1	1		0
+rushdown3	Rushdown Fighter III	Boosts Speed by 30%.	1	0	0	0	100	0	1		0
+heckle	Heckle	Weak attack with a chance to daze.	1	4	10	1	100	2	2		1
+untouchable	Untouchable	When Defense or Magic Defense are decreased, evasion is increased. Levels for amount of increase.	1	0	0	0	100	2	3		0
+misdirection	Misdirection	Weak attack that decreases a target's accuracy by 10%.	1	0	20	5	90	1	3		1
+flickerDodge	Flicker Dodge	Avoid an anticipated attack.	1	2	0	0	100	4	1		7
+flickerCounter	Flicker Counter	If attacked, avoid and counterattack with a chance to daze. If no attack comes, suffer cooldown for a turn.	1	0	0	0	100	4	2		7
+polarize	Polarize	Boosts Speed slightly for 3 rounds.	1	3	0	0	100	4	3		7
+flickerAssault	Flicker Assault	Zigzag forward into a focused strike, knocking the target into the enemy behind it.	1	0	0	0	100	4	4		1

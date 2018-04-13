@@ -106,9 +106,9 @@ public class E_Mudpuppy : Enemy {
         }
     }
 
-    public override void Attack(string atkChoice)
+    public override void Attack()
     {
-        switch (atkChoice)
+        switch (CurrentAttackName)
         {
             case "Bite":
                 //StartCoroutine(Bite());
@@ -123,5 +123,7 @@ public class E_Mudpuppy : Enemy {
                 Bite();
                 break;
         }
+
+        base.Attack();
     }    
 }

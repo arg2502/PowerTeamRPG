@@ -24,10 +24,10 @@ public class Cole : Hero {
         base.Awake();
 	}
 
-    public override void Attack(string atkChoice)
+    public override void Attack()
     {
         // attacks specific to the character
-        switch (atkChoice)
+        switch (CurrentAttackName)
         {
             case "Candleshot":
                 Candleshot();
@@ -51,35 +51,11 @@ public class Cole : Hero {
 
         // check parent function to take care of reducing pm
         // also check if the attack is a general hero attack (Strike, Block) or an item use
-        base.Attack(atkChoice);
+        base.Attack();
 
     }
 
-    public override void DecideTypeOfTarget()
-    {
-        currentTargetType = TargetType.NULL;
-        switch(CurrentAttackName)
-        {
-            case "Splash Flame":
-                currentTargetType = TargetType.ENEMY_SPLASH;
-                break;
-            case "Firewall":
-            case "Hellfire":
-                currentTargetType = TargetType.ENEMY_TEAM;
-                break;
-            case "Candleshot":
-            case "Fireball":
-            case "Grand Fireball":
-                currentTargetType = TargetType.ENEMY_SINGLE;
-                break;
-
-        }
-
-        // still no target? check general hero
-        if (currentTargetType == TargetType.NULL)
-            base.DecideTypeOfTarget();
-    }
-
+    
     void Candleshot()
     {
         SingleAttack(40f, 0f, 100f, true);

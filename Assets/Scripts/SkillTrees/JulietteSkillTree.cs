@@ -152,6 +152,8 @@ public class JulietteSkillTree : SkillTree
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
-        
+
+        startingTechs = new List<Technique>() { };
+
     }    
 }

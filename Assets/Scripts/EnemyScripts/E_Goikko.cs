@@ -100,9 +100,9 @@ public class E_Goikko : Enemy {
         }
     }
 
-    public override void Attack(string atkChoice)
+    public override void Attack()
     {
-        switch (atkChoice)
+        switch (CurrentAttackName)
         {
             case "Tackle":
                 //StartCoroutine(Tackle());
@@ -121,6 +121,6 @@ public class E_Goikko : Enemy {
                 break;
         }
 
-        base.Attack(atkChoice);
+        base.Attack();
     }    
 }

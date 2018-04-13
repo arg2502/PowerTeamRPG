@@ -29,7 +29,7 @@ public class Jethro : Hero {
         //lr.Start();
         //passivesList.Add(lr);
     }
-	
+
     //public override void SelectTarget(List<Denigen> targetsFromCursors)
     //{
     //    //clear any previously selected targets from other turns
@@ -38,44 +38,42 @@ public class Jethro : Hero {
     //        targets.Clear();
     //    }
 
-        //this will use a switch statement to determine the type of
-        //targeting required, and then pass off to a more specific method
-        //switch (attack)
-        //{
-        //    case "Block":
-        //        SelectSelfTarget(attack);
-        //        break;
-        //    case "Helmsplitter":
-        //    case "Strike":
-        //        SelectSingleTarget();
-        //        break;
-        //    default:
-        //        // if there is no case for this action, then it must be treated as an item
-        //        SelectSingleTeamTarget(attack);
-        //        break;
-        //}
+    //this will use a switch statement to determine the type of
+    //targeting required, and then pass off to a more specific method
+    //switch (attack)
+    //{
+    //    case "Block":
+    //        SelectSelfTarget(attack);
+    //        break;
+    //    case "Helmsplitter":
+    //    case "Strike":
+    //        SelectSingleTarget();
+    //        break;
+    //    default:
+    //        // if there is no case for this action, then it must be treated as an item
+    //        SelectSingleTeamTarget(attack);
+    //        break;
     //}
+    //}
+    
 
-	public override void Attack (string atkChoice)
+    public override void Attack ()
 	{
 		// attacks specific to the character
-		switch (atkChoice) {
+		switch (CurrentAttackName) {
 			case "Helmsplitter":
-				if (!targets [0].IsDead)
-					Helmsplitter ();
+                Helmsplitter();
 				break;
 		}
 
         // check parent function to take care of reducing pm
         // also check if the attack is a general hero attack (Strike, Block) or an item use
-        base.Attack(atkChoice);
+        base.Attack();
 
 
     }
     public void Helmsplitter()
 	{
-		float damage;
-		damage = CalcDamage(0.5f, 0.03f, 0.9f, false);
-		targets[0].TakeDamage(this, damage, false);
+        SingleAttack(50f, 3f, 90f, false);
 	}
 }

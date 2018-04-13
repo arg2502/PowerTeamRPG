@@ -1,12 +1,12 @@
-Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level
-pivotKick	Pivot Kick	Slam into an opponent with your heels, knocking them into a back row opponent.	1	8	90	5	100	2	0	
-scorpio	Scorpio Jolt	Basic lightning attack, with lightning arcing from antennae to tail for greater accuracy.	1	9	0	15	100	1	0	
-tempest	Tempest Sword	Flicker forward to deal a lightning charged sword strike. Deals magic damage with the physical stat. Always goes first, but has lower than average accuracy.	1	0	0	0	75	0	0	
-conduct	Conduct	Become a lightning rod, calling down a bolt of lightning. Powers up electric attacks dramatically for 3 attacks.	1	5	0	0	100	0	1	
-conductor	Conductor	Electric attacks have a chance to daze.	1	0	0	0	100	0	2	
-climax	Climax Stab	Rapidly strike an opponent 6 times. The first five deal minimal damage, but the sixth deals as much as the five combined.	1	0	90	0	100	2	1	
-drill	Drill Blitz	Spinning attack that hits up to 10 times. Each hit has its own crit chance.	1	12	85	5	100	2	2	
-doubleCut	Double Cut	Spinning slash that hits two adjacent opponents.	1	0	0	0	100	2	3	
-headDash	Head Dash	The standard attack of the Zeebees. Deal damage to an opponent with a swipe of your antennae.	1	1	45	5	95	3	0	
-armorRush	Armor Rush	Bodyslam opponent, the higher the defense on your armor, the greater the attack.	1	0	0	0	100	4	0	
-doubleDash	Double Dash	Perform two slightly less powerful Head Dashes against two enemies next to each other.	1	4	35	5	90	4	1	
+Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level	Target Type
+pivotKick	Pivot Kick	Slam into an opponent with your heels, knocking them into a back row opponent.	1	8	90	5	100	2	0		1
+scorpio	Scorpio Jolt	Basic lightning attack, with lightning arcing from antennae to tail for greater accuracy.	1	9	0	15	100	1	0		1
+tempest	Tempest Sword	Flicker forward to deal a lightning charged sword strike. Deals magic damage with the physical stat. Always goes first, but has lower than average accuracy.	1	0	0	0	75	0	0		1
+conduct	Conduct	Become a lightning rod, calling down a bolt of lightning. Powers up electric attacks dramatically for 3 attacks.	1	5	0	0	100	0	1		7
+conductor	Conductor	Electric attacks have a chance to daze.	1	0	0	0	100	0	2		0
+climax	Climax Stab	Rapidly strike an opponent 6 times. The first five deal minimal damage, but the sixth deals as much as the five combined.	1	0	90	0	100	2	1		1
+drill	Drill Blitz	Spinning attack that hits up to 10 times. Each hit has its own crit chance.	1	12	85	5	100	2	2		1
+doubleCut	Double Cut	Spinning slash that hits two adjacent opponents.	1	0	0	0	100	2	3		2
+headDash	Head Dash	The standard attack of the Zeebees. Deal damage to an opponent with a swipe of your antennae.	1	1	45	5	95	3	0		1
+armorRush	Armor Rush	Bodyslam opponent, the higher the defense on your armor, the greater the attack.	1	0	0	0	100	4	0		1
+doubleDash	Double Dash	Perform two slightly less powerful Head Dashes against two enemies next to each other.	1	4	35	5	90	4	1		2

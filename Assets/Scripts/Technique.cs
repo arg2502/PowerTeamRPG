@@ -33,6 +33,7 @@ public class Technique {
     protected int critical;
     protected int accuracy;
     protected int level;
+    public TargetType targetType;
     public Dictionary<Technique, GameObject> treeLinesDictionary = new Dictionary<Technique, GameObject>();
 
     public string Name { get { return name; } set { name = value; } }
@@ -94,6 +95,11 @@ public class Technique {
                     int.TryParse(list[i], out level);
                     break;
 
+                case 11:
+                    int targetInt;
+                    int.TryParse(list[i], out targetInt);
+                    targetType = (TargetType)targetInt;
+                    break;
             }
         }
 

@@ -153,6 +153,8 @@ public class EleanorSkillTree : SkillTree
         listOfTrees = new List<MyTree>();
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
-             
+
+        // NOT FINAL
+        startingTechs = new List<Technique>() { purge, tears, gaze };
     }    
 }

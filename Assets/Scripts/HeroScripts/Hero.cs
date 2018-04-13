@@ -37,22 +37,19 @@ public class Hero : Denigen {
     public TargetType currentTargetType;
     
     // the method for handling item use
-    public void ItemUse( string itemName)
+    public void ItemUse()
     {
         // if the item is intended for living, but the target is dead, don't use the item -- skip the turn
-        var itemIsForLiving = GameControl.itemManager.ItemForLiving(itemName);
+        var itemIsForLiving = GameControl.itemManager.ItemForLiving(CurrentAttackName);
         if (itemIsForLiving && targets[0].IsDead)
             return;
-
-        //if (targets.Count > 1 || name == targets[0].name) { calcDamageText.Add(name + " uses " + itemName + "!"); }
-        //else { calcDamageText.Add(name + " uses " + itemName + " on " + targets[0].name + "!"); }
-
+        
         //search through all of the items
         for (int j = 0; j < GameControl.control.consumables.Count; j++)
         {
             var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
             // Disable an item if the number of denigens commanded to use said item is >= its quantity
-            if (itemName == item.name)
+            if (CurrentAttackName == item.name)
             {
                 item.Use(targets[0]);
                 break;
@@ -62,7 +59,18 @@ public class Hero : Denigen {
 
     public virtual void DecideTypeOfTarget()
     {
-        switch(CurrentAttackName)
+        currentTargetType = TargetType.NULL;
+
+        // Determine if it's a hero's specific technique first
+        var tech = GameControl.skillTreeManager.FindTechnique(data, CurrentAttackName);
+        if (tech != null)
+        {
+            currentTargetType = tech.targetType;
+            return;
+        }
+
+        // if we reached this point, then we haven't found the right target type yet
+        switch (CurrentAttackName)
         {
             case "Strike":
                 currentTargetType = TargetType.ENEMY_SINGLE;
@@ -294,7 +302,7 @@ public class Hero : Denigen {
     }
 
     
-    public override void Attack(string atkChoice)
+    public override void Attack()
     {
         // check if the target is still alive, if not -- find a new one
         // if we're not using items
@@ -302,7 +310,7 @@ public class Hero : Denigen {
             IsTargetDead();
 
         // specific denigens will pick attack methods based off of user choice
-        switch (atkChoice)
+        switch (CurrentAttackName)
         {
             case "Strike":
                 Strike();          
@@ -312,7 +320,7 @@ public class Hero : Denigen {
                 break;
             default:
                 // if there is no case for this action, then it must be treated as an item
-                ItemUse(atkChoice);
+                ItemUse();
                 break;
         }
 
@@ -331,7 +339,7 @@ public class Hero : Denigen {
         //}
 
         // Denigen attack -- tells BattleManager that this denigen's attack phase is over
-        base.Attack(atkChoice);
+        base.Attack();
     }
     //Strike is standard attack with 50% power
     //It uses no mana, and its magic properties are determined by the stat breakdown

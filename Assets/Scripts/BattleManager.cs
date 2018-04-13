@@ -222,35 +222,6 @@ public class BattleManager : MonoBehaviour {
         }
     }
     
-    public void TestTarget()
-    {
-        if (battleState != BattleState.TARGET)
-        {
-            print("We're not targeting right now");
-            return;
-        }
-
-        //if (denigenList[currentDenigen] is Hero)
-        //{
-        //Hero hero = denigenList[currentDenigen] as Hero;
-        Hero hero = heroList[currentDenigen];
-            hero.CurrentAttackName = "Strike";
-            //hero.SelectTarget(hero.CurrentAttack);
-            print(hero.name + "'s target is " + hero.Targets[0].name);
-        //}
-
-        // find the next hero that can target -- if no more, end phase
-        do
-        {
-            if (currentDenigen < heroList.Count - 1)
-                currentDenigen++;
-            else
-                ChangeBattleState(BattleState.ATTACK);
-        } while (heroList[currentDenigen].IsDead);
-
-        //print("TARGET -- AFTER WHILE");
-    }
-
     void ShowBattleMenu()
     {
         battleMessage.text = "";
@@ -318,32 +289,7 @@ public class BattleManager : MonoBehaviour {
         FindNextAlive();
 
     }
-
-    public void TestAttack()
-    {
-        if(battleState != BattleState.ATTACK)
-        {
-            print("We're not attacking right now");
-            return;
-        }
-
-        var denigen = denigenList[currentDenigen];
-        //print(denigen.name + " uses " + denigen.CurrentAttack);
-        denigen.Attack(denigen.CurrentAttackName);
-
-        //print(denigen.name + " state: " + denigen.StatusState);
-
-        // increment up list -- if the next one is dead, continue to the next
-        currentDenigen++;
-        if (currentDenigen < denigenList.Count)
-            FindNextAlive();
-        // if we're at the end, end the phase
-        else
-            ChangeBattleState(BattleState.TARGET);
-
-        //print("ATTACK -- AFTER WHILE");
-    }
-
+    
     void FindNextAlive()
     {
         while (denigenList[currentDenigen].IsDead || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
@@ -496,7 +442,7 @@ public class BattleManager : MonoBehaviour {
     void AttackDenigen()
     {
         var denigen = denigenList[currentDenigen];
-        denigen.Attack(denigen.CurrentAttackName);
+        denigen.Attack();
     }
     
     public void NextAttack()
@@ -852,14 +798,14 @@ public class BattleManager : MonoBehaviour {
 // for determining what kind and how many targets a denigen can affect depending on their chosen attack
 public enum TargetType
 {
+    NULL,
     ENEMY_SINGLE,
     ENEMY_SPLASH,
     ENEMY_TEAM,
-    HERO_SELF,
     HERO_SINGLE,
     HERO_SPLASH,
     HERO_TEAM,
-    NULL
+    HERO_SELF
 }
 
 // Battle Menu state

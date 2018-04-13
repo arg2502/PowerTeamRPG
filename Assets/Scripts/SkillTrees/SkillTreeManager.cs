@@ -10,9 +10,11 @@ public class SkillTreeManager {
     JethroSkillTree jethro;
     ColeSkillTree cole;
     EleanorSkillTree eleanor;
-    JulietteSkillTree juliette;
+    JulietteSkillTree jouliette;
 
     public TechniqueImageDatabase imageDatabase;
+
+    System.Collections.Generic.List<HeroData> heroList; // reference to GameControl's list
 
 	// Use this for initialization
 	public SkillTreeManager () {
@@ -20,9 +22,9 @@ public class SkillTreeManager {
         jethro = new JethroSkillTree();
         cole = new ColeSkillTree();
         eleanor = new EleanorSkillTree();
-        juliette = new JulietteSkillTree();
+        jouliette = new JulietteSkillTree();
         imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
-
+        heroList = GameControl.control.heroList;
         AddStartingTechniques();
     }
 
@@ -40,7 +42,7 @@ public class SkillTreeManager {
                 currentSkillTree = eleanor;
                 break;
             case 3:
-                currentSkillTree = juliette;
+                currentSkillTree = jouliette;
                 break;
         }
     }
@@ -106,14 +108,34 @@ public class SkillTreeManager {
 
     void AddStartingTechniques()
     {
-        AddColeStartingTechniques();
+        AddJethroStartingTechniques();
+        if(heroList.Count > 1) AddColeStartingTechniques();
+        if(heroList.Count > 2) AddEleanorStartingTechniques();
+        if(heroList.Count > 3) AddJoulietteStartingTechniques();
     }
 
+    void AddJethroStartingTechniques()
+    {
+        foreach (var tech in jethro.startingTechs)
+            AddTechnique(GameControl.control.heroList[0], tech);
+    }
 
     void AddColeStartingTechniques()
     {
         foreach (var tech in cole.startingTechs)
             AddTechnique(GameControl.control.heroList[1], tech);
+    }
+
+    void AddEleanorStartingTechniques()
+    {
+        foreach (var tech in eleanor.startingTechs)
+            AddTechnique(GameControl.control.heroList[2], tech);
+    }
+
+    void AddJoulietteStartingTechniques()
+    {
+        foreach (var tech in jouliette.startingTechs)
+            AddTechnique(GameControl.control.heroList[3], tech);
     }
 
     public Technique FindTechnique(DenigenData data, string techName)
