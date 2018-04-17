@@ -169,6 +169,15 @@ public class Denigen : MonoBehaviour {
 
     public StatsCard statsCard;
 
+    // status effects
+    int statusDamage;
+    public int StatusDamage { get { return statusDamage; } }
+    int bleedTurn;
+    int maxBleedTurn = 3; // NOT FINAL
+    int bleedDamage = 2; // NOT FINAL
+    int infectionDamage = 2; // NOT FINAL
+
+
     // Use this for initialization
 	protected void Awake () {
 
@@ -422,5 +431,66 @@ public class Denigen : MonoBehaviour {
         {
             targets[i].Heal(healEffect);
         }
+    }
+
+    // status effects
+
+    public System.Action CheckStatusHealthDamage()
+    {
+        switch(StatusState)
+        {
+            case DenigenData.Status.bleeding:
+                return IsBleeding;
+            case DenigenData.Status.infected:
+                return IsInfected;
+            default:
+                return null;
+        }
+    }
+
+    public void ToNormal()
+    {
+        statusDamage = 0;
+        StatusState = DenigenData.Status.normal;
+    }
+
+    public void ToDead()
+    {
+        StatusState = DenigenData.Status.dead;
+    }
+
+    public void ToOverkill()
+    {
+        print("OVERKILL");
+        StatusState = DenigenData.Status.overkill;
+    }
+
+    public void ToBleeding()
+    {
+        StatusState = DenigenData.Status.bleeding;
+        bleedTurn = 1;
+    }
+
+    void IsBleeding()
+    {
+        print("inside IsBleeding()");
+        if (bleedTurn <= maxBleedTurn)
+        {
+            statusDamage = bleedDamage * bleedTurn;
+            print("reduce " + DenigenName + " HP by " + statusDamage);
+            Hp -= statusDamage;
+            bleedTurn++;
+        }
+        else
+        {
+            bleedTurn = 0;
+            ToNormal();
+        }
+    }
+
+    void IsInfected()
+    {
+        statusDamage = infectionDamage;
+        Hp -= statusDamage;
     }
 }

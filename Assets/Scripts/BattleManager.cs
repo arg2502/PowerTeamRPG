@@ -51,6 +51,7 @@ public class BattleManager : MonoBehaviour {
     public UnityEngine.UI.Text battleMessage;
     public Hero CurrentHero { get { return heroList[currentDenigen]; } }
     public int CurrentIndex { get { return currentDenigen; } }
+    List<string> messagesToDisplay;
 
 	void Start ()
     {
@@ -264,12 +265,29 @@ public class BattleManager : MonoBehaviour {
 
     void StartTargetPhase()
     {
-        //fleeFailed = false;
-        ShowBattleMenu();
-        ShowCurrentFullCard();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
         ResetBlocking();
+
+        // before we go back to targeting, check to see if any denigens have a status that requires them to lose health
+        foreach (var d in denigenList)
+        {
+            var callback = d.CheckStatusHealthDamage();
+            if (callback != null)
+            {
+                callback.Invoke();
+                TakeDamage(d, d.StatusDamage);
+            }
+        }
+
+        // make sure the battle has not ended and we still want TARGET
+        // kinda ugly :p
+        if (battleState != BattleState.TARGET) return;
+
+        // otherwise, we're ready to actually start targeting
+        ShowBattleMenu();
+        ShowCurrentFullCard();
+
     }
 
     void StartAttackPhase()
@@ -581,7 +599,7 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PerformAttack(Denigen attacker, List<Denigen> targeted)
     {
         // show damage
-        var messagesToDisplay = new List<string>();
+        messagesToDisplay = new List<string>();
 
         foreach (var target in targeted)
         {
@@ -613,34 +631,45 @@ public class BattleManager : MonoBehaviour {
             messagesToDisplay.Add(message);
 
             print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
-            
-            // create the damage effect, but onlu if the denigen is not dead
-            ShowDamage(target);
 
-            // check for dead
-            print(target.DenigenName + " HP: " + target.Hp);
-            if (target.Hp <= 0)
-            {
-                target.Hp = 0;
-                print(target.DenigenName + " falls!");
-                messagesToDisplay.Add(target.DenigenName + " falls!");
-                target.StatusState = DenigenData.Status.dead;
-                KillOff(target);
-            }
-            
-            target.statsCard.UpdateStats();
+            TakeDamage(target, target.CalculatedDamage);
         }
 
         DisplayMultiMessage(messagesToDisplay);
         yield return new WaitForSeconds(1f);
     }
 
-    void ShowDamage(Denigen target)
+    void TakeDamage(Denigen target, int damage)
+    {
+        // create the damage effect, but onlu if the denigen is not dead
+        ShowDamage(target, damage);
+
+        // check for dead
+        print(target.DenigenName + " HP: " + target.Hp);
+        if (target.Hp <= 0)
+        {
+            // check for overkill
+            var overkillBoundary = -(target.HpMax * 0.3f);
+            if (target.Hp < overkillBoundary)
+                target.ToOverkill();
+            else
+                target.ToDead();
+
+            target.Hp = 0;
+            print(target.DenigenName + " falls!");
+            messagesToDisplay.Add(target.DenigenName + " falls!");
+            KillOff(target);
+        }
+
+        target.statsCard.UpdateStats();
+    }
+
+    void ShowDamage(Denigen target, int damage)
     {
         GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
         be.name = "DamageEffect";
         //be.GetComponent<Effect>().Start();
-        be.GetComponent<Effect>().damage = target.CalculatedDamage.ToString();
+        be.GetComponent<Effect>().damage = damage.ToString();
     }
 
     void ShowHealing(Denigen target, int heal)

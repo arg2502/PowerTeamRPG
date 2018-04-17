@@ -16,6 +16,9 @@ public class Eleanor : Hero {
             case "Gaze of Morttimer":
                 Gaze();
                 break;
+            case "Antiheal":
+                Antiheal();
+                break;
         }
 
         base.Attack();
@@ -36,6 +39,12 @@ public class Eleanor : Hero {
     {
         // NOT FINAL -- RANDOMLY CHOSEN
         TeamHeal(20, 0, 100);
+    }
+
+    void Antiheal()
+    {
+        targets[0].ToBleeding();
+        print(targets[0].DenigenName + " is now bleeding");
     }
 
 }
