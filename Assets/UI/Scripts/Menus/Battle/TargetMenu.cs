@@ -92,13 +92,14 @@
                 SetCursorPositions(battleManager.heroPositions);
             }
 
-            CheckForDead();
-
             rootButton = AssignRootButton();
             SetSelectedObjectToRoot();
 
 
             currentButton = rootButton;
+
+            CheckForDead();
+
 
             
         }
@@ -196,7 +197,7 @@
                     }
                     // if dead, check if the item can be used on them
                     var itemForTheLiving = GameControl.itemManager.ItemForLiving(battleManager.CurrentHero.CurrentAttackName);
-                    if (currentTargets[i].IsDead)
+                    if (currentTargets[i].IsJustDead)
                     {
                         print("index: " + i + ", forLiving: " + itemForTheLiving);
                         ToggleCursorActivation(i, !itemForTheLiving);

@@ -154,4 +154,17 @@ public class DenigenData : ScriptableObject
                 return false;
         }
     }
+    /// <summary>
+    /// only dead -- not overkill
+    /// </summary>
+    public bool IsJustDead
+    {
+        get
+        {
+            if (statusState == Status.dead)
+                return true;
+            else
+                return false;
+        }
+    }
 }

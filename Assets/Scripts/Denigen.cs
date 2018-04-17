@@ -361,7 +361,10 @@ public class Denigen : MonoBehaviour {
     {
         get { return data.IsDead; }
     }
-
+    public bool IsJustDead
+    {
+        get { return data.IsJustDead; }
+    }
     // ATTACK METHODS
 
     /// <summary>
