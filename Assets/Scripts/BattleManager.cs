@@ -643,9 +643,9 @@ public class BattleManager : MonoBehaviour {
             // check for overkill
             var overkillBoundary = -(target.HpMax * 0.3f);
             if (target.Hp < overkillBoundary)
-                target.ToOverkill();
+                target.SetStatus(DenigenData.Status.overkill);
             else
-                target.ToDead();
+                target.SetStatus(DenigenData.Status.dead);
 
             target.Hp = 0;
             print(target.DenigenName + " falls!");

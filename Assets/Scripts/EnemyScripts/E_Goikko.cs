@@ -52,28 +52,13 @@ public class E_Goikko : Enemy {
     {
         // code for choosing the target of this attack
         // because goikko is an early enemy, let's have it randomly select a target
-        int random = 0;
-        do
-        {
-            random = Random.Range(0, battleManager.heroList.Count);
-        } while (battleManager.heroList[random].IsDead);
-
-        targets.Add(battleManager.heroList[random]);
-
-
-        //pass tackle's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage(0.65f, 0.25f, 0.9f, false);
-
-        //yield return StartCoroutine(PlayAnimation("Attack"));
-
-        //Using index 0 because there is only one target for this attack
-        targets[0].TakeDamage(this, damage, false);
+        ChooseRandomTarget();
+        SingleAttack(65, 25, 90, false);
     }
-    void Frenzy()
+    void Poison()
     {
-        calcDamageText.Add(name + " used frenzy");
-        print(name + " used frenzy");
-        //yield return StartCoroutine(PlayAnimation("Poison"));
+        ChooseRandomTarget();
+        SingleStatusAttack(DenigenData.Status.infected);
     }
     public override string ChooseAttack()
     {
@@ -86,12 +71,12 @@ public class E_Goikko : Enemy {
         //Use health states to change goikko's behavior throughout the battle
         if (healthState == Health.high)
         {
-            if (rng < 0.5f) { return "Frenzy"; } //boost atk
+            if (rng < 0.5f) { return "Poison"; } //boost atk
             else { return "Tackle"; } //attack
         }
         else if (healthState == Health.average)
         {
-            if (rng < 0.25f) { return "Frenzy"; } //boost atk
+            if (rng < 0.25f) { return "Poison"; } //boost atk
             else { return "Tackle"; } //attack
         }
         else
@@ -105,19 +90,13 @@ public class E_Goikko : Enemy {
         switch (CurrentAttackName)
         {
             case "Tackle":
-                //StartCoroutine(Tackle());
                 Tackle();
-                attackAnimation = "Tackle";
                 break;
-            case "Frenzy":
-                //StartCoroutine(Frenzy());
-                Frenzy();
-                attackAnimation = "Poison";
+            case "Poison":
+                Poison();
                 break;
             default:
-                //StartCoroutine(Tackle());
                 Tackle();
-                attackAnimation = "Tackle";
                 break;
         }
 

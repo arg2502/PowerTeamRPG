@@ -14,6 +14,7 @@ public class StatsCard : MonoBehaviour {
     public Image portrait;
     public Text denigenName;
     public Text level;
+    public Text status;
     public Text hpCurrent;
     public Text hpMax;
     public Text pmCurrent;
@@ -45,6 +46,11 @@ public class StatsCard : MonoBehaviour {
     {
         denigenName.text = currentDenigen.DenigenName;
         level.text = "Lvl " + currentDenigen.Level;
+
+        // get status state -- but capitalize the first letter
+        var statusText = currentDenigen.StatusState.ToString();
+        statusText = char.ToUpper(statusText[0]) + statusText.Substring(1);
+        status.text = "Status: " + statusText;
 
         if (currentDenigen is Hero)
         {

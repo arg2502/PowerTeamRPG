@@ -45,28 +45,8 @@ public class E_Mudpuppy : Enemy {
     {
         // code for choosing the target of this attack
         // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
-
-        // COMMENT FOR NOW
-        // -AG
-
-        //Denigen tempTarget = battleMenu.heroList[0];
-        //for (int i = 0; i < battleMenu.heroList.Count; i++)
-        //{
-        //    if (battleMenu.heroList[i].hpChange > tempTarget.hpChange)
-        //    {
-        //        tempTarget = battleMenu.heroList[i];
-        //    }
-        //}
-        //targets.Add(tempTarget);
-
-        //pass bite's values into the calc damage method, then pass them to the target's TakeDamage
-        float damage = CalcDamage(0.8f, 0.15f, 0.95f, false);
-
-        // play bite animation
-        //yield return StartCoroutine(PlayAnimation("Bite"));
-
-        //Using index 0 because there is only one target for this attack
-        targets[0].TakeDamage(this, damage, false);
+        ChooseRandomTarget();
+        SingleAttack(80, 15, 95, false);
     }
 
     //IEnumerator Frenzy()
@@ -111,15 +91,12 @@ public class E_Mudpuppy : Enemy {
         switch (CurrentAttackName)
         {
             case "Bite":
-                //StartCoroutine(Bite());
                 Bite();
                 break;
             case "Frenzy":
-                //StartCoroutine(Frenzy());
                 Frenzy();
                 break;
             default:
-                //StartCoroutine(Bite());
                 Bite();
                 break;
         }

@@ -26,7 +26,7 @@ public class Eleanor : Hero {
 
     void Purge()
     {
-
+        SingleStatusCure();
     }
 
     void Tears()
@@ -43,7 +43,7 @@ public class Eleanor : Hero {
 
     void Antiheal()
     {
-        targets[0].ToBleeding();
+        SingleStatusAttack(DenigenData.Status.bleeding);
         print(targets[0].DenigenName + " is now bleeding");
     }
 

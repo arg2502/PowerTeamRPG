@@ -77,6 +77,8 @@ public class Enemy : Denigen {
 
     public override void Attack()
     {
+        attackAnimation = CurrentAttackName;
+
         base.Attack();
     }
 
@@ -94,5 +96,16 @@ public class Enemy : Denigen {
         if (i == 2) { name += " C"; }
         if (i == 3) { name += " D"; }
         if (i == 4) { name += " E"; }
+    }
+
+    protected void ChooseRandomTarget()
+    {
+        int random = 0;
+        do
+        {
+            random = Random.Range(0, battleManager.heroList.Count);
+        } while (battleManager.heroList[random].IsDead);
+
+        targets.Add(battleManager.heroList[random]);
     }
 }

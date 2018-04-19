@@ -436,8 +436,25 @@ public class Denigen : MonoBehaviour {
         }
     }
 
-    // status effects
+    protected void SingleStatusAttack(DenigenData.Status status)
+    {
+        // not sure if these types of attack will have accuracy or not
+        // could always be added later
 
+        targets[0].SetStatus(status);
+    }
+
+    protected void SingleStatusCure()
+    {
+        // double check and make sure they're not dead before setting them back to normal
+        var target = targets[0];
+        if (target.IsDead)
+            return;
+
+        target.SetStatus(DenigenData.Status.normal);
+    }
+
+    // status effects
     public System.Action CheckStatusHealthDamage()
     {
         switch(StatusState)
@@ -451,29 +468,33 @@ public class Denigen : MonoBehaviour {
         }
     }
 
-    public void ToNormal()
+    public void SetStatus(DenigenData.Status newStatus)
+    {
+        StatusState = newStatus;
+
+        switch(StatusState)
+        {
+            case DenigenData.Status.normal:
+                StartNormal();
+                break;
+            case DenigenData.Status.bleeding:
+                StartBleeding();
+                break;
+            case DenigenData.Status.overkill: // TEMP -- FOR TESTING
+                print("OVERKILL");
+                break;
+        }
+    }
+
+    public void StartNormal()
     {
         statusDamage = 0;
-        StatusState = DenigenData.Status.normal;
-    }
-
-    public void ToDead()
+    }    
+    public void StartBleeding()
     {
-        StatusState = DenigenData.Status.dead;
-    }
-
-    public void ToOverkill()
-    {
-        print("OVERKILL");
-        StatusState = DenigenData.Status.overkill;
-    }
-
-    public void ToBleeding()
-    {
-        StatusState = DenigenData.Status.bleeding;
         bleedTurn = 1;
     }
-
+    
     void IsBleeding()
     {
         print("inside IsBleeding()");
@@ -487,7 +508,7 @@ public class Denigen : MonoBehaviour {
         else
         {
             bleedTurn = 0;
-            ToNormal();
+            StartNormal();
         }
     }
 
