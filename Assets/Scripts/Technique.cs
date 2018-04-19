@@ -42,7 +42,7 @@ public class Technique {
     public int ColPos { get { return colPos; } set { colPos = value; } }
     public int RowPos { get { return rowPos; } set { rowPos = value; } }
     public List<Technique> ListNextTechnique { get { return listNextTechnique; } set { listNextTechnique = value; } }    
-    public int Cost { get { return cost; } set { cost = value; } }
+    public int TechPointCost { get { return cost; } set { cost = value; } }
     public bool Active { get { return active; } set { active = value; } }
     public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    
     public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }

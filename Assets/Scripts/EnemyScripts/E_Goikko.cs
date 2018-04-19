@@ -58,8 +58,7 @@ public class E_Goikko : Enemy {
     void Poison()
     {
         ChooseRandomTarget();
-        //SingleStatusAttack(DenigenData.Status.infected);
-        DazeTarget();
+        SingleStatusAttack(DenigenData.Status.cursed);
     }
     public override string ChooseAttack()
     {
@@ -72,7 +71,7 @@ public class E_Goikko : Enemy {
         //Use health states to change goikko's behavior throughout the battle
         if (healthState == Health.high)
         {
-            if (rng < 0.5f) { return "Poison"; } //boost atk
+            if (rng < /*0.5f*/ 1f) { return "Poison"; } //boost atk
             else { return "Tackle"; } //attack
         }
         else if (healthState == Health.average)

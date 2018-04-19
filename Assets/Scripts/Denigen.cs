@@ -327,8 +327,14 @@ public class Denigen : MonoBehaviour {
     {
         if (currentAttack != null)
         {
-            Pm -= currentAttack.Pm;
-            print(DenigenName + " pays " + currentAttack.Pm + " to use " + currentAttack.Name);
+            int cost;
+            if (StatusState == DenigenData.Status.cursed)
+                cost = currentAttack.Pm * 2;
+            else
+                cost = currentAttack.Pm;
+
+            Pm -= cost;
+            print(DenigenName + " pays " + cost + " to use " + currentAttack.Name);
         }
     }
 

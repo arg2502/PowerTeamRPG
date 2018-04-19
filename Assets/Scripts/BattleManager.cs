@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UI;
 
+// Not a static var in GameControl, because we do not need a BattleManager at all times
 public class BattleManager : MonoBehaviour {
 
     int currentDenigen = 0;
@@ -490,12 +491,9 @@ public class BattleManager : MonoBehaviour {
         // reduce power magic points at the moment of attack
         attacker.PayPowerMagic();
 
-        // Update UI -- FOR NOW JUST HEROES
-//if (attacker is Hero)
-        //{
-            //ToggleDenigenStatCard(attacker, true);
-            attacker.statsCard.UpdateStats();
-        //}
+        // Update UI
+        attacker.statsCard.UpdateStats();
+        
         
 
         var anim = attacker.GetComponent<Animator>();

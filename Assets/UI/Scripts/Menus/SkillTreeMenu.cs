@@ -237,14 +237,14 @@
             }
 
             // if the hero does not have enough tech points, ignore (and display message)
-            if (gameControl.heroList[currentHero].techPts < tech.Cost)
+            if (gameControl.heroList[currentHero].techPts < tech.TechPointCost)
             {
                 StartCoroutine(ShowWarning(costWarning));
                 return;
             }
 
             // otherwise, we're good to buy the technique
-            string messageText = "<i>You want to buy:</i>\n\t<b>" + tech.Name + "</b>\n<i>Cost:</i><b>\t" + tech.Cost + "</b>";
+            string messageText = "<i>You want to buy:</i>\n\t<b>" + tech.Name + "</b>\n<i>Cost:</i><b>\t" + tech.TechPointCost + "</b>";
             techniqueToAdd = tech;
             buttonToChange = button;
             RootButton = buttonToChange;
@@ -255,7 +255,7 @@
         {
             treeManager.AddTechnique(gameControl.heroList[currentHero], techniqueToAdd);
             print("you now have " + techniqueToAdd.Name);
-            gameControl.heroList[currentHero].techPts -= techniqueToAdd.Cost; // reduce points
+            gameControl.heroList[currentHero].techPts -= techniqueToAdd.TechPointCost; // reduce points
             SetButtonState(buttonToChange, techniqueToAdd, true); // change button appearance
             SetHeroTechText();
             techniqueToAdd = null;
@@ -514,7 +514,7 @@
             descriptionText.text = "<b>" + tech.Name + "</b>\n\n" + tech.Description;
 
             // set cost text
-            costText.text = "Cost: " + tech.Cost;
+            costText.text = "Cost: " + tech.TechPointCost;
 
             // set prerequites, if there are any
             if (tech.Prerequisites != null && tech.Prerequisites.Count > 0)

@@ -211,6 +211,14 @@
             {
                 foreach (var b in currentContainer.GetComponentsInChildren<Button>())
                     listOfButtons.Add(b);
+
+                var containerButtons = currentContainer.GetComponentsInChildren<ListButton>();
+                // but we also need to update the pm cost
+                for (int i = 0; i < containerButtons.Length; i++)
+                {
+                    var listButton = containerButtons[i];
+                    listButton.RefreshPMCost();
+                }
             }
             else
             {
