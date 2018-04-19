@@ -31,7 +31,7 @@ public class Denigen : MonoBehaviour {
     // store damage variables
     int calculatedDamage;
     //Denigen attacker;
-    public int CalculatedDamage { get { return calculatedDamage; } }
+    public int CalculatedDamage { get { return calculatedDamage; } set { calculatedDamage = value; } }
 
     internal int healHP;
     internal int healPM;

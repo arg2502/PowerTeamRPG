@@ -239,27 +239,19 @@ public class BattleManager : MonoBehaviour {
         currentDenigen = FindNextLivingIndex(0);
 
         // determine what happens now in this new state
-        if(battleState == BattleState.TARGET)
+        switch(battleState)
         {
-            StartTargetPhase();
-        }
-        if (battleState == BattleState.ATTACK)
-        {
-            StartAttackPhase();
-        }
-
-        else if(battleState == BattleState.VICTORY)
-        {
-            print("VICTORY SCREECH");
-        }
-
-        else if(battleState == BattleState.FAILURE)
-        {
-            print("*smash announcer voice* FAILURE");
-        }
-        else if (battleState == BattleState.FLEE)
-        {
-            EndBattle();
+            case BattleState.TARGET:
+                StartTargetPhase();
+                break;
+            case BattleState.ATTACK:
+                StartAttackPhase();
+                break;
+            case BattleState.VICTORY:
+            case BattleState.FAILURE:
+            case BattleState.FLEE:
+                EndBattle();
+                break;
         }
     }
 
@@ -267,7 +259,7 @@ public class BattleManager : MonoBehaviour {
     {
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
-        ResetBlocking();
+        ResetDenigen();
 
         // before we go back to targeting, check to see if any denigens have a status that requires them to lose health
         foreach (var d in denigenList)
@@ -704,12 +696,16 @@ public class BattleManager : MonoBehaviour {
     /// <summary>
     /// Called after the end of the attack phase -- resets blocking to false for next round
     /// </summary>
-    void ResetBlocking()
+    void ResetDenigen()
     {
         foreach(var denigen in denigenList)
         {
+            // reset blocking
             if (denigen.IsBlocking)
                 denigen.IsBlocking = false;
+
+            denigen.CurrentAttackName = ""; // reset attack
+            denigen.CalculatedDamage = 0; // reset damage taken
         }
     }
 
