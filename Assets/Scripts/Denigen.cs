@@ -212,6 +212,11 @@ public class Denigen : MonoBehaviour {
         
     }
 
+    protected void Dazed()
+    {
+        targets = new List<Denigen>(); // reset targets to empty list
+    }
+
     protected float CalcDamage(float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
         attackType = AttackType.NORMAL; // set to normal at start
@@ -452,6 +457,11 @@ public class Denigen : MonoBehaviour {
             return;
 
         target.SetStatus(DenigenData.Status.normal);
+    }
+
+    protected void DazeTarget()
+    {
+        targets[0].CurrentAttackName = "Dazed";
     }
 
     // status effects

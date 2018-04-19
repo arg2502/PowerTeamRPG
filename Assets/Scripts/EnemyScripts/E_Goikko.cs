@@ -58,7 +58,8 @@ public class E_Goikko : Enemy {
     void Poison()
     {
         ChooseRandomTarget();
-        SingleStatusAttack(DenigenData.Status.infected);
+        //SingleStatusAttack(DenigenData.Status.infected);
+        DazeTarget();
     }
     public override string ChooseAttack()
     {
@@ -94,9 +95,6 @@ public class E_Goikko : Enemy {
                 break;
             case "Poison":
                 Poison();
-                break;
-            default:
-                Tackle();
                 break;
         }
 

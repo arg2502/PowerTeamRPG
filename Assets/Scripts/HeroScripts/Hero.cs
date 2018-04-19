@@ -306,24 +306,28 @@ public class Hero : Denigen {
     {
         // check if the target is still alive, if not -- find a new one
         // if we're not using items
-        if (battleManager.menuState != MenuState.ITEMS)
+        if (!usingItem)
+        {
             IsTargetDead();
 
-        // specific denigens will pick attack methods based off of user choice
-        switch (CurrentAttackName)
-        {
-            case "Strike":
-                Strike();          
-                break;
-            case "Block":
-                Block();
-                break;
-            default:
-                // if there is no case for this action, then it must be treated as an item
-                ItemUse();
-                break;
+            // specific denigens will pick attack methods based off of user choice
+            switch (CurrentAttackName)
+            {
+                case "Strike":
+                    Strike();
+                    break;
+                case "Block":
+                    Block();
+                    break;
+                case "Dazed":
+                    Dazed();
+                    break;
+            }
         }
-
+        else
+        {
+            ItemUse();
+        }
         // just set all attacks with this attack animation for now
         attackAnimation = "Attack";
 

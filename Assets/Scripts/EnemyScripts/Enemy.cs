@@ -79,6 +79,13 @@ public class Enemy : Denigen {
     {
         attackAnimation = CurrentAttackName;
 
+        switch(CurrentAttackName)
+        {
+            case "Dazed":
+                Dazed();
+                break;
+        }
+
         base.Attack();
     }
 

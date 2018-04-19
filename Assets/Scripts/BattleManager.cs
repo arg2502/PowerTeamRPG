@@ -523,16 +523,16 @@ public class BattleManager : MonoBehaviour {
         //    ToggleDenigenStatCard(attacker, false);
 
         // we don't need to show any target info if the attacker is just blocking
-        if (attacker.IsBlocking)
+        if (attacker.IsBlocking || targeted.Count <= 0)
         {
             NextAttack();
             yield break;
         }
-
-        //if (targeted.Count > 0)
-        //    battleCamera.MoveTo(targeted[0].transform.position);
+        
+        // show targets being affected by attack/item
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
+
         // wait for camera to get back
         yield return new WaitForSeconds(0.25f);
 

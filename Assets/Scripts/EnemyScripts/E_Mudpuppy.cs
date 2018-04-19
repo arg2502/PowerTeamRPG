@@ -96,9 +96,6 @@ public class E_Mudpuppy : Enemy {
             case "Frenzy":
                 Frenzy();
                 break;
-            default:
-                Bite();
-                break;
         }
 
         base.Attack();
