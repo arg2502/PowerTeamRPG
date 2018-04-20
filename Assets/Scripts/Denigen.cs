@@ -306,10 +306,16 @@ public class Denigen : MonoBehaviour {
         }
 
         // check for attack based passivesList
-        foreach (Passive cdp in PassivesList)
+        print("Damage before CalcPassives: " + damage);
+        foreach (Passive passive in PassivesList)
         {
-            if (cdp is CalcDamagePassive) { cdp.Use(this, null); }
+            if (passive is CalcDamagePassive)
+            {
+                var temp = passive as CalcDamagePassive;
+                damage += temp.CalcDamage(this, damage);
+            }
         }
+        print("Damage after CalcPassives: " + damage);
 
         //Clear the target's previous text, to avoid a build up 
         for (int i = 0; i < targets.Count; i++)
@@ -362,9 +368,13 @@ public class Denigen : MonoBehaviour {
         }
 
         // check for passivesList
-        foreach (Passive tdp in PassivesList)
+        foreach (Passive passive in PassivesList)
         {
-            if (tdp is TakeDamagePassive) { tdp.Use(attackingDen, this); }
+            if (passive is TakeDamagePassive)
+            {
+                var temp = passive as TakeDamagePassive;
+                damage += temp.TakeDamage(attackingDen, this, damage);
+            }
         }
 
         //attacker = attackingDen;
