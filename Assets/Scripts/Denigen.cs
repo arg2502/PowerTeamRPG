@@ -72,7 +72,7 @@ public class Denigen : MonoBehaviour {
     public bool UsingItem { get { return usingItem; } set { usingItem = value; } }
 
     //public Denigen Attacker { get { return attacker; } }
-    public enum AttackType { NORMAL, MISS, CRIT, BLOCKED };
+    public enum AttackType { NORMAL, MISS, CRIT, BLOCKED, DODGED};
     public AttackType attackType;
 
     protected string attackAnimation;
@@ -91,8 +91,12 @@ public class Denigen : MonoBehaviour {
     public int EvasionChange { get { return evasionChange; } set { evasionChange = value; } }
     public int SpdChange { get { return spdChange; } set { spdChange = value; } }
 
+    // status effect stats
+    int petrifiedChange;
+    int blindedChange;
+
     // DenigenData linkers
-    // fighting stats (with in-battle changes
+    // fighting stats (with in-battle changes)
     public string DenigenName { get { return data.denigenName; } }
     public int Hp { get { return data.hp; } set { data.hp = value; } }
     public int Pm { get { return data.pm; } set { data.pm = value; } }
@@ -103,7 +107,7 @@ public class Denigen : MonoBehaviour {
     public int MgkAtk { get { return data.mgkAtk + mgkAtkChange; } }
     public int MgkDef { get { return data.mgkDef + mgkDefChange; } }
     public int Luck { get { return data.luck + luckChange; } }
-    public int Evasion { get { return data.evasion + evasionChange; } }
+    public int Evasion { get { return data.evasion + evasionChange + petrifiedChange + blindedChange; } }
     public int Spd { get { return data.spd + spdChange; } }
 
     // leveling stats
@@ -149,6 +153,8 @@ public class Denigen : MonoBehaviour {
     // the name of the attack the denigen plans on making this turn
     private Technique currentAttack;
     public Technique CurrentAttack { get { return currentAttack; } } // ONLY GETTER -- the current attack should only be set when the attack name is set below
+    private int attackCost;
+    public int AttackCost { get { return attackCost; } }
     private string currentAttackName;
     public string CurrentAttackName
     {
@@ -160,6 +166,13 @@ public class Denigen : MonoBehaviour {
         {
             currentAttackName = value;
             currentAttack = GameControl.skillTreeManager.FindTechnique(data, value);
+
+            if (currentAttack == null)
+                attackCost = 0;
+            else if (StatusState == DenigenData.Status.cursed)
+                attackCost = currentAttack.Pm * 2;
+            else
+                attackCost = currentAttack.Pm;
         }
     }
 
@@ -198,6 +211,24 @@ public class Denigen : MonoBehaviour {
 
     public virtual void Attack()
     {
+        // final general check
+        // All denigens can have these "attacks"
+
+        // If the denigen is still petrified at the time of their attack, they cannot attack
+        if (StatusState == DenigenData.Status.petrified)
+            CurrentAttackName = "Petrified";
+
+        switch(CurrentAttackName)
+        {
+            case "Dazed":
+                Dazed();
+                break;
+            case "Petrified":
+                Petrified();
+                break;
+        }
+
+
         // specific denigens will pick attack methods based off of user choice
 
         // always called at the end of specific denigens' Attack()s
@@ -217,11 +248,23 @@ public class Denigen : MonoBehaviour {
         targets = new List<Denigen>(); // reset targets to empty list
     }
 
+    protected void Petrified()
+    {
+        targets = new List<Denigen>(); // reset targets to empty list
+        battleManager.battleMessage.text = DenigenName + " is petrified and can't attack";
+    }
+
     protected float CalcDamage(float power, float crit, float accuracy, bool isMagic) // all floats are percentages
     {
         attackType = AttackType.NORMAL; // set to normal at start
         
-        //print(name + " uses " + atkChoice + "!");
+        // if blinded, cut accuracy in half
+        if(StatusState == DenigenData.Status.blinded)
+        {
+            var halfAccuracy = accuracy * 0.5f;
+            accuracy -= halfAccuracy;
+        }
+        print("accuracy: " + accuracy);
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
         if (num > accuracy)
@@ -282,6 +325,16 @@ public class Denigen : MonoBehaviour {
     //Made public to allow other denigens to deal damage
     public void TakeDamage(Denigen attackingDen, float damage, bool isMagic)
     {
+        // attempt to dodge the attack
+        var randomDodge = Random.value;
+        if(randomDodge < Evasion / 100f)
+        {
+            calculatedDamage = 0;
+            print("DODGED");
+            attackingDen.attackType = AttackType.DODGED;
+            return;
+        }
+
         // use stat based on if magic or physical
         int defStat;
         if (isMagic)
@@ -327,14 +380,8 @@ public class Denigen : MonoBehaviour {
     {
         if (currentAttack != null)
         {
-            int cost;
-            if (StatusState == DenigenData.Status.cursed)
-                cost = currentAttack.Pm * 2;
-            else
-                cost = currentAttack.Pm;
-
-            Pm -= cost;
-            print(DenigenName + " pays " + cost + " to use " + currentAttack.Name);
+            Pm -= attackCost;
+            print(DenigenName + " pays " + attackCost + " to use " + currentAttack.Name);
         }
     }
 
@@ -486,9 +533,7 @@ public class Denigen : MonoBehaviour {
 
     public void SetStatus(DenigenData.Status newStatus)
     {
-        StatusState = newStatus;
-
-        switch(StatusState)
+        switch(newStatus)
         {
             case DenigenData.Status.normal:
                 StartNormal();
@@ -496,21 +541,77 @@ public class Denigen : MonoBehaviour {
             case DenigenData.Status.bleeding:
                 StartBleeding();
                 break;
+            case DenigenData.Status.blinded:
+                StartBlinded();
+                break;
+            case DenigenData.Status.petrified:
+                StartPetrified();
+                break;
             case DenigenData.Status.overkill: // TEMP -- FOR TESTING
                 print("OVERKILL");
                 break;
         }
+
+        StatusState = newStatus;
     }
 
     public void StartNormal()
     {
         statusDamage = 0;
+
+        // set stats back to normal
+        if(StatusState == DenigenData.Status.blinded)
+        {
+            print("evasion before: " + Evasion);
+            blindedChange = 0;
+            print("evasion after: " + Evasion);
+        }
+        else if (StatusState == DenigenData.Status.petrified)
+        {
+            print("evasion before: " + Evasion);
+            petrifiedChange = 0;
+            print("evasion after: " + Evasion);
+        }
     }    
     public void StartBleeding()
     {
         bleedTurn = 1;
     }
-    
+    public void StartBlinded()
+    {
+        // cannot do anymore harm if already blinded
+        if(StatusState != DenigenData.Status.blinded)
+        {
+            // set back to normal first, to remove any other status effects
+            StartNormal();
+
+            // drastically reduce evasiveness
+            print("evasion before: " + Evasion);
+            var halfEvasion = Evasion * 0.5f;
+            blindedChange -= (int)halfEvasion;
+            print("evasion after: " + Evasion);
+        }
+    }
+
+    public void StartPetrified()
+    {
+        if(StatusState != DenigenData.Status.petrified)
+        {
+            // set back to normal first, to remove any other status effects
+            StartNormal();
+
+            // slightly reduce evasiveness
+            print("evasion before: " + Evasion);
+            var partialEvasion = Evasion * 0.15f;
+            petrifiedChange -= (int)partialEvasion;
+            print("evasion after: " + Evasion);
+
+            // stop attack
+            CurrentAttackName = "Petrified";
+        }
+    }
+
+
     void IsBleeding()
     {
         print("inside IsBleeding()");

@@ -441,10 +441,11 @@ public class BattleManager : MonoBehaviour {
     {
         currentDenigen = newIndex;
         ShowCurrentFullCard();
-
+        
         // go back to BattleMenu
         ShowBattleMenu();
     }
+    
     void GoToAttackState()
     {
         ChangeBattleState(BattleState.ATTACK);
@@ -613,6 +614,9 @@ public class BattleManager : MonoBehaviour {
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";
+                    break;
+                case Denigen.AttackType.DODGED:
+                    message = target.DenigenName + " dodged the attack\n";
                     break;
             }
 

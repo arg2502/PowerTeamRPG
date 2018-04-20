@@ -10,16 +10,16 @@ public class ListButton : MonoBehaviour {
     public Image typeIcon;
 
     BattleManager battleManager;
-    Technique currentTech;
+    Technique thisTech;
         
     public void SetTechnique(Technique tech)
     {
         if(battleManager == null)
             battleManager = FindObjectOfType<BattleManager>();
 
-        currentTech = tech;
-        techName.text = currentTech.Name;
-        techIcon.sprite = currentTech.TreeImage;
+        thisTech = tech;
+        techName.text = thisTech.Name;
+        techIcon.sprite = thisTech.TreeImage;
         RefreshPMCost();        
 
         // FOR NOW, JUST DISABLE TYPE ICON, AS I DON'T KNOW IF WE'RE HAVING ELEMENTAL TYPES FOR TECHNIQUES
@@ -34,12 +34,12 @@ public class ListButton : MonoBehaviour {
         Color textColor;
         if (battleManager.CurrentHero.StatusState == DenigenData.Status.cursed)
         {
-            cost = currentTech.Pm * 2;
+            cost = thisTech.Pm * 2;
             textColor = Color.red;
         }
         else
         {
-            cost = currentTech.Pm;
+            cost = thisTech.Pm;
             textColor = Color.black;
         }
 

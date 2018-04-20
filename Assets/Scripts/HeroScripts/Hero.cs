@@ -319,9 +319,6 @@ public class Hero : Denigen {
                 case "Block":
                     Block();
                     break;
-                case "Dazed":
-                    Dazed();
-                    break;
             }
         }
         else

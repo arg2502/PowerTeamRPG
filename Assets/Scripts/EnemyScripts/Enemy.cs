@@ -78,14 +78,7 @@ public class Enemy : Denigen {
     public override void Attack()
     {
         attackAnimation = CurrentAttackName;
-
-        switch(CurrentAttackName)
-        {
-            case "Dazed":
-                Dazed();
-                break;
-        }
-
+        
         base.Attack();
     }
 

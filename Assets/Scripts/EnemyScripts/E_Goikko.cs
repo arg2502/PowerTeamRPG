@@ -58,7 +58,7 @@ public class E_Goikko : Enemy {
     void Poison()
     {
         ChooseRandomTarget();
-        SingleStatusAttack(DenigenData.Status.cursed);
+        SingleStatusAttack(DenigenData.Status.infected);
     }
     public override string ChooseAttack()
     {
