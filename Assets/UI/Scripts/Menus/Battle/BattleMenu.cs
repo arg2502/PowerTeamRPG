@@ -14,6 +14,7 @@
         public override void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
+            descriptionText = battleManager.DescriptionText;
             base.Init();
         }
 

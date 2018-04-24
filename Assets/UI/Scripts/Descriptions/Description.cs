@@ -12,10 +12,10 @@
         {
             if (string.IsNullOrEmpty(description))
                 SetDescription();
-
+            print("description: " + description);
             return description;
         }
 
-        protected virtual void SetDescription() { description = ""; }
+        public virtual void SetDescription(string message = "") { print("set to: " + message); description = message; }
     }
 }

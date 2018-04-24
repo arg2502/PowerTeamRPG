@@ -9,7 +9,7 @@
         public HeroStat hero;
         DenigenData currentHero;
        
-        protected override void SetDescription()
+        public override void SetDescription(string message = "")
         {
             SetHero();
             if (currentHero == null) return;

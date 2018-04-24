@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
@@ -49,10 +50,13 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
-    public UnityEngine.UI.Text battleMessage;
+    public Text battleMessage;
     public Hero CurrentHero { get { return heroList[currentDenigen]; } }
     public int CurrentIndex { get { return currentDenigen; } }
     List<string> messagesToDisplay;
+
+    public GameObject DescriptionObj;
+    public Text DescriptionText;
 
 	void Start ()
     {
@@ -60,8 +64,9 @@ public class BattleManager : MonoBehaviour {
         AddEnemies();
         AssignStatsCards();
         CreateBattleMenu();
-        SortBySpeed();
-        ShowCurrentFullCard();
+        ChangeBattleState(BattleState.TARGET);
+        //SortBySpeed();
+        //ShowCurrentFullCard();
         //foreach(var d in denigenList)
         //{
         //    print(d.DenigenName + ": " + d.Hp);
@@ -93,7 +98,7 @@ public class BattleManager : MonoBehaviour {
 
         
         // TEST ONLY CERTAIN HEROES
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             CreateHero(GameControl.control.heroList[i].denigenName, GameControl.control.heroList[i].identity);
         }
@@ -230,6 +235,17 @@ public class BattleManager : MonoBehaviour {
         uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
     }
 
+    void ToggleDescription(bool show)
+    {
+        SetText();
+        DescriptionObj.SetActive(show);
+    }
+
+    public void SetText(string message = "")
+    {
+        DescriptionText.text = message;
+    }
+
     void ChangeBattleState(BattleState state)
     {
         // set the new battle state
@@ -279,6 +295,8 @@ public class BattleManager : MonoBehaviour {
 
         // otherwise, we're ready to actually start targeting
         ShowBattleMenu();
+        ToggleDescription(true);
+        SortBySpeed();
         ShowCurrentFullCard();
 
     }
@@ -286,6 +304,7 @@ public class BattleManager : MonoBehaviour {
     void StartAttackPhase()
     {
         //ToggleAllStatCards(false);
+        ToggleDescription(false);
 
         // have enemies decide their attack
         foreach (var enemy in enemyList)

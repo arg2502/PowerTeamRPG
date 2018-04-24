@@ -33,6 +33,7 @@
         public override void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
+            descriptionText = battleManager.DescriptionText;
             currentContainer = jethroSkillsContainers; // default -- for positioning only
             originalContainerPos = currentContainer.transform.localPosition;
             currentContainer = null;
@@ -58,7 +59,6 @@
             base.AddButtons();
             listOfButtons = new List<Button>();
         }
-
         public override void Refocus()
         {
             base.Refocus();
@@ -160,8 +160,11 @@
                 var itemName = consumableItem.name;
                 button.onClick.AddListener(() => OnSelect(itemName));
 
+                // set description
+                button.GetComponent<Description>().SetDescription(consumableItem.description);
             }
             SetButtonNavigation();
+            AddListeners();
         }
 
         bool AllItemsAboveZero()
@@ -254,8 +257,13 @@
                     button.onClick.RemoveAllListeners();
                     var attack = category[i].Name;
                     button.onClick.AddListener(() => OnSelect(attack));
+
+                    // set description
+                    button.GetComponent<Description>().SetDescription(category[i].Description);
+
                 }
                 SetButtonNavigation();
+                AddListeners();
             }
         }
 

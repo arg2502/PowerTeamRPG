@@ -93,8 +93,8 @@
                 button = bed.selectedObject;
 
             var descriptionComponent = button.GetComponent<Description>();
-            if (descriptionText != null && button != null && descriptionComponent != null && !descriptionComponent.noDescription)                
-                descriptionText.text = button.GetComponent<Description>().GetDescription(); //button.name;
+            if (descriptionText != null && button != null && descriptionComponent != null && !descriptionComponent.noDescription)
+                descriptionText.text = button.GetComponent<Description>().GetDescription();
         }
 
         public virtual void SetButtonNavigation()
