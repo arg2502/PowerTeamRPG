@@ -50,7 +50,6 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
-    public Text battleMessage;
     public Hero CurrentHero { get { return heroList[currentDenigen]; } }
     public int CurrentIndex { get { return currentDenigen; } }
     List<string> messagesToDisplay;
@@ -231,7 +230,7 @@ public class BattleManager : MonoBehaviour {
     
     void ShowBattleMenu()
     {
-        battleMessage.text = "";
+        DescriptionText.text = "";
         uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
     }
 
@@ -302,9 +301,8 @@ public class BattleManager : MonoBehaviour {
     }
 
     void StartAttackPhase()
-    {
-        //ToggleAllStatCards(false);
-        ToggleDescription(false);
+    {        
+        //ToggleDescription(false);
 
         // have enemies decide their attack
         foreach (var enemy in enemyList)
@@ -504,7 +502,7 @@ public class BattleManager : MonoBehaviour {
         //}
 
         // show attack
-        battleMessage.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
+        DescriptionText.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
         battleCamera.MoveTo(attacker.transform.position);
         battleCamera.ZoomAttack();
 
@@ -696,10 +694,10 @@ public class BattleManager : MonoBehaviour {
     {
         if (messages.Count > 0)
         {
-            battleMessage.text = messages[0];
+            DescriptionText.text = messages[0];
             for (int i = 1; i < messages.Count; i++)
             {
-                battleMessage.text += "\n" + messages[i];
+                DescriptionText.text += "\n" + messages[i];
             }
         }
     }
@@ -707,11 +705,11 @@ public class BattleManager : MonoBehaviour {
     void EndBattle()
     {
         if (battleState == BattleState.VICTORY)
-            battleMessage.text = "VICTORY!";
+            DescriptionText.text = "VICTORY!";
         else if (battleState == BattleState.FAILURE)
-            battleMessage.text = "FAILURE";
+            DescriptionText.text = "FAILURE";
         else if (battleState == BattleState.FLEE)
-            battleMessage.text = "Flee successful";
+            DescriptionText.text = "Flee successful";
     }
 
     /// <summary>
@@ -763,7 +761,7 @@ public class BattleManager : MonoBehaviour {
     }
     IEnumerator ShowFleeFailed()
     {
-        battleMessage.text = "Failed to flee";
+        DescriptionText.text = "Failed to flee";
         //fleeFailed = true;
         foreach (var hero in heroList)
             hero.CurrentAttackName = "";

@@ -251,7 +251,7 @@ public class Denigen : MonoBehaviour {
     protected void Petrified()
     {
         targets = new List<Denigen>(); // reset targets to empty list
-        battleManager.battleMessage.text = DenigenName + " is petrified and can't attack";
+        battleManager.SetText(DenigenName + " is petrified and can't attack");
     }
 
     protected float CalcDamage(float power, float crit, float accuracy, bool isMagic) // all floats are percentages
