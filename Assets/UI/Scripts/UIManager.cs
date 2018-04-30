@@ -22,9 +22,14 @@
             list_currentMenus = new List<GameObject>();
 
             // assign canvas and eventsystem, but make sure they exist
-            canvas = GameObject.FindObjectOfType<Canvas>(); // this should probably be set in scene or another way. What if we can multiple canvases for some reason?
+            SetCanvas();
             if (canvas == null) Debug.LogError("You need to add a canvas to the scene.");
             
+        }
+
+        void SetCanvas()
+        {
+            canvas = GameObject.FindObjectOfType<Canvas>(); // this should probably be set in scene or another way. What if we can multiple canvases for some reason?
         }
 
         public Menu CurrentMenu
@@ -92,6 +97,8 @@
             // if we don't already have one, create it
             else
             {
+                if (canvas == null)
+                    SetCanvas();
                 menuObj = GameObject.Instantiate(menuPrefab);
                 menuObj.transform.SetParent(canvas.transform, false);
                 menuObj.transform.localPosition = Vector3.zero;

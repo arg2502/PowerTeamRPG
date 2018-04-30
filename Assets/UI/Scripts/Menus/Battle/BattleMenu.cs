@@ -81,7 +81,7 @@
             if (battleManager.CalcFlee())
             {
                 uiManager.HideAllMenus();
-                battleManager.FleeBattle();
+                battleManager.StartFlee();
             }
             // flee failed
             // skip to Attack state

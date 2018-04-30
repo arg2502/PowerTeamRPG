@@ -132,13 +132,19 @@ public class BattleManager : MonoBehaviour {
         // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
         // this could probably be stored inside GameControl to transfer the data over to the battle
         // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
-        int numOfGoikkos = 1;
-        for (int i = 0; i < numOfGoikkos; i++)
-            enemiesToAdd.Add("Goikko");
+        //int numOfGoikkos = 1;
+        //for (int i = 0; i < numOfGoikkos; i++)
+        //    enemiesToAdd.Add("Goikko");
 
-        // call CreateEnemies on each enemy to add to create the enemies
-        foreach (var enemy in enemiesToAdd)
-            CreateEnemy(enemy);
+        //// call CreateEnemies on each enemy to add to create the enemies
+        //foreach (var enemy in enemiesToAdd)
+        //    CreateEnemy(enemy);
+
+        foreach(var enemy in GameControl.control.enemies)
+        {
+            CreateEnemy(enemy.denigenName);
+        }
+
     }
 
     void CreateEnemy(string enemyName)
@@ -501,6 +507,12 @@ public class BattleManager : MonoBehaviour {
         //    yield break;
         //}
 
+        if(attacker.IsBlocking)
+        {
+            NextAttack();
+            yield break;
+        }
+
         // show attack
         DescriptionText.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
         battleCamera.MoveTo(attacker.transform.position);
@@ -538,8 +550,8 @@ public class BattleManager : MonoBehaviour {
         //if (attacker is Hero)
         //    ToggleDenigenStatCard(attacker, false);
 
-        // we don't need to show any target info if the attacker is just blocking
-        if (attacker.IsBlocking || targeted.Count <= 0)
+        // we don't need to show any target info if there are no targets
+        if (targeted.Count <= 0)
         {
             NextAttack();
             yield break;
@@ -705,11 +717,12 @@ public class BattleManager : MonoBehaviour {
     void EndBattle()
     {
         if (battleState == BattleState.VICTORY)
-            DescriptionText.text = "VICTORY!";
+            StartCoroutine(WinBattle());
         else if (battleState == BattleState.FAILURE)
-            DescriptionText.text = "FAILURE";
+            StartCoroutine(FailBattle());
         else if (battleState == BattleState.FLEE)
-            DescriptionText.text = "Flee successful";
+            StartCoroutine(FleeBattle());
+            
     }
 
     /// <summary>
@@ -749,7 +762,7 @@ public class BattleManager : MonoBehaviour {
         else return false;
     }
 
-    public void FleeBattle()
+    public void StartFlee()
     {
         ChangeBattleState(BattleState.FLEE);
     }
@@ -768,6 +781,61 @@ public class BattleManager : MonoBehaviour {
 
         yield return new WaitForSeconds(1f);
         GoToAttackState();
+    }
+
+    IEnumerator WinBattle()
+    {
+        DescriptionText.text = "SUCCESS";
+
+        // count winnings (gold) && experience
+        var winnings = 0;
+        var exp = 0;
+        foreach(var e in enemyList)
+        {
+            winnings += e.Gold;
+            exp += e.ExpGiven;
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        // add gold earnings
+        DescriptionText.text = "You gain " + winnings + " gold.";
+        GameControl.control.AddGold(winnings);
+        yield return new WaitForSeconds(2f);
+
+        // add exp
+        DescriptionText.text = "Your team members gain " + exp + " exp.";
+
+        foreach (var h in heroList)
+        {
+            if (!h.IsDead)
+                h.AddExp(exp);
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        GameControl.control.ReturnFromBattle();
+    }
+
+    IEnumerator FailBattle()
+    {
+        DescriptionText.text = "FAILURE";
+        // calculate loss gold
+        var loss = (int)(GameControl.control.totalGold * 0.1f);
+        yield return new WaitForSeconds(2f);
+
+        DescriptionText.text = "You lose " + loss + " gold.";
+        GameControl.control.AddGold(-loss);
+        yield return new WaitForSeconds(2f);
+
+        GameControl.control.LoadLastSavedStatue();
+    }
+
+    IEnumerator FleeBattle()
+    {
+        DescriptionText.text = "Flee successful";
+        yield return new WaitForSeconds(2f);
+        GameControl.control.ReturnFromBattle();
     }
 
     // STATS CARDS

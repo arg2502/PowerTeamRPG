@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -50,7 +51,7 @@ public class GameControl : MonoBehaviour {
 	// probably going to need a roomData class for long term saving of the abouve list
 	public int areaLevel; // mean level of enemies, determined by an enemyControl obj
 	public int numOfEnemies; // number of enemies in battle, determined by an enemyControl obj
-	public List<Enemy> enemies; // the type of enemies in battle, determined by an enemyControl obj
+	public List<EnemyData> enemies; // the type of enemies in battle, determined by an enemyControl obj
 
 	// things for saving the state of the pause menu - temporary, not to be written to a file
 	public bool isPaused;
@@ -914,6 +915,47 @@ public class GameControl : MonoBehaviour {
     {
         foreach (var hero in heroList)
             hero.statusState = DenigenData.Status.normal;
+    }
+
+    void SetHeroesToMaxHP()
+    {
+        foreach (var hero in heroList)
+            hero.hp = hero.hpMax;
+    }
+
+    public void ReturnFromBattle()
+    {
+        currentCharacterState = characterControl.CharacterState.Normal;
+        SceneManager.LoadScene(currentScene);
+    }
+
+    public void LoadLastSavedStatue()
+    {
+        // reset heroes stats
+        SetHeroesToLiving();
+        SetHeroesToMaxHP();
+
+        // set all enemies "been battled" to false
+        currentRoom.SetEnemiesToNotBattled();
+
+
+        if (taggedStatue)
+        {
+            currentPosition = savedStatue;
+            currentCharacterState = characterControl.CharacterState.Normal;
+        }
+        else
+        {
+            currentPosition = areaEntrance;
+            currentCharacterState = characterControl.CharacterState.Transition;
+        }
+
+        SceneManager.LoadScene(currentScene);
+    }
+
+    public void AddGold(int gold)
+    {
+        totalGold += gold;
     }
 }
 

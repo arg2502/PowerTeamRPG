@@ -293,7 +293,7 @@ public class Denigen : MonoBehaviour {
         num = Random.Range(0.0f, 1.0f);
 
         // use luck to increase crit chance
-        float chance = Mathf.Pow((float)(Luck), 2.0f / 3.0f); // luck ^ 2/3
+        float chance = Mathf.Pow(Luck, 2.0f / 3.0f); // luck ^ 2/3
         chance /= 100f; // make percentage
 
         // add chance to crit to increase the probability of num being the smaller one
@@ -333,7 +333,9 @@ public class Denigen : MonoBehaviour {
     {
         // attempt to dodge the attack
         var randomDodge = Random.value;
-        if(randomDodge < Evasion / 100f)
+        float chance = Mathf.Pow(Evasion, 2.0f / 3.0f);
+        chance /= 100f;
+        if (randomDodge <= chance)
         {
             calculatedDamage = 0;
             print("DODGED");

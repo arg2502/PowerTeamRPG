@@ -27,4 +27,27 @@ public class HeroData : DenigenData {
         return false;
     }
 
+
+    public void AddExp(int expToAdd)
+    {
+        exp += expToAdd;
+        expToLvlUp -= expToAdd;
+        
+        //Level up the hero, if necessary
+        if (expToLvlUp <= 0)
+        {
+            // keep the rollover experience
+            int extraExp = Mathf.Abs(expToLvlUp);
+            LevelUp(extraExp);
+            //UpdateCard(h);
+            //h.statBoost = true;
+            //h.skillTree = true;
+            //levelUp = true; // tells the game to go to the level up scene
+        }
+
+        // HANDLE GOING TO STAT BOOST AND SKILL TREE MENUS LATER
+        // maybe have a callback function passed through constructor? if (levelUp) callback.Invoke(); ??
+        // -- AG 4/29/18
+    }
+
 }

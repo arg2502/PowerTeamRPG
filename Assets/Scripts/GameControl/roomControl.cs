@@ -14,7 +14,7 @@ public class roomControl : MonoBehaviour {
 	public int dungeonID = -1;
 	public int areaLevel; // the locked level of enemies in the area
 	public int numOfEnemies; //number of enemies walking around
-	public List<Enemy> possibleEnemies;// Array of possible enemy types
+	public List<EnemyData> possibleEnemies;// Array of possible enemy types
 	public List<enemyControl> enemies = new List<enemyControl>();
 	public GameObject enemyControlPrefab; // a generic enemy control object
 	public int minEnemiesPerBattle;
@@ -175,9 +175,10 @@ public class roomControl : MonoBehaviour {
 							if (enemies [i] != null) {
 								enemies [i].UpdateDist ();
 								if (enemies [i].beenBattled 
-									&& enemies [i].dist < enemies [i].safeDistance + 100.0f) {
-									enemies [i].GetComponent<SpriteRenderer> ().enabled = false;
-									enemies [i].enabled = false;
+									&& enemies [i].dist < enemies [i].safeDistance + 1.5f) {
+                                    //enemies [i].GetComponent<SpriteRenderer> ().enabled = false;
+                                    //enemies [i].enabled = false;
+                                    enemies[i].gameObject.SetActive(false);
 								} else {
 									enemies [i].GetComponent<SpriteRenderer> ().enabled = true;
 									enemies [i].enabled = true;
@@ -268,6 +269,14 @@ public class roomControl : MonoBehaviour {
 
         if (!roomWasLoaded)
             AssignCurrentPosition();
+    }
+
+    public void SetEnemiesToNotBattled()
+    {
+        foreach(var e in enemies)
+        {
+            e.beenBattled = false;
+        }
     }
 
     void OnLevelWasLoaded(int level)

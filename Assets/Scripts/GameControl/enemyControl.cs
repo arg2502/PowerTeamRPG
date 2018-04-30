@@ -32,7 +32,7 @@ public class enemyControl : OverworldObject {
 
     roomControl rc; // a reference to the roomControl object, which will dictate enemy specifics
     int numOfEnemies; // number of enemies this object carries
-    public List<Enemy> enemies; // the enemies this object carries
+    public List<EnemyData> enemies; // the enemies this object carries
     public List<RaycastHit2D> raycastHits = new List<RaycastHit2D>();
     float distance = 1.5f;
 
@@ -71,8 +71,9 @@ public class enemyControl : OverworldObject {
 		// set enabled state if you battled and close to it
 		// mainly for coming out of pause sub menus
 		if (beenBattled && dist <= safeDistance + 1.5f) {
-			sr.enabled = false;
-			enabled = false;
+            //sr.enabled = false;
+            //enabled = false;
+            gameObject.SetActive(false);
 		} 
 
         //check player's distance from enemy
@@ -81,8 +82,9 @@ public class enemyControl : OverworldObject {
 			if (dist <= safeDistance + 1.5f) {
 				// if the enemy has been arbitrarily place, destroy it
 				if (beenPlaced) {
-					sr.enabled = false;
-					enabled = false;
+                    //sr.enabled = false;
+                    //enabled = false;
+                    gameObject.SetActive(false);
 				}
 				// if it's a random enemy, push it somewhere else
 				else {
@@ -260,7 +262,7 @@ public class enemyControl : OverworldObject {
             if (enemies.Count == 0)
             {
                 numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
-                enemies = new List<Enemy>();
+                enemies = new List<EnemyData>();
                 for (int i = 0; i < numOfEnemies; i++)
                 {
                     enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
@@ -274,7 +276,7 @@ public class enemyControl : OverworldObject {
             //save the current room, to acheive persistency while paused
             GameControl.control.RecordRoom();
 
-            UnityEngine.SceneManagement.SceneManager.LoadScene("testMenu"); // load the battle scene
+            UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene"); // load the battle scene
         }
     }
 }

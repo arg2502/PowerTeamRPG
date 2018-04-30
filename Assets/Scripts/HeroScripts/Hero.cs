@@ -393,4 +393,10 @@ public class Hero : Denigen {
         }
         
     }
+
+    public void AddExp(int expToAdd)
+    {
+        var tempData = data as HeroData;
+        tempData.AddExp(expToAdd);
+    }
 }
