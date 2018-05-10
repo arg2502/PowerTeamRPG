@@ -926,6 +926,8 @@ public class GameControl : MonoBehaviour {
     public void ReturnFromBattle()
     {
         currentCharacterState = characterControl.CharacterState.Normal;
+        if (string.IsNullOrEmpty(currentScene))
+            currentScene = "testScene";
         SceneManager.LoadScene(currentScene);
     }
 

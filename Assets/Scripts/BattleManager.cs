@@ -128,23 +128,22 @@ public class BattleManager : MonoBehaviour {
             enemyStartingPositions.Add(go.transform.localPosition);
             go.GetComponent<SpriteRenderer>().enabled = false; // turn off placeholder renderer
         }
-
-        // enemiesToAdd should probably be set by the Enemy that you collided with to start the battle
-        // this could probably be stored inside GameControl to transfer the data over to the battle
-        // FOR NOW -- LET'S JUST MANUALLY ADD A BUNCH OF SHIT
-        //int numOfGoikkos = 1;
-        //for (int i = 0; i < numOfGoikkos; i++)
-        //    enemiesToAdd.Add("Goikko");
-
-        //// call CreateEnemies on each enemy to add to create the enemies
-        //foreach (var enemy in enemiesToAdd)
-        //    CreateEnemy(enemy);
-
         foreach(var enemy in GameControl.control.enemies)
         {
             CreateEnemy(enemy.denigenName);
         }
 
+        // FOR TESTING -- Or for whatever reason the enemies list is empty
+        if (GameControl.control.enemies.Count <= 0)
+        {
+            int numOfGoikkos = 1;
+            for (int i = 0; i < numOfGoikkos; i++)
+                enemiesToAdd.Add("Goikko");
+
+            // call CreateEnemies on each enemy to add to create the enemies
+            foreach (var enemy in enemiesToAdd)
+                CreateEnemy(enemy);
+        }
     }
 
     void CreateEnemy(string enemyName)
@@ -236,13 +235,12 @@ public class BattleManager : MonoBehaviour {
     
     void ShowBattleMenu()
     {
-        DescriptionText.text = "";
+        //DescriptionText.text = "";
         uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
     }
 
     void ToggleDescription(bool show)
     {
-        SetText();
         DescriptionObj.SetActive(show);
     }
 
