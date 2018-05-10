@@ -23,7 +23,7 @@ public class Technique {
     List<Technique> listNextTechnique; // tells the skill tree if this technique is part of a chain/branch
     [NonSerialized]
     List<Technique> prerequisites;
-    //[NonSerialized]
+    [NonSerialized]
     Sprite treeImage; // image to display on the button in the skill tree
     protected int cost; // number of skill points required to unlock
     bool active; // if true, the hero has this technique
