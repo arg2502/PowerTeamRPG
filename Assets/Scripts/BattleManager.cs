@@ -866,7 +866,7 @@ public class BattleManager : MonoBehaviour {
     }
     void ToggleDenigenStatCard(Denigen denigen, bool show)
     {
-        print("current: " + currentDenigen +", showFull: " + show);
+        print("denigen: " + denigen.DenigenName + ", current: " + currentDenigen +", showFull: " + show);
         //denigen.statsCard.gameObject.SetActive(show);
         if (show)
             denigen.statsCard.ShowFullCard();

@@ -64,6 +64,7 @@
             base.Refocus();
             uiManager.ShowAllMenus();
             battleManager.ShowAllShortCardsExceptCurrent();
+            print("REFOCUS");
         }
 
         void FillList()
@@ -151,6 +152,7 @@
                 itemObj.GetComponent<ListButton>().SetItem(consumableItem);
 
                 var button = itemObj.GetComponentInChildren<Button>();
+                button.name = consumableItem.name;
                 button.GetComponentInChildren<Text>().text = consumableItem.name;
                 listOfButtons.Add(button);
 
@@ -443,7 +445,8 @@
                 return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
-            rootButton = currentObj.GetComponent<Button>();
+            rootButton = currentObj.GetComponentInChildren<Button>();
+            print("UPDATE");
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);

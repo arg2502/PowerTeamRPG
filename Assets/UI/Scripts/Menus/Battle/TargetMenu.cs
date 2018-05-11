@@ -56,7 +56,6 @@
                     return targetCursors[i];
                 }
             }
-            Debug.LogError("AssignRootButton(): Cursor is null");
             return null;
         }
 
@@ -92,15 +91,15 @@
                 SetCursorPositions(battleManager.heroPositions);
             }
 
-            rootButton = AssignRootButton();
-            SetSelectedObjectToRoot();
-
-
-            currentButton = rootButton;
-
             CheckForDead();
+            rootButton = AssignRootButton();
 
-
+            // if rootButton is null, then that means there are no available targets and we've most likely already popped out of the menu            
+            if (rootButton == null)
+                return;
+            Debug.LogError(rootButton);
+            SetSelectedObjectToRoot();
+            currentButton = rootButton;
             
         }
         
@@ -330,7 +329,10 @@
             //    FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
             //FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
             foreach (var denigen in currentTargets)
-                denigen.statsCard.ShowShortCard();
+            {
+                if (denigen != battleManager.CurrentHero)
+                    denigen.statsCard.ShowShortCard();
+            }
         }
 
         void CheckTargetState()
@@ -395,6 +397,16 @@
 
             }
         }
+
+        public override void Close()
+        {
+            base.Close();
+
+            prevButton = null;
+            currentButton = null;
+            HideCards();
+        }
+
         new void Update()
         {
             base.Update();

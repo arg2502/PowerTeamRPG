@@ -123,6 +123,11 @@
         /// </summary>
         public virtual void Refocus() { }
 
+        /// <summary>
+        /// Called right as you leave a menu -- so objects aren't left selected that shouldn't be
+        /// </summary>
+        public virtual void Close() { }
+
         protected void Update()
         {
             if (Input.GetKeyDown(KeyCode.Backspace))
