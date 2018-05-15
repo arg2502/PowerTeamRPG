@@ -136,7 +136,7 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            int numOfGoikkos = 1;
+            int numOfGoikkos = 4;
             for (int i = 0; i < numOfGoikkos; i++)
                 enemiesToAdd.Add("Goikko");
 
@@ -621,6 +621,9 @@ public class BattleManager : MonoBehaviour {
 
         foreach (var target in targeted)
         {
+            // if the target has died between targeting and now, ignore him
+            if (target.IsDead) continue;
+
             // alter hp based off of damage
             target.Hp -= target.CalculatedDamage;
             print("target calc: " + target.CalculatedDamage);

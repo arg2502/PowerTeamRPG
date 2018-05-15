@@ -124,12 +124,12 @@
             // determine if we need multiple targets
             if(battleManager.targetState == TargetType.ENEMY_SPLASH || battleManager.targetState == TargetType.HERO_SPLASH)
             {
-                // add denigen below if not at very bottom
-                if (pos > 0)
+                // add denigen below if not at very bottom (and make sure they're still alive)
+                if (pos > 0 && !currentTargets[pos - 1].IsDead)
                     targets.Add(currentTargets[pos - 1]);
 
-                // add denigen above if not at very top
-                if (pos < currentTargets.Count - 1)
+                // add denigen above if not at very top (and make sure they're still alive)
+                if (pos < currentTargets.Count - 1 && !currentTargets[pos + 1].IsDead)
                     targets.Add(currentTargets[pos + 1]);
             
             }
@@ -138,8 +138,8 @@
                 // add the rest of the group to the target list
                 for(int i = 0; i < currentTargets.Count; i++)
                 {
-                    // make sure we don't add the main target twice
-                    if (i != pos)
+                    // make sure we don't add the main target twice (and make sure they're still alive)
+                    if (i != pos && !currentTargets[i].IsDead)
                         targets.Add(currentTargets[i]);
                 }
             }
@@ -306,7 +306,8 @@
 
             for(int i = 0; i < currentTargets.Count; i++)
             {
-                if(i >= low && i <= high)
+                // show the targets' cards if it's within the range (and make sure they're still alive)
+                if ((i >= low && i <= high) && !currentTargets[i].IsDead)
                 {
                     currentTargets[i].statsCard.ShowFullCard();
                 }
@@ -320,7 +321,11 @@
         void ShowTeamCards()
         {
             foreach (var denigen in currentTargets)
-                denigen.statsCard.ShowFullCard();
+            {
+                // make sure they're still alive before showing their card
+                if (!denigen.IsDead)
+                    denigen.statsCard.ShowFullCard();
+            }
         }
 
         void HideCards()

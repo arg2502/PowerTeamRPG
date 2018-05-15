@@ -365,7 +365,8 @@ public class Hero : Denigen {
     void IsTargetDead()
     {
         // if they're not dead, stop right here
-        if (!targets[0].IsDead)
+        // or if the attack is a team attack, then the first target doesn't matter, return
+        if (!targets[0].IsDead || (currentTargetType == TargetType.ENEMY_TEAM || currentTargetType == TargetType.HERO_TEAM))
             return;
         
         print("Target is dead -- find new target");
