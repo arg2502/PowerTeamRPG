@@ -627,7 +627,10 @@ public class BattleManager : MonoBehaviour {
             // alter hp based off of damage
             target.Hp -= target.CalculatedDamage;
             print("target calc: " + target.CalculatedDamage);
-            
+
+            // if we're healing, check to make sure we're not going over maxHp
+            if (target.Hp > target.HpMax)
+                target.Hp = target.HpMax;
 
             //Now record appropriate text
             var message = "";
@@ -665,8 +668,12 @@ public class BattleManager : MonoBehaviour {
 
     void TakeDamage(Denigen target, int damage)
     {
-        // create the damage effect, but onlu if the denigen is not dead
-        ShowDamage(target, damage);
+        // show the Damage effect if damage was done
+        // or show the heal effect if calcDamage is negative (meaning someone's using their turn to heal)
+        if (target.CalculatedDamage >= 0)
+            ShowDamage(target, damage);
+        else
+            ShowHealing(target, -damage);
 
         // check for dead
         print(target.DenigenName + " HP: " + target.Hp);

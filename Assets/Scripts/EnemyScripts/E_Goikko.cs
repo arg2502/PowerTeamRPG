@@ -69,20 +69,21 @@ public class E_Goikko : Enemy {
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated
 
         //Use health states to change goikko's behavior throughout the battle
-        if (healthState == Health.high)
-        {
-            if (rng < 0.5f) { return "Poison"; } //boost atk
-            else { return "Tackle"; } //attack
-        }
-        else if (healthState == Health.average)
-        {
-            if (rng < 0.25f) { return "Poison"; } //boost atk
-            else { return "Tackle"; } //attack
-        }
-        else
-        {
-            return "Tackle";
-        }
+        return "Poison";
+        //if (healthState == Health.high)
+        //{
+        //    if (rng < 0.5f) { return "Poison"; } //boost atk
+        //    else { return "Tackle"; } //attack
+        //}
+        //else if (healthState == Health.average)
+        //{
+        //    if (rng < 0.25f) { return "Poison"; } //boost atk
+        //    else { return "Tackle"; } //attack
+        //}
+        //else
+        //{
+        //    return "Tackle";
+        //}
     }
 
     public override void Attack()

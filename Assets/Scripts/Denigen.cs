@@ -381,6 +381,7 @@ public class Denigen : MonoBehaviour {
 
         //attacker = attackingDen;
         calculatedDamage = (int)damage;
+        print(this.DenigenName + " calculatedDamage: " + calculatedDamage);
     }
 
     void Heal(float healEffect)
@@ -510,7 +511,7 @@ public class Denigen : MonoBehaviour {
     {
         // not sure if these types of attack will have accuracy or not
         // could always be added later
-
+        targets[0].calculatedDamage = 0;
         targets[0].SetStatus(status);
     }
 
@@ -520,12 +521,13 @@ public class Denigen : MonoBehaviour {
         var target = targets[0];
         if (target.IsDead)
             return;
-
+        target.calculatedDamage = 0;
         target.SetStatus(DenigenData.Status.normal);
     }
 
     protected void DazeTarget()
     {
+        targets[0].calculatedDamage = 0;
         targets[0].CurrentAttackName = "Dazed";
     }
 
