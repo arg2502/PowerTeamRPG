@@ -18,6 +18,10 @@
         Button prevButton;
         int currentIndex = -1;
 
+        public Sprite damageIcon;
+        public Sprite healIcon;
+        float splashScale = 0.5f;
+
         protected override void AddButtons()
         {
             base.AddButtons();
@@ -79,16 +83,18 @@
                     currentTargets.Add(enemy);
 
                 SetCursorPositions(battleManager.enemyPositions);
+                SetCursorIcons(damageIcon);
             }
             else
             {
-                // heroes are backwards??? I forget why..
+                // heroes are backwards for menu navigation purposes (index 0 is Jethro (bottom))
                 for(int i = battleManager.heroList.Count-1; i >= 0; i--)
                 {
                     currentTargets.Add(battleManager.heroList[i]);
                 }
 
                 SetCursorPositions(battleManager.heroPositions);
+                SetCursorIcons(healIcon);
             }
 
             CheckForDead();
@@ -112,6 +118,14 @@
                 var pos = RectTransformUtility.WorldToScreenPoint(Camera.main, targets[i].transform.position);
                 //screenPos.Add(pos);
                 targetCursors[i].transform.position = pos;
+            }
+        }
+
+        void SetCursorIcons(Sprite icon)
+        {
+            foreach(var button in targetCursors)
+            {
+                button.GetComponent<Image>().sprite = icon;
             }
         }
 
@@ -347,7 +361,7 @@
             currentIndex = FindIndexInButtonArray(currentButton);
             int low;
             int high;
-            float alpha = 0.5f;
+            //float alpha = 0.5f;
 
             switch (battleManager.targetState)
             {
@@ -360,7 +374,7 @@
                 case TargetType.ENEMY_TEAM:
                     low = 0;
                     high = targetCursors.Count - 1;
-                    alpha = 1f;
+                    //alpha = 1f;
                     break;
                 default:
                     low = currentIndex;
@@ -368,37 +382,56 @@
                     break;
             }
 
-            ChangeButtonColors(low, high, alpha);
+            ChangeButtonSizes(low, high);
         }
 
-        void ChangeButtonColors(int low, int high, float alpha)
+        void ChangeButtonSizes(int low, int high)
         {
             // tell the buttons we want, to show their highlighted sprites
             // all others to show disabled
             for (int i = 0; i < targetCursors.Count; i++)
             {
                 var button = targetCursors[i];
+                var image = button.GetComponent<Image>();
+
                 if (i >= low && i <= high)
                 {
-                    var color = button.colors.highlightedColor;
+                    var color = image.color;
+                    color.a = 1f;
+                    image.color = color;
 
-                    // always have the current main target at full opacity
-                    if (i == currentIndex)
-                        color.a = 1f;
-                    // if there are others, set their alphas accordingly:
-                    // splash -- slightly transparent
-                    // team -- fully opaque
-                    else
-                        color.a = alpha;
+                    button.transform.localScale = Vector3.one;
 
-                    button.GetComponent<Image>().color = color;
+
+                    // if splash damage, set all but the main target to a smaller size
+                    if(battleManager.targetState == TargetType.ENEMY_SPLASH
+                        || battleManager.targetState == TargetType.HERO_SPLASH)
+                    {
+                        if(i != currentIndex)
+                        {
+                            button.transform.localScale = Vector3.one * splashScale;
+                        }
+                    }
+
+                    //var color = button.colors.highlightedColor;
+
+                    //// always have the current main target at full opacity
+                    //if (i == currentIndex)
+                    //    color.a = 1f;
+                    //// if there are others, set their alphas accordingly:
+                    //// splash -- slightly transparent
+                    //// team -- fully opaque
+                    //else
+                    //    color.a = alpha;
+
+                    //button.GetComponent<Image>().color = color;
                 }
                 else
                 {
-                    // turn all other cursor options invisible
-                    var color = button.colors.normalColor;
+                    //// turn all other cursor options invisible
+                    var color = image.color;
                     color.a = 0f;
-                    button.GetComponent<Image>().color = color;
+                    image.color = color;
                 }
 
             }
