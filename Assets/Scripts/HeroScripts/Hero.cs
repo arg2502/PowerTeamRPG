@@ -30,7 +30,7 @@ public class Hero : Denigen {
     protected int targetIndex3 = 0;
 
     //properties
-    public int TargetIndex { get { return targetIndex; } set { targetIndex = value; } }
+    public int MainTargetIndex { get { return targetIndex; } set { targetIndex = value; } }
     public int LevelUpPts { get { return levelUpPts; } set { levelUpPts = value; } }
     public int TechPts { get { return techPts; } set { techPts = value; } }
 
@@ -372,11 +372,11 @@ public class Hero : Denigen {
         print("Target is dead -- find new target");
 
         targets.Clear();
-        
+        print(DenigenName + "'s TargetIndex: " + targetIndex);
         for(int i = 1; i < battleManager.enemyList.Count; i++)
         {
             // check below
-            if (targetIndex > 0 && !battleManager.enemyList[targetIndex - i].IsDead)
+            if ((targetIndex - i) >= 0 && !battleManager.enemyList[targetIndex - i].IsDead)
             {
                 targetIndex -= i;
                 targets.Add(battleManager.enemyList[targetIndex]);
@@ -384,7 +384,7 @@ public class Hero : Denigen {
             }
 
             // check above
-            if (targetIndex < battleManager.enemyList.Count - 1 && !battleManager.enemyList[targetIndex + i].IsDead)
+            if ((targetIndex + i) < battleManager.enemyList.Count && !battleManager.enemyList[targetIndex + i].IsDead)
             {
                 targetIndex += i;
                 targets.Add(battleManager.enemyList[targetIndex]);

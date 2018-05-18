@@ -29,7 +29,8 @@ public class BattleManager : MonoBehaviour {
     public List<StatsCard> heroStatsList;
     public List<StatsCard> enemyStatsList;
 
-    //bool fleeFailed = false;
+    const int MAX_HEROES = 4;
+    const int MAX_ENEMIES = 5;
 
     // Battle states
     public enum BattleState
@@ -105,6 +106,10 @@ public class BattleManager : MonoBehaviour {
     
     void CreateHero(string heroName, int index) 
     {
+        // if we're already at our max amount, break away (just in case)
+        if (heroList.Count >= MAX_HEROES)
+            return;
+
         // special case -- if we're Jethro, our player name may not be Jethro, but the prefab is
         if (index == 0)
             heroName = "Jethro";
@@ -136,7 +141,7 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            int numOfGoikkos = 4;
+            int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
                 enemiesToAdd.Add("Goikko");
 
@@ -148,6 +153,10 @@ public class BattleManager : MonoBehaviour {
 
     void CreateEnemy(string enemyName)
     {
+        // if we're already at our max amount, break away (just in case)
+        if (enemyList.Count >= MAX_ENEMIES)
+            return;
+
         // create Enemy object
         var enemyObj = Instantiate(Resources.Load("Prefabs/EnemiesBattle/" + enemyName)) as GameObject;
         enemyObj.transform.SetParent(enemyContainer);

@@ -97,7 +97,7 @@
             // if rootButton is null, then that means there are no available targets and we've most likely already popped out of the menu            
             if (rootButton == null)
                 return;
-            Debug.LogError(rootButton);
+            //Debug.LogError(rootButton);
             SetSelectedObjectToRoot();
             currentButton = rootButton;
             
@@ -120,6 +120,7 @@
             List<Denigen> targets = new List<Denigen>();
             var mainTarget = currentTargets[pos];
             targets.Add(mainTarget);
+            battleManager.CurrentHero.MainTargetIndex = pos;
 
             // determine if we need multiple targets
             if(battleManager.targetState == TargetType.ENEMY_SPLASH || battleManager.targetState == TargetType.HERO_SPLASH)
