@@ -1,21 +1,17 @@
 fileFormatVersion: 2
-guid: 359de74c0e052574fab502316f052f0e
-timeCreated: 1520905755
+guid: 335d8371bf8f44e4a83f1174c1c51d00
+timeCreated: 1526751137
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: tempJethroAttack_0
-    21300002: tempJethroAttack_1
-    21300004: tempJethroAttack_2
-    21300006: tempJethroAttack_3
-    21300008: tempJethroAttack_4
-    21300010: tempJethroAttack_5
-    21300012: tempJethroAttack_6
-    21300014: tempJethroAttack_7
-    21300016: tempJethroAttack_8
-    21300018: tempJethroAttack_9
-    21300020: tempJethroAttack_10
-    21300022: tempJethroAttack_11
+    21300000: jethroIdle_0
+    21300002: jethroIdle_1
+    21300004: jethroIdle_2
+    21300006: jethroIdle_3
+    21300008: jethroIdle_4
+    21300010: jethroIdle_5
+    21300012: jethroIdle_6
+    21300014: jethroIdle_7
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -39,7 +35,7 @@ TextureImporter:
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
@@ -79,173 +75,137 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tempJethroAttack_0
+      name: jethroIdle_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 1150
-        width: 725
-        height: 575
+        y: 450
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_1
+      name: jethroIdle_1
       rect:
         serializedVersion: 2
-        x: 725
-        y: 1150
-        width: 725
-        height: 575
+        x: 325
+        y: 450
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_2
+      name: jethroIdle_2
       rect:
         serializedVersion: 2
-        x: 1450
-        y: 1150
-        width: 725
-        height: 575
+        x: 650
+        y: 450
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_3
+      name: jethroIdle_3
       rect:
         serializedVersion: 2
-        x: 2175
-        y: 1150
-        width: 725
-        height: 575
+        x: 975
+        y: 450
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 575
-        width: 725
-        height: 575
-      alignment: 9
-      pivot: {x: 0.51, y: 0.422}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: tempJethroAttack_5
-      rect:
-        serializedVersion: 2
-        x: 725
-        y: 575
-        width: 725
-        height: 575
-      alignment: 9
-      pivot: {x: 0.51, y: 0.422}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: tempJethroAttack_6
-      rect:
-        serializedVersion: 2
-        x: 1450
-        y: 575
-        width: 725
-        height: 575
-      alignment: 9
-      pivot: {x: 0.51, y: 0.422}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: tempJethroAttack_7
-      rect:
-        serializedVersion: 2
-        x: 2175
-        y: 575
-        width: 725
-        height: 575
-      alignment: 9
-      pivot: {x: 0.51, y: 0.422}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: tempJethroAttack_8
+      name: jethroIdle_4
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 725
-        height: 575
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_9
+      name: jethroIdle_5
       rect:
         serializedVersion: 2
-        x: 725
+        x: 325
         y: 0
-        width: 725
-        height: 575
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_10
+      name: jethroIdle_6
       rect:
         serializedVersion: 2
-        x: 1450
+        x: 650
         y: 0
-        width: 725
-        height: 575
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: tempJethroAttack_11
+      name: jethroIdle_7
       rect:
         serializedVersion: 2
-        x: 2175
+        x: 975
         y: 0
-        width: 725
-        height: 575
+        width: 325
+        height: 450
       alignment: 9
-      pivot: {x: 0.51, y: 0.422}
+      pivot: {x: 0.64, y: 0.484}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
