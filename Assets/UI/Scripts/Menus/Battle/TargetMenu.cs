@@ -103,10 +103,10 @@
             // if rootButton is null, then that means there are no available targets and we've most likely already popped out of the menu            
             if (rootButton == null)
                 return;
-            //Debug.LogError(rootButton);
             SetSelectedObjectToRoot();
             currentButton = rootButton;
-            
+            CheckTargetState();
+
         }
         
         void SetCursorPositions(List<GameObject> targets)
@@ -411,20 +411,7 @@
                         {
                             button.transform.localScale = Vector3.one * splashScale;
                         }
-                    }
-
-                    //var color = button.colors.highlightedColor;
-
-                    //// always have the current main target at full opacity
-                    //if (i == currentIndex)
-                    //    color.a = 1f;
-                    //// if there are others, set their alphas accordingly:
-                    //// splash -- slightly transparent
-                    //// team -- fully opaque
-                    //else
-                    //    color.a = alpha;
-
-                    //button.GetComponent<Image>().color = color;
+                    }                    
                 }
                 else
                 {
