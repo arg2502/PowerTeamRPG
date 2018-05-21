@@ -98,6 +98,11 @@ public class Enemy : Denigen {
         if (i == 4) { name += " E"; }
     }
 
+    protected void ChooseSelfTarget()
+    {
+        targets.Add(this);
+    }
+
     protected void ChooseRandomTarget()
     {
         int random = 0;
@@ -107,5 +112,23 @@ public class Enemy : Denigen {
         } while (battleManager.heroList[random].IsDead);
 
         targets.Add(battleManager.heroList[random]);
+    }
+
+    protected void ChooseHighestHPTarget()
+    {
+        Hero highestHP = null;
+        
+        foreach (var h in battleManager.heroList)
+        {
+            // if null (first hero), set it
+            if (highestHP == null)
+                highestHP = h;
+
+            // otherwise, if we find a hero with higher HP, set it to that new hero
+            else if (highestHP.Hp > h.Hp)
+                highestHP = h;
+        }
+
+        targets.Add(highestHP);
     }
 }

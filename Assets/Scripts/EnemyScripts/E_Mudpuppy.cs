@@ -45,7 +45,8 @@ public class E_Mudpuppy : Enemy {
     {
         // code for choosing the target of this attack
         // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
-        ChooseRandomTarget();
+        //ChooseRandomTarget();
+        ChooseHighestHPTarget();
         SingleAttack(80, 15, 95, false);
     }
 
