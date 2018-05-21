@@ -39,7 +39,7 @@
             currentContainer = null;
             base.Init();
         }
-
+        
         public override void TurnOnMenu()
         {
             base.TurnOnMenu();
@@ -64,6 +64,8 @@
             base.Refocus();
             uiManager.ShowAllMenus();
             battleManager.ShowAllShortCardsExceptCurrent();
+            //rootButton = currentObj.GetComponent<Button>();
+            //SetSelectedObjectToRoot();
             print("REFOCUS");
         }
 
@@ -271,10 +273,40 @@
 
         void OnSelect(string attack)
         {
-            uiManager.HideAllMenus();
             battleManager.DetermineTargetType(attack);
-            uiManager.PushMenu(uiDatabase.TargetMenu);
+
+            // if attack menu, check if we have enough PM for the technique
+            // if we do, proceed to targetMenu
+            // if not (and if the player has not turned off that menu (add that functionality later)), 
+            // show a notification prompt asking if the player REALLY wants to use the technique
+            if (battleManager.menuState != MenuState.ITEMS
+                && !battleManager.CurrentHero.EnoughPm)
+            {
+                OpenNotEnoughPMPrompt();
+            }
+            else
+            {
+                OpenTarget();
+            }
         }        
+
+        void OpenNotEnoughPMPrompt()
+        {
+            string message;
+            var currentAttack = battleManager.CurrentHero.CurrentAttack;
+            message = "You currently do not have enough power magic to use this technique:\n\n";
+            message += currentAttack.Name + ": " + currentAttack.Pm;
+            message += "\nPM: " + battleManager.CurrentHero.Pm;
+            message += "\n\nAre you sure you want to try to use this technique?";
+            uiManager.PushConfirmationMenu(message, OpenTarget);
+        }
+
+        void OpenTarget()
+        {
+            print("open target menu");
+            uiManager.HideAllMenus();
+            uiManager.PushMenu(uiDatabase.TargetMenu);
+        }
 
         public void SetContainersToNull()
         {
@@ -441,12 +473,13 @@
             base.Update();
 
             if (currentObj == EventSystem.current.currentSelectedGameObject
-                || !gameObject.activeSelf)
+                || uiManager.menuInFocus != this.gameObject)
                 return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
             rootButton = currentObj.GetComponentInChildren<Button>();
-            print("UPDATE");
+            print("ListSub: currentObj: " + currentObj);
+            print("ListSub: rootButton: " + rootButton);
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);

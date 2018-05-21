@@ -36,6 +36,8 @@ public class Hero : Denigen {
 
     public TargetType currentTargetType;
     
+    public bool EnoughPm { get { return Pm >= CurrentAttack.Pm; } }
+
     // the method for handling item use
     public void ItemUse()
     {

@@ -35,14 +35,15 @@
 
             yesButton.onClick.RemoveAllListeners();
             noButton.onClick.RemoveAllListeners();
-            
+
+            yesButton.onClick.AddListener(CloseMenu);
+            noButton.onClick.AddListener(CloseMenu);
+
             yesButton.onClick.AddListener(yesAction.Invoke);
 
             if (noAction != null)
                 noButton.onClick.AddListener(noAction.Invoke);
 
-            yesButton.onClick.AddListener(CloseMenu);
-            noButton.onClick.AddListener(CloseMenu);
         }
 
         void CloseMenu()
