@@ -42,7 +42,7 @@ public class E_Crabgrass : Enemy {
         // if high health, then only choose stomp
         if(healthState == Health.high)
         {
-            return "Heal";//"Stomp";
+            return "Stomp";
         }
         // if average health, mainly stomp with small chance of heal
         else if(healthState == Health.average)
