@@ -143,7 +143,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Goikko");
+                enemiesToAdd.Add("Mudpuppy");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)

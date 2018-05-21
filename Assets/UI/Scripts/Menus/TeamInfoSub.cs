@@ -7,7 +7,7 @@
 
     public class TeamInfoSub : SubMenu
     {
-        public Button jethroButton, coleButton, eleanorButton, julietteButton;
+        public Button jethroButton, coleButton, eleanorButton, joulietteButton;
         internal int currentHero;
         internal Button currentButton; // to know the Y position
 
@@ -18,11 +18,11 @@
             jethroButton.onClick.AddListener(OnJethro);
             coleButton.onClick.AddListener(OnCole);
             eleanorButton.onClick.AddListener(OnEleanor);
-            julietteButton.onClick.AddListener(OnJuliette);
+            joulietteButton.onClick.AddListener(OnJouliette);
         }
         protected override void AddButtons()
         {
-            listOfButtons = new List<Button>() { jethroButton, coleButton, eleanorButton, julietteButton };
+            listOfButtons = new List<Button>() { jethroButton, coleButton, eleanorButton, joulietteButton };
         }
         public override Button AssignRootButton()
         {
@@ -53,11 +53,11 @@
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
-        private void OnJuliette()
+        private void OnJouliette()
         {
             // open HeroInfoSub but with Juliette stats
             currentHero = 3;
-            currentButton = julietteButton;
+            currentButton = joulietteButton;
             uiManager.PushMenu(uiDatabase.HeroInfoSub, this);
         }
 
