@@ -4,36 +4,32 @@ using UnityEngine;
 
 public class E_Crabgrass : Enemy {
 
+    Skill stomp;
+    Spell heal;
+
     void Start()
     {
-        // TEMPORARY
-        Skill stomp = new Skill();
-        stomp.Name = "Stomp";
-        stomp.Pm = 0;
-        stomp.Description = "Stomp stomp stomp";
-        SkillsList.Add(stomp);
+        stomp = skillTree.stomp;
+        heal = skillTree.heal;
 
-        Spell heal = new Spell();
-        heal.Name = "Heal";
-        heal.Pm = 0;
-        heal.Description = "Healing McHealface";
-        SpellsList.Add(heal);
+        GameControl.skillTreeManager.AddTechnique(Data, stomp);
+        GameControl.skillTreeManager.AddTechnique(Data, heal);
     }
 
     void Stomp()
     {
         // I'm guessing it's just a simple single random attack?
         ChooseRandomTarget();
-        SingleAttack(75, 25, 90, false); // TEMPORARY
+        SingleAttack(stomp);
     }
 
     void Heal()
     {
         ChooseSelfTarget();
-        SingleHeal(15, 0, 100); // TEMPORARY
+        SingleHeal(heal);
     }
 
-    public override string ChooseAttack()
+    public override Technique ChooseAttack()
     {
         targets.Clear();
 
@@ -42,33 +38,28 @@ public class E_Crabgrass : Enemy {
         // if high health, then only choose stomp
         if(healthState == Health.high)
         {
-            return "Stomp";
+            return stomp;
         }
         // if average health, mainly stomp with small chance of heal
         else if(healthState == Health.average)
         {
-            if (rng < 0.33f) return "Heal";
-            else return "Stomp";
+            if (rng < 0.33f) return heal;
+            else return stomp;
         }
         // if low health, higher chance of healing
         else
         {
-            if (rng < 0.66f) return "Heal";
-            else return "Stomp";
+            if (rng < 0.66f) return heal;
+            else return stomp;
         }
     }
 
     public override void Attack()
     {
-        switch(CurrentAttackName)
-        {
-            case "Stomp":
-                Stomp();
-                break;
-            case "Heal":
-                Heal();
-                break;
-        }
+        if (string.Equals(CurrentAttackName, stomp.Name))
+            Stomp();
+        else if (string.Equals(CurrentAttackName, heal.Name))
+            Heal();
 
         base.Attack();
     }

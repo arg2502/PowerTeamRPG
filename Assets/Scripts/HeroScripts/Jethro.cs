@@ -74,6 +74,9 @@ public class Jethro : Hero {
     }
     public void Helmsplitter()
 	{
-        SingleAttack(50f, 3f, 90f, false);
-	}
+        var helm = GameControl.skillTreeManager.FindTechnique(Data, "Helmsplitter") as Skill;
+
+        //SingleAttack(50f, 3f, 90f, false);
+        SingleAttack(helm);
+    }
 }

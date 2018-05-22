@@ -143,7 +143,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Crabgrass");
+                enemiesToAdd.Add("Mudpuppy");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -320,7 +320,7 @@ public class BattleManager : MonoBehaviour {
         // have enemies decide their attack
         foreach (var enemy in enemyList)
         {
-            enemy.CurrentAttackName = enemy.ChooseAttack();
+            enemy.CurrentAttackName = enemy.ChooseAttack().Name;
         }
 
         // resort in case there have been speed changes

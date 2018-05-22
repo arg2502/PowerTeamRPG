@@ -29,6 +29,8 @@ public class Enemy : Denigen {
     public int ExpMultiplier { get { return enemyData.expMultiplier; } set { enemyData.expMultiplier = value; } }
     public int GoldMultiplier { get { return enemyData.goldMultiplier; } set { enemyData.goldMultiplier = value; } }
 
+    protected EnemySkillTree skillTree;
+
 	// Use this for initialization
 	public void Init () {
         //set the base stats for the enemy
@@ -53,6 +55,8 @@ public class Enemy : Denigen {
         gold = Stars * GoldMultiplier;
 
         Rename();
+
+        skillTree = GameControl.skillTreeManager.enemySkillTree;
 	}
 
     protected void TakeDamage(float damage, bool isMagic)
@@ -70,7 +74,7 @@ public class Enemy : Denigen {
     // The brain of the enemy
     // Every enemy will have this method, but the code for each will be tailored to it's species
     // Since every attack will be different, choosing a target should be handled in specific attack methods.
-    public virtual string ChooseAttack()
+    public virtual Technique ChooseAttack()
     {
         return null;
     }
@@ -125,7 +129,7 @@ public class Enemy : Denigen {
                 highestHP = h;
 
             // otherwise, if we find a hero with higher HP, set it to that new hero
-            else if (highestHP.Hp > h.Hp)
+            else if (h.Hp > highestHP.Hp)
                 highestHP = h;
         }
 

@@ -1,0 +1,7 @@
+Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level	Target Type
+whip	Tongue Whip			0	65	25	90				1
+poison	Poison			1	0	0	100				1
+bite	Bite			0	80	15	95				1
+frenzy	Frenzy			1	0	0	100				7
+stomp	Stomp			0	75	25	90				1
+heal	Heal			1	15	0	100				7

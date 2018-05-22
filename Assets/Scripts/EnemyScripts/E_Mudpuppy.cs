@@ -4,39 +4,16 @@ using System.Collections.Generic;
 
 public class E_Mudpuppy : Enemy {
 
-	// Use this for initialization
-	void Start () {
-        //stars = 1; // SET ELSEWHERE
-        //ExpMultiplier = 2;
-        //GoldMultiplier = 2;
-        
-        // TEMPORARY
-        Skill bite = new Skill();
-        bite.Name = "Bite";
-        bite.Pm = 0;
-        bite.Description = "The attacker uses their powerful jaws to deal physical damage. \n Str 80, Crit 15, Acc 95";
-        SkillsList.Add(bite);
-        Skill frenzy = new Skill();
-        frenzy.Name = "Frenzy";
-        frenzy.Pm = 0;
-        frenzy.Description = "The attacker gets riled up, boosting ATK.\n +10% ATK";
-        SkillsList.Add(frenzy);
+    Skill bite;
+    Skill frenzy;
 
-        // SET ELSEWHERE
-        // stats - should total to 1.00f
-        //hpPer = 0.18f;
-        //pmPer = 0.06f;
-        //atkPer = 0.30f;
-        //defPer = 0.11f;
-        //mgkAtkPer = 0.03f;
-        //mgkDefPer = 0.08f;
-        //luckPer = 0.15f;
-        //evasionPer = 0.12f;
-        //spdPer = 0.06f;
+    // Use this for initialization
+    void Start() {
+        bite = skillTree.bite;
+        frenzy = skillTree.frenzy;
 
-        //name = "Mudpuppy";
-
-        //base.Start();	
+        GameControl.skillTreeManager.AddTechnique(Data, bite);
+        GameControl.skillTreeManager.AddTechnique(Data, frenzy);       
 	}
 
     //Attack method for bite -- straight forward physical attack
@@ -47,7 +24,7 @@ public class E_Mudpuppy : Enemy {
         // because mudpuppy is an early enemy, let's have it attack the hero with the most remaining hp
         //ChooseRandomTarget();
         ChooseHighestHPTarget();
-        SingleAttack(80, 15, 95, false);
+        SingleAttack(bite);
     }
 
     //IEnumerator Frenzy()
@@ -59,10 +36,10 @@ public class E_Mudpuppy : Enemy {
         // play frenzy animation
         //yield return StartCoroutine(PlayAnimation("Frenzy"));
 
-        calcDamageText.Add("It's atk power has increased!");
+        //calcDamageText.Add("It's atk power has increased!");
     }
 
-    public override string ChooseAttack()
+    public override Technique ChooseAttack()
     {
         // clear the targets list
         targets.Clear();
@@ -73,31 +50,26 @@ public class E_Mudpuppy : Enemy {
         //Use health states to change mudpuppy's behavior throughout the battle
         if (healthState == Health.high)
         {
-            if (rng < 0.5f) { return "Frenzy"; } //boost atk
-            else { return "Bite"; } //attack
+            if (rng < 0.5f) { return frenzy; } //boost atk
+            else { return bite; } //attack
         }
         else if (healthState == Health.average)
         {
-            if (rng < 0.25f) { return "Frenzy"; } //boost atk
-            else { return "Bite"; } //attack
+            if (rng < 0.25f) { return frenzy; } //boost atk
+            else { return bite; } //attack
         }
         else
         {
-            return "Bite";
+            return bite;
         }
     }
 
     public override void Attack()
     {
-        switch (CurrentAttackName)
-        {
-            case "Bite":
-                Bite();
-                break;
-            case "Frenzy":
-                Frenzy();
-                break;
-        }
+        if (string.Equals(CurrentAttackName, bite.Name))
+            Bite();
+        else if (string.Equals(CurrentAttackName, frenzy.Name))
+            Frenzy();
 
         base.Attack();
     }    

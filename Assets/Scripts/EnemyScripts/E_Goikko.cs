@@ -4,63 +4,31 @@ using System.Collections.Generic;
 
 public class E_Goikko : Enemy {
 
-	// Use this for initialization -- goikko is basically mudpuppy, other than stats
-	void Start () {
-        //stars = 1; // SET ELSEWHERE
-        //ExpMultiplier = 1;
-        //GoldMultiplier = 1;
+    Skill tongueWhip;
+    Spell poison;
 
-        //Skills and spells will probably be static for enemies
-        //skillsList = new List<string>() { "Tackle" };
-        //skillsDescription = new List<string>() { "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90" };
-        //spellsList = new List<string>() { "Frenzy" };
-        //spellsDescription = new List<string>() { "The attacker gets riled up, boosting ATK.\n +10% ATK" };
-        //skillsList = new List<Skill>() { };
-        //spellsList = new List<Spell>() { };
+    // Use this for initialization -- goikko is basically mudpuppy, other than stats
+    void Start() {
+        tongueWhip = skillTree.whip;
+        poison = skillTree.poison;
 
-        // TEMPORARY
-        Skill tackle = new Skill();
-        tackle.Name = "Tackle";
-        tackle.Pm = 0;
-        tackle.Description = "The attacker rushes headlong into their target. \n Str 50, Crit 25, Acc 90";
-        SkillsList.Add(tackle);
-        Skill frenzy = new Skill();
-        frenzy.Name = "Frenzy";
-        frenzy.Pm = 0;
-        frenzy.Description = "The attacker gets riled up, boosting ATK.\n +10% ATK";
-        SkillsList.Add(frenzy);
-
-        // stats - should total to 1.00f
-        //hpPer = 0.19f;
-        //pmPer = 0.09f;
-        //atkPer = 0.13f;
-        //defPer = 0.08f;
-        //mgkAtkPer = 0.10f;
-        //mgkDefPer = 0.08f;
-        //luckPer = 0.11f;
-        //evasionPer = 0.14f;
-        //spdPer = 0.18f;
-
-        //name = "Goikko";
-
-        //base.Start();	
+        GameControl.skillTreeManager.AddTechnique(Data, tongueWhip);
+        GameControl.skillTreeManager.AddTechnique(Data, poison);
 	}
-
-    //Attack method for bite -- straight forward physical attack
-    //IEnumerator Tackle()
-    void Tackle()
+    
+    void TongueWhip()
     {
         // code for choosing the target of this attack
         // because goikko is an early enemy, let's have it randomly select a target
         ChooseRandomTarget();
-        SingleAttack(65, 25, 90, false);
+        SingleAttack(tongueWhip);
     }
     void Poison()
     {
         ChooseRandomTarget();
         SingleStatusAttack(DenigenData.Status.infected);
     }
-    public override string ChooseAttack()
+    public override Technique ChooseAttack()
     {
         //CLEAR the targets list
         targets.Clear();
@@ -72,31 +40,26 @@ public class E_Goikko : Enemy {
         //return "Poison";
         if (healthState == Health.high)
         {
-            if (rng < 0.5f) { return "Poison"; } //boost atk
-            else { return "Tackle"; } //attack
+            if (rng < 0.5f) { return poison; } //boost atk
+            else { return tongueWhip; } //attack
         }
         else if (healthState == Health.average)
         {
-            if (rng < 0.25f) { return "Poison"; } //boost atk
-            else { return "Tackle"; } //attack
+            if (rng < 0.25f) { return poison; } //boost atk
+            else { return tongueWhip; } //attack
         }
         else
         {
-            return "Tackle";
+            return tongueWhip;
         }
     }
 
     public override void Attack()
     {
-        switch (CurrentAttackName)
-        {
-            case "Tackle":
-                Tackle();
-                break;
-            case "Poison":
-                Poison();
-                break;
-        }
+        if (string.Equals(CurrentAttackName, tongueWhip.Name))
+            TongueWhip();
+        else if (string.Equals(CurrentAttackName, poison.Name))
+            Poison();
 
         base.Attack();
     }    

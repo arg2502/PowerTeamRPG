@@ -12,6 +12,8 @@ public class SkillTreeManager {
     EleanorSkillTree eleanor;
     JulietteSkillTree jouliette;
 
+    public EnemySkillTree enemySkillTree;
+
     public TechniqueImageDatabase imageDatabase;
 
     System.Collections.Generic.List<HeroData> heroList; // reference to GameControl's list
@@ -23,6 +25,7 @@ public class SkillTreeManager {
         cole = new ColeSkillTree();
         eleanor = new EleanorSkillTree();
         jouliette = new JulietteSkillTree();
+        enemySkillTree = new EnemySkillTree();
         imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
         heroList = GameControl.control.heroList;
         AddStartingTechniques();

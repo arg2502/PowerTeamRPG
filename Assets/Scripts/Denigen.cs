@@ -451,6 +451,16 @@ public class Denigen : MonoBehaviour {
         var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
         targets[0].TakeDamage(this, damage, isMagic);
     }
+    protected void SingleAttack(Technique tech)
+    {
+        var power = tech.Damage;
+        var crit = tech.Critical;
+        var accuracy = tech.Accuaracy;
+        var isMagic = (tech is Spell);
+
+        SingleAttack(power, crit, accuracy, isMagic);
+    }
+
 
     /// <summary>
     /// General Attack methods -- parameters will be divided by 100f.
@@ -474,6 +484,15 @@ public class Denigen : MonoBehaviour {
             targets[i].TakeDamage(this, damage / splashDivider, isMagic);
         }
     }
+    protected void SplashAttack(Technique tech, float splashDivider = 2f)
+    {
+        var power = tech.Damage;
+        var crit = tech.Critical;
+        var accuracy = tech.Accuaracy;
+        var isMagic = (tech is Spell);
+
+        SplashAttack(power, crit, accuracy, isMagic, splashDivider);
+    }
 
     /// <summary>
     /// General Attack methods -- parameters will be divided by 100f.
@@ -491,13 +510,30 @@ public class Denigen : MonoBehaviour {
             targets[i].TakeDamage(this, damage, true);
         }
     }
+    protected void TeamAttack(Technique tech)
+    {
+        var power = tech.Damage;
+        var crit = tech.Critical;
+        var accuracy = tech.Accuaracy;
+        var isMagic = (tech is Spell);
+
+        TeamAttack(power, crit, accuracy, isMagic);
+    }
 
     protected void SingleHeal(float power, float crit, float accuracy)
     {
         var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic: true);
         targets[0].Heal(healEffect);
     }
-    
+    protected void SingleHeal(Technique tech)
+    {
+        var power = tech.Damage;
+        var crit = tech.Critical;
+        var accuracy = tech.Accuaracy;
+
+        SingleHeal(power, crit, accuracy);
+    }
+
     protected void TeamHeal(float power, float crit, float accuracy)
     {
         var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic: true);
@@ -505,6 +541,14 @@ public class Denigen : MonoBehaviour {
         {
             targets[i].Heal(healEffect);
         }
+    }
+    protected void TeamHeal(Technique tech)
+    {
+        var power = tech.Damage;
+        var crit = tech.Critical;
+        var accuracy = tech.Accuaracy;
+
+        TeamHeal(power, crit, accuracy);
     }
 
     protected void SingleStatusAttack(DenigenData.Status status)
