@@ -13,7 +13,9 @@ public class E_Mudpuppy : Enemy {
         frenzy = skillTree.frenzy;
 
         GameControl.skillTreeManager.AddTechnique(Data, bite);
-        GameControl.skillTreeManager.AddTechnique(Data, frenzy);       
+        GameControl.skillTreeManager.AddTechnique(Data, frenzy);
+
+        defaultAttack = bite;
 	}
 
     //Attack method for bite -- straight forward physical attack

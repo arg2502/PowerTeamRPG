@@ -321,6 +321,10 @@ public class BattleManager : MonoBehaviour {
         foreach (var enemy in enemyList)
         {
             enemy.CurrentAttackName = enemy.ChooseAttack().Name;
+
+            // check if the enemy has enough PM. If not, use the default attack
+            if (enemy.NotEnoughPM())
+                enemy.CurrentAttackName = enemy.defaultAttack.Name;
         }
 
         // resort in case there have been speed changes

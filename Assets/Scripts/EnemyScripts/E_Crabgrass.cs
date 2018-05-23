@@ -14,6 +14,8 @@ public class E_Crabgrass : Enemy {
 
         GameControl.skillTreeManager.AddTechnique(Data, stomp);
         GameControl.skillTreeManager.AddTechnique(Data, heal);
+
+        defaultAttack = stomp;
     }
 
     void Stomp()

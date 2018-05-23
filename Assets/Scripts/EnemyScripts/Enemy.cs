@@ -31,6 +31,8 @@ public class Enemy : Denigen {
 
     protected EnemySkillTree skillTree;
 
+    public Technique defaultAttack; // the fallback free attack for the enemy when they don't have enough PM
+
 	// Use this for initialization
 	public void Init () {
         //set the base stats for the enemy
@@ -77,6 +79,11 @@ public class Enemy : Denigen {
     public virtual Technique ChooseAttack()
     {
         return null;
+    }    
+
+    public bool NotEnoughPM()
+    {
+        return (Pm - CurrentAttack.Pm) < 0; // true if the current attack will take the enemy's PM below 0
     }
 
     public override void Attack()
