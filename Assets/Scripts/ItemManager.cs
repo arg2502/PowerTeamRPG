@@ -12,8 +12,8 @@ public class ItemManager {
     public bool ItemForLiving(string item)
     {
         // TEST FOR NOW
-        if (item == "Lesser Restorative")
-            return false;
+        //if (item == "Lesser Restorative")
+        //    return false;
         return true;
     }
 }
