@@ -1,0 +1,278 @@
+fileFormatVersion: 2
+guid: 5ceaad6528ee2094180f1c6211d652be
+timeCreated: 1527125054
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: coleAttack_0
+    21300002: coleAttack_1
+    21300004: coleAttack_2
+    21300006: coleAttack_3
+    21300008: coleAttack_4
+    21300010: coleAttack_5
+    21300012: coleAttack_6
+    21300014: coleAttack_7
+    21300016: coleAttack_8
+    21300018: coleAttack_9
+    21300020: coleAttack_10
+    21300022: coleAttack_11
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: coleAttack_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1100
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_1
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 1100
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_2
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 1100
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_3
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 1100
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 550
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_5
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 550
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_6
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 550
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_7
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 550
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_9
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 0
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_10
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 0
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: coleAttack_11
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 0
+        width: 425
+        height: 550
+      alignment: 9
+      pivot: {x: 0.379, y: 0.5635}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline: []
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
