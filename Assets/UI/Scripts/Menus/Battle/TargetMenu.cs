@@ -17,9 +17,7 @@
         Button currentButton;
         Button prevButton;
         int currentIndex = -1;
-
-        public Sprite damageIcon;
-        public Sprite healIcon;
+                
         float splashScale = 0.5f;
 
         protected override void AddButtons()
@@ -83,7 +81,7 @@
                     currentTargets.Add(enemy);
 
                 SetCursorPositions(battleManager.enemyPositions);
-                SetCursorIcons(damageIcon);
+                SetCursorIcons(battleManager.damageIcon);
             }
             else
             {
@@ -94,7 +92,7 @@
                 }
 
                 SetCursorPositions(battleManager.heroPositions);
-                SetCursorIcons(healIcon);
+                SetCursorIcons(battleManager.healIcon);
             }
 
             CheckForDead();

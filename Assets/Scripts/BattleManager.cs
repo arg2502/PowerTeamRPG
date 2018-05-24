@@ -32,6 +32,10 @@ public class BattleManager : MonoBehaviour {
     const int MAX_HEROES = 4;
     const int MAX_ENEMIES = 5;
 
+    public Sprite damageIcon;
+    public Sprite healIcon;
+    public Sprite statusEffectIcon;
+
     // Battle states
     public enum BattleState
     {
@@ -681,9 +685,12 @@ public class BattleManager : MonoBehaviour {
 
     void TakeDamage(Denigen target, int damage)
     {
+        // the status effect is the status was changed
         // show the Damage effect if damage was done
         // or show the heal effect if calcDamage is negative (meaning someone's using their turn to heal)
-        if (target.CalculatedDamage >= 0)
+        if (target.StatusChanged)
+            ShowStatusEffect(target);
+        else if (target.CalculatedDamage >= 0)
             ShowDamage(target, damage);
         else
             ShowHealing(target, -damage);
@@ -713,14 +720,32 @@ public class BattleManager : MonoBehaviour {
         GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
         be.name = "DamageEffect";
         //be.GetComponent<Effect>().Start();
+        be.GetComponent<SpriteRenderer>().sprite = damageIcon;
         be.GetComponent<Effect>().damage = damage.ToString();
     }
 
     void ShowHealing(Denigen target, int heal)
     {
-        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/HealEffect"), target.transform.position, Quaternion.identity);
+        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
         be.name = "HealEffect";
+        be.GetComponent<SpriteRenderer>().sprite = healIcon;
         be.GetComponent<Effect>().damage = heal.ToString();
+    }
+
+    void ShowStatusEffect(Denigen target)
+    {
+        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+        be.name = "StatusEffect";
+
+        // if the status is changed to normal, that's "normally" (lol) a good thing. So show the heart.
+        // otherwise, show a status symbol
+        if (target.StatusState == DenigenData.Status.normal)
+            be.GetComponent<SpriteRenderer>().sprite = healIcon;
+        else
+            be.GetComponent<SpriteRenderer>().sprite = statusEffectIcon;
+
+        be.GetComponent<Effect>().damage = "";
+        target.StatusChanged = false;
     }
 
     void DisplayMultiMessage(List<string> messages)

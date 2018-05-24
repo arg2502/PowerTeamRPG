@@ -129,6 +129,8 @@ public class Denigen : MonoBehaviour {
     //private Status statusState;// = Status.normal;
 
     public DenigenData.Status StatusState { get { return data.statusState; } set { data.statusState = value; } }
+    bool statusChanged = false;
+    public bool StatusChanged { get { return statusChanged; } set { statusChanged = value; } }
 
     protected GameObject card;
     public GameObject Card { get { return card; } set { card = value; } }
@@ -611,6 +613,7 @@ public class Denigen : MonoBehaviour {
         }
 
         StatusState = newStatus;
+        statusChanged = true;
     }
 
     public void StartNormal()
