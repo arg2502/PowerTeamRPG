@@ -304,13 +304,29 @@ public class BattleManager : MonoBehaviour {
             currentSlot.Disable();
     }
 
-    void HighlightTargetTurnOrder(Denigen currentHero, bool highlight)
+    void HighlightArrowTurnOrder(Denigen currentHero, bool highlight)
     {
         // find the hero who's up next
         var heroSlot = GetTurnOrderUI(currentHero);
 
         if (heroSlot != null)
-            heroSlot.Highlight(highlight);
+            heroSlot.ArrowHighlight(highlight);
+    }
+
+    public void HighlightStarburstTurnOrder(Denigen currentTarget, bool highlight)
+    {
+        var targetSlot = GetTurnOrderUI(currentTarget);
+
+        if (targetSlot != null)
+            targetSlot.StarburstHighlight(highlight);
+    }
+
+    public void TurnOffAllHighlightStarburstTurnOrder()
+    {
+        foreach(var t in turnOrder)
+        {
+            t.StarburstHighlight(false);
+        }
     }
 
     void PrintHeroes()
@@ -391,7 +407,7 @@ public class BattleManager : MonoBehaviour {
         SortBySpeed();
         ShowCurrentFullCard();
 
-        HighlightTargetTurnOrder(heroList[currentDenigen], true);
+        HighlightArrowTurnOrder(heroList[currentDenigen], true);
 
     }
 
@@ -531,7 +547,7 @@ public class BattleManager : MonoBehaviour {
         ShowCurrentShortCard();
 
         // hide old's starburst
-        HighlightTargetTurnOrder(heroList[currentDenigen], false);
+        HighlightArrowTurnOrder(heroList[currentDenigen], false);
 
         // make sure that the next denigen in the list is living
         var nextDenigen = FindNextLivingIndex(currentDenigen + 1);
@@ -559,13 +575,13 @@ public class BattleManager : MonoBehaviour {
     void NextTarget(int newIndex)
     {
         // hide old's starburst
-        HighlightTargetTurnOrder(heroList[currentDenigen], false);
+        HighlightArrowTurnOrder(heroList[currentDenigen], false);
         
         currentDenigen = newIndex;
         ShowCurrentFullCard();
 
         // show new's starburst
-        HighlightTargetTurnOrder(heroList[currentDenigen], true);
+        HighlightArrowTurnOrder(heroList[currentDenigen], true);
 
         // go back to BattleMenu
         ShowBattleMenu();

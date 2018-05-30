@@ -129,6 +129,9 @@
 
         void OnTarget(int pos)
         {
+            // turn off all turn order starburst
+            battleManager.TurnOffAllHighlightStarburstTurnOrder();
+
             List<Denigen> targets = new List<Denigen>();
             var mainTarget = currentTargets[pos];
             targets.Add(mainTarget);
@@ -297,6 +300,21 @@
             
         }
 
+        void SwitchTargetCursor()
+        {
+            Denigen denigen;
+            if (prevButton != null)
+            {
+                denigen = FindDenigenFromButton(prevButton);
+
+                if (denigen != null)
+                    battleManager.HighlightStarburstTurnOrder(denigen, false);
+            }
+            denigen = FindDenigenFromButton(currentButton);
+            if (denigen != null)
+                battleManager.HighlightStarburstTurnOrder(denigen, true);
+        }
+        
         void ShowNormalCards()
         {
             Denigen denigen;
@@ -429,6 +447,10 @@
             prevButton = null;
             currentButton = null;
             HideCards();
+            
+            // turn off all turn order starburst
+            battleManager.TurnOffAllHighlightStarburstTurnOrder();
+
         }
 
         new void Update()
@@ -441,6 +463,7 @@
             if (currentButton == prevButton) return;
 
             SwitchCards();
+            SwitchTargetCursor();
 
             prevButton = currentButton;
 

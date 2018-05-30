@@ -29,8 +29,13 @@ public class TurnOrderUI : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void Highlight(bool isHighlighted)
+    public void ArrowHighlight(bool isHighlighted)
     {
         arrow.gameObject.SetActive(isHighlighted);
+    }
+
+    public void StarburstHighlight(bool isHighlighted)
+    {
+        starburst.gameObject.SetActive(isHighlighted);
     }
 }
