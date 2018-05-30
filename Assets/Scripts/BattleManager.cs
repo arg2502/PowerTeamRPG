@@ -62,11 +62,14 @@ public class BattleManager : MonoBehaviour {
     public GameObject DescriptionObj;
     public Text DescriptionText;
 
+    public List<TurnOrderUI> turnOrder;
+
 	void Start ()
     {
         AddHeroes();
         AddEnemies();
         AssignStatsCards();
+        InitTurnOrder();
         CreateBattleMenu();
         ChangeBattleState(BattleState.TARGET);
         //SortBySpeed();
@@ -206,6 +209,27 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
+    void InitTurnOrder()
+    {
+        // add heroes first
+        for(int i = 0; i < heroList.Count; i++)
+        {
+            turnOrder[i].Init(heroList[i]);
+        }
+
+        // add enemies next
+        for(int i = 0; i < enemyList.Count; i++)
+        {
+            turnOrder[heroList.Count + i].Init(enemyList[i]);
+        }
+
+        // disable any leftover ui
+        for(int i = (heroList.Count + enemyList.Count); i < turnOrder.Count; i++)
+        {
+            turnOrder[i].Disable();
+        }
+    }
+        
     void SortBySpeed()
     {
         Denigen temp;
@@ -235,6 +259,58 @@ public class BattleManager : MonoBehaviour {
                 }
             }
         }
+
+        SortUITurnOrder();
+    }
+
+    void SortUITurnOrder()
+    {
+        // set it so that the first to go is the last in the siblings.
+        for(int i = 0; i < denigenList.Count; i++)
+        {
+            for(int j = 0; j < turnOrder.Count; j++)
+            {
+                if (turnOrder[j].denigen == denigenList[i])
+                {
+                    if (denigenList[i].IsDead)
+                        turnOrder[j].Disable();
+                    else
+                        turnOrder[j].SetAsFirst();
+
+                }
+
+            }
+        }
+    }
+
+    TurnOrderUI GetTurnOrderUI(Denigen den)
+    {
+        for (int i = 0; i < turnOrder.Count; i++)
+        {
+            if (turnOrder[i].denigen == den)
+            {
+                return turnOrder[i];
+            }
+        }
+        return null;
+    }
+
+    void RemoveFromTurnOrder(Denigen deadDenigen)
+    {
+        // find the turn order denigen
+        var currentSlot = GetTurnOrderUI(deadDenigen);
+
+        if (currentSlot != null)
+            currentSlot.Disable();
+    }
+
+    void HighlightTargetTurnOrder(Denigen currentHero, bool highlight)
+    {
+        // find the hero who's up next
+        var heroSlot = GetTurnOrderUI(currentHero);
+
+        if (heroSlot != null)
+            heroSlot.Highlight(highlight);
     }
 
     void PrintHeroes()
@@ -315,6 +391,8 @@ public class BattleManager : MonoBehaviour {
         SortBySpeed();
         ShowCurrentFullCard();
 
+        HighlightTargetTurnOrder(denigenList[currentDenigen], true);
+
     }
 
     void StartAttackPhase()
@@ -364,6 +442,7 @@ public class BattleManager : MonoBehaviour {
         color.a = 0f;
         deadDenigen.GetComponent<SpriteRenderer>().color = color;
 
+        RemoveFromTurnOrder(deadDenigen);
         //availableDenigens.Remove(deadDenigen);
 
         CheckTheDead(deadDenigen);
@@ -451,6 +530,10 @@ public class BattleManager : MonoBehaviour {
         uiManager.DisableAllMenus();
         ShowCurrentShortCard();
 
+        // hide old's starburst
+        HighlightTargetTurnOrder(denigenList[currentDenigen], false);
+
+
         // make sure that the next denigen in the list is living
         var nextDenigen = FindNextLivingIndex(currentDenigen + 1);
         
@@ -479,7 +562,10 @@ public class BattleManager : MonoBehaviour {
     {
         currentDenigen = newIndex;
         ShowCurrentFullCard();
-        
+
+        // show new's starburst
+        HighlightTargetTurnOrder(denigenList[currentDenigen], true);
+
         // go back to BattleMenu
         ShowBattleMenu();
     }
@@ -503,6 +589,9 @@ public class BattleManager : MonoBehaviour {
             EndBattle();
             return;
         }
+
+        // hide current denigen's turn order UI to show their turn is over
+        RemoveFromTurnOrder(denigenList[currentDenigen]);
 
         // increment up list -- if the next one is dead, continue to the next
         currentDenigen++;
