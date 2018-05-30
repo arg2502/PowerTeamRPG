@@ -150,7 +150,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Mudpuppy");
+                enemiesToAdd.Add("Goikko");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -391,7 +391,7 @@ public class BattleManager : MonoBehaviour {
         SortBySpeed();
         ShowCurrentFullCard();
 
-        HighlightTargetTurnOrder(denigenList[currentDenigen], true);
+        HighlightTargetTurnOrder(heroList[currentDenigen], true);
 
     }
 
@@ -531,13 +531,11 @@ public class BattleManager : MonoBehaviour {
         ShowCurrentShortCard();
 
         // hide old's starburst
-        HighlightTargetTurnOrder(denigenList[currentDenigen], false);
-
+        HighlightTargetTurnOrder(heroList[currentDenigen], false);
 
         // make sure that the next denigen in the list is living
         var nextDenigen = FindNextLivingIndex(currentDenigen + 1);
         
-
         if (nextDenigen < heroList.Count)
             NextTarget(nextDenigen);
         else
@@ -560,11 +558,14 @@ public class BattleManager : MonoBehaviour {
 
     void NextTarget(int newIndex)
     {
+        // hide old's starburst
+        HighlightTargetTurnOrder(heroList[currentDenigen], false);
+        
         currentDenigen = newIndex;
         ShowCurrentFullCard();
 
         // show new's starburst
-        HighlightTargetTurnOrder(denigenList[currentDenigen], true);
+        HighlightTargetTurnOrder(heroList[currentDenigen], true);
 
         // go back to BattleMenu
         ShowBattleMenu();
