@@ -74,6 +74,8 @@ public class StatsCard : MonoBehaviour {
 
     void UpdateHealthBars()
     {
+        if (!gameObject.activeSelf) return;
+
         var healthPercent = currentDenigen.Hp / (float) currentDenigen.HpMax;
         StartCoroutine(ChangeBarValue(hpBarFull, healthPercent));
         StartCoroutine(ChangeBarValue(hpBarShort, healthPercent));
@@ -81,6 +83,8 @@ public class StatsCard : MonoBehaviour {
 
     void UpdatePowerMagicBars()
     {
+        if (!gameObject.activeSelf) return;
+
         var pmPercent = currentDenigen.Pm / (float) currentDenigen.PmMax;
         StartCoroutine(ChangeBarValue(pmBarFull, pmPercent));
         StartCoroutine(ChangeBarValue(pmBarShort, pmPercent));
@@ -111,15 +115,15 @@ public class StatsCard : MonoBehaviour {
 
     public void ShowFullCard()
     {
-        print("show full -- state: " + cardState);
-        // only play the animation if the full group is not already active
-        if (cardState == CardState.SHORT
-            || cardState == CardState.SHRINK)
-        {
-            print("inside full group is not active");
-            StopAllCoroutines();
-            StartCoroutine(ToFull());
-        }
+        //print("show full -- state: " + cardState);
+        //// only play the animation if the full group is not already active
+        //if (cardState == CardState.SHORT
+        //    || cardState == CardState.SHRINK)
+        //{
+        //    print("inside full group is not active");
+        //    StopAllCoroutines();
+        //    StartCoroutine(ToFull());
+        //}
     }
     IEnumerator ToFull()
     {
@@ -135,14 +139,14 @@ public class StatsCard : MonoBehaviour {
     
     public void ShowShortCard()
     {
-        print("SHRINK: " + gameObject.name);
-        // only play the animation if the short group is not already active
-        if (cardState == CardState.FULL
-             || cardState == CardState.GROW)
-        {
-            StopAllCoroutines();
-            StartCoroutine(ToShort());
-        }
+        //print("SHRINK: " + gameObject.name);
+        //// only play the animation if the short group is not already active
+        //if (cardState == CardState.FULL
+        //     || cardState == CardState.GROW)
+        //{
+        //    StopAllCoroutines();
+        //    StartCoroutine(ToShort());
+        //}
     }
     IEnumerator ToShort()
     {
@@ -160,6 +164,8 @@ public class StatsCard : MonoBehaviour {
     {
         fullGroup.SetActive(false);
         shortGroup.SetActive(true);
+
+        if (bgAnimator == null) return;
 
         bgAnimator.speed = 0;
         bgAnimator.Play("Shrink", -1, 1);
