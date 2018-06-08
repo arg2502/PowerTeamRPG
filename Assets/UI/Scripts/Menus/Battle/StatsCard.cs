@@ -190,4 +190,24 @@ public class StatsCard : MonoBehaviour {
         //bgAnimator.speed = 0;
         //bgAnimator.Play("Shrink", -1, 1);
     }
+
+    public void SetBGSize(int numOfCards)
+    {
+        print("num: " + numOfCards);
+        var delta = background.rectTransform.sizeDelta;
+
+        if (numOfCards == 1)
+            delta.x = 100;
+        else if (numOfCards == 2)
+            delta.x = 100;
+        else if (numOfCards == 3)
+            delta.x = 30;
+        else if (numOfCards == 4)
+            delta.x = 6;
+        else if (numOfCards == 5)
+            delta.x = -20;
+
+        background.rectTransform.sizeDelta = delta;
+
+    }
 }

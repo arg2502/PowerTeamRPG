@@ -85,30 +85,32 @@ public class StatsCardManager : MonoBehaviour {
 
     public void DetermineCardPositions(List<Hero> heroList, List<Enemy> enemyList)
     {
-        var heroes = heroList.Count;
-        if (heroes == 1)
+        var heroesCount = ActiveHeroes;
+        if (heroesCount == 1)
             OneHero();
-        else if (heroes == 2)
+        else if (heroesCount == 2)
             TwoHeroes();
-        else if (heroes == 3)
+        else if (heroesCount == 3)
             ThreeHeroes();
-        else if (heroes == 4)
+        else if (heroesCount == 4)
             FourHeroes();
+        
+        // reorder heroes from leftmost to rightmost 
+        ReorderHeroes();
 
-        var enemies = enemyList.Count;
-        //OneEnemy();
-
-        if (enemies == 1)
+        var enemyCount = ActiveEnemies;
+        if (enemyCount == 1)
             OneEnemy();
-        else if (enemies == 2)
+        else if (enemyCount == 2)
             TwoEnemies();
-        else if (enemies == 3)
+        else if (enemyCount == 3)
             ThreeEnemies();
-        else if (enemies == 4)
+        else if (enemyCount == 4)
             FourEnemies();
-        else if (enemies == 5)
+        else if (enemyCount == 5)
             FiveEnemies();
 
+        SetCardSizes();
         CheckBorders();
     }
 
@@ -143,10 +145,7 @@ public class StatsCardManager : MonoBehaviour {
     void OneHero()
     {
         var newPos = HERO_CENTER;
-        SetHeroPosition(0, newPos);
-
-        // reorder heroes from leftmost to rightmost 
-        ReorderHeroes();
+        SetHeroPosition(0, newPos);        
     }
 
     void TwoHeroes()
@@ -156,9 +155,6 @@ public class StatsCardManager : MonoBehaviour {
 
         SetHeroPosition(0, pos1);
         SetHeroPosition(1, pos2);
-
-        // reorder heroes from leftmost to rightmost 
-        ReorderHeroes();
     }
 
     void ThreeHeroes()
@@ -170,9 +166,6 @@ public class StatsCardManager : MonoBehaviour {
         SetHeroPosition(0, pos1);
         SetHeroPosition(1, pos2);
         SetHeroPosition(2, pos3);
-
-        // reorder heroes from leftmost to rightmost 
-        ReorderHeroes();
     }
 
     void FourHeroes()
@@ -186,9 +179,6 @@ public class StatsCardManager : MonoBehaviour {
         SetHeroPosition(1, pos2);
         SetHeroPosition(2, pos3);
         SetHeroPosition(3, pos4);
-
-        // reorder heroes from leftmost to rightmost 
-        ReorderHeroes();
     }
 
     void ReorderHeroes()
@@ -284,6 +274,18 @@ public class StatsCardManager : MonoBehaviour {
             }
         }
         return card;
+    }
+
+    void SetCardSizes()
+    {
+        foreach(var hero in HeroCards)
+        {
+            hero.SetBGSize(ActiveHeroes);
+        }
+        foreach(var enemy in EnemyCards)
+        {
+            enemy.SetBGSize(ActiveEnemies);
+        }
     }
 
     void CheckBorders()

@@ -106,7 +106,7 @@ public class BattleManager : MonoBehaviour {
 
         
         // TEST ONLY CERTAIN HEROES
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < 1; i++)
         {
             CreateHero(GameControl.control.heroList[i].denigenName, GameControl.control.heroList[i].identity);
         }
@@ -149,7 +149,7 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            int numOfGoikkos = 3;
+            int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
                 enemiesToAdd.Add("Goikko");
 
