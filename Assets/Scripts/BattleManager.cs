@@ -106,7 +106,7 @@ public class BattleManager : MonoBehaviour {
 
         
         // TEST ONLY CERTAIN HEROES
-        for(int i = 0; i < 1; i++)
+        for(int i = 0; i < 4; i++)
         {
             CreateHero(GameControl.control.heroList[i].denigenName, GameControl.control.heroList[i].identity);
         }
@@ -151,7 +151,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Goikko");
+                enemiesToAdd.Add("Mudpuppy");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -213,6 +213,17 @@ public class BattleManager : MonoBehaviour {
 
         // set stat cards positions
         statsCardManager.DetermineCardPositions(heroList, enemyList);
+    }
+
+    public void SetDenigenPositionsToCards()
+    {
+        foreach (var denigen in denigenList)
+        {
+            var cardPos = Camera.main.ScreenToWorldPoint(denigen.statsCard.GetComponent<RectTransform>().position);
+            cardPos.y = denigen.transform.position.y;
+            cardPos.z = denigen.transform.position.z;
+            denigen.transform.position = cardPos;
+        }
     }
 
     void InitTurnOrder()
@@ -388,6 +399,7 @@ public class BattleManager : MonoBehaviour {
 
     void StartTargetPhase()
     {
+        statsCardManager.ShowCards();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
         ResetDenigen();
@@ -418,8 +430,9 @@ public class BattleManager : MonoBehaviour {
     }
 
     void StartAttackPhase()
-    {        
+    {
         //ToggleDescription(false);
+        statsCardManager.HideCards();
 
         // have enemies decide their attack
         foreach (var enemy in enemyList)

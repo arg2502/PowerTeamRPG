@@ -33,6 +33,8 @@ public class StatsCardManager : MonoBehaviour {
 
     BattleManager battleManager;
 
+    List<StatsCard> battleCardHolder; // stores the cards that were active before battle, so we only turn those back on after battle
+
     int ActiveHeroes
     {
         get
@@ -112,6 +114,8 @@ public class StatsCardManager : MonoBehaviour {
 
         SetCardSizes();
         CheckBorders();
+
+        battleManager.SetDenigenPositionsToCards();
     }
 
     void SetHeroPosition(int index, float newPos)
@@ -296,103 +300,93 @@ public class StatsCardManager : MonoBehaviour {
 
     void CheckHeroBorders()
     {
-        StartCoroutine(CheckLeftSide(HeroCards, heroLeftBorder, ActiveHeroes));
-        StartCoroutine(CheckRightSide(HeroCards, heroRightBorder, ActiveHeroes));
+        CheckLeftSide(HeroCards, heroLeftBorder, ActiveHeroes);
+        CheckRightSide(HeroCards, heroRightBorder, ActiveHeroes);
     }
 
     void CheckEnemyBorders()
     {
-        StartCoroutine(CheckLeftSide(EnemyCards, enemyLeftBorder, ActiveEnemies));
-        StartCoroutine(CheckRightSide(EnemyCards, enemyRightBorder, ActiveEnemies));
+        CheckLeftSide(EnemyCards, enemyLeftBorder, ActiveEnemies);
+        CheckRightSide(EnemyCards, enemyRightBorder, ActiveEnemies);
     }
 
-    IEnumerator CheckLeftSide(List<StatsCard> cards, float leftBorder, int activeNum)
+    void CheckLeftSide(List<StatsCard> cards, float leftBorder, int activeNum)
     {
         // find first active hero
         var first = FindActiveCard(0, cards);
 
-        // if we're past the border, move in
-        if (first.FarLeft < leftBorder)
-        {
-            while (first.FarLeft < leftBorder)
-            {
-                var pos = first.GetComponent<RectTransform>().position;
-                pos.x += 1f;
-                first.GetComponent<RectTransform>().position = pos;
+        // find distance between far point and border
+        var distance = leftBorder - first.FarLeft;
 
-                if (activeNum > 3)
-                {
-                    var secondHero = FindActiveCard(1, cards);
-                    var pos2 = secondHero.GetComponent<RectTransform>().position;
-                    pos2.x += 0.5f;
-                    secondHero.GetComponent<RectTransform>().position = pos2;
-                }
-                yield return null;
-            }
-        }
-        // otherwise, we probably have room to stretch to the border
-        else if (first.FarLeft > leftBorder)
-        {
-            while (first.FarLeft > leftBorder)
-            {
-                var pos = first.GetComponent<RectTransform>().position;
-                pos.x -= 1f;
-                first.GetComponent<RectTransform>().position = pos;
+        var pos = first.GetComponent<RectTransform>().position;
+        pos.x += distance;
+        first.GetComponent<RectTransform>().position = pos;
 
-                if (activeNum > 3)
-                {
-                    var secondHero = FindActiveCard(1, cards);
-                    var pos2 = secondHero.GetComponent<RectTransform>().position;
-                    pos2.x -= 0.5f;
-                    secondHero.GetComponent<RectTransform>().position = pos2;
-                }
-                yield return null;
-            }
+        if (activeNum > 3)
+        {
+            var secondHero = FindActiveCard(1, cards);
+            var pos2 = secondHero.GetComponent<RectTransform>().position;
+
+            // half the distance of first card
+            var half = distance / 2f;
+            pos2.x += half;
+
+            secondHero.GetComponent<RectTransform>().position = pos2;
         }
     }
 
-    IEnumerator CheckRightSide(List<StatsCard> cards, float rightBorder, int activeNum)
+    void CheckRightSide(List<StatsCard> cards, float rightBorder, int activeNum)
     {
         // find last active hero
         StatsCard last = FindActiveCard(cards.Count - 1, cards, false);
 
-        // if we're past the border, move in
-        if (last.FarRight > rightBorder)
-        {
-            while (last.FarRight > rightBorder)
-            {
-                var pos = last.GetComponent<RectTransform>().position;
-                pos.x -= 1f;
+        // var distance = last.FarRight - rightBorder;
+        var distance = rightBorder - last.FarRight;
+
+        var pos = last.GetComponent<RectTransform>().position;
+                pos.x += distance;
                 last.GetComponent<RectTransform>().position = pos;
 
-                if (activeNum > 3)
-                {
-                    var secondHero = FindActiveCard(cards.Count - 2, cards, false);
-                    var pos2 = secondHero.GetComponent<RectTransform>().position;
-                    pos2.x -= 0.5f;
-                    secondHero.GetComponent<RectTransform>().position = pos2;
-                }
-                yield return null;
+        if (activeNum > 3)
+        {
+            var secondHero = FindActiveCard(cards.Count - 2, cards, false);
+            var pos2 = secondHero.GetComponent<RectTransform>().position;
+            var half = distance / 2f;
+            pos2.x += half;
+            secondHero.GetComponent<RectTransform>().position = pos2;
+        }
+    }
+
+    public void HideCards()
+    {
+        battleCardHolder = new List<StatsCard>();
+
+        foreach(var hero in HeroCards)
+        {
+            if (hero.gameObject.activeSelf)
+            {
+                battleCardHolder.Add(hero);
+                hero.gameObject.SetActive(false);
             }
         }
-        // otherwise, we probably have room to stretch to the border
-        else if (last.FarRight < rightBorder)
+        foreach(var enemy in EnemyCards)
         {
-            while (last.FarRight < rightBorder)
+            if(enemy.gameObject.activeSelf)
             {
-                var pos = last.GetComponent<RectTransform>().position;
-                pos.x += 1f;
-                last.GetComponent<RectTransform>().position = pos;
-
-                if (activeNum > 3)
-                {
-                    var secondHero = FindActiveCard(cards.Count - 2, cards, false);
-                    var pos2 = secondHero.GetComponent<RectTransform>().position;
-                    pos2.x -= 0.5f;
-                    secondHero.GetComponent<RectTransform>().position = pos2;
-                }
-                yield return null;
+                battleCardHolder.Add(enemy);
+                enemy.gameObject.SetActive(false);
             }
         }
     }
+
+    public void ShowCards()
+    {
+        if (battleCardHolder == null) return;
+
+        foreach(var card in battleCardHolder)
+        {
+            card.gameObject.SetActive(true);
+        }
+    }
+
 }
