@@ -18,8 +18,8 @@ public class StatsCardManager : MonoBehaviour {
     float CENTER_SCREEN;
     float HERO_CENTER;
     float ENEMY_CENTER;
-    const float EDGE_BUFFER = 20f; // arbitrary
-    const float MENU_BUFFER = 50f; // arbitrary
+    float EDGE_BUFFER = 2f * Screen.width / 100f; // arbitrary
+    float MENU_BUFFER = 8f * Screen.width / 100f; // arbitrary
 
     float heroLeftBorder;
     float heroRightBorder;
@@ -64,10 +64,9 @@ public class StatsCardManager : MonoBehaviour {
 
     void Awake()
     {
+        print("Awake screen width: " + Screen.width);
         CENTER_SCREEN = Screen.width / 2f;
-        //HERO_CENTER = Screen.width / 4f;
-        //ENEMY_CENTER = Screen.width / 4f * 3f;
-
+         
         heroLeftBorder = EDGE_BUFFER;
         heroRightBorder = CENTER_SCREEN - MENU_BUFFER;
         HERO_CENTER = (heroLeftBorder + heroRightBorder) / 2f;
@@ -87,6 +86,7 @@ public class StatsCardManager : MonoBehaviour {
 
     public void DetermineCardPositions(List<Hero> heroList, List<Enemy> enemyList)
     {
+        print("CardPos screen width: " + Screen.width);
         var heroesCount = ActiveHeroes;
         if (heroesCount == 1)
             OneHero();
@@ -296,6 +296,8 @@ public class StatsCardManager : MonoBehaviour {
     {
         CheckHeroBorders();
         CheckEnemyBorders();
+        SetMiddleCards(HeroCards, ActiveHeroes);
+        SetMiddleCards(EnemyCards, ActiveEnemies);
     }
 
     void CheckHeroBorders()
@@ -317,22 +319,22 @@ public class StatsCardManager : MonoBehaviour {
 
         // find distance between far point and border
         var distance = leftBorder - first.FarLeft;
-
+        
         var pos = first.GetComponent<RectTransform>().position;
         pos.x += distance;
         first.GetComponent<RectTransform>().position = pos;
 
-        if (activeNum > 3)
-        {
-            var secondHero = FindActiveCard(1, cards);
-            var pos2 = secondHero.GetComponent<RectTransform>().position;
+        //if (activeNum > 3)
+        //{
+        //    var secondHero = FindActiveCard(1, cards);
+        //    var pos2 = secondHero.GetComponent<RectTransform>().position;
 
-            // half the distance of first card
-            var half = distance / 2f;
-            pos2.x += half;
+        //    // half the distance of first card
+        //    var half = distance / 2f;
+        //    pos2.x += half;
 
-            secondHero.GetComponent<RectTransform>().position = pos2;
-        }
+        //    secondHero.GetComponent<RectTransform>().position = pos2;
+        //}
     }
 
     void CheckRightSide(List<StatsCard> cards, float rightBorder, int activeNum)
@@ -347,13 +349,41 @@ public class StatsCardManager : MonoBehaviour {
                 pos.x += distance;
                 last.GetComponent<RectTransform>().position = pos;
 
-        if (activeNum > 3)
+        //if (activeNum > 3)
+        //{
+        //    var secondHero = FindActiveCard(cards.Count - 2, cards, false);
+        //    var pos2 = secondHero.GetComponent<RectTransform>().position;
+        //    var half = distance / 2f;
+        //    pos2.x += half;
+        //    secondHero.GetComponent<RectTransform>().position = pos2;
+        //}
+    }
+
+    void SetMiddleCards(List<StatsCard> cards, int activeNum)
+    {
+        if (activeNum <= 3) return;
+
+        var card1 = cards[0].GetComponent<RectTransform>().position.x;
+        var lastCard = cards[cards.Count - 1].GetComponent<RectTransform>().position.x;
+        var distance = lastCard - card1;
+
+        if (activeNum == 4)
         {
-            var secondHero = FindActiveCard(cards.Count - 2, cards, false);
-            var pos2 = secondHero.GetComponent<RectTransform>().position;
-            var half = distance / 2f;
-            pos2.x += half;
-            secondHero.GetComponent<RectTransform>().position = pos2;
+            var card2 = card1 + distance / 3f;
+            var card3 = card2 + distance / 3f;
+
+            SetPosition(cards, 1, card2);
+            SetPosition(cards, 2, card3);
+        }
+        else if (activeNum == 5)
+        {
+            var card2 = card1 + distance / 4f;
+            var card3 = card1 + distance / 2f;
+            var card4 = lastCard - distance / 4f;
+
+            SetPosition(cards, 1, card2);
+            SetPosition(cards, 2, card3);
+            SetPosition(cards, 3, card4);
         }
     }
 
