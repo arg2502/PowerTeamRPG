@@ -419,15 +419,32 @@ public class Denigen : MonoBehaviour {
         //}
 	}
     
-    public IEnumerator PlayAnimation()
+    public IEnumerator PlayAttackAnimation()
     {
-        var anim = GetComponent<Animator>();
-        anim.Play(attackAnimation, -1, 0f);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + 0.25f);
+        yield return PlayAnimation(attackAnimation);
         //anim.Play("Idle", -1, 0f);
 
         //yield return new WaitForSeconds(0.5f);
         //yield return null;
+    }
+
+    public IEnumerator PlayBlockAnimation()
+    {
+        print("start block " + DenigenName + " : " + Time.time);
+        yield return PlayAnimation("Block");
+        print("after block: " + Time.time);
+    }
+
+    public IEnumerator PlayFlinchAnimation()
+    {
+        yield return PlayAnimation("Flinch");
+    }
+
+    IEnumerator PlayAnimation(string animationToPlay)
+    {
+        var anim = GetComponent<Animator>();
+        anim.Play(animationToPlay, -1, 0f);
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + 0.25f);
     }
 
     public bool IsDead

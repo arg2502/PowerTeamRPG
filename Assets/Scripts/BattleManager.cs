@@ -151,7 +151,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Mudpuppy");
+                enemiesToAdd.Add("Goikko");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -677,7 +677,7 @@ public class BattleManager : MonoBehaviour {
                 //Debug.Break();
                 //Time.timeScale = 0.5f;
             //anim.Play(attacker.AttackAnimation);
-            yield return attacker.PlayAnimation();
+            yield return attacker.PlayAttackAnimation();
             //yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + bufferTime);
             Time.timeScale = 1f;
         }
@@ -780,12 +780,15 @@ public class BattleManager : MonoBehaviour {
             {
                 case Denigen.AttackType.NORMAL:
                     message = "";
+                    StartCoroutine(target.PlayFlinchAnimation());
                     break;
                 case Denigen.AttackType.BLOCKED:
                     message = target.DenigenName + " blocked the attack\n";
+                    StartCoroutine(target.PlayBlockAnimation());
                     break;
                 case Denigen.AttackType.CRIT:
                     message = attacker.DenigenName + " hit a weak spot!\n";
+                    StartCoroutine(target.PlayFlinchAnimation());
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";

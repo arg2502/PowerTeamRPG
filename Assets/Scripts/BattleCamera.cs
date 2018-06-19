@@ -6,7 +6,7 @@ public class BattleCamera : MonoBehaviour {
     float movementRate = 5f;
     float zoomRate = 5f;
     float originalZoom;
-    float attackZoom = 9f;
+    float attackZoom = 12f;
     Vector3 originalPos;
 
     Vector3 desiredPos;
