@@ -19,7 +19,8 @@ public class TurnOrderUI : MonoBehaviour {
     public void SetAsFirst()
     {
         gameObject.SetActive(true);
-        gameObject.transform.SetAsFirstSibling();
+        //gameObject.transform.SetAsFirstSibling();
+        gameObject.transform.SetAsLastSibling();
     }
 
     public void Disable()

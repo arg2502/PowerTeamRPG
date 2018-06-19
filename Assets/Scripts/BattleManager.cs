@@ -25,9 +25,10 @@ public class BattleManager : MonoBehaviour {
     public List<GameObject> enemyPositions;
     List<Vector3> heroStartingPositions;
     List<Vector3> enemyStartingPositions;
-    
-    public List<StatsCard> heroStatsList;
-    public List<StatsCard> enemyStatsList;
+
+    StatsCardManager statsCardManager;    
+    //public List<StatsCard> heroStatsList;
+    //public List<StatsCard> enemyStatsList;
 
     const int MAX_HEROES = 4;
     const int MAX_ENEMIES = 5;
@@ -150,7 +151,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 5;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Goikko");
+                enemiesToAdd.Add("Mudpuppy");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -182,30 +183,46 @@ public class BattleManager : MonoBehaviour {
 
     void AssignStatsCards()
     {
+        statsCardManager = GetComponent<StatsCardManager>();
+
         // assign heroes their cards and set the stats
         for(int i = 0; i < heroList.Count; i++)
         {
             var hero = heroList[i];
-            hero.statsCard = heroStatsList[i];
+            hero.statsCard = statsCardManager.HeroCards[i];
             hero.statsCard.SetInitStats(hero);
         }
 
         // turn off any unused cards
-        for(int i = heroList.Count; i < heroStatsList.Count; i++)
+        for(int i = heroList.Count; i < statsCardManager.HeroCards.Count; i++)
         {
-            heroStatsList[i].gameObject.SetActive(false);
+            statsCardManager.HeroCards[i].gameObject.SetActive(false);
         }
 
         // ENEMIES
         for(int i = 0; i < enemyList.Count; i++)
         {
             var enemy = enemyList[i];
-            enemy.statsCard = enemyStatsList[i];
+            enemy.statsCard = statsCardManager.EnemyCards[i];
             enemy.statsCard.SetInitStats(enemy);
         }
-        for(int i = enemyList.Count; i < enemyStatsList.Count; i++)
+        for(int i = enemyList.Count; i < statsCardManager.EnemyCards.Count; i++)
         {
-            enemyStatsList[i].gameObject.SetActive(false);
+            statsCardManager.EnemyCards[i].gameObject.SetActive(false);
+        }
+
+        // set stat cards positions
+        statsCardManager.DetermineCardPositions(heroList, enemyList);
+    }
+
+    public void SetDenigenPositionsToCards()
+    {
+        foreach (var denigen in denigenList)
+        {
+            var cardPos = Camera.main.ScreenToWorldPoint(denigen.statsCard.GetComponent<RectTransform>().position);
+            cardPos.y = denigen.transform.position.y;
+            cardPos.z = denigen.transform.position.z;
+            denigen.transform.position = cardPos;
         }
     }
 
@@ -382,6 +399,7 @@ public class BattleManager : MonoBehaviour {
 
     void StartTargetPhase()
     {
+        statsCardManager.ShowCards();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
         ResetDenigen();
@@ -412,8 +430,9 @@ public class BattleManager : MonoBehaviour {
     }
 
     void StartAttackPhase()
-    {        
+    {
         //ToggleDescription(false);
+        statsCardManager.HideCards();
 
         // have enemies decide their attack
         foreach (var enemy in enemyList)

@@ -33,6 +33,26 @@ public class StatsCard : MonoBehaviour {
     public enum CardState { SHORT, GROW, FULL, SHRINK }
     public CardState cardState;
 
+    public float Center { get { return GetComponent<RectTransform>().position.x; } }
+    public float FarLeft
+    {
+        get
+        {         
+            Vector3[] v = new Vector3[4];
+            background.rectTransform.GetWorldCorners(v);
+            return v[0].x;
+        }
+    }
+    public float FarRight
+    {
+        get
+        {
+            Vector3[] v = new Vector3[4];
+            background.rectTransform.GetWorldCorners(v);
+            return v[3].x;
+        }
+    }
+
     void Awake()
     {
         bgAnimator = background.GetComponent<Animator>();
@@ -53,7 +73,7 @@ public class StatsCard : MonoBehaviour {
         // get status state -- but capitalize the first letter
         var statusText = currentDenigen.StatusState.ToString();
         statusText = char.ToUpper(statusText[0]) + statusText.Substring(1);
-        status.text = "Status: " + statusText;
+        status.text = statusText;
 
         if (currentDenigen is Hero)
         {
@@ -74,6 +94,8 @@ public class StatsCard : MonoBehaviour {
 
     void UpdateHealthBars()
     {
+        if (!gameObject.activeSelf) return;
+
         var healthPercent = currentDenigen.Hp / (float) currentDenigen.HpMax;
         StartCoroutine(ChangeBarValue(hpBarFull, healthPercent));
         StartCoroutine(ChangeBarValue(hpBarShort, healthPercent));
@@ -81,6 +103,8 @@ public class StatsCard : MonoBehaviour {
 
     void UpdatePowerMagicBars()
     {
+        if (!gameObject.activeSelf) return;
+
         var pmPercent = currentDenigen.Pm / (float) currentDenigen.PmMax;
         StartCoroutine(ChangeBarValue(pmBarFull, pmPercent));
         StartCoroutine(ChangeBarValue(pmBarShort, pmPercent));
@@ -111,15 +135,15 @@ public class StatsCard : MonoBehaviour {
 
     public void ShowFullCard()
     {
-        print("show full -- state: " + cardState);
-        // only play the animation if the full group is not already active
-        if (cardState == CardState.SHORT
-            || cardState == CardState.SHRINK)
-        {
-            print("inside full group is not active");
-            StopAllCoroutines();
-            StartCoroutine(ToFull());
-        }
+        //print("show full -- state: " + cardState);
+        //// only play the animation if the full group is not already active
+        //if (cardState == CardState.SHORT
+        //    || cardState == CardState.SHRINK)
+        //{
+        //    print("inside full group is not active");
+        //    StopAllCoroutines();
+        //    StartCoroutine(ToFull());
+        //}
     }
     IEnumerator ToFull()
     {
@@ -135,14 +159,14 @@ public class StatsCard : MonoBehaviour {
     
     public void ShowShortCard()
     {
-        print("SHRINK: " + gameObject.name);
-        // only play the animation if the short group is not already active
-        if (cardState == CardState.FULL
-             || cardState == CardState.GROW)
-        {
-            StopAllCoroutines();
-            StartCoroutine(ToShort());
-        }
+        //print("SHRINK: " + gameObject.name);
+        //// only play the animation if the short group is not already active
+        //if (cardState == CardState.FULL
+        //     || cardState == CardState.GROW)
+        //{
+        //    StopAllCoroutines();
+        //    StartCoroutine(ToShort());
+        //}
     }
     IEnumerator ToShort()
     {
@@ -158,10 +182,32 @@ public class StatsCard : MonoBehaviour {
 
     public void JumpToShort()
     {
-        fullGroup.SetActive(false);
-        shortGroup.SetActive(true);
+        //fullGroup.SetActive(false);
+        //shortGroup.SetActive(true);
 
-        bgAnimator.speed = 0;
-        bgAnimator.Play("Shrink", -1, 1);
+        //if (bgAnimator == null) return;
+
+        //bgAnimator.speed = 0;
+        //bgAnimator.Play("Shrink", -1, 1);
+    }
+
+    public void SetBGSize(int numOfCards)
+    {
+        print("num: " + numOfCards);
+        var delta = background.rectTransform.sizeDelta;
+
+        if (numOfCards == 1)
+            delta.x = 100;
+        else if (numOfCards == 2)
+            delta.x = 100;
+        else if (numOfCards == 3)
+            delta.x = 30;
+        else if (numOfCards == 4)
+            delta.x = 6;
+        else if (numOfCards == 5)
+            delta.x = -20;
+
+        background.rectTransform.sizeDelta = delta;
+
     }
 }
