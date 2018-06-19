@@ -94,23 +94,40 @@ public class StatsCard : MonoBehaviour {
 
     void UpdateHealthBars()
     {
-        if (!gameObject.activeSelf) return;
-
         var healthPercent = currentDenigen.Hp / (float) currentDenigen.HpMax;
-        StartCoroutine(ChangeBarValue(hpBarFull, healthPercent));
-        StartCoroutine(ChangeBarValue(hpBarShort, healthPercent));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(ChangeBarValueCoroutine(hpBarFull, healthPercent));
+            StartCoroutine(ChangeBarValueCoroutine(hpBarShort, healthPercent));
+        }
+        else
+        {
+            ChangeBarValue(hpBarFull, healthPercent);
+            ChangeBarValue(hpBarShort, healthPercent);
+        }
     }
 
     void UpdatePowerMagicBars()
     {
-        if (!gameObject.activeSelf) return;
-
         var pmPercent = currentDenigen.Pm / (float) currentDenigen.PmMax;
-        StartCoroutine(ChangeBarValue(pmBarFull, pmPercent));
-        StartCoroutine(ChangeBarValue(pmBarShort, pmPercent));
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(ChangeBarValueCoroutine(pmBarFull, pmPercent));
+            StartCoroutine(ChangeBarValueCoroutine(pmBarShort, pmPercent));
+        }
+        else
+        {
+            ChangeBarValue(pmBarFull, pmPercent);
+            ChangeBarValue(pmBarShort, pmPercent);
+        }
     }
 
-    IEnumerator ChangeBarValue(Image bar, float desiredAmount)
+    void ChangeBarValue(Image bar, float desiredAmount)
+    {
+        bar.fillAmount = desiredAmount;
+    }
+
+    IEnumerator ChangeBarValueCoroutine(Image bar, float desiredAmount)
     {
         // decrease bar value
         if (bar.fillAmount > desiredAmount)
