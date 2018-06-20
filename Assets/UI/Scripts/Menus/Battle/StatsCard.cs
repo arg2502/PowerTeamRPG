@@ -39,7 +39,8 @@ public class StatsCard : MonoBehaviour {
         get
         {         
             Vector3[] v = new Vector3[4];
-            background.rectTransform.GetWorldCorners(v);
+            //background.rectTransform.GetWorldCorners(v);
+            fullGroup.GetComponent<RectTransform>().GetWorldCorners(v);
             return v[0].x;
         }
     }
@@ -48,7 +49,8 @@ public class StatsCard : MonoBehaviour {
         get
         {
             Vector3[] v = new Vector3[4];
-            background.rectTransform.GetWorldCorners(v);
+            //background.rectTransform.GetWorldCorners(v);
+            fullGroup.GetComponent<RectTransform>().GetWorldCorners(v);
             return v[3].x;
         }
     }
@@ -84,7 +86,7 @@ public class StatsCard : MonoBehaviour {
 
             hpShort.text = currentDenigen.Hp.ToString();
             pmShort.text = currentDenigen.Pm.ToString();
-            portrait.sprite = currentDenigen.Portrait;
+            //portrait.sprite = currentDenigen.Portrait;
             portraitShort.sprite = currentDenigen.Portrait;
         }
 
@@ -210,9 +212,9 @@ public class StatsCard : MonoBehaviour {
 
     public void SetBGSize(int numOfCards)
     {
-        print("num: " + numOfCards);
-        var delta = background.rectTransform.sizeDelta;
-
+        //var delta = background.rectTransform.sizeDelta;
+        var delta = fullGroup.GetComponent<RectTransform>().sizeDelta;
+        print("delta: " + delta);
         if (numOfCards == 1)
             delta.x = 100;
         else if (numOfCards == 2)
@@ -220,11 +222,12 @@ public class StatsCard : MonoBehaviour {
         else if (numOfCards == 3)
             delta.x = 30;
         else if (numOfCards == 4)
-            delta.x = 6;
+            delta.x = 12.5f;
         else if (numOfCards == 5)
-            delta.x = -20;
+            delta.x = -7;
 
-        background.rectTransform.sizeDelta = delta;
+        //background.rectTransform.sizeDelta = delta;
+        fullGroup.GetComponent<RectTransform>().sizeDelta = delta;
 
     }
 }
