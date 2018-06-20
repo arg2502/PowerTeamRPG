@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 93382c1d2468a444480623478f0d28bf
+timeCreated: 1529449104
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dumbledor 2 Italic
+  fontNames:
+  - Dumbledor 2 Italic
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

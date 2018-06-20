@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 91fe608680f9f0c4cb2d7a3f597cc33c
+timeCreated: 1529449104
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dumbledor 2 Cut Down
+  fontNames:
+  - Dumbledor 2 Cut Down
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 5a052d78d512b2a46b06cce597de05df
+timeCreated: 1529449103
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dumbledor 2 Wide
+  fontNames:
+  - Dumbledor 2 Wide
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

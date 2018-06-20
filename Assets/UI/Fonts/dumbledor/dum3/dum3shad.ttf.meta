@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 285c437b1dea0e441b75d09f0da77534
+timeCreated: 1529449101
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dumbledor 3 Shadow
+  fontNames:
+  - Dumbledor 3 Shadow
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

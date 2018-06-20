@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BattleCamera : MonoBehaviour {
 
-    float movementRate = 5f;
-    float zoomRate = 5f;
+    float movementRate = 7.5f;
+    float zoomRate = 7.5f;
     float originalZoom;
     float attackZoom = 12f;
     Vector3 originalPos;
