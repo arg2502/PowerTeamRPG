@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StatsCardManager : MonoBehaviour {
 
+    public GameObject HeroStats;
+    public GameObject EnemyStats;
     public List<StatsCard> HeroCards;
     public List<StatsCard> EnemyCards;
 
@@ -389,34 +391,14 @@ public class StatsCardManager : MonoBehaviour {
 
     public void HideCards()
     {
-        battleCardHolder = new List<StatsCard>();
-
-        foreach(var hero in HeroCards)
-        {
-            if (hero.gameObject.activeSelf)
-            {
-                battleCardHolder.Add(hero);
-                hero.gameObject.SetActive(false);
-            }
-        }
-        foreach(var enemy in EnemyCards)
-        {
-            if(enemy.gameObject.activeSelf)
-            {
-                battleCardHolder.Add(enemy);
-                enemy.gameObject.SetActive(false);
-            }
-        }
+        HeroStats.GetComponent<Animator>().Play("TurnOff");
+        EnemyStats.GetComponent<Animator>().Play("TurnOff");       
     }
 
     public void ShowCards()
     {
-        if (battleCardHolder == null) return;
-
-        foreach(var card in battleCardHolder)
-        {
-            card.gameObject.SetActive(true);
-        }
+        HeroStats.GetComponent<Animator>().Play("TurnOn");
+        EnemyStats.GetComponent<Animator>().Play("TurnOn");
     }
 
 }
