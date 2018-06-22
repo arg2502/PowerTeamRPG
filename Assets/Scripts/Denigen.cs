@@ -179,6 +179,7 @@ public class Denigen : MonoBehaviour {
     }
 
     // reference to UI text
+    public MiniHP hpBar;
     //public struct StatsText { public Text NAME, HP, PM; }
     //public StatsText statsText;
 

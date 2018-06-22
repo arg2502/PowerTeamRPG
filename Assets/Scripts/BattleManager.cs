@@ -65,6 +65,8 @@ public class BattleManager : MonoBehaviour {
 
     public List<TurnOrderUI> turnOrder;
 
+    public GameObject hpBarPrefab;
+
 	void Start ()
     {
         AddHeroes();
@@ -213,6 +215,17 @@ public class BattleManager : MonoBehaviour {
 
         // set stat cards positions
         statsCardManager.DetermineCardPositions(heroList, enemyList);
+
+        CreateHPBars();
+    }
+
+    void CreateHPBars()
+    {
+        foreach (var denigen in denigenList)
+        {
+            var hpBar = GameObject.Instantiate(hpBarPrefab, denigen.transform);//FindObjectOfType<Canvas>().transform);            
+            hpBar.GetComponent<MiniHP>().Init(denigen);
+        }
     }
 
     public void SetDenigenPositionsToCards()
@@ -749,6 +762,9 @@ public class BattleManager : MonoBehaviour {
             messagesToDisplay.Add(message);
             target.ResetHealing();
             target.statsCard.UpdateStats();
+
+            // show hp bar
+            target.hpBar.UpdateHP();
         }
 
         DisplayMultiMessage(messagesToDisplay);
@@ -805,6 +821,9 @@ public class BattleManager : MonoBehaviour {
             print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
 
             TakeDamage(target, target.CalculatedDamage);
+
+            // show hp bar
+            target.hpBar.UpdateHP();
         }
 
         DisplayMultiMessage(messagesToDisplay);
