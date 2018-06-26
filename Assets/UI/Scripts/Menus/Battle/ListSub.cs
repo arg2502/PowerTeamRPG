@@ -30,10 +30,14 @@
         GameObject currentObj;
         Vector2 originalContainerPos;
 
+        public Text damageText;
+        public Text accuracyText;
+        public Text critText;
+
         public override void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
-            descriptionText = battleManager.DescriptionText;
+            //descriptionText = battleManager.DescriptionText;
             currentContainer = jethroSkillsContainers; // default -- for positioning only
             originalContainerPos = currentContainer.transform.localPosition;
             currentContainer = null;
@@ -45,14 +49,15 @@
             base.TurnOnMenu();
             listOfButtons = new List<Button>();
             FillList();
-            
             //if (currentContainer != lastContainer)
             //{
-                rootButton = listOfButtons[0];
+            rootButton = listOfButtons[0];
                 currentContainer.transform.localPosition = originalContainerPos;
                 //lastContainer = currentContainer;
             //}   
             SetSelectedObjectToRoot();
+            
+            UpdateButtonStatInfo();
         }
         protected override void AddButtons()
         {
@@ -478,12 +483,51 @@
 
             currentObj = EventSystem.current.currentSelectedGameObject;
             rootButton = currentObj.GetComponentInChildren<Button>();
-            print("ListSub: currentObj: " + currentObj);
-            print("ListSub: rootButton: " + rootButton);
+            //print("ListSub: currentObj: " + currentObj);
+            //print("ListSub: rootButton: " + rootButton);
+            UpdateButtonStatInfo();
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
         }
 
+        void UpdateButtonStatInfo()
+        {
+            if (battleManager.menuState == MenuState.SPELLS)
+            {
+                foreach (var spell in battleManager.CurrentHero.SpellsList)
+                {
+                    if (string.Equals(rootButton.GetComponentInChildren<Text>().text, spell.Name))
+                        SetTechStats(spell);
+                }
+            }
+            else if (battleManager.menuState == MenuState.SKILLS)
+            {
+                foreach (var skill in battleManager.CurrentHero.SkillsList)
+                {
+                    if (string.Equals(rootButton.GetComponentInChildren<Text>().text, skill.Name))
+                        SetTechStats(skill);
+                }
+            }
+            else
+            {
+                foreach (var item in gameControl.consumables)
+                {
+                    if (string.Equals(rootButton.GetComponentInChildren<Text>().text, item.GetComponent<Item>().name))
+                        SetItemStats(item.GetComponent<Item>() as ConsumableItem);
+                }
+            }
+        }        
+
+        void SetTechStats(Technique tech)
+        {
+            damageText.text = tech.Damage.ToString();
+            accuracyText.text = tech.Accuaracy.ToString();
+            critText.text = tech.Critical.ToString();
+        }
+        void SetItemStats(ConsumableItem item)
+        {
+
+        }
     }
 }

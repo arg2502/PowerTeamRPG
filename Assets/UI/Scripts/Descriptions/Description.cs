@@ -12,7 +12,7 @@
         {
             if (string.IsNullOrEmpty(description))
                 SetDescription();
-            print("description: " + description);
+            //print("description: " + description);
             return description;
         }
 
