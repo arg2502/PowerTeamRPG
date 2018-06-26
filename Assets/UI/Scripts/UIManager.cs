@@ -29,7 +29,12 @@
 
         void SetCanvas()
         {
-            canvas = GameObject.FindObjectOfType<Canvas>(); // this should probably be set in scene or another way. What if we can multiple canvases for some reason?
+            //canvas = GameObject.FindObjectOfType<Canvas>(); // this should probably be set in scene or another way. What if we can multiple canvases for some reason?
+            var canvasObj = GameObject.FindGameObjectWithTag("MainCanvas");
+            if (canvasObj == null)
+                Debug.LogError("Canvas not found. Did you add the 'MainCanvas' tag to the Canvas obj?");
+            else
+                canvas = canvasObj.GetComponent<Canvas>();
         }
 
         public Menu CurrentMenu
