@@ -34,11 +34,17 @@
         public GameObject damageObj;
         public GameObject accuracyObj;
         public GameObject critObj;
+        public Image targetType;
 
+        [Header("Sprite Icons")]
         public Sprite damageIcon;
         public Sprite hpIcon;
         public Sprite pmIcon;
         public Sprite reviveIcon;
+        public Sprite selfTarget;
+        public Sprite singleTarget;
+        public Sprite splashTarget;
+        public Sprite teamTarget;
 
         Image _damageImage;
         Text damageText;
@@ -543,7 +549,10 @@
             accuracyObj.SetActive(true);
             critObj.SetActive(true);
 
+            // update images
             _damageImage.sprite = damageIcon;
+
+            SetTargetSprite(tech);
 
             // update text
             damageText.text = tech.Damage.ToString();
@@ -571,6 +580,18 @@
                 _damageImage.sprite = reviveIcon;
                 damageText.text = "";
             }            
+        }
+
+        void SetTargetSprite(Technique tech)
+        {
+            if (tech.targetType == TargetType.HERO_SELF)
+                targetType.sprite = selfTarget;
+            else if (tech.targetType == TargetType.ENEMY_SINGLE || tech.targetType == TargetType.HERO_SINGLE)
+                targetType.sprite = singleTarget;
+            else if (tech.targetType == TargetType.ENEMY_SPLASH || tech.targetType == TargetType.HERO_SPLASH)
+                targetType.sprite = splashTarget;
+            else if (tech.targetType == TargetType.ENEMY_TEAM || tech.targetType == TargetType.HERO_TEAM)
+                targetType.sprite = teamTarget;
         }
     }
 }
