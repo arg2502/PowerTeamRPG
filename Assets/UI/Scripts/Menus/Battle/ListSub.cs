@@ -30,9 +30,20 @@
         GameObject currentObj;
         Vector2 originalContainerPos;
 
-        public Text damageText;
-        public Text accuracyText;
-        public Text critText;
+        [Header("Description Info")]
+        public GameObject damageObj;
+        public GameObject accuracyObj;
+        public GameObject critObj;
+
+        public Sprite damageIcon;
+        public Sprite hpIcon;
+        public Sprite pmIcon;
+        public Sprite reviveIcon;
+
+        Image _damageImage;
+        Text damageText;
+        Text accuracyText;
+        Text critText;
 
         public override void Init()
         {
@@ -41,6 +52,12 @@
             currentContainer = jethroSkillsContainers; // default -- for positioning only
             originalContainerPos = currentContainer.transform.localPosition;
             currentContainer = null;
+
+            _damageImage = damageObj.GetComponentInChildren<Image>();
+            damageText = damageObj.GetComponentInChildren<Text>();
+            accuracyText = accuracyObj.GetComponentInChildren<Text>();
+            critText = critObj.GetComponentInChildren<Text>();
+
             base.Init();
         }
         
@@ -71,7 +88,7 @@
             battleManager.ShowAllShortCardsExceptCurrent();
             //rootButton = currentObj.GetComponent<Button>();
             //SetSelectedObjectToRoot();
-            print("REFOCUS");
+            //print("REFOCUS");
         }
 
         void FillList()
@@ -521,13 +538,39 @@
 
         void SetTechStats(Technique tech)
         {
+            // show objects
+            damageObj.SetActive(true);
+            accuracyObj.SetActive(true);
+            critObj.SetActive(true);
+
+            _damageImage.sprite = damageIcon;
+
+            // update text
             damageText.text = tech.Damage.ToString();
             accuracyText.text = tech.Accuaracy.ToString();
             critText.text = tech.Critical.ToString();
         }
         void SetItemStats(ConsumableItem item)
         {
+            // hide objects
+            accuracyObj.SetActive(false);
+            critObj.SetActive(false);
 
+            if (item.hpChange > 0)
+            {
+                _damageImage.sprite = hpIcon;
+                damageText.text = item.hpChange.ToString();
+            }
+            else if (item.pmChange > 0)
+            {
+                _damageImage.sprite = pmIcon;
+                damageText.text = item.pmChange.ToString();
+            }
+            else
+            {
+                _damageImage.sprite = reviveIcon;
+                damageText.text = "";
+            }            
         }
     }
 }
