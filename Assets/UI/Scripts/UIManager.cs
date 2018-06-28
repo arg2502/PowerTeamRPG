@@ -163,9 +163,9 @@
             if (list_currentMenus.Count > 1)
             {
                 var lastPos = list_currentMenus.Count - 1;
-                list_currentMenus[lastPos].SetActive(false);
                 var menu = list_currentMenus[lastPos].GetComponent<Menu>();
                 menu.Close();
+                //list_currentMenus[lastPos].SetActive(false);
                 menu.RootButton = menu.AssignRootButton();
                 list_currentMenus.RemoveAt(lastPos);
                 lastPos = list_currentMenus.Count - 1;

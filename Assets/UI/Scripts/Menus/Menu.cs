@@ -14,6 +14,8 @@
         protected UIDatabase uiDatabase;
         protected Button rootButton;
         protected List<Button> listOfButtons;
+        protected Animator animator;
+        protected float animationSpeed = 1.75f;
         public Text descriptionText;
 
         /// <summary>
@@ -26,7 +28,8 @@
                 TurnOnMenu();
                 return;
             }
-            
+
+            animator = GetComponent<Animator>();
             gameControl = GameControl.control;
             uiManager = GameControl.UIManager;
             uiDatabase = uiManager.uiDatabase;
@@ -37,12 +40,33 @@
             TurnOnMenu();
         } 
 
+        void FadeIn()
+        {
+            if (animator == null) return;
+
+            animator.speed = animationSpeed;
+            animator.Play("TurnOn");
+        }
+
+        IEnumerator FadeOut()
+        {
+            if (animator != null)
+            {
+                animator.speed = animationSpeed;
+                animator.Play("TurnOff");
+                yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
+            }
+
+            gameObject.SetActive(false);
+        }
+
         /// <summary>
         /// When the menu is already created and you just want to turn it back on
         /// </summary>
         public virtual void TurnOnMenu()
         {
             gameObject.SetActive(true);
+            FadeIn();
             SetSelectedObjectToRoot();
             transform.SetAsLastSibling();     
         }
@@ -126,7 +150,10 @@
         /// <summary>
         /// Called right as you leave a menu -- so objects aren't left selected that shouldn't be
         /// </summary>
-        public virtual void Close() { }
+        public virtual void Close()
+        {
+            StartCoroutine(FadeOut());
+        }
 
         protected void Update()
         {
