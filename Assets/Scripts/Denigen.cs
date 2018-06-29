@@ -4,7 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Denigen : MonoBehaviour {
-    
+
+    // object with sprite and animator
+    public GameObject spriteHolder;
+
     // in-battle stats -- these variables will hold any temporary changes made to the Denigen's stats during battle
     // Ex: a move temporarily increases Attack stat by 5 but only for a few turns, or for the rest of the battle
     // so atkChange would be set to +5, and set back to zero after x amount of turns and/or at the end of the battle
@@ -403,7 +406,7 @@ public class Denigen : MonoBehaviour {
 
 	// Update is called once per frame
 	protected void Update () {
-        gameObject.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
+        spriteHolder.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
 
         if (this.Hp <= 0 && !this.IsDead)
             print(name + " IS DEAD");
@@ -443,7 +446,7 @@ public class Denigen : MonoBehaviour {
 
     IEnumerator PlayAnimation(string animationToPlay)
     {
-        var anim = GetComponent<Animator>();
+        var anim = spriteHolder.GetComponent<Animator>();
         anim.Play(animationToPlay, -1, 0f);
         yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + 0.25f);
     }

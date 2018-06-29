@@ -28,5 +28,6 @@
         public GameObject AttackSub;
         public GameObject ListSub;
         public GameObject TargetMenu;
+        public GameObject VictoryMenu;
     }
 }

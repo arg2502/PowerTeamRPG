@@ -9,6 +9,7 @@ public class BattleManager : MonoBehaviour {
 
     int currentDenigen = 0;
 
+    public GameObject battlePlatform;
     public List<Denigen> denigenList = new List<Denigen>();
     //List<Denigen> availableDenigens = new List<Denigen>();
     public List<Hero> heroList = new List<Hero>();
@@ -128,7 +129,15 @@ public class BattleManager : MonoBehaviour {
         heroObj.transform.SetParent(heroContainer);
         var hero = heroObj.GetComponent<Hero>();
         hero.Data = GameControl.control.heroList[index];
-        hero.transform.localPosition = heroStartingPositions[index];
+
+        var pos = heroStartingPositions[index];
+        pos.y = 0;
+        //pos.y = battlePlatform.transform.position.y;
+        //var halfHeight = hero.spriteHolder.GetComponent<SpriteRenderer>().sprite.bounds.extents.y;
+        //print("half: " + halfHeight);
+        //pos.y += halfHeight;
+        hero.transform.position = pos;
+
         denigenList.Add(hero);
         heroList.Add(hero);
         print(hero.DenigenName + ": " + hero.StatusState);
@@ -151,7 +160,7 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            int numOfGoikkos = 5;
+            int numOfGoikkos = 1;
             for (int i = 0; i < numOfGoikkos; i++)
                 enemiesToAdd.Add("Goikko");
 
@@ -176,8 +185,12 @@ public class BattleManager : MonoBehaviour {
 
         enemy.Data = enemyData;
         enemy.Init();
-        if(numOfEnemies < enemyStartingPositions.Count)
-            enemy.transform.localPosition = enemyStartingPositions[numOfEnemies];
+        if (numOfEnemies < enemyStartingPositions.Count)
+        {
+            var pos = enemyStartingPositions[numOfEnemies];
+            //pos.y = battlePlatform.transform.position.y;
+            enemy.transform.localPosition = pos;
+        }
         numOfEnemies++;
         denigenList.Add(enemy);
         enemyList.Add(enemy);
@@ -679,7 +692,7 @@ public class BattleManager : MonoBehaviour {
         
         
 
-        var anim = attacker.GetComponent<Animator>();
+        var anim = attacker.spriteHolder.GetComponent<Animator>();
         if (anim != null && !string.IsNullOrEmpty(attacker.AttackAnimation))
         {
             // time before and after the animation to give some time to watch the transitions to and from Idle
@@ -991,23 +1004,24 @@ public class BattleManager : MonoBehaviour {
 
         yield return new WaitForSeconds(2f);
 
-        // add gold earnings
-        DescriptionText.text = "You gain " + winnings + " gold.";
-        GameControl.control.AddGold(winnings);
-        yield return new WaitForSeconds(2f);
+        uiManager.PushMenu(uiManager.uiDatabase.VictoryMenu);
+        //// add gold earnings
+        //DescriptionText.text = "You gain " + winnings + " gold.";
+        //GameControl.control.AddGold(winnings);
+        //yield return new WaitForSeconds(2f);
 
-        // add exp
-        DescriptionText.text = "Your team members gain " + exp + " exp.";
+        //// add exp
+        //DescriptionText.text = "Your team members gain " + exp + " exp.";
 
-        foreach (var h in heroList)
-        {
-            if (!h.IsDead)
-                h.AddExp(exp);
-        }
+        //foreach (var h in heroList)
+        //{
+        //    if (!h.IsDead)
+        //        h.AddExp(exp);
+        //}
 
-        yield return new WaitForSeconds(2f);
+        //yield return new WaitForSeconds(2f);
 
-        GameControl.control.ReturnFromBattle();
+        //GameControl.control.ReturnFromBattle();
     }
 
     IEnumerator FailBattle()

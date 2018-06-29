@@ -12,6 +12,10 @@ TextureImporter:
     21300010: jethroIdle_5
     21300012: jethroIdle_6
     21300014: jethroIdle_7
+    21300016: jethroIdle_8
+    21300018: jethroIdle_9
+    21300020: jethroIdle_10
+    21300022: jethroIdle_11
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -107,7 +111,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,7 +125,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -135,7 +139,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -149,7 +153,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -163,7 +167,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -177,7 +181,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -191,7 +195,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,7 +209,7 @@ TextureImporter:
         width: 325
         height: 450
       alignment: 9
-      pivot: {x: 0.64, y: 0.484}
+      pivot: {x: 0.3353, y: 0.0088}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
