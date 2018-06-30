@@ -12,14 +12,17 @@ TextureImporter:
     21300010: goikkoAttackSheet_5
     21300012: goikkoAttackSheet_6
     21300014: goikkoAttackSheet_7
-  serializedVersion: 2
+  externalObjects: {}
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -29,36 +32,54 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: -1
     aniso: 16
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: goikkoAttackSheet_0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -66,17 +87,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 39.600006, y: 79.5}
-        - {x: -68.399994, y: 79.5}
-        - {x: -68.399994, y: -81.5}
-        - {x: 36.600006, y: -81.5}
-        - {x: 67.600006, y: -38.5}
-        - {x: 67.600006, y: 9.5}
-        - {x: 52.600006, y: 50.5}
-    - name: goikkoAttackSheet_1
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_1
       rect:
         serializedVersion: 2
         x: 240
@@ -84,26 +101,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 64.600006, y: -10.5}
-        - {x: 35.600006, y: 52.5}
-        - {x: 22.600006, y: 78.5}
-        - {x: -48.399994, y: 78.5}
-        - {x: -65.399994, y: 72.5}
-        - {x: -65.399994, y: -26.5}
-        - {x: -50.399994, y: -81.5}
-        - {x: 32.600006, y: -81.5}
-        - {x: 37.600006, y: -80.5}
-        - {x: 63.600006, y: -27.5}
-        - {x: 64.600006, y: -20.5}
-      - - {x: 67.600006, y: -22.5}
-        - {x: 70.600006, y: -21.5}
-        - {x: 70.600006, y: -18.5}
-        - {x: 67.600006, y: -17.5}
-        - {x: 65.600006, y: -19.5}
-    - name: goikkoAttackSheet_2
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_2
       rect:
         serializedVersion: 2
         x: 480
@@ -111,35 +115,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 52.599976, y: -21.5}
-        - {x: 49.599976, y: -23.5}
-        - {x: 49.599976, y: -16.5}
-        - {x: 46.599976, y: -12.5}
-        - {x: 51.599976, y: -10.5}
-        - {x: 59.599976, y: 0.5}
-        - {x: 56.599976, y: 59.5}
-        - {x: 24.599976, y: 74.5}
-        - {x: -42.400024, y: 74.5}
-        - {x: -57.400024, y: 46.5}
-        - {x: -57.400024, y: -69.5}
-        - {x: -54.400024, y: -82.5}
-        - {x: -47.400024, y: -83.5}
-        - {x: 38.599976, y: -83.5}
-        - {x: 66.599976, y: -56.5}
-        - {x: 66.599976, y: -14.5}
-        - {x: 60.599976, y: -2.5}
-        - {x: 50.599976, y: -10.5}
-        - {x: 50.599976, y: -19.5}
-      - - {x: -68.400024, y: 10.5}
-        - {x: -68.400024, y: -5.5}
-        - {x: -65.400024, y: -6.5}
-        - {x: -62.400024, y: -5.5}
-        - {x: -62.400024, y: 9.5}
-        - {x: -65.400024, y: 10.5}
-    - name: goikkoAttackSheet_3
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_3
       rect:
         serializedVersion: 2
         x: 720
@@ -147,19 +129,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 9.599976, y: 73.5}
-        - {x: -26.400024, y: 73.5}
-        - {x: -49.400024, y: 47.5}
-        - {x: -54.400024, y: 35.5}
-        - {x: -54.400024, y: -82.5}
-        - {x: 54.599976, y: -82.5}
-        - {x: 68.599976, y: -58.5}
-        - {x: 68.599976, y: 8.5}
-        - {x: 39.599976, y: 64.5}
-    - name: goikkoAttackSheet_4
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_4
       rect:
         serializedVersion: 2
         x: 0
@@ -167,14 +143,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -54.399994, y: 73.5}
-        - {x: -54.399994, y: -82.5}
-        - {x: 67.600006, y: -82.5}
-        - {x: 67.600006, y: 73.5}
-    - name: goikkoAttackSheet_5
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_5
       rect:
         serializedVersion: 2
         x: 240
@@ -182,33 +157,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 16.600006, y: 67.5}
-        - {x: -5.399994, y: 63.5}
-        - {x: -3.399994, y: 67.5}
-        - {x: -3.399994, y: 71.5}
-        - {x: -4.399994, y: 73.5}
-        - {x: -13.399994, y: 73.5}
-        - {x: -16.399994, y: 72.5}
-        - {x: -33.399994, y: 58.5}
-        - {x: -49.399994, y: 36.5}
-        - {x: -126.399994, y: -22.5}
-        - {x: -128.4, y: -24.5}
-        - {x: -128.4, y: -27.5}
-        - {x: -128.4, y: -20.5}
-        - {x: -144.4, y: -17.5}
-        - {x: -154.4, y: -15.5}
-        - {x: -156.4, y: -17.5}
-        - {x: -156.4, y: -50.5}
-        - {x: -70.399994, y: -80.5}
-        - {x: -65.399994, y: -81.5}
-        - {x: 54.600006, y: -81.5}
-        - {x: 72.600006, y: -67.5}
-        - {x: 72.600006, y: -8.5}
-        - {x: 57.600006, y: 54.5}
-    - name: goikkoAttackSheet_6
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_6
       rect:
         serializedVersion: 2
         x: 480
@@ -216,53 +171,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 20.599976, y: 73.5}
-        - {x: -46.400024, y: 73.5}
-        - {x: -62.400024, y: 49.5}
-        - {x: -62.400024, y: -47.5}
-        - {x: -46.400024, y: -82.5}
-        - {x: 41.599976, y: -82.5}
-        - {x: 68.599976, y: -45.5}
-        - {x: 68.599976, y: 20.5}
-        - {x: 66.599976, y: 40.5}
-      - - {x: -132.40002, y: -34.5}
-        - {x: -138.40002, y: -36.5}
-        - {x: -138.40002, y: -41.5}
-        - {x: -135.40002, y: -43.5}
-        - {x: -121.400024, y: -43.5}
-        - {x: -119.400024, y: -39.5}
-        - {x: -119.400024, y: -36.5}
-        - {x: -122.400024, y: -34.5}
-      - - {x: -118.400024, y: -21.5}
-        - {x: -121.400024, y: -23.5}
-        - {x: -121.400024, y: -24.5}
-        - {x: -120.400024, y: -26.5}
-        - {x: -118.400024, y: -28.5}
-        - {x: -121.400024, y: -31.5}
-        - {x: -121.400024, y: -36.5}
-        - {x: -99.400024, y: -42.5}
-        - {x: -61.400024, y: -42.5}
-        - {x: -59.400024, y: -40.5}
-        - {x: -59.400024, y: -29.5}
-        - {x: -79.400024, y: -21.5}
-      - - {x: -136.40002, y: -21.5}
-        - {x: -155.40002, y: -21.5}
-        - {x: -159.40002, y: -22.5}
-        - {x: -159.40002, y: -29.5}
-        - {x: -156.40002, y: -30.5}
-        - {x: -137.40002, y: -30.5}
-        - {x: -134.40002, y: -27.5}
-        - {x: -134.40002, y: -22.5}
-      - - {x: -164.40002, y: -28.5}
-        - {x: -163.40002, y: -29.5}
-        - {x: -160.40002, y: -28.5}
-        - {x: -160.40002, y: -25.5}
-        - {x: -163.40002, y: -24.5}
-        - {x: -164.40002, y: -25.5}
-    - name: goikkoAttackSheet_7
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: goikkoAttackSheet_7
       rect:
         serializedVersion: 2
         x: 720
@@ -270,44 +185,13 @@ TextureImporter:
         width: 240
         height: 167
       alignment: 9
-      pivot: {x: 0.685, y: 0.5}
+      pivot: {x: 0.585, y: 0.0335}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 52.599976, y: -21.5}
-        - {x: 49.599976, y: -23.5}
-        - {x: 49.599976, y: -16.5}
-        - {x: 46.599976, y: -12.5}
-        - {x: 51.599976, y: -10.5}
-        - {x: 59.599976, y: 0.5}
-        - {x: 56.599976, y: 59.5}
-        - {x: 24.599976, y: 74.5}
-        - {x: -42.400024, y: 74.5}
-        - {x: -57.400024, y: 46.5}
-        - {x: -57.400024, y: -69.5}
-        - {x: -54.400024, y: -82.5}
-        - {x: -47.400024, y: -83.5}
-        - {x: 38.599976, y: -83.5}
-        - {x: 66.599976, y: -56.5}
-        - {x: 66.599976, y: -14.5}
-        - {x: 60.599976, y: -2.5}
-        - {x: 50.599976, y: -10.5}
-        - {x: 50.599976, y: -19.5}
-      - - {x: -89.400024, y: -26.5}
-        - {x: -92.400024, y: -27.5}
-        - {x: -93.400024, y: -28.5}
-        - {x: -93.400024, y: -36.5}
-        - {x: -75.400024, y: -41.5}
-        - {x: -52.400024, y: -41.5}
-        - {x: -50.400024, y: -39.5}
-        - {x: -50.400024, y: -30.5}
-        - {x: -58.400024, y: -26.5}
-      - - {x: -68.400024, y: 10.5}
-        - {x: -68.400024, y: -5.5}
-        - {x: -65.400024, y: -6.5}
-        - {x: -62.400024, y: -5.5}
-        - {x: -62.400024, y: 9.5}
-        - {x: -65.400024, y: 10.5}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
     outline: []
+    physicsShape: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

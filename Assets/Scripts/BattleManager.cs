@@ -162,7 +162,7 @@ public class BattleManager : MonoBehaviour {
         {
             int numOfGoikkos = 1;
             for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Goikko");
+                enemiesToAdd.Add("Mudpuppy");
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -188,7 +188,7 @@ public class BattleManager : MonoBehaviour {
         if (numOfEnemies < enemyStartingPositions.Count)
         {
             var pos = enemyStartingPositions[numOfEnemies];
-            //pos.y = battlePlatform.transform.position.y;
+            pos.y = 0;
             enemy.transform.localPosition = pos;
         }
         numOfEnemies++;
@@ -499,9 +499,9 @@ public class BattleManager : MonoBehaviour {
     {
         // what to do with a denigen that has been killed
         // FOR NOW -- JUST SET THEIR ALPHA TO ZERO
-        var color = deadDenigen.GetComponent<SpriteRenderer>().color;
+        var color = deadDenigen.spriteHolder.GetComponent<SpriteRenderer>().color;
         color.a = 0f;
-        deadDenigen.GetComponent<SpriteRenderer>().color = color;
+        deadDenigen.spriteHolder.GetComponent<SpriteRenderer>().color = color;
 
         RemoveFromTurnOrder(deadDenigen);
         //availableDenigens.Remove(deadDenigen);
