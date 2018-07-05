@@ -207,7 +207,7 @@ public class Denigen : MonoBehaviour {
 
 
         // start IDLE animation at random frame, so that if there are multiple of this denigen, they don't all look the same
-        anim = GetComponent<Animator>();
+        anim = spriteHolder.GetComponent<Animator>();
         if (anim != null)
         {
             AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);//could replace 0 by any other animation layer index
