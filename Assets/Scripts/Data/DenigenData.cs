@@ -110,6 +110,8 @@ public class DenigenData : ScriptableObject
     
     protected void LevelUpOnAwake(int startingLevel, int rollover = 0)
     {
+        expToLvlUp = CalcExpToLvlUp(); // at least once if level one -- kinda hacky
+
         // minus 1 because it will level up "startingLevel" number of times
         // we already start at 1, so we wanna start at (startingLevel-1)
         for (int i = 0; i < startingLevel - 1; i++)

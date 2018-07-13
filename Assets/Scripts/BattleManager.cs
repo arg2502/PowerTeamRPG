@@ -160,7 +160,7 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            int numOfGoikkos = 5;
+            int numOfGoikkos = 1;
             for (int i = 0; i < numOfGoikkos; i++)
                 enemiesToAdd.Add("Goikko");
 

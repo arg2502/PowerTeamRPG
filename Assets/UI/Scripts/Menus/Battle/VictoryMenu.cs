@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.UI;
 
     public class VictoryMenu : Menu
     {
@@ -15,6 +16,7 @@
         protected override void AddButtons()
         {
             base.AddButtons();
+            listOfButtons = new List<Button>();
         }
         protected override void AddListeners()
         {
@@ -25,10 +27,24 @@
             base.Init();
             battleManager = FindObjectOfType<BattleManager>();
 
-            jethroCard.Init(battleManager.heroList[0]);
-            coleCard.Init(battleManager.heroList[1]);
-            eleanorCard.Init(battleManager.heroList[2]);
-            joulietteCard.Init(battleManager.heroList[3]);
+            FindHeroes();
+        }
+
+        void FindHeroes()
+        {
+            for(int i = 0; i < battleManager.heroList.Count; i++)
+            {
+                var currentDenigen = battleManager.heroList[i];
+                if (currentDenigen.Data.identity == 0)
+                    jethroCard.Init(currentDenigen);
+                else if (currentDenigen.Data.identity == 1)
+                    coleCard.Init(currentDenigen);
+                else if (currentDenigen.Data.identity == 2)
+                    eleanorCard.Init(currentDenigen);
+                else if (currentDenigen.Data.identity == 3)
+                    joulietteCard.Init(currentDenigen);
+                
+            }
         }
     }
 }
