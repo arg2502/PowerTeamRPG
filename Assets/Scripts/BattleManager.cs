@@ -648,7 +648,7 @@ public class BattleManager : MonoBehaviour {
         // if the battle is over, break the cycle        
         if (IsBattleOver)
         {
-            EndBattle();
+            //EndBattle();
             return;
         }
 
@@ -1005,6 +1005,8 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
 
         uiManager.PushMenu(uiManager.uiDatabase.VictoryMenu);
+        var victoryMenu = uiManager.CurrentMenu.GetComponent<VictoryMenu>();
+        victoryMenu.LevelUp(exp);
         //// add gold earnings
         //DescriptionText.text = "You gain " + winnings + " gold.";
         //GameControl.control.AddGold(winnings);

@@ -139,6 +139,11 @@ public class DenigenData : ScriptableObject
         return ((int)expToGo - rollover);
     }
 
+    public int MaxExpOfLevel(int thisLevel)
+    {
+        return (int)(thisLevel * growthSpeed * 10);
+    }
+
     /// <summary>
     /// Returns true if the denigen's status is either "dead" or "overkill"
     /// A simpler solution to writing if(dead || overkill) all the time

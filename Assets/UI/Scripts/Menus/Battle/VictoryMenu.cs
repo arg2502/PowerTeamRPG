@@ -46,5 +46,13 @@
                 
             }
         }
+
+        public void LevelUp(int exp)
+        {
+            jethroCard.LevelUp(exp);
+            coleCard.LevelUp(exp);
+            eleanorCard.LevelUp(exp);
+            joulietteCard.LevelUp(exp);
+        }
     }
 }

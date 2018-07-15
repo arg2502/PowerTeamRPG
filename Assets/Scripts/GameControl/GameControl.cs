@@ -842,6 +842,18 @@ public class GameControl : MonoBehaviour {
         SetHeroesToLiving();
     }
 
+//    void AddHero(HeroData data)
+//    {
+
+//        // because scriptable objects are assets, changes made during runtime remain
+//        // creating a copy resets the values, making it easier to test
+//#if UNITY_EDITOR
+//        data = Instantiate(data);
+//#endif
+
+//        heroList.Add(data);
+//    }
+
     void AddJethro()
     {
         //test code for creating Jethro -- based on level 1 stats
@@ -859,9 +871,14 @@ public class GameControl : MonoBehaviour {
         //Destroy(jethroObj);
 
         var jethro = Resources.Load<HeroData>("Data/Heroes/Start_Jethro");
+#if UNITY_EDITOR
+        jethro = Instantiate(jethro);
+#endif
+        heroList.Add(jethro);
+        //AddHero(jethro);
         jethro.denigenName = playerName;
         //jethro.Init();
-        heroList.Add(jethro);
+        
         
     }
     void AddCole()
@@ -875,6 +892,9 @@ public class GameControl : MonoBehaviour {
         //Destroy(coleObj);
 
         var cole = Resources.Load<HeroData>("Data/Heroes/Start_Cole");
+#if UNITY_EDITOR
+        cole = Instantiate(cole);
+#endif
         heroList.Add(cole);
 
         // the below code would probably be found in the "Add Spell" functions
@@ -894,6 +914,9 @@ public class GameControl : MonoBehaviour {
         //Destroy(eleanorObj);
 
         var eleanor = Resources.Load<HeroData>("Data/Heroes/Start_Eleanor");
+#if UNITY_EDITOR
+        eleanor = Instantiate(eleanor);
+#endif
         heroList.Add(eleanor);
     }
     void AddJuliette()
@@ -908,6 +931,9 @@ public class GameControl : MonoBehaviour {
         //Destroy(julietteObj);
 
         var jouliette = Resources.Load<HeroData>("Data/Heroes/Start_Jouliette");
+#if UNITY_EDITOR
+        jouliette = Instantiate(jouliette);
+#endif
         heroList.Add(jouliette);
     }
 

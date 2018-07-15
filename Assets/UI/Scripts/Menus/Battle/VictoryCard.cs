@@ -11,16 +11,82 @@ public class VictoryCard : MonoBehaviour {
     public Image expValue;
     public Text currentExp;
     public Text maxExp;
-    Denigen currentDenigen;
+    Hero currentHero;
 
-    public void Init(Denigen denigen)
+    float fillSpeed = 0.5f;
+
+    public void Init(Hero hero)
     {
-        currentDenigen = denigen;
-        portrait.sprite = currentDenigen.Portrait;
-        title.text = currentDenigen.DenigenName;
-        level.text = currentDenigen.Level.ToString();
-        currentExp.text = currentDenigen.Exp.ToString();
-        maxExp.text = currentDenigen.ExpToLevelUp.ToString();
-        expValue.fillAmount = (float)currentDenigen.Exp / currentDenigen.ExpToLevelUp;
+        currentHero = hero;
+        portrait.sprite = currentHero.Portrait;
+        title.text = currentHero.DenigenName;
+        level.text = currentHero.Level.ToString();
+        currentExp.text = currentHero.Exp.ToString();
+        maxExp.text = (currentHero.Exp + currentHero.ExpToLevelUp).ToString();
+        UpdateBar();
+    }
+
+    void UpdateBar()
+    {
+        var currentNum = int.Parse(currentExp.text);
+        var maxNum = int.Parse(maxExp.text);
+        expValue.fillAmount = (float)currentNum / maxNum;
+    }
+
+    IEnumerator BarChange()
+    {
+        var end = int.Parse(currentExp.text);
+        var desiredFill = (float)end / int.Parse(maxExp.text);
+
+        while(expValue.fillAmount < desiredFill)
+        {
+            expValue.fillAmount += Time.deltaTime * fillSpeed;
+            yield return null;
+        }
+        expValue.fillAmount = desiredFill;
+    }
+
+    public void LevelUp(int exp)
+    {
+        currentHero.AddExp(exp);
+        StartCoroutine(IncreaseBar(exp));
+    }
+
+    IEnumerator IncreaseBar(int remainingExp)
+    {
+        var startExp = int.Parse(currentExp.text);
+
+        for (int i = 0; i < remainingExp; i++)
+        {
+            startExp++;
+            if (currentHero.DenigenName == "Jethro")
+                print("start: " + startExp);
+            currentExp.text = startExp.ToString();
+
+            yield return StartCoroutine(BarChange());
+
+            // check if leveled up
+            if (BarFull())
+            {
+                startExp = 0;
+                currentExp.text = startExp.ToString();
+
+                var levelNum = int.Parse(level.text);
+                levelNum++;
+                level.text = levelNum.ToString();
+
+                maxExp.text = currentHero.Data.MaxExpOfLevel(levelNum).ToString();
+
+                yield return StartCoroutine(BarChange());
+            }
+            
+        }
+    }
+
+    bool BarFull()
+    {
+        if (expValue.fillAmount >= 1)
+            return true;
+        else return false;
     }
 }
