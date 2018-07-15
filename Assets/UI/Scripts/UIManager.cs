@@ -90,7 +90,8 @@
 
             GameObject menuObj;
             // check if we have already have this menu in the scene. If we do, enable it
-            if(dictionary_existingMenus.ContainsKey(menuToEnable))
+            if(dictionary_existingMenus.ContainsKey(menuToEnable)
+                && dictionary_existingMenus[menuToEnable] != null)
             {
                 menuObj = dictionary_existingMenus[menuToEnable];
                 //menuObj.GetComponent<Menu>().Init();
@@ -107,8 +108,16 @@
                 menuObj = GameObject.Instantiate(menuPrefab);
                 menuObj.transform.SetParent(canvas.transform, false);
                 menuObj.transform.localPosition = Vector3.zero;
-                if (sub) AssignSubPosition(menuObj); 
-                dictionary_existingMenus.Add(menuToEnable, menuObj);
+                if (sub) AssignSubPosition(menuObj);
+
+                // add to dictionary if not already there
+                // if key exists, assign the newly created menu to the dictionary
+                // a little hacky, but oh well...it fixes the issue of menus not existing when you return to the scene
+                if (!dictionary_existingMenus.ContainsKey(menuToEnable))
+                    dictionary_existingMenus.Add(menuToEnable, menuObj);
+                else
+                    dictionary_existingMenus[menuToEnable] = menuObj;
+
                 list_currentMenus.Add(menuObj);
 
                 //menuObj.GetComponent<Menu>().Init();
