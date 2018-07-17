@@ -80,7 +80,10 @@
                 foreach (var enemy in battleManager.enemyList)
                     currentTargets.Add(enemy);
 
-                SetCursorPositions(battleManager.enemyPositions);
+                var tempList = new List<Denigen>();
+                foreach (var h in battleManager.enemyList)
+                    tempList.Add(h as Denigen);
+                SetCursorPositions(tempList);
                 SetCursorIcons(battleManager.damageIcon);
             }
             else
@@ -91,7 +94,11 @@
                     currentTargets.Add(battleManager.heroList[i]);
                 }
 
-                SetCursorPositions(battleManager.heroPositions);
+                var tempList = new List<Denigen>();
+                foreach (var h in battleManager.heroList)
+                    tempList.Add(h as Denigen);
+
+                SetCursorPositions(tempList);
                 SetCursorIcons(battleManager.healIcon);
             }
 
@@ -107,7 +114,7 @@
 
         }
         
-        void SetCursorPositions(List<GameObject> targets)
+        void SetCursorPositions(List<Denigen> targets)
         {
             // set positions of cursors
             // convert world coordinates to screen coordinates for UI
