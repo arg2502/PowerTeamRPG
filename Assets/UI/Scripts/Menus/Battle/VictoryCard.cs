@@ -15,6 +15,9 @@ public class VictoryCard : MonoBehaviour {
 
     float fillSpeed = 0.5f;
 
+    bool isDone = false;
+    public bool IsDone { get { return isDone; } }
+
     public void Init(Hero hero)
     {
         currentHero = hero;
@@ -54,6 +57,8 @@ public class VictoryCard : MonoBehaviour {
 
     IEnumerator IncreaseBar(int remainingExp)
     {
+        isDone = false;
+
         var startExp = int.Parse(currentExp.text);
 
         for (int i = 0; i < remainingExp; i++)
@@ -81,6 +86,8 @@ public class VictoryCard : MonoBehaviour {
             }
             
         }
+
+        isDone = true;
     }
 
     bool BarFull()

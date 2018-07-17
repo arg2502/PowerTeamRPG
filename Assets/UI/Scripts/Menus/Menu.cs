@@ -189,7 +189,7 @@
             // check for any inactive buttons
             for (int i = 0; i < listOfButtons.Count; i++)
             {
-                if (!listOfButtons[i].interactable)
+                if (!listOfButtons[i].interactable && listOfButtons.Count > 1)
                 {
                     //Debug.Log(i + ": not interactable");
                     // if button is at top

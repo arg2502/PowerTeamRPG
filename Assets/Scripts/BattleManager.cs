@@ -1017,7 +1017,9 @@ public class BattleManager : MonoBehaviour {
 
         uiManager.PushMenu(uiManager.uiDatabase.VictoryMenu);
         var victoryMenu = uiManager.CurrentMenu.GetComponent<VictoryMenu>();
+        victoryMenu.AddGold(winnings);
         victoryMenu.LevelUp(exp);
+        
         //// add gold earnings
         //DescriptionText.text = "You gain " + winnings + " gold.";
         //GameControl.control.AddGold(winnings);
