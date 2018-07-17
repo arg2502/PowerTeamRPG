@@ -55,14 +55,17 @@
             base.TurnOnMenu();
 
             treeManager = GameControl.skillTreeManager;
+        }
 
+        public void SetHero(int heroIndex)
+        {
             // the hero to show first is stored inside TeamInfoSub where you selected the hero
-            teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;
+            //teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;
 
+            //MoveHeroList(teamInfoSub.currentHero, true); // move list before new currentHero is assigned
 
-            MoveHeroList(teamInfoSub.currentHero, true); // move list before new currentHero is assigned
-
-            currentHero = teamInfoSub.currentHero; // kinda redundant cause currentHero is set inside AssignTree, but oh whale
+            //currentHero = teamInfoSub.currentHero; // kinda redundant cause currentHero is set inside AssignTree, but oh whale
+            currentHero = heroIndex;
             AssignTree(0, currentHero);
             SetSelectedObjectToRoot();
             ToggleTextChange();

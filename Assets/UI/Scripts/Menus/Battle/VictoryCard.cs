@@ -18,6 +18,9 @@ public class VictoryCard : MonoBehaviour {
     bool isDone = false;
     public bool IsDone { get { return isDone; } }
 
+    bool leveledUp = false;
+    public bool LeveledUp { get { return leveledUp; } }
+
     public void Init(Hero hero)
     {
         currentHero = hero;
@@ -26,6 +29,7 @@ public class VictoryCard : MonoBehaviour {
         level.text = currentHero.Level.ToString();
         currentExp.text = currentHero.Exp.ToString();
         maxExp.text = (currentHero.Exp + currentHero.ExpToLevelUp).ToString();
+        leveledUp = false;
         UpdateBar();
     }
 
@@ -51,6 +55,7 @@ public class VictoryCard : MonoBehaviour {
 
     public void LevelUp(int exp)
     {
+        leveledUp = true;
         currentHero.AddExp(exp);
         StartCoroutine(IncreaseBar(exp));
     }

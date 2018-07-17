@@ -41,6 +41,8 @@
         {
             // open skill tree for this character
             uiManager.PushMenu(uiDatabase.SkillTreeMenu);
+            var skillTree = uiManager.CurrentMenu.GetComponent<SkillTreeMenu>();
+            skillTree.SetHero(teamInfoSub.currentHero);
         }
         void OnStatPoints()
         {

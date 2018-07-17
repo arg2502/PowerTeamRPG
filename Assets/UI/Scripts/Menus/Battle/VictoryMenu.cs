@@ -13,6 +13,8 @@
         public VictoryCard joulietteCard;
         BattleManager battleManager;
 
+        public Button skillTreeButton;
+        public Button statsButton;
         public Button doneButton;
         public Text totalGold;
         public Text earnedGold;
@@ -21,19 +23,22 @@
         protected override void AddButtons()
         {
             base.AddButtons();
-            listOfButtons = new List<Button>() { doneButton };
+            listOfButtons = new List<Button>() { skillTreeButton, statsButton, doneButton };
         }
         protected override void AddListeners()
         {
             base.AddListeners();
+            skillTreeButton.onClick.AddListener(OnSkillTree);
+            statsButton.onClick.AddListener(OnStats);
             doneButton.onClick.AddListener(OnDone);
         }
+        
         public override void Init()
         {
-            base.Init();
             battleManager = FindObjectOfType<BattleManager>();
-            
             FindHeroes();
+
+            base.Init();
         }
 
         public override Button AssignRootButton()
@@ -106,14 +111,43 @@
                 yield return new WaitForSeconds(Time.deltaTime * goldRate);                
             }
             
-            ActivateDoneButton();
+            ActivateButtons();
         }
 
-        void ActivateDoneButton()
+        void ActivateButtons()
         {
-            doneButton.interactable = true;
+            foreach (var b in listOfButtons)
+                b.interactable = true;
+
+            SetButtonNavigation();
         }
 
+        void OnSkillTree()
+        {
+            uiManager.PushMenu(uiManager.uiDatabase.SkillTreeMenu);
+            var skillTree = uiManager.CurrentMenu.GetComponent<SkillTreeMenu>();
+
+            int heroIndex;
+
+            if (jethroCard.LeveledUp)
+                heroIndex = 0;
+            else if (coleCard.LeveledUp)
+                heroIndex = 1;
+            else if (eleanorCard.LeveledUp)
+                heroIndex = 2;
+            else if (joulietteCard.LeveledUp)
+                heroIndex = 3;
+            else
+                heroIndex = 0;
+
+            skillTree.SetHero(heroIndex);
+                
+                
+        }
+        void OnStats()
+        {
+
+        }
         void OnDone()
         {
             gameControl.ReturnFromBattle();
