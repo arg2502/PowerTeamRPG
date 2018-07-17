@@ -51,7 +51,7 @@ public class E_Crabgrass : Enemy {
         // if low health, higher chance of healing
         else
         {
-            if (rng < 0.66f) return heal;
+            if (rng < 0.8f) return heal;
             else return stomp;
         }
     }
