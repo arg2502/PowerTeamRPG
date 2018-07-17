@@ -68,6 +68,10 @@ public class BattleManager : MonoBehaviour {
 
     public GameObject hpBarPrefab;
 
+    [Header("TEST VARS")]
+    public int TEST_numOfEnemies;
+    public List<string> TEST_listOfEnemies;
+
 	void Start ()
     {
         AddHeroes();
@@ -160,9 +164,13 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            int numOfGoikkos = 1;
-            for (int i = 0; i < numOfGoikkos; i++)
-                enemiesToAdd.Add("Goikko");
+            //int numOfGoikkos = 3;
+            for (int i = 0; i < TEST_numOfEnemies; i++)
+            {
+                var random = Random.Range(0, TEST_listOfEnemies.Count - 1);
+                enemiesToAdd.Add(TEST_listOfEnemies[random]);
+            }
+                
 
             // call CreateEnemies on each enemy to add to create the enemies
             foreach (var enemy in enemiesToAdd)
@@ -949,6 +957,9 @@ public class BattleManager : MonoBehaviour {
 
     public bool CalcFlee()
     {
+        // TEMP FOR TESTING
+        return true;
+
         // calculate the likelihood of flight
         int enemyMight = 0;
         int heroMight = 0;
