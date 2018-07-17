@@ -24,7 +24,9 @@
             // assign canvas and eventsystem, but make sure they exist
             SetCanvas();
             if (canvas == null) Debug.LogError("You need to add a canvas to the scene.");
-            
+
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += ClearLists;
+
         }
 
         void SetCanvas()
@@ -46,7 +48,7 @@
                 var latestMenu = list[count - 1].GetComponent<Menu>();
                 return latestMenu;
             }
-            
+
         }
 
         public Menu FindMenu(GameObject databaseMenuToFind)
@@ -56,7 +58,7 @@
             // back out if we don't have the menu yet
             if (!dictionary_existingMenus.ContainsKey(tempMenu))
                 return null;
-            
+
             var menuToReturn = dictionary_existingMenus[tempMenu].GetComponent<Menu>();
 
             if (menuToReturn != null)
@@ -77,7 +79,7 @@
         public void ActivateMenu(GameObject menuPrefab, bool sub = false)
         {
             EnableMenu(menuPrefab, sub);
-            InitMenu(menuPrefab.GetComponent<Menu>());            
+            InitMenu(menuPrefab.GetComponent<Menu>());
         }
 
         /// <summary>
@@ -86,18 +88,19 @@
         /// <param name="menuPrefab"></param>
         public void EnableMenu(GameObject menuPrefab, bool sub = false)
         {
+            Debug.Log("enable menu");
             var menuToEnable = menuPrefab.GetComponent<Menu>();
 
             GameObject menuObj;
             // check if we have already have this menu in the scene. If we do, enable it
-            if(dictionary_existingMenus.ContainsKey(menuToEnable)
+            if (dictionary_existingMenus.ContainsKey(menuToEnable)
                 && dictionary_existingMenus[menuToEnable] != null)
             {
                 menuObj = dictionary_existingMenus[menuToEnable];
                 //menuObj.GetComponent<Menu>().Init();
                 if (sub) AssignSubPosition(menuObj);
                 list_currentMenus.Add(menuObj);
-                
+
                 //menuObj.GetComponent<Menu>().TurnOnMenu();
             }
             // if we don't already have one, create it
@@ -113,10 +116,10 @@
                 // add to dictionary if not already there
                 // if key exists, assign the newly created menu to the dictionary
                 // a little hacky, but oh well...it fixes the issue of menus not existing when you return to the scene
-                if (!dictionary_existingMenus.ContainsKey(menuToEnable))
+                //if (!dictionary_existingMenus.ContainsKey(menuToEnable))
                     dictionary_existingMenus.Add(menuToEnable, menuObj);
-                else
-                    dictionary_existingMenus[menuToEnable] = menuObj;
+               // else
+                    //dictionary_existingMenus[menuToEnable] = menuObj;
 
                 list_currentMenus.Add(menuObj);
 
@@ -124,7 +127,7 @@
             }
             // set this menu as the one in focus (currently on)
             menuInFocus = menuObj;
-            
+
         }
 
         void InitMenu(Menu menu)
@@ -187,8 +190,8 @@
             }
             else
                 DisableAllMenus();
-        }        
-        
+        }
+
         void AssignSubPosition(GameObject menuObj)
         {
             // if the menu is a sub menu, base it's position off of the parent's button that 
@@ -199,9 +202,9 @@
             var rootButtonPos = parentMenu.RootButton.transform.position;
             var buttonWidth = parentMenu.RootButton.GetComponent<RectTransform>().rect.width;
             menuObj.transform.position = new Vector3(rootButtonPos.x + buttonWidth, rootButtonPos.y);
-            
+
         }
-        
+
         public void PushConfirmationMenu(string messageText, Action yesAction, Action noAction = null)
         {
             EnableMenu(uiDatabase.ConfirmationMenu);
@@ -223,6 +226,14 @@
         {
             foreach (var menu in list_currentMenus)
                 menu.SetActive(true);
+        }
+
+        // clear the current menu list and dictionary of existing menu objects
+        // should be called on scene changes when the menu objects are destroyed
+        public void ClearLists(UnityEngine.SceneManagement.Scene current, UnityEngine.SceneManagement.Scene last)
+        {
+            list_currentMenus.Clear();
+            dictionary_existingMenus.Clear();
         }
     }
 }

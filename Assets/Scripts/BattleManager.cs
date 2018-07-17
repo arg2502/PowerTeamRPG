@@ -92,7 +92,7 @@ public class BattleManager : MonoBehaviour {
     {
         uiManager = GameControl.UIManager;
         var battleMenuObj = uiManager.uiDatabase.BattleMenu;
-        uiManager.PushMenu(battleMenuObj);
+        //uiManager.PushMenu(battleMenuObj);
         battleMenu = uiManager.FindMenu(battleMenuObj) as UI.BattleMenu;
     }
     void AddHeroes()
