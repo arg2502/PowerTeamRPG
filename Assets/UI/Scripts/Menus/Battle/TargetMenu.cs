@@ -51,11 +51,24 @@
 
         public override Button AssignRootButton()
         {
-            for (int i = 0; i < currentTargets.Count; i++)
+            if (!battleManager.IsTargetEnemy)
             {
-                if (targetCursors[i].interactable)
+                for (int i = 0; i < currentTargets.Count; i++)
                 {
-                    return targetCursors[i];
+                    if (targetCursors[i].interactable)
+                    {
+                        return targetCursors[i];
+                    }
+                }
+            }
+            else
+            {
+                for (int i = currentTargets.Count-1; i >= 0; i--)
+                {
+                    if (targetCursors[i].interactable)
+                    {
+                        return targetCursors[i];
+                    }
                 }
             }
             return null;
@@ -69,6 +82,11 @@
             listSub = uiManager.FindMenu(uiDatabase.ListSub) as ListSub;
         }
 
+        public override void SetButtonNavigation()
+        {
+            SetButtonNavigationHorizontal();
+        }
+
         public override void TurnOnMenu()
         {
             base.TurnOnMenu();
@@ -77,11 +95,16 @@
 
             if (battleManager.IsTargetEnemy)
             {
-                foreach (var enemy in battleManager.enemyList)
-                    currentTargets.Add(enemy);
+                //foreach (var enemy in battleManager.enemyList)
+                //    currentTargets.Add(enemy);
+                for (int i = battleManager.enemyList.Count - 1; i >= 0; i--)
+                {
+                    currentTargets.Add(battleManager.enemyList[i]);
+                }
 
+                // setting cursor positions
                 var tempList = new List<Denigen>();
-                foreach (var h in battleManager.enemyList)
+                foreach (var h in currentTargets)
                     tempList.Add(h as Denigen);
                 SetCursorPositions(tempList);
                 SetCursorIcons(battleManager.damageIcon);
@@ -89,13 +112,23 @@
             else
             {
                 // heroes are backwards for menu navigation purposes (index 0 is Jethro (bottom))
-                for(int i = battleManager.heroList.Count-1; i >= 0; i--)
-                {
-                    currentTargets.Add(battleManager.heroList[i]);
-                }
+                //for (int i = battleManager.heroList.Count - 1; i >= 0; i--)
+                //{
+                //    currentTargets.Add(battleManager.heroList[i]);
+                //}
+                // COLE -- ELEANOR -- JETHRO -- JOULIETTE (start with joules then go left)
 
+                currentTargets.Add(battleManager.heroList[0]);
+                if (battleManager.heroList.Count > 3)
+                    currentTargets.Add(battleManager.heroList[3]);
+                if (battleManager.heroList.Count > 1)
+                    currentTargets.Add(battleManager.heroList[1]);
+                if (battleManager.heroList.Count > 2)
+                    currentTargets.Add(battleManager.heroList[2]);
+
+                // setting cursor positions
                 var tempList = new List<Denigen>();
-                foreach (var h in battleManager.heroList)
+                foreach (var h in currentTargets)
                     tempList.Add(h as Denigen);
 
                 SetCursorPositions(tempList);

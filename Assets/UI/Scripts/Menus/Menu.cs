@@ -141,6 +141,26 @@
             CheckForInactiveButtons();
         }
 
+        public void SetButtonNavigationHorizontal()
+        {
+            for (int i = 0; i < listOfButtons.Count; i++)
+            {
+                var navigation = listOfButtons[i].navigation;
+                navigation.mode = Navigation.Mode.Explicit;
+
+                // set where the menu will go when 
+                if (i > 0)
+                    navigation.selectOnLeft = listOfButtons[i - 1];
+                if (i < listOfButtons.Count - 1)
+                    navigation.selectOnRight = listOfButtons[i + 1];
+
+
+                listOfButtons[i].navigation = navigation;
+            }
+
+            CheckForInactiveButtons();
+        }
+
         /// <summary>
         /// for when you left a menu and returned to it, but it was never turned off
         ///some values may need to be reset -- refocus on this current menu
