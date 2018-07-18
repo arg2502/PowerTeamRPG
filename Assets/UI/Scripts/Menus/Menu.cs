@@ -42,6 +42,8 @@
 
         void FadeIn()
         {
+            StopAllCoroutines(); // stops menu from fading out (if the menu was backed out of and then quickly selected again)
+
             if (animator == null) return;
 
             animator.speed = animationSpeed;
