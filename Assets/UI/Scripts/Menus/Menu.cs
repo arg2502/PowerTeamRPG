@@ -106,6 +106,7 @@
             if(rootButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }            
             if (rootButton.gameObject == EventSystem.current.currentSelectedGameObject) return;
             EventSystem.current.SetSelectedGameObject(rootButton.gameObject);
+            rootButton.OnSelect(null); // to highlight button
         }
 
         //public void AssignDescription(Button button)
