@@ -214,7 +214,6 @@ public class StatsCard : MonoBehaviour {
     {
         //var delta = background.rectTransform.sizeDelta;
         var delta = fullGroup.GetComponent<RectTransform>().sizeDelta;
-        print("delta: " + delta);
         if (numOfCards == 1)
             delta.x = 100;
         else if (numOfCards == 2)

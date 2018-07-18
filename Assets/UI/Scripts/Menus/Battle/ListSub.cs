@@ -66,7 +66,7 @@
 
             base.Init();
         }
-        
+
         public override void TurnOnMenu()
         {
             base.TurnOnMenu();
@@ -75,12 +75,12 @@
             //if (currentContainer != lastContainer)
             //{
             rootButton = listOfButtons[0];
-                currentContainer.transform.localPosition = originalContainerPos;
-                //lastContainer = currentContainer;
+            currentContainer.transform.localPosition = originalContainerPos;
+            //lastContainer = currentContainer;
             //}   
+            UpdateButtonStatInfo();
             SetSelectedObjectToRoot();
             
-            UpdateButtonStatInfo();
         }
         protected override void AddButtons()
         {
@@ -120,7 +120,7 @@
         void FillItems()
         {
             var containerButtons = currentContainer.GetComponentsInChildren<ListButton>();
-            print("length: " + containerButtons.Length);
+            //print("length: " + containerButtons.Length);
 
             // check if we've already created the list
             // check and see if we have the right number of buttons that we need -- if we used the last of an item in the last round, then we would have more buttons than we need

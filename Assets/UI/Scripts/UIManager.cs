@@ -88,7 +88,7 @@
         /// <param name="menuPrefab"></param>
         public void EnableMenu(GameObject menuPrefab, bool sub = false)
         {
-            Debug.Log("enable menu");
+            //Debug.Log("enable menu");
             var menuToEnable = menuPrefab.GetComponent<Menu>();
 
             GameObject menuObj;

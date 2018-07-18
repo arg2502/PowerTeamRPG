@@ -144,7 +144,6 @@ public class BattleManager : MonoBehaviour {
 
         denigenList.Add(hero);
         heroList.Add(hero);
-        print(hero.DenigenName + ": " + hero.StatusState);
     }
     
     void AddEnemies()
@@ -409,7 +408,6 @@ public class BattleManager : MonoBehaviour {
     {
         // set the new battle state
         battleState = state;
-        print("STATE CHANGE -- " + battleState);
         
         // reset current denigen to traverse through list during attacks
         currentDenigen = FindNextLivingIndex(0);
@@ -1089,9 +1087,7 @@ public class BattleManager : MonoBehaviour {
         }
     }
     void ToggleDenigenStatCard(Denigen denigen, bool show)
-    {
-        print("denigen: " + denigen.DenigenName + ", current: " + currentDenigen +", showFull: " + show);
-        //denigen.statsCard.gameObject.SetActive(show);
+    {        
         if (show)
             denigen.statsCard.ShowFullCard();
         else

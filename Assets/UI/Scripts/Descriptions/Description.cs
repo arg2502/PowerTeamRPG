@@ -16,6 +16,6 @@
             return description;
         }
 
-        public virtual void SetDescription(string message = "") { print("set to: " + message); description = message; }
+        public virtual void SetDescription(string message = "") { description = message; }
     }
 }

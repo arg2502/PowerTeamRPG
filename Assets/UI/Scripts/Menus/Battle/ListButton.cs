@@ -57,7 +57,7 @@ public class ListButton : MonoBehaviour {
 
     public void RefreshItemQuantity(Item item)
     {
-        print("refresh quantity to: " + item.quantity);
+        //print("refresh quantity to: " + item.quantity);
         pmCost.text = (item.quantity - item.GetComponent<ConsumableItem>().inUse).ToString();
     }
 }

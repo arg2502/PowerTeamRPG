@@ -66,7 +66,6 @@ public class StatsCardManager : MonoBehaviour {
 
     void Awake()
     {
-        print("Awake screen width: " + Screen.width);
         CENTER_SCREEN = Screen.width / 2f;
          
         heroLeftBorder = EDGE_BUFFER;
@@ -88,7 +87,6 @@ public class StatsCardManager : MonoBehaviour {
 
     public void DetermineCardPositions(List<Hero> heroList, List<Enemy> enemyList)
     {
-        print("CardPos screen width: " + Screen.width);
         var heroesCount = ActiveHeroes;
         if (heroesCount == 1)
             OneHero();
