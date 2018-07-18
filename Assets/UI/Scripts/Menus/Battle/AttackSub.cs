@@ -91,7 +91,8 @@
         {
             base.Update();
 
-            if (rootButton == EventSystem.current.currentSelectedGameObject.GetComponent<Button>()
+            if (EventSystem.current.currentSelectedGameObject != null &&
+                rootButton == EventSystem.current.currentSelectedGameObject.GetComponent<Button>()
                 || uiManager.menuInFocus != this.gameObject
                 || !gameObject.activeSelf)
                 return;
