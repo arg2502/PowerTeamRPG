@@ -323,7 +323,7 @@ public class BattleManager : MonoBehaviour {
             {
                 if (turnOrder[j].denigen == denigenList[i])
                 {
-                    if (denigenList[i].IsDead)
+                    if (denigenList[i].IsDead || denigenList[i].IsBlocking)
                         turnOrder[j].Disable();
                     else
                         turnOrder[j].SetAsFirst();
