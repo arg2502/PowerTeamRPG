@@ -167,7 +167,7 @@ public class BattleManager : MonoBehaviour {
             //int numOfGoikkos = 3;
             for (int i = 0; i < TEST_numOfEnemies; i++)
             {
-                var random = Random.Range(0, TEST_listOfEnemies.Count - 1);
+                var random = Random.Range(0, TEST_listOfEnemies.Count);
                 enemiesToAdd.Add(TEST_listOfEnemies[random]);
             }
                 

@@ -349,16 +349,17 @@ public class StatsCardManager : MonoBehaviour {
 
         var pos = last.GetComponent<RectTransform>().position;
                 pos.x += distance;
-                last.GetComponent<RectTransform>().position = pos;
+                last.GetComponent<RectTransform>().position = pos;        
+    }
 
-        //if (activeNum > 3)
-        //{
-        //    var secondHero = FindActiveCard(cards.Count - 2, cards, false);
-        //    var pos2 = secondHero.GetComponent<RectTransform>().position;
-        //    var half = distance / 2f;
-        //    pos2.x += half;
-        //    secondHero.GetComponent<RectTransform>().position = pos2;
-        //}
+    StatsCard FindLastCard(List<StatsCard> cards)
+    {
+        for(int i = cards.Count - 1; i >= 0; i--)
+        {
+            if (cards[i].gameObject.activeSelf)
+                return cards[i];
+        }
+        return null;
     }
 
     void SetMiddleCards(List<StatsCard> cards, int activeNum)
@@ -366,7 +367,8 @@ public class StatsCardManager : MonoBehaviour {
         if (activeNum <= 3) return;
 
         var card1 = cards[0].GetComponent<RectTransform>().position.x;
-        var lastCard = cards[cards.Count - 1].GetComponent<RectTransform>().position.x;
+        var lastActiveCard = FindLastCard(cards);
+        var lastCard = lastActiveCard.GetComponent<RectTransform>().position.x;
         var distance = lastCard - card1;
 
         if (activeNum == 4)
