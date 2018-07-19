@@ -435,18 +435,7 @@ public class BattleManager : MonoBehaviour {
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
         ResetDenigen();
-
-        // before we go back to targeting, check to see if any denigens have a status that requires them to lose health
-        foreach (var d in denigenList)
-        {
-            var callback = d.CheckStatusHealthDamage();
-            if (callback != null)
-            {
-                callback.Invoke();
-                TakeDamage(d, d.StatusDamage);
-            }
-        }
-
+        
         // make sure the battle has not ended and we still want TARGET
         // kinda ugly :p
         if (battleState != BattleState.TARGET) return;
@@ -492,13 +481,30 @@ public class BattleManager : MonoBehaviour {
             if (currentDenigen >= denigenList.Count)
             {
                 // FOR NOW -- JUST GO BACK TO TARGETING
-                ChangeBattleState(BattleState.TARGET);
+                //ChangeBattleState(BattleState.TARGET);
+                EndAttackPhase();
                 return;
             }
         }
         if (currentDenigen < denigenList.Count)
             print("NEXT UP -- " + denigenList[currentDenigen].name);
         AttackDenigen();
+    }
+
+    void EndAttackPhase()
+    {
+        // before we go back to targeting, check to see if any denigens have a status that requires them to lose health
+        foreach (var d in denigenList)
+        {
+            var callback = d.CheckStatusHealthDamage();
+            if (callback != null)
+            {
+                callback.Invoke();
+                TakeDamage(d, d.StatusDamage);
+            }
+        }
+
+        ChangeBattleState(BattleState.TARGET);
     }
 
     public void KillOff(Denigen deadDenigen)
@@ -667,7 +673,7 @@ public class BattleManager : MonoBehaviour {
             FindNextAlive();
         // if we're at the end, end the phase
         else
-            ChangeBattleState(BattleState.TARGET);
+            EndAttackPhase();
     }
 
     public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
