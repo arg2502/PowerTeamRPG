@@ -59,7 +59,7 @@
         void OnAttack()
         {
             dimmer.gameObject.SetActive(true);
-            uiManager.PushMenu(uiDatabase.AttackSub);
+            uiManager.PushMenu(uiDatabase.AttackSub, this);
         }
         void OnBlock()
         {
@@ -72,7 +72,7 @@
             //print("Whoa, there. This function isn't done yet, sonny.");
             dimmer.gameObject.SetActive(true);
             battleManager.SetMenuState(MenuState.ITEMS);
-            uiManager.PushMenu(uiDatabase.ListSub);
+            uiManager.PushMenu(uiDatabase.ListSub, this);
         }
         void OnFlee()
         {
