@@ -8,8 +8,6 @@ public class Denigen : MonoBehaviour {
     // object with sprite and animator
     public GameObject spriteHolder;
 
-    public GameObject statusEffect;
-
     // in-battle stats -- these variables will hold any temporary changes made to the Denigen's stats during battle
     // Ex: a move temporarily increases Attack stat by 5 but only for a few turns, or for the rest of the battle
     // so atkChange would be set to +5, and set back to zero after x amount of turns and/or at the end of the battle
@@ -215,9 +213,6 @@ public class Denigen : MonoBehaviour {
             AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);//could replace 0 by any other animation layer index
             anim.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
         }
-
-        if (statusEffect != null)
-            statusEffect.SetActive(false);
     }
 
     public virtual void Attack()
@@ -636,20 +631,10 @@ public class Denigen : MonoBehaviour {
             case DenigenData.Status.overkill: // TEMP -- FOR TESTING
                 print("OVERKILL");
                 break;
-            case DenigenData.Status.infected:
-                StartInfected();
-                break;
         }
 
         StatusState = newStatus;
         statusChanged = true;
-    }
-
-    void AnimateEffect(string name)
-    {
-        if(statusEffect == null) { Debug.LogError("No status effect obj found."); return; }
-        statusEffect.SetActive(true);
-        statusEffect.GetComponent<Animator>().Play(name);
     }
 
     public void StartNormal()
@@ -669,18 +654,10 @@ public class Denigen : MonoBehaviour {
             petrifiedChange = 0;
             print("evasion after: " + Evasion);
         }
-
-        // turn off effects
-        statusEffect.SetActive(false);
     }    
     public void StartBleeding()
     {
         bleedTurn = 1;
-        AnimateEffect("Bleeding");
-    }
-    void StartInfected()
-    {
-        AnimateEffect("Infected");
     }
     public void StartBlinded()
     {
