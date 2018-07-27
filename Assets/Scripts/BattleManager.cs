@@ -38,6 +38,12 @@ public class BattleManager : MonoBehaviour {
     public Sprite healIcon;
     public Sprite statusEffectIcon;
 
+    public Sprite infectedIcon;
+    public Sprite bleedingIcon;
+    public Sprite blindedIcon;
+    public Sprite petrifiedIcon;
+    public Sprite cursedIcon;
+
     // Battle states
     public enum BattleState
     {

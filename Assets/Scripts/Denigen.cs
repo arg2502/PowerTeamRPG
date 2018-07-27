@@ -189,6 +189,7 @@ public class Denigen : MonoBehaviour {
     public StatsCard statsCard;
 
     // status effects
+    GameObject statusIcon;
     int statusDamage;
     public int StatusDamage { get { return statusDamage; } }
     int bleedTurn;
@@ -635,6 +636,45 @@ public class Denigen : MonoBehaviour {
 
         StatusState = newStatus;
         statusChanged = true;
+
+        ShowIcon();
+    }
+
+    void ShowIcon()
+    {
+        if(StatusState == DenigenData.Status.normal || StatusState == DenigenData.Status.dead || StatusState == DenigenData.Status.overkill)
+        {
+            if (statusIcon != null)
+                statusIcon.SetActive(false);
+
+            return;
+        }
+
+        if (statusIcon == null)
+        {
+            statusIcon = GameObject.Instantiate(Resources.Load("Prefabs/StatusIcon")) as GameObject;
+            statusIcon.transform.SetParent(this.transform);
+
+            var pos = transform.position;
+            pos.y = transform.position.y + 1f;
+            statusIcon.transform.position = pos;
+        }
+
+        Sprite icon;
+
+        if (StatusState == DenigenData.Status.infected)
+            icon = battleManager.infectedIcon;
+        else if (StatusState == DenigenData.Status.bleeding)
+            icon = battleManager.bleedingIcon;
+        else if (StatusState == DenigenData.Status.blinded)
+            icon = battleManager.blindedIcon;
+        else if (StatusState == DenigenData.Status.petrified)
+            icon = battleManager.petrifiedIcon;
+        else
+            icon = battleManager.cursedIcon;
+
+        statusIcon.GetComponent<SpriteRenderer>().sprite = icon;
+
     }
 
     public void StartNormal()
