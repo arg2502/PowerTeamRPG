@@ -644,19 +644,25 @@ public class Denigen : MonoBehaviour {
     {
         if(StatusState == DenigenData.Status.normal || StatusState == DenigenData.Status.dead || StatusState == DenigenData.Status.overkill)
         {
-            if (statusIcon != null)
+            if (this.statusIcon != null)
                 statusIcon.SetActive(false);
 
             return;
         }
 
-        if (statusIcon == null)
+        if (this.statusIcon == null)
         {
             statusIcon = GameObject.Instantiate(Resources.Load("Prefabs/StatusIcon")) as GameObject;
             statusIcon.transform.SetParent(this.transform);
 
             var pos = transform.position;
-            pos.y = transform.position.y + 1f;
+
+            // get top of denigen's sprite
+            var sr = spriteHolder.GetComponent<SpriteRenderer>();
+            var top = sr.sprite.bounds.center.y + (sr.sprite.bounds.extents.y / 1.5f);
+            
+
+            pos.y = top;
             statusIcon.transform.position = pos;
         }
 
