@@ -167,7 +167,7 @@
                 listOfButtons[i].navigation = navigation;
             }
 
-            CheckForInactiveButtons();
+            CheckForInactiveButtons(horizontal : true);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@
                 return false;
         }
 
-        void CheckForInactiveButtons()
+        void CheckForInactiveButtons(bool horizontal = false)
         {
             // check for any inactive buttons
             for (int i = 0; i < listOfButtons.Count; i++)
@@ -227,7 +227,8 @@
                         var navigation = listOfButtons[i + 1].navigation;
                         navigation.mode = Navigation.Mode.Explicit;
 
-                        navigation.selectOnUp = null;
+                        if (!horizontal) navigation.selectOnUp = null;
+                        else navigation.selectOnLeft = null;
 
                         listOfButtons[i + 1].navigation = navigation;
                     }
@@ -238,7 +239,8 @@
                         var navigation = listOfButtons[i - 1].navigation;
                         navigation.mode = Navigation.Mode.Explicit;
 
-                        navigation.selectOnDown = null;
+                        if (!horizontal) navigation.selectOnDown = null;
+                        else navigation.selectOnRight = null;
 
                         listOfButtons[i - 1].navigation = navigation;
                     }
@@ -252,7 +254,9 @@
                         navigation.mode = Navigation.Mode.Explicit;
 
                         var button = FindNextActiveButton(i, +1);
-                        navigation.selectOnDown = button;
+
+                        if (!horizontal) navigation.selectOnDown = button;
+                        else navigation.selectOnRight = button;
 
                         listOfButtons[i - 1].navigation = navigation;
                         //}
@@ -263,7 +267,9 @@
                         navigation.mode = Navigation.Mode.Explicit;
 
                         button = FindNextActiveButton(i, -1);
-                        navigation.selectOnUp = button;
+
+                        if (!horizontal) navigation.selectOnUp = button;
+                        else navigation.selectOnLeft = button;
 
                         listOfButtons[i + 1].navigation = navigation;
                     }
