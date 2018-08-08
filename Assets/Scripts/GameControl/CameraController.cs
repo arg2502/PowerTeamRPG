@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate ()
     {
         FollowTarget();
-        StayWithinRoom();
+        //StayWithinRoom();
 	}
 
     void FollowTarget()

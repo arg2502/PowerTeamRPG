@@ -68,11 +68,11 @@ public class roomControl : MonoBehaviour {
 
         // find the room's limits
         roomLimits = new RoomLimits();
-        var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
-        roomLimits.minX = (int)tilemap.transform.position.x;
-        roomLimits.minY = (int)tilemap.transform.position.y;
-        roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
-        roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
+        //var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
+        //roomLimits.minX = (int)tilemap.transform.position.x;
+        //roomLimits.minY = (int)tilemap.transform.position.y;
+        //roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
+        //roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
 
 
 		//create the appropriate amount of enemies
