@@ -927,6 +927,9 @@ public class BattleManager : MonoBehaviour {
             be.GetComponent<SpriteRenderer>().sprite = statusEffectIcon;
 
         be.GetComponent<Effect>().damage = "";
+
+        target.ShowIcon();
+        
         target.StatusChanged = false;
     }
 

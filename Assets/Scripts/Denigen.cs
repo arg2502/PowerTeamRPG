@@ -637,10 +637,10 @@ public class Denigen : MonoBehaviour {
         StatusState = newStatus;
         statusChanged = true;
 
-        ShowIcon();
+        //ShowIcon();
     }
 
-    void ShowIcon()
+    public void ShowIcon()
     {
         if(StatusState == DenigenData.Status.normal || StatusState == DenigenData.Status.dead || StatusState == DenigenData.Status.overkill)
         {
