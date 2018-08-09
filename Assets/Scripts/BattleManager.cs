@@ -821,6 +821,10 @@ public class BattleManager : MonoBehaviour {
             if (target.Hp > target.HpMax)
                 target.Hp = target.HpMax;
 
+            // if the attack only changes status effects, we can't block it
+            if (attacker.attackType == Denigen.AttackType.BLOCKED && target.StatusChanged && target.CalculatedDamage <= 0)
+                attacker.attackType = Denigen.AttackType.NORMAL;
+
             //Now record appropriate text
             var message = "";
             switch (attacker.attackType)
