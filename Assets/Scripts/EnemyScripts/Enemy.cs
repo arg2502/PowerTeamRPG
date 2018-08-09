@@ -45,11 +45,11 @@ public class Enemy : Denigen {
         areaLevel = 3;
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
-        Level = Random.Range((areaLevel - 2), (areaLevel + 2));
+        var startLevel = Random.Range((areaLevel - 2), (areaLevel + 2));
         //level up until desired level is hit
-        for (int i = 0; i < Level; i++)
+        for (int i = 0; i < startLevel; i++)
         {
-            data.LevelUp(i + 1);
+            data.LevelUp();
         }
 
         // Calculate the experience and gold this enemy should award

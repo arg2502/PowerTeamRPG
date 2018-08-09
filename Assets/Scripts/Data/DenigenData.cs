@@ -77,9 +77,10 @@ public class DenigenData : ScriptableObject
     }
 
 
-    public void LevelUp(int lvl)
+    public void LevelUp(int rollover = 0)
     {
-        multiplier = (lvl / 10.0f) + 1.0f;
+        level++;
+        multiplier = (level / 10.0f) + 1.0f;
         boostTotal = stars * 9 * multiplier; // 9 = number of stats
 
         // increase stats
@@ -94,17 +95,17 @@ public class DenigenData : ScriptableObject
         luck += (int)(boostTotal * luckPer);
         evasion += (int)(boostTotal * evasionPer);
         spd += (int)(boostTotal * spdPer);
+        
+        // allocate stats
+        //levelUpPts += (int)(stars * multiplier); // 3 * (level/10 + 1)
 
-        //just in case we're in battle when we level up, let's also increase the bsttle stats
-        // COMMENTED ON 2/14/18 -- We should only be referencing DenigenData
-        //atkChange += (int)(boostTotal * atkPer);
-        //defChange += (int)(boostTotal * defPer);
-        //mgkAtkChange += (int)(boostTotal * mgkAtkPer);
-        //mgkDefChange += (int)(boostTotal * mgkDefPer);
-        //luckChange += (int)(boostTotal * luckPer);
-        //evasionChange += (int)(boostTotal * evasionPer);
-        //spdChange += (int)(boostTotal * spdPer);
+        // actually allocating the points will be done through a levelup menu
 
+        // increase technique points each level up
+        techPts++;
+
+        //calc new required points to level up
+        expToLvlUp = CalcExpToLvlUp(rollover);
     }
 
     
@@ -116,19 +117,8 @@ public class DenigenData : ScriptableObject
         // we already start at 1, so we wanna start at (startingLevel-1)
         for (int i = 0; i < startingLevel - 1; i++)
         {
-            LevelUp(level);
-            level++;
-
-            // allocate stats
-            levelUpPts += (int)(stars * multiplier); // 3 * (level/10 + 1)
-
-            // actually allocating the points will be done through a levelup menu
-
-            // increase technique points each level up
-            techPts++;
-
-            //calc new required points to level up
-            expToLvlUp = CalcExpToLvlUp(rollover);
+            LevelUp(rollover);
+            
         }
     }
 
