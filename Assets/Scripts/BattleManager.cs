@@ -852,9 +852,6 @@ public class BattleManager : MonoBehaviour {
             print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
 
             TakeDamage(target, target.CalculatedDamage);
-
-            // show hp bar
-            target.hpBar.UpdateHP();
         }
 
         DisplayMultiMessage(messagesToDisplay);
@@ -872,6 +869,9 @@ public class BattleManager : MonoBehaviour {
             ShowDamage(target, damage);
         else
             ShowHealing(target, -damage);
+
+        // show hp bar
+        target.hpBar.UpdateHP();
 
         // check for dead
         print(target.DenigenName + " HP: " + target.Hp);
