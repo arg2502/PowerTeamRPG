@@ -46,8 +46,8 @@ public class Enemy : Denigen {
 
         //set the enemy's level within a range of +/- 2 of the area level -- this range can be changed later, if desired
         var startLevel = Random.Range((areaLevel - 2), (areaLevel + 2));
-        //level up until desired level is hit
-        for (int i = 0; i < startLevel; i++)
+        //level up until desired level is hit (minus 1 because level is already 1)
+        for (int i = 0; i < startLevel - 1; i++)
         {
             data.LevelUp();
         }
