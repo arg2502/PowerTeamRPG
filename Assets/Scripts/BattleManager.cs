@@ -150,6 +150,10 @@ public class BattleManager : MonoBehaviour {
 
         denigenList.Add(hero);
         heroList.Add(hero);
+
+        // if they're dead, remove them from the start
+        if (hero.IsDead)
+            KillOff(hero);
     }
     
     void AddEnemies()
