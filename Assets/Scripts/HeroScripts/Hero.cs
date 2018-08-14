@@ -375,20 +375,25 @@ public class Hero : Denigen {
 
         targets.Clear();
         print(DenigenName + "'s TargetIndex: " + targetIndex);
+
+        // the target index is in reverse order from the enemyList (for menu layout purposes)
+        // find the opposite value
+        var newTargetIndex = (battleManager.enemyList.Count - 1) - targetIndex;
+
         for(int i = 1; i < battleManager.enemyList.Count; i++)
         {
-            // check below
-            if ((targetIndex - i) >= 0 && !battleManager.enemyList[targetIndex - i].IsDead)
+            // check left
+            if ((newTargetIndex - i) >= 0 && !battleManager.enemyList[newTargetIndex - i].IsDead)
             {
-                targetIndex -= i;
+                targetIndex = newTargetIndex - i;
                 targets.Add(battleManager.enemyList[targetIndex]);
                 break;
             }
 
-            // check above
-            if ((targetIndex + i) < battleManager.enemyList.Count && !battleManager.enemyList[targetIndex + i].IsDead)
+            // check right
+            if ((newTargetIndex + i) < battleManager.enemyList.Count && !battleManager.enemyList[newTargetIndex + i].IsDead)
             {
-                targetIndex += i;
+                targetIndex = newTargetIndex + i;
                 targets.Add(battleManager.enemyList[targetIndex]);
                 break;
             }
