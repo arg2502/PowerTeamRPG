@@ -41,6 +41,10 @@ public class MiniHP : MonoBehaviour {
 
         var percentage = (float)currentDenigen.Hp / currentDenigen.HpMax;
 
+        // cap the min/max values
+        if (percentage <= 0) percentage = 0;
+        if (percentage >= 1) percentage = 1;
+
         // show the update
         StartCoroutine(ChangeBar(percentage));
     }
