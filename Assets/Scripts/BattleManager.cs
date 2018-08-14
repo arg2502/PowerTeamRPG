@@ -154,6 +154,9 @@ public class BattleManager : MonoBehaviour {
         // if they're dead, remove them from the start
         if (hero.IsDead)
             KillOff(hero);
+
+        // after all creation
+        hero.UpdateIcon();
     }
     
     void AddEnemies()
@@ -518,12 +521,8 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void KillOff(Denigen deadDenigen)
-    {
-        // what to do with a denigen that has been killed
-        // FOR NOW -- JUST SET THEIR ALPHA TO ZERO
-        var color = deadDenigen.spriteHolder.GetComponent<SpriteRenderer>().color;
-        color.a = 0f;
-        deadDenigen.spriteHolder.GetComponent<SpriteRenderer>().color = color;
+    {        
+        deadDenigen.Die();        
 
         RemoveFromTurnOrder(deadDenigen);
         //availableDenigens.Remove(deadDenigen);
@@ -932,7 +931,7 @@ public class BattleManager : MonoBehaviour {
 
         be.GetComponent<Effect>().damage = "";
 
-        target.ShowIcon();
+        target.UpdateIcon();
         
         target.StatusChanged = false;
     }

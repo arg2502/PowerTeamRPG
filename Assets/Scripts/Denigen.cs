@@ -460,6 +460,16 @@ public class Denigen : MonoBehaviour {
     {
         get { return data.IsJustDead; }
     }
+    public void Die()
+    {
+        // what to do with a denigen that has been killed
+        // FOR NOW -- JUST SET THEIR ALPHA TO ZERO
+        var color = spriteHolder.GetComponent<SpriteRenderer>().color;
+        color.a = 0f;
+        spriteHolder.GetComponent<SpriteRenderer>().color = color;
+
+        UpdateIcon();
+    }
     // ATTACK METHODS
 
     /// <summary>
@@ -640,7 +650,7 @@ public class Denigen : MonoBehaviour {
         //ShowIcon();
     }
 
-    public void ShowIcon()
+    public void UpdateIcon()
     {
         if(StatusState == DenigenData.Status.normal || StatusState == DenigenData.Status.dead || StatusState == DenigenData.Status.overkill)
         {
