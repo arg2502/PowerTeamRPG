@@ -84,10 +84,10 @@ public class DenigenData : ScriptableObject
         boostTotal = stars * 9 * multiplier; // 9 = number of stats
 
         // increase stats
-        hp += (int)(boostTotal * hpPer);
-        pm += (int)(boostTotal * pmPer);
-        hpMax += (int)(boostTotal * hpPer);
+        hpMax += (int)(boostTotal * hpPer);        
         pmMax += (int)(boostTotal * pmPer);
+        hp = hpMax; // refill hp
+        pm = pmMax; // refill pm
         atk += (int)(boostTotal * atkPer);
         def += (int)(boostTotal * defPer);
         mgkAtk += (int)(boostTotal * mgkAtkPer);

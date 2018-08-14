@@ -55,6 +55,13 @@ public class VictoryCard : MonoBehaviour {
 
     public void LevelUp(int exp)
     {
+        // don't level up if the hero is dead
+        if(currentHero.IsDead)
+        {
+            isDone = true;
+            return;
+        }
+
         leveledUp = true;
         currentHero.AddExp(exp);
         StartCoroutine(IncreaseBar(exp));
