@@ -40,6 +40,7 @@
 
         public override void TurnOnMenu()
         {
+            rootButton = AssignRootButton();
             base.TurnOnMenu();
 
             dimmer.gameObject.SetActive(false);
