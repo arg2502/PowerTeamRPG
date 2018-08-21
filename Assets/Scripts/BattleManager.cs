@@ -335,7 +335,7 @@ public class BattleManager : MonoBehaviour {
             {
                 if (turnOrder[j].denigen == denigenList[i])
                 {
-                    if (denigenList[i].IsDead || denigenList[i].IsBlocking)
+                    if (denigenList[i].IsDead || denigenList[i].IsBlocking || (battleState == BattleState.ATTACK && string.IsNullOrEmpty(denigenList[i].CurrentAttackName)))
                         turnOrder[j].Disable();
                     else
                         turnOrder[j].SetAsFirst();
@@ -1025,6 +1025,13 @@ public class BattleManager : MonoBehaviour {
         //fleeFailed = true;
         foreach (var hero in heroList)
             hero.CurrentAttackName = "";
+
+        // remove heroes from turn order ui
+        foreach(var turn in turnOrder)
+        {
+            if (turn.denigen is Hero)
+                turn.Disable();
+        }
 
         yield return new WaitForSeconds(1f);
         GoToAttackState();
