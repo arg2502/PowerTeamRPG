@@ -835,7 +835,7 @@ public class BattleManager : MonoBehaviour {
             {
                 case Denigen.AttackType.NORMAL:
                     message = "";
-                    StartCoroutine(target.PlayFlinchAnimation());
+                    target.Flinch();
                     break;
                 case Denigen.AttackType.BLOCKED:
                     message = target.DenigenName + " blocked the attack\n";
@@ -843,7 +843,7 @@ public class BattleManager : MonoBehaviour {
                     break;
                 case Denigen.AttackType.CRIT:
                     message = attacker.DenigenName + " hit a weak spot!\n";
-                    StartCoroutine(target.PlayFlinchAnimation());
+                    target.Flinch();
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";

@@ -405,6 +405,12 @@ public class Denigen : MonoBehaviour {
         }
     }
 
+    public void Flinch()
+    {
+        if (calculatedDamage >= 0)
+            StartCoroutine(PlayFlinchAnimation());
+    }
+
 	// Update is called once per frame
 	protected void Update () {
         spriteHolder.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
