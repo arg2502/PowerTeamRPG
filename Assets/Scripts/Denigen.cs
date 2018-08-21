@@ -479,6 +479,21 @@ public class Denigen : MonoBehaviour {
         UpdateIcon();
     }
     // ATTACK METHODS
+    public void StartEnemyAttack(Technique tech)
+    {
+        switch(tech.targetType)
+        {
+            case TargetType.ENEMY_SINGLE:
+                SingleAttack(tech);
+                break;
+            case TargetType.ENEMY_SPLASH:
+                SplashAttack(tech);
+                break;
+            case TargetType.ENEMY_TEAM:
+                TeamAttack(tech);
+                break;
+        }
+    }
 
     /// <summary>
     /// General Attack methods -- parameters will be divided by 100f.

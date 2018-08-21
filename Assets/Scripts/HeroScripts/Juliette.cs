@@ -19,5 +19,33 @@ public class Juliette : Hero {
 
         base.Awake();	
 	}
-	
+
+    public override void Attack()
+    {
+        switch(CurrentAttackName)
+        {
+            case "Pivot Kick":
+                PivotKick();
+                break;
+            case "Scorpio Jolt":
+                Scorpio();
+                break;
+        }
+
+        base.Attack();
+    }
+
+    void PivotKick()
+    {
+        var pk = GameControl.skillTreeManager.FindTechnique(Data, "Pivot Kick") as Skill;
+
+        StartEnemyAttack(pk);
+    }
+
+    void Scorpio()
+    {
+        var scor = GameControl.skillTreeManager.FindTechnique(Data, "Scorpio Jolt") as Spell;
+
+        StartEnemyAttack(scor);
+    }
 }
