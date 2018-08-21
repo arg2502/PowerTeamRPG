@@ -697,7 +697,7 @@ public class Denigen : MonoBehaviour {
         else
             icon = battleManager.cursedIcon;
 
-        statusIcon.GetComponent<SpriteRenderer>().sprite = icon;
+        statusIcon.GetComponentInChildren<SpriteRenderer>().sprite = icon;
         statusIcon.SetActive(true);
     }
 
