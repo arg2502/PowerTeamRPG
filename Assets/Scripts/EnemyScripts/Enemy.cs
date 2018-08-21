@@ -86,6 +86,18 @@ public class Enemy : Denigen {
         return (Pm - CurrentAttack.Pm) < 0; // true if the current attack will take the enemy's PM below 0
     }
 
+    public override void ChooseTarget()
+    {
+        base.ChooseTarget();
+
+        // choose attack
+        CurrentAttackName = ChooseAttack().Name;
+
+        // check if the enemy has enough PM. If not, use the default attack
+        if (NotEnoughPM())
+            CurrentAttackName = defaultAttack.Name;
+    }
+
     public override void Attack()
     {
         attackAnimation = CurrentAttackName;

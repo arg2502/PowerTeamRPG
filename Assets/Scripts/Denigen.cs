@@ -216,6 +216,8 @@ public class Denigen : MonoBehaviour {
         }
     }
 
+    public virtual void ChooseTarget() { }
+
     public virtual void Attack()
     {
         // final general check
@@ -441,9 +443,9 @@ public class Denigen : MonoBehaviour {
 
     public IEnumerator PlayBlockAnimation()
     {
-        print("start block " + DenigenName + " : " + Time.time);
+        //print("start block " + DenigenName + " : " + Time.time);
         yield return PlayAnimation("Block");
-        print("after block: " + Time.time);
+        //print("after block: " + Time.time);
     }
 
     public IEnumerator PlayFlinchAnimation()

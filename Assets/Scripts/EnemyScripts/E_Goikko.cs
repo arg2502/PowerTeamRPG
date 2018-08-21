@@ -19,21 +19,21 @@ public class E_Goikko : Enemy {
 	}
     
     void TongueWhip()
-    {
-        // code for choosing the target of this attack
-        // because goikko is an early enemy, let's have it randomly select a target
-        ChooseRandomTarget();
+    {       
         SingleAttack(tongueWhip);
     }
     void Poison()
     {
-        ChooseRandomTarget();
         SingleStatusAttack(DenigenData.Status.infected);
     }
     public override Technique ChooseAttack()
     {
         //CLEAR the targets list
         targets.Clear();
+
+        // choose target first, THEN determine type of attack
+        ChooseRandomTarget();
+        bool targetAlreadyPoisoned = targets[0].StatusState == DenigenData.Status.infected;
 
         // Use rng to provide variety to decision making
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated
@@ -42,12 +42,12 @@ public class E_Goikko : Enemy {
         //return "Poison";
         if (healthState == Health.high)
         {
-            if (rng < 0.5f) { return poison; } //boost atk
+            if (!targetAlreadyPoisoned && rng < 0.5f) { return poison; } //boost atk
             else { return tongueWhip; } //attack
         }
         else if (healthState == Health.average)
         {
-            if (rng < 0.25f) { return poison; } //boost atk
+            if (!targetAlreadyPoisoned && rng < 0.25f) { return poison; } //boost atk
             else { return tongueWhip; } //attack
         }
         else
