@@ -919,8 +919,14 @@ public class BattleManager : MonoBehaviour {
 
     void ShowStatusEffect(Denigen target)
     {
-        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
-        be.name = "StatusEffect";
+        GameObject be = null;
+        if (target.GetComponentInChildren<Effect>())
+            be = target.GetComponentInChildren<Effect>().gameObject;
+        if (be == null)
+        {
+            be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+            be.name = "StatusEffect";
+        }
 
         // if the status is changed to normal, that's "normally" (lol) a good thing. So show the heart.
         // otherwise, show a status symbol
