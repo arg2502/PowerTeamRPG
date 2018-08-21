@@ -479,8 +479,10 @@ public class Denigen : MonoBehaviour {
         UpdateIcon();
     }
     // ATTACK METHODS
-    public void StartEnemyAttack(Technique tech)
+    public void StartAttack(string techName)
     {
+        var tech = GameControl.skillTreeManager.FindTechnique(Data, techName);
+
         switch(tech.targetType)
         {
             case TargetType.ENEMY_SINGLE:
@@ -491,6 +493,13 @@ public class Denigen : MonoBehaviour {
                 break;
             case TargetType.ENEMY_TEAM:
                 TeamAttack(tech);
+                break;
+            case TargetType.HERO_SELF:
+            case TargetType.HERO_SINGLE:
+                SingleHeal(tech);
+                break;
+            case TargetType.HERO_TEAM:
+                TeamHeal(tech);
                 break;
         }
     }

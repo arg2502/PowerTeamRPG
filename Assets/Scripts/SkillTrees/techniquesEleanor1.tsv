@@ -1,9 +1,9 @@
 Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level	Target Type
 purge	Purge	Cure one character of status effects.	1	3	0	0	100	2	0		4
 karmaic	Karmaic Justice	For every healing spell performed, increase power magic by 1.	1	0	0	0	100	0	0		7
-tears	Morttimer's Tears	Basic healing for one character.	1	3	0	0	100	2	1		4
+tears	Morttimer's Tears	Basic healing for one character.	1	3	60	0	100	2	1		4
 peace	Morttimer's Peace	Regenerates health a little bit for 3 rounds on one hero.	1	0	0	0	100	1	1		4
-gaze	Gaze of Morttimer	Heals team.	1	0	0	0	100	1	2		6
+gaze	Gaze of Morttimer	Heals team.	1	0	50	0	100	1	2		6
 sharedBlood	Shared Blood	Heal team for a 25% of your hp.	1	0	0	0	100	0	2		6
 disciple1	Disciple of Morttimer I	Healing allies is 10% better.	1	0	0	0	100	1	3	1	0
 disciple2	Disciple of Morttimer II	Healing allies is 20% better.	1	0	0	0	100	1	4	2	0

@@ -25,27 +25,25 @@ public class Juliette : Hero {
         switch(CurrentAttackName)
         {
             case "Pivot Kick":
-                PivotKick();
-                break;
             case "Scorpio Jolt":
-                Scorpio();
+                StartAttack(CurrentAttackName);
                 break;
         }
 
         base.Attack();
     }
 
-    void PivotKick()
-    {
-        var pk = GameControl.skillTreeManager.FindTechnique(Data, "Pivot Kick") as Skill;
+    //void PivotKick()
+    //{
+    //    var pk = GameControl.skillTreeManager.FindTechnique(Data, "Pivot Kick") as Skill;
 
-        StartEnemyAttack(pk);
-    }
+    //    StartEnemyAttack(pk);
+    //}
 
-    void Scorpio()
-    {
-        var scor = GameControl.skillTreeManager.FindTechnique(Data, "Scorpio Jolt") as Spell;
+    //void Scorpio()
+    //{
+    //    var scor = GameControl.skillTreeManager.FindTechnique(Data, "Scorpio Jolt") as Spell;
 
-        StartEnemyAttack(scor);
-    }
+    //    StartEnemyAttack(scor);
+    //}
 }

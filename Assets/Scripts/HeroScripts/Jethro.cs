@@ -62,7 +62,7 @@ public class Jethro : Hero {
 		// attacks specific to the character
 		switch (CurrentAttackName) {
 			case "Helmsplitter":
-                Helmsplitter();
+                StartAttack(CurrentAttackName);
 				break;
 		}
 
@@ -72,11 +72,11 @@ public class Jethro : Hero {
 
 
     }
-    public void Helmsplitter()
-	{
-        var helm = GameControl.skillTreeManager.FindTechnique(Data, "Helmsplitter") as Skill;
+ //   public void Helmsplitter()
+	//{
+ //       var helm = GameControl.skillTreeManager.FindTechnique(Data, "Helmsplitter") as Skill;
 
-        //SingleAttack(50f, 3f, 90f, false);
-        SingleAttack(helm);
-    }
+ //       //SingleAttack(50f, 3f, 90f, false);
+ //       StartEnemyAttack(helm);
+ //   }
 }

@@ -30,22 +30,12 @@ public class Cole : Hero {
         switch (CurrentAttackName)
         {
             case "Candleshot":
-                Candleshot();
-                break;
             case "Fireball":
-                Fireball();
-                break;
             case "Grand Fireball":
-                GrandFireball();
-                break;
             case "Firewall":
-                Firewall();
-                break;
             case "Splash Flame":
-                SplashFlame();
-                break;
             case "Hellfire":
-                HellFire();
+                StartAttack(CurrentAttackName);
                 break;
         }
 
@@ -56,33 +46,40 @@ public class Cole : Hero {
     }
 
     
-    void Candleshot()
-    {
-        SingleAttack(40f, 0f, 100f, true);
-    }
+    //void Candleshot()
+    //{
+    //    //SingleAttack(40f, 0f, 100f, true);
+    //    var candle = GameControl.skillTreeManager.FindTechnique(Data, "Candleshot");
+    //    StartEnemyAttack(candle);
+    //}
 
-    void Fireball()
-    {
-        SingleAttack(55f, 5f, 95f, true);
-    }
+    //void Fireball()
+    //{
+    //    //SingleAttack(55f, 5f, 95f, true);
+    //    var fireball = GameControl.skillTreeManager.FindTechnique(Data, "Fireball");
+    //    StartEnemyAttack(fireball);
+    //}
 
-    void GrandFireball()
-    {
-        SingleAttack(75f, 10f, 90f, true);
-    }
+    //void GrandFireball()
+    //{
+    //    //SingleAttack(75f, 10f, 90f, true);
+    //    var grand = GameControl.skillTreeManager.FindTechnique(Data, "Grand Fireball");
+    //    StartEnemyAttack(grand);
+    //}
 
-    public void SplashFlame()
-    {
-        SplashAttack(60f, 5f, 85f, true);
-    }
+    //public void SplashFlame()
+    //{
+    //    //SplashAttack(60f, 5f, 85f, true);
+    //    var 
+    //}
 
-    void Firewall()
-    {
-        TeamAttack(20f, 6f, 100f, true);
-    }
+    //void Firewall()
+    //{
+    //    TeamAttack(20f, 6f, 100f, true);
+    //}
 
-    public void HellFire()
-    {
-        TeamAttack(40f, 3f, 100f, true);
-    }
+    //public void HellFire()
+    //{
+    //    TeamAttack(40f, 3f, 100f, true);
+    //}
 }
