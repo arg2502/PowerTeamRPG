@@ -19,7 +19,8 @@ public class Effect : MonoBehaviour {
 	public void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
         sr.sortingOrder = 1000;
-        textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        //textObject = (GameObject)Instantiate(Resources.Load("Prefabs/CenterTextPrefab"));
+        textObject = GetComponentInChildren<TextMesh>().gameObject;
         textObject.name = "EffectText";
         textObject.GetComponent<MeshRenderer>().sortingOrder = 1000;
         labelMesh = textObject.GetComponent<TextMesh>();
