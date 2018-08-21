@@ -513,7 +513,8 @@ public class BattleManager : MonoBehaviour {
             if (callback != null)
             {
                 callback.Invoke();
-                TakeDamage(d, d.StatusDamage);
+                d.CalculatedDamage = d.StatusDamage;
+                TakeDamage(d);
             }
         }
 
@@ -858,14 +859,14 @@ public class BattleManager : MonoBehaviour {
 
             print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
 
-            TakeDamage(target, target.CalculatedDamage);
+            TakeDamage(target);
         }
 
         DisplayMultiMessage(messagesToDisplay);
         yield return new WaitForSeconds(1f);
     }
 
-    void TakeDamage(Denigen target, int damage)
+    void TakeDamage(Denigen target)
     {
         // the status effect is the status was changed
         // show the Damage effect if damage was done
@@ -873,9 +874,9 @@ public class BattleManager : MonoBehaviour {
         if (target.StatusChanged)
             ShowStatusEffect(target);
         else if (target.CalculatedDamage >= 0)
-            ShowDamage(target, damage);
+            ShowDamage(target, target.CalculatedDamage);
         else
-            ShowHealing(target, -damage);
+            ShowHealing(target, -target.CalculatedDamage);
 
         // show hp bar
         target.hpBar.UpdateHP();
@@ -984,7 +985,7 @@ public class BattleManager : MonoBehaviour {
     public bool CalcFlee()
     {
         // TEMP FOR TESTING
-        return true;
+        //return true;
 
         // calculate the likelihood of flight
         int enemyMight = 0;

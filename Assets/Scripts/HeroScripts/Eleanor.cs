@@ -32,13 +32,13 @@ public class Eleanor : Hero {
     void Tears()
     {
         // NOT FINAL -- RANDOMLY CHOSEN
-        SingleHeal(20, 0, 100);
+        SingleHeal(60, 0, 100);
     }
 
     void Gaze()
     {
         // NOT FINAL -- RANDOMLY CHOSEN
-        TeamHeal(20, 0, 100);
+        TeamHeal(50, 0, 100);
     }
 
     void Antiheal()
