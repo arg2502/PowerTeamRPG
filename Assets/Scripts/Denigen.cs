@@ -434,7 +434,19 @@ public class Denigen : MonoBehaviour {
     
     public IEnumerator PlayAttackAnimation()
     {
+        // save denigen's sorting order
+        var sr = GetComponentInChildren<SpriteRenderer>();
+        var originalSort = sr.sortingLayerName;
+
+        // set sprite to the most forefront
+        GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Attack";
+
+        // play attack animation
         yield return PlayAnimation(attackAnimation);
+
+        // set sprite back to original order
+        GetComponentInChildren<SpriteRenderer>().sortingLayerName = originalSort;
+
         //anim.Play("Idle", -1, 0f);
 
         //yield return new WaitForSeconds(0.5f);
