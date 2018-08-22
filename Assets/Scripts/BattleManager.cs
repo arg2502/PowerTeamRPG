@@ -712,6 +712,17 @@ public class BattleManager : MonoBehaviour {
         // reduce power magic points at the moment of attack
         attacker.PayPowerMagic();
 
+
+        if (attacker.attackType == Denigen.AttackType.FAILED)
+        {
+            yield return new WaitForSeconds(1f);
+            DescriptionText.text = "But " + attacker.DenigenName + " does not have enough PM to perform the technique.\n";
+            yield return new WaitForSeconds(1.5f);
+            NextAttack();
+            yield break;
+        }
+        
+
         // Update UI
         attacker.statsCard.UpdateStats();
         

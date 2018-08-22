@@ -75,7 +75,7 @@ public class Denigen : MonoBehaviour {
     public bool UsingItem { get { return usingItem; } set { usingItem = value; } }
 
     //public Denigen Attacker { get { return attacker; } }
-    public enum AttackType { NORMAL, MISS, CRIT, BLOCKED, DODGED};
+    public enum AttackType { NORMAL, MISS, CRIT, BLOCKED, DODGED, FAILED};
     public AttackType attackType;
 
     protected string attackAnimation;
@@ -402,6 +402,13 @@ public class Denigen : MonoBehaviour {
     {
         if (currentAttack != null)
         {
+            // if the denigen doesn't have enough PM, then the attack fails. Do nothing.
+            if(attackCost > Pm)
+            {
+                attackType = AttackType.FAILED;
+                return;
+            }
+
             Pm -= attackCost;
             print(DenigenName + " pays " + attackCost + " to use " + currentAttack.Name);
         }
