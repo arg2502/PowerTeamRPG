@@ -207,7 +207,8 @@
         /// <returns></returns>
         bool ExceptionMenus()
         {
-            if (this.gameObject.GetComponent<BattleMenu>())
+            if (this.gameObject.GetComponent<BattleMenu>()
+                || this.gameObject.GetComponent<VictoryMenu>())
                 return true;
             else
                 return false;
