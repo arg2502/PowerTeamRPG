@@ -1002,10 +1002,10 @@ public class BattleManager : MonoBehaviour {
             if (!h.IsDead) heroMight += h.Level * h.Stars;
         }
         float likelihood = (60 + heroMight - enemyMight) / 100.0f;
-
+        
         //see if the player succeeds or fails
         float num = Random.Range(0.0f, 1.0f);
-        if (num > likelihood) return true;
+        if (num < likelihood) return true;
         else return false;
     }
 
