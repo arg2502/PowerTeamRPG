@@ -53,17 +53,17 @@
         {
             if (!battleManager.IsTargetEnemy)
             {
+                // finds the current hero and returns the button
                 for (int i = 0; i < currentTargets.Count; i++)
                 {
-                    if (targetCursors[i].interactable)
-                    {
+                    if (currentTargets[i] == battleManager.CurrentHero)
                         return targetCursors[i];
-                    }
+
                 }
             }
             else
             {
-                for (int i = currentTargets.Count-1; i >= 0; i--)
+                for (int i = currentTargets.Count - 1; i >= 0; i--)
                 {
                     if (targetCursors[i].interactable)
                     {
