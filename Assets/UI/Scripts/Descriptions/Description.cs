@@ -6,6 +6,7 @@
     public class Description : MonoBehaviour
     {
         public bool noDescription;
+        [TextArea]
         public string description;
 
         public string GetDescription()
