@@ -20,7 +20,11 @@ public class ListButton : MonoBehaviour {
         thisTech = tech;
         techName.text = thisTech.Name;
         techIcon.sprite = thisTech.TreeImage;
-        RefreshPMCost();        
+        RefreshPMCost();
+
+        // Hide techIcon for now if null
+        if (techIcon.sprite == null)
+            techIcon.gameObject.SetActive(false);
 
         // FOR NOW, JUST DISABLE TYPE ICON, AS I DON'T KNOW IF WE'RE HAVING ELEMENTAL TYPES FOR TECHNIQUES
         typeIcon.gameObject.SetActive(false);
