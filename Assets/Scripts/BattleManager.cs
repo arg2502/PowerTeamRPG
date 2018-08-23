@@ -867,13 +867,18 @@ public class BattleManager : MonoBehaviour {
                     break;
             }
 
+            if (target.WasJustHealed)
+                message += target.DenigenName + " is healed by " + target.CalculatedDamage;
+            else
+                message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
 
-            message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
             messagesToDisplay.Add(message);
 
-            print(target.DenigenName + " takes " + target.CalculatedDamage + " damage!");
-
-            TakeDamage(target);
+            // if the attacker misses, there's no damage to take
+            if (attacker.attackType != Denigen.AttackType.MISS)
+            {
+                TakeDamage(target);
+            }
         }
 
         DisplayMultiMessage(messagesToDisplay);

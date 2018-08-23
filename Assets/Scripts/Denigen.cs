@@ -416,8 +416,24 @@ public class Denigen : MonoBehaviour {
 
     public void Flinch()
     {
-        if (calculatedDamage >= 0)
-            StartCoroutine(PlayFlinchAnimation());
+        // Don't flinch if healing:        
+        if (WasJustHealed)
+            return;
+
+        StartCoroutine(PlayFlinchAnimation());
+    }
+
+    public bool WasJustHealed
+    {
+        get
+        {
+            // damage < 0 -- that means our hp was replenished
+            // denigen is normal but status was just changed -- that means we were just healed from a status effect
+            if (calculatedDamage < 0 || (statusChanged && StatusState == DenigenData.Status.normal))
+                return true;
+            else
+                return false;
+        }
     }
 
 	// Update is called once per frame
