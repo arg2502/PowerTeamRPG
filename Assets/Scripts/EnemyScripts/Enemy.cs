@@ -115,10 +115,16 @@ public class Enemy : Denigen {
             if (e != this && e.name.Contains(name)) { i++; }
             if (e == this) { break; }
         }
-        if (i == 1) { name += " B"; }
-        if (i == 2) { name += " C"; }
-        if (i == 3) { name += " D"; }
-        if (i == 4) { name += " E"; }
+
+        string additional = "";
+
+        if (i == 1) { additional += " B"; }
+        else if (i == 2) { additional += " C"; }
+        else if (i == 3) { additional += " D"; }
+        else if (i == 4) { additional += " E"; }
+
+        name += additional;
+        DenigenName += additional;
     }
 
     protected void ChooseSelfTarget()

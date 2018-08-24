@@ -100,7 +100,7 @@ public class Denigen : MonoBehaviour {
 
     // DenigenData linkers
     // fighting stats (with in-battle changes)
-    public string DenigenName { get { return data.denigenName; } }
+    public string DenigenName { get { return data.denigenName; } set { data.denigenName = value; } }
     public int Hp { get { return data.hp; } set { data.hp = value; } }
     public int Pm { get { return data.pm; } set { data.pm = value; } }
     public int HpMax { get { return data.hpMax + hpMaxChange; } }
