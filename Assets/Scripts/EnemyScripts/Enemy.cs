@@ -33,6 +33,8 @@ public class Enemy : Denigen {
 
     public Technique defaultAttack; // the fallback free attack for the enemy when they don't have enough PM
 
+    private bool taunted = false;
+
 	// Use this for initialization
 	public void Init () {
         //set the base stats for the enemy
@@ -91,17 +93,43 @@ public class Enemy : Denigen {
         base.ChooseTarget();
 
         // choose attack
-        CurrentAttackName = ChooseAttack().Name;
+        if (!taunted)
+        {
+            CurrentAttackName = ChooseAttack().Name;
 
-        // check if the enemy has enough PM. If not, use the default attack
-        if (NotEnoughPM())
-            CurrentAttackName = defaultAttack.Name;
+            // check if the enemy has enough PM. If not, use the default attack
+            if (NotEnoughPM())
+                CurrentAttackName = defaultAttack.Name;
+        }
+    }
+
+    public void TauntAttack()
+    {
+        // set the target to 'taunted' so that the denigen will not go through their normal targeting phase
+        taunted = true;
+
+        // now we need our target to target Joules with a single target attack
+        // we could either search through and find an attack with type of single target
+        // or we could just set the attack to their default attack and make sure when we assign that they are single targets
+        // ...or both
+        CurrentAttackName = defaultAttack.Name;
+        if (CurrentAttack.targetType != TargetType.ENEMY_SINGLE)
+            Debug.LogError("Default Attack is not a single target attack.");
+
+        // make sure Jouliette is the only target -- she will always be heroList[3]
+        targets.Clear();
+        var joules = battleManager.heroList.Find(hero => hero.Data.identity == 3);
+        print(joules.DenigenName);
+        targets.Add(joules);
     }
 
     public override void Attack()
     {
         attackAnimation = CurrentAttackName;
-        
+
+        // reset taunted
+        taunted = false;
+
         base.Attack();
     }
 

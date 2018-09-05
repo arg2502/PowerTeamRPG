@@ -37,6 +37,9 @@ public class Cole : Hero {
             case "Hellfire":
                 StartAttack(CurrentAttackName);
                 break;
+            case "Anathema":
+                Anathema();
+                break;
         }
 
         // check parent function to take care of reducing pm
@@ -45,7 +48,11 @@ public class Cole : Hero {
 
     }
 
-    
+    void Anathema()
+    {
+        SingleStatusAttack(DenigenData.Status.cursed);
+    }
+
     //void Candleshot()
     //{
     //    //SingleAttack(40f, 0f, 100f, true);

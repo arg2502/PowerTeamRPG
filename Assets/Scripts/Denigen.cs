@@ -669,7 +669,7 @@ public class Denigen : MonoBehaviour {
         target.calculatedDamage = 0;
         target.SetStatus(DenigenData.Status.normal);
     }
-
+    
     protected void DazeTarget()
     {
         targets[0].calculatedDamage = 0;

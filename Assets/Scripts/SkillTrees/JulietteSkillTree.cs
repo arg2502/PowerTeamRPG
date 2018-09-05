@@ -153,7 +153,7 @@ public class JulietteSkillTree : SkillTree
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
 
-        startingTechs = new List<Technique>() { pivotKick, scorpio };
+        startingTechs = new List<Technique>() { pivotKick, scorpio, taunt };
 
     }    
 }
