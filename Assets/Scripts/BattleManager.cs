@@ -60,6 +60,7 @@ public class BattleManager : MonoBehaviour {
     public TargetType targetState;
 
     //public BattleUI battleUI;
+    bool fleeFailed = false;
     public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
@@ -513,7 +514,7 @@ public class BattleManager : MonoBehaviour {
     
     void FindNextAlive()
     {
-        while (denigenList[currentDenigen].IsDead)// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
+        while (CurrentDenigen.IsDead || (CurrentDenigen is Hero && fleeFailed))// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
         {
             currentDenigen++;
             if (currentDenigen >= denigenList.Count)
@@ -544,6 +545,7 @@ public class BattleManager : MonoBehaviour {
                 TakeDamage(d);
             }
         }
+        fleeFailed = false;
         SortBySpeed();
         currentDenigen = 0;
         NextTurn();
@@ -699,6 +701,11 @@ public class BattleManager : MonoBehaviour {
     void AttackDenigen()
     {
         var denigen = denigenList[currentDenigen];
+        if (denigen is Hero && fleeFailed)
+        {
+            NextAttack();
+            return;
+        }
         denigen.ChooseTarget();
         denigen.Attack();
     }
@@ -727,13 +734,13 @@ public class BattleManager : MonoBehaviour {
     public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
     {
         // first check if we have failed a flee. If we have, then skip all heroes
-        //if (fleeFailed && attacker is Hero)
-        //{
-        //    //NextAttack();
-        //    yield break;
-        //}
+        if (fleeFailed && attacker is Hero)
+        {
+            NextAttack();
+            yield break;
+        }
 
-        if(attacker.IsBlocking)
+        if (attacker.IsBlocking)
         {
             NextAttack();
             yield break;
@@ -1039,6 +1046,7 @@ public class BattleManager : MonoBehaviour {
     {
         // TEMP FOR TESTING
         //return true;
+        return false;
 
         // calculate the likelihood of flight
         int enemyMight = 0;
@@ -1072,7 +1080,7 @@ public class BattleManager : MonoBehaviour {
     IEnumerator ShowFleeFailed()
     {
         DescriptionText.text = "Failed to flee";
-        //fleeFailed = true;
+        fleeFailed = true;
         foreach (var hero in heroList)
             hero.CurrentAttackName = "";
 
