@@ -36,7 +36,7 @@ public class ListButton : MonoBehaviour {
         // determine cost based on status state
         int cost;
         Color textColor;
-        if (battleManager.CurrentHero.StatusState == DenigenData.Status.cursed)
+        if (battleManager.CurrentDenigen.StatusState == DenigenData.Status.cursed)
         {
             cost = thisTech.Pm * 2;
             textColor = Color.red;

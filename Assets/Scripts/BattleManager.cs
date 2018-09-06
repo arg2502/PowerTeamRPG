@@ -63,7 +63,8 @@ public class BattleManager : MonoBehaviour {
     public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
-    public Hero CurrentHero { get { return heroList[currentDenigen]; } }
+    public Denigen CurrentDenigen { get { return denigenList[currentDenigen]; } }
+    public Hero CurrentHero { get { return denigenList[currentDenigen] as Hero; } }
     public int CurrentIndex { get { return currentDenigen; } }
     List<string> messagesToDisplay;
 
@@ -85,7 +86,11 @@ public class BattleManager : MonoBehaviour {
         AssignStatsCards();
         InitTurnOrder();
         CreateBattleMenu();
-        ChangeBattleState(BattleState.TARGET);
+        SortBySpeed();
+        currentDenigen = 0;
+        NextTurn();
+        //ChangeBattleState(BattleState.TARGET);
+        
         //SortBySpeed();
         //ShowCurrentFullCard();
         //foreach(var d in denigenList)
@@ -423,7 +428,7 @@ public class BattleManager : MonoBehaviour {
         battleState = state;
         
         // reset current denigen to traverse through list during attacks
-        currentDenigen = FindNextLivingIndex(0);
+        //currentDenigen = FindNextLivingIndex(0);
 
         // determine what happens now in this new state
         switch(battleState)
@@ -440,6 +445,18 @@ public class BattleManager : MonoBehaviour {
                 EndBattle();
                 break;
         }
+    }
+
+    void NextTurn()
+    {
+        var nextDenigen = denigenList[currentDenigen];
+
+        Debug.LogError("NEXT TURN: " + nextDenigen.DenigenName);
+        // determine if the next denigen to go is a hero or enemy
+        if (nextDenigen is Hero)
+            ChangeBattleState(BattleState.TARGET);
+        else
+            ChangeBattleState(BattleState.ATTACK);
     }
 
     void StartTargetPhase()
@@ -459,7 +476,7 @@ public class BattleManager : MonoBehaviour {
         SortBySpeed();
         ShowCurrentFullCard();
 
-        HighlightArrowTurnOrder(heroList[currentDenigen], true);
+        HighlightArrowTurnOrder(CurrentHero, true);
 
     }
 
@@ -484,13 +501,14 @@ public class BattleManager : MonoBehaviour {
         SortBySpeed();
 
         // make sure the first denigen to attack is alive
-        FindNextAlive();
+        //FindNextAlive();
+        AttackDenigen();
 
     }
     
     void FindNextAlive()
     {
-        while (denigenList[currentDenigen].IsDead || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
+        while (denigenList[currentDenigen].IsDead)// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
         {
             currentDenigen++;
             if (currentDenigen >= denigenList.Count)
@@ -503,7 +521,9 @@ public class BattleManager : MonoBehaviour {
         }
         if (currentDenigen < denigenList.Count)
             print("NEXT UP -- " + denigenList[currentDenigen].name);
-        AttackDenigen();
+        //AttackDenigen();
+
+        NextTurn();
     }
 
     void EndAttackPhase()
@@ -519,8 +539,9 @@ public class BattleManager : MonoBehaviour {
                 TakeDamage(d);
             }
         }
-
-        ChangeBattleState(BattleState.TARGET);
+        currentDenigen = 0;
+        NextTurn();
+        //ChangeBattleState(BattleState.TARGET);
     }
 
     public void KillOff(Denigen deadDenigen)
@@ -585,10 +606,10 @@ public class BattleManager : MonoBehaviour {
 
     public void DetermineTargetType(string attackName)
     {
-        Hero hero = heroList[currentDenigen];
-        hero.CurrentAttackName = attackName;
-        hero.DecideTypeOfTarget();
-        targetState = hero.currentTargetType;
+        //Hero hero = heroList[currentDenigen];
+        CurrentHero.CurrentAttackName = attackName;
+        CurrentHero.DecideTypeOfTarget();
+        targetState = CurrentHero.currentTargetType;
     }
     public bool IsTargetEnemy
     {
@@ -606,25 +627,26 @@ public class BattleManager : MonoBehaviour {
         }
     }
     public void TargetDenigen(List<Denigen> targets)
-    {
-        Hero hero = heroList[currentDenigen];
-        hero.SelectTarget(targets);
-        print(hero.name + "'s target is " + hero.Targets[0].name);
+    {        
+        CurrentHero.SelectTarget(targets);
+        print(CurrentHero.name + "'s target is " + CurrentHero.Targets[0].name);
 
         // disable all menus
         uiManager.DisableAllMenus();
         ShowCurrentShortCard();
 
         // hide old's starburst
-        HighlightArrowTurnOrder(heroList[currentDenigen], false);
+        //HighlightArrowTurnOrder(heroList[currentDenigen], false);
 
+        GoToAttackState();
         // make sure that the next denigen in the list is living
-        var nextDenigen = FindNextLivingIndex(currentDenigen + 1);
-        
-        if (nextDenigen < heroList.Count)
-            NextTarget(nextDenigen);
-        else
-            GoToAttackState();
+        //currentDenigen = FindNextLivingIndex(currentDenigen + 1);
+
+        //NextTurn();
+        //if (nextDenigen < heroList.Count)
+        //    NextTarget(nextDenigen);
+        //else
+        //    GoToAttackState();
     }
 
     /// <summary>
@@ -635,7 +657,7 @@ public class BattleManager : MonoBehaviour {
     int FindNextLivingIndex(int startingIndex)
     {
         var nextDenigen = startingIndex;
-        while (nextDenigen < heroList.Count && heroList[nextDenigen].IsDead)
+        while (nextDenigen < /*heroList*/denigenList.Count && /*heroList*/denigenList[nextDenigen].IsDead)
             nextDenigen++;
 
         return nextDenigen;
@@ -644,13 +666,13 @@ public class BattleManager : MonoBehaviour {
     void NextTarget(int newIndex)
     {
         // hide old's starburst
-        HighlightArrowTurnOrder(heroList[currentDenigen], false);
+        HighlightArrowTurnOrder(CurrentHero, false);
         
         currentDenigen = newIndex;
         ShowCurrentFullCard();
 
         // show new's starburst
-        HighlightArrowTurnOrder(heroList[currentDenigen], true);
+        HighlightArrowTurnOrder(CurrentHero, true);
 
         // go back to BattleMenu
         ShowBattleMenu();
@@ -1116,7 +1138,7 @@ public class BattleManager : MonoBehaviour {
     // STATS CARDS
     public void ShowCurrentFullCard()
     {
-        ToggleDenigenStatCard(heroList[currentDenigen], true);
+        ToggleDenigenStatCard(CurrentDenigen, true);
         //var card = heroList[currentDenigen].statsCard;
         //if(!card.gameObject.activeSelf)
         //    card.gameObject.SetActive(true);
@@ -1124,7 +1146,7 @@ public class BattleManager : MonoBehaviour {
     }
     public void ShowCurrentShortCard()
     {
-        ToggleDenigenStatCard(heroList[currentDenigen], false);
+        ToggleDenigenStatCard(CurrentDenigen, false);
         //var card = heroList[currentDenigen].statsCard;
         //card.gameObject.SetActive(true);
         //card.ShowShortCard();

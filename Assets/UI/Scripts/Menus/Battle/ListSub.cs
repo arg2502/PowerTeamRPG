@@ -215,7 +215,7 @@
 
         void FillTechniques()
         {
-            var currentHero = battleManager.CurrentHero;
+            var currentHero = battleManager.CurrentDenigen;
 
             // set/find container
             if (battleManager.menuState == MenuState.SPELLS)
@@ -321,10 +321,10 @@
         void OpenNotEnoughPMPrompt()
         {
             string message;
-            var currentAttack = battleManager.CurrentHero.CurrentAttack;
+            var currentAttack = battleManager.CurrentDenigen.CurrentAttack;
             message = "You currently do not have enough power magic to use this technique:\n\n";
             message += currentAttack.Name + ": " + currentAttack.Pm;
-            message += "\nPM: " + battleManager.CurrentHero.Pm;
+            message += "\nPM: " + battleManager.CurrentDenigen.Pm;
             message += "\n\nAre you sure you want to try to use this technique?";
             uiManager.PushConfirmationMenu(message, OpenTarget);
         }
@@ -518,7 +518,7 @@
         {
             if (battleManager.menuState == MenuState.SPELLS)
             {
-                foreach (var spell in battleManager.CurrentHero.SpellsList)
+                foreach (var spell in battleManager.CurrentDenigen.SpellsList)
                 {
                     if (string.Equals(rootButton.GetComponentInChildren<Text>().text, spell.Name))
                         SetTechStats(spell);
@@ -526,7 +526,7 @@
             }
             else if (battleManager.menuState == MenuState.SKILLS)
             {
-                foreach (var skill in battleManager.CurrentHero.SkillsList)
+                foreach (var skill in battleManager.CurrentDenigen.SkillsList)
                 {
                     if (string.Equals(rootButton.GetComponentInChildren<Text>().text, skill.Name))
                         SetTechStats(skill);

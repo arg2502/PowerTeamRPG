@@ -77,7 +77,7 @@
         /// </summary>
         void CheckTechniques()
         {
-            var hero = battleManager.CurrentHero;
+            var hero = battleManager.CurrentDenigen;
             
             // sets buttons to false if lists are empty
             skills.interactable = hero.SkillsList.Count > 0;

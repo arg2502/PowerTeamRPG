@@ -56,7 +56,7 @@
                 // finds the current hero and returns the button
                 for (int i = 0; i < currentTargets.Count; i++)
                 {
-                    if (currentTargets[i] == battleManager.CurrentHero)
+                    if (currentTargets[i] == battleManager.CurrentDenigen)
                         return targetCursors[i];
 
                 }
@@ -206,10 +206,10 @@
                 // we should have like a find item function ---- TODO
                 foreach(var item in gameControl.consumables)
                 {
-                    if (item.GetComponent<Item>().name == battleManager.CurrentHero.CurrentAttackName)
+                    if (item.GetComponent<Item>().name == battleManager.CurrentDenigen.CurrentAttackName)
                     {
                         item.GetComponent<ConsumableItem>().inUse++;
-                        battleManager.CurrentHero.UsingItem = true;
+                        battleManager.CurrentDenigen.UsingItem = true;
                     }
                 }
             }
@@ -251,7 +251,7 @@
                         continue;
                     }
                     // if dead, check if the item can be used on them
-                    var itemForTheLiving = GameControl.itemManager.ItemForLiving(battleManager.CurrentHero.CurrentAttackName);
+                    var itemForTheLiving = GameControl.itemManager.ItemForLiving(battleManager.CurrentDenigen.CurrentAttackName);
                     if (currentTargets[i].IsJustDead)
                     {
                         print("index: " + i + ", forLiving: " + itemForTheLiving);
@@ -406,7 +406,7 @@
             //FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
             foreach (var denigen in currentTargets)
             {
-                if (denigen != battleManager.CurrentHero)
+                if (denigen != battleManager.CurrentDenigen)
                     denigen.statsCard.ShowShortCard();
             }
         }
