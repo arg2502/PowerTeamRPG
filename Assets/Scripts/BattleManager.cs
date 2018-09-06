@@ -340,7 +340,7 @@ public class BattleManager : MonoBehaviour {
             {
                 if (turnOrder[j].denigen == denigenList[i])
                 {
-                    if (denigenList[i].IsDead || denigenList[i].IsBlocking || (battleState == BattleState.ATTACK && string.IsNullOrEmpty(denigenList[i].CurrentAttackName)))
+                    if (denigenList[i].IsDead)
                         turnOrder[j].Disable();
                     else
                         turnOrder[j].SetAsFirst();
@@ -464,7 +464,7 @@ public class BattleManager : MonoBehaviour {
         statsCardManager.ShowCards();
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
-        ResetDenigen();
+        ResetDenigen(CurrentHero);
         
         // make sure the battle has not ended and we still want TARGET
         // kinda ugly :p
@@ -473,9 +473,14 @@ public class BattleManager : MonoBehaviour {
         // otherwise, we're ready to actually start targeting
         ShowBattleMenu();
         ToggleDescription(true);
-        SortBySpeed();
+        //SortBySpeed();
         ShowCurrentFullCard();
 
+        // disable all other arrows
+        foreach (var d in denigenList)
+            HighlightArrowTurnOrder(d, false);
+
+        // turn on the current hero's arrow
         HighlightArrowTurnOrder(CurrentHero, true);
 
     }
@@ -498,7 +503,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         // resort in case there have been speed changes
-        SortBySpeed();
+        //SortBySpeed();
 
         // make sure the first denigen to attack is alive
         //FindNextAlive();
@@ -539,6 +544,7 @@ public class BattleManager : MonoBehaviour {
                 TakeDamage(d);
             }
         }
+        SortBySpeed();
         currentDenigen = 0;
         NextTurn();
         //ChangeBattleState(BattleState.TARGET);
@@ -607,9 +613,12 @@ public class BattleManager : MonoBehaviour {
     public void DetermineTargetType(string attackName)
     {
         //Hero hero = heroList[currentDenigen];
-        CurrentHero.CurrentAttackName = attackName;
-        CurrentHero.DecideTypeOfTarget();
-        targetState = CurrentHero.currentTargetType;
+        var hero = CurrentHero;
+        Debug.LogError("before: " + hero);
+        hero.CurrentAttackName = attackName;
+        hero.DecideTypeOfTarget();
+        Debug.LogError("after: " + hero);
+        targetState = hero.currentTargetType;
     }
     public bool IsTargetEnemy
     {
@@ -636,7 +645,7 @@ public class BattleManager : MonoBehaviour {
         ShowCurrentShortCard();
 
         // hide old's starburst
-        //HighlightArrowTurnOrder(heroList[currentDenigen], false);
+        HighlightArrowTurnOrder(CurrentHero, false);
 
         GoToAttackState();
         // make sure that the next denigen in the list is living
@@ -1008,19 +1017,18 @@ public class BattleManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Called after the end of the attack phase -- resets blocking to false for next round
     /// </summary>
-    void ResetDenigen()
+    void ResetDenigen(Denigen denigen)
     {
-        foreach(var denigen in denigenList)
-        {
+        //foreach(var denigen in denigenList)
+        //{
             // reset blocking
             if (denigen.IsBlocking)
                 denigen.IsBlocking = false;
 
             denigen.CurrentAttackName = ""; // reset attack
             denigen.CalculatedDamage = 0; // reset damage taken
-        }
+        //}
     }
 
     public bool CalcFlee()
