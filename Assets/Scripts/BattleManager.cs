@@ -491,16 +491,16 @@ public class BattleManager : MonoBehaviour {
         statsCardManager.HideCards();
 
         // have enemies decide their attack
-        foreach (var enemy in enemyList)
-        {
-            // standby -- waiting to be set (something so that it's not null
-            enemy.CurrentAttackName = "Standby";
-            //enemy.CurrentAttackName = enemy.ChooseAttack().Name;
+        //foreach (var enemy in enemyList)
+        //{
+        //    // standby -- waiting to be set (something so that it's not null
+        //    enemy.CurrentAttackName = "Standby";
+        //    //enemy.CurrentAttackName = enemy.ChooseAttack().Name;
 
-            //// check if the enemy has enough PM. If not, use the default attack
-            //if (enemy.NotEnoughPM())
-            //    enemy.CurrentAttackName = enemy.defaultAttack.Name;
-        }
+        //    //// check if the enemy has enough PM. If not, use the default attack
+        //    //if (enemy.NotEnoughPM())
+        //    //    enemy.CurrentAttackName = enemy.defaultAttack.Name;
+        //}
 
         // resort in case there have been speed changes
         //SortBySpeed();
@@ -647,7 +647,11 @@ public class BattleManager : MonoBehaviour {
         // hide old's starburst
         HighlightArrowTurnOrder(CurrentHero, false);
 
-        GoToAttackState();
+        // if we're blocking, don't even bother going to attack, just go to the next one
+        if (CurrentHero.IsBlocking)
+            NextAttack();
+        else
+            GoToAttackState();
         // make sure that the next denigen in the list is living
         //currentDenigen = FindNextLivingIndex(currentDenigen + 1);
 
