@@ -61,6 +61,7 @@ public class BattleManager : MonoBehaviour {
 
     //public BattleUI battleUI;
     bool fleeFailed = false;
+    string fleeFailedDenigen = "";
     public BattleCamera battleCamera;
     UIManager uiManager;
     public UI.BattleMenu battleMenu;
@@ -89,7 +90,8 @@ public class BattleManager : MonoBehaviour {
         CreateBattleMenu();
         SortBySpeed();
         currentDenigen = 0;
-        NextTurn();
+        //NextTurn();
+        FindNextAlive();
         //ChangeBattleState(BattleState.TARGET);
         
         //SortBySpeed();
@@ -514,7 +516,7 @@ public class BattleManager : MonoBehaviour {
     
     void FindNextAlive()
     {
-        while (CurrentDenigen.IsDead || (CurrentDenigen is Hero && fleeFailed))// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
+        while (CurrentDenigen.IsDead || IsFleeFailed())// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
         {
             currentDenigen++;
             if (currentDenigen >= denigenList.Count)
@@ -545,11 +547,40 @@ public class BattleManager : MonoBehaviour {
                 TakeDamage(d);
             }
         }
-        fleeFailed = false;
+        //fleeFailed = false;
         SortBySpeed();
         currentDenigen = 0;
-        NextTurn();
+        //NextTurn();
+        FindNextAlive();
         //ChangeBattleState(BattleState.TARGET);
+    }
+
+    bool IsFleeFailed()
+    {
+        // if the current denigen is not a hero, then they automatically take their turn regardless of a failed flee
+        if (!(CurrentDenigen is Hero))
+            return false;
+
+        // check to see if the flee has failed
+        if(fleeFailed)
+        {
+            // before we return true, check to see whose turn it is
+            // if it's the same denigen who tried to flee, then we have completed the cycle
+            // reset values and return false
+            if(string.Equals(CurrentDenigen.DenigenName, fleeFailedDenigen))
+            {
+                fleeFailedDenigen = "";
+                fleeFailed = false;
+                return false;
+            }
+
+            // if we have not cycled through yet, then we're still in a failed flee state, return true
+            return true;
+        }
+
+        // if the flee has not failed at all, just return false
+        return false;
+        
     }
 
     public void KillOff(Denigen deadDenigen)
@@ -701,7 +732,7 @@ public class BattleManager : MonoBehaviour {
     void AttackDenigen()
     {
         var denigen = denigenList[currentDenigen];
-        if (denigen is Hero && fleeFailed)
+        if (IsFleeFailed())
         {
             NextAttack();
             return;
@@ -734,7 +765,7 @@ public class BattleManager : MonoBehaviour {
     public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
     {
         // first check if we have failed a flee. If we have, then skip all heroes
-        if (fleeFailed && attacker is Hero)
+        if (IsFleeFailed())
         {
             NextAttack();
             yield break;
@@ -1081,6 +1112,7 @@ public class BattleManager : MonoBehaviour {
     {
         DescriptionText.text = "Failed to flee";
         fleeFailed = true;
+        fleeFailedDenigen = CurrentDenigen.DenigenName;
         foreach (var hero in heroList)
             hero.CurrentAttackName = "";
 
@@ -1092,7 +1124,10 @@ public class BattleManager : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(1f);
-        GoToAttackState();
+        //GoToAttackState();
+        currentDenigen++;
+        //NextTurn();
+        FindNextAlive();
     }
 
     IEnumerator WinBattle()
