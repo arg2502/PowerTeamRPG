@@ -7,7 +7,7 @@ public class E_Crabgrass : Enemy {
     Skill stomp;
     Spell heal;
 
-    void Start()
+    protected override void AssignAttack()
     {
         stomp = skillTree.stomp;
         heal = skillTree.heal;

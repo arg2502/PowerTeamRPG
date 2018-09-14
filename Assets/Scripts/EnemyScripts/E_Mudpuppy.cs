@@ -6,9 +6,9 @@ public class E_Mudpuppy : Enemy {
 
     Skill bite;
     Skill frenzy;
-
-    // Use this for initialization
-    void Start() {
+    
+    protected override void AssignAttack()    
+    {
         bite = skillTree.bite;
         frenzy = skillTree.frenzy;
 

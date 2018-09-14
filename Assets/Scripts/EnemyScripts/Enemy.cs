@@ -61,7 +61,14 @@ public class Enemy : Denigen {
         Rename();
 
         skillTree = GameControl.skillTreeManager.enemySkillTree;
+
+        AssignAttack();
 	}
+
+    /// <summary>
+    /// Sets the child enemies attacks based off of the enemy Skill Tree
+    /// </summary>
+    protected virtual void AssignAttack() { }
 
     protected void TakeDamage(float damage, bool isMagic)
     {

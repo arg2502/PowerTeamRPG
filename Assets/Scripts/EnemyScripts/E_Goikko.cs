@@ -8,7 +8,8 @@ public class E_Goikko : Enemy {
     Spell poison;
 
     // Use this for initialization -- goikko is basically mudpuppy, other than stats
-    void Start() {
+    protected override void AssignAttack()
+    {
         tongueWhip = skillTree.whip;
         poison = skillTree.poison;
 
