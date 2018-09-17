@@ -967,11 +967,13 @@ public class BattleManager : MonoBehaviour {
         {
             ShowStatusEffect(target);
             ShowStrikeEffect(target);
+            AudioManager.instance.PlayHit();
         }            
         else if (target.CalculatedDamage >= 0)
         {
             ShowDamage(target, target.CalculatedDamage);
             ShowStrikeEffect(target);
+            AudioManager.instance.PlayHit();
         }
         else
             ShowHealing(target, -target.CalculatedDamage);
