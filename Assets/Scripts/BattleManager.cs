@@ -647,10 +647,10 @@ public class BattleManager : MonoBehaviour {
     {
         //Hero hero = heroList[currentDenigen];
         var hero = CurrentHero;
-        Debug.LogError("before: " + hero);
+        //Debug.LogError("before: " + hero);
         hero.CurrentAttackName = attackName;
         hero.DecideTypeOfTarget();
-        Debug.LogError("after: " + hero);
+        //Debug.LogError("after: " + hero);
         targetState = hero.currentTargetType;
     }
     public bool IsTargetEnemy
@@ -671,7 +671,7 @@ public class BattleManager : MonoBehaviour {
     public void TargetDenigen(List<Denigen> targets)
     {        
         CurrentHero.SelectTarget(targets);
-        print(CurrentHero.name + "'s target is " + CurrentHero.Targets[0].name);
+        //print(CurrentHero.name + "'s target is " + CurrentHero.Targets[0].name);
 
         // disable all menus
         uiManager.DisableAllMenus();
@@ -906,7 +906,7 @@ public class BattleManager : MonoBehaviour {
 
             // alter hp based off of damage
             target.Hp -= target.CalculatedDamage;
-            print("target calc: " + target.CalculatedDamage);
+            //print("target calc: " + target.CalculatedDamage);
 
             // if we're healing, check to make sure we're not going over maxHp
             if (target.Hp > target.HpMax)
@@ -964,9 +964,15 @@ public class BattleManager : MonoBehaviour {
         // show the Damage effect if damage was done
         // or show the heal effect if calcDamage is negative (meaning someone's using their turn to heal)
         if (target.StatusChanged)
+        {
             ShowStatusEffect(target);
+            ShowStrikeEffect(target);
+        }            
         else if (target.CalculatedDamage >= 0)
+        {
             ShowDamage(target, target.CalculatedDamage);
+            ShowStrikeEffect(target);
+        }
         else
             ShowHealing(target, -target.CalculatedDamage);
 
@@ -974,7 +980,7 @@ public class BattleManager : MonoBehaviour {
         target.hpBar.UpdateHP();
 
         // check for dead
-        print(target.DenigenName + " HP: " + target.Hp);
+        //print(target.DenigenName + " HP: " + target.Hp);
         if (target.Hp <= 0)
         {
             // check for overkill
@@ -1019,6 +1025,7 @@ public class BattleManager : MonoBehaviour {
         {
             be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
             be.name = "StatusEffect";
+            be.transform.SetParent(target.transform);
         }
 
         // if the status is changed to normal, that's "normally" (lol) a good thing. So show the heart.
@@ -1033,6 +1040,22 @@ public class BattleManager : MonoBehaviour {
         target.UpdateIcon();
         
         target.StatusChanged = false;
+    }
+
+    void ShowStrikeEffect(Denigen target)
+    {
+        GameObject be = null;
+        if (target.GetComponentInChildren<StrikeEffect>())
+            be = target.GetComponentInChildren<StrikeEffect>().gameObject;
+        if (be == null)
+        {
+            be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/StrikeEffect"), target.transform.position, Quaternion.identity);
+            be.name = "StrikeEffect";
+            be.transform.SetParent(target.transform);
+        }
+
+        be.SetActive(true);
+        be.GetComponent<StrikeEffect>().PlayAnimation();
     }
 
     void DisplayMultiMessage(List<string> messages)

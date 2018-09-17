@@ -273,7 +273,7 @@ public class Denigen : MonoBehaviour {
             var halfAccuracy = accuracy * 0.5f;
             accuracy -= halfAccuracy;
         }
-        print("accuracy: " + accuracy);
+        //print("accuracy: " + accuracy);
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
         if (num > accuracy)
