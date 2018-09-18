@@ -6,11 +6,17 @@ public class AudioManager : MonoBehaviour {
 
     // SUPER BASIC FOR NOW -- REFORMAT LATER
 
+    [Header("Music")]
     public AudioClip battleIntro;
     public AudioClip battleLoop;
+
+    [Header("SFX")]
     public AudioClip sfx_hit;
-    public AudioSource mus_Source;
-    public AudioSource sfx_Source;
+    public AudioClip sfx_block;
+
+    [Header("Sources")]
+    public AudioSource source_MUS;
+    public AudioSource source_SFX;
 
     public static AudioManager instance;
 
@@ -34,28 +40,38 @@ public class AudioManager : MonoBehaviour {
 	
     IEnumerator StartThenLoop()
     {
-        mus_Source.clip = battleIntro;
-        mus_Source.loop = false;
-        mus_Source.Play();
+        source_MUS.clip = battleIntro;
+        source_MUS.loop = false;
+        source_MUS.Play();
 
-        yield return new WaitUntil(() => mus_Source.time >= battleIntro.length || !mus_Source.isPlaying);
+        yield return new WaitUntil(() => source_MUS.time >= battleIntro.length || !source_MUS.isPlaying);
 
-        mus_Source.clip = battleLoop;
-        mus_Source.loop = true;
-        mus_Source.Play();
+        source_MUS.clip = battleLoop;
+        source_MUS.loop = true;
+        source_MUS.Play();
     }
 
-    public void PlayHit()
+    void PlaySFX(AudioClip clip)
     {
         // randomize pitch a little
         var low = 0.9f;
         var high = 1.1f;
         var random = Random.Range(low, high);
-        sfx_Source.pitch = random;
-        print(sfx_Source.pitch);
+        source_SFX.pitch = random;
+        print(source_SFX.pitch);
 
-        sfx_Source.clip = sfx_hit;
-        sfx_Source.loop = false;
-        sfx_Source.Play();
+        source_SFX.clip = clip;
+        source_SFX.loop = false;
+        source_SFX.Play();
+    }
+
+    public void PlayHit()
+    {
+        PlaySFX(sfx_hit);
+    }
+
+    public void PlayBlock()
+    {
+        PlaySFX(sfx_block);
     }
 }

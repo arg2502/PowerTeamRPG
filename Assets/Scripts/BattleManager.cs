@@ -923,14 +923,17 @@ public class BattleManager : MonoBehaviour {
                 case Denigen.AttackType.NORMAL:
                     message = "";
                     target.Flinch();
+                    AudioManager.instance.PlayHit();
                     break;
                 case Denigen.AttackType.BLOCKED:
                     message = target.DenigenName + " blocked the attack\n";
                     StartCoroutine(target.PlayBlockAnimation());
+                    AudioManager.instance.PlayBlock();
                     break;
                 case Denigen.AttackType.CRIT:
                     message = attacker.DenigenName + " hit a weak spot!\n";
                     target.Flinch();
+                    AudioManager.instance.PlayHit();
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";
@@ -973,7 +976,6 @@ public class BattleManager : MonoBehaviour {
         {
             ShowDamage(target, target.CalculatedDamage);
             ShowStrikeEffect(target);
-            AudioManager.instance.PlayHit();
         }
         else
             ShowHealing(target, -target.CalculatedDamage);
