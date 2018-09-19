@@ -19,7 +19,7 @@ public class characterControl : OverworldObject {
     float runSpeed = 7f;
     public Vector2 speed;
     public Vector2 desiredSpeed;
-    PauseMenu pm;
+    //PauseMenu pm;
 	//public bool canMove;
 
     public LayerMask movableMask;
@@ -45,7 +45,7 @@ public class characterControl : OverworldObject {
     // Use this for initialization
     void Start () {
 
-        pm = GetComponentInChildren<PauseMenu>();
+        //pm = GetComponentInChildren<PauseMenu>();
         myCamera = FindObjectOfType<CameraController>();
         anim = GetComponent<Animator>();
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced

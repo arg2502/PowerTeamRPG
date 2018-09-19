@@ -74,7 +74,8 @@ public class CameraController : MonoBehaviour {
         //else if(moveSpeed != origMoveSpeed)
         //    moveSpeed = origMoveSpeed;
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        transform.position = targetPos;
     }
 
     void StayWithinRoom()

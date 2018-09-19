@@ -430,16 +430,16 @@ public class GameControl : MonoBehaviour {
 					rcd.blockData[i].position.y = rc.movables[i].transform.position.y;
 					rcd.blockData[i].position.z = rc.movables[i].transform.position.z;
 				}
-				for(int i = 0; i < rc.treasureChests.Count; i++)
-				{
-					rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
-					rcd.chestData[i].chestName = rc.treasureChests[i].name;
-				}
-				for (int i = 0; i < rc.doorsInRoom.Count; i++)
-				{
-					rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
-					rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
-				}
+				//for(int i = 0; i < rc.treasureChests.Count; i++)
+				//{
+				//	rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
+				//	rcd.chestData[i].chestName = rc.treasureChests[i].name;
+				//}
+				//for (int i = 0; i < rc.doorsInRoom.Count; i++)
+				//{
+				//	rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
+				//	rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
+				//}
 				for (int i = 0; i < rc.switchesInRoom.Count; i++) {
 					rcd.switchData [i].isActivated = rc.switchesInRoom [i].isActivated;
 					rcd.switchData [i].switchName = rc.switchesInRoom [i].name;
@@ -489,72 +489,72 @@ public class GameControl : MonoBehaviour {
 	// save the menu for when you transition to an external portion of the menu
 	public void RecordPauseMenu()
 	{
-		PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
-		pause.isActive = tempPause.isActive;
-		pause.isVisible = tempPause.isVisible;
-		pause.selectedIndex = tempPause.SelectedIndex;
-		pause.position = tempPause.transform.position;
+		//PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
+		//pause.isActive = tempPause.isActive;
+		//pause.isVisible = tempPause.isVisible;
+		//pause.selectedIndex = tempPause.SelectedIndex;
+		//pause.position = tempPause.transform.position;
 
-		TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
-		teamSub.isActive = tempTeamSub.isActive;
-		teamSub.isVisible = tempTeamSub.isVisible;
-		teamSub.selectedIndex = tempTeamSub.SelectedIndex;
-		teamSub.position = tempTeamSub.transform.position;
+		//TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
+		//teamSub.isActive = tempTeamSub.isActive;
+		//teamSub.isVisible = tempTeamSub.isVisible;
+		//teamSub.selectedIndex = tempTeamSub.SelectedIndex;
+		//teamSub.position = tempTeamSub.transform.position;
 
-		HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
-		heroSub.isVisible = tempHeroSub.isVisible;
-		heroSub.selectedIndex = tempHeroSub.SelectedIndex;
-		heroSub.position = tempHeroSub.transform.position;
+		//HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
+		//heroSub.isVisible = tempHeroSub.isVisible;
+		//heroSub.selectedIndex = tempHeroSub.SelectedIndex;
+		//heroSub.position = tempHeroSub.transform.position;
 
-		InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
-		inventSub.isVisible = tempInventSub.isVisible;
-		inventSub.selectedIndex = tempInventSub.SelectedIndex;
-		inventSub.position = tempInventSub.transform.position;
+		//InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
+		//inventSub.isVisible = tempInventSub.isVisible;
+		//inventSub.selectedIndex = tempInventSub.SelectedIndex;
+		//inventSub.position = tempInventSub.transform.position;
 	}
 
 	// called if the isPaused variable is set to true
 	public void RestorePauseMenu()
 	{
-		PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
-		TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
-		HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
-		InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
+		//PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
+		//TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
+		//HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
+		//InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
 
-		if (pause.isVisible) 
-		{
-			tempPause.isVisible = true;
-			tempPause.EnablePauseMenu();
-			tempPause.player.ToggleMovement();
-			tempPause.isActive = pause.isActive;
-			tempPause.SelectedIndex = pause.selectedIndex;
-			tempPause.HighlightButton();
-			tempPause.transform.position = pause.position;
-		}
-		if (teamSub.isVisible)
-		{
-			tempTeamSub.isVisible = true;
-			tempTeamSub.EnableSubMenu();
-			tempTeamSub.isActive = teamSub.isActive;
-			tempTeamSub.SelectedIndex = teamSub.selectedIndex;
-			tempTeamSub.HighlightButton();
-			tempTeamSub.transform.position = teamSub.position;
-		}
-		if (heroSub.isVisible)
-		{
-			tempHeroSub.isVisible = true;
-			tempHeroSub.EnableSubMenu();
-			tempHeroSub.SelectedIndex = heroSub.selectedIndex;
-			tempHeroSub.HighlightButton();
-			tempHeroSub.transform.position = heroSub.position;
-		}
-		if (inventSub.isVisible)
-		{
-			tempInventSub.isVisible = true;
-			tempInventSub.EnableSubMenu();
-			tempInventSub.SelectedIndex = inventSub.selectedIndex;
-			tempInventSub.HighlightButton();
-			tempInventSub.transform.position = inventSub.position;
-		}
+		//if (pause.isVisible) 
+		//{
+		//	tempPause.isVisible = true;
+		//	tempPause.EnablePauseMenu();
+		//	tempPause.player.ToggleMovement();
+		//	tempPause.isActive = pause.isActive;
+		//	tempPause.SelectedIndex = pause.selectedIndex;
+		//	tempPause.HighlightButton();
+		//	tempPause.transform.position = pause.position;
+		//}
+		//if (teamSub.isVisible)
+		//{
+		//	tempTeamSub.isVisible = true;
+		//	tempTeamSub.EnableSubMenu();
+		//	tempTeamSub.isActive = teamSub.isActive;
+		//	tempTeamSub.SelectedIndex = teamSub.selectedIndex;
+		//	tempTeamSub.HighlightButton();
+		//	tempTeamSub.transform.position = teamSub.position;
+		//}
+		//if (heroSub.isVisible)
+		//{
+		//	tempHeroSub.isVisible = true;
+		//	tempHeroSub.EnableSubMenu();
+		//	tempHeroSub.SelectedIndex = heroSub.selectedIndex;
+		//	tempHeroSub.HighlightButton();
+		//	tempHeroSub.transform.position = heroSub.position;
+		//}
+		//if (inventSub.isVisible)
+		//{
+		//	tempInventSub.isVisible = true;
+		//	tempInventSub.EnableSubMenu();
+		//	tempInventSub.SelectedIndex = inventSub.selectedIndex;
+		//	tempInventSub.HighlightButton();
+		//	tempInventSub.transform.position = inventSub.position;
+		//}
 	}
 
 	public void Load()

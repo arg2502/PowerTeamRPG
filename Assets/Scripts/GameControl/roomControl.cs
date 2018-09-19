@@ -20,8 +20,8 @@ public class roomControl : MonoBehaviour {
 	public int minEnemiesPerBattle;
 	public int maxEnemiesPerBattle;
 	public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
-	public List<TreasureChest> treasureChests = new List<TreasureChest>();
-	public List<DoorQuestion> doorsInRoom = new List<DoorQuestion>();
+	//public List<TreasureChest> treasureChests = new List<TreasureChest>();
+	//public List<DoorQuestion> doorsInRoom = new List<DoorQuestion>();
 	public List<Switch> switchesInRoom = new List<Switch> ();
 	public List<ColorBridge> colorBridgesInRoom = new List<ColorBridge>();
 	public List<Drawbridge> drawbridgesInRoom = new List<Drawbridge>();
@@ -44,14 +44,14 @@ public class roomControl : MonoBehaviour {
 		{
 			movables.Add(m);
 		}
-		foreach(TreasureChest tc in FindObjectsOfType<TreasureChest>())
-		{
-			treasureChests.Add(tc);
-		}
-		foreach(DoorQuestion dq in FindObjectsOfType<DoorQuestion>())
-		{
-			doorsInRoom.Add(dq);
-		}
+		//foreach(TreasureChest tc in FindObjectsOfType<TreasureChest>())
+		//{
+		//	treasureChests.Add(tc);
+		//}
+		//foreach(DoorQuestion dq in FindObjectsOfType<DoorQuestion>())
+		//{
+		//	doorsInRoom.Add(dq);
+		//}
 		foreach (Switch s in FindObjectsOfType<Switch>()) {
 			switchesInRoom.Add (s);
 		}
@@ -116,27 +116,27 @@ public class roomControl : MonoBehaviour {
 					//movables [i].gameObject.SetActive (movables [i].isActivated);
 				}
 				// sync open chests
-				for (int i = 0; i < treasureChests.Count; i++)
-				{
-					for (int j = 0; j < treasureChests.Count; j++)
-					{
-						if (treasureChests[i].name == rc.chestData[j].chestName)
-						{
-							treasureChests[i].isOpen = rc.chestData[j].isChestOpen;
-						}
-					}
-				}
+				//for (int i = 0; i < treasureChests.Count; i++)
+				//{
+				//	for (int j = 0; j < treasureChests.Count; j++)
+				//	{
+				//		if (treasureChests[i].name == rc.chestData[j].chestName)
+				//		{
+				//			treasureChests[i].isOpen = rc.chestData[j].isChestOpen;
+				//		}
+				//	}
+				//}
 				// sync doors
-				for (int i = 0; i < doorsInRoom.Count; i++)
-				{
-					for (int j = 0; j < doorsInRoom.Count; j++)
-					{
-						if (doorsInRoom[i].name == rc.doorData[j].doorName)
-						{
-							doorsInRoom[i].gameObject.SetActive(rc.doorData[j].isLocked);
-						}
-					}
-				}
+				//for (int i = 0; i < doorsInRoom.Count; i++)
+				//{
+				//	for (int j = 0; j < doorsInRoom.Count; j++)
+				//	{
+				//		if (doorsInRoom[i].name == rc.doorData[j].doorName)
+				//		{
+				//			doorsInRoom[i].gameObject.SetActive(rc.doorData[j].isLocked);
+				//		}
+				//	}
+				//}
 				// sync switches
 				for (int i = 0; i < switchesInRoom.Count; i++) {
 					for (int j = 0; j < switchesInRoom.Count; j++) {
@@ -226,19 +226,19 @@ public class roomControl : MonoBehaviour {
 			newRoom.blockData [i].position.z = movables [i].transform.position.z;
 
 		}
-		for(int i = 0; i < treasureChests.Count; i++)
-		{
-			newRoom.chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
-			newRoom.chestData[i].isChestOpen = treasureChests[i].isOpen;
-			newRoom.chestData[i].chestName = treasureChests[i].name;
-		}
-		for(int i = 0; i < doorsInRoom.Count; i++)
-		{
-			newRoom.doorData.Add(new DoorData());
-			newRoom.doorData[i].isLocked = doorsInRoom[i].gameObject.activeSelf;
-			newRoom.doorData[i].doorName = doorsInRoom[i].name;
+		//for(int i = 0; i < treasureChests.Count; i++)
+		//{
+		//	newRoom.chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
+		//	newRoom.chestData[i].isChestOpen = treasureChests[i].isOpen;
+		//	newRoom.chestData[i].chestName = treasureChests[i].name;
+		//}
+		//for(int i = 0; i < doorsInRoom.Count; i++)
+		//{
+		//	newRoom.doorData.Add(new DoorData());
+		//	newRoom.doorData[i].isLocked = doorsInRoom[i].gameObject.activeSelf;
+		//	newRoom.doorData[i].doorName = doorsInRoom[i].name;
 
-		}
+		//}
 		for(int i = 0; i < switchesInRoom.Count; i++){
 			newRoom.switchData.Add (new SwitchData ());
 			newRoom.switchData [i].isActivated = switchesInRoom [i].isActivated;
