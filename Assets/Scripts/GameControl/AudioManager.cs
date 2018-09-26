@@ -16,7 +16,9 @@ public class AudioManager : MonoBehaviour {
 
     [Header("Sources")]
     public AudioSource source_MUS;
-    public AudioSource source_SFX;
+    public GameObject sfx_obj;
+    AudioSource[] source_SFX;
+    //public AudioSource source_SFX;
 
     public static AudioManager instance;
 
@@ -35,6 +37,7 @@ public class AudioManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //mus_Source = GetComponent<AudioSource>();
+        source_SFX = sfx_obj.GetComponentsInChildren<AudioSource>();
         StartCoroutine(StartThenLoop());		
 	}
 	
@@ -57,12 +60,28 @@ public class AudioManager : MonoBehaviour {
         var low = 0.9f;
         var high = 1.1f;
         var random = Random.Range(low, high);
-        source_SFX.pitch = random;
-        print(source_SFX.pitch);
 
-        source_SFX.clip = clip;
-        source_SFX.loop = false;
-        source_SFX.Play();
+        // find an empty source
+        AudioSource source = null;
+
+        for(int i = 0; i < source_SFX.Length; i++)
+        {
+            if (!source_SFX[i].isPlaying)
+            {
+                source = source_SFX[i];
+                break;
+            }
+        }
+        // default to first just in case
+        if (source == null)
+            source = source_SFX[0];
+
+        source.pitch = random;
+        //print(source_SFX.pitch);
+
+        source.clip = clip;
+        source.loop = false;
+        source.Play();
     }
 
     public void PlayHit()
@@ -73,5 +92,10 @@ public class AudioManager : MonoBehaviour {
     public void PlayBlock()
     {
         PlaySFX(sfx_block);
+    }
+
+    public void Play(AudioClip clip)
+    {
+        PlaySFX(clip);
     }
 }
