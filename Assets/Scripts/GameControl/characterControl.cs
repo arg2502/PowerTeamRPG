@@ -13,6 +13,10 @@ public class characterControl : OverworldObject {
         Defeat
     }
 
+	//new code -------------------------------------------------------------
+	private BoxCollider2D boxCollider; // Variable to reference our collider
+	private RaycastHit2D hit; //checks for collisions
+	// end new code --------------------------------------------------------
 
     float moveSpeed = 0;
     float walkSpeed = 4.5f;
@@ -51,6 +55,10 @@ public class characterControl : OverworldObject {
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
 		canMove = true;
         base.Start();
+
+		//new code -------------------------------------------------
+		boxCollider = GetComponent<BoxCollider2D> ();
+		//end new code ---------------------------------------------
 
         //canMove = false;
         
@@ -98,6 +106,36 @@ public class characterControl : OverworldObject {
         else { return true; }
 
     }
+
+	//new code ----------------------------------------------------
+	//A method for determining movement, which also checks collisions
+	public void Move(float move_x, float move_y){
+		//create the vector of the desired movement
+		Vector2 direction = new Vector2 (move_x, move_y);
+		direction.Normalize ();
+		direction *= moveSpeed * Time.deltaTime;
+		
+		//cast a box to see if jethro will collide vertically
+		hit = Physics2D.BoxCast (transform.position, boxCollider.size, 0,
+		                         new Vector2 (0, direction.y), Mathf.Abs (direction.y));
+		if (hit.collider == null) { // if the collider is null, no collision
+			transform.Translate(0, direction.y, 0); // move in the y direction
+
+			isMoving = true;
+			lastMovement = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+		}
+		
+		//cast a box to see if jethro will collide horizontally
+		hit = Physics2D.BoxCast (transform.position, boxCollider.size, 0,
+		                         new Vector2 (direction.x, 0), Mathf.Abs (direction.x));
+		if (hit.collider == null) { // if the collider is null, no collision
+			transform.Translate(direction.x, 0, 0); // move in the x direction
+
+			isMoving = true;
+			lastMovement = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+		}
+	}
+	//end new code -----------------------------------------------------
 	
 	// Update is called once per frame
     void Update()
@@ -151,43 +189,50 @@ public class characterControl : OverworldObject {
             // If not pushing or pulling
             if (!Input.GetKey(GameControl.control.selectKey))
             {
-                // vertical input
-                if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
-                {
-                    desiredSpeed = new Vector2(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime);
-                    if(CheckCollision(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")), movableMask) == false)
-                    {
-                        speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") * Time.deltaTime);
-                    }
-                    isMoving = true;
-                    lastMovement = new Vector2(0f, Input.GetAxisRaw("Vertical"));
-                }
+				// new code --------------------------------------------------------------
+				if(Input.GetAxisRaw("Vertical") != 0f || Input.GetAxisRaw("Horizontal") != 0f){
+					Move (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+				}
+				// end new code ----------------------------------------------------------
 
-                // horizontal input - may or may not be vertical input already
-                if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
-                {
-                    desiredSpeed = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f);
-                    if (CheckCollision(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0f), movableMask) == false)
-                    {
-                        speed += new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0f);
-                    }
-                    isMoving = true;
-                    lastMovement = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
-                }
 
-                //RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
-                //RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
-                
-                // if not colliding with object, move
-                if (speed != Vector2.zero && !CheckCollision(speed, mask))
-                {
-                    // normalize speed and mult by moveSpeed to prevent super fastness
-                    speed.Normalize();
-                    speed *= moveSpeed * Time.deltaTime;
-
-                    transform.Translate(speed);
-                    desiredSpeed = Vector2.zero;
-                }
+//                // vertical input
+//                if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
+//                {
+//                    desiredSpeed = new Vector2(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime);
+//                    if(CheckCollision(new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical")), movableMask) == false)
+//                    {
+//                        speed += new Vector2(0, moveSpeed * Input.GetAxisRaw("Vertical") * Time.deltaTime);
+//                    }
+//                    isMoving = true;
+//                    lastMovement = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+//                }
+//
+//                // horizontal input - may or may not be vertical input already
+//                if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
+//                {
+//                    desiredSpeed = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f);
+//                    if (CheckCollision(new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), 0f), movableMask) == false)
+//                    {
+//                        speed += new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0f);
+//                    }
+//                    isMoving = true;
+//                    lastMovement = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+//                }
+//
+//                //RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
+//                //RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
+//                
+//                // if not colliding with object, move
+//                if (speed != Vector2.zero && !CheckCollision(speed, mask))
+//                {
+//                    // normalize speed and mult by moveSpeed to prevent super fastness
+//                    speed.Normalize();
+//                    speed *= moveSpeed * Time.deltaTime;
+//
+//                    transform.Translate(speed);
+//                    desiredSpeed = Vector2.zero;
+//                }
 
             }
 
