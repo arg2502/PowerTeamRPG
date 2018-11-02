@@ -13,6 +13,8 @@ public class AudioManager : MonoBehaviour {
     [Header("SFX")]
     public AudioClip sfx_hit;
     public AudioClip sfx_block;
+    public AudioClip sfx_menuNav;
+    public AudioClip sfx_menuSelect;
 
     [Header("Sources")]
     public AudioSource source_MUS;
@@ -54,34 +56,38 @@ public class AudioManager : MonoBehaviour {
         source_MUS.Play();
     }
 
-    void PlaySFX(AudioClip clip)
+    void PlaySFX(AudioClip clip, bool randomPitch = true)
     {
-        // randomize pitch a little
-        var low = 0.9f;
-        var high = 1.1f;
-        var random = Random.Range(low, high);
+        print("sfx play: " + clip);
+        var pitchRandom = 1f;
+        if (randomPitch)
+        {
+            // randomize pitch a little
+            var low = 0.9f;
+            var high = 1.1f;
+            pitchRandom = Random.Range(low, high);
+        }
 
         // find an empty source
-        AudioSource source = null;
+        int sourceIndex = -1;
 
-        for(int i = 0; i < source_SFX.Length; i++)
+        for (int i = 0; i < source_SFX.Length; i++)
         {
             if (!source_SFX[i].isPlaying)
             {
-                source = source_SFX[i];
+                sourceIndex = i;
                 break;
             }
         }
         // default to first just in case
-        if (source == null)
-            source = source_SFX[0];
+        if (source_SFX[sourceIndex] == null)
+            sourceIndex = 0;
 
-        source.pitch = random;
-        //print(source_SFX.pitch);
+        source_SFX[sourceIndex].pitch = pitchRandom;
 
-        source.clip = clip;
-        source.loop = false;
-        source.Play();
+        source_SFX[sourceIndex].clip = clip;
+        source_SFX[sourceIndex].loop = false;
+        source_SFX[sourceIndex].Play();
     }
 
     public void PlayHit()
@@ -94,8 +100,40 @@ public class AudioManager : MonoBehaviour {
         PlaySFX(sfx_block);
     }
 
+    public void PlayMenuNav()
+    {
+        // only play the navigation if the select sound is not playing
+        if (!IsClipPlaying(sfx_menuSelect))
+            PlaySFX(sfx_menuNav, randomPitch: false);
+    }
+
+    public void PlayMenuSelect()
+    {
+        PlaySFX(sfx_menuSelect, randomPitch: false);
+    }
+
     public void Play(AudioClip clip)
     {
         PlaySFX(clip);
+    }
+
+    /// <summary>
+    /// Checks all audio sources to see if it's currently playing the passed in audio clip.
+    /// </summary>
+    /// <param name="clip"></param>
+    /// <returns>True if a match is found, meaning the clip is currently being played.
+    /// False if no clip was found.</returns>
+    bool IsClipPlaying(AudioClip clip)
+    {
+        // loop through all sources checking the clips
+        foreach(var source in source_SFX)
+        {
+            // if the clip matches a source's currently playing clip, then return true
+            if (source.clip == clip && source.isPlaying)
+                return true;
+        }
+
+        // if the clip was not found, then return false
+        return false;
     }
 }

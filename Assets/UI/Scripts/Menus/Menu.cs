@@ -78,17 +78,39 @@
             if (listOfButtons == null) return;
             foreach(Button button in listOfButtons)
             {
-                AddDescriptionEvent(button);
+                // Add an EventTrigger Component to the button here
+                button.gameObject.AddComponent<EventTrigger>();
+
+                // These functions add specific triggers based on certain actions performed with the buttons
+                AddDescriptionEvent(button); // Changes the description text obj when the button is highlighted
+                AddButtonSounds(button); // plays button sfx when highlighted/pressed
             }
         }
 
         protected void AddDescriptionEvent(Button button)
         {
             // ADD AN EVENT TRIGGER AND SET FUNCTION UP HERE
-            var trigger = button.gameObject.AddComponent<EventTrigger>();
+            var trigger = button.gameObject.GetComponent<EventTrigger>();
             var entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.Select;
             entry.callback.AddListener((baseEventData) => AssignDescription(baseEventData));
+            trigger.triggers.Add(entry);
+        }
+        
+        protected void AddButtonSounds(Button button)
+        {
+            var trigger = button.gameObject.GetComponent<EventTrigger>();
+
+            // Menu nav sfx
+            var entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.Deselect;
+            entry.callback.AddListener((unused) => AudioManager.instance.PlayMenuNav());
+            trigger.triggers.Add(entry);
+
+            // Menu select sfx
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.Submit;
+            entry.callback.AddListener((unused) => AudioManager.instance.PlayMenuSelect());
             trigger.triggers.Add(entry);
         }
 
