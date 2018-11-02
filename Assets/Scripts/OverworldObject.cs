@@ -24,4 +24,6 @@ public class OverworldObject : MonoBehaviour {
         }
     }
     public virtual void Activate() {}
+
+	public int SortingOrder { get { return this.sr.sortingOrder; } set { this.sr.sortingOrder = value; } }
 }
