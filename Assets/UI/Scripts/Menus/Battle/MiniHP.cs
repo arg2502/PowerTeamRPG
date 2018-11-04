@@ -70,7 +70,6 @@ public class MiniHP : MonoBehaviour {
             }
         }
         hpBar.fillAmount = desiredAmount;
-        print("DONE");
         yield return new WaitForSeconds(1f);
         TurnOff();
     }

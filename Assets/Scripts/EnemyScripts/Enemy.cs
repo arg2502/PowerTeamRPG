@@ -126,7 +126,6 @@ public class Enemy : Denigen {
         // make sure Jouliette is the only target -- she will always be heroList[3]
         targets.Clear();
         var joules = battleManager.heroList.Find(hero => hero.Data.identity == 3);
-        print(joules.DenigenName);
         targets.Add(joules);
     }
 

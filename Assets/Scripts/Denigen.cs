@@ -310,12 +310,10 @@ public class Denigen : MonoBehaviour {
         {
             damage *= 1.5f;
             calcDamageText.Add(name + " strikes a weak spot!");
-            print(name + " strikes a weak spot!");
             attackType = AttackType.CRIT;
         }
 
         // check for attack based passivesList
-        print("Damage before CalcPassives: " + damage);
         foreach (Passive passive in PassivesList)
         {
             if (passive is CalcDamagePassive)
@@ -324,7 +322,6 @@ public class Denigen : MonoBehaviour {
                 damage += temp.CalcDamage(this, damage);
             }
         }
-        print("Damage after CalcPassives: " + damage);
 
         //Clear the target's previous text, to avoid a build up 
         for (int i = 0; i < targets.Count; i++)
@@ -387,10 +384,8 @@ public class Denigen : MonoBehaviour {
                 damage += temp.TakeDamage(attackingDen, this, damage);
             }
         }
-
-        //attacker = attackingDen;
+        
         calculatedDamage = (int)damage;
-        print(this.DenigenName + " calculatedDamage: " + calculatedDamage);
     }
 
     void Heal(float healEffect)
@@ -410,7 +405,6 @@ public class Denigen : MonoBehaviour {
             }
 
             Pm -= attackCost;
-            print(DenigenName + " pays " + attackCost + " to use " + currentAttack.Name);
         }
     }
 

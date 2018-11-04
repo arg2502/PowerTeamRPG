@@ -59,7 +59,6 @@ public class AudioManager : MonoBehaviour {
 
     void PlaySFX(AudioClip clip, bool randomPitch = true)
     {
-        print("sfx play: " + clip);
         var pitchRandom = 1f;
         if (randomPitch)
         {

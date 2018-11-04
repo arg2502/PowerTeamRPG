@@ -454,7 +454,6 @@ public class BattleManager : MonoBehaviour {
     {
         var nextDenigen = denigenList[currentDenigen];
 
-        Debug.LogError("NEXT TURN: " + nextDenigen.DenigenName);
         // determine if the next denigen to go is a hero or enemy
         if (nextDenigen is Hero)
             ChangeBattleState(BattleState.TARGET);
@@ -522,14 +521,10 @@ public class BattleManager : MonoBehaviour {
             if (currentDenigen >= denigenList.Count)
             {
                 // FOR NOW -- JUST GO BACK TO TARGETING
-                //ChangeBattleState(BattleState.TARGET);
                 EndAttackPhase();
                 return;
             }
         }
-        if (currentDenigen < denigenList.Count)
-            print("NEXT UP -- " + denigenList[currentDenigen].name);
-        //AttackDenigen();
 
         NextTurn();
     }
