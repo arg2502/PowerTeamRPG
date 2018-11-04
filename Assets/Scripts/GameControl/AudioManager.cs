@@ -13,6 +13,7 @@ public class AudioManager : MonoBehaviour {
     [Header("SFX")]
     public AudioClip sfx_hit;
     public AudioClip sfx_block;
+    public AudioClip sfx_miss;
     public AudioClip sfx_menuNav;
     public AudioClip sfx_menuSelect;
 
@@ -98,6 +99,11 @@ public class AudioManager : MonoBehaviour {
     public void PlayBlock()
     {
         PlaySFX(sfx_block);
+    }
+
+    public void PlayMiss()
+    {
+        PlaySFX(sfx_miss, randomPitch: false);
     }
 
     public void PlayMenuNav()

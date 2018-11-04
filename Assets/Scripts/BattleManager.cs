@@ -939,6 +939,7 @@ public class BattleManager : MonoBehaviour {
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";
+                    AudioManager.instance.PlayMiss();
                     break;
                 case Denigen.AttackType.DODGED:
                     message = target.DenigenName + " dodged the attack\n";
