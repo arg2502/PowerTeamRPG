@@ -11,6 +11,7 @@ public class ListButton : MonoBehaviour {
 
     BattleManager battleManager;
     Technique thisTech;
+    public Technique ThisTech { get { return thisTech; } }
         
     public void SetTechnique(Technique tech)
     {

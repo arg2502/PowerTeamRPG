@@ -74,7 +74,7 @@
             FillList();
             //if (currentContainer != lastContainer)
             //{
-            rootButton = listOfButtons[0];
+            rootButton = AssignRootButton();
             currentContainer.transform.localPosition = originalContainerPos;
             //lastContainer = currentContainer;
             //}   
@@ -82,6 +82,23 @@
             SetSelectedObjectToRoot();
             
         }
+        public override Button AssignRootButton()
+        {
+            if (listOfButtons.Count <= 0)
+                return null;
+
+            for(int i = 0; i < listOfButtons.Count; i++)
+            {
+                if (listOfButtons[i].interactable)
+                    return listOfButtons[i];
+            }
+
+            // We should not reach this point, as we should not be able to enter a menu with 0 interactable buttons
+            // return 0 pos just in case, but also log error
+            Debug.LogError("No interactable buttons found. We should not be in this menu.");
+            return listOfButtons[0];
+        }
+
         protected override void AddButtons()
         {
             base.AddButtons();
@@ -215,7 +232,7 @@
 
         void FillTechniques()
         {
-            var currentHero = battleManager.CurrentDenigen;
+            var currentHero = battleManager.CurrentDenigen as Hero;
 
             // set/find container
             if (battleManager.menuState == MenuState.SPELLS)
@@ -253,6 +270,23 @@
                 {
                     var listButton = containerButtons[i];
                     listButton.RefreshPMCost();
+
+                    // assign attacks
+                    var button = listButton.GetComponentInChildren<Button>();
+                    var tech = listButton.ThisTech;
+
+                    button.onClick.RemoveAllListeners();
+
+                    if (currentHero.EnoughPm(tech))
+                    {
+                        var attack = tech.Name;
+                        button.interactable = true;
+                        button.onClick.AddListener(() => OnSelect(attack));
+                    }
+                    else
+                    {
+                        button.interactable = false;
+                    }
                 }
             }
             else
@@ -287,16 +321,28 @@
 
                     // assign attacks
                     button.onClick.RemoveAllListeners();
-                    var attack = category[i].Name;
-                    button.onClick.AddListener(() => OnSelect(attack));
+
+                    if (currentHero.EnoughPm(category[i]))
+                    {
+                        var attack = category[i].Name;
+                        button.interactable = true;
+                        button.onClick.AddListener(() => OnSelect(attack));
+                    }
+                    else
+                    {
+                        button.interactable = false;
+                    }
+
+                    //var attack = category[i].Name;
+                    //button.onClick.AddListener(() => OnSelect(attack));
 
                     // set description
                     button.GetComponent<Description>().SetDescription(category[i].Description);
 
                 }
-                SetButtonNavigation();
-                AddListeners();
             }
+            SetButtonNavigation();
+            AddListeners();
         }
 
         void OnSelect(string attack)
@@ -307,15 +353,16 @@
             // if we do, proceed to targetMenu
             // if not (and if the player has not turned off that menu (add that functionality later)), 
             // show a notification prompt asking if the player REALLY wants to use the technique
-            if (battleManager.menuState != MenuState.ITEMS
-                && !battleManager.CurrentHero.EnoughPm)
-            {
-                OpenNotEnoughPMPrompt();
-            }
-            else
-            {
-                OpenTarget();
-            }
+            //if (battleManager.menuState != MenuState.ITEMS
+            //    && !battleManager.CurrentHero.EnoughPm)
+            //{
+            //    OpenNotEnoughPMPrompt();
+            //}
+            //else
+            //{
+            //    OpenTarget();
+            //}
+            OpenTarget();
         }        
 
         void OpenNotEnoughPMPrompt()
@@ -331,7 +378,6 @@
 
         void OpenTarget()
         {
-            print("open target menu");
             uiManager.HideAllMenus();
             uiManager.PushMenu(uiDatabase.TargetMenu);
         }

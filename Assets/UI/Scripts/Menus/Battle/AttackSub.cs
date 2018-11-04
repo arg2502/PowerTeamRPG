@@ -5,6 +5,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine.EventSystems;
+    using System.Linq;
 
     public class AttackSub : Menu
     {
@@ -78,13 +79,39 @@
         void CheckTechniques()
         {
             var hero = battleManager.CurrentDenigen;
-            
-            // sets buttons to false if lists are empty
-            skills.interactable = hero.SkillsList.Count > 0;
-            spells.interactable = hero.SpellsList.Count > 0;
+
+            // sets buttons to false if lists are empty, or if we can't afford any techniques
+            // -- The Cast<> function is from the System.Linq library, it allows us to pass
+            // a List of child objects in as a List of parent objects --
+            skills.interactable = CheckInteractableOfTechs(hero.SkillsList.Cast<Technique>().ToList());
+            spells.interactable = CheckInteractableOfTechs(hero.SpellsList.Cast<Technique>().ToList());
 
             // reset buttons
             SetButtonNavigation();
+        }
+
+        /// <summary>
+        /// Checks if we can enter into a Skills or Spells list. If no techniques available, false.
+        /// Otherwise, check if there's at least one technique that we can afford, if we can't, false.
+        /// If we can, true.
+        /// </summary>
+        /// <returns></returns>
+        bool CheckInteractableOfTechs(List<Technique> techniqueList)
+        {
+            // if we don't have any techniques, there's no list to show, deactivate button
+            if (techniqueList.Count <= 0)
+                return false;
+
+            // check to see if we have enough PM for at least 1 technique, if we do, allow them through
+            var hero = battleManager.CurrentDenigen;
+            for(int i = 0; i < techniqueList.Count; i++)
+            {
+                if (hero.Pm >= techniqueList[i].Pm)
+                    return true;
+            }
+
+            // if there are no techniques we can afford, deactivate the button
+            return false;
         }
 
         new void Update()

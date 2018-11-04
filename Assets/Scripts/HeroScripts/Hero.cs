@@ -36,7 +36,7 @@ public class Hero : Denigen {
 
     public TargetType currentTargetType;
     
-    public bool EnoughPm { get { return Pm >= CurrentAttack.Pm; } }
+    public bool EnoughPm(Technique tech) { return Pm >= tech.Pm; } 
 
     // the method for handling item use
     public void ItemUse()
@@ -359,7 +359,6 @@ public class Hero : Denigen {
             isMagic = true;
         }
         damage = CalcDamage(0.3f, 0.1f, 0.95f, isMagic);
-        print(name + " strikes! " + damage + " damage");
         targets[0].TakeDamage(this, damage, isMagic);
     }
 
