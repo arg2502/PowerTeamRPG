@@ -26,17 +26,10 @@ public class characterControl : OverworldObject {
     //PauseMenu pm;
 	//public bool canMove;
 
-    public LayerMask movableMask;
+    //public LayerMask movableMask;
 
 	MovableOverworldObject carriedObject;
 	bool isCarrying = false;
-
-    RaycastHit2D topHitCheck;
-    RaycastHit2D bottomHitCheck;
-
-    float sideHitFloat = 0.3f; // 0.25
-    float topHitFloat = 0.5f;
-    float bottomHitFloat = 0.75f;
 
     Animator anim;
 
@@ -117,7 +110,7 @@ public class characterControl : OverworldObject {
 		// vertical input
 		if (Input.GetAxisRaw ("Vertical") > 0.5f || Input.GetAxisRaw ("Vertical") < -0.5f) {
 			hit = Physics2D.BoxCast (adjustedPosition, boxCollider.size, 0,
-		                         new Vector2 (0, direction.y), Mathf.Abs (direction.y));
+		                         new Vector2 (0, direction.y), Mathf.Abs (direction.y), mask);
 			if (hit.collider == null) { // if the collider is null, no collision
 				transform.Translate (0, direction.y, 0); }// move in the y direction
 
@@ -130,7 +123,7 @@ public class characterControl : OverworldObject {
 		// horizontal input
 		if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f) {
 			hit = Physics2D.BoxCast (adjustedPosition, boxCollider.size, 0,
-			                         new Vector2 (direction.x, 0), Mathf.Abs (direction.x));
+			                         new Vector2 (direction.x, 0), Mathf.Abs (direction.x), mask);
 			if (hit.collider == null) { // if the collider is null, no collision
 				transform.Translate (direction.x, 0, 0); }// move in the x direction
 
@@ -234,7 +227,8 @@ public class characterControl : OverworldObject {
 
 					//cast the collider forward from the player's adjusted position
 					hit = Physics2D.BoxCast (adjustedPosition, carriedCollider.size, 0,
-					                         lastMovement, Mathf.Abs (carriedCollider.size.x));
+					                         lastMovement, Mathf.Abs (carriedCollider.size.x), mask);
+
 					//Put the object down if clear -- this part will prob have to be edited in the future
 					//to allow for switches and holes, etc, that the object can be placed on top of
 					if(hit.collider == null){

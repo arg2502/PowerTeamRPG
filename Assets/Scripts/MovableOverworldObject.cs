@@ -3,10 +3,8 @@ using System.Collections;
 
 public class MovableOverworldObject : OverworldObject {
 
-    public float collisionOffset; //probably delet
     public bool isActivated; //whether or not a toggle has caused the object to appear
 	public bool isCarried = false; //whether or not Jethro is carrying the object
-    public float raycastDist = 0.125f; //probably delet
 
     void Start()
     {		
