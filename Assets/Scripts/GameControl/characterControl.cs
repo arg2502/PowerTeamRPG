@@ -49,6 +49,9 @@ public class characterControl : OverworldObject {
     Action OnDesiredPos;
     Gateway currentGateway;
     CameraController myCamera;
+
+    TEST_NPC currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
+
     // Use this for initialization
     void Start () {
 
@@ -80,30 +83,42 @@ public class characterControl : OverworldObject {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (GameControl.control.currentCharacterState == CharacterState.Normal)
+        // for transition between areas
+        if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
-            if (other.GetComponent<Gateway>())
-            {
-                currentGateway = other.GetComponent<Gateway>();
-                StartCoroutine(myCamera.Fade());
-                ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
-            }
+            currentGateway = other.GetComponent<Gateway>();
+            StartCoroutine(myCamera.Fade());
+            ExitRoom(currentGateway.transform.position, currentGateway.exitPos);            
+        }
+
+        // for NPC interaction -- REPLACE WITH CORRECT NPC CLASS NAME
+        if(other.GetComponent<TEST_NPC>())
+        {
+            currentNPC = other.GetComponent<TEST_NPC>();
         }
     }
-    //void OnCollisionEnter2D(Collision2D otherCollider2d)
-    //{
-    //    print("ENTER");
-    //    canMove = false;
-    //}
-    //void OnCollisionExit2D(Collision2D otherCollider2d)
-    //{
-    //    print("EXIT");
-    //    canMove = true;
-    //}
 
-	//new code ----------------------------------------------------
-	//A method for determining movement, which also checks collisions
-	public void Move(float move_x, float move_y){
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if(other.GetComponent<TEST_NPC>() && Equals(other.GetComponent<TEST_NPC>(), currentNPC)
+            && Input.GetKeyUp(GameControl.control.selectKey))
+        {
+            other.GetComponent<TEST_NPC>().StartDialogue();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
+        if(collision.GetComponent<TEST_NPC>() && Equals(collision.GetComponent<TEST_NPC>(), currentNPC))
+        {
+            currentNPC = null;
+        }
+    }
+
+    //new code ----------------------------------------------------
+    //A method for determining movement, which also checks collisions
+    public void Move(float move_x, float move_y){
 		//create the vector of the desired movement
 		Vector2 direction = new Vector2 (move_x, move_y);
 		direction.Normalize ();

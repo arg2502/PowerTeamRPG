@@ -23,7 +23,16 @@ public class Dialogue : MonoBehaviour {
 
     public void StartDialogue(TextAsset textAsset)
     {
-        DecipherConversation(textAsset);
+        if (dialogueConversation == null)
+            DecipherConversation(textAsset);
+
+        else if (conversationIterator >= dialogueConversation.Count)
+        {
+            print("END");
+            conversationIterator = 0;
+            speaker.EndDialogue();
+            return;
+        }
         PrintConversation();
     }
 
@@ -85,27 +94,9 @@ public class Dialogue : MonoBehaviour {
         currentSpeakerSprite = speakerEmotions[conversationIterator];
         currentDialogueText = dialogueConversation[conversationIterator];
 
-        print(currentSpeakerName);
-        print(currentSpeakerSprite);
-        print(currentDialogueText);
+        print(currentSpeakerName + ": " + currentDialogueText);
 
-    }
+        conversationIterator++;
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            if(conversationIterator < dialogueConversation.Count - 1)
-            {
-                conversationIterator++;
-                PrintConversation();
-            }
-            else
-            {
-                print("END");
-                conversationIterator = 0;
-                speaker.EndDialogue();
-            }
-        }
-    }
+    }    
 }

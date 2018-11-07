@@ -16,6 +16,7 @@ public class TEST_NPC : MonoBehaviour {
 
     Dialogue dialogue;
     bool isTalking = false;
+    public bool IsTalking { get { return isTalking; } }
 
     // Use this for initialization
     void Start () {
@@ -25,7 +26,7 @@ public class TEST_NPC : MonoBehaviour {
     /// <summary>
     /// Send the appropriate conversation over to the Dialogue class to handle
     /// </summary>
-    void StartDialogue()
+    public void StartDialogue()
     {
         dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
         isTalking = true;
@@ -36,13 +37,5 @@ public class TEST_NPC : MonoBehaviour {
         if (numOfTimesTalked < dialogueList.Count - 1)
             numOfTimesTalked++;
         isTalking = false;
-    }
-
-    private void Update()
-    {
-        if(!isTalking && Input.GetKeyDown(KeyCode.Space))
-        {
-            StartDialogue();
-        }
     }
 }
