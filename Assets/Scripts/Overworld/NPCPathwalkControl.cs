@@ -80,6 +80,8 @@ public class NPCPathwalkControl : MovableOverworldObject {
 
 		//select the direction to start moving toward the waypoint
 		ChooseDirection ();
+
+		base.Start();
 	}
 
 	void Move (float move_x, float move_y){
@@ -316,6 +318,8 @@ public class NPCPathwalkControl : MovableOverworldObject {
 		{
 			anim.SetBool("isMoving", canMove);
 		}
+
+		sr.sortingOrder = (int)(-transform.position.y * 10.0f);
 	
 	}
 

@@ -143,7 +143,7 @@ public class characterControl : OverworldObject {
         if (Input.GetKeyDown(KeyCode.P) && Time.timeScale < 1.0f)
             Time.timeScale += 0.1f;
 
-        sr.sortingOrder = (int)-transform.position.y;
+		sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 
