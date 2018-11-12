@@ -13,10 +13,8 @@ public class characterControl : OverworldObject {
         Defeat
     }
 
-	//new code -------------------------------------------------------------
 	private BoxCollider2D boxCollider; // Variable to reference our collider
 	private RaycastHit2D hit; //checks for collisions
-	// end new code --------------------------------------------------------
 
     float moveSpeed = 0;
     float walkSpeed = 6f;
@@ -103,47 +101,52 @@ public class characterControl : OverworldObject {
 		direction *= moveSpeed * Time.deltaTime;
 
 		//get the position of the boxcollider, adjusted for any offsets
-		Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
-		                                       (transform.position.y + boxCollider.offset.y));
+		//Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
+		//                                       (transform.position.y + boxCollider.offset.y));
 
-        hit = Physics2D.BoxCast(adjustedPosition, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude), mask);
+        hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude), mask);
 
-        if(hit.collider)
-        {
-            var horHit = Physics2D.BoxCast(adjustedPosition, boxCollider.size, 0,
-                                   new Vector2(direction.x, 0), Mathf.Abs(direction.x), mask);
-            if (horHit.collider)
-                direction.x = 0;
+		// if there was a hit, test the individual axes, one after the other
+        if (hit.collider) {
+			//The clipping on corners occured because these 2 individual tests
+			//created a false positive, where the 2 tests would cast in the cardinal
+			//directions and miss the corner of a hitbox, and then the player
+			//would move diagonally and hit the corner the sests missed
+			//Performing a translate after each test fixes this problem
 
-            var vertHit = Physics2D.BoxCast(adjustedPosition, boxCollider.size, 0,
-                                   new Vector2(0, direction.y), Mathf.Abs(direction.y), mask);
+			var horHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
+                                   new Vector2 (direction.x, 0), Mathf.Abs (direction.x), mask);
+			if (horHit.collider){
+				direction.x = 0;
+			}
+			else{
+				transform.Translate(new Vector2 (direction.x, 0.0f));
+			}
 
-            if (vertHit.collider)
-                direction.y = 0;
-        }
+			var vertHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
+                                   new Vector2 (0, direction.y), Mathf.Abs (direction.y), mask);
 
-        //if (hit.collider == null)
-        //{ // if the collider is null, no collision
-            transform.Translate(direction);
-        //}// move in the y direction
+			if (vertHit.collider){
+				direction.y = 0;
+			}
+			else{
+				transform.Translate(new Vector2 (0.0f, direction.y));
+			}
 
-        //cast a box to see if jethro will collide vertically
+		} else {
+			//if the collider is null, no collision, just translate
+			transform.Translate (direction);
+		}
+
         // vertical input
         if (Input.GetAxisRaw ("Vertical") > 0.5f || Input.GetAxisRaw ("Vertical") < -0.5f) {			
-
 			//stuff for the animator
 			isMoving = true;
 			lastMovement = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
 		}
-		
-		//cast a box to see if jethro will collide horizontally
+
 		// horizontal input
 		if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f) {
-			//hit = Physics2D.BoxCast (adjustedPosition, boxCollider.size, 0,
-			//                         new Vector2 (direction.x, 0), Mathf.Abs (direction.x), mask);
-			//if (hit.collider == null) { // if the collider is null, no collision
-			//	transform.Translate (direction.x, 0, 0); }// move in the x direction
-
 			//stuff for the animator
 			isMoving = true;
 			lastMovement = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);

@@ -297,7 +297,7 @@ public class NPCPathwalkControl : MovableOverworldObject {
 			//if avoiding for too long, head back to the previous waypoint
 			redirectTimer += Time.deltaTime;
 			if(redirectTimer >= redirectTime && prevWaypoint != null){
-				print (this.name + " is STUCK, redirecting.");
+				//print (this.name + " is STUCK, redirecting.");
 				redirectTimer = 0.0f; // reset the timer for use by walking state
 				walkingState = State.walking; //set state to walking
 				currentWaypoint = prevWaypoint; //turn the stuck NPC around
