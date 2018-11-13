@@ -116,24 +116,18 @@ public class characterControl : OverworldObject {
 
 			var horHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
                                    new Vector2 (direction.x, 0), Mathf.Abs (direction.x), mask);
-			if (horHit.collider){
-				direction.x = 0;
-			}
-			else{
+			if (horHit.collider == null){
 				transform.Translate(new Vector2 (direction.x, 0.0f));
 			}
 
 			var vertHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
                                    new Vector2 (0, direction.y), Mathf.Abs (direction.y), mask);
 
-			if (vertHit.collider){
-				direction.y = 0;
-			}
-			else{
+			if (vertHit.collider == null){
 				transform.Translate(new Vector2 (0.0f, direction.y));
 			}
-
-		} else {
+		}
+		else {
 			//if the collider is null, no collision, just translate
 			transform.Translate (direction);
 		}
@@ -203,14 +197,12 @@ public class characterControl : OverworldObject {
 				moveSpeed = walkSpeed;
 			}
 
-            // If not pushing or pulling
-            //if (!Input.GetKey(GameControl.control.selectKey))
-            //{
-				// new code --------------------------------------------------------------
+            //Check for input
+			if(Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
+			{
 				//call the move function
 				Move (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
-				// end new code ----------------------------------------------------------
-            //}
+            }
 
             // If picking up or putting down an object
             if (Input.GetKeyUp(GameControl.control.selectKey))
