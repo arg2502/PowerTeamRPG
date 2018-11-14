@@ -119,7 +119,7 @@ public class characterControl : OverworldObject {
 
     void TalkToNPC()
     {
-        if(Input.GetKeyUp(GameControl.control.selectKey) && !currentNPC.IsTalking
+        if(Input.GetKeyDown(GameControl.control.selectKey) && !currentNPC.IsTalking
             && GameControl.control.currentCharacterState != CharacterState.Talking)
         {
             currentNPC.StartDialogue();
