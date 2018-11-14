@@ -103,6 +103,11 @@ public class GameControl : MonoBehaviour {
     //public RoomTransitionState roomState;
     public characterControl.CharacterState currentCharacterState;
 
+    public void SetCharacterState(characterControl.CharacterState newState)
+    {
+        currentCharacterState = newState;
+    }
+
     //awake gets called before start
     void Awake () {
 		if (control == null)

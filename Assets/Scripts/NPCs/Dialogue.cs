@@ -10,11 +10,14 @@ public class Dialogue : MonoBehaviour {
     Sprite currentSpeakerSprite;
     string currentDialogueText;
 
+    TextAsset currentTextAsset;
     List<string> speakerNames;
     List<Sprite> speakerEmotions;
     List<string> dialogueConversation;
 
     int conversationIterator = 0;
+
+    UI.DialogueMenu dialogueMenu;
 
     private void Start()
     {
@@ -23,24 +26,28 @@ public class Dialogue : MonoBehaviour {
 
     public void StartDialogue(TextAsset textAsset)
     {
-        if (dialogueConversation == null)
-            DecipherConversation(textAsset);
-
-        else if (conversationIterator >= dialogueConversation.Count)
+        // if this is our first time talking to an NPC,
+        // OR the text they have to say is different from the last time we've talked,
+        // set the current text asset and decipher dialogue
+        if (currentTextAsset == null || currentTextAsset != textAsset) // NEEDS TESTING WITH MULTIPLE DIALOGUES
         {
-            print("END");
-            conversationIterator = 0;
-            speaker.EndDialogue();
-            return;
+            currentTextAsset = textAsset;
+            DecipherConversation();
         }
+
+        // push the dialogue menu
+        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
+        dialogueMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueMenu).GetComponent<UI.DialogueMenu>();
+        dialogueMenu.SetContinue(PrintConversation);
+
+        // Send the dialogue information to the menu to be printed
         PrintConversation();
     }
 
     /// <summary>
-    /// Fill out the lists for the conversation based on the passed in file
+    /// Fill out the lists for the conversation based on the currently stored Text Asset, passed in from the NPC.
     /// </summary>
-    /// <param name="textAsset"></param>
-    void DecipherConversation(TextAsset textAsset)
+    void DecipherConversation()
     {
         speakerNames = new List<string>();
         speakerEmotions = new List<Sprite>();
@@ -49,7 +56,7 @@ public class Dialogue : MonoBehaviour {
         // split whole doc into row
         // each row makes up a sentence or section of the dialogue
         // could be possible to have someone different speak on each row
-        var rows = textAsset.text.Split('\n');
+        var rows = currentTextAsset.text.Split('\n');
         
         // Loop through the lines (skipping the first line, as that contains var names like "name", "emotion", etc.
         // Add the appropriate variables to the lists
@@ -90,11 +97,25 @@ public class Dialogue : MonoBehaviour {
 
     void PrintConversation()
     {
+        // if the iterator is greater than the amount of dialogue that needs to be said,
+        // End the conversation
+        if (conversationIterator >= dialogueConversation.Count)
+        {
+            print("END");
+            conversationIterator = 0;
+            speaker.EndDialogue();
+
+            // pop dialogue menu
+            GameControl.UIManager.HideAllMenus();
+
+            return;
+        }
         currentSpeakerName = speakerNames[conversationIterator];
         currentSpeakerSprite = speakerEmotions[conversationIterator];
         currentDialogueText = dialogueConversation[conversationIterator];
 
         print(currentSpeakerName + ": " + currentDialogueText);
+        dialogueMenu.SetText(currentSpeakerName, currentDialogueText, currentSpeakerSprite);
 
         conversationIterator++;
 

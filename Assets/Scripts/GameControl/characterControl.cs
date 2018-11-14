@@ -10,7 +10,8 @@ public class characterControl : OverworldObject {
         Transition,
         Normal,
         Battle,
-        Defeat
+        Defeat,
+        Talking
     }
 
 	//new code -------------------------------------------------------------
@@ -95,15 +96,15 @@ public class characterControl : OverworldObject {
         if(other.GetComponent<TEST_NPC>())
         {
             currentNPC = other.GetComponent<TEST_NPC>();
+            TalkToNPC();
         }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if(other.GetComponent<TEST_NPC>() && Equals(other.GetComponent<TEST_NPC>(), currentNPC)
-            && Input.GetKeyUp(GameControl.control.selectKey))
+        if (other.GetComponent<TEST_NPC>() && Equals(other.GetComponent<TEST_NPC>(), currentNPC))
         {
-            other.GetComponent<TEST_NPC>().StartDialogue();
+            TalkToNPC();
         }
     }
 
@@ -116,9 +117,23 @@ public class characterControl : OverworldObject {
         }
     }
 
+    void TalkToNPC()
+    {
+        if(Input.GetKeyUp(GameControl.control.selectKey) && !currentNPC.IsTalking
+            && GameControl.control.currentCharacterState != CharacterState.Talking)
+        {
+            currentNPC.StartDialogue();
+        }
+    }
+
     //new code ----------------------------------------------------
     //A method for determining movement, which also checks collisions
     public void Move(float move_x, float move_y){
+
+        // if we're talking to an npc, don't move at all
+        if (GameControl.control.currentCharacterState == CharacterState.Talking)
+            return;
+
 		//create the vector of the desired movement
 		Vector2 direction = new Vector2 (move_x, move_y);
 		direction.Normalize ();

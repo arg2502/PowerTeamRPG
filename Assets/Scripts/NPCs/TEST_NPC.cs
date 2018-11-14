@@ -18,6 +18,8 @@ public class TEST_NPC : MonoBehaviour {
     bool isTalking = false;
     public bool IsTalking { get { return isTalking; } }
 
+    characterControl.CharacterState prevState;
+
     // Use this for initialization
     void Start () {
         dialogue = GetComponent<Dialogue>();
@@ -30,6 +32,11 @@ public class TEST_NPC : MonoBehaviour {
     {
         dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
         isTalking = true;
+
+        print("State was: " + GameControl.control.currentCharacterState);
+        prevState = GameControl.control.currentCharacterState;
+        GameControl.control.SetCharacterState(characterControl.CharacterState.Talking);
+        print("State is now: " + GameControl.control.currentCharacterState);
     }
 
     public void EndDialogue()
@@ -37,5 +44,8 @@ public class TEST_NPC : MonoBehaviour {
         if (numOfTimesTalked < dialogueList.Count - 1)
             numOfTimesTalked++;
         isTalking = false;
+
+        GameControl.control.SetCharacterState(prevState);
+        print("State is once again: " + GameControl.control.currentCharacterState);
     }
 }

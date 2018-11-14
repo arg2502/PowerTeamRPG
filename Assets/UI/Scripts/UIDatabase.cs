@@ -6,6 +6,9 @@
     [CreateAssetMenu(fileName = "UIDatabase", menuName = "Database/UI Menus", order = 1)]
     public class UIDatabase : ScriptableObject
     {
+        [Header("Overworld")]
+        public GameObject DialogueMenu;
+
         [Header("Misc.")]
         public GameObject ConfirmationMenu;
 

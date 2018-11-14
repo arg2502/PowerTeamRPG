@@ -99,19 +99,19 @@
         
         protected void AddButtonSounds(Button button)
         {
-            var trigger = button.gameObject.GetComponent<EventTrigger>();
+            //var trigger = button.gameObject.GetComponent<EventTrigger>();
 
-            // Menu nav sfx
-            var entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.Deselect;
-            entry.callback.AddListener((unused) => AudioManager.instance.PlayMenuNav());
-            trigger.triggers.Add(entry);
+            //// Menu nav sfx
+            //var entry = new EventTrigger.Entry();
+            //entry.eventID = EventTriggerType.Deselect;
+            //entry.callback.AddListener((unused) => AudioManager.instance.PlayMenuNav());
+            //trigger.triggers.Add(entry);
 
-            // Menu select sfx
-            entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.Submit;
-            entry.callback.AddListener((unused) => AudioManager.instance.PlayMenuSelect());
-            trigger.triggers.Add(entry);
+            //// Menu select sfx
+            //entry = new EventTrigger.Entry();
+            //entry.eventID = EventTriggerType.Submit;
+            //entry.callback.AddListener((unused) => AudioManager.instance.PlayMenuSelect());
+            //trigger.triggers.Add(entry);
         }
 
         protected virtual void AddButtons() { }
