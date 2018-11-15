@@ -127,6 +127,11 @@ public class characterControl : OverworldObject {
         if(Input.GetKeyDown(GameControl.control.selectKey) && !currentNPC.IsTalking
             && GameControl.control.currentCharacterState != CharacterState.Talking)
         {
+            // if the NPC has a pathwalk, set the NPC to stop and face the player
+            if (currentNPC.GetComponent<NPCPathwalkControl>())
+                currentNPC.GetComponent<NPCPathwalkControl>().FaceCharacter(-(lastMovement));
+
+            // begin the NPC's dialogue
             currentNPC.StartDialogue();
         }
     }

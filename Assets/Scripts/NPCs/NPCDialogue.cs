@@ -47,5 +47,13 @@ public class NPCDialogue : MonoBehaviour {
         isTalking = false;
 
         GameControl.control.SetCharacterState(prevState);
+
+        // At the end of the dialogue, set the NPC's walking method back to normal
+        // ...might not be the best place for this, as the NPCPathwalkControl function that's called
+        // at the start of the conversation is called in characterControl, but that's because that 
+        // function needs a characterControl variable
+        // plus this location kinda makes sense...
+        if (GetComponent<NPCPathwalkControl>())
+            GetComponent<NPCPathwalkControl>().BackToNormal();
     }
 }

@@ -24,10 +24,12 @@ public class NPCPathwalkControl : MovableOverworldObject {
 	//this will modify the NPC's behavior
 	public enum State {
 		walking, //moving toward the currentWaypoint
-		avoiding //avoiding an obstacle in the way of the waypoint
+		avoiding, //avoiding an obstacle in the way of the waypoint
+        talking // dialogue is occuring -- NPC stops and faces player
 	}
 	//set the state to walking by default
 	public State walkingState = State.walking;
+    State prevState = State.walking; // for talking -- store the previous state before talking began
 
 	//Create enum for the 4 directions an NPC can travel in
 	//This acts like the input axis of the player character
@@ -340,4 +342,21 @@ public class NPCPathwalkControl : MovableOverworldObject {
 			}
 		}
 	}
+
+    public void FaceCharacter(Vector2 directionToFace)
+    {
+        prevState = walkingState; // store what the current state is
+        walkingState = State.talking; // set NPC to talking
+        canMove = false; // Stop moving, to set to idle sprites
+        lastMovement = directionToFace; // set direction to face based on opposite player's dir
+
+        // set the blend tree animator to face the proper direction
+        anim.SetFloat("lastHSpeed", lastMovement.x);
+        anim.SetFloat("lastVSpeed", lastMovement.y);
+    }
+    public void BackToNormal()
+    {
+        canMove = true;
+        walkingState = prevState;
+    }
 }
