@@ -3,10 +3,8 @@ using System.Collections;
 
 public class MovableOverworldObject : OverworldObject {
 
-    public float collisionOffset; //probably delet
     public bool isActivated; //whether or not a toggle has caused the object to appear
 	public bool isCarried = false; //whether or not Jethro is carrying the object
-    public float raycastDist = 0.125f; //probably delet
 
     void Start()
     {		
@@ -22,7 +20,7 @@ public class MovableOverworldObject : OverworldObject {
 		if (isActivated && !isCarried) // this pertains to whether or not a switch has caused the object to appear
         {
             //gameObject.SetActive(true);
-            sr.sortingOrder = (int)-transform.position.y;
+            sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         }
 	}
 }

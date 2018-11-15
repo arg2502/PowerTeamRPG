@@ -14,30 +14,21 @@ public class characterControl : OverworldObject {
         Talking
     }
 
-	//new code -------------------------------------------------------------
 	private BoxCollider2D boxCollider; // Variable to reference our collider
 	private RaycastHit2D hit; //checks for collisions
-	// end new code --------------------------------------------------------
 
     float moveSpeed = 0;
-    float walkSpeed = 4.5f;
-    float runSpeed = 7f;
+    float walkSpeed = 6f;
+    float runSpeed = 9f;
     public Vector2 speed;
     public Vector2 desiredSpeed;
     //PauseMenu pm;
 	//public bool canMove;
 
-    public LayerMask movableMask;
+    //public LayerMask movableMask;
 
 	MovableOverworldObject carriedObject;
 	bool isCarrying = false;
-
-    RaycastHit2D topHitCheck;
-    RaycastHit2D bottomHitCheck;
-
-    float sideHitFloat = 0.3f; // 0.25
-    float topHitFloat = 0.5f;
-    float bottomHitFloat = 0.75f;
 
     Animator anim;
 
@@ -140,30 +131,46 @@ public class characterControl : OverworldObject {
 		direction *= moveSpeed * Time.deltaTime;
 
 		//get the position of the boxcollider, adjusted for any offsets
-		Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
-		                                       (transform.position.y + boxCollider.offset.y));
-		
-		//cast a box to see if jethro will collide vertically
-		// vertical input
-		if (Input.GetAxisRaw ("Vertical") > 0.5f || Input.GetAxisRaw ("Vertical") < -0.5f) {
-			hit = Physics2D.BoxCast (adjustedPosition, boxCollider.size, 0,
-		                         new Vector2 (0, direction.y), Mathf.Abs (direction.y));
-			if (hit.collider == null) { // if the collider is null, no collision
-				transform.Translate (0, direction.y, 0); }// move in the y direction
+		//Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
+		//                                       (transform.position.y + boxCollider.offset.y));
 
+        hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude), mask);
+
+		// if there was a hit, test the individual axes, one after the other
+        if (hit.collider) {
+			//The clipping on corners occured because these 2 individual tests
+			//created a false positive, where the 2 tests would cast in the cardinal
+			//directions and miss the corner of a hitbox, and then the player
+			//would move diagonally and hit the corner the sests missed
+			//Performing a translate after each test fixes this problem
+
+			var horHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
+                                   new Vector2 (direction.x, 0), Mathf.Abs (direction.x), mask);
+			if (horHit.collider == null){
+				transform.Translate(new Vector2 (direction.x, 0.0f));
+			}
+
+			var vertHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
+                                   new Vector2 (0, direction.y), Mathf.Abs (direction.y), mask);
+
+			if (vertHit.collider == null){
+				transform.Translate(new Vector2 (0.0f, direction.y));
+			}
+		}
+		else {
+			//if the collider is null, no collision, just translate
+			transform.Translate (direction);
+		}
+
+        // vertical input
+        if (Input.GetAxisRaw ("Vertical") > 0.5f || Input.GetAxisRaw ("Vertical") < -0.5f) {			
 			//stuff for the animator
 			isMoving = true;
 			lastMovement = new Vector2 (0f, Input.GetAxisRaw ("Vertical"));
 		}
-		
-		//cast a box to see if jethro will collide horizontally
+
 		// horizontal input
 		if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f) {
-			hit = Physics2D.BoxCast (adjustedPosition, boxCollider.size, 0,
-			                         new Vector2 (direction.x, 0), Mathf.Abs (direction.x));
-			if (hit.collider == null) { // if the collider is null, no collision
-				transform.Translate (direction.x, 0, 0); }// move in the x direction
-
 			//stuff for the animator
 			isMoving = true;
 			lastMovement = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);
@@ -180,7 +187,7 @@ public class characterControl : OverworldObject {
         if (Input.GetKeyDown(KeyCode.P) && Time.timeScale < 1.0f)
             Time.timeScale += 0.1f;
 
-        sr.sortingOrder = (int)-transform.position.y;
+		sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 
@@ -220,14 +227,12 @@ public class characterControl : OverworldObject {
 				moveSpeed = walkSpeed;
 			}
 
-            // If not pushing or pulling
-            //if (!Input.GetKey(GameControl.control.selectKey))
-            //{
-				// new code --------------------------------------------------------------
+            //Check for input
+			if(Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
+			{
 				//call the move function
 				Move (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
-				// end new code ----------------------------------------------------------
-            //}
+            }
 
             // If picking up or putting down an object
             if (Input.GetKeyUp(GameControl.control.selectKey))
@@ -264,7 +269,8 @@ public class characterControl : OverworldObject {
 
 					//cast the collider forward from the player's adjusted position
 					hit = Physics2D.BoxCast (adjustedPosition, carriedCollider.size, 0,
-					                         lastMovement, Mathf.Abs (carriedCollider.size.x));
+					                         lastMovement, Mathf.Abs (carriedCollider.size.x), mask);
+
 					//Put the object down if clear -- this part will prob have to be edited in the future
 					//to allow for switches and holes, etc, that the object can be placed on top of
 					if(hit.collider == null){
