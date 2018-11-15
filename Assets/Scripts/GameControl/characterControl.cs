@@ -42,7 +42,8 @@ public class characterControl : OverworldObject {
     Gateway currentGateway;
     CameraController myCamera;
 
-    TEST_NPC currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
+    NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
+    float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
 
     // Use this for initialization
     void Start () {
@@ -83,39 +84,94 @@ public class characterControl : OverworldObject {
             ExitRoom(currentGateway.transform.position, currentGateway.exitPos);            
         }
 
-        // for NPC interaction -- REPLACE WITH CORRECT NPC CLASS NAME
-        if(other.GetComponent<TEST_NPC>())
+        // for NPC interaction
+        if(other.GetComponent<NPCDialogue>())
         {
-            currentNPC = other.GetComponent<TEST_NPC>();
-            TalkToNPC();
+            // When we enter a trigger area for an NPC that will speak, start checking for collisions
+            CheckInRangeNPC();
         }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.GetComponent<TEST_NPC>() && Equals(other.GetComponent<TEST_NPC>(), currentNPC))
+        if (other.GetComponent<NPCDialogue>())
         {
-            TalkToNPC();
+            // While within an NPC's trigger area, constantly check for NPCs
+            // We want to constantly check in case we are in situations where there are multiple NPCs
+            // We want to be able to turn and talk to that NPC without any problems
+            CheckInRangeNPC();
+
+            // If we have an NPC to talk to, check if the player has pressed select to talk to them
+            if(currentNPC)
+                TalkToNPC();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if(collision.GetComponent<TEST_NPC>() && Equals(collision.GetComponent<TEST_NPC>(), currentNPC))
+        if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), currentNPC))
         {
-            currentNPC = null;
+            ResetCurrentNPC();
         }
     }
 
+    // NPC Talking interaction section -------------------------
     void TalkToNPC()
     {
+        // If we:
+        //  press the select key,
+        //  the NPC is not talking already
+        //  and the character is not already talking
+        // then begin talking to the NPC
         if(Input.GetKeyDown(GameControl.control.selectKey) && !currentNPC.IsTalking
             && GameControl.control.currentCharacterState != CharacterState.Talking)
         {
             currentNPC.StartDialogue();
         }
     }
+
+    void ResetCurrentNPC(NPCDialogue newCurrent = null)
+    {
+        // Set the previously current NPC back to normal
+        if (currentNPC)
+            currentNPC.GetComponent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
+
+        // set the new current NPC if one was passed in
+        if(newCurrent)
+        {
+            currentNPC = newCurrent;
+
+            // Some sort of indicator to tell the player who they can talk to
+            // FOR NOW, we just changed the color
+            currentNPC.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+        // if no NPC was passed in, then there's no one we can talk to
+        else
+        {
+            currentNPC = null;
+        }
+    }
+
+    void CheckInRangeNPC()
+    {
+        // Check if there is an NPC if front of us by casting a box based off of Jethro's lastMovement vector        
+        var talkingVector = lastMovement * talkingDistance;
+        var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);
+        //Debug.DrawLine(boxCollider.bounds.center, boxCollider.bounds.center + new Vector3(talkingVector.x, talkingVector.y));
+        
+        // If there was a collision with an NPC that we can talk to, then set that to the current NPC
+        if(triggerHit.collider && triggerHit.collider.GetComponent<NPCDialogue>())
+        {
+            ResetCurrentNPC(triggerHit.collider.GetComponent<NPCDialogue>());
+        }
+        // otherwise, there's no one in front of us, so we shouldn't be able to talk to anyone
+        else
+        {
+            ResetCurrentNPC();
+        }
+    }
+    // END NPC Talking interaction section ---------------------------
 
     //new code ----------------------------------------------------
     //A method for determining movement, which also checks collisions

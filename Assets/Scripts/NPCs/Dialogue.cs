@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour {
 
-    TEST_NPC speaker;
+    NPCDialogue speaker;
     string currentSpeakerName;
     Sprite currentSpeakerSprite;
     string currentDialogueText;
@@ -21,7 +21,7 @@ public class Dialogue : MonoBehaviour {
 
     private void Start()
     {
-        speaker = GetComponent<TEST_NPC>();
+        speaker = GetComponent<NPCDialogue>();
     }
 
     public void StartDialogue(TextAsset textAsset)
