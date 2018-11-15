@@ -13,6 +13,7 @@
         string dialogueStr; // the full string that dialogueText will print out
         public Image portraitImage;
         public Button continueButton; // invisible
+        Action Continue; // function that occurs when Continue button is pressed, set in Dialogue.cs
 
         public override void TurnOnMenu()
         {
@@ -34,19 +35,28 @@
         {
             base.AddListeners();
             continueButton.onClick.RemoveAllListeners();
+
+            if (Continue != null)
+                continueButton.onClick.AddListener(Continue.Invoke);
         }
-
-        Action Continue;
-        //{
-        //    print("continue has been pressed!");
-        //}
-
+        
+        /// <summary>
+        /// Set what function occurs when the continue button is pressed. Used outside of this class.
+        /// </summary>
+        /// <param name="continueAction"></param>
         public void SetContinue(Action continueAction)
         {
             Continue = continueAction;
-            continueButton.onClick.AddListener(Continue.Invoke);
+            AddListeners();
         }
 
+        /// <summary>
+        /// Setting the speaker text, dialogue text, and portrait image for each part of conversation.
+        /// Set in Dialogue.cs
+        /// </summary>
+        /// <param name="speaker"></param>
+        /// <param name="dialogue"></param>
+        /// <param name="portrait"></param>
         public void SetText(string speaker, string dialogue, Sprite portrait)
         {
             speakerText.text = speaker;

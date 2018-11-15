@@ -101,7 +101,6 @@ public class Dialogue : MonoBehaviour {
         // End the conversation
         if (conversationIterator >= dialogueConversation.Count)
         {
-            print("END");
             conversationIterator = 0;
             speaker.EndDialogue();
 
@@ -113,8 +112,7 @@ public class Dialogue : MonoBehaviour {
         currentSpeakerName = speakerNames[conversationIterator];
         currentSpeakerSprite = speakerEmotions[conversationIterator];
         currentDialogueText = dialogueConversation[conversationIterator];
-
-        print(currentSpeakerName + ": " + currentDialogueText);
+        
         dialogueMenu.SetText(currentSpeakerName, currentDialogueText, currentSpeakerSprite);
 
         conversationIterator++;
