@@ -10,10 +10,10 @@ public class ScriptableItem : ScriptableObject {
 	//Variables universal to all items
 	public Sprite sprite;
 	public string description;
-	public int quantity;
+	//public int quantity;
 	//public int uses;
 	public int value;
-
+	public Boosts[] statBoosts;
 	//There will be little to no functionality in the item classes
 	//Instead, Items will act as data containers, with the menus 
 	//holding all of the functionality for the items

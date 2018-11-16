@@ -9,13 +9,5 @@ public class ScriptableWeapon : ScriptableItem {
 	public enum Type { augment, bookmark, beads };
 
 	//Weapons can affect any stats other than hp or pm
-	public int atkChange;
-	public int defChange;
-	public int mgkAtkChange;
-	public int mgkDefChange;
-	public int luckChange;
-	public int evadeChange;
-	public int spdChange;
-
 	//Also passives, whenever we get there
 }
