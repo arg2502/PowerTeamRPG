@@ -53,7 +53,7 @@ public class NPCDialogue : MonoBehaviour {
         // at the start of the conversation is called in characterControl, but that's because that 
         // function needs a characterControl variable
         // plus this location kinda makes sense...
-        if (GetComponent<NPCPathwalkControl>())
-            GetComponent<NPCPathwalkControl>().BackToNormal();
+        if (GetComponentInParent<NPCPathwalkControl>())
+            GetComponentInParent<NPCPathwalkControl>().BackToNormal();
     }
 }

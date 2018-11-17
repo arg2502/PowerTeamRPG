@@ -128,8 +128,8 @@ public class characterControl : OverworldObject {
             && GameControl.control.currentCharacterState != CharacterState.Talking)
         {
             // if the NPC has a pathwalk, set the NPC to stop and face the player
-            if (currentNPC.GetComponent<NPCPathwalkControl>())
-                currentNPC.GetComponent<NPCPathwalkControl>().FaceCharacter(-(lastMovement));
+            if (currentNPC.GetComponentInParent<NPCPathwalkControl>())
+                currentNPC.GetComponentInParent<NPCPathwalkControl>().FaceCharacter(-(lastMovement));
 
             // begin the NPC's dialogue
             currentNPC.StartDialogue();
@@ -140,7 +140,7 @@ public class characterControl : OverworldObject {
     {
         // Set the previously current NPC back to normal
         if (currentNPC)
-            currentNPC.GetComponent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
+            currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
 
         // set the new current NPC if one was passed in
         if(newCurrent)
@@ -149,7 +149,7 @@ public class characterControl : OverworldObject {
 
             // Some sort of indicator to tell the player who they can talk to
             // FOR NOW, we just changed the color
-            currentNPC.GetComponent<SpriteRenderer>().color = Color.yellow;
+            currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
         }
         // if no NPC was passed in, then there's no one we can talk to
         else
@@ -166,9 +166,9 @@ public class characterControl : OverworldObject {
         //Debug.DrawLine(boxCollider.bounds.center, boxCollider.bounds.center + new Vector3(talkingVector.x, talkingVector.y));
         
         // If there was a collision with an NPC that we can talk to, then set that to the current NPC
-        if(triggerHit.collider && triggerHit.collider.GetComponent<NPCDialogue>())
+        if(triggerHit.collider && triggerHit.collider.GetComponentInChildren<NPCDialogue>())
         {
-            ResetCurrentNPC(triggerHit.collider.GetComponent<NPCDialogue>());
+            ResetCurrentNPC(triggerHit.collider.GetComponentInChildren<NPCDialogue>());
         }
         // otherwise, there's no one in front of us, so we shouldn't be able to talk to anyone
         else

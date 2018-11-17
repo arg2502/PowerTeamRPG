@@ -326,22 +326,35 @@ public class NPCPathwalkControl : MovableOverworldObject {
 	}
 
 	//THis method checks npc's collision with a trigger, assumedly a waypoint
-	void OnTriggerStay2D(Collider2D other){
-		//Check if the trigger is the current target waypoint
-		if (other == currentWaypoint.box) 
-		{
-			waypointTimer += Time.deltaTime; //increase time within trigger
-
-			//check if our target time has been met
-			if(waypointTimer >= waypointTargetTime)
-			{
-				//if the target time is met, pick a new waypoint to travel to
-				ChooseNextWaypoint();
-				//reset the timer
-				waypointTimer = 0.0f;
-			}
-		}
+	void OnTriggerEnter2D(Collider2D other){
+        
+        //Check if the trigger is the current target waypoint
+        if (other == currentWaypoint.box)
+        {
+            // Start the timer in a coroutine
+            StartCoroutine(StartCountdown());
+        }
 	}
+
+    /// <summary>
+    /// This coroutine once started will loop until the waypointTimer has met its target time.
+    /// Then it will choose the next waypoint, reset the timer, and the coroutine will end.
+    /// </summary>
+    IEnumerator StartCountdown()
+    {
+        //check if our target time has been met
+        while (waypointTimer < waypointTargetTime)
+        {
+            waypointTimer += Time.deltaTime; //increase time within trigger
+            yield return null; // required for coroutine -- wait one frame, then repeat loop
+        }        
+        
+        //if the target time is met, pick a new waypoint to travel to
+        ChooseNextWaypoint();
+
+        //reset the timer
+        waypointTimer = 0.0f;
+    }
 
     public void FaceCharacter(Vector2 directionToFace)
     {
