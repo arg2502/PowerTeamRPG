@@ -52,17 +52,28 @@ public class ListButton : MonoBehaviour {
         pmCost.color = textColor;
     }
 
-    public void SetItem(Item item)
+//    public void SetItem(Item item)
+//    {
+//        techName.text = item.name;
+//        RefreshItemQuantity(item);
+//        techIcon.sprite = item.sprite;
+//        typeIcon.gameObject.SetActive(false);        
+//    }
+
+	public void SetItem(InventoryItem item)
     {
-        techName.text = item.name;
+		var _item = ItemDatabase.GetItem ("Consumable", item.name);
+	    techName.text = item.name;
         RefreshItemQuantity(item);
-        techIcon.sprite = item.sprite;
+        techIcon.sprite = _item.sprite;
         typeIcon.gameObject.SetActive(false);        
     }
 
-    public void RefreshItemQuantity(Item item)
+    //public void RefreshItemQuantity(Item item)
+	public void RefreshItemQuantity(InventoryItem item)
     {
         //print("refresh quantity to: " + item.quantity);
-        pmCost.text = (item.quantity - item.GetComponent<ConsumableItem>().inUse).ToString();
+		pmCost.text = item.quantity.ToString();
+        //pmCost.text = (item.quantity - item.GetComponent<ConsumableItem>().inUse).ToString();
     }
 }

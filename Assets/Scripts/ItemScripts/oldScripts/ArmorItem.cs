@@ -112,6 +112,6 @@ public class ArmorItem : Item {
         //quantity++;
         uses--;
         // if this item is not in the inventory anymore, add it back in
-        if (quantity == 1) { GameControl.control.equipment.Add(this.gameObject); }
+//        if (quantity == 1) { GameControl.control.equipment.Add(this.gameObject); }
     }
 }

@@ -47,13 +47,55 @@ public class Hero : Denigen {
             return;
         
         //search through all of the items
+		//this should probably go in a manager class? Maybe? --Eric
         for (int j = 0; j < GameControl.control.consumables.Count; j++)
         {
-            var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
+			ScriptableConsumable item = ItemDatabase.GetItem(GameControl.control.consumables[j].type,
+			                                                 GameControl.control.consumables[j].name) as ScriptableConsumable;
+            //var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
             // Disable an item if the number of denigens commanded to use said item is >= its quantity
             if (CurrentAttackName == item.name)
             {
-                item.Use(targets[0]);
+                //item.Use(targets[0]);
+				//run through any stat boosts the item may offer
+				foreach(Boosts b in item.statBoosts){
+					switch(b.statName){
+					case "HP":
+						targets[0].SetHPHealingValue(b.boost);
+						break;
+					case "PM":
+						targets[0].SetPMHealingValue(b.boost);
+						break;
+					case "ATK":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					case "DEF":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					case "MGKATK":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					case "MGKDEF":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					case "LUCK":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					case "EVASION":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					case "SPD":
+						print ("Target's " + b.statName + " is boosted by " + b.boost);
+						break;
+					default:
+						print ("Error on item use by " + this.name + ": Attempted to boost stat named " + b.statName);
+						break;
+					}
+				}
+				GameControl.control.consumables[j].quantity --;
+				if(GameControl.control.consumables[j].quantity <= 0) {
+					GameControl.control.consumables.Remove(GameControl.control.consumables[j]);
+				}
                 break;
             }
         }

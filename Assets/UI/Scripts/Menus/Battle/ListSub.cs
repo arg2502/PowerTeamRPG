@@ -157,7 +157,7 @@
                 for (int i = 0; i < containerButtons.Length; i++)
                 {
                     var listButton = containerButtons[i];
-                    listButton.RefreshItemQuantity(gameControl.consumables[i].GetComponent<Item>());
+                    listButton.RefreshItemQuantity(gameControl.consumables[i]);
                 }
                 // we're all set, now we can leave
                 return;
@@ -177,17 +177,18 @@
             var category = gameControl.consumables;
 
             // search for any unavailable items (items where the remaining are chosen to be used up in battle by other heroes)
-            for(int i = 0; i < category.Count; i++)
-            {
-                var item = category[i].GetComponent<ConsumableItem>();
-                // if there are no more of this item available, skip it
-                if (!item.Available)
-                    category.RemoveAt(i);
-            }
+//            for(int i = 0; i < category.Count; i++)
+//            {
+//                var item = category[i].GetComponent<ConsumableItem>();
+//                // if there are no more of this item available, skip it
+//                if (!item.Available)
+//                    category.RemoveAt(i);
+//            }
 
             for (int i = 0; i < category.Count; i++)
             {
-                var consumableItem = category[i].GetComponent<ConsumableItem>();
+				var consumableItem = category[i];
+				//var consumableItem = category[i].GetComponent<ConsumableItem>();
 
                 var itemObj = Instantiate(slotPrefab);
                 itemObj.name = consumableItem.name + "_Button";
@@ -210,7 +211,8 @@
                 button.onClick.AddListener(() => OnSelect(itemName));
 
                 // set description
-                button.GetComponent<Description>().SetDescription(consumableItem.description);
+                //button.GetComponent<Description>().SetDescription(consumableItem.description);
+				button.GetComponent<Description>().SetDescription(ItemDatabase.GetItemDescription(consumableItem.name));
             }
             SetButtonNavigation();
             AddListeners();
@@ -218,15 +220,18 @@
 
         bool AllItemsAboveZero()
         {
-            foreach(var itemObj in gameControl.consumables)
-            {
-                var item = itemObj.GetComponent<ConsumableItem>();
-                if (!item.Available)
-                {
-                    print("IS THIS ABOVE ZERO YO?: " + item.name + " " + (item.quantity - item.inUse));
-                    return false;
-                }
-            }
+			//I think this method is no longer necessary, since we changed the battle flow to one
+			//command at a time instead of all heroes at once
+
+//            foreach(var itemObj in gameControl.consumables)
+//            {
+//                var item = itemObj.GetComponent<ConsumableItem>();
+//                if (!item.Available)
+//                {
+//                    print("IS THIS ABOVE ZERO YO?: " + item.name + " " + (item.quantity - item.inUse));
+//                    return false;
+//                }
+//            }
             return true;
         }
 
@@ -582,8 +587,10 @@
             {
                 foreach (var item in gameControl.consumables)
                 {
-                    if (string.Equals(rootButton.GetComponentInChildren<Text>().text, item.GetComponent<Item>().name))
-                        SetItemStats(item.GetComponent<Item>() as ConsumableItem);
+//                    if (string.Equals(rootButton.GetComponentInChildren<Text>().text, item.GetComponent<Item>().name))
+//                        SetItemStats(item.GetComponent<Item>() as ConsumableItem);
+					if (string.Equals(rootButton.GetComponentInChildren<Text>().text, item.name))
+						SetItemStats(ItemDatabase.GetItem("Consumable", item.name) as ScriptableConsumable);
                 }
             }
         }        
@@ -605,28 +612,52 @@
             accuracyText.text = tech.Accuaracy.ToString();
             critText.text = tech.Critical.ToString();
         }
-        void SetItemStats(ConsumableItem item)
-        {
-            // hide objects
-            accuracyObj.SetActive(false);
-            critObj.SetActive(false);
+//        void SetItemStats(ConsumableItem item)
+//        {
+//            // hide objects
+//            accuracyObj.SetActive(false);
+//            critObj.SetActive(false);
+//
+//            if (item.hpChange > 0)
+//            {
+//                _damageImage.sprite = hpIcon;
+//                damageText.text = item.hpChange.ToString();
+//            }
+//            else if (item.pmChange > 0)
+//            {
+//                _damageImage.sprite = pmIcon;
+//                damageText.text = item.pmChange.ToString();
+//            }
+//            else
+//            {
+//                _damageImage.sprite = reviveIcon;
+//                damageText.text = "";
+//            }            
+//        }
 
-            if (item.hpChange > 0)
-            {
-                _damageImage.sprite = hpIcon;
-                damageText.text = item.hpChange.ToString();
-            }
-            else if (item.pmChange > 0)
-            {
-                _damageImage.sprite = pmIcon;
-                damageText.text = item.pmChange.ToString();
-            }
-            else
-            {
-                _damageImage.sprite = reviveIcon;
-                damageText.text = "";
-            }            
-        }
+		//THis method will need reworking to deal with items that affect more than one stat
+		void SetItemStats(ScriptableConsumable item)
+		{
+			// hide objects
+			accuracyObj.SetActive(false);
+			critObj.SetActive(false);
+			
+			if (item.statBoosts[0].statName == "HP")
+			{
+				_damageImage.sprite = hpIcon;
+				damageText.text = item.statBoosts[0].boost.ToString();
+			}
+			else if (item.statBoosts[0].statName == "PM")
+			{
+				_damageImage.sprite = pmIcon;
+				damageText.text = item.statBoosts[0].boost.ToString();
+			}
+			else
+			{
+				_damageImage.sprite = reviveIcon;
+				damageText.text = "";
+			}            
+		}
 
         void SetTargetSprite(Technique tech)
         {

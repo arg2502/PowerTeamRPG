@@ -206,9 +206,10 @@
                 // we should have like a find item function ---- TODO
                 foreach(var item in gameControl.consumables)
                 {
-                    if (item.GetComponent<Item>().name == battleManager.CurrentDenigen.CurrentAttackName)
+                    //if (item.GetComponent<Item>().name == battleManager.CurrentDenigen.CurrentAttackName)
+					if (item.name == battleManager.CurrentDenigen.CurrentAttackName)
                     {
-                        item.GetComponent<ConsumableItem>().inUse++;
+                        //item.GetComponent<ConsumableItem>().inUse++;
                         battleManager.CurrentDenigen.UsingItem = true;
                     }
                 }

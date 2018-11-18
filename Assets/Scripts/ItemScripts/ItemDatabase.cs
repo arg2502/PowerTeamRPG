@@ -46,17 +46,18 @@ public class ItemDatabase {
 	}
 
 	static public ScriptableItem GetItem(string itemType, string id){
+		itemType = itemType.ToLower ();
 		ValidateDatabase (); //make sure database is populated before searching
 		foreach (ScriptableItem item in _items) {
 			if(item.name == id) {
 				//make sure to return a clone of the obj to avoid editing the original
-				if(itemType == "Consumable"){
+				if(itemType == "consumable"){
 					return ScriptableObject.Instantiate(item) as ScriptableConsumable;
 				}
-				else if(itemType == "Weapon"){
+				else if(itemType == "weapon"){
 					return ScriptableObject.Instantiate(item) as ScriptableWeapon;
 				}
-				else if(itemType == "Armor"){
+				else if(itemType == "armor"){
 					return ScriptableObject.Instantiate(item) as ScriptableArmor;
 				}
 				else{
@@ -66,6 +67,28 @@ public class ItemDatabase {
 		}
 
 		Debug.Log("No item named " + id + " of type " + itemType + " has been found");
+		return null;
+	}
+
+	static public string GetItemDescription(string id){
+		ValidateDatabase (); //make sure database is populated before searching
+		foreach (ScriptableItem item in _items) {
+			if(item.name == id) {
+				return item.description;
+			}
+		}
+		Debug.Log("No item named " + id + " has been found");
+		return null;
+	}
+
+	static public Sprite GetItemSprite(string id){
+		ValidateDatabase (); //make sure database is populated before searching
+		foreach (ScriptableItem item in _items) {
+			if(item.name == id) {
+				return item.sprite;
+			}
+		}
+		Debug.Log("No item named " + id + " has been found");
 		return null;
 	}
 }

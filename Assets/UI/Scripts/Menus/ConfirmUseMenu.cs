@@ -8,7 +8,8 @@
     public class ConfirmUseMenu : Menu
     {
         public Button topButton, middleButton, bottomButton;
-        internal Item item;
+        //internal Item item;
+		internal InventoryItem item;
         InventoryMenu inventory;
         
         public override void TurnOnMenu()
@@ -185,7 +186,8 @@
             var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
             useItem.item = item;
             useItem.descriptionText = descriptionText;
-            useItem.icon.sprite = item.sprite;
+            //useItem.icon.sprite = item.sprite;
+			useItem.icon.sprite = ItemDatabase.GetItemSprite(item.name);
             useItem.itemName.text = item.name;
             useItem.menuState = menuState;
             useItem.Setup();     
