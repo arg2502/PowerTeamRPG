@@ -639,24 +639,23 @@
 		void SetItemStats(ScriptableConsumable item)
 		{
 			// hide objects
-			accuracyObj.SetActive(false);
-			critObj.SetActive(false);
-			
-			if (item.statBoosts[0].statName == "HP")
-			{
-				_damageImage.sprite = hpIcon;
-				damageText.text = item.statBoosts[0].boost.ToString();
+			accuracyObj.SetActive (false);
+			critObj.SetActive (false);
+			if (item.statBoosts.Length > 0) {
+				if (item.statBoosts [0].statName == "HP") {
+					_damageImage.sprite = hpIcon;
+					damageText.text = item.statBoosts [0].boost.ToString ();
+				} else if (item.statBoosts [0].statName == "PM") {
+					_damageImage.sprite = pmIcon;
+					damageText.text = item.statBoosts [0].boost.ToString ();
+				} else {
+					_damageImage.sprite = reviveIcon;
+					damageText.text = "";
+				}  
+			} else { //The item doesn't affect stats, so make the corresponding values null
+				_damageImage.sprite = null;
+				damageText.text = null;
 			}
-			else if (item.statBoosts[0].statName == "PM")
-			{
-				_damageImage.sprite = pmIcon;
-				damageText.text = item.statBoosts[0].boost.ToString();
-			}
-			else
-			{
-				_damageImage.sprite = reviveIcon;
-				damageText.text = "";
-			}            
 		}
 
         void SetTargetSprite(Technique tech)

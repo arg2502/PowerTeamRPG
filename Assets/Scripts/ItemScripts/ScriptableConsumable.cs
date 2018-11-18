@@ -6,5 +6,33 @@ using UnityEngine;
 public class ScriptableConsumable : ScriptableItem {
 
 	//Consumable items usually have some sort of change to stats or status
-	public string statusChange;
+	//public string statusChange;
+
+	//Unlike equipment or armor, consumable items can have multiple types of targets
+	public enum TargetType
+	{
+		NULL,
+		ENEMY_SINGLE,
+		ENEMY_SPLASH,
+		ENEMY_TEAM,
+		HERO_SINGLE,
+		HERO_SPLASH,
+		HERO_TEAM,
+		HERO_SELF
+	}
+
+	// status effect
+	public enum Status { 
+		normal, 
+		bleeding, 
+		infected, 
+		cursed, 
+		blinded, 
+		petrified, 
+		dead, 
+		overkill 
+	};
+
+	public TargetType targetType;
+	public Status statusChange;
 }

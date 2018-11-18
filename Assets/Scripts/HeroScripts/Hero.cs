@@ -41,64 +41,7 @@ public class Hero : Denigen {
     // the method for handling item use
     public void ItemUse()
     {
-        // if the item is intended for living, but the target is dead, don't use the item -- skip the turn
-        var itemIsForLiving = GameControl.itemManager.ItemForLiving(CurrentAttackName);
-        if (itemIsForLiving && targets[0].IsDead)
-            return;
-        
-        //search through all of the items
-		//this should probably go in a manager class? Maybe? --Eric
-        for (int j = 0; j < GameControl.control.consumables.Count; j++)
-        {
-			ScriptableConsumable item = ItemDatabase.GetItem(GameControl.control.consumables[j].type,
-			                                                 GameControl.control.consumables[j].name) as ScriptableConsumable;
-            //var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
-            // Disable an item if the number of denigens commanded to use said item is >= its quantity
-            if (CurrentAttackName == item.name)
-            {
-                //item.Use(targets[0]);
-				//run through any stat boosts the item may offer
-				foreach(Boosts b in item.statBoosts){
-					switch(b.statName){
-					case "HP":
-						targets[0].SetHPHealingValue(b.boost);
-						break;
-					case "PM":
-						targets[0].SetPMHealingValue(b.boost);
-						break;
-					case "ATK":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					case "DEF":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					case "MGKATK":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					case "MGKDEF":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					case "LUCK":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					case "EVASION":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					case "SPD":
-						print ("Target's " + b.statName + " is boosted by " + b.boost);
-						break;
-					default:
-						print ("Error on item use by " + this.name + ": Attempted to boost stat named " + b.statName);
-						break;
-					}
-				}
-				GameControl.control.consumables[j].quantity --;
-				if(GameControl.control.consumables[j].quantity <= 0) {
-					GameControl.control.consumables.Remove(GameControl.control.consumables[j]);
-				}
-                break;
-            }
-        }
+		GameControl.itemManager.ItemUse (this, targets);
     }
 
     public virtual void DecideTypeOfTarget()
@@ -134,16 +77,18 @@ public class Hero : Denigen {
 
     TargetType DecideItemTarget(string itemName)
     {
-        switch(itemName)
-        {
-            // THIS IS WHERE WE WILL HAVE A LIST OF ALL ITEMS AND WHAT KIND OF TARGET TYPE THEY NEED TO BE
-            // PERHAPS WE SHOULD HAVE A SEPARATE ITEMMANAGER CLASS OR SOMETHING TO HANDLE THIS INSTEAD OF HAVING IT INSIDE HERO
-            // AT LEAST IN DENIGEN SO THAT ENEMIES COULD POTENTALLY USE ITEMS AS WELL
-
-            // JUST RETURN ONE RESULT FOR NOW
-            default:
-                return TargetType.HERO_SINGLE;
-        }
+//        switch(itemName)
+//        {
+//            // THIS IS WHERE WE WILL HAVE A LIST OF ALL ITEMS AND WHAT KIND OF TARGET TYPE THEY NEED TO BE
+//            // PERHAPS WE SHOULD HAVE A SEPARATE ITEMMANAGER CLASS OR SOMETHING TO HANDLE THIS INSTEAD OF HAVING IT INSIDE HERO
+//            // AT LEAST IN DENIGEN SO THAT ENEMIES COULD POTENTALLY USE ITEMS AS WELL
+//
+//            // JUST RETURN ONE RESULT FOR NOW
+//            default:
+//                return TargetType.HERO_SINGLE;
+//        }
+		ScriptableConsumable _item = ItemDatabase.GetItem ("consumable", itemName) as ScriptableConsumable;
+		return (TargetType)_item.targetType;
     }
 
     //select the target for your attack
