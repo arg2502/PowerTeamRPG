@@ -32,6 +32,8 @@ public class ItemManager {
 							if (targets [i].IsDead)
 								return;
 							targets [i].CalculatedDamage = 0;
+							targets [i].HealedStatusEffect = targets[i].StatusState;
+							targets [i].StatusChanged = true;
 							targets [i].SetStatus (DenigenData.Status.normal);
 						}
 						//run through any stat boosts the item may offer
@@ -45,24 +47,31 @@ public class ItemManager {
 								break;
 							case "ATK":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].AtkChange += b.boost;
 								break;
 							case "DEF":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].DefChange += b.boost;
 								break;
 							case "MGKATK":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].MgkAtkChange += b.boost;
 								break;
 							case "MGKDEF":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].MgkDefChange += b.boost;
 								break;
 							case "LUCK":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].LuckChange += b.boost;
 								break;
 							case "EVASION":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].EvasionChange += b.boost;
 								break;
 							case "SPD":
 								Debug.Log ("Target's " + b.statName + " is boosted by " + b.boost);
+								targets [i].SpdChange += b.boost;
 								break;
 							default:
 								Debug.Log ("Error on item use by " + user.name + ": Attempted to boost stat named " + b.statName);

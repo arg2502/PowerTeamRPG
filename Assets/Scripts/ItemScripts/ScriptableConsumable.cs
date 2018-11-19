@@ -34,5 +34,7 @@ public class ScriptableConsumable : ScriptableItem {
 	};
 
 	public TargetType targetType;
+
+	//This variable tells us what condition the item cures
 	public Status statusChange;
 }

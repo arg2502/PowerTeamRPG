@@ -860,6 +860,7 @@ public class BattleManager : MonoBehaviour {
                 target.Hp += target.healHP;
                 target.LimitHP();                
                 healedStatName = "HP";
+				ShowHealing(target, healedStatValue);
             }
 
             else if(target.healPM != 0)
@@ -868,13 +869,44 @@ public class BattleManager : MonoBehaviour {
                 target.Pm += target.healPM;
                 target.LimitPM();
                 healedStatName = "PM";
+				ShowHealing(target, healedStatValue);
             }
 
-            ShowHealing(target, healedStatValue);
+            //ShowHealing(target, healedStatValue);
             var message = "";
 
             if (!string.IsNullOrEmpty(healedStatName))
                 message = target.DenigenName + "'s " + healedStatName + " restored by " + healedStatValue;
+			else 
+			{
+				//Status healing items? or statboosting items
+				var _item = ItemDatabase.GetItem("Consumable", attacker.CurrentAttackName) as ScriptableConsumable;
+				if(_item != null){
+					if (_item.statusChange != ScriptableConsumable.Status.normal
+					    &&(DenigenData.Status)_item.statusChange == target.HealedStatusEffect) {
+
+						//status healing
+
+						message = target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!";
+						target.HealedStatusEffect = DenigenData.Status.normal;
+						ShowStatusEffect(target);
+					}
+					else{
+
+						//stat boosting
+
+						foreach(Boosts b in _item.statBoosts)
+						{
+							if(b.boost > 0){
+								messagesToDisplay.Add(target.DenigenName + "'s " + b.statName + " is increased by " + b.boost);
+							} else if (b.boost < 0){
+								messagesToDisplay.Add(target.DenigenName + "'s " + b.statName + " is decreased by " + b.boost);
+							}
+						}
+					}
+				}
+				
+			}
 
             messagesToDisplay.Add(message);
             target.ResetHealing();
@@ -967,6 +999,14 @@ public class BattleManager : MonoBehaviour {
         if (target.StatusChanged)
         {
             ShowStatusEffect(target);
+			if(target.StatusState != DenigenData.Status.normal){
+				//Acquired a status effect
+				messagesToDisplay.Add(target.DenigenName + " is " + target.StatusState.ToString());
+			} else if (target.StatusState == DenigenData.Status.normal && target.HealedStatusEffect != DenigenData.Status.normal){
+				//Healed a status ailment
+				messagesToDisplay.Add (target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!");
+				target.HealedStatusEffect = DenigenData.Status.normal;
+			}
             //AudioManager.instance.PlayHit();
         }            
         else if (target.CalculatedDamage >= 0)

@@ -28,6 +28,9 @@ public class Denigen : MonoBehaviour {
     protected DenigenData data;
     public DenigenData Data { get { return data; } set { data = value; } }
 
+	protected DenigenData.Status healedStatusEffect;
+	public DenigenData.Status HealedStatusEffect { get { return healedStatusEffect; } set { healedStatusEffect = value; } }
+
     public List<string> TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
     public List<string> CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
 
@@ -661,6 +664,7 @@ public class Denigen : MonoBehaviour {
         if (target.IsDead)
             return;
         target.calculatedDamage = 0;
+		target.HealedStatusEffect = target.StatusState;
         target.SetStatus(DenigenData.Status.normal);
     }
     
