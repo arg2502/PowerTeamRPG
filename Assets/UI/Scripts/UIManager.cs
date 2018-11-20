@@ -172,14 +172,16 @@
         }
         public void PopMenu()
         {
-            if (list_currentMenus.Count > 1)
+            // Close the current menu and remove it from our menu stack
+            var lastPos = list_currentMenus.Count - 1;
+            var menu = list_currentMenus[lastPos].GetComponent<Menu>();
+            menu.Close();
+            menu.RootButton = menu.AssignRootButton();
+            list_currentMenus.RemoveAt(lastPos);
+
+            // If there are more menus, set the new last menu to the current menu
+            if (list_currentMenus.Count > 0)
             {
-                var lastPos = list_currentMenus.Count - 1;
-                var menu = list_currentMenus[lastPos].GetComponent<Menu>();
-                menu.Close();
-                //list_currentMenus[lastPos].SetActive(false);
-                menu.RootButton = menu.AssignRootButton();
-                list_currentMenus.RemoveAt(lastPos);
                 lastPos = list_currentMenus.Count - 1;
                 menuInFocus = list_currentMenus[lastPos];
                 menu = menuInFocus.GetComponent<Menu>();
@@ -188,6 +190,7 @@
                 //menu.ToggleButtonState(true);
                 menu.Refocus();
             }
+            // otherwise, clear the stack
             else
                 DisableAllMenus();
         }

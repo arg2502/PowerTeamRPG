@@ -105,7 +105,7 @@ public class Dialogue : MonoBehaviour {
             speaker.EndDialogue();
 
             // pop dialogue menu
-            GameControl.UIManager.HideAllMenus();
+            GameControl.UIManager.PopMenu();
 
             return;
         }
