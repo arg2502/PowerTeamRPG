@@ -1,0 +1,2 @@
+name	emotion	dialogue
+		And now I am saying something very very long so that the scrolling dialogue box can be tested. Isn't talking great? Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah

@@ -10,16 +10,22 @@
     {
         public Text speakerText;
         public Text dialogueText;
-        string dialogueStr; // the full string that dialogueText will print out
         public Image portraitImage;
-        float typingSpeed = 0.01f;
         public Button continueButton; // invisible
+        public RectMask2D textMask;
+
+        string dialogueStr; // the full string that dialogueText will print out
+        float typingSpeed = 0.01f;
         Action nextDialogue; // function that occurs when Continue button is pressed, set in Dialogue.cs
         bool readyForNextDialogue = true;
+        float currentYBoundary;
+        Vector3 origTextPos;
 
         public override void TurnOnMenu()
         {
             RootButton = AssignRootButton();
+            currentYBoundary = textMask.GetComponent<RectTransform>().sizeDelta.y;
+            origTextPos = dialogueText.transform.localPosition;
             base.TurnOnMenu();
         }
         public override Button AssignRootButton()
@@ -41,7 +47,13 @@
             if (nextDialogue != null)
                 continueButton.onClick.AddListener(Continue);
         }
-        
+
+        public override void Close()
+        {
+            dialogueText.transform.localPosition = origTextPos;
+            base.Close();
+        }
+
         void Continue()
         {
             // text has finished writing by this point, go to next dialogue
@@ -93,9 +105,22 @@
             for(int i = 0; i < dialogueStr.Length; i++)
             {
                 dialogueText.text += dialogueStr[i];
+                CheckIfTextOutOfBounds();
                 yield return new WaitForSeconds(typingSpeed);
             }
             EndTyping();
+        }
+
+        void CheckIfTextOutOfBounds()
+        {
+            if(dialogueText.preferredHeight > currentYBoundary)
+            {
+                //print("OUT OF BOUNDS");                
+                var yPos = dialogueText.preferredHeight - currentYBoundary;
+                dialogueText.transform.Translate(0, yPos, 0);//localPosition += new Vector3(0, yPos);
+                currentYBoundary += yPos;
+                print("yBound: " + currentYBoundary + ", preferred height: " + dialogueText.preferredHeight);
+            }
         }
 
         /// <summary>
@@ -105,6 +130,7 @@
         {
             StopAllCoroutines();
             dialogueText.text = dialogueStr;
+            CheckIfTextOutOfBounds();
             readyForNextDialogue = true;
         }
     }
