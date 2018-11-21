@@ -32,7 +32,11 @@ public class E_Mudpuppy : Enemy {
     //IEnumerator Frenzy()
     void Frenzy()
     {
-        AtkChange += (int)(Atk * 0.1f);
+		ChooseSelfTarget ();
+		StatChanged = "ATK";
+		statChangeInt = (int)(Atk * 0.1f);
+		AtkChange += statChangeInt;
+        //AtkChange += (int)(Atk * 0.1f);
         calcDamageText.Add(name + " used frenzy!");
 
         // play frenzy animation
