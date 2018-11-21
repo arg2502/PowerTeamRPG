@@ -33,11 +33,17 @@ public class NPCDialogue : MonoBehaviour {
     /// </summary>
     public void StartDialogue()
     {
-        dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
-        isTalking = true;
-        
+        isTalking = true;        
         prevState = GameControl.control.currentCharacterState;
         GameControl.control.SetCharacterState(characterControl.CharacterState.Talking);
+
+        // Start the actual Dialogue last, as this will determine whether we should end the dialogue as well
+        // (Putting this line first caused issues where the dialogue would try to start again soon after
+        // ending, but then the iterator would not be 0 yet and the conversation would end, BUT THEN 
+        // the character was set to Talking and was stuck forever. This way, if there is a false start,
+        // the character is set to Talking first, and then the dialogues starts & ends
+        // not really a fix, more like hiding the bug)
+        dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
     }
 
     public void EndDialogue()

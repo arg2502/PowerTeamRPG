@@ -174,6 +174,11 @@
         {
             // Close the current menu and remove it from our menu stack
             var lastPos = list_currentMenus.Count - 1;
+
+            // if there are no menus in our list or the menu is null somehow, ignore Pop
+            if (lastPos < 0 || list_currentMenus[lastPos] == null)
+                return;
+
             var menu = list_currentMenus[lastPos].GetComponent<Menu>();
             menu.Close();
             menu.RootButton = menu.AssignRootButton();
