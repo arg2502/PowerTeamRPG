@@ -656,6 +656,7 @@
 				_damageImage.sprite = null;
 				damageText.text = null;
 			}
+			SetTargetSprite (item);
 		}
 
         void SetTargetSprite(Technique tech)
@@ -669,5 +670,17 @@
             else if (tech.targetType == TargetType.ENEMY_TEAM || tech.targetType == TargetType.HERO_TEAM)
                 targetType.sprite = teamTarget;
         }
+
+		void SetTargetSprite(ScriptableConsumable _item)
+		{
+			if ((TargetType)_item.targetType == TargetType.HERO_SELF)
+				targetType.sprite = selfTarget;
+			else if ((TargetType)_item.targetType == TargetType.ENEMY_SINGLE || (TargetType)_item.targetType == TargetType.HERO_SINGLE)
+				targetType.sprite = singleTarget;
+			else if ((TargetType)_item.targetType == TargetType.ENEMY_SPLASH || (TargetType)_item.targetType == TargetType.HERO_SPLASH)
+				targetType.sprite = splashTarget;
+			else if ((TargetType)_item.targetType == TargetType.ENEMY_TEAM || (TargetType)_item.targetType == TargetType.HERO_TEAM)
+				targetType.sprite = teamTarget;
+		}
     }
 }

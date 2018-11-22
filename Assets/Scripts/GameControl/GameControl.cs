@@ -179,6 +179,7 @@ public class GameControl : MonoBehaviour {
 			GameControl.control.AddItem("Tincture", "Consumable", 5);
 			GameControl.control.AddItem("Strengthening Draught", "Consumable", 5);
 			GameControl.control.AddItem("Copper Tonic", "Consumable", 5);
+			GameControl.control.AddItem("Captain Power's BIG Booster", "Consumable", 5);
 			//test code for creating Cole -- based on level 2 stats
 			//We will have these stats stored in HeroData objs for consistency between rooms
 			//heroList.Add(new HeroData());

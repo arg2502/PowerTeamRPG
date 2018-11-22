@@ -880,7 +880,8 @@ public class BattleManager : MonoBehaviour {
 				ShowHealing(target, healedStatValue, healedStatName);
             }
 
-            else if(target.healPM != 0)
+            //else if(target.healPM != 0)
+			if(target.healPM != 0)
             {
                 healedStatValue = target.HealedByPMValue();
                 target.Pm += target.healPM;
@@ -900,15 +901,21 @@ public class BattleManager : MonoBehaviour {
 				//Status healing items? or statboosting items
 				var _item = ItemDatabase.GetItem("Consumable", attacker.CurrentAttackName) as ScriptableConsumable;
 				if(_item != null){
-					if (_item.statusChange != ScriptableConsumable.Status.normal
-					    &&(DenigenData.Status)_item.statusChange == target.HealedStatusEffect) {
-
+//					if (_item.statusChange != ScriptableConsumable.Status.normal
+//					    &&(DenigenData.Status)_item.statusChange == target.HealedStatusEffect) {
+					// Check if this item heals status ailments
+					if (_item.statusChange != ScriptableConsumable.Status.normal){
 						//status healing
-
-						message = target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!";
-						target.HealedStatusEffect = DenigenData.Status.normal;
-						ShowStatusEffect(target);
-						//ShowHealing(target, healedStatValue);
+						//now check if it heals the status ailment the target has
+						if((DenigenData.Status)_item.statusChange == target.HealedStatusEffect){
+							message = target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!";
+							target.HealedStatusEffect = DenigenData.Status.normal;
+							ShowStatusEffect(target);
+							//ShowHealing(target, healedStatValue);
+						} else {
+							//the item does not heal the status ailment of the target
+							message = "The " + _item.name + " has no effect...";
+						}
 					}
 					else{
 
@@ -993,10 +1000,20 @@ public class BattleManager : MonoBehaviour {
                     break;
             }
 
-            if (target.WasJustHealed)
+            if (target.WasJustHealed){
+				//healing
                 message += target.DenigenName + " is healed by " + target.CalculatedDamage;
-            else
-                message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
+			}else if (target.StatChanged != null){
+				//stat changes
+				if(target.statChangeInt >= 0){
+                	message += target.DenigenName + "'s " + target.StatChanged + " increases by " + target.statChangeInt;
+				}else{
+					message += target.DenigenName + "'s " + target.StatChanged + " decreases by " + target.statChangeInt;
+				}
+			}else{
+				//damage
+				message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
+			}
 
             messagesToDisplay.Add(message);
 
