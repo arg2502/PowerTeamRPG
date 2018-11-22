@@ -642,16 +642,71 @@
 			accuracyObj.SetActive (false);
 			critObj.SetActive (false);
 			if (item.statBoosts.Length > 0) {
-				if (item.statBoosts [0].statName == "HP") {
-					_damageImage.sprite = hpIcon;
-					damageText.text = item.statBoosts [0].boost.ToString ();
-				} else if (item.statBoosts [0].statName == "PM") {
-					_damageImage.sprite = pmIcon;
-					damageText.text = item.statBoosts [0].boost.ToString ();
-				} else {
-					_damageImage.sprite = reviveIcon;
-					damageText.text = "";
-				}  
+				for(int i = 0; i < item.statBoosts.Length; i++){ 
+					switch (item.statBoosts[i].statName){
+					case "HP":
+						_damageImage.sprite = battleManager.healIcon;
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "PM":
+						_damageImage.sprite = battleManager.healPMIcon;
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "ATK":
+						if(item.statBoosts [i].boost >= 0){
+							_damageImage.sprite = battleManager.atkIncIcon;
+						}else{
+							_damageImage.sprite = battleManager.atkDecIcon;
+						}
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "DEF":
+						if(item.statBoosts [i].boost >= 0){
+							_damageImage.sprite = battleManager.defIncIcon;
+						}else{
+							_damageImage.sprite = battleManager.defDecIcon;
+						}
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "MGKATK":
+						if(item.statBoosts [i].boost >= 0){
+							_damageImage.sprite = battleManager.mgkAtkIncIcon;
+						}else{
+							_damageImage.sprite = battleManager.mgkAtkDecIcon;
+						}
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "MGKDEF":
+						if(item.statBoosts [i].boost >= 0){
+							_damageImage.sprite = battleManager.mgkDefIncIcon;
+						}else{
+							_damageImage.sprite = battleManager.mgkDefDecIcon;
+						}
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "LUCK":
+						if(item.statBoosts [i].boost >= 0){
+							_damageImage.sprite = battleManager.luckIncIcon;
+						}else{
+							_damageImage.sprite = battleManager.luckDecIcon;
+						}
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					case "EVASION":
+					case "SPD":
+						if(item.statBoosts [i].boost >= 0){
+							_damageImage.sprite = battleManager.spdIncIcon;
+						}else{
+							_damageImage.sprite = battleManager.spdDecIcon;
+						}
+						damageText.text = item.statBoosts [i].boost.ToString ();
+						break;
+					default:
+						_damageImage.sprite = reviveIcon;
+						damageText.text = "";
+						break;
+					}
+				}
 			} else { //The item doesn't affect stats, so make the corresponding values null
 				_damageImage.sprite = null;
 				damageText.text = null;
