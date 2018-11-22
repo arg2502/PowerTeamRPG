@@ -57,7 +57,7 @@ public class ConsumableItem : Item {
         // Always decrease quantity by 1 since this is the consumable item class
         quantity--;
         // if quantity hits 0, remove it from the inventory
-        if (quantity <= 0) { GameControl.control.consumables.Remove(this.gameObject); }
+//        if (quantity <= 0) { GameControl.control.consumables.Remove(this.gameObject); }
     }
 
     public void Use(Denigen target)
@@ -104,7 +104,7 @@ public class ConsumableItem : Item {
         quantity--;
         print("new quantity: " + quantity);
         // if quantity hits 0, remove it from the inventory
-        if (quantity <= 0) { GameControl.control.consumables.Remove(this.gameObject); }
+//        if (quantity <= 0) { GameControl.control.consumables.Remove(this.gameObject); }
 
         // reset inUse
         inUse = 0;

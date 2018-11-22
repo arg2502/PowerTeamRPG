@@ -28,11 +28,18 @@ public class GameControl : MonoBehaviour {
 	public List<int> keysObtainedInDungeons = new List<int>();
 	public int numOfDungeons;
 	//items
-	public List<GameObject> consumables;// = new List<ConsumableItem>() { };
-	public List<GameObject> equipment;
-	public List<GameObject> weapons;
-	public List<GameObject> reusables;
-    public bool itemAdded;
+//	public List<GameObject> consumables;// = new List<ConsumableItem>() { };
+//	public List<GameObject> equipment;
+//	public List<GameObject> weapons;
+//	public List<GameObject> reusables;
+//    public bool itemAdded;
+	//----------new code------------------
+	public List<InventoryItem> consumables;
+	public List<InventoryItem> equipment;
+	public List<InventoryItem> weapons;
+	public List<InventoryItem> key;
+	public bool itemAdded;
+	//------------------------------------
     
     //room information
     public roomControl currentRoom; // keep track of the literal room object where the player currently is
@@ -166,33 +173,18 @@ public class GameControl : MonoBehaviour {
             //testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
             //GameControl.control.heroList[1].spellsList.Add(testtarget);
             
-            GameObject temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-            temp.name = "LesserRestorative";
-			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-            temp.name = "LesserRestorative";
-            GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
-            temp.name = "Restorative";
-			GameControl.control.AddItem(temp);
-            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-            temp.name = "LesserRestorative";
-			GameControl.control.AddItem(temp);
-            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
-            temp.name = "LesserElixir";
-			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
-            temp.name = "Elixir";
-			GameControl.control.AddItem(temp);
-            temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
-            temp.name = "SpareSword";
-			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
-            temp.name = "TomeOfPractical";
-			GameControl.control.AddItem(temp);
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
-            temp.name = "HelmetOfFortitude";
-			GameControl.control.AddItem(temp);
+			//Add Items to the inventory for testing
+			GameControl.control.AddItem("Lesser Restorative", "consumable", 3);
+			GameControl.control.AddItem("Restorative", "Consumable", 3);
+			GameControl.control.AddItem("Lesser Elixir", "consumable", 3);
+			GameControl.control.AddItem("Elixir", "Consumable", 2);
+			GameControl.control.AddItem("Elixir", "Consumable", 2);
+			GameControl.control.AddItem("Purple Prince", "consumable", 1);
+			GameControl.control.AddItem("Huge Ass Heals", "Consumable", 2);
+			GameControl.control.AddItem("Tincture", "Consumable", 5);
+			GameControl.control.AddItem("Strengthening Draught", "Consumable", 5);
+			GameControl.control.AddItem("Copper Tonic", "Consumable", 5);
+			GameControl.control.AddItem("Captain Power's BIG Booster", "Consumable", 5);
 			//test code for creating Cole -- based on level 2 stats
 			//We will have these stats stored in HeroData objs for consistency between rooms
 			//heroList.Add(new HeroData());
@@ -228,73 +220,142 @@ public class GameControl : MonoBehaviour {
 		}
 	}
    
-    public void AddItem(GameObject item)
+    public void AddItem(string _name, string _type, int _quantity)
 	{
+		//make all letters in type lowercase to avoid input errors
+		_type = _type.ToLower ();
+
 		// loop through the inventory to see if the player already has this type of item
 		// if so, increase the quantity of that item
-		if (item.GetComponent<ReusableItem>() != null)
+		if (_type == "consumable") 
 		{
-			foreach (GameObject i in reusables)
+			foreach(InventoryItem i in consumables)
 			{
-				if (i.GetComponent<ReusableItem>().name == item.GetComponent<ReusableItem>().name) { i.GetComponent<ReusableItem>().quantity++; Destroy(item); return; }
+				//If the item is found, simply increase the quantity and exit the method
+				if(i.name == _name){
+					i.quantity += _quantity;
+					return;}
 			}
 
-			// if this type of item is not already in the inventory, add it now
-			reusables.Add(item);
-			DontDestroyOnLoad(reusables[reusables.Count - 1]);
+			//If the item is not found, add it to the inventory
+			consumables.Add(new InventoryItem(_name, _quantity, _type));
 		}
-		if (item.GetComponent<ConsumableItem>() != null)
+
+		else if (_type == "weapon") 
 		{
-			foreach (GameObject i in consumables)
+			foreach(InventoryItem i in weapons)
 			{
-				if (i.GetComponent<ConsumableItem>().name == item.GetComponent<ConsumableItem>().name) { i.GetComponent<ConsumableItem>().quantity++; Destroy(item); return; }
+				//If the item is found, simply increase the quantity and exit the method
+				if(i.name == _name){
+					i.quantity += _quantity;
+					return;}
 			}
-
-			// if this type of item is not already in the inventory, add it now
-			consumables.Add(item);
-			DontDestroyOnLoad(consumables[consumables.Count - 1]);
+			
+			//If the item is not found, add it to the inventory
+			weapons.Add(new InventoryItem(_name, _quantity, _type));
 		}
-		if (item.GetComponent<ArmorItem>() != null)
+
+		else if (_type == "armor") 
 		{
-			foreach (GameObject i in equipment)
+			foreach(InventoryItem i in equipment)
 			{
-				if (i.GetComponent<ArmorItem>().name == item.GetComponent<ArmorItem>().name) { i.GetComponent<ArmorItem>().quantity++; Destroy(item); return; }
+				//If the item is found, simply increase the quantity and exit the method
+				if(i.name == _name){
+					i.quantity += _quantity;
+					return;}
 			}
-
-			// if this type of item is not already in the inventory, add it now
-			equipment.Add(item);
-			DontDestroyOnLoad(equipment[equipment.Count - 1]);
+			
+			//If the item is not found, add it to the inventory
+			equipment.Add(new InventoryItem(_name, _quantity, _type));
 		}
-		if (item.GetComponent<WeaponItem>() != null)
+
+		if (_type == "key") 
 		{
-			foreach (GameObject i in weapons)
+			foreach(InventoryItem i in key)
 			{
-				if (i.GetComponent<WeaponItem>().name == item.GetComponent<WeaponItem>().name) { i.GetComponent<WeaponItem>().quantity++; Destroy(item); return; }
+				//If the item is found, simply increase the quantity and exit the method
+				if(i.name == _name){
+					i.quantity += _quantity;
+					return;}
 			}
-
-			// if this type of item is not already in the inventory, add it now
-			weapons.Add(item);
-			DontDestroyOnLoad(weapons[weapons.Count - 1]);
+			
+			//If the item is not found, add it to the inventory
+			key.Add(new InventoryItem(_name, _quantity, _type));
 		}
 
-        // flag the inventory that an item was added and needs to be updated
-        itemAdded = true;
+		itemAdded = true;
+
+//		if (item.GetComponent<ReusableItem>() != null)
+//		{
+//			foreach (GameObject i in reusables)
+//			{
+//				if (i.GetComponent<ReusableItem>().name == item.GetComponent<ReusableItem>().name) { i.GetComponent<ReusableItem>().quantity++; Destroy(item); return; }
+//			}
+//
+//			// if this type of item is not already in the inventory, add it now
+//			reusables.Add(item);
+//			DontDestroyOnLoad(reusables[reusables.Count - 1]);
+//		}
+//		if (item.GetComponent<ConsumableItem>() != null)
+//		{
+//			foreach (GameObject i in consumables)
+//			{
+//				if (i.GetComponent<ConsumableItem>().name == item.GetComponent<ConsumableItem>().name) { i.GetComponent<ConsumableItem>().quantity++; Destroy(item); return; }
+//			}
+//
+//			// if this type of item is not already in the inventory, add it now
+//			consumables.Add(item);
+//			DontDestroyOnLoad(consumables[consumables.Count - 1]);
+//		}
+//		if (item.GetComponent<ArmorItem>() != null)
+//		{
+//			foreach (GameObject i in equipment)
+//			{
+//				if (i.GetComponent<ArmorItem>().name == item.GetComponent<ArmorItem>().name) { i.GetComponent<ArmorItem>().quantity++; Destroy(item); return; }
+//			}
+//
+//			// if this type of item is not already in the inventory, add it now
+//			equipment.Add(item);
+//			DontDestroyOnLoad(equipment[equipment.Count - 1]);
+//		}
+//		if (item.GetComponent<WeaponItem>() != null)
+//		{
+//			foreach (GameObject i in weapons)
+//			{
+//				if (i.GetComponent<WeaponItem>().name == item.GetComponent<WeaponItem>().name) { i.GetComponent<WeaponItem>().quantity++; Destroy(item); return; }
+//			}
+//
+//			// if this type of item is not already in the inventory, add it now
+//			weapons.Add(item);
+//			DontDestroyOnLoad(weapons[weapons.Count - 1]);
+//		}
+//
+//        // flag the inventory that an item was added and needs to be updated
+//        itemAdded = true;
 
 	}
 
-    public void RemoveItem(GameObject item)
+    public void RemoveItem(InventoryItem _item)
     {
-        if (item.GetComponent<ReusableItem>() != null)
-            reusables.Remove(item);
-
-        if (item.GetComponent<ConsumableItem>() != null)
-            consumables.Remove(item);
-
-        if (item.GetComponent<ArmorItem>() != null)
-            equipment.Remove(item);
-
-        if (item.GetComponent<WeaponItem>() != null)
-            weapons.Remove(item);
+		if (consumables.Contains (_item))
+			consumables.Remove (_item);
+		else if (equipment.Contains (_item))
+			equipment.Remove (_item);
+		else if (weapons.Contains (_item))
+			weapons.Remove (_item);
+		else if (key.Contains (_item))
+			key.Remove (_item);
+//        if (item.GetComponent<ReusableItem>() != null)
+//            reusables.Remove(item);
+//
+//        if (item.GetComponent<ConsumableItem>() != null)
+//            consumables.Remove(item);
+//
+//        if (item.GetComponent<ArmorItem>() != null)
+//            equipment.Remove(item);
+//
+//        if (item.GetComponent<WeaponItem>() != null)
+//            weapons.Remove(item);
     }
 
 	//this will save our game data to an external, persistent file
@@ -369,42 +430,42 @@ public class GameControl : MonoBehaviour {
 
 
 		// Save all of the player's inventory
-		foreach (GameObject i in consumables)
-		{
-			Item item = i.GetComponent<Item>();
-			ItemData id = new ItemData();
-			id.name = item.name;
-			id.quantity = item.quantity;
-			id.uses = item.uses;
-			data.consumables.Add(id);
-		}
-		foreach (GameObject i in reusables)
-		{
-			Item item = i.GetComponent<Item>();
-			ItemData id = new ItemData();
-			id.name = item.name;
-			id.quantity = item.quantity;
-			id.uses = item.uses;
-			data.reusables.Add(id);
-		}
-		foreach (GameObject i in weapons)
-		{
-			Item item = i.GetComponent<Item>();
-			ItemData id = new ItemData();
-			id.name = item.name;
-			id.quantity = item.quantity;
-			id.uses = item.uses;
-			data.weapons.Add(id);
-		}
-		foreach (GameObject i in equipment)
-		{
-			Item item = i.GetComponent<Item>();
-			ItemData id = new ItemData();
-			id.name = item.name;
-			id.quantity = item.quantity;
-			id.uses = item.uses;
-			data.equipment.Add(id);
-		}
+//		foreach (GameObject i in consumables)
+//		{
+//			Item item = i.GetComponent<Item>();
+//			ItemData id = new ItemData();
+//			id.name = item.name;
+//			id.quantity = item.quantity;
+//			id.uses = item.uses;
+//			data.consumables.Add(id);
+//		}
+//		foreach (GameObject i in reusables)
+//		{
+//			Item item = i.GetComponent<Item>();
+//			ItemData id = new ItemData();
+//			id.name = item.name;
+//			id.quantity = item.quantity;
+//			id.uses = item.uses;
+//			data.reusables.Add(id);
+//		}
+//		foreach (GameObject i in weapons)
+//		{
+//			Item item = i.GetComponent<Item>();
+//			ItemData id = new ItemData();
+//			id.name = item.name;
+//			id.quantity = item.quantity;
+//			id.uses = item.uses;
+//			data.weapons.Add(id);
+//		}
+//		foreach (GameObject i in equipment)
+//		{
+//			Item item = i.GetComponent<Item>();
+//			ItemData id = new ItemData();
+//			id.name = item.name;
+//			id.quantity = item.quantity;
+//			id.uses = item.uses;
+//			data.equipment.Add(id);
+//		}
 
 		// record the player's position
 		data.posX = currentPosition.x;
@@ -574,26 +635,26 @@ public class GameControl : MonoBehaviour {
 			heroList = new List<HeroData>() { };
 
 			//Make sure the item lists are cleared before adding more
-			consumables.Clear();
-			reusables.Clear();
-			weapons.Clear();
-			equipment.Clear();
+//			consumables.Clear();
+//			reusables.Clear();
+//			weapons.Clear();
+//			equipment.Clear();
 
 			//Find all items and destroy them
 			Item[] items = FindObjectsOfType<Item>();
 			foreach (Item i in items) { Destroy(i.gameObject); }
 
 			// Read in all consumable items
-			foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
-
-			//Read in all reusable items
-			foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
-
-			//read in all weapons
-			foreach (ItemData id in data.weapons) { LoadWeaponItem(id, null); }
-
-			//read in all equipment
-			foreach (ItemData id in data.equipment) { LoadArmorItem(id, null); }
+//			foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
+//
+//			//Read in all reusable items
+//			foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
+//
+//			//read in all weapons
+//			foreach (ItemData id in data.weapons) { LoadWeaponItem(id, null); }
+//
+//			//read in all equipment
+//			foreach (ItemData id in data.equipment) { LoadArmorItem(id, null); }
 
 			//load all of the heroes
 			for (int i = 0; i < data.heroList.Count; i++)
@@ -625,24 +686,24 @@ public class GameControl : MonoBehaviour {
 				temp.statusState = (DenigenData.Status)data.heroList[i].statusState;
                 print("LOADED");
 
-				if (data.heroList[i].weapon != null) 
-				{ 
-					foreach (GameObject w in weapons)
-					{
-						if (w.GetComponent<WeaponItem>().name == data.heroList[i].weapon.name) { temp.weapon = w; }
-					} 
-				}
-				temp.equipment = new List<GameObject>();
-				if (data.heroList[i].equipment.Count > 0) 
-				{ 
-					for (int j = 0; j < data.heroList[i].equipment.Count; j++)
-					{
-						foreach (GameObject e in equipment)
-						{
-							if (e.GetComponent<ArmorItem>().name == data.heroList[i].equipment[j].name) { temp.equipment.Add(e); }
-						}
-					} 
-				}
+//				if (data.heroList[i].weapon != null) 
+//				{ 
+//					foreach (GameObject w in weapons)
+//					{
+//						if (w.GetComponent<WeaponItem>().name == data.heroList[i].weapon.name) { temp.weapon = w; }
+//					} 
+//				}
+//				temp.equipment = new List<GameObject>();
+//				if (data.heroList[i].equipment.Count > 0) 
+//				{ 
+//					for (int j = 0; j < data.heroList[i].equipment.Count; j++)
+//					{
+//						foreach (GameObject e in equipment)
+//						{
+//							if (e.GetComponent<ArmorItem>().name == data.heroList[i].equipment[j].name) { temp.equipment.Add(e); }
+//						}
+//					} 
+//				}
 
 				heroList.Add(temp);
 			}
@@ -676,136 +737,136 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 
-	public void LoadConsumableItem(ItemData id)
-	{
-		GameObject temp = null;
-		switch (id.name)
-		{
-		case "Lesser Restorative":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-                temp.name = "LesserRestorative";
-			break;
-		case "Restorative":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
-                temp.name = "Restorative";
-			break;
-		case "Gratuitous Restorative":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousRestorative"));
-                temp.name = "GratuitousRestorative";
-			break;
-		case "Terminal Restorative":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalRestorative"));
-                temp.name = "TerminalRestorative";
-			break;
-		case "Lesser Elixir":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
-                temp.name = "LesserElixir";
-			break;
-		case "Elixir":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
-                temp.name = "Elixir";
-			break;
-		case "Gratuitous Elixir":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousElixir"));
-                temp.name = "GratuitousElixir";
-			break;
-		case "Terminal Elixir":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalElixir"));
-                temp.name = "TerminalElixir";
-			break;
-		default:
-			print("Error: Incorrect item name - " + id.name);
-			break;
-		}
-		GameControl.control.AddItem(temp);
-		GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().quantity = id.quantity;
-		GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().uses = id.uses;
-	}
-
-	public void LoadReusableItem(ItemData id)
-	{
-		GameObject temp = null;
-		switch (id.name)
-		{
-		default:
-			print("Error: Incorrect item name - " + id.name);
-			break;
-		}
-		GameControl.control.AddItem(temp);
-		GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().quantity = id.quantity;
-		GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().uses = id.uses;
-
-	}
-
-	public void LoadArmorItem(ItemData id, DenigenData hd)
-	{
-		GameObject temp = null;
-		switch (id.name)
-		{
-		case "Helmet of Fortitude":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
-                temp.name = "HelmetOfFortitude";
-			break;
-		case "Iron Armor":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronArmor"));
-                temp.name = "IronArmor";
-			break;
-		case "Iron Helm":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronHelm"));
-                temp.name = "IronHelm";
-			break;
-		case "Steel Armor":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelArmor"));
-                temp.name = "SteelArmor";
-			break;
-		case "Steel Gauntlets":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelGauntlets"));
-                temp.name = "SteelGauntlets";
-			break;
-		case "Steel Helm":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelHelm"));
-                temp.name = "SteelHelm";
-			break;
-		default:
-			print("Error: Incorrect item name - " + id.name);
-			break;
-		}
-		if (hd == null)
-		{
-			GameControl.control.AddItem(temp);
-			GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
-			GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().uses = id.uses;
-
-		}
-		else { hd.equipment.Add(temp); DontDestroyOnLoad(temp); }
-	}
-
-	public void LoadWeaponItem(ItemData id, DenigenData hd)
-	{
-		GameObject temp = null;
-		switch (id.name)
-		{
-		case "Spare Sword":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
-                temp.name = "SpareSword";
-			break;
-		case "Tome of Practical Spells":
-			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
-                temp.name = "TomeOfPractical";
-			break;
-		default:
-			print("Error: Incorrect item name - " + id.name);
-			break;
-		}
-		if (hd == null)
-		{
-			GameControl.control.AddItem(temp);
-			GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
-			GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().uses = id.uses;
-
-		}
-		else { hd.weapon = temp; DontDestroyOnLoad(temp); }
-	}
+//	public void LoadConsumableItem(ItemData id)
+//	{
+//		GameObject temp = null;
+//		switch (id.name)
+//		{
+//		case "Lesser Restorative":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
+//                temp.name = "LesserRestorative";
+//			break;
+//		case "Restorative":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
+//                temp.name = "Restorative";
+//			break;
+//		case "Gratuitous Restorative":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousRestorative"));
+//                temp.name = "GratuitousRestorative";
+//			break;
+//		case "Terminal Restorative":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalRestorative"));
+//                temp.name = "TerminalRestorative";
+//			break;
+//		case "Lesser Elixir":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
+//                temp.name = "LesserElixir";
+//			break;
+//		case "Elixir":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
+//                temp.name = "Elixir";
+//			break;
+//		case "Gratuitous Elixir":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousElixir"));
+//                temp.name = "GratuitousElixir";
+//			break;
+//		case "Terminal Elixir":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalElixir"));
+//                temp.name = "TerminalElixir";
+//			break;
+//		default:
+//			print("Error: Incorrect item name - " + id.name);
+//			break;
+//		}
+//		GameControl.control.AddItem(temp);
+//		GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().quantity = id.quantity;
+//		GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().uses = id.uses;
+//	}
+//
+//	public void LoadReusableItem(ItemData id)
+//	{
+//		GameObject temp = null;
+//		switch (id.name)
+//		{
+//		default:
+//			print("Error: Incorrect item name - " + id.name);
+//			break;
+//		}
+//		GameControl.control.AddItem(temp);
+//		GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().quantity = id.quantity;
+//		GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().uses = id.uses;
+//
+//	}
+//
+//	public void LoadArmorItem(ItemData id, DenigenData hd)
+//	{
+//		GameObject temp = null;
+//		switch (id.name)
+//		{
+//		case "Helmet of Fortitude":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
+//                temp.name = "HelmetOfFortitude";
+//			break;
+//		case "Iron Armor":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronArmor"));
+//                temp.name = "IronArmor";
+//			break;
+//		case "Iron Helm":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronHelm"));
+//                temp.name = "IronHelm";
+//			break;
+//		case "Steel Armor":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelArmor"));
+//                temp.name = "SteelArmor";
+//			break;
+//		case "Steel Gauntlets":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelGauntlets"));
+//                temp.name = "SteelGauntlets";
+//			break;
+//		case "Steel Helm":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelHelm"));
+//                temp.name = "SteelHelm";
+//			break;
+//		default:
+//			print("Error: Incorrect item name - " + id.name);
+//			break;
+//		}
+//		if (hd == null)
+//		{
+//			GameControl.control.AddItem(temp);
+//			GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
+//			GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().uses = id.uses;
+//
+//		}
+//		else { hd.equipment.Add(temp); DontDestroyOnLoad(temp); }
+//	}
+//
+//	public void LoadWeaponItem(ItemData id, DenigenData hd)
+//	{
+//		GameObject temp = null;
+//		switch (id.name)
+//		{
+//		case "Spare Sword":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
+//                temp.name = "SpareSword";
+//			break;
+//		case "Tome of Practical Spells":
+//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
+//                temp.name = "TomeOfPractical";
+//			break;
+//		default:
+//			print("Error: Incorrect item name - " + id.name);
+//			break;
+//		}
+//		if (hd == null)
+//		{
+//			GameControl.control.AddItem(temp);
+//			GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
+//			GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().uses = id.uses;
+//
+//		}
+//		else { hd.weapon = temp; DontDestroyOnLoad(temp); }
+//	}
     void AssignHeroStats(DenigenData dataToSet, Hero hero)
     {
         //dataToSet.level = hero.Level;

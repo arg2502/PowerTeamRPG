@@ -28,6 +28,9 @@ public class Denigen : MonoBehaviour {
     protected DenigenData data;
     public DenigenData Data { get { return data; } set { data = value; } }
 
+	protected DenigenData.Status healedStatusEffect;
+	public DenigenData.Status HealedStatusEffect { get { return healedStatusEffect; } set { healedStatusEffect = value; } }
+
     public List<string> TakeDamageText { get { return takeDamageText; } set { takeDamageText = value; } }
     public List<string> CalcDamageText { get { return calcDamageText; } set { calcDamageText = value; } }
 
@@ -134,6 +137,11 @@ public class Denigen : MonoBehaviour {
     public DenigenData.Status StatusState { get { return data.statusState; } set { data.statusState = value; } }
     bool statusChanged = false;
     public bool StatusChanged { get { return statusChanged; } set { statusChanged = value; } }
+
+	//used when an attack (not item) affects the stats of a denigen
+	string statChanged = null;
+	public string StatChanged { get { return statChanged; } set { statChanged = value; } }
+	public int statChangeInt = 0;
 
     protected GameObject card;
     public GameObject Card { get { return card; } set { card = value; } }
@@ -287,12 +295,16 @@ public class Denigen : MonoBehaviour {
         // if its a magic attack, use magic variables
         if (isMagic)
         {
-            atkStat = MgkAtk;
+            //atkStat = MgkAtk;
+			//add the stat change to make sure in-battle stat boosts are applied
+			atkStat = MgkAtk + mgkAtkChange;
         }
         // if not magic, use physical variables
         else
         {
-            atkStat = Atk;
+            //atkStat = Atk;
+			//add the stat change to make sure in-battle stat boosts are applied
+			atkStat = Atk + atkChange;
         }
 
         // calculate damage
@@ -302,7 +314,9 @@ public class Denigen : MonoBehaviour {
         num = Random.Range(0.0f, 1.0f);
 
         // use luck to increase crit chance
-        float chance = Mathf.Pow(Luck, 2.0f / 3.0f); // luck ^ 2/3
+		//Add the luck change stat as well to make sure in-battle luck boosts are applied
+        //float chance = Mathf.Pow(Luck, 2.0f / 3.0f); // luck ^ 2/3
+		float chance = Mathf.Pow((Luck + luckChange), 2.0f / 3.0f); // luck ^ 2/3
         chance /= 100f; // make percentage
 
         // add chance to crit to increase the probability of num being the smaller one
@@ -339,7 +353,9 @@ public class Denigen : MonoBehaviour {
     {
         // attempt to dodge the attack
         var randomDodge = Random.value;
-        float chance = Mathf.Pow(Evasion, 2.0f / 3.0f);
+		//add the evasion change stat to account for in-battle stat changes
+        //float chance = Mathf.Pow(Evasion, 2.0f / 3.0f);
+		float chance = Mathf.Pow((Evasion + evasionChange), 2.0f / 3.0f);
         chance /= 100f;
         if (randomDodge <= chance)
         {
@@ -353,11 +369,15 @@ public class Denigen : MonoBehaviour {
         int defStat;
         if (isMagic)
         {
-            defStat = MgkDef;
+			//add the change stat to account for in-battle stat changes
+            //defStat = MgkDef;
+			defStat = MgkDef + mgkDefChange;
         }
         else
         {
-            defStat = Def;
+			//add the change stat to account for in-battle stat changes
+            //defStat = Def;
+			defStat = Def + defChange;
         }
 
         // reduce damage by half the defensive stat
@@ -661,6 +681,7 @@ public class Denigen : MonoBehaviour {
         if (target.IsDead)
             return;
         target.calculatedDamage = 0;
+		target.HealedStatusEffect = target.StatusState;
         target.SetStatus(DenigenData.Status.normal);
     }
     

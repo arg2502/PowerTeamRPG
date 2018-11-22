@@ -107,18 +107,20 @@
         {
             // first check, if it's 0, we obviously don't have any items
             if (gameControl.consumables.Count <= 0)
-                return false;
+				return false;
+			else
+				return true;
             
             // next check, let's make sure we have some items that are available. If not, then as far as the menu's concerned, we don't have items            
-            foreach(var obj in gameControl.consumables)
-            {
-                var item = obj.GetComponent<ConsumableItem>();
-                if (item.Available)
-                    return true;
-            }
-
-            // if we've reached this point, then that means we have not been able to find an item that's available
-            return false;
+//            foreach(var obj in gameControl.consumables)
+//            {
+//                var item = obj.GetComponent<ConsumableItem>();
+//                if (item.Available)
+//                    return true;
+//            }
+//
+//            // if we've reached this point, then that means we have not been able to find an item that's available
+//            return false;
 
         }
     }

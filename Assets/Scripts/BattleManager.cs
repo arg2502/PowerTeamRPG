@@ -38,6 +38,22 @@ public class BattleManager : MonoBehaviour {
     public Sprite healIcon;
     public Sprite statusEffectIcon;
 
+	public Sprite critIcon;
+	public Sprite healPMIcon;
+	public Sprite atkIncIcon;
+	public Sprite atkDecIcon;
+	public Sprite defIncIcon;
+	public Sprite defDecIcon;
+	public Sprite mgkAtkIncIcon;
+	public Sprite mgkAtkDecIcon;
+	public Sprite mgkDefIncIcon;
+	public Sprite mgkDefDecIcon;
+	public Sprite luckIncIcon;
+	public Sprite luckDecIcon;
+	public Sprite spdIncIcon;
+	public Sprite spdDecIcon;
+
+
     public Sprite infectedIcon;
     public Sprite bleedingIcon;
     public Sprite blindedIcon;
@@ -860,21 +876,64 @@ public class BattleManager : MonoBehaviour {
                 target.Hp += target.healHP;
                 target.LimitHP();                
                 healedStatName = "HP";
+				//ShowHealing(target, healedStatValue);
+				ShowHealing(target, healedStatValue, healedStatName);
             }
 
-            else if(target.healPM != 0)
+            //else if(target.healPM != 0)
+			if(target.healPM != 0)
             {
                 healedStatValue = target.HealedByPMValue();
                 target.Pm += target.healPM;
                 target.LimitPM();
                 healedStatName = "PM";
+				//ShowHealing(target, healedStatValue);
+				ShowHealing(target, healedStatValue, healedStatName);
             }
 
-            ShowHealing(target, healedStatValue);
+            //ShowHealing(target, healedStatValue);
             var message = "";
 
             if (!string.IsNullOrEmpty(healedStatName))
                 message = target.DenigenName + "'s " + healedStatName + " restored by " + healedStatValue;
+			else 
+			{
+				//Status healing items? or statboosting items
+				var _item = ItemDatabase.GetItem("Consumable", attacker.CurrentAttackName) as ScriptableConsumable;
+				if(_item != null){
+//					if (_item.statusChange != ScriptableConsumable.Status.normal
+//					    &&(DenigenData.Status)_item.statusChange == target.HealedStatusEffect) {
+					// Check if this item heals status ailments
+					if (_item.statusChange != ScriptableConsumable.Status.normal){
+						//status healing
+						//now check if it heals the status ailment the target has
+						if((DenigenData.Status)_item.statusChange == target.HealedStatusEffect){
+							message = target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!";
+							target.HealedStatusEffect = DenigenData.Status.normal;
+							ShowStatusEffect(target);
+							//ShowHealing(target, healedStatValue);
+						} else {
+							//the item does not heal the status ailment of the target
+							message = "The " + _item.name + " has no effect...";
+						}
+					}
+					else{
+
+						//stat boosting
+
+						foreach(Boosts b in _item.statBoosts)
+						{
+							if(b.boost > 0){
+								messagesToDisplay.Add(target.DenigenName + "'s " + b.statName + " is increased by " + b.boost);
+							} else if (b.boost < 0){
+								messagesToDisplay.Add(target.DenigenName + "'s " + b.statName + " is decreased by " + b.boost);
+							}
+							ShowStatBoost(target, b.boost, b.statName);
+						}
+					}
+				}
+				
+			}
 
             messagesToDisplay.Add(message);
             target.ResetHealing();
@@ -941,10 +1000,20 @@ public class BattleManager : MonoBehaviour {
                     break;
             }
 
-            if (target.WasJustHealed)
+            if (target.WasJustHealed){
+				//healing
                 message += target.DenigenName + " is healed by " + target.CalculatedDamage;
-            else
-                message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
+			}else if (target.StatChanged != null){
+				//stat changes
+				if(target.statChangeInt >= 0){
+                	message += target.DenigenName + "'s " + target.StatChanged + " increases by " + target.statChangeInt;
+				}else{
+					message += target.DenigenName + "'s " + target.StatChanged + " decreases by " + target.statChangeInt;
+				}
+			}else{
+				//damage
+				message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
+			}
 
             messagesToDisplay.Add(message);
 
@@ -967,14 +1036,28 @@ public class BattleManager : MonoBehaviour {
         if (target.StatusChanged)
         {
             ShowStatusEffect(target);
+			if(target.StatusState != DenigenData.Status.normal){
+				//Acquired a status effect
+				messagesToDisplay.Add(target.DenigenName + " is " + target.StatusState.ToString());
+			} else if (target.StatusState == DenigenData.Status.normal && target.HealedStatusEffect != DenigenData.Status.normal){
+				//Healed a status ailment
+				messagesToDisplay.Add (target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!");
+				target.HealedStatusEffect = DenigenData.Status.normal;
+			}
             //AudioManager.instance.PlayHit();
         }            
         else if (target.CalculatedDamage >= 0)
         {
-            ShowDamage(target, target.CalculatedDamage);
+			if(target.StatChanged == null){
+            	ShowDamage(target, target.CalculatedDamage);
+			} else {
+				ShowStatBoost(target, target.statChangeInt, target.StatChanged);
+				target.StatChanged = null;
+				target.statChangeInt = 0;
+			}
         }
         else
-            ShowHealing(target, -target.CalculatedDamage);
+            ShowHealing(target, -target.CalculatedDamage, "HP");
 
         // show hp bar
         target.hpBar.UpdateHP();
@@ -1008,13 +1091,84 @@ public class BattleManager : MonoBehaviour {
         be.GetComponent<Effect>().damage = damage.ToString();
     }
 
-    void ShowHealing(Denigen target, int heal)
-    {
-        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
-        be.name = "HealEffect";
-        be.GetComponent<SpriteRenderer>().sprite = healIcon;
-        be.GetComponent<Effect>().damage = heal.ToString();
-    }
+//    void ShowHealing(Denigen target, int heal)
+//    {
+//        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+//        be.name = "HealEffect";
+//        be.GetComponent<SpriteRenderer>().sprite = healIcon;
+//        be.GetComponent<Effect>().damage = heal.ToString();
+//    }
+
+	void ShowHealing(Denigen target, int heal, string statName)
+	{
+		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+		be.name = "HealEffect";
+		if (statName == "HP") {
+			be.GetComponent<SpriteRenderer> ().sprite = healIcon;
+		} else if (statName == "PM") {
+			be.GetComponent<SpriteRenderer> ().sprite = healPMIcon;
+		}
+		be.GetComponent<Effect> ().damage = heal.ToString ();
+	}
+
+	void ShowStatBoost(Denigen target, int _boost, string _stat)
+	{
+		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+		be.name = "StatBoostEffect";
+		//be.GetComponent<SpriteRenderer>().sprite = healIcon;
+		if (_boost >= 0) {
+			switch (_stat) {
+			case "ATK":
+				be.GetComponent<SpriteRenderer> ().sprite = atkIncIcon;
+				break;
+			case "DEF":
+				be.GetComponent<SpriteRenderer> ().sprite = defIncIcon;
+				break;
+			case "MGKATK":
+				be.GetComponent<SpriteRenderer> ().sprite = mgkAtkIncIcon;
+				break;
+			case "MGKDEF":
+				be.GetComponent<SpriteRenderer> ().sprite = mgkDefIncIcon;
+				break;
+			case "LUCK":
+				be.GetComponent<SpriteRenderer> ().sprite = luckIncIcon;
+				break;
+			case "SPD":
+			case "EVASION":
+				be.GetComponent<SpriteRenderer> ().sprite = spdIncIcon;
+				break;
+			default:
+				print ("No case for a stat of type " + _stat + " exists");
+				break;
+			}
+		} else {
+			switch (_stat) {
+			case "ATK":
+				be.GetComponent<SpriteRenderer> ().sprite = atkDecIcon;
+				break;
+			case "DEF":
+				be.GetComponent<SpriteRenderer> ().sprite = defDecIcon;
+				break;
+			case "MGKATK":
+				be.GetComponent<SpriteRenderer> ().sprite = mgkAtkDecIcon;
+				break;
+			case "MGKDEF":
+				be.GetComponent<SpriteRenderer> ().sprite = mgkDefDecIcon;
+				break;
+			case "LUCK":
+				be.GetComponent<SpriteRenderer> ().sprite = luckDecIcon;
+				break;
+			case "SPD":
+			case "EVASION":
+				be.GetComponent<SpriteRenderer> ().sprite = spdDecIcon;
+				break;
+			default:
+				print ("No case for a stat of type " + _stat + " exists");
+				break;
+			}
+		}
+		be.GetComponent<Effect> ().damage = _boost.ToString();
+	}
 
     void ShowStatusEffect(Denigen target)
     {

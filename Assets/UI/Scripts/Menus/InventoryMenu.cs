@@ -21,7 +21,8 @@
         GameObject currentObj;
         int outerListPosition;
         int innerListPosition;
-        internal Item chosenItem;
+        //internal Item chosenItem;
+		internal InventoryItem chosenItem;
         internal string currentDescription;
 
         float buttonDistance = 55f;
@@ -70,40 +71,68 @@
             // create grid with 4 lists --- for the 4 categories of the inventory
             buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
 
-            FillList(gameControl.consumables, 0);
-            FillList(gameControl.weapons, 1);
-            FillList(gameControl.equipment, 2);
-            FillList(gameControl.reusables, 3);
+//            FillList(gameControl.consumables, 0);
+//            FillList(gameControl.weapons, 1);
+//            FillList(gameControl.equipment, 2);
+//            FillList(gameControl.reusables, 3);
+
+			FillList(gameControl.consumables, "Consumable", 0);
+			FillList(gameControl.weapons, "Weapon", 1);
+			FillList(gameControl.equipment, "Armor", 2);
+			FillList(gameControl.key, "Key", 3);
 
             SetButtonNavigation(); // reset button navigation
             gameControl.itemAdded = false; // reset flag to false
         }
 
-        void FillList(List<GameObject> category, int listPosition)
+        //void FillList(List<GameObject> category, int listPosition)
+		void FillList(List<InventoryItem> category, string _type, int listPosition)
         {
             for (int i = 0; i < category.Count; i++)
             {
-                var item = Instantiate(itemPrefab);
-                item.name = category[i].GetComponent<Item>().name + "_Button";
-                item.transform.SetParent(itemSlotsContainer.transform);
-                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
-                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+//                var item = Instantiate(itemPrefab);
+//                item.name = category[i].GetComponent<Item>().name + "_Button";
+//                item.transform.SetParent(itemSlotsContainer.transform);
+//                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
+//                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+//
+//                var button = item.GetComponentInChildren<Button>();
+//                var itemInfo = category[i].GetComponent<Item>();
+//                button.GetComponentInChildren<Text>().text = itemInfo.name;
+//                buttonGrid[listPosition].Add(button);
+//
+//                // description
+//                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
+//
+//                var itemSlot = item.GetComponent<ItemSlot>();
+//
+//                // set item to item slot so it's connected to the button
+//                itemSlot.SetItem(itemInfo);
+//
+//                // add listener
+//                button.onClick.AddListener(OnSelect);
 
-                var button = item.GetComponentInChildren<Button>();
-                var itemInfo = category[i].GetComponent<Item>();
-                button.GetComponentInChildren<Text>().text = itemInfo.name;
-                buttonGrid[listPosition].Add(button);
-
-                // description
-                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
-
-                var itemSlot = item.GetComponent<ItemSlot>();
-
-                // set item to item slot so it's connected to the button
-                itemSlot.SetItem(itemInfo);
-
-                // add listener
-                button.onClick.AddListener(OnSelect);
+				var item = Instantiate(itemPrefab);
+				item.name = category[i].name + "_Button";
+				item.transform.SetParent(itemSlotsContainer.transform);
+				item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
+				item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+				
+				var button = item.GetComponentInChildren<Button>();
+				var itemInfo = ItemDatabase.GetItem(_type, item.name);
+				button.GetComponentInChildren<Text>().text = itemInfo.name;
+				buttonGrid[listPosition].Add(button);
+				
+				// description
+				item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
+				
+				var itemSlot = item.GetComponent<ItemSlot>();
+				
+				// set item to item slot so it's connected to the button
+				itemSlot.SetItem(category[i]);
+				
+				// add listener
+				button.onClick.AddListener(OnSelect);
             }
             if (category.Count <= 0)
             {
@@ -397,7 +426,7 @@
             itemSlot.UpdateQuantity();
             
             // check if consumable & zero
-            if(itemSlot.item.GetComponent<ConsumableItem>()
+            if(itemSlot.item.type == "consumable"
                 && itemSlot.item.quantity - itemSlot.item.uses <= 0)
             {
                 // remove item button from grid and delete
@@ -405,7 +434,7 @@
                 var index = buttonGrid[outerListPosition].IndexOf(currentObj.GetComponent<Button>());//Find(currentObj.GetComponent<Button>())
                 buttonGrid[outerListPosition].Remove(currentObj.GetComponent<Button>());
                 Destroy(currentObj.transform.parent.gameObject);
-                gameControl.RemoveItem(itemSlot.item.gameObject);                
+                gameControl.RemoveItem(itemSlot.item);                
 
                 // add an invisible button if there are no more items in the list
                 if(buttonGrid[outerListPosition].Count <= 0)

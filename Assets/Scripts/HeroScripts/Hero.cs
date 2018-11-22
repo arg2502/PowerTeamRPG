@@ -41,22 +41,7 @@ public class Hero : Denigen {
     // the method for handling item use
     public void ItemUse()
     {
-        // if the item is intended for living, but the target is dead, don't use the item -- skip the turn
-        var itemIsForLiving = GameControl.itemManager.ItemForLiving(CurrentAttackName);
-        if (itemIsForLiving && targets[0].IsDead)
-            return;
-        
-        //search through all of the items
-        for (int j = 0; j < GameControl.control.consumables.Count; j++)
-        {
-            var item = GameControl.control.consumables[j].GetComponent<ConsumableItem>();
-            // Disable an item if the number of denigens commanded to use said item is >= its quantity
-            if (CurrentAttackName == item.name)
-            {
-                item.Use(targets[0]);
-                break;
-            }
-        }
+		GameControl.itemManager.ItemUse (this, targets);
     }
 
     public virtual void DecideTypeOfTarget()
@@ -92,16 +77,18 @@ public class Hero : Denigen {
 
     TargetType DecideItemTarget(string itemName)
     {
-        switch(itemName)
-        {
-            // THIS IS WHERE WE WILL HAVE A LIST OF ALL ITEMS AND WHAT KIND OF TARGET TYPE THEY NEED TO BE
-            // PERHAPS WE SHOULD HAVE A SEPARATE ITEMMANAGER CLASS OR SOMETHING TO HANDLE THIS INSTEAD OF HAVING IT INSIDE HERO
-            // AT LEAST IN DENIGEN SO THAT ENEMIES COULD POTENTALLY USE ITEMS AS WELL
-
-            // JUST RETURN ONE RESULT FOR NOW
-            default:
-                return TargetType.HERO_SINGLE;
-        }
+//        switch(itemName)
+//        {
+//            // THIS IS WHERE WE WILL HAVE A LIST OF ALL ITEMS AND WHAT KIND OF TARGET TYPE THEY NEED TO BE
+//            // PERHAPS WE SHOULD HAVE A SEPARATE ITEMMANAGER CLASS OR SOMETHING TO HANDLE THIS INSTEAD OF HAVING IT INSIDE HERO
+//            // AT LEAST IN DENIGEN SO THAT ENEMIES COULD POTENTALLY USE ITEMS AS WELL
+//
+//            // JUST RETURN ONE RESULT FOR NOW
+//            default:
+//                return TargetType.HERO_SINGLE;
+//        }
+		ScriptableConsumable _item = ItemDatabase.GetItem ("consumable", itemName) as ScriptableConsumable;
+		return (TargetType)_item.targetType;
     }
 
     //select the target for your attack
