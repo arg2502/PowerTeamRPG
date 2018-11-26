@@ -104,8 +104,8 @@ TextureImporter:
       name: NPC_Placeholder_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 288
+        x: 1
+        y: 295
         width: 64
         height: 96
       alignment: 0
@@ -118,8 +118,8 @@ TextureImporter:
       name: NPC_Placeholder_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 288
+        x: 67
+        y: 295
         width: 64
         height: 96
       alignment: 0
@@ -132,8 +132,8 @@ TextureImporter:
       name: NPC_Placeholder_2
       rect:
         serializedVersion: 2
-        x: 128
-        y: 288
+        x: 133
+        y: 295
         width: 64
         height: 96
       alignment: 0
@@ -146,8 +146,8 @@ TextureImporter:
       name: NPC_Placeholder_3
       rect:
         serializedVersion: 2
-        x: 192
-        y: 288
+        x: 199
+        y: 295
         width: 64
         height: 96
       alignment: 0
@@ -160,8 +160,8 @@ TextureImporter:
       name: NPC_Placeholder_4
       rect:
         serializedVersion: 2
-        x: 256
-        y: 288
+        x: 265
+        y: 295
         width: 64
         height: 96
       alignment: 0
@@ -174,8 +174,8 @@ TextureImporter:
       name: NPC_Placeholder_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
+        x: 1
+        y: 197
         width: 64
         height: 96
       alignment: 0
@@ -188,8 +188,8 @@ TextureImporter:
       name: NPC_Placeholder_6
       rect:
         serializedVersion: 2
-        x: 64
-        y: 192
+        x: 67
+        y: 197
         width: 64
         height: 96
       alignment: 0
@@ -202,8 +202,8 @@ TextureImporter:
       name: NPC_Placeholder_7
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
+        x: 133
+        y: 197
         width: 64
         height: 96
       alignment: 0
@@ -216,8 +216,8 @@ TextureImporter:
       name: NPC_Placeholder_8
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
+        x: 199
+        y: 197
         width: 64
         height: 96
       alignment: 0
@@ -230,8 +230,8 @@ TextureImporter:
       name: NPC_Placeholder_9
       rect:
         serializedVersion: 2
-        x: 256
-        y: 192
+        x: 265
+        y: 197
         width: 64
         height: 96
       alignment: 0
@@ -244,8 +244,8 @@ TextureImporter:
       name: NPC_Placeholder_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 96
+        x: 1
+        y: 99
         width: 64
         height: 96
       alignment: 0
@@ -258,8 +258,8 @@ TextureImporter:
       name: NPC_Placeholder_11
       rect:
         serializedVersion: 2
-        x: 64
-        y: 96
+        x: 67
+        y: 99
         width: 64
         height: 96
       alignment: 0
@@ -272,8 +272,8 @@ TextureImporter:
       name: NPC_Placeholder_12
       rect:
         serializedVersion: 2
-        x: 128
-        y: 96
+        x: 133
+        y: 99
         width: 64
         height: 96
       alignment: 0
@@ -286,8 +286,8 @@ TextureImporter:
       name: NPC_Placeholder_13
       rect:
         serializedVersion: 2
-        x: 192
-        y: 96
+        x: 199
+        y: 99
         width: 64
         height: 96
       alignment: 0
@@ -300,8 +300,8 @@ TextureImporter:
       name: NPC_Placeholder_14
       rect:
         serializedVersion: 2
-        x: 256
-        y: 96
+        x: 265
+        y: 99
         width: 64
         height: 96
       alignment: 0
@@ -314,8 +314,8 @@ TextureImporter:
       name: NPC_Placeholder_15
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 1
+        y: 1
         width: 64
         height: 96
       alignment: 0
@@ -328,8 +328,8 @@ TextureImporter:
       name: NPC_Placeholder_16
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
+        x: 67
+        y: 1
         width: 64
         height: 96
       alignment: 0
@@ -342,8 +342,8 @@ TextureImporter:
       name: NPC_Placeholder_17
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 133
+        y: 1
         width: 64
         height: 96
       alignment: 0
@@ -356,8 +356,8 @@ TextureImporter:
       name: NPC_Placeholder_18
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
+        x: 199
+        y: 1
         width: 64
         height: 96
       alignment: 0
@@ -370,8 +370,8 @@ TextureImporter:
       name: NPC_Placeholder_19
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
+        x: 265
+        y: 1
         width: 64
         height: 96
       alignment: 0
