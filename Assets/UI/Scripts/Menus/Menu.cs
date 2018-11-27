@@ -90,7 +90,9 @@
         protected void AddDescriptionEvent(Button button)
         {
             // ADD AN EVENT TRIGGER AND SET FUNCTION UP HERE
-            var trigger = button.gameObject.GetComponent<EventTrigger>();
+            var trigger = button.gameObject.GetComponent<EventTrigger>(); // get EventTrigger if already existing
+            if (!trigger) // if there is no event trigger already, add one
+                trigger = button.gameObject.AddComponent<EventTrigger>();
             var entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.Select;
             entry.callback.AddListener((baseEventData) => AssignDescription(baseEventData));
