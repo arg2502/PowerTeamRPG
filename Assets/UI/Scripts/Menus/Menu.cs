@@ -208,6 +208,12 @@
             StartCoroutine(FadeOut());
         }
 
+        /// <summary>
+        /// Called when backspace is pressed if this menu is an Exception Menu
+        /// Use this is you want something to occur right before closing/popping the menu.
+        /// </summary>
+        public virtual void PrePop() { }
+
         protected void Update()
         {
             if (Input.GetKeyDown(KeyCode.Backspace))
@@ -216,10 +222,13 @@
             if (this.gameObject != uiManager.menuInFocus) return;
             
             if (Input.GetKeyUp(KeyCode.Backspace)
-                && !ExceptionMenus()
                 && uiManager.poppable)
             {
-                uiManager.PopMenu();
+                if (!ExceptionMenus())
+                    uiManager.PopMenu();
+                else
+                    PrePop();
+
                 uiManager.poppable = false;
             }
 
@@ -232,7 +241,8 @@
         bool ExceptionMenus()
         {
             if (this.gameObject.GetComponent<BattleMenu>()
-                || this.gameObject.GetComponent<VictoryMenu>())
+                || this.gameObject.GetComponent<VictoryMenu>()
+                || this.gameObject.GetComponent<StatPointsMenu>())
                 return true;
             else
                 return false;

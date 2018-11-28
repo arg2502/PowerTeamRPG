@@ -97,7 +97,7 @@ public class DenigenData : ScriptableObject
         spd += (int)(boostTotal * spdPer);
         
         // allocate stats
-        //levelUpPts += (int)(stars * multiplier); // 3 * (level/10 + 1)
+        levelUpPts += (int)(stars * multiplier); // 3 * (level/10 + 1)
 
         // actually allocating the points will be done through a levelup menu
 

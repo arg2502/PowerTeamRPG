@@ -26,6 +26,9 @@
         [Header("Skill Tree")]
         public GameObject SkillTreeMenu;
 
+        [Header("Stat Points")]
+        public GameObject StatPointsMenu;
+
         [Header("Battle")]
         public GameObject BattleMenu;
         public GameObject AttackSub;

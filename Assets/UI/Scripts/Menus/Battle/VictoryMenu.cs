@@ -146,7 +146,23 @@
         }
         void OnStats()
         {
+            uiManager.PushMenu(uiManager.uiDatabase.StatPointsMenu);
+            var statPoints = uiManager.CurrentMenu.GetComponent<StatPointsMenu>();
 
+            int heroIndex;
+
+            if (jethroCard.LeveledUp)
+                heroIndex = 0;
+            else if (coleCard.LeveledUp)
+                heroIndex = 1;
+            else if (eleanorCard.LeveledUp)
+                heroIndex = 2;
+            else if (joulietteCard.LeveledUp)
+                heroIndex = 3;
+            else
+                heroIndex = 0;
+
+            statPoints.SetHero(heroIndex);
         }
         void OnDone()
         {
