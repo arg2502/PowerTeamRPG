@@ -54,7 +54,7 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate ()
     {
         FollowTarget();
-        //StayWithinRoom();
+        StayWithinRoom();
 	}
 
     void FollowTarget()
@@ -69,13 +69,13 @@ public class CameraController : MonoBehaviour {
 
         targetPos = new Vector3(currentX, currentY, transform.position.z);
 
-        //if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
-        //    moveSpeed = 100;
-        //else if(moveSpeed != origMoveSpeed)
-        //    moveSpeed = origMoveSpeed;
+        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+            moveSpeed = 100;
+        else if (moveSpeed != origMoveSpeed)
+            moveSpeed = origMoveSpeed;
 
-        //transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
-        transform.position = targetPos;
+        transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        //transform.position = targetPos;
     }
 
     void StayWithinRoom()
@@ -120,6 +120,7 @@ public class CameraController : MonoBehaviour {
             targetPos = new Vector3(targetPos.x, currentY, transform.position.z);
             outOfBoundsY = true;
         }
+        
     }
 
     public void StayWithinRoomAtStart()
