@@ -205,7 +205,16 @@
             luck.ShouldDecreaseBeActive(currentHeroIndex);
             evasion.ShouldDecreaseBeActive(currentHeroIndex);
             spd.ShouldDecreaseBeActive(currentHeroIndex);
-            
+
+            hp.UpdateChangeText(currentHeroIndex);
+            pm.UpdateChangeText(currentHeroIndex);
+            atk.UpdateChangeText(currentHeroIndex);
+            def.UpdateChangeText(currentHeroIndex);
+            mgkAtk.UpdateChangeText(currentHeroIndex);
+            mgkDef.UpdateChangeText(currentHeroIndex);
+            evasion.UpdateChangeText(currentHeroIndex);
+            luck.UpdateChangeText(currentHeroIndex);
+            spd.UpdateChangeText(currentHeroIndex);
         }
         
         /// <summary>

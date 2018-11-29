@@ -11,6 +11,7 @@
         public Text statValue;
         public Image decreaseArrow;
         public Image increaseArrow;
+        public Text changeText;
         // current stat value ???
         int currentStat = -1;
 
@@ -38,14 +39,23 @@
         {
             statChanges[hero] += increment;
             SetHeroStatValue(hero, currentStat);
+            UpdateChangeText(hero);
+            AnimateChange();
         }
 
         public void ShouldDecreaseBeActive(int hero)
         {
             if (statChanges[hero] > 0)
+            {
                 ToggleDecreaseArrow(true);
+                ToggleChangeText(true);
+            }
             else if (decreaseArrow.gameObject.activeSelf)
-                ToggleDecreaseArrow(false);                
+            {
+                ToggleDecreaseArrow(false);
+                ToggleChangeText(false);
+            }
+                
         }
 
         public void ToggleDecreaseArrow(bool active)
@@ -56,6 +66,29 @@
         public void ToggleIncreaseArrow(bool active)
         {
             increaseArrow.gameObject.SetActive(active);
+        }
+
+        void ToggleChangeText(bool active)
+        {
+            if (changeText.gameObject.activeSelf == !active)
+                changeText.gameObject.SetActive(active);
+        }
+
+        public void UpdateChangeText(int hero)
+        {
+            if(statChanges[hero] <= 0)
+            {
+                ToggleChangeText(false);
+                return;
+            }
+
+            changeText.gameObject.SetActive(true);
+            changeText.text = "+" + statChanges[hero];
+        }
+
+        void AnimateChange()
+        {
+            changeText.GetComponent<Animator>().Play("Shake", -1, 0f);
         }
 
         public void ClearArray()
