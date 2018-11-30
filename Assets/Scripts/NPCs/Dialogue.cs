@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +12,45 @@ public class Dialogue : MonoBehaviour {
     string currentDialogueText;
 
     TextAsset currentTextAsset;
-    List<string> speakerNames;
-    List<Sprite> speakerEmotions;
-    List<string> dialogueConversation;
 
     int conversationIterator = 0;
 
     UI.DialogueMenu dialogueMenu;
+
+    // Keeps hold of everything the dialogue conversation needs:
+    // names of whose speaker, sprite emotions, and the actual dialogue
+    // Also keeps track of any possible responses the player needs to make
+    public struct Conversation
+    {
+        public List<string> speakerNames;
+        public List<Sprite> speakerEmotions;
+        public List<string> dialogueConversation;
+        public List<Response> responses;
+
+        public string GetSpeakerName(int increment)
+        {
+            return speakerNames[increment];
+        }
+
+        public Sprite GetSpeakerEmotion(int increment)
+        {
+            return speakerEmotions[increment];
+        }
+
+        public string GetDialogueConversation(int increment)
+        {
+            return dialogueConversation[increment];
+        }
+    }
+    Conversation currentConversation;
+
+    // Used when the player has to opportunity to make a choice in the dialogue
+    // Stores what the player can say to respond, and the conversation that takes place after that response
+    public struct Response
+    {
+        public string playerResponse;
+        public Conversation conversation;
+    }
 
     private void Start()
     {
@@ -29,10 +62,10 @@ public class Dialogue : MonoBehaviour {
         // if this is our first time talking to an NPC,
         // OR the text they have to say is different from the last time we've talked,
         // set the current text asset and decipher dialogue
-        if (currentTextAsset == null || currentTextAsset != textAsset) // NEEDS TESTING WITH MULTIPLE DIALOGUES
+        if (currentTextAsset == null || currentTextAsset != textAsset)
         {
             currentTextAsset = textAsset;
-            DecipherConversation();
+            currentConversation = DecipherConversation(currentTextAsset.text);
         }
 
         // push the dialogue menu
@@ -47,20 +80,24 @@ public class Dialogue : MonoBehaviour {
     /// <summary>
     /// Fill out the lists for the conversation based on the currently stored Text Asset, passed in from the NPC.
     /// </summary>
-    void DecipherConversation()
+    Conversation DecipherConversation(string currentText, int startAtRow = 1, int endAtRow = -1)
     {
-        speakerNames = new List<string>();
-        speakerEmotions = new List<Sprite>();
-        dialogueConversation = new List<string>();
+        Conversation newConversation = new Conversation();
+        newConversation.speakerNames = new List<string>();
+        newConversation.speakerEmotions = new List<Sprite>();
+        newConversation.dialogueConversation = new List<string>();
 
         // split whole doc into row
         // each row makes up a sentence or section of the dialogue
         // could be possible to have someone different speak on each row
         var rows = currentTextAsset.text.Split('\n');
+
+        if (endAtRow < 0)
+            endAtRow = rows.Length;
         
         // Loop through the lines (skipping the first line, as that contains var names like "name", "emotion", etc.
         // Add the appropriate variables to the lists
-        for(int i = 1; i < rows.Length; i++)
+        for(int i = startAtRow; i < endAtRow; i++)
         {
             // split rows further by dividing them by 'tab' space, since TextAsset was originally a .tsv
             var lines = rows[i].Split('\t');
@@ -68,38 +105,89 @@ public class Dialogue : MonoBehaviour {
             // the first column should be the name of the speaker
             // if blank, use the NPC's name
             if (string.IsNullOrEmpty(lines[0]))
-                speakerNames.Add(speaker.npcName);
+                newConversation.speakerNames.Add(speaker.npcName);
             else
-                speakerNames.Add(lines[0]);
+                newConversation.speakerNames.Add(lines[0]);
 
             // Next, we had emotional response.
             // TODO: come up with a way to know which character's sprite to add.
             // FOR NOW: just add the NPC's image
             if (string.IsNullOrEmpty(lines[1]))
-                speakerEmotions.Add(speaker.neutralSpr);
+                newConversation.speakerEmotions.Add(speaker.neutralSpr);
             else
             {
                 switch (lines[1])
                 {
                     case "HAPPY":
-                        speakerEmotions.Add(speaker.happySpr);
+                        newConversation.speakerEmotions.Add(speaker.happySpr);
                         break;
                     case "NEUTRAL":
-                        speakerEmotions.Add(speaker.neutralSpr);
+                        newConversation.speakerEmotions.Add(speaker.neutralSpr);
                         break;
                 }
             }
 
             // Finally, adding the dialogue. This should never be null so no need to check
-            dialogueConversation.Add(lines[2]);
+            newConversation.dialogueConversation.Add(lines[2]);
+
+            // Now we'll check if the dialogue line requires a response
+            // If this column is empty or doesn't contain our special char, just ignore. We're done with this row
+            if (lines.Length < 4 || string.IsNullOrEmpty(lines[3]) || !lines[3].Contains("["))
+                continue;
+            
+            var lineCounter = i + 1; // start on the next line
+
+            newConversation.responses = new List<Response>();
+
+            // Otherwise, we need to figure out the responses and store their corresponding dialogue elsewhere
+            // First separate the responses (separating character is _)
+            var responses = lines[3].Split('_');
+            
+            // now we need to make sure we split the actual text response with 
+            // the marker that determines how many lines the dialogue that corresponds with the response is
+            for(int j = 0; j < responses.Length; j++)
+            {
+                var newResponse = new Response();
+
+                var bracketIndex = responses[j].IndexOf('[');
+                var actualResponse = responses[j].Substring(0, bracketIndex);
+                newResponse.playerResponse = actualResponse;
+
+                var numOfLinesStr = responses[j].Substring(bracketIndex);
+                
+                // get the numeric values from numOfLines
+                // Regex -- Regular Expression
+                // \d+ should return any numeric values found within the string
+                var resultStr = Regex.Match(numOfLinesStr, @"\d+").Value;
+
+                // parse string to int
+                int numOfLines = int.Parse(resultStr);
+                
+                // create a new conversation that will be printed if this response it chosen
+                // search through the current text file, except instead of starting at the top and going till the end,
+                // start at the row in the text file where the response dialogue takes place,
+                // and end after the appropriate amount of lines listed (numOfLines)
+                newResponse.conversation = DecipherConversation(currentTextAsset.text, lineCounter, lineCounter + numOfLines);
+                
+                // increase the line counter for the next response
+                lineCounter += numOfLines;
+                
+                // add the new response obj to our new conversation
+                newConversation.responses.Add(newResponse);
+            }
+
+            // once we've determined there is a response, we don't want to go any further
+            break;
         }
+
+        return newConversation;
     }
 
     void PrintConversation()
     {
         // if the iterator is greater than the amount of dialogue that needs to be said,
         // End the conversation
-        if (conversationIterator >= dialogueConversation.Count)
+        if (conversationIterator >= currentConversation.dialogueConversation.Count)
         {
             conversationIterator = 0;
             speaker.EndDialogue();
@@ -109,9 +197,9 @@ public class Dialogue : MonoBehaviour {
 
             return;
         }
-        currentSpeakerName = speakerNames[conversationIterator];
-        currentSpeakerSprite = speakerEmotions[conversationIterator];
-        currentDialogueText = dialogueConversation[conversationIterator];
+        currentSpeakerName = currentConversation.GetSpeakerName(conversationIterator);
+        currentSpeakerSprite = currentConversation.GetSpeakerEmotion(conversationIterator);
+        currentDialogueText = currentConversation.GetDialogueConversation(conversationIterator);
         
         dialogueMenu.SetText(currentSpeakerName, currentDialogueText, currentSpeakerSprite);
 

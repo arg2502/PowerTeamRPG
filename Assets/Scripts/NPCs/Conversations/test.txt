@@ -1,4 +1,8 @@
-name	emotion	dialogue
-		These are some words that I'm speaking.
-		And these are some more words.
-	HAPPY	Funny that's how life be.
+name	emotion	dialogue	responses
+		These are some words that I'm speaking.	
+		And these are some more words.	
+	HAPPY	Funny that's how life be, right?	Yeah[2]_What?[1]_No[1]
+	HAPPY	This guy gets it.	
+	HAPPY	Well, I'm off.	
+		Nevermind.	
+		Well fuck you then.	
