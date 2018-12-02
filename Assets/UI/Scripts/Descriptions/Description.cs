@@ -9,15 +9,15 @@
         public Description parentButton;
         [TextArea]
         public string description;
-
-        public string GetDescription()
+        
+        public virtual string GetDescription()
         {
-            //if (string.IsNullOrEmpty(description))
+            // if this description does not have it's own text and is based
+            // off a "parent" button, get that description instead
             if (parentButton)
                 SetDescription(parentButton.GetDescription());
-            else
-                SetDescription();
-            //print("description: " + description);
+            
+            // otherwise, return this button's description text
             return description;
         }
 

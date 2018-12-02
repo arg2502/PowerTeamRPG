@@ -8,7 +8,20 @@
         public enum HeroStat { Jethro, Cole, Eleanor, Juliette }
         public HeroStat hero;
         DenigenData currentHero;
-       
+
+        private void Start()
+        {
+            SetDescription();
+        }
+
+        // override our GetDescription to reset the description text everytime we
+        // ask for it, since it's possible to have changed
+        public override string GetDescription()
+        {
+            SetDescription();
+            return description;
+        }
+
         public override void SetDescription(string message = "")
         {
             SetHero();
