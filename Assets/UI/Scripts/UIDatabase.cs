@@ -8,6 +8,7 @@
     {
         [Header("Overworld")]
         public GameObject DialogueMenu;
+        public GameObject DialogueResponseMenu;
 
         [Header("Misc.")]
         public GameObject ConfirmationMenu;

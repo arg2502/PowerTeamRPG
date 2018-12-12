@@ -46,14 +46,20 @@ public class NPCDialogue : MonoBehaviour {
         dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
     }
 
-    public void EndDialogue()
+    public void EndDialogue(Dialogue.Conversation currentConversation)
     {
         if (numOfTimesTalked < dialogueList.Count - 1)
             numOfTimesTalked++;
         isTalking = false;
 
         GameControl.control.SetCharacterState(prevState);
-
+        
+        // call any functions that need to occur after the dialogue has ended here
+        if(!string.IsNullOrEmpty(currentConversation.actionName))
+        {
+            Invoke(currentConversation.actionName, 0f);
+        }
+        
         // At the end of the dialogue, set the NPC's walking method back to normal
         // ...might not be the best place for this, as the NPCPathwalkControl function that's called
         // at the start of the conversation is called in characterControl, but that's because that 
@@ -61,5 +67,10 @@ public class NPCDialogue : MonoBehaviour {
         // plus this location kinda makes sense...
         if (GetComponentInParent<NPCPathwalkControl>())
             GetComponentInParent<NPCPathwalkControl>().BackToNormal();
+    }
+
+    void TestFunction()
+    {
+        print("TEST FUNCTION BABY");
     }
 }

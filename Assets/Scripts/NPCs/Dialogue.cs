@@ -26,6 +26,7 @@ public class Dialogue : MonoBehaviour {
         public List<Sprite> speakerEmotions;
         public List<string> dialogueConversation;
         public List<Response> responses;
+        public string actionName;
 
         public string GetSpeakerName(int increment)
         {
@@ -41,6 +42,11 @@ public class Dialogue : MonoBehaviour {
         {
             return dialogueConversation[increment];
         }
+
+        public bool IsThereResponse()
+        {
+            return responses != null && responses.Count > 0;
+        }        
     }
     Conversation currentConversation;
 
@@ -72,6 +78,7 @@ public class Dialogue : MonoBehaviour {
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
         dialogueMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueMenu).GetComponent<UI.DialogueMenu>();
         dialogueMenu.SetContinue(PrintConversation);
+        dialogueMenu.OnNextDialogue += CheckForResponseMenu; // add event listener
 
         // Send the dialogue information to the menu to be printed
         PrintConversation();
@@ -149,12 +156,27 @@ public class Dialogue : MonoBehaviour {
             {
                 var newResponse = new Response();
 
+                // responses[j] = text[number, function]
+
                 var bracketIndex = responses[j].IndexOf('[');
                 var actualResponse = responses[j].Substring(0, bracketIndex);
                 newResponse.playerResponse = actualResponse;
 
-                var numOfLinesStr = responses[j].Substring(bracketIndex);
-                
+                var commaIndex = responses[j].IndexOf(',');
+
+                string numOfLinesStr = "";
+                string functionStr = "";
+                if (commaIndex >= 0)
+                {
+                    numOfLinesStr = responses[j].Substring(bracketIndex, commaIndex);
+                    functionStr = responses[j].Substring(commaIndex);
+                }
+                else
+                    numOfLinesStr = responses[j].Substring(bracketIndex);
+                // numOfLinesStr = [number,
+                // functionStr = , function]
+
+
                 // get the numeric values from numOfLines
                 // Regex -- Regular Expression
                 // \d+ should return any numeric values found within the string
@@ -169,6 +191,17 @@ public class Dialogue : MonoBehaviour {
                 // and end after the appropriate amount of lines listed (numOfLines)
                 newResponse.conversation = DecipherConversation(currentTextAsset.text, lineCounter, lineCounter + numOfLines);
                 
+                // set the conversation's action if we have one to set
+                if(!string.IsNullOrEmpty(functionStr))
+                {
+                    // get any alphanumeric values from functionStr to get function name
+                    // Regex -- Regular Expression
+                    // \w+ should return any alphanumeric values found within the string
+                    var newAction = Regex.Match(functionStr, @"\w+").Value;
+                    newResponse.conversation.actionName = newAction;
+
+                }
+
                 // increase the line counter for the next response
                 lineCounter += numOfLines;
                 
@@ -186,16 +219,25 @@ public class Dialogue : MonoBehaviour {
     void PrintConversation()
     {
         // if the iterator is greater than the amount of dialogue that needs to be said,
-        // End the conversation
         if (conversationIterator >= currentConversation.dialogueConversation.Count)
         {
-            conversationIterator = 0;
-            speaker.EndDialogue();
+            //// check to see if there are any responses to give
+            //if (currentConversation.IsThereResponse())
+            //{
+            //    GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu);
+            //}
 
-            // pop dialogue menu
-            GameControl.UIManager.PopMenu();
+            //// End the conversation if there is no options for responses
+            //else
+            //{
+                conversationIterator = 0;
+                speaker.EndDialogue(currentConversation);
 
-            return;
+                // pop dialogue menu
+                GameControl.UIManager.PopMenu();
+
+                return;
+            //}
         }
         currentSpeakerName = currentConversation.GetSpeakerName(conversationIterator);
         currentSpeakerSprite = currentConversation.GetSpeakerEmotion(conversationIterator);
@@ -206,4 +248,23 @@ public class Dialogue : MonoBehaviour {
         conversationIterator++;
 
     }    
+
+    void CheckForResponseMenu()
+    {
+        // check to see if there are any responses to give
+        if (conversationIterator >= currentConversation.dialogueConversation.Count
+            && currentConversation.IsThereResponse())
+        {
+            GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu);
+            var responseMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu).GetComponent<UI.DialogueResponseMenu>();
+            responseMenu.SetResponses(currentConversation.responses);
+            responseMenu.OnStartNextConversation += NextConversation;
+        }
+    }
+
+    void NextConversation(Conversation nextConvo)
+    {
+        currentConversation = nextConvo;
+        PrintConversation();
+    }
 }
