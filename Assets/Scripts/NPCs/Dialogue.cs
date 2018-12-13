@@ -257,14 +257,18 @@ public class Dialogue : MonoBehaviour {
         {
             GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu);
             var responseMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu).GetComponent<UI.DialogueResponseMenu>();
-            responseMenu.SetResponses(currentConversation.responses);
-            responseMenu.OnStartNextConversation += NextConversation;
+            responseMenu.SetResponses(currentConversation.responses);                
+            responseMenu.OnStartNextConversation.AddListener(NextConversation);
         }
     }
-
+    
     void NextConversation(Conversation nextConvo)
     {
+        print("next conversation");
+        //if (conversationIterator <= 0) return;
+        //responseMenu.OnStartNextConversation -= NextConversation;
         currentConversation = nextConvo;
+        conversationIterator = 0;        
         PrintConversation();
     }
 }
