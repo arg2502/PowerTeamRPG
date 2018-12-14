@@ -55,6 +55,7 @@ public class NPCDialogue : MonoBehaviour {
         GameControl.control.SetCharacterState(prevState);
         
         // call any functions that need to occur after the dialogue has ended here
+
         if(!string.IsNullOrEmpty(currentConversation.actionName))
         {
             Invoke(currentConversation.actionName, 0f);

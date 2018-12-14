@@ -142,6 +142,19 @@ public class Dialogue : MonoBehaviour {
             if (lines.Length < 4 || string.IsNullOrEmpty(lines[3]) || !lines[3].Contains("["))
                 continue;
             
+            // If we've reached this point then it means we either have responses to choose,
+            // or there's a function that needs to be performed at the end of this conversation
+            // Let's see if it's just a function. If it is, then we just set the current
+            // conversation action and continue
+            // To check, see if there are any numbers in the function.
+            // There should only be numbers if there's a response
+            if(!Regex.Match(lines[3], @"\d+").Success)
+            {
+                var newAction = Regex.Match(lines[3], @"\w+").Value;
+                newConversation.actionName = newAction;
+                continue;
+            }
+
             var lineCounter = i + 1; // start on the next line
 
             newConversation.responses = new List<Response>();
