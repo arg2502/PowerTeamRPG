@@ -1,29 +1,29 @@
 fileFormatVersion: 2
-guid: 6f46a7dc1a791c44cbbf0f7e41e0f2ef
-timeCreated: 1544643925
+guid: a0192881d41bd09469c03a0068099209
+timeCreated: 1544824153
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: O_Eleanor_0
-    21300002: O_Eleanor_1
-    21300004: O_Eleanor_2
-    21300006: O_Eleanor_3
-    21300008: O_Eleanor_4
-    21300010: O_Eleanor_5
-    21300012: O_Eleanor_6
-    21300014: O_Eleanor_7
-    21300016: O_Eleanor_8
-    21300018: O_Eleanor_9
-    21300020: O_Eleanor_10
-    21300022: O_Eleanor_11
-    21300024: O_Eleanor_12
-    21300026: O_Eleanor_13
-    21300028: O_Eleanor_14
-    21300030: O_Eleanor_15
-    21300032: O_Eleanor_16
-    21300034: O_Eleanor_17
-    21300036: O_Eleanor_18
-    21300038: O_Eleanor_19
+    21300000: O_Juliette_0
+    21300002: O_Juliette_1
+    21300004: O_Juliette_2
+    21300006: O_Juliette_3
+    21300008: O_Juliette_4
+    21300010: O_Juliette_5
+    21300012: O_Juliette_6
+    21300014: O_Juliette_7
+    21300016: O_Juliette_8
+    21300018: O_Juliette_9
+    21300020: O_Juliette_10
+    21300022: O_Juliette_11
+    21300024: O_Juliette_12
+    21300026: O_Juliette_13
+    21300028: O_Juliette_14
+    21300030: O_Juliette_15
+    21300032: O_Juliette_16
+    21300034: O_Juliette_17
+    21300036: O_Juliette_18
+    21300038: O_Juliette_19
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -101,13 +101,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: O_Eleanor_0
+      name: O_Juliette_0
       rect:
         serializedVersion: 2
         x: 1
-        y: 295
-        width: 64
-        height: 96
+        y: 271
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,13 +115,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_1
+      name: O_Juliette_1
       rect:
         serializedVersion: 2
-        x: 67
-        y: 295
-        width: 64
-        height: 96
+        x: 91
+        y: 271
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,13 +129,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_2
+      name: O_Juliette_2
       rect:
         serializedVersion: 2
-        x: 133
-        y: 295
-        width: 64
-        height: 96
+        x: 181
+        y: 271
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,13 +143,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_3
+      name: O_Juliette_3
       rect:
         serializedVersion: 2
-        x: 199
-        y: 295
-        width: 64
-        height: 96
+        x: 271
+        y: 271
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,13 +157,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_4
+      name: O_Juliette_4
       rect:
         serializedVersion: 2
-        x: 265
-        y: 295
-        width: 64
-        height: 96
+        x: 361
+        y: 271
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,83 +171,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_5
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 197
-        width: 64
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: O_Eleanor_6
-      rect:
-        serializedVersion: 2
-        x: 67
-        y: 197
-        width: 64
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: O_Eleanor_7
-      rect:
-        serializedVersion: 2
-        x: 133
-        y: 197
-        width: 64
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: O_Eleanor_8
-      rect:
-        serializedVersion: 2
-        x: 199
-        y: 197
-        width: 64
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: O_Eleanor_9
-      rect:
-        serializedVersion: 2
-        x: 265
-        y: 197
-        width: 64
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: O_Eleanor_10
+      name: O_Juliette_5
       rect:
         serializedVersion: 2
         x: 1
-        y: 99
-        width: 64
-        height: 96
+        y: 181
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -255,13 +185,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_11
+      name: O_Juliette_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 99
-        width: 64
-        height: 96
+        x: 91
+        y: 181
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -269,13 +199,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_12
+      name: O_Juliette_7
       rect:
         serializedVersion: 2
-        x: 133
-        y: 99
-        width: 64
-        height: 96
+        x: 181
+        y: 181
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -283,13 +213,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_13
+      name: O_Juliette_8
       rect:
         serializedVersion: 2
-        x: 199
-        y: 99
-        width: 64
-        height: 96
+        x: 271
+        y: 181
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -297,13 +227,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_14
+      name: O_Juliette_9
       rect:
         serializedVersion: 2
-        x: 265
-        y: 99
-        width: 64
-        height: 96
+        x: 361
+        y: 181
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -311,13 +241,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_15
+      name: O_Juliette_10
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 91
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: O_Juliette_11
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 91
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: O_Juliette_12
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 91
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: O_Juliette_13
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 91
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: O_Juliette_14
+      rect:
+        serializedVersion: 2
+        x: 361
+        y: 91
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: O_Juliette_15
       rect:
         serializedVersion: 2
         x: 1
         y: 1
-        width: 64
-        height: 96
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -325,13 +325,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_16
+      name: O_Juliette_16
       rect:
         serializedVersion: 2
-        x: 67
+        x: 91
         y: 1
-        width: 64
-        height: 96
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -339,13 +339,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_17
+      name: O_Juliette_17
       rect:
         serializedVersion: 2
-        x: 133
+        x: 181
         y: 1
-        width: 64
-        height: 96
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -353,13 +353,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_18
+      name: O_Juliette_18
       rect:
         serializedVersion: 2
-        x: 199
+        x: 271
         y: 1
-        width: 64
-        height: 96
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -367,13 +367,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: O_Eleanor_19
+      name: O_Juliette_19
       rect:
         serializedVersion: 2
-        x: 265
+        x: 361
         y: 1
-        width: 64
-        height: 96
+        width: 88
+        height: 88
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
