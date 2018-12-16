@@ -362,7 +362,7 @@ public class characterControl : OverworldObject {
 			if(isCarrying)
 			{
 				//Move the object to the position above player's head
-				carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
+				carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f/*+ 0.85f*/, transform.position.z);
 				//make sure the object is always rendered above the player
 				carriedObject.SortingOrder = sr.sortingOrder + 1;
 			}
@@ -375,6 +375,7 @@ public class characterControl : OverworldObject {
             anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
             anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
             anim.SetBool("isMoving", isMoving);
+			anim.SetFloat ("isCarry", System.Convert.ToSingle(isCarrying));
             anim.SetFloat("lastHSpeed", lastMovement.x);
             anim.SetFloat("lastVSpeed", lastMovement.y);
         }
