@@ -115,6 +115,13 @@ public class GameControl : MonoBehaviour {
         currentCharacterState = newState;
     }
 
+    // states for checking if the player is in a menu/talking
+    //bool isInMenu;
+    //public bool IsInMenu { get { return IsInMenu; } set { isInMenu = value; } }
+    characterControl.CharacterState prevState;
+    public characterControl.CharacterState PrevState { get { return prevState; } set { prevState = value; } }
+
+
     //awake gets called before start
     void Awake () {
 		if (control == null)

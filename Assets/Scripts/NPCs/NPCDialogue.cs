@@ -15,8 +15,8 @@ public class NPCDialogue : MonoBehaviour {
     public Sprite happySpr;
 
     Dialogue dialogue;
-    bool isTalking = false;
-    public bool IsTalking { get { return isTalking; } }
+    //bool isTalking = false;
+    //public bool IsTalking { get { return isTalking; } }
 
     characterControl.CharacterState prevState;
 
@@ -33,9 +33,9 @@ public class NPCDialogue : MonoBehaviour {
     /// </summary>
     public void StartDialogue()
     {
-        isTalking = true;        
-        prevState = GameControl.control.currentCharacterState;
-        GameControl.control.SetCharacterState(characterControl.CharacterState.Talking);
+        //isTalking = true;        
+        //prevState = GameControl.control.currentCharacterState;
+        //GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
 
         // Start the actual Dialogue last, as this will determine whether we should end the dialogue as well
         // (Putting this line first caused issues where the dialogue would try to start again soon after
@@ -50,9 +50,9 @@ public class NPCDialogue : MonoBehaviour {
     {
         if (numOfTimesTalked < dialogueList.Count - 1)
             numOfTimesTalked++;
-        isTalking = false;
 
-        GameControl.control.SetCharacterState(prevState);
+        //isTalking = false;
+        //GameControl.control.SetCharacterState(prevState);
         
         // call any functions that need to occur after the dialogue has ended here
 

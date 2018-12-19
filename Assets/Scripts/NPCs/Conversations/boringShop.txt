@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses/actions
+		Yes?	Buy[Buy]_Sell[Sell]_Never mind[1]
+		Bye, then.	

@@ -327,5 +327,18 @@
             return null;
 
         }  
+
+        /// <summary>
+        /// If there is a menu that needs passed in values after Initialization, call this Refresh function
+        /// to reinitialize with the proper values
+        /// </summary>
+        protected void Refresh()
+        {
+            AddButtons();
+            AddListeners();
+            rootButton = AssignRootButton();
+            SetButtonNavigation();
+            TurnOnMenu();
+        }
     }
 }

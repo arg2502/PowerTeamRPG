@@ -71,19 +71,19 @@
 
         public override void Close()
         {
-            base.Close();
+            foreach(var b in listOfButtons)
+                b.onClick.RemoveAllListeners();
 
             OnStartNextConversation.RemoveAllListeners();
+
+
+            base.Close();
         }
 
         public void SetResponses(List<Dialogue.Response> _responses)
         {
             responses = _responses;
-            AddButtons();
-            AddListeners();
-            rootButton = AssignRootButton();
-            SetButtonNavigation();
-            TurnOnMenu();
+            Refresh();
         }
 
         

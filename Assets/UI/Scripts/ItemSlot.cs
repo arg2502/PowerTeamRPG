@@ -27,7 +27,7 @@ public class ItemSlot : MonoBehaviour {
 		icon.sprite = ItemDatabase.GetItemSprite(item.name);
 		quantity.text = "X " + (item.quantity - item.uses);
 	}
-	
+
 	public void UpdateQuantity()
 	{
 		quantity.text = "X " + (item.quantity - item.uses);

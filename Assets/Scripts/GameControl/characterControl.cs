@@ -11,7 +11,7 @@ public class characterControl : OverworldObject {
         Normal,
         Battle,
         Defeat,
-        Talking
+        Menu
     }
 
 	private BoxCollider2D boxCollider; // Variable to reference our collider
@@ -124,8 +124,8 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-        if(Input.GetKeyDown(GameControl.control.selectKey) && !currentNPC.IsTalking
-            && GameControl.control.currentCharacterState != CharacterState.Talking)
+        if(Input.GetKeyDown(GameControl.control.selectKey)// && !GameControl.control.IsInMenu
+            && GameControl.control.currentCharacterState != CharacterState.Menu)
         {
             // if the NPC has a pathwalk, set the NPC to stop and face the player
             if (currentNPC.GetComponentInParent<NPCPathwalkControl>())
@@ -183,7 +183,7 @@ public class characterControl : OverworldObject {
     public void Move(float move_x, float move_y){
 
         // if we're talking to an npc, don't move at all
-        if (GameControl.control.currentCharacterState == CharacterState.Talking)
+        if (GameControl.control.currentCharacterState == CharacterState.Menu)
             return;
 
 		//create the vector of the desired movement

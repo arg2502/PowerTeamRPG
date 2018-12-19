@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.Events;
 
     public class DialogueMenu : Menu
     {
@@ -29,12 +30,12 @@
 
                 if(readyForNextDialogue && OnNextDialogue != null)
                 {
-                    OnNextDialogue();
+                    OnNextDialogue.Invoke();
                 }
             }
         }
-        public delegate void OnNextDialogueDelegate();
-        public event OnNextDialogueDelegate OnNextDialogue;
+        //public delegate void OnNextDialogueDelegate();
+        public UnityEvent OnNextDialogue;
 
 
         float currentYBoundary;
@@ -45,6 +46,7 @@
         public override void TurnOnMenu()
         {
             RootButton = AssignRootButton();
+            //SetSelectedObjectToRoot();
             currentYBoundary = textMask.GetComponent<RectTransform>().sizeDelta.y;
             origTextPos = dialogueText.transform.localPosition;
             base.TurnOnMenu();

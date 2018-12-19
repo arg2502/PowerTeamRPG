@@ -68,17 +68,18 @@ public class Dialogue : MonoBehaviour {
         // if this is our first time talking to an NPC,
         // OR the text they have to say is different from the last time we've talked,
         // set the current text asset and decipher dialogue
-        if (currentTextAsset == null || currentTextAsset != textAsset)
-        {
+        //if (currentTextAsset == null || currentTextAsset != textAsset)
+        //{
             currentTextAsset = textAsset;
             currentConversation = DecipherConversation(currentTextAsset.text);
-        }
+        //}
 
         // push the dialogue menu
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
         dialogueMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueMenu).GetComponent<UI.DialogueMenu>();
         dialogueMenu.SetContinue(PrintConversation);
-        dialogueMenu.OnNextDialogue += CheckForResponseMenu; // add event listener
+        dialogueMenu.OnNextDialogue.RemoveAllListeners();
+        dialogueMenu.OnNextDialogue.AddListener(CheckForResponseMenu); // add event listener
 
         // Send the dialogue information to the menu to be printed
         PrintConversation();
@@ -138,17 +139,17 @@ public class Dialogue : MonoBehaviour {
             newConversation.dialogueConversation.Add(lines[2]);
 
             // Now we'll check if the dialogue line requires a response
-            // If this column is empty or doesn't contain our special char, just ignore. We're done with this row
-            if (lines.Length < 4 || string.IsNullOrEmpty(lines[3]) || !lines[3].Contains("["))
+            // If this column is empty, just ignore. We're done with this row
+            if (lines.Length < 4 || string.IsNullOrEmpty(lines[3]))// || !lines[3].Contains("["))
                 continue;
             
             // If we've reached this point then it means we either have responses to choose,
             // or there's a function that needs to be performed at the end of this conversation
             // Let's see if it's just a function. If it is, then we just set the current
             // conversation action and continue
-            // To check, see if there are any numbers in the function.
-            // There should only be numbers if there's a response
-            if(!Regex.Match(lines[3], @"\d+").Success)
+            // To check, see if our special character "[" is there. If there is, then there's a response.
+            // If not, then it's just the action
+            if(!lines[3].Contains("["))
             {
                 var newAction = Regex.Match(lines[3], @"\w+").Value;
                 newConversation.actionName = newAction;
@@ -179,16 +180,22 @@ public class Dialogue : MonoBehaviour {
 
                 string numOfLinesStr = "";
                 string functionStr = "";
+                print("comma index: " + commaIndex);
                 if (commaIndex >= 0)
                 {
                     numOfLinesStr = responses[j].Substring(bracketIndex, commaIndex);
                     functionStr = responses[j].Substring(commaIndex);
                 }
-                else
+                // if there's no comma, find out if it's a number, if it is, then set num of lines
+                else if (Regex.Match(responses[j], @"\d+").Success)
                     numOfLinesStr = responses[j].Substring(bracketIndex);
+                // otherwise, it's text for a function
+                else
+                    functionStr = responses[j].Substring(bracketIndex);
                 // numOfLinesStr = [number,
                 // functionStr = , function]
-
+                print("lines str: " + numOfLinesStr);
+                print("function str: " + functionStr);
 
                 // get the numeric values from numOfLines
                 // Regex -- Regular Expression
@@ -196,7 +203,9 @@ public class Dialogue : MonoBehaviour {
                 var resultStr = Regex.Match(numOfLinesStr, @"\d+").Value;
 
                 // parse string to int
-                int numOfLines = int.Parse(resultStr);
+                int numOfLines;
+                int.TryParse(resultStr, out numOfLines);
+                print("num of lines: " + numOfLines);
                 
                 // create a new conversation that will be printed if this response it chosen
                 // search through the current text file, except instead of starting at the top and going till the end,
