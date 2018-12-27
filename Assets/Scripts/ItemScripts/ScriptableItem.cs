@@ -17,4 +17,19 @@ public class ScriptableItem : ScriptableObject {
 	//There will be little to no functionality in the item classes
 	//Instead, Items will act as data containers, with the menus 
 	//holding all of the functionality for the items
+
+    public string Type
+    {
+        get
+        {
+            if (this is ScriptableConsumable)
+                return "consumable";
+            else if (this is ScriptableArmor)
+                return "armor";
+            else if (this is ScriptableWeapon)
+                return "weapon";
+            else
+                return "key";
+        }
+    }
 }

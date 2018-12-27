@@ -227,6 +227,11 @@ public class GameControl : MonoBehaviour {
 		}
 	}
    
+    public void AddItem(ScriptableItem _item, int _quantity)
+    {
+        AddItem(_item.name, _item.Type, _quantity);
+    }
+
     public void AddItem(string _name, string _type, int _quantity)
 	{
 		//make all letters in type lowercase to avoid input errors

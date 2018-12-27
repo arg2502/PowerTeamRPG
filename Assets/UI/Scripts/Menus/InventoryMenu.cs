@@ -113,7 +113,7 @@
 //                button.onClick.AddListener(OnSelect);
 
 				var item = Instantiate(itemPrefab);
-				item.name = category[i].name + "_Button";
+                item.name = category[i].name;// + "_Button";
 				item.transform.SetParent(itemSlotsContainer.transform);
 				item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
 				item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
