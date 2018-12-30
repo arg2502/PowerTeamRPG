@@ -10,6 +10,7 @@
         public GameObject DialogueMenu;
         public GameObject DialogueResponseMenu;
         public GameObject ShopkeeperBuyMenu;
+        public GameObject ShopkeeperSellMenu;
         public GameObject ItemQuantityMenu;
 
         [Header("Misc.")]

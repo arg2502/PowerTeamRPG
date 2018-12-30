@@ -242,7 +242,10 @@
         {
             if (this.gameObject.GetComponent<BattleMenu>()
                 || this.gameObject.GetComponent<VictoryMenu>()
-                || this.gameObject.GetComponent<StatPointsMenu>())
+                || this.gameObject.GetComponent<StatPointsMenu>()
+                || this.gameObject.GetComponent<DialogueMenu>()
+                || this.gameObject.GetComponent<DialogueResponseMenu>()
+                )
                 return true;
             else
                 return false;

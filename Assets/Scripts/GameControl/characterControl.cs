@@ -248,7 +248,7 @@ public class characterControl : OverworldObject {
         if (Input.GetKeyDown(KeyCode.P) && Time.timeScale < 1.0f)
             Time.timeScale += 0.1f;
 
-        if (Input.GetKeyUp(GameControl.control.pauseKey))
+        if (Input.GetKeyUp(GameControl.control.pauseKey) && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
             GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
         }

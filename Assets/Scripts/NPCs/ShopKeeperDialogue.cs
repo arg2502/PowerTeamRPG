@@ -8,7 +8,6 @@ public class ShopKeeperDialogue : NPCDialogue {
 
     public void Buy()
     {
-        //print("BUY");
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu);
         var buyMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu).GetComponent<UI.ShopkeeperBuyMenu>();
         buyMenu.FillSlots(this);
@@ -16,6 +15,6 @@ public class ShopKeeperDialogue : NPCDialogue {
 
     public void Sell()
     {
-        print("NOT YET");
+        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
     }
 }
