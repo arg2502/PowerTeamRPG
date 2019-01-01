@@ -104,6 +104,9 @@
                 Refresh();
                 return;
             }
+
+            upScroll.gameObject.SetActive(false);
+
             base.TurnOnMenu();
         }
 

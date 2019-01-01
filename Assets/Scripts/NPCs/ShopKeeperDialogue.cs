@@ -18,8 +18,11 @@ public class ShopKeeperDialogue : NPCDialogue {
     float defaultSpecialized = 0.9f;
     float defaultOthers = 0.6f;
 
+    Dictionary<ScriptableItem, int> customItemPrices;
+
     //public bool useDefault;
     bool useDefault = true; // FOR TESTING, JUST SET TO TRUE --- SHOULD BE SET IN INSPECTOR INSTEAD
+    bool useCustom;
 
     private void Start()
     {
@@ -88,6 +91,12 @@ public class ShopKeeperDialogue : NPCDialogue {
         // find the scriptable object based on the inventory item
         var s_item = ItemDatabase.GetItem(GameControl.control.CurrentInventory, item.name);
 
+        if(useCustom && customItemPrices.ContainsKey(s_item))
+        {
+            return customItemPrices[s_item];
+        }
+        
+
         // depending on the type of item, return based on the percentage
         if (s_item is ScriptableConsumable)
             return (int)(Mathf.Ceil(s_item.value * consumablePer));
@@ -95,7 +104,9 @@ public class ShopKeeperDialogue : NPCDialogue {
             return (int)(Mathf.Ceil(s_item.value * weaponPer));
         else if (s_item is ScriptableArmor)
             return (int)(Mathf.Ceil(s_item.value * armorPer));
-        else
+        else if (s_item is ScriptableKey)
             return (int)(Mathf.Ceil(s_item.value * miscPer));
+        else
+            return -1;
     }
 }

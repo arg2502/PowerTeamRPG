@@ -16,6 +16,7 @@
 
         public Text totalGold;
         public Text currentValueText;
+        public Text currentValueLabel;
         int CurrentValue
         {
             get
@@ -505,7 +506,18 @@
             totalGold.text = gameControl.totalGold.ToString();
             if (EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>())
                 chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
-            currentValueText.text = CurrentValue.ToString();
+
+            if (CurrentValue < 0)
+            {
+                currentValueText.gameObject.SetActive(false);
+                currentValueLabel.gameObject.SetActive(false);
+            }
+            else
+            {
+                currentValueText.gameObject.SetActive(true);
+                currentValueLabel.gameObject.SetActive(true);
+                currentValueText.text = CurrentValue.ToString();
+            }
 
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
