@@ -232,8 +232,17 @@
             confirmMenu.specificText.text = messageText;
             confirmMenu.yesAction = yesAction;
             confirmMenu.noAction = noAction;
+            confirmMenu.Refresh(); // refresh listeners
             //InitMenu(confirmMenu);
             confirmMenu.Init();
+        }
+
+        public void PushNotificationMenu(string messageText)
+        {
+            EnableMenu(uiDatabase.NotificationMenu);
+            var notificationMenu = list_currentMenus[list_currentMenus.Count - 1].GetComponent<NotificationMenu>();
+            notificationMenu.messageText.text = messageText;
+            notificationMenu.Init();
         }
 
         public void HideAllMenus()

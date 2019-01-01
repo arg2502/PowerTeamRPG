@@ -13,6 +13,21 @@
         public GameObject itemPrefab;
         public GameObject invisiblePrefab;
         public GameObject upScroll, downScroll;
+
+        public Text totalGold;
+        public Text currentValueText;
+        int CurrentValue
+        {
+            get
+            {
+                if (gameControl.CurrentShopkeeper == null)
+                    return 0;
+                else
+                    return gameControl.CurrentShopkeeper.GetItemPrice(chosenItem);
+            }
+        }
+        //ShopKeeperDialogue currentShopkeeper;
+
         Rect screen = new Rect(0, 0, Screen.width, Screen.height);
         bool moving;
         float startTime = 0;
@@ -175,10 +190,10 @@
             {
                 OutsideOfViewInstant(currentObj);
             }
-
-            UpdateItemQuantity();
-
+            
             base.TurnOnMenu();
+            
+            UpdateItemQuantity();
         }
         public override void Refocus()
         {
@@ -187,6 +202,25 @@
             SetSelectedObjectToRoot();
             UpdateItemQuantity();
 
+        }
+
+        public override void Close()
+        {
+            //// since this menu needs to be used for multiple shopkeepers,
+            //// we can't hold onto all the scriptable objects
+            //// for now, let's just destroy all the items and the buttons
+            //// maybe at some point we can figure out a way to not destroy if it's the same shopkeeper
+            //for (int i = 0; i < listOfButtons.Count; i++)
+            //{
+            //    Destroy(listOfButtons[i].GetComponentInParent<ItemSlot>().s_item);
+            //    Destroy(listOfButtons[i]);
+            //}
+            //listOfButtons.Clear();
+
+            base.Close();
+
+            gameControl.CurrentShopkeeper.StartDialogue();
+            //currentShopkeeper = null;
         }
 
         void CreateInvisibleButton(int position)
@@ -361,10 +395,10 @@
                 downScroll.SetActive(false);
         }
 
-        void OnEnable()
-        {
-            currentObj = EventSystem.current.currentSelectedGameObject;
-        }
+        //void OnEnable()
+        //{
+        //    currentObj = EventSystem.current.currentSelectedGameObject;
+        //}
 
         void ToggleTextChange()
         {
@@ -406,10 +440,10 @@
         void OnSelect()
         {
             // save the item you wish to use/equip
-            chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
 
             uiManager.PushMenu(uiDatabase.ItemQuantityMenu);
             var quantityMenu = uiManager.FindMenu(uiDatabase.ItemQuantityMenu).GetComponent<ItemQuantityMenu>();
+            quantityMenu.SetShopkeeper(gameControl.CurrentShopkeeper);
             quantityMenu.SetItem(chosenItem);
         }
 
@@ -456,16 +490,27 @@
             }
         }
 
+        //public void AssignShopkeeper(ShopKeeperDialogue skd)
+        //{
+        //    currentShopkeeper = skd;
+        //}
+
         new void Update()
         {
             base.Update();
 
-            if (this.gameObject != uiManager.menuInFocus) return;
+            if (this.gameObject != uiManager.menuInFocus || EventSystem.current.currentSelectedGameObject == null)
+                return;
+            
+            totalGold.text = gameControl.totalGold.ToString();
+            if (EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>())
+                chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
+            currentValueText.text = CurrentValue.ToString();
 
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
-
+            
             // set current list position by finding the new current button
             for (int i = 0; i < buttonGrid.Count; i++)
             {

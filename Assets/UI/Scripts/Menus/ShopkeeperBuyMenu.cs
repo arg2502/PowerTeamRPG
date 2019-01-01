@@ -15,8 +15,9 @@
         public Text stats1;
         public Text stats2;
         public Text itemDescription;
+        public Text totalGold;
 
-        ShopKeeperDialogue currentShopkeeper;
+        //ShopKeeperDialogue currentShopkeeper;
         public GameObject listParent;
         public GameObject itemPrefab;
         float buttonDistance = -50f;
@@ -38,22 +39,22 @@
             if (listOfButtons == null)
                 listOfButtons = new List<Button>();
 
-            if (currentShopkeeper == null)
-                return;
+            //if (gameControl.CurrentShopkeeper == null)
+                //return;
 
-            for (int i = 0; i < currentShopkeeper.shopInventory.Count; i++)
+            for (int i = 0; i < gameControl.CurrentShopkeeper.shopInventory.Count; i++)
             {
                 var item = Instantiate(itemPrefab);
-                item.name = currentShopkeeper.shopInventory[i].name;// + "_Button";
+                item.name = gameControl.CurrentShopkeeper.shopInventory[i].name;// + "_Button";
                 item.transform.SetParent(listParent.transform);
                 item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * buttonDistance);
                 item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
 
                 var button = item.GetComponentInChildren<Button>();
                 //var itemInfo = ItemDatabase.GetItem(currentShopkeeper.shopInventory[i].type, item.name); //??
-                var itemInfo = ScriptableObject.Instantiate(currentShopkeeper.shopInventory[i]);                
+                var itemInfo = ScriptableObject.Instantiate(gameControl.CurrentShopkeeper.shopInventory[i]);                
 
-                button.GetComponentInChildren<Text>().text = currentShopkeeper.shopInventory[i].name;                
+                button.GetComponentInChildren<Text>().text = gameControl.CurrentShopkeeper.shopInventory[i].name;                
                 listOfButtons.Add(button);
 
                 // description
@@ -65,7 +66,7 @@
                 itemSlot.SetItem(itemInfo);
 
                 // add listener
-                button.onClick.AddListener(OnSelect);
+                button.onClick.AddListener(OnSelect);               
             }
         }
 
@@ -92,23 +93,40 @@
 
             base.Close();
 
-            currentShopkeeper.StartDialogue();
-            currentShopkeeper = null;
+            gameControl.CurrentShopkeeper.StartDialogue();
+            //currentShopkeeper = null;
         }
 
-        public void FillSlots(ShopKeeperDialogue shopkeeper)
+        public override void TurnOnMenu()
         {
-            currentShopkeeper = shopkeeper;
-            Refresh();
+            if (listOfButtons.Count <= 0)
+            {
+                Refresh();
+                return;
+            }
+            base.TurnOnMenu();
         }
+
+        //public void FillSlots(ShopKeeperDialogue shopkeeper)
+        //{
+        //    currentShopkeeper = shopkeeper;
+        //    Refresh();
+        //}
 
         private void OnSelect()
         {
-            //currentItemToBuy = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().s_item;
-
-            uiManager.PushMenu(uiDatabase.ItemQuantityMenu, this);
-            var quantityMenu = uiManager.FindMenu(uiDatabase.ItemQuantityMenu).GetComponent<ItemQuantityMenu>();
-            quantityMenu.SetItem(currentItemToBuy);
+            // check if we can afford at least one of the item.
+            if (currentItemToBuy.value < gameControl.totalGold)
+            {
+                uiManager.PushMenu(uiDatabase.ItemQuantityMenu, this);
+                var quantityMenu = uiManager.FindMenu(uiDatabase.ItemQuantityMenu).GetComponent<ItemQuantityMenu>();
+                quantityMenu.SetItem(currentItemToBuy);
+            }
+            // If not, don't open
+            else
+            {
+                uiManager.PushNotificationMenu("You don't have enough gold for that item.");
+            }
         }
 
 
@@ -138,6 +156,8 @@
             base.Update();
             
             if (EventSystem.current.currentSelectedGameObject == null) return;
+
+            totalGold.text = gameControl.totalGold.ToString();
 
             var itemSlot = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>();
 

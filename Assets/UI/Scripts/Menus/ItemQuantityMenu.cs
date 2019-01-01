@@ -26,6 +26,8 @@
         enum PurchaseState { BUY, SELL }
         PurchaseState currentPurchaseState;
 
+        ShopKeeperDialogue currentShopkeeper;
+
         protected override void AddButtons()
         {
             base.AddButtons();
@@ -54,8 +56,7 @@
                 priceValue = itemToBuy.value;
             else if (currentPurchaseState == PurchaseState.SELL && itemToSell != null)
             {
-                var typeName = gameControl.CurrentInventory;
-                priceValue = ItemDatabase.GetItem(typeName, itemToSell.name).value;
+                priceValue = currentShopkeeper.GetItemPrice(itemToSell);
             }            
         }
 
@@ -83,15 +84,22 @@
             Refresh();
         }
 
+        public void SetShopkeeper(ShopKeeperDialogue skd)
+        {
+            currentShopkeeper = skd;
+        }
+
         void BuyItem()
         {   
-            GameControl.control.AddItem(itemToBuy, quantityNum);
+            gameControl.AddItem(itemToBuy, quantityNum);
+            gameControl.totalGold -= (quantityNum * priceValue);
             uiManager.PopMenu();
         }
 
         void SellItem()
         {
-            GameControl.control.RemoveItem(itemToSell, quantityNum);
+            gameControl.RemoveItem(itemToSell, quantityNum);
+            gameControl.totalGold += (quantityNum * priceValue);
             uiManager.PopMenu();
         }
 
@@ -104,7 +112,13 @@
 
             if (Input.GetKeyUp(gameControl.rightKey))
             {
-                quantityNum++;
+                // if buying, only increase until we can't afford it
+                // if selling, only increase until we run out
+                if ((currentPurchaseState == PurchaseState.BUY && (quantityNum + 1) * priceValue <= gameControl.totalGold)
+                    || (currentPurchaseState == PurchaseState.SELL && quantityNum < itemToSell.quantity))
+                {
+                    quantityNum++;
+                }
                 //UpdateArrowStates();
             }
             else if (Input.GetKeyUp(gameControl.leftKey))

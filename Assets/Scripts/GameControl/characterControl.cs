@@ -42,7 +42,6 @@ public class characterControl : OverworldObject {
     Gateway currentGateway;
     CameraController myCamera;
 
-    NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
 
     // Use this for initialization
@@ -102,7 +101,7 @@ public class characterControl : OverworldObject {
             CheckInRangeNPC();
 
             // If we have an NPC to talk to, check if the player has pressed select to talk to them
-            if(currentNPC)
+            if(GameControl.control.currentNPC)
                 TalkToNPC();
         }
     }
@@ -110,7 +109,7 @@ public class characterControl : OverworldObject {
     private void OnTriggerExit2D(Collider2D collision)
     {
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), currentNPC))
+        if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
         {
             ResetCurrentNPC();
         }
@@ -128,33 +127,33 @@ public class characterControl : OverworldObject {
             && GameControl.control.currentCharacterState != CharacterState.Menu)
         {
             // if the NPC has a pathwalk, set the NPC to stop and face the player
-            if (currentNPC.GetComponentInParent<NPCPathwalkControl>())
-                currentNPC.GetComponentInParent<NPCPathwalkControl>().FaceCharacter(-(lastMovement));
+            if (GameControl.control.CurrentNPCPathwalk)
+                GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
 
             // begin the NPC's dialogue
-            currentNPC.StartDialogue();
+            GameControl.control.currentNPC.StartDialogue();
         }
     }
 
     void ResetCurrentNPC(NPCDialogue newCurrent = null)
     {
         // Set the previously current NPC back to normal
-        if (currentNPC)
-            currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
+        if (GameControl.control.currentNPC)
+            GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
 
         // set the new current NPC if one was passed in
         if(newCurrent)
         {
-            currentNPC = newCurrent;
+            GameControl.control.currentNPC = newCurrent;
 
             // Some sort of indicator to tell the player who they can talk to
             // FOR NOW, we just changed the color
-            currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
+            GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
         }
         // if no NPC was passed in, then there's no one we can talk to
         else
         {
-            currentNPC = null;
+            GameControl.control.currentNPC = null;
         }
     }
 

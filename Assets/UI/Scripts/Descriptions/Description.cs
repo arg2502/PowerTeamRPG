@@ -15,8 +15,8 @@
             //if (string.IsNullOrEmpty(description))
             if (parentButton)
                 SetDescription(parentButton.GetDescription());
-            else
-                SetDescription();
+            //else
+              //  SetDescription();
             //print("description: " + description);
             return description;
         }

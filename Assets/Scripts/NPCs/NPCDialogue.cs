@@ -21,7 +21,7 @@ public class NPCDialogue : MonoBehaviour {
     characterControl.CharacterState prevState;
 
     // Use this for initialization
-    void Start () {
+    protected void Start () {
         dialogue = GetComponent<Dialogue>();
 
         if (dialogue == null)

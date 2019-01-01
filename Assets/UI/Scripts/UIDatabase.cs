@@ -15,6 +15,7 @@
 
         [Header("Misc.")]
         public GameObject ConfirmationMenu;
+        public GameObject NotificationMenu;
 
         [Header("Pause Menu")]
         public GameObject PauseMenu;

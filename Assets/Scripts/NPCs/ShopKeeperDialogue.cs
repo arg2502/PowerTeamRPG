@@ -6,15 +6,96 @@ public class ShopKeeperDialogue : NPCDialogue {
 
     public List<ScriptableItem> shopInventory;
 
+    [System.Serializable]
+    public enum ShopKeeperType { CONSUMABLE, WEAPON, ARMOR, MISC }
+    public ShopKeeperType currentType;
+
+    public float consumablePer;
+    public float weaponPer;
+    public float armorPer;
+    public float miscPer;
+
+    float defaultSpecialized = 0.9f;
+    float defaultOthers = 0.6f;
+
+    //public bool useDefault;
+    bool useDefault = true; // FOR TESTING, JUST SET TO TRUE --- SHOULD BE SET IN INSPECTOR INSTEAD
+
+    private void Start()
+    {
+        base.Start();
+
+        if(useDefault)
+        {
+            SetDefault();
+        }
+    }
+
+    void SetDefault()
+    {
+        if (currentType == ShopKeeperType.CONSUMABLE)
+        {
+            consumablePer = defaultSpecialized;
+            weaponPer = defaultOthers;
+            armorPer = defaultOthers;
+            miscPer = defaultOthers;
+        }
+        else if (currentType == ShopKeeperType.WEAPON)
+        {
+            consumablePer = defaultOthers;
+            weaponPer = defaultSpecialized;
+            armorPer = defaultOthers;
+            miscPer = defaultOthers;
+        }
+        else if (currentType == ShopKeeperType.ARMOR)
+        {
+            consumablePer = defaultOthers;
+            weaponPer = defaultOthers;
+            armorPer = defaultSpecialized;
+            miscPer = defaultOthers;
+        }
+        else
+        {
+            consumablePer = defaultOthers;
+            weaponPer = defaultOthers;
+            armorPer = defaultOthers;
+            miscPer = defaultSpecialized;
+        }
+    }
+
+    /// <summary>
+    /// Called through dialogue response
+    /// </summary>
     public void Buy()
     {
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu);
-        var buyMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu).GetComponent<UI.ShopkeeperBuyMenu>();
-        buyMenu.FillSlots(this);
+        //var buyMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu).GetComponent<UI.ShopkeeperBuyMenu>();
+        //buyMenu.FillSlots(this);
     }
 
+    /// <summary>
+    /// Called through dialogue response
+    /// </summary>
     public void Sell()
     {
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
+        //var sellMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu).GetComponent<UI.ShopkeeperSellMenu>();
+        //sellMenu.AssignShopkeeper(this);
+    }
+
+    public int GetItemPrice(InventoryItem item)
+    {
+        // find the scriptable object based on the inventory item
+        var s_item = ItemDatabase.GetItem(GameControl.control.CurrentInventory, item.name);
+
+        // depending on the type of item, return based on the percentage
+        if (s_item is ScriptableConsumable)
+            return (int)(Mathf.Ceil(s_item.value * consumablePer));
+        else if (s_item is ScriptableWeapon)
+            return (int)(Mathf.Ceil(s_item.value * weaponPer));
+        else if (s_item is ScriptableArmor)
+            return (int)(Mathf.Ceil(s_item.value * armorPer));
+        else
+            return (int)(Mathf.Ceil(s_item.value * miscPer));
     }
 }
