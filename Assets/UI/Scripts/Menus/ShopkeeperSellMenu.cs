@@ -255,14 +255,23 @@
             var contentTransform = buttonObj.GetComponent<RectTransform>();
             contentTransform.GetWorldCorners(objectCorners);
 
-            // if any corner of the object is on screen, break out of the method
+
+            //// if any corner of the object is on screen, break out of the method
+            //foreach (Vector3 corner in objectCorners)
+            //{
+            //    if (itemSlotsWorld.Contains(corner))
+            //        return false;
+            //}
+
+            //return true;
+
+            // WRONG -- It should be, if any corner is off screen, return true
             foreach (Vector3 corner in objectCorners)
             {
-                if (itemSlotsWorld.Contains(corner))
-                    return false;
+                if (!itemSlotsWorld.Contains(corner))
+                    return true;
             }
-
-            return true;
+            return false;
         }
 
         void OutsideOfViewInstant(GameObject desiredObj)

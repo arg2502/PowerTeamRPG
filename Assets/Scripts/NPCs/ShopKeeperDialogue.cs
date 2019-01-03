@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class ShopKeeperDialogue : NPCDialogue {
 
@@ -18,13 +19,13 @@ public class ShopKeeperDialogue : NPCDialogue {
 
     float defaultSpecialized = 0.9f;
     float defaultOthers = 0.6f;
-
-    Dictionary<ScriptableItem, int> customItemPrices;
-
+    
     //public bool useDefault;
-    bool useDefault = true; // FOR TESTING, JUST SET TO TRUE --- SHOULD BE SET IN INSPECTOR INSTEAD
+    bool useDefault = true;
     bool useCustom;
-
+    
+    public Dictionary<ScriptableItem, int> customItemPrices;
+    
     private void Start()
     {
         base.Start();
