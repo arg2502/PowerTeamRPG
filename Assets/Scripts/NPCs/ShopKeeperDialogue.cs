@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ShopKeeperDialogue : NPCDialogue {
 
-    public List<ScriptableItem> shopInventory;
+    public TextAsset commentList;
+    public List<ScriptableItem> shopInventory;    
 
     [System.Serializable]
     public enum ShopKeeperType { CONSUMABLE, WEAPON, ARMOR, MISC }

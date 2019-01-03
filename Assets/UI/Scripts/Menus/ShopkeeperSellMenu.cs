@@ -451,6 +451,7 @@
         void UpdateItemQuantity()
         {
             var itemSlot = currentObj.GetComponentInParent<ItemSlot>();
+            if (itemSlot == null) return;
             itemSlot.UpdateQuantity();
 
             // check if consumable & zero

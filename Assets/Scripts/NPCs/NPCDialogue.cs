@@ -13,6 +13,8 @@ public class NPCDialogue : MonoBehaviour {
     public string npcName;
     public Sprite neutralSpr;
     public Sprite happySpr;
+    public Sprite sadSpr;
+    public Sprite angrySpr;
 
     Dialogue dialogue;
     //bool isTalking = false;

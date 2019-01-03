@@ -16,6 +16,9 @@
         public Text stats2;
         public Text itemDescription;
         public Text totalGold;
+        public Image skPortrait;
+        public Text skSpeaker;
+        public Text skComment;
 
         //ShopKeeperDialogue currentShopkeeper;
         public GameObject listParent;
@@ -31,6 +34,13 @@
         float lerpTime = 10f;
         bool moving;
         public Image upScroll, downScroll;
+
+        public struct ShopkeeperComment
+        {
+            public Sprite sprite;
+            public string comment;
+        }
+        Dictionary<string, ShopkeeperComment> dictComments;
 
         protected override void AddButtons()
         {
@@ -99,6 +109,7 @@
 
         public override void TurnOnMenu()
         {
+            DecipherComments();
             if (listOfButtons.Count <= 0)
             {
                 Refresh();
@@ -154,6 +165,63 @@
            
         }
 
+        void DecipherComments()
+        {
+            skSpeaker.text = gameControl.CurrentShopkeeper.npcName;
+            dictComments = new Dictionary<string, ShopkeeperComment>();
+
+            // 0 - item name, 1 - emotion, 2 - comment
+            if (gameControl.CurrentShopkeeper.commentList == null) return;
+            var rows = gameControl.CurrentShopkeeper.commentList.text.Split('\n');
+
+            for(int i = 0; i < rows.Length; i++)
+            {
+                var line = rows[i];
+                var comment = line.Split('\t');
+
+                var itemName = comment[0];
+                var emotion = comment[1];
+                var commentText = comment[2];
+
+                Sprite _sprite = null;
+                if (string.IsNullOrEmpty(emotion))
+                    _sprite = gameControl.CurrentShopkeeper.neutralSpr;
+                else
+                {
+                    if (string.Equals(emotion, "HAPPY"))
+                        _sprite = gameControl.CurrentShopkeeper.happySpr;
+
+                    else if (string.Equals(emotion, "SAD"))
+                        _sprite = gameControl.CurrentShopkeeper.sadSpr;
+
+                    else if (string.Equals(emotion, "ANGRY"))
+                        _sprite = gameControl.CurrentShopkeeper.angrySpr;
+                }
+
+                var newComment = new ShopkeeperComment();
+                newComment.sprite = _sprite;
+                newComment.comment = commentText;
+
+                dictComments.Add(itemName, newComment);
+            }
+        }
+
+        void UpdateComment(ScriptableItem newItem)
+        {
+            if(dictComments.ContainsKey(newItem.name))
+            {
+                var currentComment = dictComments[newItem.name];
+                skPortrait.sprite = currentComment.sprite;
+                skComment.text = currentComment.comment;
+            }
+            // Default values -- in case we don't have comments for the item for some reason
+            else
+            {
+                skPortrait.sprite = gameControl.CurrentShopkeeper.neutralSpr;
+                skComment.text = "I actually don't know what that is.";
+            }
+        }
+
         private new void Update()
         {
             base.Update();
@@ -167,7 +235,7 @@
             if (itemSlot)
                 currentItemToBuy = itemSlot.s_item;
             UpdateStats(currentItemToBuy);
-
+            UpdateComment(currentItemToBuy);
 
             if (CheckIfOffScreen(EventSystem.current.currentSelectedGameObject))
                 OutsideOfView(EventSystem.current.currentSelectedGameObject);
