@@ -10,6 +10,7 @@
     public class InventoryMenu : GridMenu
     {
         public GameObject itemSlotsContainer;
+        Vector3 origPosSlotsContainer;
         public GameObject itemPrefab;
         public GameObject invisiblePrefab;        
         public GameObject upScroll, downScroll;
@@ -42,7 +43,13 @@
         public override void Init()
         {
             base.Init();
+            origPosSlotsContainer = itemSlotsContainer.transform.position;
             CheckIfListOffScreen();
+        }
+        public override void Close()
+        {
+            itemSlotsContainer.transform.position = origPosSlotsContainer;
+            base.Close();
         }
         protected override void SetHorizontalNavigation(int buttonIterator, int listIterator)
         {

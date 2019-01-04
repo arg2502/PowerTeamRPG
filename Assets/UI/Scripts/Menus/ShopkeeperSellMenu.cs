@@ -10,6 +10,7 @@
     public class ShopkeeperSellMenu : GridMenu
     {
         public GameObject itemSlotsContainer;
+        Vector3 origPosSlotsContainer;
         public GameObject itemPrefab;
         public GameObject invisiblePrefab;
         public GameObject upScroll, downScroll;
@@ -58,6 +59,7 @@
         public override void Init()
         {
             base.Init();
+            origPosSlotsContainer = itemSlotsContainer.transform.position;
             CheckIfListOffScreen();
         }
         protected override void SetHorizontalNavigation(int buttonIterator, int listIterator)
@@ -217,7 +219,7 @@
             //    Destroy(listOfButtons[i]);
             //}
             //listOfButtons.Clear();
-
+            itemSlotsContainer.transform.position = origPosSlotsContainer;
             base.Close();
 
             gameControl.CurrentShopkeeper.StartDialogue();
@@ -296,6 +298,7 @@
             }
 
             itemSlotsContainer.transform.position = newPosition;
+            
             if (CheckIfOffScreen(desiredObj))
                 OutsideOfViewInstant(desiredObj);
         }

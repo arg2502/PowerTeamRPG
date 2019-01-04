@@ -22,6 +22,7 @@
 
         //ShopKeeperDialogue currentShopkeeper;
         public GameObject listParent;
+        Vector3 origPosList;
         public GameObject itemPrefab;
         float buttonDistance = -50f;
 
@@ -41,6 +42,12 @@
             public string comment;
         }
         Dictionary<string, ShopkeeperComment> dictComments;
+
+        public override void Init()
+        {
+            origPosList = listParent.transform.position;
+            base.Init();
+        }
 
         protected override void AddButtons()
         {
@@ -100,7 +107,7 @@
                 Destroy(listOfButtons[i]);
             }
             listOfButtons.Clear();
-
+            listParent.transform.position = origPosList;
             base.Close();
 
             gameControl.CurrentShopkeeper.StartDialogue();
