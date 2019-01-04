@@ -71,10 +71,23 @@ public class GameControl : MonoBehaviour {
 	public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
 
 	// for telling the pause menu which list of items to use
-	internal string whichInventory;    
+	//internal string whichInventory;    
     public enum WhichInventory { Consumables, Weapons, Equipment, KeyItems }
     internal WhichInventory whichInventoryEnum;
-    
+    public string CurrentInventory
+    {
+        get
+        {
+            if (whichInventoryEnum == WhichInventory.Consumables)
+                return "consumable";
+            else if (whichInventoryEnum == WhichInventory.Weapons)
+                return "weapon";
+            else if (whichInventoryEnum == WhichInventory.Equipment)
+                return "armor";
+            else
+                return "key";
+        }
+    }
 
     // tells shopkeeper whether to open buy or sell menu
     // false - buy
@@ -114,6 +127,17 @@ public class GameControl : MonoBehaviour {
     {
         currentCharacterState = newState;
     }
+
+    // states for checking if the player is in a menu/talking
+    //bool isInMenu;
+    //public bool IsInMenu { get { return IsInMenu; } set { isInMenu = value; } }
+    characterControl.CharacterState prevState;
+    public characterControl.CharacterState PrevState { get { return prevState; } set { prevState = value; } }
+
+    // Current NPC
+    public NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
+    public NPCPathwalkControl CurrentNPCPathwalk { get { return currentNPC.GetComponent<NPCPathwalkControl>(); } }
+    public ShopKeeperDialogue CurrentShopkeeper { get { return currentNPC.GetComponent<ShopKeeperDialogue>(); } }
 
     //awake gets called before start
     void Awake () {
@@ -220,6 +244,11 @@ public class GameControl : MonoBehaviour {
 		}
 	}
    
+    public void AddItem(ScriptableItem _item, int _quantity)
+    {
+        AddItem(_item.name, _item.Type, _quantity);
+    }
+
     public void AddItem(string _name, string _type, int _quantity)
 	{
 		//make all letters in type lowercase to avoid input errors
@@ -335,10 +364,15 @@ public class GameControl : MonoBehaviour {
 
 	}
 
-    public void RemoveItem(InventoryItem _item)
+    public void RemoveItem(InventoryItem _item, int _quantity = 1)
     {
+        // decrease the quantity first. If there's none left, then remove.
+        _item.quantity -= _quantity;
+        if (_item.quantity > 0)
+            return;
+        
 		if (consumables.Contains (_item))
-			consumables.Remove (_item);
+            consumables.Remove(_item);
 		else if (equipment.Contains (_item))
 			equipment.Remove (_item);
 		else if (weapons.Contains (_item))

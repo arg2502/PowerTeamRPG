@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.Events;
 
     public class DialogueMenu : Menu
     {
@@ -17,13 +18,35 @@
         string dialogueStr; // the full string that dialogueText will print out
         float typingSpeed = 0.01f;
         Action nextDialogue; // function that occurs when Continue button is pressed, set in Dialogue.cs
+
+        // testing out event triggers
         bool readyForNextDialogue = true;
+        public bool ReadyForNextDialogue
+        {
+            get { return readyForNextDialogue; }
+            set
+            {
+                readyForNextDialogue = value;
+
+                if(readyForNextDialogue && OnNextDialogue != null)
+                {
+                    OnNextDialogue.Invoke();
+                }
+            }
+        }
+        //public delegate void OnNextDialogueDelegate();
+        public UnityEvent OnNextDialogue;
+
+
         float currentYBoundary;
         Vector3 origTextPos;
+
+        //bool isThereResponse = false;
 
         public override void TurnOnMenu()
         {
             RootButton = AssignRootButton();
+            //SetSelectedObjectToRoot();
             currentYBoundary = textMask.GetComponent<RectTransform>().sizeDelta.y;
             origTextPos = dialogueText.transform.localPosition;
             base.TurnOnMenu();
@@ -85,12 +108,12 @@
         /// <param name="speaker"></param>
         /// <param name="dialogue"></param>
         /// <param name="portrait"></param>
-        public void SetText(string speaker, string dialogue, Sprite portrait)
+        public void SetText(string speaker, string dialogue, Sprite portrait)//, bool isResponse)
         {
             speakerText.text = speaker;
             dialogueStr = dialogue;
             portraitImage.sprite = portrait;
-
+            //isThereResponse = isResponse;
             StartCoroutine(TypeDialogue());
         }
 
@@ -131,7 +154,7 @@
             StopAllCoroutines();
             dialogueText.text = dialogueStr;
             CheckIfTextOutOfBounds();
-            readyForNextDialogue = true;
+            ReadyForNextDialogue = true; // invokes event
         }
     }
 }

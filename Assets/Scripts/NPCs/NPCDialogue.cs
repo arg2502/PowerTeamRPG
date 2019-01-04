@@ -13,15 +13,17 @@ public class NPCDialogue : MonoBehaviour {
     public string npcName;
     public Sprite neutralSpr;
     public Sprite happySpr;
+    public Sprite sadSpr;
+    public Sprite angrySpr;
 
     Dialogue dialogue;
-    bool isTalking = false;
-    public bool IsTalking { get { return isTalking; } }
+    //bool isTalking = false;
+    //public bool IsTalking { get { return isTalking; } }
 
     characterControl.CharacterState prevState;
 
     // Use this for initialization
-    void Start () {
+    protected void Start () {
         dialogue = GetComponent<Dialogue>();
 
         if (dialogue == null)
@@ -33,9 +35,9 @@ public class NPCDialogue : MonoBehaviour {
     /// </summary>
     public void StartDialogue()
     {
-        isTalking = true;        
-        prevState = GameControl.control.currentCharacterState;
-        GameControl.control.SetCharacterState(characterControl.CharacterState.Talking);
+        //isTalking = true;        
+        //prevState = GameControl.control.currentCharacterState;
+        //GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
 
         // Start the actual Dialogue last, as this will determine whether we should end the dialogue as well
         // (Putting this line first caused issues where the dialogue would try to start again soon after
@@ -46,14 +48,21 @@ public class NPCDialogue : MonoBehaviour {
         dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
     }
 
-    public void EndDialogue()
+    public void EndDialogue(Dialogue.Conversation currentConversation)
     {
         if (numOfTimesTalked < dialogueList.Count - 1)
             numOfTimesTalked++;
-        isTalking = false;
 
-        GameControl.control.SetCharacterState(prevState);
+        //isTalking = false;
+        //GameControl.control.SetCharacterState(prevState);
+        
+        // call any functions that need to occur after the dialogue has ended here
 
+        if(!string.IsNullOrEmpty(currentConversation.actionName))
+        {
+            Invoke(currentConversation.actionName, 0f);
+        }
+        
         // At the end of the dialogue, set the NPC's walking method back to normal
         // ...might not be the best place for this, as the NPCPathwalkControl function that's called
         // at the start of the conversation is called in characterControl, but that's because that 
@@ -61,5 +70,10 @@ public class NPCDialogue : MonoBehaviour {
         // plus this location kinda makes sense...
         if (GetComponentInParent<NPCPathwalkControl>())
             GetComponentInParent<NPCPathwalkControl>().BackToNormal();
+    }
+
+    void TestFunction()
+    {
+        print("TEST FUNCTION BABY");
     }
 }

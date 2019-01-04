@@ -16,8 +16,6 @@
             // off a "parent" button, get that description instead
             if (parentButton)
                 SetDescription(parentButton.GetDescription());
-            
-            // otherwise, return this button's description text
             return description;
         }
 

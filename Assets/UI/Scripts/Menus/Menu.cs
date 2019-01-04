@@ -242,7 +242,10 @@
         {
             if (this.gameObject.GetComponent<BattleMenu>()
                 || this.gameObject.GetComponent<VictoryMenu>()
-                || this.gameObject.GetComponent<StatPointsMenu>())
+                || this.gameObject.GetComponent<StatPointsMenu>()
+                || this.gameObject.GetComponent<DialogueMenu>()
+                || this.gameObject.GetComponent<DialogueResponseMenu>()
+                )
                 return true;
             else
                 return false;
@@ -327,5 +330,18 @@
             return null;
 
         }  
+
+        /// <summary>
+        /// If there is a menu that needs passed in values after Initialization, call this Refresh function
+        /// to reinitialize with the proper values
+        /// </summary>
+        public void Refresh()
+        {
+            AddButtons();
+            AddListeners();
+            rootButton = AssignRootButton();
+            SetButtonNavigation();
+            TurnOnMenu();
+        }
     }
 }

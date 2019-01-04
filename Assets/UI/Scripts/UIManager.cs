@@ -78,6 +78,14 @@
 
         public void ActivateMenu(GameObject menuPrefab, bool sub = false)
         {
+            // freeze player if first menu
+            if (GameControl.control.currentCharacterState != characterControl.CharacterState.Menu)
+            {
+                //GameControl.control.IsInMenu = true;
+                GameControl.control.PrevState = GameControl.control.currentCharacterState;
+                GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
+            }
+
             EnableMenu(menuPrefab, sub);
             InitMenu(menuPrefab.GetComponent<Menu>());
         }
@@ -149,6 +157,10 @@
 
             // set focus to null
             menuInFocus = null;
+
+            // set back to previous state
+            //GameControl.control.IsInMenu = false;
+            GameControl.control.SetCharacterState(GameControl.control.PrevState);
         }
 
         /// <summary>
@@ -220,8 +232,17 @@
             confirmMenu.specificText.text = messageText;
             confirmMenu.yesAction = yesAction;
             confirmMenu.noAction = noAction;
+            confirmMenu.Refresh(); // refresh listeners
             //InitMenu(confirmMenu);
             confirmMenu.Init();
+        }
+
+        public void PushNotificationMenu(string messageText)
+        {
+            EnableMenu(uiDatabase.NotificationMenu);
+            var notificationMenu = list_currentMenus[list_currentMenus.Count - 1].GetComponent<NotificationMenu>();
+            notificationMenu.messageText.text = messageText;
+            notificationMenu.Init();
         }
 
         public void HideAllMenus()

@@ -8,9 +8,14 @@
     {
         [Header("Overworld")]
         public GameObject DialogueMenu;
+        public GameObject DialogueResponseMenu;
+        public GameObject ShopkeeperBuyMenu;
+        public GameObject ShopkeeperSellMenu;
+        public GameObject ItemQuantityMenu;
 
         [Header("Misc.")]
         public GameObject ConfirmationMenu;
+        public GameObject NotificationMenu;
 
         [Header("Pause Menu")]
         public GameObject PauseMenu;

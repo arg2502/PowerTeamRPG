@@ -11,7 +11,7 @@ public class characterControl : OverworldObject {
         Normal,
         Battle,
         Defeat,
-        Talking
+        Menu
     }
 
 	private BoxCollider2D boxCollider; // Variable to reference our collider
@@ -42,7 +42,6 @@ public class characterControl : OverworldObject {
     Gateway currentGateway;
     CameraController myCamera;
 
-    NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
 
     // Use this for initialization
@@ -102,7 +101,7 @@ public class characterControl : OverworldObject {
             CheckInRangeNPC();
 
             // If we have an NPC to talk to, check if the player has pressed select to talk to them
-            if(currentNPC)
+            if(GameControl.control.currentNPC)
                 TalkToNPC();
         }
     }
@@ -110,7 +109,7 @@ public class characterControl : OverworldObject {
     private void OnTriggerExit2D(Collider2D collision)
     {
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), currentNPC))
+        if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
         {
             ResetCurrentNPC();
         }
@@ -124,37 +123,37 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-        if(Input.GetKeyDown(GameControl.control.selectKey) && !currentNPC.IsTalking
-            && GameControl.control.currentCharacterState != CharacterState.Talking)
+        if(Input.GetKeyDown(GameControl.control.selectKey)// && !GameControl.control.IsInMenu
+            && GameControl.control.currentCharacterState != CharacterState.Menu)
         {
             // if the NPC has a pathwalk, set the NPC to stop and face the player
-            if (currentNPC.GetComponentInParent<NPCPathwalkControl>())
-                currentNPC.GetComponentInParent<NPCPathwalkControl>().FaceCharacter(-(lastMovement));
+            if (GameControl.control.CurrentNPCPathwalk)
+                GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
 
             // begin the NPC's dialogue
-            currentNPC.StartDialogue();
+            GameControl.control.currentNPC.StartDialogue();
         }
     }
 
     void ResetCurrentNPC(NPCDialogue newCurrent = null)
     {
         // Set the previously current NPC back to normal
-        if (currentNPC)
-            currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
+        if (GameControl.control.currentNPC)
+            GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
 
         // set the new current NPC if one was passed in
         if(newCurrent)
         {
-            currentNPC = newCurrent;
+            GameControl.control.currentNPC = newCurrent;
 
             // Some sort of indicator to tell the player who they can talk to
             // FOR NOW, we just changed the color
-            currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
+            GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
         }
         // if no NPC was passed in, then there's no one we can talk to
         else
         {
-            currentNPC = null;
+            GameControl.control.currentNPC = null;
         }
     }
 
@@ -183,7 +182,7 @@ public class characterControl : OverworldObject {
     public void Move(float move_x, float move_y){
 
         // if we're talking to an npc, don't move at all
-        if (GameControl.control.currentCharacterState == CharacterState.Talking)
+        if (GameControl.control.currentCharacterState == CharacterState.Menu)
             return;
 
 		//create the vector of the desired movement
@@ -248,7 +247,12 @@ public class characterControl : OverworldObject {
         if (Input.GetKeyDown(KeyCode.P) && Time.timeScale < 1.0f)
             Time.timeScale += 0.1f;
 
-		sr.sortingOrder = (int)(-transform.position.y * 10.0f);
+        if (Input.GetKeyUp(GameControl.control.pauseKey) && GameControl.control.currentCharacterState == CharacterState.Normal)
+        {
+            GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
+        }
+
+        sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 

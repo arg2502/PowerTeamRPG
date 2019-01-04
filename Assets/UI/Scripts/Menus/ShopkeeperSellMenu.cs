@@ -7,13 +7,29 @@
     using System;
     using System.Collections.Generic;
 
-    public class InventoryMenu : GridMenu
+    public class ShopkeeperSellMenu : GridMenu
     {
         public GameObject itemSlotsContainer;
         public GameObject itemPrefab;
-        public GameObject invisiblePrefab;        
+        public GameObject invisiblePrefab;
         public GameObject upScroll, downScroll;
-        Rect screen = new Rect(0,0, Screen.width, Screen.height);
+
+        public Text totalGold;
+        public Text currentValueText;
+        public Text currentValueLabel;
+        int CurrentValue
+        {
+            get
+            {
+                if (gameControl.CurrentShopkeeper == null)
+                    return 0;
+                else
+                    return gameControl.CurrentShopkeeper.GetItemPrice(chosenItem);
+            }
+        }
+        //ShopKeeperDialogue currentShopkeeper;
+
+        Rect screen = new Rect(0, 0, Screen.width, Screen.height);
         bool moving;
         float startTime = 0;
         Rect itemSlotsWorld;
@@ -22,7 +38,7 @@
         int outerListPosition;
         int innerListPosition;
         //internal Item chosenItem;
-		internal InventoryItem chosenItem;
+        internal InventoryItem chosenItem;
         internal string currentDescription;
 
         float buttonDistance = 55f;
@@ -71,72 +87,72 @@
             // create grid with 4 lists --- for the 4 categories of the inventory
             buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
 
-//            FillList(gameControl.consumables, 0);
-//            FillList(gameControl.weapons, 1);
-//            FillList(gameControl.equipment, 2);
-//            FillList(gameControl.reusables, 3);
+            //            FillList(gameControl.consumables, 0);
+            //            FillList(gameControl.weapons, 1);
+            //            FillList(gameControl.equipment, 2);
+            //            FillList(gameControl.reusables, 3);
 
-			FillList(gameControl.consumables, "Consumable", 0);
-			FillList(gameControl.weapons, "Weapon", 1);
-			FillList(gameControl.equipment, "Armor", 2);
-			FillList(gameControl.key, "Key", 3);
+            FillList(gameControl.consumables, "Consumable", 0);
+            FillList(gameControl.weapons, "Weapon", 1);
+            FillList(gameControl.equipment, "Armor", 2);
+            FillList(gameControl.key, "Key", 3);
 
             SetButtonNavigation(); // reset button navigation
             gameControl.itemAdded = false; // reset flag to false
         }
 
         //void FillList(List<GameObject> category, int listPosition)
-		void FillList(List<InventoryItem> category, string _type, int listPosition)
+        void FillList(List<InventoryItem> category, string _type, int listPosition)
         {
             for (int i = 0; i < category.Count; i++)
             {
-//                var item = Instantiate(itemPrefab);
-//                item.name = category[i].GetComponent<Item>().name + "_Button";
-//                item.transform.SetParent(itemSlotsContainer.transform);
-//                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
-//                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
-//
-//                var button = item.GetComponentInChildren<Button>();
-//                var itemInfo = category[i].GetComponent<Item>();
-//                button.GetComponentInChildren<Text>().text = itemInfo.name;
-//                buttonGrid[listPosition].Add(button);
-//
-//                // description
-//                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
-//
-//                var itemSlot = item.GetComponent<ItemSlot>();
-//
-//                // set item to item slot so it's connected to the button
-//                itemSlot.SetItem(itemInfo);
-//
-//                // add listener
-//                button.onClick.AddListener(OnSelect);
+                //                var item = Instantiate(itemPrefab);
+                //                item.name = category[i].GetComponent<Item>().name + "_Button";
+                //                item.transform.SetParent(itemSlotsContainer.transform);
+                //                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
+                //                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+                //
+                //                var button = item.GetComponentInChildren<Button>();
+                //                var itemInfo = category[i].GetComponent<Item>();
+                //                button.GetComponentInChildren<Text>().text = itemInfo.name;
+                //                buttonGrid[listPosition].Add(button);
+                //
+                //                // description
+                //                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
+                //
+                //                var itemSlot = item.GetComponent<ItemSlot>();
+                //
+                //                // set item to item slot so it's connected to the button
+                //                itemSlot.SetItem(itemInfo);
+                //
+                //                // add listener
+                //                button.onClick.AddListener(OnSelect);
 
-				var item = Instantiate(itemPrefab);
+                var item = Instantiate(itemPrefab);
                 item.name = category[i].name;// + "_Button";
-				item.transform.SetParent(itemSlotsContainer.transform);
-				item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
-				item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
-				
-				var button = item.GetComponentInChildren<Button>();
-				var itemInfo = ItemDatabase.GetItem(_type, item.name);
-				button.GetComponentInChildren<Text>().text = itemInfo.name;
-				buttonGrid[listPosition].Add(button);
-				
-				// description
-				item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
-				
-				var itemSlot = item.GetComponent<ItemSlot>();
-				
-				// set item to item slot so it's connected to the button
-				itemSlot.SetItem(category[i]);
-				
-				// add listener
-				button.onClick.AddListener(OnSelect);
+                item.transform.SetParent(itemSlotsContainer.transform);
+                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
+                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
+
+                var button = item.GetComponentInChildren<Button>();
+                var itemInfo = ItemDatabase.GetItem(_type, item.name);
+                button.GetComponentInChildren<Text>().text = itemInfo.name;
+                buttonGrid[listPosition].Add(button);
+
+                // description
+                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
+
+                var itemSlot = item.GetComponent<ItemSlot>();
+
+                // set item to item slot so it's connected to the button
+                itemSlot.SetItem(category[i]);
+
+                // add listener
+                button.onClick.AddListener(OnSelect);
             }
             if (category.Count <= 0)
             {
-                CreateInvisibleButton(listPosition);      
+                CreateInvisibleButton(listPosition);
             }
         }
 
@@ -176,9 +192,9 @@
                 OutsideOfViewInstant(currentObj);
             }
             
-            UpdateItemQuantity();
-
             base.TurnOnMenu();
+            
+            UpdateItemQuantity();
         }
         public override void Refocus()
         {
@@ -187,6 +203,25 @@
             SetSelectedObjectToRoot();
             UpdateItemQuantity();
 
+        }
+
+        public override void Close()
+        {
+            //// since this menu needs to be used for multiple shopkeepers,
+            //// we can't hold onto all the scriptable objects
+            //// for now, let's just destroy all the items and the buttons
+            //// maybe at some point we can figure out a way to not destroy if it's the same shopkeeper
+            //for (int i = 0; i < listOfButtons.Count; i++)
+            //{
+            //    Destroy(listOfButtons[i].GetComponentInParent<ItemSlot>().s_item);
+            //    Destroy(listOfButtons[i]);
+            //}
+            //listOfButtons.Clear();
+
+            base.Close();
+
+            gameControl.CurrentShopkeeper.StartDialogue();
+            //currentShopkeeper = null;
         }
 
         void CreateInvisibleButton(int position)
@@ -285,24 +320,24 @@
 
             // if below screen, set the button above it as the desired position
             Vector3 desiredPosition = buttonObj.transform.position;
-           // bool belowScreen = false;
+            // bool belowScreen = false;
 
             // vertical movement
             if (objectCorners[0].y < itemSlotsWorld.yMin)
             {
-                if (ourButtonListPosition <= 0) return;                
+                if (ourButtonListPosition <= 0) return;
                 desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition - 1].transform.position;
                 //belowScreen = true;
             }
-            else if(objectCorners[2].y > itemSlotsWorld.yMax)
+            else if (objectCorners[2].y > itemSlotsWorld.yMax)
             {
                 if (ourButtonListPosition >= buttonGrid[outerListPosition].Count - 1) return;
                 desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition + 1].transform.position;
-               // belowScreen = false;
+                // belowScreen = false;
             }
 
             // horizontal movement
-            if(objectCorners[0].x > itemSlotsWorld.xMax)
+            if (objectCorners[0].x > itemSlotsWorld.xMax)
             {
                 desiredPosition = buttonGrid[outerListPosition - 1][0].transform.position;
             }
@@ -327,7 +362,7 @@
                 newPosition = new Vector2(itemSlotsContainer.transform.position.x, itemSlotsContainer.transform.position.y + distance);
                 lerpTime = lerpTimeVertical;
             }
-            
+
             if (!moving)
             {
                 moving = true;
@@ -342,7 +377,7 @@
             original = itemSlotsContainer.transform.position;
             while ((itemSlotsContainer.transform.position - newPosition).magnitude >= 0.1f)
             {
-                itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);                
+                itemSlotsContainer.transform.position = Vector2.Lerp(original, newPosition, (Time.time - startTime) * lerpTime);
                 yield return null;
             }
             moving = false;
@@ -370,10 +405,10 @@
                 downScroll.SetActive(false);
         }
 
-        void OnEnable()
-        {
-            currentObj = EventSystem.current.currentSelectedGameObject;
-        }
+        //void OnEnable()
+        //{
+        //    currentObj = EventSystem.current.currentSelectedGameObject;
+        //}
 
         void ToggleTextChange()
         {
@@ -411,27 +446,15 @@
 
             currentDescription = descriptionText.text;
         }
-        
+
         void OnSelect()
         {
             // save the item you wish to use/equip
-            chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
 
-            // open the ConfirmUse menu
-            uiManager.PushMenu(uiDatabase.ConfirmUseMenu);
-
-            //var count = uiManager.list_currentMenus.Count;
-            //var confirmUse = uiManager.list_currentMenus[count - 1].GetComponent<ConfirmUseMenu>();
-            //confirmUse.item = chosenItem;
-            //confirmUse.descriptionText = descriptionText;
-            //uiManager.PushMenu(uiDatabase.UseItemMenu);
-
-            //// set the Item Use menu's item to the one chosen
-            //var count = uiManager.list_currentMenus.Count;
-            //var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
-            //useItem.item = chosenItem;
-            //useItem.descriptionText = descriptionText;
-            //useItem.icon.sprite = chosenItem.sprite;
+            uiManager.PushMenu(uiDatabase.ItemQuantityMenu);
+            var quantityMenu = uiManager.FindMenu(uiDatabase.ItemQuantityMenu).GetComponent<ItemQuantityMenu>();
+            quantityMenu.SetShopkeeper(gameControl.CurrentShopkeeper);
+            quantityMenu.SetItem(chosenItem);
         }
 
         void UpdateItemQuantity()
@@ -439,9 +462,9 @@
             var itemSlot = currentObj.GetComponentInParent<ItemSlot>();
             if (itemSlot == null) return;
             itemSlot.UpdateQuantity();
-            
+
             // check if consumable & zero
-            if(itemSlot.item.type == "consumable"
+            if (itemSlot.item.type == "consumable"
                 && itemSlot.item.quantity - itemSlot.item.uses <= 0)
             {
                 // remove item button from grid and delete
@@ -449,10 +472,10 @@
                 var index = buttonGrid[outerListPosition].IndexOf(currentObj.GetComponent<Button>());//Find(currentObj.GetComponent<Button>())
                 buttonGrid[outerListPosition].Remove(currentObj.GetComponent<Button>());
                 Destroy(currentObj.transform.parent.gameObject);
-                gameControl.RemoveItem(itemSlot.item);                
+                gameControl.RemoveItem(itemSlot.item);
 
                 // add an invisible button if there are no more items in the list
-                if(buttonGrid[outerListPosition].Count <= 0)
+                if (buttonGrid[outerListPosition].Count <= 0)
                 {
                     CreateInvisibleButton(outerListPosition);
                 }
@@ -461,7 +484,7 @@
                 //item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
                 if (index < buttonGrid[outerListPosition].Count)
                 {
-                    for(int i = index; i < buttonGrid[outerListPosition].Count; i++)
+                    for (int i = index; i < buttonGrid[outerListPosition].Count; i++)
                         buttonGrid[outerListPosition][i].transform.parent.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * outerListPosition, i * -buttonDistance);
 
                     // reset navigation
@@ -478,30 +501,52 @@
             }
         }
 
+        //public void AssignShopkeeper(ShopKeeperDialogue skd)
+        //{
+        //    currentShopkeeper = skd;
+        //}
+
         new void Update()
         {
             base.Update();
 
-            if (this.gameObject != uiManager.menuInFocus) return;
+            if (this.gameObject != uiManager.menuInFocus || EventSystem.current.currentSelectedGameObject == null)
+                return;
+            
+            totalGold.text = gameControl.totalGold.ToString();
+            if (EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>())
+                chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
+
+            if (CurrentValue < 0)
+            {
+                currentValueText.gameObject.SetActive(false);
+                currentValueLabel.gameObject.SetActive(false);
+            }
+            else
+            {
+                currentValueText.gameObject.SetActive(true);
+                currentValueLabel.gameObject.SetActive(true);
+                currentValueText.text = CurrentValue.ToString();
+            }
 
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
             
             // set current list position by finding the new current button
-            for(int i = 0; i < buttonGrid.Count; i++)
+            for (int i = 0; i < buttonGrid.Count; i++)
             {
                 if (buttonGrid[i].Count > 0 && currentObj == buttonGrid[i][0].gameObject)
                 {
                     outerListPosition = i;
-                    gameControl.whichInventoryEnum = (GameControl.WhichInventory) outerListPosition;
+                    gameControl.whichInventoryEnum = (GameControl.WhichInventory)outerListPosition;
                     break;
                 }
             }
             // find position within the column
-            for(int i = 0; i < buttonGrid[outerListPosition].Count; i++)
+            for (int i = 0; i < buttonGrid[outerListPosition].Count; i++)
             {
-                if(currentObj == buttonGrid[outerListPosition][i].gameObject)
+                if (currentObj == buttonGrid[outerListPosition][i].gameObject)
                 {
                     innerListPosition = i;
                     break;
@@ -513,7 +558,7 @@
 
             if (CheckIfOffScreen(currentObj))
                 OutsideOfView(currentObj);
-            
+
         }
     }
 }
