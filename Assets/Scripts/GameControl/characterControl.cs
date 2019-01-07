@@ -305,7 +305,12 @@ public class characterControl : OverworldObject {
 				//If the player is not carrying an object, check for one
 				if(!isCarrying)
 				{
-					//use the last calculated boxcast to see if we've clicked on a movable object
+					//create a box cast specifically for picking up objects, as per Alec's request
+					Vector2 direction = lastMovement;
+					direction.Normalize ();
+					direction *= moveSpeed * Time.deltaTime;
+					hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
+
 					if (hit.collider != null && hit.collider.tag == "Movable")
 					{
 						print("Hit " + hit.collider.name);
@@ -350,8 +355,8 @@ public class characterControl : OverworldObject {
 						else if (lastMovement.y != 0 && lastMovement.y > 0) {yMultiple = 1;}
 
 						//move the object to it's final resting place
-						carriedObject.transform.position = new Vector3(((carriedCollider.size.x  + 0.1f) * xMultiple) + adjustedPosition.x,
-						                                               ((carriedCollider.size.y  + carriedCollider.offset.y + 0.25f)* yMultiple) + transform.position.y);
+						carriedObject.transform.position = new Vector3(((carriedCollider.size.x + carriedCollider.offset.x) * xMultiple) + adjustedPosition.x,
+						                                               ((carriedCollider.size.y  + carriedCollider.offset.y + Math.Abs(carriedCollider.offset.y))* yMultiple) + transform.position.y);
 						//reset the object's isCarried to false
 						carriedObject.isCarried = false;
 						//reset the object's collider to enabled
