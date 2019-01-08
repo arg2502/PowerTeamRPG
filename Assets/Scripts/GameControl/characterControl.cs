@@ -129,6 +129,8 @@ public class characterControl : OverworldObject {
             // if the NPC has a pathwalk, set the NPC to stop and face the player
             if (GameControl.control.CurrentNPCPathwalk)
                 GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
+			else if (GameControl.control.CurrentStationaryNPC)
+				GameControl.control.CurrentStationaryNPC.FaceCharacter(-(lastMovement));
 
             // begin the NPC's dialogue
             GameControl.control.currentNPC.StartDialogue();
