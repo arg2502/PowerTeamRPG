@@ -8,7 +8,7 @@
 
     public class DialogueResponseMenu : Menu
     {
-        float distanceBetweenButtons = -50f;
+        float distanceBetweenButtons = -100f;
         public Button templateButton;
         public GameObject parentGroup;
         List<Dialogue.Response> responses;
