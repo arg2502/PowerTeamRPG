@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+		Hey, kid. I hope you weren't looking to buy any drinks, 'cuz I've got nothing to sell right now... that's a lie. I've got a ton of Drink, but I can't sell it because I occupy a weird middle ground of Story NPC and Shopkeeper, and the guy who put me here didn't know how to handle that... or maybe he just didn't feel like taking 5 minutes to figure it out. But he took the time to make me say all of this pointless stuff.	
+	HAPPY	Kinda funny when you think about it.	

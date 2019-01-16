@@ -34,6 +34,9 @@ public class StationaryNPCControl : OverworldObject {
 		boxCollider = GetComponent<BoxCollider2D> ();
 
 		base.Start();
+
+		//Call backtoNormal to make NPC face it's default direction and idle
+		BackToNormal ();
 	}
 	
 	// Update is called once per frame
@@ -44,7 +47,7 @@ public class StationaryNPCControl : OverworldObject {
 	public void FaceCharacter(Vector2 directionToFace)
 	{
 		currentState = State.talking; // set NPC to talking
-		canMove = false; // Stop moving, to set to idle sprites
+		canMove = false; // Stop moving, to set to talking sprites
 		//lastMovement = directionToFace; // set direction to face based on opposite player's dir
 		print ("Face " + directionToFace.ToString());
 		// set the blend tree animator to face the proper direction
@@ -56,6 +59,26 @@ public class StationaryNPCControl : OverworldObject {
 	{
 		canMove = true;
 		currentState = State.idle;
-		anim.SetBool ("canMove", canMove);
+		anim.SetBool ("canMove", canMove); //sets back to idle sprites
+
+		//Set the NPC to face the default direction
+		switch (defaultDirection) {
+		case Direction.up:
+			anim.SetFloat("lastHSpeed", 0.0f);
+			anim.SetFloat("lastVSpeed", 1.0f);
+			break;
+		case Direction.left:
+			anim.SetFloat("lastHSpeed", -1.0f);
+			anim.SetFloat("lastVSpeed", 0.0f);
+			break;
+		case Direction.right:
+			anim.SetFloat("lastHSpeed", 1.0f);
+			anim.SetFloat("lastVSpeed", 0.0f);
+			break;
+		default: //down
+			anim.SetFloat("lastHSpeed", 0.0f);
+			anim.SetFloat("lastVSpeed", -1.0f);
+			break;
+		}
 	}
 }
