@@ -215,15 +215,15 @@ public class StatsCard : MonoBehaviour {
         //var delta = background.rectTransform.sizeDelta;
         var delta = fullGroup.GetComponent<RectTransform>().sizeDelta;
         if (numOfCards == 1)
-            delta.x = 100;
+            delta.x = 225;
         else if (numOfCards == 2)
-            delta.x = 100;
+            delta.x = 225;
         else if (numOfCards == 3)
-            delta.x = 30;
+            delta.x = 210;
         else if (numOfCards == 4)
-            delta.x = 12.5f;
+            delta.x = 200;
         else if (numOfCards == 5)
-            delta.x = -7;
+            delta.x = 190;
 
         //background.rectTransform.sizeDelta = delta;
         fullGroup.GetComponent<RectTransform>().sizeDelta = delta;
