@@ -70,6 +70,8 @@ public class NPCDialogue : MonoBehaviour {
         // plus this location kinda makes sense...
         if (GetComponentInParent<NPCPathwalkControl>())
             GetComponentInParent<NPCPathwalkControl>().BackToNormal();
+		else if (GetComponentInParent<StationaryNPCControl>())
+			GetComponentInParent<StationaryNPCControl>().BackToNormal();
     }
 
     void TestFunction()

@@ -24,6 +24,30 @@ TextureImporter:
     21300034: NPC_Placeholder_17
     21300036: NPC_Placeholder_18
     21300038: NPC_Placeholder_19
+    21300040: NPC_GenericDriadali_M1_0
+    21300042: NPC_GenericDriadali_M1_1
+    21300044: NPC_GenericDriadali_M1_2
+    21300046: NPC_GenericDriadali_M1_3
+    21300048: NPC_GenericDriadali_M1_4
+    21300050: NPC_GenericDriadali_M1_5
+    21300052: NPC_GenericDriadali_M1_6
+    21300054: NPC_GenericDriadali_M1_7
+    21300056: NPC_GenericDriadali_M1_8
+    21300058: NPC_GenericDriadali_M1_9
+    21300060: NPC_GenericDriadali_M1_10
+    21300062: NPC_GenericDriadali_M1_11
+    21300064: NPC_GenericDriadali_M1_12
+    21300066: NPC_GenericDriadali_M1_13
+    21300068: NPC_GenericDriadali_M1_14
+    21300070: NPC_GenericDriadali_M1_15
+    21300072: NPC_GenericDriadali_M1_16
+    21300074: NPC_GenericDriadali_M1_17
+    21300076: NPC_GenericDriadali_M1_18
+    21300078: NPC_GenericDriadali_M1_19
+    21300080: NPC_GenericDriadali_M1_20
+    21300082: NPC_GenericDriadali_M1_21
+    21300084: NPC_GenericDriadali_M1_22
+    21300086: NPC_GenericDriadali_M1_23
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -101,7 +125,77 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: NPC_Placeholder_0
+      name: NPC_GenericDriadali_M1_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 393
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_GenericDriadali_M1_1
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 393
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_GenericDriadali_M1_2
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 393
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_GenericDriadali_M1_3
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 393
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_GenericDriadali_M1_4
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 393
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_GenericDriadali_M1_5
       rect:
         serializedVersion: 2
         x: 1
@@ -115,7 +209,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_1
+      name: NPC_GenericDriadali_M1_6
       rect:
         serializedVersion: 2
         x: 67
@@ -129,7 +223,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_2
+      name: NPC_GenericDriadali_M1_7
       rect:
         serializedVersion: 2
         x: 133
@@ -143,7 +237,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_3
+      name: NPC_GenericDriadali_M1_8
       rect:
         serializedVersion: 2
         x: 199
@@ -157,7 +251,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_4
+      name: NPC_GenericDriadali_M1_9
       rect:
         serializedVersion: 2
         x: 265
@@ -171,7 +265,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_5
+      name: NPC_GenericDriadali_M1_10
       rect:
         serializedVersion: 2
         x: 1
@@ -185,7 +279,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_6
+      name: NPC_GenericDriadali_M1_11
       rect:
         serializedVersion: 2
         x: 67
@@ -199,7 +293,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_7
+      name: NPC_GenericDriadali_M1_12
       rect:
         serializedVersion: 2
         x: 133
@@ -213,7 +307,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_8
+      name: NPC_GenericDriadali_M1_13
       rect:
         serializedVersion: 2
         x: 199
@@ -227,7 +321,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_9
+      name: NPC_GenericDriadali_M1_14
       rect:
         serializedVersion: 2
         x: 265
@@ -241,7 +335,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_10
+      name: NPC_GenericDriadali_M1_15
       rect:
         serializedVersion: 2
         x: 1
@@ -255,7 +349,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_11
+      name: NPC_GenericDriadali_M1_16
       rect:
         serializedVersion: 2
         x: 67
@@ -269,7 +363,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_12
+      name: NPC_GenericDriadali_M1_17
       rect:
         serializedVersion: 2
         x: 133
@@ -283,7 +377,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_13
+      name: NPC_GenericDriadali_M1_18
       rect:
         serializedVersion: 2
         x: 199
@@ -297,7 +391,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_14
+      name: NPC_GenericDriadali_M1_19
       rect:
         serializedVersion: 2
         x: 265
@@ -311,7 +405,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_15
+      name: NPC_GenericDriadali_M1_20
       rect:
         serializedVersion: 2
         x: 1
@@ -325,7 +419,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_16
+      name: NPC_GenericDriadali_M1_21
       rect:
         serializedVersion: 2
         x: 67
@@ -339,7 +433,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_17
+      name: NPC_GenericDriadali_M1_22
       rect:
         serializedVersion: 2
         x: 133
@@ -353,24 +447,10 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: NPC_Placeholder_18
+      name: NPC_GenericDriadali_M1_23
       rect:
         serializedVersion: 2
         x: 199
-        y: 1
-        width: 64
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: NPC_Placeholder_19
-      rect:
-        serializedVersion: 2
-        x: 265
         y: 1
         width: 64
         height: 96

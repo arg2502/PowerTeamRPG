@@ -7,10 +7,11 @@ public class OverworldObject : MonoBehaviour {
     public LayerMask mask;
     public bool canMove = true;
     public Vector3 offset = new Vector3(256.0f, 0.0f, 0.0f); // offset for stuck enemies, default: right
+	public int sortingOffset; //mainly for multi-object prefabs
 	// Use this for initialization
 	protected void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
-        sr.sortingOrder = (int)-transform.position.y;
+		sr.sortingOrder = (int)(-transform.position.y * 10.0f) + sortingOffset;
 	}
 
     // move this to gameManager

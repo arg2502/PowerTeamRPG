@@ -132,6 +132,12 @@ public class Dialogue : MonoBehaviour {
                     case "NEUTRAL":
                         newConversation.speakerEmotions.Add(speaker.neutralSpr);
                         break;
+					case "SAD":
+						newConversation.speakerEmotions.Add(speaker.sadSpr);
+						break;
+					case "ANGRY":
+						newConversation.speakerEmotions.Add(speaker.angrySpr);
+						break;
                 }
             }
 
