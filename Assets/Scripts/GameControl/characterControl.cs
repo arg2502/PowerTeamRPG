@@ -25,6 +25,9 @@ public class characterControl : OverworldObject {
     //PauseMenu pm;
 	//public bool canMove;
 
+	public bool onRamp = false;
+	public bool isRampRight = false;
+
     //public LayerMask movableMask;
 
 	MovableOverworldObject carriedObject;
@@ -191,6 +194,9 @@ public class characterControl : OverworldObject {
 		Vector2 direction = new Vector2 (move_x, move_y);
 		direction.Normalize ();
 		direction *= moveSpeed * Time.deltaTime;
+
+		if (onRamp && isRampRight) { direction = new Vector2(direction.x, direction.y + direction.x);}
+		if (onRamp && !isRampRight) { direction = new Vector2(direction.x, direction.y - direction.x);}
 
 		//get the position of the boxcollider, adjusted for any offsets
 		//Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
