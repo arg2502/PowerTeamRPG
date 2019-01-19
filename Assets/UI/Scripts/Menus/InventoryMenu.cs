@@ -26,8 +26,8 @@
 		internal InventoryItem chosenItem;
         internal string currentDescription;
 
-        float buttonDistance = 55f;
-        float listDistance = 1000f;
+        float buttonDistance = 125f;
+        float listDistance = 2000f;
         float lerpTimeVertical = 10f;
         float lerpTimeHorizontal = 5f;
 

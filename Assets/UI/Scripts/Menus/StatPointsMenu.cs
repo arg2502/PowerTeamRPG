@@ -53,10 +53,22 @@
             ConfirmPoints();
         }
 
-        public void SetHero(int heroIndex)
+        void SetHero(int heroIndex)
         {
+            // instantly move list to chosen hero
+            MoveHeroList(heroIndex, true);
+
             currentHeroIndex = heroIndex;
             AssignStats();
+            ToggleTextChange();
+        }
+                
+        // Called when first opening menu. (Mainly so we only set the Original Points once.
+        // Normal SetHero is called every time the hero switches, and we only want original point set once.        
+        public void SetInitialHero(int heroIndex)
+        {
+            SetOriginalPoints();
+            SetHero(heroIndex);
         }
 
         void AssignStats()
@@ -71,7 +83,6 @@
             evasion.SetHeroStatValue(currentHeroIndex, CurrentHero.evasion);
             spd.SetHeroStatValue(currentHeroIndex, CurrentHero.spd);
 
-            SetOriginalPoints();
             UpdatePoints();
             UpdateArrowStates();
         }
@@ -273,6 +284,12 @@
 
         void ResetPointsAndPop()
         {
+            // set the heroes' points back to their original
+            for(int i = 0; i < gameControl.heroList.Count; i++)
+            {
+                gameControl.heroList[i].levelUpPts = originalPoints[i];
+            }
+
             // clear all the placeholder changes made to the stat items
             // so that they will be zero again when we return
             hp.ClearArray();

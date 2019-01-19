@@ -62,7 +62,8 @@
             // the hero to show first is stored inside TeamInfoSub where you selected the hero
             //teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;
 
-            //MoveHeroList(teamInfoSub.currentHero, true); // move list before new currentHero is assigned
+            // instantly move list to chosen hero
+            MoveHeroList(heroIndex, true);
 
             //currentHero = teamInfoSub.currentHero; // kinda redundant cause currentHero is set inside AssignTree, but oh whale
             currentHero = heroIndex;

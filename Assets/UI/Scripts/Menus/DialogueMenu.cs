@@ -82,6 +82,7 @@
             // text has finished writing by this point, go to next dialogue
             if (readyForNextDialogue)
             {
+                dialogueText.transform.localPosition = origTextPos; // reset to starting pos
                 nextDialogue.Invoke();
             }
             // Otherwise, the text is still typing. Press select to skip to the end of the typing
@@ -140,7 +141,8 @@
             {
                 //print("OUT OF BOUNDS");                
                 var yPos = dialogueText.preferredHeight - currentYBoundary;
-                dialogueText.transform.Translate(0, yPos, 0);//localPosition += new Vector3(0, yPos);
+                //dialogueText.transform.Translate(0, yPos, 0);//localPosition += new Vector3(0, yPos);
+                dialogueText.transform.localPosition += new Vector3(0, yPos);
                 currentYBoundary += yPos;
                 print("yBound: " + currentYBoundary + ", preferred height: " + dialogueText.preferredHeight);
             }
