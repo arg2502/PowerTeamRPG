@@ -35,18 +35,18 @@ public class ListButton : MonoBehaviour {
     public void RefreshPMCost()
     {
         // determine cost based on status state
-        int cost;
-        Color textColor;
+        int cost = thisTech.Pm;
+        Color textColor = pmCost.color;
         if (battleManager.CurrentDenigen.StatusState == DenigenData.Status.cursed)
         {
             cost = thisTech.Pm * 2;
             textColor = Color.red;
         }
-        else
-        {
-            cost = thisTech.Pm;
-            textColor = Color.black;
-        }
+        //else
+        //{
+        //    cost = thisTech.Pm;
+        //    textColor = Color.white;
+        //}
 
         pmCost.text = cost.ToString();
         pmCost.color = textColor;

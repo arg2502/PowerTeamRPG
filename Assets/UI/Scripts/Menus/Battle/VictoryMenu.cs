@@ -162,7 +162,7 @@
             else
                 heroIndex = 0;
 
-            statPoints.SetHero(heroIndex);
+            statPoints.SetInitialHero(heroIndex);
         }
         void OnDone()
         {

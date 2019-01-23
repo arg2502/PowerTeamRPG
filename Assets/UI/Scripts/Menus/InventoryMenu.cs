@@ -26,8 +26,8 @@
 		internal InventoryItem chosenItem;
         internal string currentDescription;
 
-        float buttonDistance = 55f;
-        float listDistance = 1000f;
+        float buttonDistance = 125f;
+        float listDistance = 2000f;
         float lerpTimeVertical = 10f;
         float lerpTimeHorizontal = 5f;
 
@@ -292,24 +292,27 @@
 
             // if below screen, set the button above it as the desired position
             Vector3 desiredPosition = buttonObj.transform.position;
-           // bool belowScreen = false;
+            // bool belowScreen = false;
 
             // vertical movement
             if (objectCorners[0].y < itemSlotsWorld.yMin)
             {
-                if (ourButtonListPosition <= 0) return;                
-                desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition - 1].transform.position;
-                //belowScreen = true;
+                if (ourButtonListPosition > 0)
+                    desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition - 1].transform.position;
+                else
+                    desiredPosition = buttonGrid[outerListPosition][0].transform.position;
             }
-            else if(objectCorners[2].y > itemSlotsWorld.yMax)
+            else if (objectCorners[2].y > itemSlotsWorld.yMax)
             {
-                if (ourButtonListPosition >= buttonGrid[outerListPosition].Count - 1) return;
-                desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition + 1].transform.position;
-               // belowScreen = false;
+                var lastElement = buttonGrid[outerListPosition].Count - 1;
+                if (ourButtonListPosition < lastElement)
+                    desiredPosition = buttonGrid[outerListPosition][ourButtonListPosition + 1].transform.position;
+                else
+                    desiredPosition = buttonGrid[outerListPosition][lastElement].transform.position;
             }
 
             // horizontal movement
-            if(objectCorners[0].x > itemSlotsWorld.xMax)
+            if (objectCorners[0].x > itemSlotsWorld.xMax)
             {
                 desiredPosition = buttonGrid[outerListPosition - 1][0].transform.position;
             }
@@ -325,7 +328,7 @@
             if (desiredPosition.x != buttonObj.transform.position.x)
             {
                 distance = desiredPosition.x - buttonObj.transform.position.x;
-                newPosition = new Vector2(itemSlotsContainer.transform.position.x + distance, itemSlotsContainer.transform.position.y);
+                newPosition = new Vector2(itemSlotsContainer.transform.position.x + distance, origPosSlotsContainer.y);
                 lerpTime = lerpTimeHorizontal;
             }
             else

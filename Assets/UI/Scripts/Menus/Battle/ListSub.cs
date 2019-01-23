@@ -17,7 +17,7 @@
             eleanorSkillsContainers, eleanorSpellsContainers,
             joulietteSkillsContainers, joulietteSpellsContainers;
 
-        float slotDistance = 65f;
+        float slotDistance = 130f;
 
         // move button variables
         float defaultLerpTime = 10f;

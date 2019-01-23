@@ -24,7 +24,7 @@
         public GameObject listParent;
         Vector3 origPosList;
         public GameObject itemPrefab;
-        float buttonDistance = -50f;
+        float buttonDistance = -125f;
 
         ScriptableItem currentItemToBuy = null;
         

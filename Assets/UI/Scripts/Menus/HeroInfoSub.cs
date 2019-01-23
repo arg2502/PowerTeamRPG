@@ -84,7 +84,7 @@
             // open stat points for this character
             uiManager.PushMenu(uiDatabase.StatPointsMenu, this);
             var statPoints = uiManager.CurrentMenu.GetComponent<StatPointsMenu>();
-            statPoints.SetHero(teamInfoSub.currentHero);
+            statPoints.SetInitialHero(teamInfoSub.currentHero);
         }
 
     }

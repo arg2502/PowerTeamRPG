@@ -127,7 +127,7 @@
         public Button RootButton { get { return rootButton; } set { rootButton = value; } }
         public void SetSelectedObjectToRoot()
         {
-            if(rootButton == null) { Debug.LogError("You forgot to set FirstButton."); return; }
+            if(rootButton == null) { /*Debug.LogError("You forgot to set FirstButton.");*/ return; }
             //if (rootButton.gameObject == EventSystem.current.currentSelectedGameObject) return;
             StartCoroutine(SetRoot());
         }
