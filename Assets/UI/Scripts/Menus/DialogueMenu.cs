@@ -138,13 +138,10 @@
         void CheckIfTextOutOfBounds()
         {
             if(dialogueText.preferredHeight > currentYBoundary)
-            {
-                //print("OUT OF BOUNDS");                
+            {           
                 var yPos = dialogueText.preferredHeight - currentYBoundary;
-                //dialogueText.transform.Translate(0, yPos, 0);//localPosition += new Vector3(0, yPos);
                 dialogueText.transform.localPosition += new Vector3(0, yPos);
                 currentYBoundary += yPos;
-                print("yBound: " + currentYBoundary + ", preferred height: " + dialogueText.preferredHeight);
             }
         }
 

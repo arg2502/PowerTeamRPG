@@ -48,8 +48,7 @@ public class StationaryNPCControl : OverworldObject {
 	{
 		currentState = State.talking; // set NPC to talking
 		canMove = false; // Stop moving, to set to talking sprites
-		//lastMovement = directionToFace; // set direction to face based on opposite player's dir
-		print ("Face " + directionToFace.ToString());
+
 		// set the blend tree animator to face the proper direction
 		anim.SetBool ("canMove", canMove);
 		anim.SetFloat("lastHSpeed", directionToFace.x);

@@ -6,6 +6,7 @@ public class StatsCardManager : MonoBehaviour {
 
     public GameObject HeroStats;
     public GameObject EnemyStats;
+    public GameObject StatsBG;
     public List<StatsCard> HeroCards;
     public List<StatsCard> EnemyCards;
 
@@ -392,13 +393,15 @@ public class StatsCardManager : MonoBehaviour {
     public void HideCards()
     {
         HeroStats.GetComponent<Animator>().Play("TurnOff");
-        EnemyStats.GetComponent<Animator>().Play("TurnOff");       
+        EnemyStats.GetComponent<Animator>().Play("TurnOff");
+        StatsBG.GetComponent<Animator>().Play("TurnOff");    
     }
 
     public void ShowCards()
     {
         HeroStats.GetComponent<Animator>().Play("TurnOn");
         EnemyStats.GetComponent<Animator>().Play("TurnOn");
+        StatsBG.GetComponent<Animator>().Play("TurnOn");
     }
 
 }

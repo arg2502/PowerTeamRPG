@@ -66,7 +66,6 @@ public class characterControl : OverworldObject {
         // if the character is transitioning through a gateway, call EnterRoom
         if (GameControl.control.currentCharacterState == CharacterState.Transition)
         {
-            Debug.Log(GameControl.control.currentEntranceGateway);
             var gateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
             if (gateway != null && !GameControl.control.taggedStatue)
@@ -321,7 +320,6 @@ public class characterControl : OverworldObject {
 
 					if (hit.collider != null && hit.collider.tag == "Movable")
 					{
-						print("Hit " + hit.collider.name);
 						//if it hits one, move the object to the position above Jethro's head and set iscarried to true
 						isCarrying = true;
 						//disable the object's collider, so it doesn't hinder movement

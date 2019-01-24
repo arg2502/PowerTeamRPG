@@ -43,7 +43,7 @@
             rootButton = AssignRootButton();
             base.TurnOnMenu();
 
-            dimmer.gameObject.SetActive(false);
+            //dimmer.gameObject.SetActive(false);
             //battleManager.battleUI.transform.SetAsLastSibling(); // <- ugly line
 
             CheckForItems();
@@ -52,14 +52,14 @@
         public override void Refocus()
         {
             base.Refocus();
-            dimmer.gameObject.SetActive(false);
+            //dimmer.gameObject.SetActive(false);
             battleManager.ShowAllShortCardsExceptCurrent();
             CheckForItems();
         }
 
         void OnAttack()
         {
-            dimmer.gameObject.SetActive(true);
+            //dimmer.gameObject.SetActive(true);
             uiManager.PushMenu(uiDatabase.AttackSub, this);
         }
         void OnBlock()
@@ -71,7 +71,7 @@
         void OnItems()
         {
             //print("Whoa, there. This function isn't done yet, sonny.");
-            dimmer.gameObject.SetActive(true);
+            //dimmer.gameObject.SetActive(true);
             battleManager.SetMenuState(MenuState.ITEMS);
             uiManager.PushMenu(uiDatabase.ListSub, this);
         }

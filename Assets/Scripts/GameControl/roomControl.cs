@@ -294,11 +294,8 @@ public class roomControl : MonoBehaviour {
         roomLimits.minY = (int)tilemap.transform.position.y;
         roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
         roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
-        print("minX: " + roomLimits.minX);
         AssignCurrentPosition();
-        Debug.Log(GameControl.control.currentCharacterState);
-
-        
+                
         GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
 
     }
@@ -357,8 +354,7 @@ public class roomControl : MonoBehaviour {
 
         //tell the gameControl object what it needs to know
         GameControl.control.currentRoom = this;
-        print("Current Room: " + GameControl.control.currentRoom);
-
+        
         // if player is coming back from battle, then there is no entrance
         if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle
             || GameControl.control.currentCharacterState == characterControl.CharacterState.Defeat)
