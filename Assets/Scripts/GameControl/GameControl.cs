@@ -93,17 +93,7 @@ public class GameControl : MonoBehaviour {
     // false - buy
     // true - sell
     public bool isSellMenu;
-
-	// Keycodes
-	public KeyCode upKey;
-	public KeyCode downKey;
-	public KeyCode leftKey;
-	public KeyCode rightKey;
-	public KeyCode selectKey;
-	public KeyCode backKey;
-	public KeyCode pauseKey;
-	public KeyCode runKey;
-
+    	
     // check if an attack animation is playing
     public bool isAnimating = false;
     public bool isDying = false;
@@ -155,18 +145,7 @@ public class GameControl : MonoBehaviour {
             UIManager = new UIManager();
             skillTreeManager = new SkillTreeManager();
             itemManager = new ItemManager();
-
-			// default KeyCodes
-			// possibly have them loaded in from somewhere based off user settings
-			upKey = KeyCode.W;
-			downKey = KeyCode.S;
-			leftKey = KeyCode.A;
-			rightKey = KeyCode.D;
-			selectKey = KeyCode.Space;
-			backKey = KeyCode.Backspace;
-			pauseKey = KeyCode.Q;
-			runKey = KeyCode.LeftShift;
-
+            
 			totalGold = 0;
 			totalKeys = 0;
 

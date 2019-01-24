@@ -7,7 +7,7 @@
         
         void Update()
         {
-            if(Input.GetKeyUp(KeyCode.Q))
+            if(Input.GetButton("Pause"))
             {
                 GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
             }

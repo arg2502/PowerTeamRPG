@@ -125,7 +125,7 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-        if(Input.GetKeyDown(GameControl.control.selectKey)// && !GameControl.control.IsInMenu
+        if(Input.GetButtonDown("Submit")
             && GameControl.control.currentCharacterState != CharacterState.Menu)
         {
             // if the NPC has a pathwalk, set the NPC to stop and face the player
@@ -248,13 +248,7 @@ public class characterControl : OverworldObject {
 	// Update is called once per frame
     void Update()
     {
-        // DEBUG - change time rate
-        if (Input.GetKeyDown(KeyCode.O) && Time.timeScale > 0.1f)
-            Time.timeScale -= 0.1f;
-        if (Input.GetKeyDown(KeyCode.P) && Time.timeScale < 1.0f)
-            Time.timeScale += 0.1f;
-
-        if (Input.GetKeyUp(GameControl.control.pauseKey) && GameControl.control.currentCharacterState == CharacterState.Normal)
+        if (Input.GetButtonDown("Pause") && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
             GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
         }
@@ -293,7 +287,7 @@ public class characterControl : OverworldObject {
 		if (canMove) {
             isMoving = false;
 
-			if (Input.GetKey (GameControl.control.runKey) || Input.GetKey (KeyCode.RightShift)) {
+			if (Input.GetButton("Run")) {
 				moveSpeed = runSpeed;
 			} else {
 				moveSpeed = walkSpeed;
@@ -307,7 +301,7 @@ public class characterControl : OverworldObject {
             }
 
             // If picking up or putting down an object
-            if (Input.GetKeyUp(GameControl.control.selectKey))
+            if (Input.GetButtonDown("Submit"))
             {
 				//If the player is not carrying an object, check for one
 				if(!isCarrying)

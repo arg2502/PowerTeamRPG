@@ -35,7 +35,7 @@ public class Switch : OverworldObject {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyUp(GameControl.control.selectKey) && !isActivated)
+        if (Input.GetButtonDown("Submit") && !isActivated)
         {
             distFromPlayer = Mathf.Abs(Mathf.Sqrt(((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
             + ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));

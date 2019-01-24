@@ -309,25 +309,25 @@
         {
             base.Update();
 
-            if (Input.GetKeyDown(KeyCode.RightBracket))
+            if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
             {
                 IncreaseHero();
                 UpdateArrowStates();
             }
-            else if (Input.GetKeyDown(KeyCode.LeftBracket))
+            else if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") < 0)
             {
                 DecreaseHero();
                 UpdateArrowStates();
             }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow) && CurrentHero.levelUpPts > 0)
+            if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0 && CurrentHero.levelUpPts > 0)
             {
                 ChangeCurrentStat(1);
                 UpdatePoints();
                 UpdateArrowStates();
             }
 
-            else if(Input.GetKeyDown(KeyCode.LeftArrow) && CurrentStat.StatChanges[currentHeroIndex] > 0)
+            else if(Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0 && CurrentStat.StatChanges[currentHeroIndex] > 0)
             {
                 ChangeCurrentStat(-1);
                 UpdatePoints();

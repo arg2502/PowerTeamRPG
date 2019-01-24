@@ -559,17 +559,10 @@
             UpdateText();
             
 
-            if (Input.GetKeyDown(KeyCode.RightBracket))
+            if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
                 IncreaseHero();
-            else if (Input.GetKeyDown(KeyCode.LeftBracket))
-                DecreaseHero();
-
-            if (Input.GetKeyUp(KeyCode.T))
-            {
-                Debug.Log("YOU PRESSED 'T' AND GOT A TECH POINT. YOU CHEATING BASTARD");
-                gameControl.heroList[currentHero].techPts++;
-                Debug.Log(gameControl.heroList[currentHero].denigenName + " tech points: " + gameControl.heroList[currentHero].techPts);
-            }
+            else if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") < 0)
+                DecreaseHero();            
         }
     }
 }

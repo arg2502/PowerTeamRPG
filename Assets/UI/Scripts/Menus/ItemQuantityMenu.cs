@@ -110,7 +110,7 @@
             price.text = priceValue.ToString();
             totalPrice.text = (quantityNum * priceValue).ToString();
 
-            if (Input.GetKeyUp(gameControl.rightKey))
+            if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
             {
                 // if buying, only increase until we can't afford it
                 // if selling, only increase until we run out
@@ -121,7 +121,7 @@
                 }
                 //UpdateArrowStates();
             }
-            else if (Input.GetKeyUp(gameControl.leftKey))
+            else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0)
             {
                 if (quantityNum > 1)
                     quantityNum--;

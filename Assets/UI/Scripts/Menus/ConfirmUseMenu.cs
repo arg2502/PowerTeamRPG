@@ -93,7 +93,7 @@
 
             // assign text to buttons
             AssignText(topButton, "Use");
-            AssignText(middleButton, "Cancel");
+            AssignText(middleButton, "Back");
 
             // set top button to call UseItem with Consumables
             topButton.onClick.AddListener(OnUse);
@@ -121,7 +121,7 @@
             // text
             AssignText(topButton, "Equip");
             AssignText(middleButton, "Remove");
-            AssignText(bottomButton, "Cancel");
+            AssignText(bottomButton, "Back");
 
             // determine if the item can be equipped to any team member
             if(item.quantity - item.uses <= 0)
@@ -154,7 +154,7 @@
             // for now just one button that's CANCEL
             ActivateButtons(1);
             RemoveAllListeners();
-            AssignText(topButton, "Cancel");
+            AssignText(topButton, "Back");
             topButton.onClick.AddListener(OnCancel);
         }
 
