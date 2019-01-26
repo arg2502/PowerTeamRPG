@@ -1252,10 +1252,6 @@ public class BattleManager : MonoBehaviour {
 
     public bool CalcFlee()
     {
-        // TEMP FOR TESTING
-        //return true;
-        return false;
-
         // calculate the likelihood of flight
         int enemyMight = 0;
         int heroMight = 0;

@@ -83,7 +83,8 @@
             {
                 //GameControl.control.IsInMenu = true;
                 GameControl.control.PrevState = GameControl.control.currentCharacterState;
-                GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
+                if (GameControl.control.currentCharacterState != characterControl.CharacterState.Battle)
+                    GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
             }
 
             EnableMenu(menuPrefab, sub);

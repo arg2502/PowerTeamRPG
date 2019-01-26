@@ -426,7 +426,6 @@ public class characterControl : OverworldObject {
         OnDesiredPos = FinishExit;
 
         GameControl.control.currentCharacterState = CharacterState.Transition;
-
     }
 
     public void FindIncrementTransitionValues(Vector2 startPos, Vector2 endPos)

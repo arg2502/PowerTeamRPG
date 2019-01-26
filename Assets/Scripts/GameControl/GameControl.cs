@@ -212,10 +212,7 @@ public class GameControl : MonoBehaviour {
 			pause = new tempMenu();
 			teamSub = new tempMenu();
 			heroSub = new tempMenu();
-			inventSub = new tempMenu();
-
-            currentCharacterState = characterControl.CharacterState.Transition;
-
+			inventSub = new tempMenu();            
 		}
 		else if (control != this)
 		{
@@ -1031,10 +1028,10 @@ public class GameControl : MonoBehaviour {
 
     public void ReturnFromBattle()
     {
-        currentCharacterState = characterControl.CharacterState.Normal;
+        //currentCharacterState = characterControl.CharacterState.Normal;
         if (string.IsNullOrEmpty(currentScene))
             currentScene = "testScene";
-        SceneManager.LoadScene(currentScene);
+        SceneManager.LoadScene(currentScene);        
     }
 
     public void LoadLastSavedStatue()

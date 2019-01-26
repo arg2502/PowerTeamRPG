@@ -284,7 +284,7 @@ public class roomControl : MonoBehaviour {
     {
         roomWasLoaded = true;
 
-        if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle) return;
+        //if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle) return;
         if (GameControl.control.isPaused) return;
 
         // find the room's limits
@@ -294,10 +294,10 @@ public class roomControl : MonoBehaviour {
         roomLimits.minY = (int)tilemap.transform.position.y;
         roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
         roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
-        AssignCurrentPosition();
+        
                 
-        GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
-
+        //GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
+        AssignCurrentPosition();
     }
 
     public Gateway AssignEntrance(string exitedGatewayName)
@@ -312,8 +312,13 @@ public class roomControl : MonoBehaviour {
        
         if (string.IsNullOrEmpty(exitedGatewayName))
         {
+            if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle)
+            {
+                GameControl.control.currentCharacterState = characterControl.CharacterState.Normal;
+                return null;
+            }
             // default send to the first gateway in the room's position
-            if (gatewaysInRoom.Count > 0) return gatewaysInRoom[0];
+            else if (gatewaysInRoom.Count > 0) return gatewaysInRoom[0];
 
             // if there are no gateways for some reason, set to default current position
             //else return entrance = GameControl.control.currentPosition;
@@ -355,12 +360,12 @@ public class roomControl : MonoBehaviour {
         //tell the gameControl object what it needs to know
         GameControl.control.currentRoom = this;
         
-        // if player is coming back from battle, then there is no entrance
-        if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle
-            || GameControl.control.currentCharacterState == characterControl.CharacterState.Defeat)
-        {
-            return;
-        }
+        //// if player is coming back from battle, then there is no entrance
+        //if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle
+        //    || GameControl.control.currentCharacterState == characterControl.CharacterState.Defeat)
+        //{
+        //    return;
+        //}
         
         var gatewayEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
         if (gatewayEntrance != null)
@@ -389,6 +394,9 @@ public class roomControl : MonoBehaviour {
     // find the correct gateway based off of the area entrance
     public Gateway FindCurrentGateway(Vector2 areaEntrance)
     {
+        if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle)
+            return null;
+
         foreach(Gateway g in gatewaysInRoom)
         {
             if (areaEntrance.x == g.transform.position.x && areaEntrance.y == g.transform.position.y)
