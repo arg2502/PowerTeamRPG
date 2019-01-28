@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CameraController : MonoBehaviour {
@@ -17,7 +18,7 @@ public class CameraController : MonoBehaviour {
 
     float currentX, currentY;
 
-    SpriteRenderer blackCanvas;
+    public Image blackCanvas;
     Color black;
     Color clear;
     float timeToFade;
@@ -41,8 +42,7 @@ public class CameraController : MonoBehaviour {
         //transform.position = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
         StayWithinRoomAtStart();
         
-
-        blackCanvas = GetComponentInChildren<SpriteRenderer>();
+                
         black = new Color(0, 0, 0, 1);
         clear = new Color(0, 0, 0, 0);
         timeToFade = 0.5f;
