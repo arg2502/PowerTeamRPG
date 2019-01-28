@@ -27,6 +27,13 @@ public class Gateway : MonoBehaviour {
     }
     public Direction direction;
 
+    public enum Type
+    {
+        NORMAL,
+        DOOR
+    }
+    public Type gatewayType;
+
     void Awake()
     {
         SetPositions();

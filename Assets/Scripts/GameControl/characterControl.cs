@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System;
 
@@ -41,7 +42,7 @@ public class characterControl : OverworldObject {
     // for room transition
     float xIncrementTransition = 0, yIncrementTransition = 0;
     Vector2 desiredPos;
-    Action OnDesiredPos;
+    UnityEvent OnDesiredPos;
     Gateway currentGateway;
     CameraController myCamera;
 
@@ -59,6 +60,7 @@ public class characterControl : OverworldObject {
 
 		//new code -------------------------------------------------
 		boxCollider = GetComponent<BoxCollider2D> ();
+        OnDesiredPos = new UnityEvent();
 		//end new code ---------------------------------------------
 
         //canMove = false;
@@ -81,6 +83,16 @@ public class characterControl : OverworldObject {
         if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
             currentGateway = other.GetComponent<Gateway>();
+            if (currentGateway.gatewayType == Gateway.Type.DOOR)
+            {
+                if (Input.GetButtonDown("Submit"))
+                {
+                    StartCoroutine(myCamera.Fade());
+                    ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
+                }
+                else return;
+            }
+
             StartCoroutine(myCamera.Fade());
             ExitRoom(currentGateway.transform.position, currentGateway.exitPos);            
         }
@@ -95,6 +107,24 @@ public class characterControl : OverworldObject {
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        // for transition between areas
+        if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
+        {
+            currentGateway = other.GetComponent<Gateway>();
+            if (currentGateway.gatewayType == Gateway.Type.DOOR)
+            {
+                if (Input.GetButtonDown("Submit"))
+                {
+                    StartCoroutine(myCamera.Fade());
+                    ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
+                }
+                else return;
+            }
+
+            StartCoroutine(myCamera.Fade());
+            ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
+        }
+
         if (other.GetComponent<NPCDialogue>())
         {
             // While within an NPC's trigger area, constantly check for NPCs
@@ -275,8 +305,7 @@ public class characterControl : OverworldObject {
             }
             else
             {
-                OnDesiredPos.Invoke();
-                
+                OnDesiredPos.Invoke();                
             }
 
         }
@@ -398,8 +427,9 @@ public class characterControl : OverworldObject {
     {
         FindIncrementTransitionValues(startPos, endPos);
         desiredPos = endPos;
-        OnDesiredPos = FinishEntrance;
+        OnDesiredPos.AddListener(FinishEntrance);
         GameControl.control.currentCharacterState = CharacterState.Transition;
+        //Invoke("FinishEntrance", 2f);
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
     {
@@ -422,10 +452,13 @@ public class characterControl : OverworldObject {
 
         // set desired value
         desiredPos = newDesiredPos;
-        
-        OnDesiredPos = FinishExit;
 
-        GameControl.control.currentCharacterState = CharacterState.Transition;
+        if (currentGateway.gatewayType != Gateway.Type.DOOR)
+            OnDesiredPos.AddListener(FinishExit);
+        else
+            Invoke("FinishExit", 0.5f);
+
+        GameControl.control.currentCharacterState = CharacterState.Transition;        
     }
 
     public void FindIncrementTransitionValues(Vector2 startPos, Vector2 endPos)
@@ -497,10 +530,13 @@ public class characterControl : OverworldObject {
     {
         lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
         GameControl.control.currentCharacterState = CharacterState.Normal;
+        OnDesiredPos.RemoveAllListeners();
     }
     void FinishExit()
     {
+        if (currentGateway == null) return;
         currentGateway.GetComponent<Gateway>().NextScene();
         currentGateway = null;
+        OnDesiredPos.RemoveAllListeners();
     }
 }
