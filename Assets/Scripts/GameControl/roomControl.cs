@@ -112,8 +112,15 @@ public class roomControl : MonoBehaviour {
 				// first the blocks -- since that's what ive got
 				for (int i = 0; i < movables.Count; i++)
 				{
-					movables[i].transform.position = new Vector3(rc.blockData[i].position.x, rc.blockData[i].position.y, rc.blockData[i].position.z);
-					movables [i].isActivated = rc.blockData [i].isActivated;
+                    for(int j = 0; j < movables.Count; j++)
+                    {
+                        if(movables[i].name == rc.blockData[j].blockName)
+                        {
+                            movables[i].transform.position = new Vector3(rc.blockData[j].position.x, rc.blockData[j].position.y, rc.blockData[j].position.z);
+                            movables[i].isActivated = rc.blockData[j].isActivated;
+                        }
+                    }
+					
 					//movables [i].gameObject.SetActive (movables [i].isActivated);
 				}
 				// sync open chests
