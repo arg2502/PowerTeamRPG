@@ -68,10 +68,10 @@ public class characterControl : OverworldObject {
         // if the character is transitioning through a gateway, call EnterRoom
         if (GameControl.control.currentCharacterState == CharacterState.Transition)
         {
-            var gateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
+            currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
-            if (gateway != null && !GameControl.control.taggedStatue)
-                EnterRoom(gateway.transform.position, gateway.entrancePos);
+            if (currentGateway != null && !GameControl.control.taggedStatue)
+                EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
             else
                 GameControl.control.currentCharacterState = CharacterState.Normal;
         }
@@ -287,7 +287,7 @@ public class characterControl : OverworldObject {
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 
-        if (GameControl.control.currentCharacterState == CharacterState.Transition)
+        if (GameControl.control.currentCharacterState == CharacterState.Transition && currentGateway.gatewayType != Gateway.Type.DOOR)
         {
             anim.SetBool("isMoving", true);
             anim.SetFloat("vSpeed", yIncrementTransition);
@@ -313,7 +313,8 @@ public class characterControl : OverworldObject {
 
 
         // STATE == NORMAL
-		if (canMove) {
+		//if (canMove) {
+        if(canMove && GameControl.control.currentCharacterState == CharacterState.Normal) { 
             isMoving = false;
 
 			if (Input.GetButton("Run")) {
@@ -427,9 +428,15 @@ public class characterControl : OverworldObject {
     {
         FindIncrementTransitionValues(startPos, endPos);
         desiredPos = endPos;
-        OnDesiredPos.AddListener(FinishEntrance);
-        GameControl.control.currentCharacterState = CharacterState.Transition;
-        //Invoke("FinishEntrance", 2f);
+
+        if (currentGateway.gatewayType != Gateway.Type.DOOR)
+            OnDesiredPos.AddListener(FinishEntrance);
+        else
+        {
+            transform.position = currentGateway.entrancePos;
+            Invoke("FinishEntrance", 0.5f);
+        }
+        GameControl.control.currentCharacterState = CharacterState.Transition;        
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
     {

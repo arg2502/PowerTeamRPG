@@ -273,7 +273,7 @@ public class roomControl : MonoBehaviour {
 		}
 
         newRoom.roomLimits = roomLimits;
-        Debug.Log(GameControl.control.currentCharacterState);
+        //Debug.Log(GameControl.control.currentCharacterState);
 
         if (!roomWasLoaded)
             AssignCurrentPosition();

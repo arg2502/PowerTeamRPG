@@ -16,7 +16,9 @@ public class Gateway : MonoBehaviour {
     // place where the player will end up upon exiting
     internal Vector2 exitPos;
 
-    float transitionDist = 5.0f;
+    float normalDist = 5.0f;
+    float doorDist = 0.5f;
+    float transitionDist;
 
     public enum Direction
     {
@@ -36,6 +38,11 @@ public class Gateway : MonoBehaviour {
 
     void Awake()
     {
+        if (gatewayType == Type.DOOR)
+            transitionDist = doorDist;
+        else
+            transitionDist = normalDist;
+
         SetPositions();
     }
 
