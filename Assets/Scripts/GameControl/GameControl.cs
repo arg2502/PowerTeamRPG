@@ -719,8 +719,9 @@ public class GameControl : MonoBehaviour {
 				heroList.Add(temp);
 			}
 
-			//put the player back where they were
-			UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
+            //put the player back where they were
+            //UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
+            LoadSceneAsync(data.currentScene);
 			// Put their position vector here if we choose
 			currentPosition = new Vector2(data.posX, data.posY);
 			taggedStatue = data.taggedStatue;
@@ -1031,7 +1032,11 @@ public class GameControl : MonoBehaviour {
         //currentCharacterState = characterControl.CharacterState.Normal;
         if (string.IsNullOrEmpty(currentScene))
             currentScene = "testScene";
-        SceneManager.LoadScene(currentScene);        
+        //SceneManager.LoadScene(currentScene);        
+        if (!ReadyForNextScene)
+            ReadyForNextScene = true;
+        else
+            GameControl.control.LoadSceneAsync(currentScene);
     }
 
     public void LoadLastSavedStatue()
@@ -1062,6 +1067,47 @@ public class GameControl : MonoBehaviour {
     {
         totalGold += gold;
     }
+
+    AsyncOperation currentOperation;
+    public bool ReadyForNextScene
+    {
+        get { return currentOperation.allowSceneActivation; }
+        set
+        {
+            currentOperation.allowSceneActivation = value;
+            if(value == true)
+            {
+                print("current progress: " + currentOperation.progress);
+                if (currentOperation.progress < 0.9f)
+                    UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
+            }
+        }
+    }
+    public void LoadScene(string _scene)
+    {
+        SceneManager.LoadScene(_scene);
+    }
+
+    public void LoadSceneAsync(string _scene, bool waitToLoad = false)
+    {
+        //print("loading called");
+        StartCoroutine(LoadAsync(_scene, waitToLoad));
+    }
+
+    IEnumerator LoadAsync(string _scene, bool waitToLoad = false)
+    {
+        currentOperation = SceneManager.LoadSceneAsync(_scene);
+        if (waitToLoad)
+            ReadyForNextScene = false;
+        else
+            UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
+        while (currentOperation.progress < 0.9f)
+        {
+            //print("loading: " + currentOperation.progress);
+            yield return null;
+        }        
+    }
+
 }
 
 //this class is where all of our data will be sent in order to be saved

@@ -50,7 +50,8 @@ public class Gateway : MonoBehaviour {
     {
         GameControl.control.AssignEntrance(gatewayName);
         GameControl.control.RecordRoom();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        GameControl.control.ReadyForNextScene = true;
     }
 
     public void SetPositions()

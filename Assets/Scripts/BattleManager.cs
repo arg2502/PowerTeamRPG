@@ -1359,6 +1359,7 @@ public class BattleManager : MonoBehaviour {
     IEnumerator FleeBattle()
     {
         DescriptionText.text = "Flee successful";
+        GameControl.control.LoadSceneAsync(GameControl.control.currentScene, true);
         yield return new WaitForSeconds(2f);
         GameControl.control.ReturnFromBattle();
     }

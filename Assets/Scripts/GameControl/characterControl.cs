@@ -77,33 +77,33 @@ public class characterControl : OverworldObject {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        // for transition between areas
-        if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
-        {
-            currentGateway = other.GetComponent<Gateway>();
-            if (currentGateway.gatewayType == Gateway.Type.DOOR)
-            {
-                if (Input.GetButtonDown("Submit"))
-                {
-                    StartCoroutine(myCamera.Fade());
-                    ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
-                }
-                else return;
-            }
+    //void OnTriggerEnter2D(Collider2D other)
+    //{
+    //    // for transition between areas
+    //    if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
+    //    {
+    //        currentGateway = other.GetComponent<Gateway>();
+    //        if (currentGateway.gatewayType == Gateway.Type.DOOR)
+    //        {
+    //            if (Input.GetButtonDown("Submit"))
+    //            {
+    //                StartCoroutine(myCamera.Fade());
+    //                ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
+    //            }
+    //            else return;
+    //        }
 
-            StartCoroutine(myCamera.Fade());
-            ExitRoom(currentGateway.transform.position, currentGateway.exitPos);            
-        }
+    //        StartCoroutine(myCamera.Fade());
+    //        ExitRoom(currentGateway.transform.position, currentGateway.exitPos);            
+    //    }
 
-        // for NPC interaction
-        if(other.GetComponent<NPCDialogue>())
-        {
-            // When we enter a trigger area for an NPC that will speak, start checking for collisions
-            CheckInRangeNPC();
-        }
-    }
+    //    // for NPC interaction
+    //    if(other.GetComponent<NPCDialogue>())
+    //    {
+    //        // When we enter a trigger area for an NPC that will speak, start checking for collisions
+    //        CheckInRangeNPC();
+    //    }
+    //}
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -120,9 +120,11 @@ public class characterControl : OverworldObject {
                 }
                 else return;
             }
-
-            StartCoroutine(myCamera.Fade());
-            ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
+            else
+            {
+                StartCoroutine(myCamera.Fade());
+                ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
+            }
         }
 
         if (other.GetComponent<NPCDialogue>())
@@ -287,7 +289,7 @@ public class characterControl : OverworldObject {
         speed = new Vector2(0f, 0f);
         //desiredSpeed = Vector2.zero;
 
-        if (GameControl.control.currentCharacterState == CharacterState.Transition && currentGateway.gatewayType != Gateway.Type.DOOR)
+        if (GameControl.control.currentCharacterState == CharacterState.Transition && currentGateway?.gatewayType != Gateway.Type.DOOR)
         {
             anim.SetBool("isMoving", true);
             anim.SetFloat("vSpeed", yIncrementTransition);
@@ -440,6 +442,9 @@ public class characterControl : OverworldObject {
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
     {
+        // Start loading next scene
+        GameControl.control.LoadSceneAsync(currentGateway.sceneName, waitToLoad: true);
+
         FindIncrementTransitionValues(startPos, endPos);
 
         // determine the desiredPos value based on the increment transition values

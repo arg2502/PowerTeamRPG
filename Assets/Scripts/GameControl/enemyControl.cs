@@ -252,7 +252,7 @@ public class enemyControl : OverworldObject {
 
     void CheckForBattle()
     {
-        if (dist <= 0.25f)
+        if (dist <= 0.25f && GameControl.control.currentCharacterState == characterControl.CharacterState.Normal)
         {
             GameControl.control.currentCharacterState = characterControl.CharacterState.Battle;
             GameControl.control.currentPosition = player.position; //record the player's position before entering battle
@@ -276,7 +276,8 @@ public class enemyControl : OverworldObject {
             //save the current room, to acheive persistency while paused
             GameControl.control.RecordRoom();
 
-            UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene"); // load the battle scene
+            //UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene"); // load the battle scene
+            GameControl.control.LoadSceneAsync("BattleScene");
         }
     }
 }
