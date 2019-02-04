@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 using System;
+using UnityEditor.Animations;
 
 public class characterControl : OverworldObject {
 
@@ -47,6 +49,10 @@ public class characterControl : OverworldObject {
     CameraController myCamera;
 
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
+
+    public enum HeroCharacter { JETHRO, COLE, ELEANOR, JOULIETTE }
+    HeroCharacter currentCharacter;
+    public List<AnimatorController> heroAnimators;
 
     // Use this for initialization
     void Start () {
@@ -284,6 +290,11 @@ public class characterControl : OverworldObject {
         {
             GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
         }
+
+        if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
+            IncreaseHero();
+        else if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") < 0)
+            DecreaseHero();
 
         sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
@@ -550,5 +561,19 @@ public class characterControl : OverworldObject {
         currentGateway.GetComponent<Gateway>().NextScene();
         currentGateway = null;
         OnDesiredPos.RemoveAllListeners();
+    }
+
+    void IncreaseHero()
+    {
+        currentCharacter++;
+        if ((int)currentCharacter > GameControl.control.heroList.Count - 1) currentCharacter = 0;
+        GetComponent<Animator>().runtimeAnimatorController = heroAnimators[(int)currentCharacter];
+    }
+
+    void DecreaseHero()
+    {
+        currentCharacter--;
+        if ((int)currentCharacter < 0) currentCharacter = (HeroCharacter)GameControl.control.heroList.Count - 1;
+        GetComponent<Animator>().runtimeAnimatorController = heroAnimators[(int)currentCharacter];
     }
 }
