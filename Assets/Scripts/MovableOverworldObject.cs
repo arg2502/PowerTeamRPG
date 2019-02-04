@@ -23,4 +23,20 @@ public class MovableOverworldObject : OverworldObject {
             sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         }
 	}
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.GetComponent<FloorSwitch>())
+        {
+            other.GetComponent<FloorSwitch>().PressSwitch();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.GetComponent<FloorSwitch>())
+        {
+            other.GetComponent<FloorSwitch>().UndoSwitch();
+        }
+    }
 }

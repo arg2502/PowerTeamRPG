@@ -68,12 +68,12 @@ public class roomControl : MonoBehaviour {
 		}
 
         // find the room's limits
-        roomLimits = new RoomLimits();
-        var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
-        roomLimits.minX = (int)tilemap.transform.position.x;
-        roomLimits.minY = (int)tilemap.transform.position.y;
-        roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
-        roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
+        //roomLimits = new RoomLimits();
+        //var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
+        //roomLimits.minX = (int)tilemap.transform.position.x;
+        //roomLimits.minY = (int)tilemap.transform.position.y;
+        //roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
+        //roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
 
 
         //create the appropriate amount of enemies
@@ -297,11 +297,13 @@ public class roomControl : MonoBehaviour {
         // find the room's limits
         roomLimits = new RoomLimits();
         var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
-        roomLimits.minX = (int)tilemap.transform.position.x;
-        roomLimits.minY = (int)tilemap.transform.position.y;
-        roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
-        roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
-        
+        if (tilemap != null)
+        {
+            roomLimits.minX = (int)tilemap.transform.position.x;
+            roomLimits.minY = (int)tilemap.transform.position.y;
+            roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
+            roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
+        }
                 
         //GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
         AssignCurrentPosition();
