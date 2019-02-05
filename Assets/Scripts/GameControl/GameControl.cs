@@ -1077,7 +1077,7 @@ public class GameControl : MonoBehaviour {
             currentOperation.allowSceneActivation = value;
             if(value == true)
             {
-                print("current progress: " + currentOperation.progress);
+                //print("current progress: " + currentOperation.progress);
                 if (currentOperation.progress < 0.9f)
                     UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
             }

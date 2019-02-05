@@ -38,7 +38,6 @@ public class roomControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
 		// convert arrays to lists
         
 		foreach(MovableOverworldObject m in FindObjectsOfType<MovableOverworldObject>())

@@ -54,7 +54,6 @@ public class NPCPathwalkControl : MovableOverworldObject {
 
 	// Use this for initialization
 	void Start () {
-
 		//Find the NPC's animator
 		anim = GetComponent<Animator>();
 
