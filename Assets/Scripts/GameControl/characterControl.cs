@@ -21,8 +21,15 @@ public class characterControl : OverworldObject {
 	private RaycastHit2D hit; //checks for collisions
 
     float moveSpeed = 0;
-    float walkSpeed = 6f;
-    float runSpeed = 9f;
+    float walkSpeed;// = 6f;
+    float runSpeed { get { return walkSpeed * 1.5f; } }//9f;
+
+    float jethroWalk = 6f;
+    float coleWalk = 6f;
+    float eleanorWalk = 6f;
+    float joulietteWalk = 8f;
+    float[] characterSpeeds;
+
     public Vector2 speed;
     public Vector2 desiredSpeed;
     //PauseMenu pm;
@@ -67,6 +74,8 @@ public class characterControl : OverworldObject {
 		//new code -------------------------------------------------
 		boxCollider = GetComponent<BoxCollider2D> ();
         OnDesiredPos = new UnityEvent();
+        characterSpeeds = new float[4] { jethroWalk, coleWalk, eleanorWalk, joulietteWalk };
+        walkSpeed = characterSpeeds[(int)currentCharacter];
 		//end new code ---------------------------------------------
 
         //canMove = false;
@@ -346,68 +355,72 @@ public class characterControl : OverworldObject {
             // If picking up or putting down an object
             if (Input.GetButtonDown("Submit"))
             {
-				//If the player is not carrying an object, check for one
-				if(!isCarrying)
-				{
-					//create a box cast specifically for picking up objects, as per Alec's request
-					Vector2 direction = lastMovement;
-					direction.Normalize ();
-					direction *= moveSpeed * Time.deltaTime;
-					hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
+                if (currentCharacter == HeroCharacter.JETHRO)
+                {
+                    //If the player is not carrying an object, check for one
+                    if (!isCarrying)
+                    {
+                        //create a box cast specifically for picking up objects, as per Alec's request
+                        Vector2 direction = lastMovement;
+                        direction.Normalize();
+                        direction *= moveSpeed * Time.deltaTime;
+                        hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
 
-					if (hit.collider != null && hit.collider.tag == "Movable")
-					{
-						//if it hits one, move the object to the position above Jethro's head and set iscarried to true
-						isCarrying = true;
-						//disable the object's collider, so it doesn't hinder movement
-						hit.collider.enabled = false;
-						//set carried object to the object we are picking up
-						carriedObject = hit.collider.GetComponent<MovableOverworldObject>();
-						carriedObject.isCarried = true; // set the object's isCarried to true
-						//Move the object to the position above player's head
-						carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
-						//make sure the object is always rendered above the player
-						carriedObject.SortingOrder = sr.sortingOrder + 1;
-					}
-				}
-				//if an object is already being carried, drop the object in the direction that jethro is facing
-				else if(isCarrying)
-				{
-					//check that the area you are facing is open enough to drop the object
-					//Start by calculating the adjusted position of player's feet (since we're placing object "on the ground")
-					Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
-					                                       (transform.position.y + boxCollider.offset.y));
-					//get the carried object's collider (to avoid calling Get component more than necessary
-					BoxCollider2D carriedCollider = carriedObject.GetComponent<BoxCollider2D>();
+                        if (hit.collider != null && hit.collider.tag == "Movable")
+                        {
+                            //if it hits one, move the object to the position above Jethro's head and set iscarried to true
+                            isCarrying = true;
+                            //disable the object's collider, so it doesn't hinder movement
+                            hit.collider.enabled = false;
+                            //set carried object to the object we are picking up
+                            carriedObject = hit.collider.GetComponent<MovableOverworldObject>();
+                            carriedObject.isCarried = true; // set the object's isCarried to true
+                                                            //Move the object to the position above player's head
+                            carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
+                            //make sure the object is always rendered above the player
+                            carriedObject.SortingOrder = sr.sortingOrder + 1;
+                        }
+                    }
+                    //if an object is already being carried, drop the object in the direction that jethro is facing
+                    else if (isCarrying)
+                    {
+                        //check that the area you are facing is open enough to drop the object
+                        //Start by calculating the adjusted position of player's feet (since we're placing object "on the ground")
+                        Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
+                                                               (transform.position.y + boxCollider.offset.y));
+                        //get the carried object's collider (to avoid calling Get component more than necessary
+                        BoxCollider2D carriedCollider = carriedObject.GetComponent<BoxCollider2D>();
 
-					//cast the collider forward from the player's adjusted position
-					hit = Physics2D.BoxCast (adjustedPosition, carriedCollider.size, 0,
-					                         lastMovement, Mathf.Abs (carriedCollider.size.x), mask);
+                        //cast the collider forward from the player's adjusted position
+                        hit = Physics2D.BoxCast(adjustedPosition, carriedCollider.size, 0,
+                                                 lastMovement, Mathf.Abs(carriedCollider.size.x), mask);
 
-					//Put the object down if clear -- this part will prob have to be edited in the future
-					//to allow for switches and holes, etc, that the object can be placed on top of
-					if(hit.collider == null){
-						//calculate how much to translate the object
-						int xMultiple = 0;
-						int yMultiple = 0;
-						//make the xMultiple either 1, 0, or -1, for directional purposes
-						if (lastMovement.x != 0 && lastMovement.x < 0) {xMultiple = -1;}
-						else if (lastMovement.x != 0 && lastMovement.x > 0) {xMultiple = 1;}
-						//make the yMultiple either 1, 0, or -1, for directional purposes
-						if (lastMovement.y != 0 && lastMovement.y < 0) {yMultiple = -1;}
-						else if (lastMovement.y != 0 && lastMovement.y > 0) {yMultiple = 1;}
+                        //Put the object down if clear -- this part will prob have to be edited in the future
+                        //to allow for switches and holes, etc, that the object can be placed on top of
+                        if (hit.collider == null)
+                        {
+                            //calculate how much to translate the object
+                            int xMultiple = 0;
+                            int yMultiple = 0;
+                            //make the xMultiple either 1, 0, or -1, for directional purposes
+                            if (lastMovement.x != 0 && lastMovement.x < 0) { xMultiple = -1; }
+                            else if (lastMovement.x != 0 && lastMovement.x > 0) { xMultiple = 1; }
+                            //make the yMultiple either 1, 0, or -1, for directional purposes
+                            if (lastMovement.y != 0 && lastMovement.y < 0) { yMultiple = -1; }
+                            else if (lastMovement.y != 0 && lastMovement.y > 0) { yMultiple = 1; }
 
-						//move the object to it's final resting place
-						carriedObject.transform.position = new Vector3(((carriedCollider.size.x + carriedCollider.offset.x) * xMultiple) + adjustedPosition.x,
-						                                               ((carriedCollider.size.y  + carriedCollider.offset.y + Math.Abs(carriedCollider.offset.y))* yMultiple) + transform.position.y);
-						//reset the object's isCarried to false
-						carriedObject.isCarried = false;
-						//reset the object's collider to enabled
-						carriedCollider.enabled = true;
-						//reset the player's isCarrying to false
-						isCarrying = false;
-					}
-				}
+                            //move the object to it's final resting place
+                            carriedObject.transform.position = new Vector3(((carriedCollider.size.x + carriedCollider.offset.x) * xMultiple) + adjustedPosition.x,
+                                                                           ((carriedCollider.size.y + carriedCollider.offset.y + Math.Abs(carriedCollider.offset.y)) * yMultiple) + transform.position.y);
+                            //reset the object's isCarried to false
+                            carriedObject.isCarried = false;
+                            //reset the object's collider to enabled
+                            carriedCollider.enabled = true;
+                            //reset the player's isCarrying to false
+                            isCarrying = false;
+                        }
+                    }
+                }
             }
 
 			//if we are carrying an object, move it to player's position
@@ -565,15 +578,19 @@ public class characterControl : OverworldObject {
 
     void IncreaseHero()
     {
+        if (isCarrying) return;
         currentCharacter++;
         if ((int)currentCharacter > GameControl.control.heroList.Count - 1) currentCharacter = 0;
         GetComponent<Animator>().runtimeAnimatorController = heroAnimators[(int)currentCharacter];
+        walkSpeed = characterSpeeds[(int)currentCharacter];
     }
 
     void DecreaseHero()
     {
+        if (isCarrying) return;
         currentCharacter--;
         if ((int)currentCharacter < 0) currentCharacter = (HeroCharacter)GameControl.control.heroList.Count - 1;
         GetComponent<Animator>().runtimeAnimatorController = heroAnimators[(int)currentCharacter];
+        walkSpeed = characterSpeeds[(int)currentCharacter];
     }
 }
