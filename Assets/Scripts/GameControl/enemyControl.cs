@@ -236,17 +236,19 @@ public class enemyControl : OverworldObject {
     {
         RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
         RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
-        if (topHit.collider == null && bottomHit.collider == null)
-        {
-            transform.Translate(speed);
-        }        
-        else
+                
+        if((topHit.collider != null && !topHit.collider.GetComponent<characterControl>())
+            || bottomHit.collider != null && !bottomHit.collider.GetComponent<characterControl>())
         {
             state = State.coolDown;
             timer = 0.0f;
             int prevDir = dir;
             while (dir == prevDir) { dir = Random.Range(0, 3); }
             speed = directions[dir] * coolDownSpeed * Time.deltaTime;
+        }
+        else
+        {
+            transform.Translate(speed);
         }
     }
 
