@@ -39,7 +39,7 @@ public class CameraController : MonoBehaviour {
 
         verticalSize = myCamera.orthographicSize;
         horizontalSize = verticalSize * Screen.width / Screen.height;
-        //transform.position = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
+        transform.position = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
         StayWithinRoomAtStart();
         
                 
@@ -62,9 +62,13 @@ public class CameraController : MonoBehaviour {
         if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
             return;
 
-        if (!outOfBoundsX)
+        if (RoomTooSmallX())
+            currentX = MidX;
+        else if (!outOfBoundsX)
             currentX = followTarget.transform.position.x;
-        if (!outOfBoundsY)
+        if (RoomTooSmallY())
+            currentY = MidY;
+        else if (!outOfBoundsY)
             currentY = followTarget.transform.position.y;
 
         targetPos = new Vector3(currentX, currentY, transform.position.z);
@@ -78,17 +82,38 @@ public class CameraController : MonoBehaviour {
         //transform.position = targetPos;
     }
 
+    float MidX { get { return (GameControl.control.currentRoom.roomLimits.minX + GameControl.control.currentRoom.roomLimits.maxX) / 2f; } }
+    float MidY { get { return (GameControl.control.currentRoom.roomLimits.minY + GameControl.control.currentRoom.roomLimits.maxY) / 2f; } }
+    bool RoomTooSmallX()
+    {
+        // horizontalSize -- radius of camera view in x direction
+        // Mathf.Abs(minX+maxX) -- the total width of the room
+        // if the diameter of the camera view is greater than the length of the room, then the entire room
+        // can horizontally fit on screen -- we don't have to move the camera
+        return (horizontalSize * 2 > Mathf.Abs(GameControl.control.currentRoom.roomLimits.minX) + Mathf.Abs(GameControl.control.currentRoom.roomLimits.maxX));
+
+    }
+    bool RoomTooSmallY()
+    {
+
+        // verticalSize -- radius of camera view in Y direction
+        // Mathf.Abs(minY+maxY) -- the total height of the room
+        // if the diameter of the camera view is greater than the height of the room, then the entire room
+        // can vertically fit on screen -- we don't have to move the camera
+        return (verticalSize * 2 > Mathf.Abs(GameControl.control.currentRoom.roomLimits.minY) + Mathf.Abs(GameControl.control.currentRoom.roomLimits.maxY));
+    }
+
     void StayWithinRoom()
     {
         //var currentPos = transform.position;
         var currentPos = followTarget.transform.position;
         var currentRoom = GameControl.control.currentRoom;
-
+        
         if (currentRoom == null) return;
 
         outOfBoundsX = false;
         outOfBoundsY = false;
-
+                
         // check left
         if (currentPos.x - horizontalSize <= currentRoom.roomLimits.minX)
         {
@@ -98,13 +123,13 @@ public class CameraController : MonoBehaviour {
         }
 
         // check right
-        if (currentPos.x + horizontalSize >= currentRoom.roomLimits.maxX)
+        else if (currentPos.x + horizontalSize >= currentRoom.roomLimits.maxX)
         {
             currentX = currentRoom.roomLimits.maxX - horizontalSize;
             targetPos = new Vector3(currentX, targetPos.y, transform.position.z);
             outOfBoundsX = true;
         }
-
+        
         // check up
         if (currentPos.y + verticalSize >= currentRoom.roomLimits.minY)
         {
@@ -114,13 +139,12 @@ public class CameraController : MonoBehaviour {
         }
 
         // check down
-        if (currentPos.y - verticalSize <= currentRoom.roomLimits.maxY)
+        else if (currentPos.y - verticalSize <= currentRoom.roomLimits.maxY)
         {
             currentY = currentRoom.roomLimits.maxY + verticalSize;
             targetPos = new Vector3(targetPos.x, currentY, transform.position.z);
             outOfBoundsY = true;
-        }
-        
+        }        
     }
 
     public void StayWithinRoomAtStart()
@@ -133,7 +157,12 @@ public class CameraController : MonoBehaviour {
         Vector3 currentPosition = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
         var currentRoom = GameControl.control.currentRoom;
 
-        if (currentPosition.x - horizontalSize <= currentRoom.roomLimits.minX)
+        if(RoomTooSmallX())
+        {
+            currentX = MidX;
+            transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
+        }
+        else if (currentPosition.x - horizontalSize <= currentRoom.roomLimits.minX)
         {
             //transform.Translate(new Vector3(horizontalSize, 0));
             currentX = currentRoom.roomLimits.minX + horizontalSize;
@@ -147,7 +176,13 @@ public class CameraController : MonoBehaviour {
             transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
             outOfBoundsX = true;
         }
-        if (currentPosition.y + verticalSize >= currentRoom.roomLimits.minY)
+
+        if(RoomTooSmallY())
+        {
+            currentY = MidY;
+            transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+        }
+        else if (currentPosition.y + verticalSize >= currentRoom.roomLimits.minY)
         {
             //transform.Translate(new Vector3(0, -verticalSize));
             currentY = currentRoom.roomLimits.minY - verticalSize;
