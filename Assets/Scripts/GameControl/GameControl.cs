@@ -124,6 +124,9 @@ public class GameControl : MonoBehaviour {
     characterControl.CharacterState prevState;
     public characterControl.CharacterState PrevState { get { return prevState; } set { prevState = value; } }
 
+    public characterControl.HeroCharacter currentCharacter;
+    public int currentCharacterInt { get { return (int)currentCharacter; } }
+
     // Current NPC
     public NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
     public NPCPathwalkControl CurrentNPCPathwalk { get { return currentNPC.GetComponentInParent<NPCPathwalkControl>(); } }

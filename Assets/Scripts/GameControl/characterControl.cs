@@ -58,7 +58,6 @@ public class characterControl : OverworldObject {
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
 
     public enum HeroCharacter { JETHRO, COLE, ELEANOR, JOULIETTE }
-    HeroCharacter currentCharacter;
     public List<AnimatorController> heroAnimators;
 
     // Use this for initialization
@@ -75,7 +74,7 @@ public class characterControl : OverworldObject {
 		boxCollider = GetComponent<BoxCollider2D> ();
         OnDesiredPos = new UnityEvent();
         characterSpeeds = new float[4] { jethroWalk, coleWalk, eleanorWalk, joulietteWalk };
-        walkSpeed = characterSpeeds[(int)currentCharacter];
+        ChangeHero();
 		//end new code ---------------------------------------------
 
         //canMove = false;
@@ -355,7 +354,7 @@ public class characterControl : OverworldObject {
             // If picking up or putting down an object
             if (Input.GetButtonDown("Submit"))
             {
-                if (currentCharacter == HeroCharacter.JETHRO)
+                if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
                 {
                     //If the player is not carrying an object, check for one
                     if (!isCarrying)
@@ -579,18 +578,22 @@ public class characterControl : OverworldObject {
     void IncreaseHero()
     {
         if (isCarrying) return;
-        currentCharacter++;
-        if ((int)currentCharacter > GameControl.control.heroList.Count - 1) currentCharacter = 0;
-        GetComponent<Animator>().runtimeAnimatorController = heroAnimators[(int)currentCharacter];
-        walkSpeed = characterSpeeds[(int)currentCharacter];
+        GameControl.control.currentCharacter++;
+        if (GameControl.control.currentCharacterInt > GameControl.control.heroList.Count - 1) GameControl.control.currentCharacter = 0;
+        ChangeHero();
     }
 
     void DecreaseHero()
     {
         if (isCarrying) return;
-        currentCharacter--;
-        if ((int)currentCharacter < 0) currentCharacter = (HeroCharacter)GameControl.control.heroList.Count - 1;
-        GetComponent<Animator>().runtimeAnimatorController = heroAnimators[(int)currentCharacter];
-        walkSpeed = characterSpeeds[(int)currentCharacter];
+        GameControl.control.currentCharacter--;
+        if (GameControl.control.currentCharacterInt < 0) GameControl.control.currentCharacter = (HeroCharacter)GameControl.control.heroList.Count - 1;
+        ChangeHero();
+    }
+
+    void ChangeHero()
+    {
+        GetComponent<Animator>().runtimeAnimatorController = heroAnimators[GameControl.control.currentCharacterInt];
+        walkSpeed = characterSpeeds[GameControl.control.currentCharacterInt];
     }
 }
