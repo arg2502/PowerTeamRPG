@@ -396,7 +396,7 @@ public class characterControl : OverworldObject {
 
                         //Put the object down if clear -- this part will prob have to be edited in the future
                         //to allow for switches and holes, etc, that the object can be placed on top of
-                        if (hit.collider == null)
+                        if (hit.collider == null || hit.collider.GetComponentInChildren<Firewall>())
                         {
                             //calculate how much to translate the object
                             int xMultiple = 0;

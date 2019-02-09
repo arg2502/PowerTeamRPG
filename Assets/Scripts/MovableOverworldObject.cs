@@ -10,6 +10,11 @@ public class MovableOverworldObject : OverworldObject {
     private float objectWeight;
     public float ObjectWeight { get { return objectWeight; } }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        print("movable collision");
+    }
+
     void Start()
     {		
         base.Start();
