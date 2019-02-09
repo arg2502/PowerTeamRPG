@@ -8,6 +8,19 @@ public class OverworldObject : MonoBehaviour {
     public bool canMove = true;
     public Vector3 offset = new Vector3(256.0f, 0.0f, 0.0f); // offset for stuck enemies, default: right
 	public int sortingOffset; //mainly for multi-object prefabs
+
+    // weight variables -- used only as references throughout objects (movables/switches/etc.)
+    public enum Weight { NORMAL, LIGHT, HEAVY, CUSTOM }
+    public Weight weightClass;
+    // NOT SET IN STONE -- CAN BE CHANGED ONCE WE FIGURE OUT WHAT WE WANT TO DO WITH THEM
+    // CURRENTLY
+    // 3 lights = 1 normal
+    // 5 lights = 1 heavy 
+    // 2 normals = ~1 heavy   
+    protected float LightWeight { get { return 1f; } }
+    protected float NormalWeight { get { return 3f; } }
+    protected float HeavyWeight { get { return 5f; } }
+
 	// Use this for initialization
 	protected void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
