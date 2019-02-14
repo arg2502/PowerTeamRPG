@@ -9,12 +9,7 @@ public class MovableOverworldObject : OverworldObject {
     public float customWeight = 0f;
     private float objectWeight;
     public float ObjectWeight { get { return objectWeight; } }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        print("movable collision");
-    }
-
+    
     void Start()
     {		
         base.Start();
@@ -35,8 +30,6 @@ public class MovableOverworldObject : OverworldObject {
 
 	// Update is called once per frame
 	void Update () {
-		//GetComponent<SpriteRenderer>().enabled = isActivated; 
-		//GetComponent<BoxCollider2D> ().enabled = isActivated;
 		if (isActivated && !isCarried) // this pertains to whether or not a switch has caused the object to appear
         {
             //gameObject.SetActive(true);
