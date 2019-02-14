@@ -42,6 +42,7 @@ public class characterControl : OverworldObject {
 
 	MovableOverworldObject carriedObject;
 	bool isCarrying = false;
+    bool canCarry = true;
 
     Animator anim;
 
@@ -152,6 +153,11 @@ public class characterControl : OverworldObject {
             if(GameControl.control.currentNPC)
                 TalkToNPC();
         }
+
+        if(other.GetComponent<Firewall>())
+        {
+            canCarry = false;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -160,6 +166,11 @@ public class characterControl : OverworldObject {
         if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
         {
             ResetCurrentNPC();
+        }
+
+        if(collision.GetComponent<Firewall>())
+        {
+            canCarry = true;
         }
     }
 
@@ -357,7 +368,7 @@ public class characterControl : OverworldObject {
                 if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
                 {
                     //If the player is not carrying an object, check for one
-                    if (!isCarrying)
+                    if (!isCarrying && canCarry)
                     {
                         //create a box cast specifically for picking up objects, as per Alec's request
                         Vector2 direction = lastMovement;
