@@ -40,9 +40,13 @@ public class characterControl : OverworldObject {
 
     //public LayerMask movableMask;
 
+    // Jethro -- Carrying
 	MovableOverworldObject carriedObject;
 	bool isCarrying = false;
     bool canCarry = true;
+
+    // Jouliette -- Zap
+    float zapRadius = 3f;
 
     Animator anim;
 
@@ -362,9 +366,10 @@ public class characterControl : OverworldObject {
 				Move (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
             }
 
-            // If picking up or putting down an object
+            // special action
             if (Input.GetButtonDown("Submit"))
             {
+                // If picking up or putting down an object
                 if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
                 {
                     //If the player is not carrying an object, check for one
@@ -431,7 +436,20 @@ public class characterControl : OverworldObject {
                         }
                     }
                 }
-            }
+                else if (GameControl.control.currentCharacter == HeroCharacter.JOULIETTE)
+                {
+                    //print("ZAP");
+                    var hits = Physics2D.CircleCastAll(transform.position, zapRadius, Vector2.zero);
+                    foreach (var h in hits)
+                    {
+                        if(h.collider.GetComponent<Generator>())
+                        {
+                            h.collider.GetComponent<Generator>().ActivateGenerator();
+                        }
+                    }
+                        
+                }
+            }            
 
 			//if we are carrying an object, move it to player's position
 			if(isCarrying)
