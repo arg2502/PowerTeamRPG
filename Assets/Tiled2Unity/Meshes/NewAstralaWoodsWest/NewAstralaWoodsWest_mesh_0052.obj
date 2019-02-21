@@ -1,0 +1,43 @@
+﻿# Tiled2Unity generated file. Do not modify by hand.
+# Wavefront file for 'NewAstralaWoodsWest_mesh_0052.obj'
+
+# Vertices (Count = 16)
+v -429 -135 0
+v -430 -135 0
+v -430 -134 0
+v -429 -134 0
+v -429 -136 0
+v -430 -136 0
+v -430 -135 0
+v -429 -135 0
+v -429 -137 0
+v -430 -137 0
+v -430 -136 0
+v -429 -136 0
+v -429 -138 0
+v -430 -138 0
+v -430 -137 0
+v -429 -137 0
+
+# Texture cooridinates (Count = 8)
+vt 0.7794613 0.8358586
+vt 0.8872054 0.8358586
+vt 0.8872054 0.9974747
+vt 0.7794613 0.9974747
+vt 0.7794613 0.669192
+vt 0.8872054 0.669192
+vt 0.8872054 0.8308081
+vt 0.7794613 0.8308081
+
+# Normal
+vn 0 0 -1
+
+# Mesh description
+g NewAstralaWoodsWest_mesh_0052
+
+# Faces
+f 1/1/1 2/2/1 3/3/1 4/4/1
+f 5/5/1 6/6/1 7/7/1 8/8/1
+f 9/5/1 10/6/1 11/7/1 12/8/1
+f 13/5/1 14/6/1 15/7/1 16/8/1
+
