@@ -16,20 +16,25 @@ public class MagicTileTracker : MonoBehaviour {
 
     public void CheckTiles()
     {
+        bool wasPuzzleSolved = true;
+
         foreach(var t in tiles)
         {
             if (!t.IsOn)
-                return;
+            {
+                wasPuzzleSolved = false;
+                break;
+            }                
         }
 
-        SolveTiles();
+        SolveTiles(wasPuzzleSolved);
     }
 
-    void SolveTiles()
+    void SolveTiles(bool wasPuzzleSolved)
     {
         foreach(var t in tiles)
         {
-            t.SolveTile();
+            t.SolveTile(wasPuzzleSolved);
         }
     }
 }

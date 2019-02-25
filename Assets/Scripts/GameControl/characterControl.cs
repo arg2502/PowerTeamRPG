@@ -45,6 +45,10 @@ public class characterControl : OverworldObject {
 	bool isCarrying = false;
     bool canCarry = true;
 
+    // Eleanor -- Hidden
+    List<HiddenObject> hiddenObjFound;
+    float hiddenRadius = 20f;
+
     // Jouliette -- Zap
     float zapRadius = 3f;
 
@@ -347,6 +351,41 @@ public class characterControl : OverworldObject {
         }
 
 
+        if(Input.GetButtonDown("Submit"))
+        {
+            if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR)
+            {
+                if (canMove)
+                {
+                    hiddenObjFound = new List<HiddenObject>();
+
+                    // For now, I'll do a large overlap circle to detect any HiddenObjects
+                    // within camera view (not precise, but around there)
+                    // This is probably not the best way, but we'll see what happens
+                    var hits = Physics2D.OverlapCircleAll(transform.position, hiddenRadius);
+                    foreach (var h in hits)
+                    {
+                        if (h.GetComponent<HiddenObject>())
+                            hiddenObjFound.Add(h.GetComponent<HiddenObject>());
+                    }
+                    if (hiddenObjFound.Count > 0)
+                    {
+                        foreach (var obj in hiddenObjFound)
+                            obj.Show();
+                    }
+
+                    canMove = false;
+                }
+                else
+                {
+                    foreach (var obj in hiddenObjFound)
+                        obj.Hide();
+
+                    hiddenObjFound.Clear();
+                    canMove = true;
+                }
+            }
+        }
 
         // STATE == NORMAL
 		//if (canMove) {
@@ -436,15 +475,16 @@ public class characterControl : OverworldObject {
                         }
                     }
                 }
+                
                 else if (GameControl.control.currentCharacter == HeroCharacter.JOULIETTE)
                 {
                     //print("ZAP");
-                    var hits = Physics2D.CircleCastAll(transform.position, zapRadius, Vector2.zero);
+                    var hits = Physics2D.OverlapCircleAll(transform.position, zapRadius);
                     foreach (var h in hits)
                     {
-                        if(h.collider.GetComponent<Generator>())
+                        if(h.GetComponent<Generator>())
                         {
-                            h.collider.GetComponent<Generator>().ActivateGenerator();
+                            h.GetComponent<Generator>().ActivateGenerator();
                         }
                     }
                         
@@ -607,6 +647,7 @@ public class characterControl : OverworldObject {
     void IncreaseHero()
     {
         if (isCarrying) return;
+        if (!canMove) return;
         GameControl.control.currentCharacter++;
         if (GameControl.control.currentCharacterInt > GameControl.control.heroList.Count - 1) GameControl.control.currentCharacter = 0;
         ChangeHero();
@@ -614,6 +655,8 @@ public class characterControl : OverworldObject {
 
     void DecreaseHero()
     {
+        if (GameControl.control.currentCharacterState != CharacterState.Normal) return;
+        if (!canMove) return;
         if (isCarrying) return;
         GameControl.control.currentCharacter--;
         if (GameControl.control.currentCharacterInt < 0) GameControl.control.currentCharacter = (HeroCharacter)GameControl.control.heroList.Count - 1;

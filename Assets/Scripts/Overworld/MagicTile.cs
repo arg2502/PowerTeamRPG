@@ -21,17 +21,14 @@ public class MagicTile : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!isSolved)
-        {
-            isOn = !isOn;
-            tracker.CheckTiles();
-            UpdateSpriteState();
-        }
+        isOn = !isOn;        
+        tracker.CheckTiles();
+        UpdateSpriteState();        
     }
 
-    public void SolveTile()
+    public void SolveTile(bool wasPuzzleSolved)
     {
-        isSolved = true;
+        isSolved = wasPuzzleSolved;
         UpdateSpriteState();
     }
 
