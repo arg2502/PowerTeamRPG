@@ -93,6 +93,18 @@ public class BattleManager : MonoBehaviour {
 
     public GameObject hpBarPrefab;
 
+    [Header("Sound Bank")]
+    // music
+    public AudioClip battleIntro;
+    public AudioClip battleLoop;
+        
+    // sfx
+    public AudioClip sfx_hit;
+    public AudioClip sfx_block;
+    public AudioClip sfx_miss;
+    public AudioClip sfx_menuNav;
+    public AudioClip sfx_menuSelect;
+    
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
     public List<string> TEST_listOfEnemies;
@@ -977,23 +989,23 @@ public class BattleManager : MonoBehaviour {
                 case Denigen.AttackType.NORMAL:
                     message = "";
                     target.Flinch();
-                    AudioManager.instance.PlayHit();
+                    //AudioManager.instance.PlayHit();
                     ShowStrikeEffect(target);
                     break;
                 case Denigen.AttackType.BLOCKED:
                     message = target.DenigenName + " blocked the attack\n";
                     StartCoroutine(target.PlayBlockAnimation());
-                    AudioManager.instance.PlayBlock();
+                    //AudioManager.instance.PlayBlock();
                     break;
                 case Denigen.AttackType.CRIT:
                     message = attacker.DenigenName + " hit a weak spot!\n";
                     target.Flinch();
-                    AudioManager.instance.PlayHit();
+                    //AudioManager.instance.PlayHit();
                     ShowStrikeEffect(target);
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";
-                    AudioManager.instance.PlayMiss();
+                    //AudioManager.instance.PlayMiss();
                     break;
                 case Denigen.AttackType.DODGED:
                     message = target.DenigenName + " dodged the attack\n";

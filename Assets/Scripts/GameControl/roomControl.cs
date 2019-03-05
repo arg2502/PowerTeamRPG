@@ -36,6 +36,10 @@ public class roomControl : MonoBehaviour {
     }
     bool roomWasLoaded;
 
+    [Header("Sound Bank")]
+    public AudioClip music_start;
+    public AudioClip music_loop;
+
 	// Use this for initialization
 	void Start () {
 		// convert arrays to lists
@@ -276,6 +280,7 @@ public class roomControl : MonoBehaviour {
 
         if (!roomWasLoaded)
             AssignCurrentPosition();
+
     }
 
     public void SetEnemiesToNotBattled()
@@ -306,6 +311,9 @@ public class roomControl : MonoBehaviour {
                 
         //GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
         AssignCurrentPosition();
+        
+        // start music
+        GameControl.audioManager.StartMusic(music_loop);
     }
 
     public Gateway AssignEntrance(string exitedGatewayName)

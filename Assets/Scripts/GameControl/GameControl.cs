@@ -21,6 +21,7 @@ public class GameControl : MonoBehaviour {
     public static UIManager UIManager;
     public static SkillTreeManager skillTreeManager;
     public static ItemManager itemManager;
+    public static AudioManager audioManager;
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
@@ -133,6 +134,9 @@ public class GameControl : MonoBehaviour {
 	public StationaryNPCControl CurrentStationaryNPC { get { return currentNPC.GetComponentInParent<StationaryNPCControl>(); } }
     public ShopKeeperDialogue CurrentShopkeeper { get { return currentNPC.GetComponent<ShopKeeperDialogue>(); } }
 
+    public AudioClip battleIntro;
+    public AudioClip battleLoop;
+
     //awake gets called before start
     void Awake () {
 		if (control == null)
@@ -148,6 +152,8 @@ public class GameControl : MonoBehaviour {
             UIManager = new UIManager();
             skillTreeManager = new SkillTreeManager();
             itemManager = new ItemManager();
+            audioManager = GetComponentInChildren<AudioManager>();
+            audioManager.Init();
             
 			totalGold = 0;
 			totalKeys = 0;

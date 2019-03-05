@@ -278,6 +278,8 @@ public class enemyControl : OverworldObject {
             //save the current room, to acheive persistency while paused
             GameControl.control.RecordRoom();
 
+            GameControl.audioManager.StartMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, fade: false);
+
             //UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene"); // load the battle scene
             GameControl.control.LoadSceneAsync("BattleScene");
         }
