@@ -83,16 +83,17 @@ public class roomControl : MonoBehaviour {
         if (!GameControl.control.isPaused)
 		{
             // TEMP COMMENTED
-			//for (int i = 0; i < numOfEnemies; i++)
-			//{
-			//	GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-   //             temp.name = "EnemyControl";
-			//	temp.transform.position = new Vector2(Random.Range(-16.0f, 16.0f), Random.Range(-16.0f, 16.0f)); // hopefully we will have a better way of placing enemies
-			//	if(temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
-			//	if(temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
-			//	enemies.Add(temp.GetComponent<enemyControl>());
-			//}
-		}
+            for (int i = 0; i < numOfEnemies; i++)
+            {
+                GameObject temp = GameObject.Instantiate(enemyControlPrefab);
+                temp.name = "EnemyControl";
+                //temp.transform.position = new Vector2(Random.Range(-16.0f, 16.0f), Random.Range(-16.0f, 16.0f)); // hopefully we will have a better way of placing enemies
+                temp.transform.position = new Vector2(Random.Range(roomLimits.minX, roomLimits.maxX), Random.Range(roomLimits.minY, roomLimits.maxY));
+                if (temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
+                if (temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
+                enemies.Add(temp.GetComponent<enemyControl>());
+            }
+        }
 		/*else if (GameControl.control.isPaused)
         {
             for (int i = 0; i < numOfEnemiesGameControl.control.enemyPos.Count; i++)
