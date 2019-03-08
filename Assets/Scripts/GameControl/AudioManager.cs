@@ -154,33 +154,7 @@ public class AudioManager : MonoBehaviour{
         source.volume = 0f;
         source.Stop();
     }
-    /*public void PlayHit()
-    {
-        PlaySFX(sfx_hit);
-    }
-
-    public void PlayBlock()
-    {
-        PlaySFX(sfx_block);
-    }
-
-    public void PlayMiss()
-    {
-        PlaySFX(sfx_miss, randomPitch: false);
-    }
-
-    public void PlayMenuNav()
-    {
-        // only play the navigation if the select sound is not playing
-        if (!IsClipPlaying(sfx_menuSelect))
-            PlaySFX(sfx_menuNav, randomPitch: false);
-    }
-
-    public void PlayMenuSelect()
-    {
-        PlaySFX(sfx_menuSelect, randomPitch: false);
-    }*/
-    
+        
     /// <summary>
     /// Checks all audio sources to see if it's currently playing the passed in audio clip.
     /// </summary>

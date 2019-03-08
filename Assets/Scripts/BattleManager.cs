@@ -989,23 +989,23 @@ public class BattleManager : MonoBehaviour {
                 case Denigen.AttackType.NORMAL:
                     message = "";
                     target.Flinch();
-                    //AudioManager.instance.PlayHit();
+                    PlayHit();
                     ShowStrikeEffect(target);
                     break;
                 case Denigen.AttackType.BLOCKED:
                     message = target.DenigenName + " blocked the attack\n";
                     StartCoroutine(target.PlayBlockAnimation());
-                    //AudioManager.instance.PlayBlock();
+                    PlayBlock();
                     break;
                 case Denigen.AttackType.CRIT:
                     message = attacker.DenigenName + " hit a weak spot!\n";
                     target.Flinch();
-                    //AudioManager.instance.PlayHit();
+                    PlayHit();
                     ShowStrikeEffect(target);
                     break;
                 case Denigen.AttackType.MISS:
                     message = attacker.DenigenName + " missed\n";
-                    //AudioManager.instance.PlayMiss();
+                    PlayMiss();
                     break;
                 case Denigen.AttackType.DODGED:
                     message = target.DenigenName + " dodged the attack\n";
@@ -1056,7 +1056,7 @@ public class BattleManager : MonoBehaviour {
 				messagesToDisplay.Add (target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!");
 				target.HealedStatusEffect = DenigenData.Status.normal;
 			}
-            //AudioManager.instance.PlayHit();
+            PlayHit();
         }            
         else if (target.CalculatedDamage >= 0)
         {
@@ -1439,6 +1439,34 @@ public class BattleManager : MonoBehaviour {
     public void SetMenuState(MenuState state)
     {
         menuState = state;
+    }
+
+    // SFX
+    public void PlayHit()
+    {
+        GameControl.audioManager.PlaySFX(sfx_hit);
+    }
+
+    public void PlayBlock()
+    {
+        GameControl.audioManager.PlaySFX(sfx_block);
+    }
+
+    public void PlayMiss()
+    {
+        GameControl.audioManager.PlaySFX(sfx_miss, randomPitch: false);
+    }
+
+    public void PlayMenuNav()
+    {
+        // only play the navigation if the select sound is not playing
+        if (!GameControl.audioManager.IsClipPlaying(sfx_menuSelect))
+            GameControl.audioManager.PlaySFX(sfx_menuNav, randomPitch: false);
+    }
+
+    public void PlayMenuSelect()
+    {
+        GameControl.audioManager.PlaySFX(sfx_menuSelect, randomPitch: false);
     }
 
 }
