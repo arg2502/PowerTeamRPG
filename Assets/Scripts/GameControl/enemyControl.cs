@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class enemyControl : OverworldObject {
+public class enemyControl : MovableOverworldObject {
 
     //attributes
     float moveSpeed = 0;

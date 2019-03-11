@@ -1,0 +1,13 @@
+item name	emotion	comment
+Lesser Restorative		No matter how many of those you drink, eventually we all succumb to the Great Sleep.
+Restorative		No matter how many of those you drink, eventually we all succumb to the Great Sleep.
+Gratuitous Restorative		No matter how many of those you drink, eventually we all succumb to the Great Sleep.
+Terminal Restorative		Don't pay any attention to the label, I brewed that one myself.
+Lesser Elixir		No amount of elixir will make up for your obvious lack of talent...
+Elixir		No amount of elixir will make up for your obvious lack of talent...
+Gratuitous Elixir		No amount of elixir will make up for your obvious lack of talent...
+Terminal Elixir		Don't pay any attention to the label, I got the recipe from Brewers Weekly.
+Linament	SAD	I think the putrid smell of those linaments is what drove my wife away...
+Tincture		I just drink those for the alcohol content.
+Copper Tonic	ANGRY	Yeah, I had a feeling you'd like that. You exude that new-age, health-conscious vibe.
+Strengthening Draught	SAD	Unfortunately, those do not build muscle-mass. Believe me, I tried.
