@@ -60,22 +60,25 @@ public class NPCDialogue : MonoBehaviour {
 
         if(!string.IsNullOrEmpty(currentConversation.actionName))
         {
-            Invoke(currentConversation.actionName, 0f);
+            GetComponentInParent<NPCObject>().PostDialogueInvoke(currentConversation.actionName);
+            //Invoke(currentConversation.actionName, 0f);
         }
-        
+
         // At the end of the dialogue, set the NPC's walking method back to normal
         // ...might not be the best place for this, as the NPCPathwalkControl function that's called
         // at the start of the conversation is called in characterControl, but that's because that 
         // function needs a characterControl variable
         // plus this location kinda makes sense...
-        if (GetComponentInParent<NPCPathwalkControl>())
-            GetComponentInParent<NPCPathwalkControl>().BackToNormal();
-		else if (GetComponentInParent<StationaryNPCControl>())
-			GetComponentInParent<StationaryNPCControl>().BackToNormal();
+        //      if (GetComponentInParent<NPCPathwalkControl>())
+        //          GetComponentInParent<NPCPathwalkControl>().BackToNormal();
+        //else if (GetComponentInParent<StationaryNPCControl>())
+        //	GetComponentInParent<StationaryNPCControl>().BackToNormal();
+
+        GetComponentInParent<NPCObject>().BackToNormal();
     }
 
-    void TestFunction()
-    {
-        print("TEST FUNCTION BABY");
-    }
+    //void TestFunction()
+    //{
+    //    print("TEST FUNCTION BABY");
+    //}
 }

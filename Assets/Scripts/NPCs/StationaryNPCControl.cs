@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationaryNPCControl : OverworldObject {
+public class StationaryNPCControl : NPCObject {
 
 	Animator anim;
 
@@ -54,7 +54,7 @@ public class StationaryNPCControl : OverworldObject {
 		anim.SetFloat("lastHSpeed", directionToFace.x);
 		anim.SetFloat("lastVSpeed", directionToFace.y);
 	}
-	public void BackToNormal()
+	public override void BackToNormal()
 	{
 		canMove = true;
 		currentState = State.idle;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCPathwalkControl : MovableOverworldObject {
+public class NPCPathwalkControl : NPCObject {
 
 	Animator anim;
 	
@@ -366,7 +366,7 @@ public class NPCPathwalkControl : MovableOverworldObject {
         anim.SetFloat("lastHSpeed", lastMovement.x);
         anim.SetFloat("lastVSpeed", lastMovement.y);
     }
-    public void BackToNormal()
+    public override void BackToNormal()
     {
         canMove = true;
         walkingState = prevState;
