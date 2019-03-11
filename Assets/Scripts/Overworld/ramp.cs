@@ -15,6 +15,12 @@ public class ramp : MonoBehaviour {
 		}
 	}
 
+	void OnTriggerStay2D (Collider2D _other){
+		if (_other.gameObject.GetComponent<characterControl> () != null) {
+			_other.gameObject.GetComponent<characterControl> ().onRamp = true;
+		}
+	}
+
 	void OnTriggerExit2D (Collider2D _other){
 		if (_other.gameObject.GetComponent<characterControl> () != null) {
 			_other.gameObject.GetComponent<characterControl> ().onRamp = false;

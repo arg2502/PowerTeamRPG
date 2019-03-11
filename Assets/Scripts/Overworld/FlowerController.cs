@@ -41,19 +41,27 @@ public class FlowerController : MonoBehaviour {
 		inPosition = true;
 		if (_other.transform.position.x >= this.transform.position.x &&
 		    this.transform.position.x > originalPos.x - maxDisplacement) {
-			this.transform.position = new Vector2((transform.position.x - moveSpeed * Time.deltaTime), transform.position.y);
+			if(this.transform.position.x > _other.bounds.center.x - _other.bounds.extents.x){
+				this.transform.position = new Vector2((transform.position.x - moveSpeed * Time.deltaTime), transform.position.y);
+			}
 		}
 		else if (_other.transform.position.x <= this.transform.position.x &&
 		    this.transform.position.x < originalPos.x + maxDisplacement) {
-			this.transform.position = new Vector2((transform.position.x + moveSpeed * Time.deltaTime), transform.position.y);
+			if(this.transform.position.x < _other.bounds.center.x + _other.bounds.extents.x){
+				this.transform.position = new Vector2((transform.position.x + moveSpeed * Time.deltaTime), transform.position.y);
+			}
 		}
 		if (_other.transform.position.y >= this.transform.position.y + collisionOffset &&
 		    this.transform.position.y > originalPos.y - maxDisplacement) {
-			this.transform.position = new Vector2(transform.position.x, (transform.position.y - moveSpeed * Time.deltaTime));
+			if(this.transform.position.y > _other.bounds.center.y - _other.bounds.extents.y){
+				this.transform.position = new Vector2(transform.position.x, (transform.position.y - moveSpeed * Time.deltaTime));
+			}
 		}
 		else if (_other.transform.position.y <= this.transform.position.y + collisionOffset &&
 		         this.transform.position.y < originalPos.y + maxDisplacement) {
-			this.transform.position = new Vector2(transform.position.x, (transform.position.y + moveSpeed * Time.deltaTime));
+			if(this.transform.position.y < _other.bounds.center.y + _other.bounds.extents.y){
+				this.transform.position = new Vector2(transform.position.x, (transform.position.y + moveSpeed * Time.deltaTime));
+			}
 		}
 	}
 
