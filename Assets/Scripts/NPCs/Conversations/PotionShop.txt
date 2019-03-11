@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses/actions
+	SAD	Oh, great, a customer... How could today get any worse?	Buy[Buy]_Sell[Sell]_Never mind[1]
+	SAD	I think the fumes from these potions are prolonging my life... I need a new job.	
