@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class MorttimerStatue : NPCObject
 {
-
     //Used to change the statue's orientation
     public bool flip = false;
     public bool side = false;

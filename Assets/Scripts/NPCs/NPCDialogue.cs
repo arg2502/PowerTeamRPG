@@ -60,8 +60,8 @@ public class NPCDialogue : MonoBehaviour {
 
         if(!string.IsNullOrEmpty(currentConversation.actionName))
         {
-            GetComponentInParent<NPCObject>().PostDialogueInvoke(currentConversation.actionName);
-            //Invoke(currentConversation.actionName, 0f);
+            //GetComponentInParent<NPCObject>().PostDialogueInvoke(currentConversation.actionName);
+            Invoke(currentConversation.actionName, 0f);
         }
 
         // At the end of the dialogue, set the NPC's walking method back to normal

@@ -10,11 +10,13 @@ public class AudioManager : MonoBehaviour{
 
     List<AudioSource> source_MUS;    
     List<AudioSource> source_SFX;
-
+    
     AudioSource currentMusic = null;
 
     float fadeOutRate = 5f;
     float fadeInRate = 1.5f;
+    bool fadingOut = false;
+    bool fadingIn = false;    
     
     public void Init () {
         // instantiating music source obj
@@ -27,26 +29,28 @@ public class AudioManager : MonoBehaviour{
         source_SFX = new List<AudioSource>();
         foreach (var a in sfxList)
             source_SFX.Add(a);
-
+        
     }
 
-    public void StartMusic(AudioClip mainClip) { private_StartMusic(mainClip, null, true, true); }
-    public void StartMusic(AudioClip introClip, AudioClip loopClip) { private_StartMusic(introClip, loopClip, true, true); }
-    public void StartMusic(AudioClip mainClip, bool fadeOut) { private_StartMusic(mainClip, null, fadeOut, true); }
-    public void StartMusic(AudioClip introClip, AudioClip mainClip, bool fadeOut) { private_StartMusic(introClip, mainClip, fadeOut, true); }
-    public void StartMusic(AudioClip mainClip, bool fadeOut, bool fadeIn) { private_StartMusic(mainClip, null, fadeOut, fadeIn); }
-    public void StartMusic(AudioClip introClip, AudioClip mainClip, bool fadeOut, bool fadeIn) { private_StartMusic(introClip, mainClip, fadeOut, fadeIn); }
+    public void StartMusic(AudioClip mainClip) { private_StartMusic(mainClip, null, true, true, false); }
+    public void StartMusic(AudioClip introClip, AudioClip loopClip) { private_StartMusic(introClip, loopClip, true, true, false); }
+    public void StartMusic(AudioClip mainClip, bool fadeOut) { private_StartMusic(mainClip, null, fadeOut, true, false); }
+    public void StartMusic(AudioClip introClip, AudioClip mainClip, bool fadeOut) { private_StartMusic(introClip, mainClip, fadeOut, true, false); }
+    public void StartMusic(AudioClip mainClip, bool fadeOut, bool fadeIn) { private_StartMusic(mainClip, null, fadeOut, fadeIn, false); }
+    public void StartMusic(AudioClip introClip, AudioClip mainClip, bool fadeOut, bool fadeIn) { private_StartMusic(introClip, mainClip, fadeOut, fadeIn, false); }
+    public void StartPausedMusic(AudioClip mainClip) { private_StartMusic(mainClip, null, true, true, true); }
 
-    void private_StartMusic(AudioClip clip, AudioClip clip2 = null, bool fadeOut = true, bool fadeIn = true)
+    void private_StartMusic(AudioClip clip, AudioClip clip2 = null, bool fadeOut = true, bool fadeIn = true, bool pause = false)
     {
         // if current music is null, there is nothing to fade out
         if(currentMusic != null)
         {
             // FADE OUT CALL HERE
             if (fadeOut)
-                StartCoroutine(FadeOut(currentMusic));
+                StartCoroutine(FadeOut(currentMusic, pause));
             else
                 currentMusic.Stop();
+            
         }
 
         // if clip2 is not null then that means we have an intro clip as well
@@ -75,7 +79,7 @@ public class AudioManager : MonoBehaviour{
         PlayMusic(loopClip, true, false);
     }
 
-    AudioSource PlayMusic(AudioClip clip, bool isLooped = true, bool fade = true)
+    AudioSource PlayMusic(AudioClip clip, bool isLooped = true, bool fade = true, bool pause = false)
     {
         var curMus = PlaySound(source_MUS, clip, isLooped, false, fade);
         currentMusic = curMus;
@@ -87,7 +91,7 @@ public class AudioManager : MonoBehaviour{
         return PlaySound(source_SFX, clip, false, randomPitch);
     }
 
-    AudioSource PlaySound(List<AudioSource> sources, AudioClip clip, bool isLooped, bool randomPitch = true, bool fade = false)
+    AudioSource PlaySound(List<AudioSource> sources, AudioClip clip, bool isLooped, bool randomPitch = true, bool fade = false, bool pause = false)
     {
         var pitchRandom = 1f;
         if (randomPitch)
@@ -103,7 +107,7 @@ public class AudioManager : MonoBehaviour{
 
         for (int i = 0; i < sources.Count; i++)
         {
-            if (!sources[i].isPlaying)
+            if (sources[i].clip == clip || sources[i].time == 0) //!sources[i].isPlaying)
             {
                 sourceIndex = i;
                 break;
@@ -120,7 +124,7 @@ public class AudioManager : MonoBehaviour{
         sources[sourceIndex].volume = 1f;
         if (fade)
         {
-            StartCoroutine(FadeIn(sources[sourceIndex]));
+            StartCoroutine(FadeIn(sources[sourceIndex], pause));
         }
         else
         {
@@ -130,10 +134,17 @@ public class AudioManager : MonoBehaviour{
         return sources[sourceIndex];
     }
 
-    IEnumerator FadeIn(AudioSource source)
+    IEnumerator FadeIn(AudioSource source, bool pause = false)
     {
+        if (fadingOut) yield break;
+        fadingIn = true;
+        // ADD SOMETHING TO THE FADING CHECK SO THAT ONLY RETURN IF THE SAME SOURCE WANTS TO FADE IN AND OUT AT THE SAME TIME
+
         source.volume = 0f;
+        //if (pause) source.UnPause();
+        //else source.Play();
         source.Play();
+
         while (source.volume < 1f)
         {
             source.volume += Time.deltaTime * fadeInRate;
@@ -141,10 +152,15 @@ public class AudioManager : MonoBehaviour{
         }
 
         source.volume = 1f;
+
+        fadingIn = false;
     }
     
-    IEnumerator FadeOut(AudioSource source)
+    IEnumerator FadeOut(AudioSource source, bool pause = false)
     {
+        if (fadingIn) yield break;
+        fadingOut = true;
+
         while(source.volume > 0f)
         {
             source.volume -= Time.deltaTime * fadeOutRate;
@@ -152,7 +168,10 @@ public class AudioManager : MonoBehaviour{
         }
 
         source.volume = 0f;
-        source.Stop();
+        if (pause) source.Pause();
+        else source.Stop();
+        
+        fadingOut = false;
     }
         
     /// <summary>

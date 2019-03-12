@@ -27,8 +27,8 @@ public class VictoryCard : MonoBehaviour {
         portrait.sprite = currentHero.Portrait;
         title.text = currentHero.DenigenName;
         level.text = currentHero.Level.ToString();
-        currentExp.text = currentHero.Exp.ToString();
-        maxExp.text = (currentHero.Exp + currentHero.ExpToLevelUp).ToString();
+        currentExp.text = currentHero.ExpLevel.ToString(); //currentHero.Exp.ToString();
+        maxExp.text = currentHero.ExpToLevelUp.ToString();
         leveledUp = false;
         UpdateBar();
     }

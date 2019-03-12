@@ -22,7 +22,7 @@ public class DenigenData : ScriptableObject
 
     internal bool statBoost = false;
     internal bool skillTree = false;
-    internal int level, exp, expToLvlUp, levelUpPts, techPts;
+    internal int level, exp, expToLvlUp, expLevel, levelUpPts, techPts;
     internal int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
     
 
@@ -106,6 +106,8 @@ public class DenigenData : ScriptableObject
 
         //calc new required points to level up
         expToLvlUp = CalcExpToLvlUp(rollover);
+
+        expLevel = rollover;
     }
 
     
