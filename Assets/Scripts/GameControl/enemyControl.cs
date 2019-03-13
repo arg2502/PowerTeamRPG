@@ -278,7 +278,8 @@ public class enemyControl : MovableOverworldObject {
             //save the current room, to acheive persistency while paused
             GameControl.control.RecordRoom();
 
-            GameControl.audioManager.StartMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
+            //GameControl.audioManager.StartMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
+            GameControl.audioManager.PauseCurrentAndStartNewMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
 
             //UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene"); // load the battle scene
             GameControl.control.LoadSceneAsync("BattleScene");

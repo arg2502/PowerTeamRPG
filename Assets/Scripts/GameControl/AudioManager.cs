@@ -38,7 +38,9 @@ public class AudioManager : MonoBehaviour{
     public void StartMusic(AudioClip introClip, AudioClip mainClip, bool fadeOut) { private_StartMusic(introClip, mainClip, fadeOut, true, false); }
     public void StartMusic(AudioClip mainClip, bool fadeOut, bool fadeIn) { private_StartMusic(mainClip, null, fadeOut, fadeIn, false); }
     public void StartMusic(AudioClip introClip, AudioClip mainClip, bool fadeOut, bool fadeIn) { private_StartMusic(introClip, mainClip, fadeOut, fadeIn, false); }
-    public void StartPausedMusic(AudioClip mainClip) { private_StartMusic(mainClip, null, true, true, true); }
+    public void PauseCurrentAndStartNewMusic(AudioClip mainClip) { private_StartMusic(mainClip, null, true, true, true); }
+    public void PauseCurrentAndStartNewMusic(AudioClip introClip, AudioClip loopClip) { private_StartMusic(introClip, loopClip, true, true, true); }
+    public void PauseCurrentAndStartNewMusic(AudioClip introClip, AudioClip loopClip, bool fadeOut, bool fadeIn) { private_StartMusic(introClip, loopClip, fadeOut, fadeIn, true); }
 
     void private_StartMusic(AudioClip clip, AudioClip clip2 = null, bool fadeOut = true, bool fadeIn = true, bool pause = false)
     {
@@ -105,14 +107,42 @@ public class AudioManager : MonoBehaviour{
         // find an empty source
         int sourceIndex = -1;
 
+        // first, check if any sources already have the same clip
         for (int i = 0; i < sources.Count; i++)
         {
-            if (sources[i].clip == clip || sources[i].time == 0) //!sources[i].isPlaying)
+            if (sources[i].clip == clip) //!sources[i].isPlaying)
             {
                 sourceIndex = i;
                 break;
             }
         }
+
+        // if no match, now check for any empty sources
+        if (sourceIndex < 0)
+        {
+            for (int i = 0; i < sources.Count; i++)
+            {
+                if (sources[i].clip == null)
+                {
+                    sourceIndex = i;
+                    break;
+                }
+            }
+        }
+
+        // if still no match, find one that is not paused (time == 0)
+        if (sourceIndex < 0)
+        {
+            for (int i = 0; i < sources.Count; i++)
+            {
+                if (sources[i].time == 0)
+                {
+                    sourceIndex = i;
+                    break;
+                }
+            }
+        }
+        
         // default to first just in case
         if (sources[sourceIndex] == null)
             sourceIndex = 0;
@@ -136,8 +166,8 @@ public class AudioManager : MonoBehaviour{
 
     IEnumerator FadeIn(AudioSource source, bool pause = false)
     {
-        if (fadingOut) yield break;
-        fadingIn = true;
+        //if (fadingOut) yield break;
+        //fadingIn = true;
         // ADD SOMETHING TO THE FADING CHECK SO THAT ONLY RETURN IF THE SAME SOURCE WANTS TO FADE IN AND OUT AT THE SAME TIME
 
         source.volume = 0f;
@@ -153,13 +183,13 @@ public class AudioManager : MonoBehaviour{
 
         source.volume = 1f;
 
-        fadingIn = false;
+        //fadingIn = false;
     }
     
     IEnumerator FadeOut(AudioSource source, bool pause = false)
     {
-        if (fadingIn) yield break;
-        fadingOut = true;
+        //if (fadingIn) yield break;
+        //fadingOut = true;
 
         while(source.volume > 0f)
         {
@@ -171,7 +201,7 @@ public class AudioManager : MonoBehaviour{
         if (pause) source.Pause();
         else source.Stop();
         
-        fadingOut = false;
+        //fadingOut = false;
     }
         
     /// <summary>
