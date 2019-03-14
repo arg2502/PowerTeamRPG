@@ -1042,6 +1042,12 @@ public class GameControl : MonoBehaviour {
             hero.hp = hero.hpMax;
     }
 
+    void SetHeroesToMaxPM()
+    {
+        foreach (var hero in heroList)
+            hero.pm = hero.pmMax;
+    }
+
     public void ReturnFromBattle()
     {
         //currentCharacterState = characterControl.CharacterState.Normal;
@@ -1059,6 +1065,7 @@ public class GameControl : MonoBehaviour {
         // reset heroes stats
         SetHeroesToLiving();
         SetHeroesToMaxHP();
+        SetHeroesToMaxPM();
 
         // set all enemies "been battled" to false
         currentRoom.SetEnemiesToNotBattled();
