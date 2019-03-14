@@ -221,7 +221,9 @@ public class GameControl : MonoBehaviour {
 			pause = new tempMenu();
 			teamSub = new tempMenu();
 			heroSub = new tempMenu();
-			inventSub = new tempMenu();            
+			inventSub = new tempMenu();
+
+            //Load();
 		}
 		else if (control != this)
 		{
@@ -731,9 +733,13 @@ public class GameControl : MonoBehaviour {
             //put the player back where they were
             //UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
             LoadSceneAsync(data.currentScene);
-			// Put their position vector here if we choose
-			currentPosition = new Vector2(data.posX, data.posY);
-			taggedStatue = data.taggedStatue;
+            // Put their position vector here if we choose
+            //currentPosition = new Vector2(data.posX, data.posY);
+
+            taggedStatue = data.taggedStatue;
+            if (taggedStatue)
+                savedStatue = new Vector2(data.posX, data.posY);
+
 			totalGold = data.totalGold;
 			keysObtainedInDungeons = data.keysObtainedInDungeons;
 			// put all interactable item data back

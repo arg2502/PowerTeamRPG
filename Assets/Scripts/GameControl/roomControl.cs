@@ -320,13 +320,14 @@ public class roomControl : MonoBehaviour {
     public Gateway AssignEntrance(string exitedGatewayName)
     {
         // if string is null, then we did not enter through a gateway -- set to saved statue or an inspector set entrance
-        //if(string.IsNullOrEmpty(exitedGatewayName))
-        //{
-        //    if (GameControl.control.taggedStatue) return entrance = GameControl.control.savedStatue;
-        //    //else return entrance;
-        //}
+        if (string.IsNullOrEmpty(exitedGatewayName))
+        {
+            if (GameControl.control.taggedStatue)// return entrance = GameControl.control.savedStatue;
+                return null;
+            //else return entrance;
+        }
 
-       
+
         if (string.IsNullOrEmpty(exitedGatewayName))
         {
             if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle)
@@ -389,6 +390,11 @@ public class roomControl : MonoBehaviour {
         {
             GameControl.control.currentEntranceGateway = gatewayEntrance;
             GameControl.control.areaEntrance = gatewayEntrance.transform.position;
+        }
+        else if (GameControl.control.taggedStatue)
+        {
+            GameControl.control.currentEntranceGateway = null;
+            GameControl.control.areaEntrance = GameControl.control.savedStatue;
         }
         else
         {

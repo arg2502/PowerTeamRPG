@@ -49,15 +49,20 @@ public class StationaryNPCControl : NPCObject {
 		currentState = State.talking; // set NPC to talking
 		canMove = false; // Stop moving, to set to talking sprites
 
-		// set the blend tree animator to face the proper direction
-		anim.SetBool ("canMove", canMove);
-		anim.SetFloat("lastHSpeed", directionToFace.x);
-		anim.SetFloat("lastVSpeed", directionToFace.y);
+        // set the blend tree animator to face the proper direction
+        if (anim)
+        {
+            anim.SetBool("canMove", canMove);
+            anim.SetFloat("lastHSpeed", directionToFace.x);
+            anim.SetFloat("lastVSpeed", directionToFace.y);
+        }
 	}
 	public override void BackToNormal()
 	{
 		canMove = true;
 		currentState = State.idle;
+        if (!anim) return;
+
 		anim.SetBool ("canMove", canMove); //sets back to idle sprites
 
 		//Set the NPC to face the default direction

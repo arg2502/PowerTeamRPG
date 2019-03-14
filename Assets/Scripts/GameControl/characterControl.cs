@@ -93,11 +93,12 @@ public class characterControl : OverworldObject {
         //{
             currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
-            if (currentGateway != null && !GameControl.control.taggedStatue)
+            if (currentGateway != null)// && !GameControl.control.taggedStatue)
                 EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
             else
                 GameControl.control.currentCharacterState = CharacterState.Normal;
         //}
+        //GameControl.control.currentCharacterState = CharacterState.Normal;
     }
 
     //void OnTriggerEnter2D(Collider2D other)
