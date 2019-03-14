@@ -118,6 +118,17 @@ public class GameControl : MonoBehaviour {
     {
         currentCharacterState = newState;
     }
+    
+    public void WaitAFrameAndSetCharacterState(characterControl.CharacterState newState)
+    {
+        StartCoroutine(IESetCharacterState(newState));
+    }
+
+    IEnumerator IESetCharacterState(characterControl.CharacterState newState)
+    {
+        yield return null; // waits one frame to let GetButtonDown finish, then set state (mainly for coming out of menu/dialogue)
+        currentCharacterState = newState;
+    }
 
     // states for checking if the player is in a menu/talking
     //bool isInMenu;

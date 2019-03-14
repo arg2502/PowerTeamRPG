@@ -77,8 +77,8 @@ public class NPCDialogue : MonoBehaviour {
         GetComponentInParent<NPCObject>().BackToNormal();
     }
 
-    //void TestFunction()
-    //{
-    //    print("TEST FUNCTION BABY");
-    //}
+    void TestFunction()
+    {
+        print("TEST FUNCTION BABY");
+    }
 }

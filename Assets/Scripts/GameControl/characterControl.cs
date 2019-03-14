@@ -353,7 +353,8 @@ public class characterControl : OverworldObject {
 
         if(Input.GetButtonDown("Submit"))
         {
-            if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR)
+            if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR
+                && GameControl.control.currentCharacterState == CharacterState.Normal)
             {
                 if (canMove)
                 {

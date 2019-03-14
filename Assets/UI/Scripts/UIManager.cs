@@ -158,10 +158,10 @@
 
             // set focus to null
             menuInFocus = null;
-
+            
             // set back to previous state
             //GameControl.control.IsInMenu = false;
-            GameControl.control.SetCharacterState(GameControl.control.PrevState);
+            GameControl.control.WaitAFrameAndSetCharacterState(GameControl.control.PrevState);
         }
 
         /// <summary>
