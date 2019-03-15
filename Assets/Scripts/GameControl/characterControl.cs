@@ -138,20 +138,25 @@ public class characterControl : OverworldObject {
         if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
             currentGateway = other.GetComponent<Gateway>();
-            if (currentGateway.gatewayType == Gateway.Type.DOOR)
-            {
-                if (Input.GetButtonDown("Submit"))
-                {
-                    StartCoroutine(myCamera.Fade());
-                    ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
-                }
-                else return;
-            }
-            else
+            if(currentGateway.gatewayType != Gateway.Type.DOOR) // handle door transition in update
             {
                 StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
             }
+            //if (currentGateway.gatewayType == Gateway.Type.DOOR)
+            //{
+            //    if (Input.GetButtonDown("Submit"))
+            //    {
+            //        StartCoroutine(myCamera.Fade());
+            //        ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
+            //    }
+            //    else return;
+            //}
+            //else
+            //{
+            //    StartCoroutine(myCamera.Fade());
+            //    ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
+            //}
         }
 
         if (other.GetComponent<NPCDialogue>())
@@ -161,9 +166,6 @@ public class characterControl : OverworldObject {
             // We want to be able to turn and talk to that NPC without any problems
             CheckInRangeNPC();
 
-            // If we have an NPC to talk to, check if the player has pressed select to talk to them
-            if(GameControl.control.currentNPC)
-                TalkToNPC();
         }
 
         if(other.GetComponent<Firewall>())
@@ -194,18 +196,19 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-        if(Input.GetButtonDown("Submit")
-            && GameControl.control.currentCharacterState != CharacterState.Menu)
-        {
+        //if(Input.GetButtonDown("Submit")
+        //    && GameControl.control.currentCharacterState != CharacterState.Menu)
+        //{
             // if the NPC has a pathwalk, set the NPC to stop and face the player
             if (GameControl.control.CurrentNPCPathwalk)
                 GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
 			else if (GameControl.control.CurrentStationaryNPC)
 				GameControl.control.CurrentStationaryNPC.FaceCharacter(-(lastMovement));
 
+        isMoving = false;
             // begin the NPC's dialogue
             GameControl.control.currentNPC.StartDialogue();
-        }
+        //}
     }
 
     void ResetCurrentNPC(NPCDialogue newCurrent = null)
@@ -353,10 +356,19 @@ public class characterControl : OverworldObject {
             }
 
         }
-
-
+        
         if(Input.GetButtonDown("Submit"))
         {
+            if(currentGateway?.gatewayType == Gateway.Type.DOOR)
+            {
+                StartCoroutine(myCamera.Fade());
+                ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
+            }
+            
+            // If we have an NPC to talk to, check if the player has pressed select to talk to them
+            if (GameControl.control.currentNPC && GameControl.control.currentCharacterState != CharacterState.Menu)
+                TalkToNPC();
+
             if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR
                 && GameControl.control.currentCharacterState == CharacterState.Normal)
             {

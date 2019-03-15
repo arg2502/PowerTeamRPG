@@ -413,6 +413,7 @@
         {
             // set description text if applicable
             // (invisible buttons do not have descriptions)
+
             var descriptionObj = currentObj.GetComponentInParent<Description>();
             if (descriptionObj != null)
                 descriptionText.text = descriptionObj.description;
@@ -497,6 +498,8 @@
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
+
+            if (currentObj == null) return;
             
             // set current list position by finding the new current button
             for(int i = 0; i < buttonGrid.Count; i++)
