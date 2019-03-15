@@ -89,15 +89,16 @@ public class characterControl : OverworldObject {
         //canMove = false;
         
         // if the character is transitioning through a gateway, call EnterRoom
-        if (GameControl.control.currentCharacterState == CharacterState.Transition)
-        {
+        //if (GameControl.control.currentCharacterState == CharacterState.Transition)
+        //{
             currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
-            if (currentGateway != null && !GameControl.control.taggedStatue)
+            if (currentGateway != null)// && !GameControl.control.taggedStatue)
                 EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
             else
                 GameControl.control.currentCharacterState = CharacterState.Normal;
-        }
+        //}
+        //GameControl.control.currentCharacterState = CharacterState.Normal;
     }
 
     //void OnTriggerEnter2D(Collider2D other)
@@ -130,6 +131,9 @@ public class characterControl : OverworldObject {
 
     private void OnTriggerStay2D(Collider2D other)
     {
+        if (myCamera == null)
+            return;
+
         // for transition between areas
         if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
         {

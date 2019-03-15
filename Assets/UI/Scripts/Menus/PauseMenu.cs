@@ -58,6 +58,7 @@
         void OnLoad()
         {
             // load the game here
+            GameControl.control.Load();
         }
     }
 }

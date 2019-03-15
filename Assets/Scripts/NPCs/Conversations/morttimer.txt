@@ -1,0 +1,3 @@
+Name	Emotion	Dialogue	Responses/Actions
+		Come and rest. May your wounds be healed.	Save
+		A record of your deeds has been made.	

@@ -232,7 +232,9 @@ public class GameControl : MonoBehaviour {
 			pause = new tempMenu();
 			teamSub = new tempMenu();
 			heroSub = new tempMenu();
-			inventSub = new tempMenu();            
+			inventSub = new tempMenu();
+
+            //Load();
 		}
 		else if (control != this)
 		{
@@ -742,9 +744,13 @@ public class GameControl : MonoBehaviour {
             //put the player back where they were
             //UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
             LoadSceneAsync(data.currentScene);
-			// Put their position vector here if we choose
-			currentPosition = new Vector2(data.posX, data.posY);
-			taggedStatue = data.taggedStatue;
+            // Put their position vector here if we choose
+            //currentPosition = new Vector2(data.posX, data.posY);
+
+            taggedStatue = data.taggedStatue;
+            if (taggedStatue)
+                savedStatue = new Vector2(data.posX, data.posY);
+
 			totalGold = data.totalGold;
 			keysObtainedInDungeons = data.keysObtainedInDungeons;
 			// put all interactable item data back
@@ -1047,6 +1053,12 @@ public class GameControl : MonoBehaviour {
             hero.hp = hero.hpMax;
     }
 
+    void SetHeroesToMaxPM()
+    {
+        foreach (var hero in heroList)
+            hero.pm = hero.pmMax;
+    }
+
     public void ReturnFromBattle()
     {
         //currentCharacterState = characterControl.CharacterState.Normal;
@@ -1064,6 +1076,7 @@ public class GameControl : MonoBehaviour {
         // reset heroes stats
         SetHeroesToLiving();
         SetHeroesToMaxHP();
+        SetHeroesToMaxPM();
 
         // set all enemies "been battled" to false
         currentRoom.SetEnemiesToNotBattled();

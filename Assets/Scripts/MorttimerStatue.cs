@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MorttimerStatue : NPCObject
+public class MorttimerStatue : NPCDialogue
 {
     //Used to change the statue's orientation
     public bool flip = false;
@@ -31,7 +32,7 @@ public class MorttimerStatue : NPCObject
         //if (distFromPlayer < distanceToSave && Input.GetKeyUp(GameControl.control.selectKey) && canTalk && !canPlayerMove)
         //{
             // set the current scene variable
-            GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            GameControl.control.currentScene = SceneManager.GetActiveScene().name;
             // heal the heroes
             foreach (DenigenData hd in GameControl.control.heroList)
             {
@@ -57,6 +58,8 @@ public class MorttimerStatue : NPCObject
 
             // Save the game
             GameControl.control.Save();
+
+        print("SAVED");
         //}
         
     }
