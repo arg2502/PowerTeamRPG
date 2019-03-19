@@ -110,7 +110,7 @@ public class enemyControl : MovableOverworldObject {
 						                     || raycastHits [1].collider != null)//owo.GetComponent<Collider2D>()) 
 						                     || (dist <= safeDistance + 1.5f)) {
 							transform.position = new Vector2 (Random.Range (-15.0f, 15.0f), Random.Range (-15.0f, 15.0f));
-							print ("hit");
+							//print ("hit");
 							dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
 							+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 

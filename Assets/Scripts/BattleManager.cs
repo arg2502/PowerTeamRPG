@@ -570,6 +570,11 @@ public class BattleManager : MonoBehaviour {
                 TakeDamage(d);
             }
         }
+
+        // check if the battle has ended after all status damage has been calculated
+        if (IsBattleOver)
+            return;
+
         //fleeFailed = false;
         SortBySpeed();
         currentDenigen = 0;

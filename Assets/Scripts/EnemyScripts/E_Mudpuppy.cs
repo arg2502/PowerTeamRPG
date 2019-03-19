@@ -36,6 +36,7 @@ public class E_Mudpuppy : Enemy {
 		StatChanged = "ATK";
 		statChangeInt = (int)(Atk * 0.1f);
 		AtkChange += statChangeInt;
+        targets[0].CalculatedDamage = 0;
         //AtkChange += (int)(Atk * 0.1f);
         calcDamageText.Add(name + " used frenzy!");
 
