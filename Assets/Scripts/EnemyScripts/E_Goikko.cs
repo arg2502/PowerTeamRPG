@@ -40,7 +40,7 @@ public class E_Goikko : Enemy {
         float rng = Random.value; //returns a random number between 0 and 1, apparently RandomRange is depricated
 
         //Use health states to change goikko's behavior throughout the battle
-        //return "Poison";
+        //return poison;
         if (healthState == Health.high)
         {
             if (!targetAlreadyPoisoned && rng < 0.5f) { return poison; } //boost atk

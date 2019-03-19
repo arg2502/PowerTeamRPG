@@ -119,7 +119,8 @@ public class BattleManager : MonoBehaviour {
         SortBySpeed();
         currentDenigen = 0;
         //NextTurn();
-        FindNextAlive();
+        StartCoroutine(StartBattle());
+        //FindNextAlive();
         //ChangeBattleState(BattleState.TARGET);
         
         //SortBySpeed();
@@ -541,6 +542,14 @@ public class BattleManager : MonoBehaviour {
 
     }
     
+    IEnumerator StartBattle()
+    {
+        // wait a second if the first to go is an enemy
+        if (denigenList[0] is Enemy)
+            yield return new WaitForSeconds(1f);
+        FindNextAlive();
+    }
+
     void FindNextAlive()
     {
         while (CurrentDenigen.IsDead || IsFleeFailed())// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
