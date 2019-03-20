@@ -116,15 +116,18 @@
                 //{
                 //    currentTargets.Add(battleManager.heroList[i]);
                 //}
-                // COLE -- ELEANOR -- JETHRO -- JOULIETTE (start with joules then go left)
+                // (from right to left)
+                // JOULIETTE -- JETHRO -- ELEANOR -- COLE (start with joules then go left)
+                
+                var jethro = battleManager.heroList.Find(hero => hero.Data.identity == 0);
+                var cole = battleManager.heroList.Find(hero => hero.Data.identity == 1);
+                var eleanor = battleManager.heroList.Find(hero => hero.Data.identity == 2);
+                var jouliette = battleManager.heroList.Find(hero => hero.Data.identity == 3);
 
-                currentTargets.Add(battleManager.heroList[0]);
-                if (battleManager.heroList.Count > 3)
-                    currentTargets.Add(battleManager.heroList[3]);
-                if (battleManager.heroList.Count > 1)
-                    currentTargets.Add(battleManager.heroList[1]);
-                if (battleManager.heroList.Count > 2)
-                    currentTargets.Add(battleManager.heroList[2]);
+                if (jouliette) currentTargets.Add(jouliette);
+                if (jethro) currentTargets.Add(jethro);
+                if (eleanor) currentTargets.Add(eleanor);
+                if (cole) currentTargets.Add(cole);
 
                 // setting cursor positions
                 var tempList = new List<Denigen>();
