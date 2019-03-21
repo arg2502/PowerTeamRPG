@@ -27,8 +27,10 @@ public class VictoryCard : MonoBehaviour {
         portrait.sprite = currentHero.Portrait;
         title.text = currentHero.DenigenName;
         level.text = currentHero.Level.ToString();
-        currentExp.text = currentHero.ExpLevel.ToString(); //currentHero.Exp.ToString();
-        maxExp.text = currentHero.ExpToLevelUp.ToString();
+        currentExp.text = currentHero.ExpCurLevel.ToString(); //currentHero.Exp.ToString();
+        //maxExp.text = currentHero.ExpToLevelUp.ToString();
+        //maxExp.text = currentHero.ExpCurLevelMax.ToString();
+        maxExp.text = currentHero.Data.MaxExpOfLevel(currentHero.Level).ToString();
         leveledUp = false;
         UpdateBar();
     }
@@ -76,8 +78,8 @@ public class VictoryCard : MonoBehaviour {
         for (int i = 0; i < remainingExp; i++)
         {
             startExp++;
-            if (currentHero.DenigenName == "Jethro")
-                print("start: " + startExp);
+            //if (currentHero.DenigenName == "Jethro")
+            //    print("start: " + startExp);
             currentExp.text = startExp.ToString();
 
             yield return StartCoroutine(BarChange());

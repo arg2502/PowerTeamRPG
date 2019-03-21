@@ -122,7 +122,8 @@ public class Denigen : MonoBehaviour {
     public float Multiplier { get { return data.multiplier; } }
     public int Exp { get { return data.exp; } set { data.exp = value; } }
     public int ExpToLevelUp { get { return data.expToLvlUp; } set { data.expToLvlUp = value; } }
-    public int ExpLevel { get { return data.expLevel; } set { data.expLevel = value; } }
+    public int ExpCurLevel { get { return data.expCurLevel; } set { data.expCurLevel = value; } }
+    public int ExpCurLevelMax { get { return data.expCurLevelMax; } set { data.expCurLevelMax = value; } }
 
     // techniques
     public List<Passive> PassivesList { get { return data.passiveList; } }
