@@ -107,6 +107,12 @@ public class DenigenData : ScriptableObject
         //calc new required points to level up
         expToLvlUp = CalcExpToLvlUp(rollover);
 
+        // check if we can level up again
+        if(expToLvlUp <= 0 && rollover != 0)
+        {
+            LevelUp(Mathf.Abs(expToLvlUp));
+        }
+
         expLevel = rollover;
     }
 
