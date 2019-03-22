@@ -20,6 +20,9 @@ public class VictoryCard : MonoBehaviour {
 
     bool leveledUp = false;
     public bool LeveledUp { get { return leveledUp; } }
+        
+    int endLevel;
+    int endExp;
 
     public void Init(Hero hero)
     {
@@ -66,6 +69,8 @@ public class VictoryCard : MonoBehaviour {
 
         leveledUp = true;
         currentHero.AddExp(exp);
+        endLevel = currentHero.Level;
+        endExp = currentHero.ExpCurLevel;
         StartCoroutine(IncreaseBar(exp));
     }
 
@@ -74,12 +79,12 @@ public class VictoryCard : MonoBehaviour {
         isDone = false;
 
         var startExp = int.Parse(currentExp.text);
-
-        for (int i = 0; i < remainingExp; i++)
+        var levelNum = int.Parse(level.text);
+        
+        // continue adding until we've reached the correct level and the correct exp for the level
+        while (!(startExp >= endExp && levelNum >= endLevel))
         {
             startExp++;
-            //if (currentHero.DenigenName == "Jethro")
-            //    print("start: " + startExp);
             currentExp.text = startExp.ToString();
 
             yield return StartCoroutine(BarChange());
@@ -89,8 +94,7 @@ public class VictoryCard : MonoBehaviour {
             {
                 startExp = 0;
                 currentExp.text = startExp.ToString();
-
-                var levelNum = int.Parse(level.text);
+                                
                 levelNum++;
                 level.text = levelNum.ToString();
 
