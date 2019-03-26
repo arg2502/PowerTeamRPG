@@ -458,50 +458,50 @@ public class GameControl : MonoBehaviour {
 		data.currentScene = currentScene;
 		data.totalGold = totalGold;
 		data.keysObtainedInDungeons = keysObtainedInDungeons;
-		//data.totalKeys = totalKeys;
+        //data.totalKeys = totalKeys;
 
 
 
-		// Save all of the player's inventory
-//		foreach (GameObject i in consumables)
-//		{
-//			Item item = i.GetComponent<Item>();
-//			ItemData id = new ItemData();
-//			id.name = item.name;
-//			id.quantity = item.quantity;
-//			id.uses = item.uses;
-//			data.consumables.Add(id);
-//		}
-//		foreach (GameObject i in reusables)
-//		{
-//			Item item = i.GetComponent<Item>();
-//			ItemData id = new ItemData();
-//			id.name = item.name;
-//			id.quantity = item.quantity;
-//			id.uses = item.uses;
-//			data.reusables.Add(id);
-//		}
-//		foreach (GameObject i in weapons)
-//		{
-//			Item item = i.GetComponent<Item>();
-//			ItemData id = new ItemData();
-//			id.name = item.name;
-//			id.quantity = item.quantity;
-//			id.uses = item.uses;
-//			data.weapons.Add(id);
-//		}
-//		foreach (GameObject i in equipment)
-//		{
-//			Item item = i.GetComponent<Item>();
-//			ItemData id = new ItemData();
-//			id.name = item.name;
-//			id.quantity = item.quantity;
-//			id.uses = item.uses;
-//			data.equipment.Add(id);
-//		}
+        // Save all of the player's inventory
+        foreach (var i in consumables)
+        {
+            //Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = i.name;
+            id.quantity = i.quantity;
+            id.uses = i.uses;
+            data.consumables.Add(id);
+        }        
+        foreach (var i in weapons)
+        {
+            //Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = i.name;
+            id.quantity = i.quantity;
+            id.uses = i.uses;
+            data.weapons.Add(id);
+        }
+        foreach (var i in equipment)
+        {
+            //Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = i.name;
+            id.quantity = i.quantity;
+            id.uses = i.uses;
+            data.equipment.Add(id);
+        }
+        foreach (var i in key)
+        {
+            //Item item = i.GetComponent<Item>();
+            ItemData id = new ItemData();
+            id.name = i.name;
+            id.quantity = i.quantity;
+            id.uses = i.uses;
+            data.key.Add(id);
+        }
 
-		// record the player's position
-		data.posX = currentPosition.x;
+        // record the player's position
+        data.posX = currentPosition.x;
 		data.posY = currentPosition.y;
 		data.taggedStatue = taggedStatue;
 
@@ -667,30 +667,33 @@ public class GameControl : MonoBehaviour {
 			//clear any current data
 			heroList = new List<HeroData>() { };
 
-			//Make sure the item lists are cleared before adding more
-//			consumables.Clear();
-//			reusables.Clear();
-//			weapons.Clear();
-//			equipment.Clear();
+            //Make sure the item lists are cleared before adding more
+            consumables.Clear();
+            //reusables.Clear();
+            weapons.Clear();
+            equipment.Clear();
+            key.Clear();
 
-			//Find all items and destroy them
-			Item[] items = FindObjectsOfType<Item>();
-			foreach (Item i in items) { Destroy(i.gameObject); }
+            //Find all items and destroy them
+            //Item[] items = FindObjectsOfType<Item>();
+            //foreach (Item i in items) { Destroy(i.gameObject); }
 
-			// Read in all consumable items
-//			foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
-//
-//			//Read in all reusable items
-//			foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
-//
-//			//read in all weapons
-//			foreach (ItemData id in data.weapons) { LoadWeaponItem(id, null); }
-//
-//			//read in all equipment
-//			foreach (ItemData id in data.equipment) { LoadArmorItem(id, null); }
+            // Read in all consumable items
+            foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
 
-			//load all of the heroes
-			for (int i = 0; i < data.heroList.Count; i++)
+            //Read in all reusable items
+//            foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
+
+            //read in all weapons
+            foreach (ItemData id in data.weapons) { LoadWeaponItem(id); }
+
+            //read in all equipment
+            foreach (ItemData id in data.equipment) { LoadArmorItem(id); }
+
+            foreach(ItemData id in data.key) { LoadKeyItem(id); }
+
+            //load all of the heroes
+            for (int i = 0; i < data.heroList.Count; i++)
 			{
 				HeroData temp = new HeroData();
 				temp.identity = data.heroList[i].identity;
@@ -775,6 +778,25 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 
+    void LoadConsumableItem(ItemData id)
+    {
+        AddItem(id.name, "consumable", id.quantity);
+    }
+
+    void LoadArmorItem(ItemData id)
+    {
+        AddItem(id.name, "armor", id.quantity);
+    }
+
+    void LoadWeaponItem(ItemData id)
+    {
+        AddItem(id.name, "weapon", id.quantity);
+    }
+
+    void LoadKeyItem(ItemData id)
+    {
+        AddItem(id.name, "key", id.quantity);
+    }
 //	public void LoadConsumableItem(ItemData id)
 //	{
 //		GameObject temp = null;
@@ -1160,9 +1182,10 @@ class PlayerData
 
 	// All of the player's items
 	public List<ItemData> consumables = new List<ItemData>() { };
-	public List<ItemData> reusables = new List<ItemData>() { };
+	//public List<ItemData> reusables = new List<ItemData>() { };
 	public List<ItemData> equipment = new List<ItemData>() { };
-	public List<ItemData> weapons = new List<ItemData>() { }; 
+	public List<ItemData> weapons = new List<ItemData>() { };
+    public List<ItemData> key = new List<ItemData>();
 }
 
 //this class should hold all of the stuff necessary for a hero object
