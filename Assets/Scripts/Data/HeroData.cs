@@ -32,7 +32,7 @@ public class HeroData : DenigenData {
     {
         exp += expToAdd;
         expToLvlUp -= expToAdd;
-        
+
         //Level up the hero, if necessary
         if (expToLvlUp <= 0)
         {
@@ -43,6 +43,10 @@ public class HeroData : DenigenData {
             //h.statBoost = true;
             //h.skillTree = true;
             //levelUp = true; // tells the game to go to the level up scene
+        }
+        else
+        {
+            expCurLevel += expToAdd;
         }
 
         // HANDLE GOING TO STAT BOOST AND SKILL TREE MENUS LATER

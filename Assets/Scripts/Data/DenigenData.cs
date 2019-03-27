@@ -22,7 +22,7 @@ public class DenigenData : ScriptableObject
 
     internal bool statBoost = false;
     internal bool skillTree = false;
-    internal int level, exp, expToLvlUp, expCurLevel, expCurLevelMax, levelUpPts, techPts;
+    internal int level, exp, expToLvlUp, expCurLevel, levelUpPts, techPts;
     internal int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
     
 
@@ -115,7 +115,7 @@ public class DenigenData : ScriptableObject
         else
         {
             expCurLevel = rollover;
-            Debug.Log("Hero: " + denigenName + ", Cur Exp: " + expCurLevel);
+            //Debug.Log("Hero: " + denigenName + ", Cur Exp: " + expCurLevel);
         }
         //expCurLevelMax = expToLvlUp + rollover;
     }

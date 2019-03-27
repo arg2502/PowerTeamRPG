@@ -410,6 +410,7 @@ public class GameControl : MonoBehaviour {
 			temp.level = heroList[i].level;
 			temp.exp = heroList[i].exp;
 			temp.expToLvlUp = heroList[i].expToLvlUp;
+            temp.expCurLevel = heroList[i].expCurLevel;
 			temp.levelUpPts = heroList[i].levelUpPts;
 			temp.techPts = heroList[i].techPts;
 			temp.hp = heroList[i].hp;
@@ -696,6 +697,22 @@ public class GameControl : MonoBehaviour {
             for (int i = 0; i < data.heroList.Count; i++)
 			{
 				HeroData temp = new HeroData();
+                string loadPath = "";
+                switch(data.heroList[i].identity)
+                {
+                    case 0: loadPath = "Data/Heroes/Start_Jethro"; break;
+                    case 1: loadPath = "Data/Heroes/Start_Cole"; break;
+                    case 2: loadPath = "Data/Heroes/Start_Eleanor"; break;
+                    case 3: loadPath = "Data/Heroes/Start_Jouliette"; break;
+                }
+                if(string.IsNullOrEmpty(loadPath))
+                {
+                    Debug.LogError("No hero found. Idenity not 0 - 4.");
+                    return;
+                }
+                temp = Resources.Load<HeroData>(loadPath);
+                temp = Instantiate(temp);
+
 				temp.identity = data.heroList[i].identity;
 				temp.statBoost = data.heroList[i].statBoost;
 				temp.skillTree = data.heroList[i].skillTree;
@@ -703,6 +720,7 @@ public class GameControl : MonoBehaviour {
 				temp.level = data.heroList[i].level;
 				temp.exp = data.heroList[i].exp;
 				temp.expToLvlUp = data.heroList[i].expToLvlUp;
+                temp.expCurLevel = data.heroList[i].expCurLevel;
 				temp.levelUpPts = data.heroList[i].levelUpPts;
 				temp.techPts = data.heroList[i].techPts;
 				temp.hp = data.heroList[i].hp;
@@ -1233,7 +1251,7 @@ public class SavableHeroData
 	public bool statBoost = false;
 	public bool skillTree = false;
 	public string name;
-	public int level, exp, expToLvlUp, levelUpPts, techPts;
+	public int level, exp, expToLvlUp, expCurLevel, levelUpPts, techPts;
 	public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
 	public List<Skill> skillsList;
 	public List<Spell> spellsList;
