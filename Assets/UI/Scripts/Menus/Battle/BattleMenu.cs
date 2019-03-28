@@ -60,6 +60,7 @@
         void OnAttack()
         {
             //dimmer.gameObject.SetActive(true);
+            battleManager.SetMenuState(MenuState.STRIKE);
             uiManager.PushMenu(uiDatabase.AttackSub, this);
         }
         void OnBlock()

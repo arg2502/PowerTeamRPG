@@ -415,10 +415,10 @@ public class BattleManager : MonoBehaviour {
 
     public void HighlightStarburstTurnOrder(Denigen currentTarget, bool highlight)
     {
-        var targetSlot = GetTurnOrderUI(currentTarget);
+        //var targetSlot = GetTurnOrderUI(currentTarget);
 
-        if (targetSlot != null)
-            targetSlot.StarburstHighlight(highlight);
+        //if (targetSlot != null)
+        //    targetSlot.StarburstHighlight(highlight);
     }
 
     public void TurnOffAllHighlightStarburstTurnOrder()
@@ -1502,6 +1502,7 @@ public enum TargetType
 // mainly to determine what "List Sub" should show
 public enum MenuState
 {
+    STRIKE,
     SKILLS,
     SPELLS,
     ITEMS
