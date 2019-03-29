@@ -34,7 +34,8 @@ public class ItemManager {
 							targets [i].CalculatedDamage = 0;
 							targets [i].HealedStatusEffect = targets[i].StatusState;
 							targets [i].StatusChanged = true;
-							targets [i].SetStatus (DenigenData.Status.normal);
+                            //targets [i].SetStatus (DenigenData.Status.normal);
+                            targets[i].MarkAsStatusChanged(DenigenData.Status.normal);
 						}
 						//run through any stat boosts the item may offer
 						foreach (Boosts b in item.statBoosts) {

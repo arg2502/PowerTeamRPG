@@ -136,6 +136,7 @@ public class Denigen : MonoBehaviour {
     //private Status statusState;// = Status.normal;
 
     public DenigenData.Status StatusState { get { return data.statusState; } set { data.statusState = value; } }
+    public DenigenData.Status NewStatus;
     bool statusChanged = false;
     public bool StatusChanged { get { return statusChanged; } set { statusChanged = value; } }
 
@@ -444,7 +445,7 @@ public class Denigen : MonoBehaviour {
         {
             // damage < 0 -- that means our hp was replenished
             // denigen is normal but status was just changed -- that means we were just healed from a status effect
-            if (calculatedDamage < 0 || (statusChanged && StatusState == DenigenData.Status.normal))
+            if (calculatedDamage < 0 || (statusChanged && NewStatus == DenigenData.Status.normal))//StatusState == DenigenData.Status.normal))
                 return true;
             else
                 return false;
@@ -672,7 +673,8 @@ public class Denigen : MonoBehaviour {
         // not sure if these types of attack will have accuracy or not
         // could always be added later
         targets[0].calculatedDamage = 0;
-        targets[0].SetStatus(status);
+        //targets[0].SetStatus(status);
+        targets[0].MarkAsStatusChanged(status);
     }
 
     protected void SingleStatusCure()
@@ -683,7 +685,8 @@ public class Denigen : MonoBehaviour {
             return;
         target.calculatedDamage = 0;
 		target.HealedStatusEffect = target.StatusState;
-        target.SetStatus(DenigenData.Status.normal);
+        //target.SetStatus(DenigenData.Status.normal);
+        target.MarkAsStatusChanged(DenigenData.Status.normal);
     }
     
     protected void DazeTarget()
@@ -704,6 +707,12 @@ public class Denigen : MonoBehaviour {
             default:
                 return null;
         }
+    }
+
+    public void MarkAsStatusChanged(DenigenData.Status newStatus)
+    {
+        NewStatus = newStatus;
+        statusChanged = true;
     }
 
     public void SetStatus(DenigenData.Status newStatus)
@@ -728,7 +737,6 @@ public class Denigen : MonoBehaviour {
         }
 
         StatusState = newStatus;
-        statusChanged = true;
 
         //ShowIcon();
     }
@@ -854,5 +862,13 @@ public class Denigen : MonoBehaviour {
     {
         statusDamage = infectionDamage;
         Hp -= statusDamage;
+    }
+
+    public void ClearTargetedValues()
+    {
+        calculatedDamage = 0;
+        ResetHealing();
+        if (StatusChanged)
+            NewStatus = StatusState;
     }
 }

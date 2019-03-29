@@ -824,7 +824,14 @@ public class BattleManager : MonoBehaviour {
 
 
         if (attacker.attackType == Denigen.AttackType.FAILED)
-        {
+        {   
+            // if we failed we need to clear any attack values
+            // Otherwise, they'll just take effect next time
+            foreach(var t in targeted)
+            {
+                t.ClearTargetedValues();
+            }
+
             yield return new WaitForSeconds(1f);
             DescriptionText.text = "But " + attacker.DenigenName + " does not have enough PM to perform the technique.\n";
             yield return new WaitForSeconds(1.5f);
@@ -936,7 +943,9 @@ public class BattleManager : MonoBehaviour {
 						if((DenigenData.Status)_item.statusChange == target.HealedStatusEffect){
 							message = target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!";
 							target.HealedStatusEffect = DenigenData.Status.normal;
-							ShowStatusEffect(target);
+                            target.SetStatus(DenigenData.Status.normal);
+                            ShowStatusEffect(target);
+                            
 							//ShowHealing(target, healedStatValue);
 						} else {
 							//the item does not heal the status ailment of the target
@@ -1061,6 +1070,7 @@ public class BattleManager : MonoBehaviour {
         // or show the heal effect if calcDamage is negative (meaning someone's using their turn to heal)
         if (target.StatusChanged)
         {
+            target.SetStatus(target.NewStatus);
             ShowStatusEffect(target);
 			if(target.StatusState != DenigenData.Status.normal){
 				//Acquired a status effect
@@ -1210,7 +1220,7 @@ public class BattleManager : MonoBehaviour {
 
         // if the status is changed to normal, that's "normally" (lol) a good thing. So show the heart.
         // otherwise, show a status symbol
-        if (target.StatusState == DenigenData.Status.normal)
+        if (target.NewStatus == DenigenData.Status.normal)
             be.GetComponent<SpriteRenderer>().sprite = healIcon;
         else
             be.GetComponent<SpriteRenderer>().sprite = statusEffectIcon;
