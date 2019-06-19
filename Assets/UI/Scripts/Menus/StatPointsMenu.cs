@@ -252,7 +252,7 @@
             // If no, discard changes and pop menu
             if (PointsHaveChanged())
             {
-                uiManager.PushConfirmationMenu("Save changes?", AddPoints, ResetPointsAndPop);
+                uiManager.PushConfirmationMenu("Save changes?", AddPoints, ResetPoints);
             }
             // otherwise, no changes were made. Nothing to save so just pop
             else
@@ -279,10 +279,10 @@
             }
 
             // Once we've added all the points, reset the changes and pop the menu
-            ResetPointsAndPop();
+            ClearAndPop();
         }
 
-        void ResetPointsAndPop()
+        void ResetPoints()
         {
             // set the heroes' points back to their original
             for(int i = 0; i < gameControl.heroList.Count; i++)
@@ -290,6 +290,11 @@
                 gameControl.heroList[i].levelUpPts = originalPoints[i];
             }
 
+            ClearAndPop();
+        }
+
+        void ClearAndPop()
+        {
             // clear all the placeholder changes made to the stat items
             // so that they will be zero again when we return
             hp.ClearArray();
@@ -302,7 +307,7 @@
             evasion.ClearArray();
             spd.ClearArray();
 
-            uiManager.PopMenu();            
+            uiManager.PopMenu();
         }
 
         private void Update()

@@ -3,7 +3,6 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using UnityEditor.Animations;
 
 public class characterControl : OverworldObject {
 
@@ -62,12 +61,13 @@ public class characterControl : OverworldObject {
     Vector2 desiredPos;
     UnityEvent OnDesiredPos;
     Gateway currentGateway;
+    bool isInGateway;
     CameraController myCamera;
 
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
 
     public enum HeroCharacter { JETHRO, COLE, ELEANOR, JOULIETTE }
-    public List<AnimatorController> heroAnimators;
+    public List<RuntimeAnimatorController> heroAnimators;
 
     // Use this for initialization
     void Start () {
@@ -137,6 +137,7 @@ public class characterControl : OverworldObject {
         // for transition between areas
         if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
+            isInGateway = true;
             currentGateway = other.GetComponent<Gateway>();
             if(currentGateway.gatewayType != Gateway.Type.DOOR) // handle door transition in update
             {
@@ -176,8 +177,11 @@ public class characterControl : OverworldObject {
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if(collision.GetComponent<Gateway>())
+            isInGateway = false;
+
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if(collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
+        if (collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
         {
             ResetCurrentNPC();
         }
@@ -359,7 +363,7 @@ public class characterControl : OverworldObject {
         
         if(Input.GetButtonDown("Submit"))
         {
-            if(currentGateway?.gatewayType == Gateway.Type.DOOR)
+            if(isInGateway && currentGateway?.gatewayType == Gateway.Type.DOOR)
             {
                 StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move

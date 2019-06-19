@@ -496,6 +496,8 @@
 
         void UpdateText()
         {
+            if (EventSystem.current.currentSelectedGameObject == null) return;
+
             // turn off warnings if we've switched to a different button
             if(currentButton != EventSystem.current.currentSelectedGameObject.GetComponent<Button>())
             {
