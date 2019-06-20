@@ -48,11 +48,13 @@ public class AudioManager : MonoBehaviour{
         if(currentMusic != null)
         {
             // FADE OUT CALL HERE
-            if (fadeOut)
-                StartCoroutine(FadeOut(currentMusic, pause));
-            else
+            // if the clip we want to play is already currently playing, just stop the source
+            //// this is to avoid getting stuck in a constant loop of fading out and fading in
+            if (!fadeOut || currentMusic.clip == clip)
                 currentMusic.Stop();
-            
+            else
+                StartCoroutine(FadeOut(currentMusic, pause));
+
         }
 
         // if clip2 is not null then that means we have an intro clip as well

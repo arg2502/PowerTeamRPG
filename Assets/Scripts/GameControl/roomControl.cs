@@ -391,7 +391,7 @@ public class roomControl : MonoBehaviour {
             GameControl.control.currentEntranceGateway = gatewayEntrance;
             GameControl.control.areaEntrance = gatewayEntrance.transform.position;
         }
-        else if (GameControl.control.taggedStatue)
+        else if (GameControl.control.taggedStatue && GameControl.control.currentCharacterState != characterControl.CharacterState.Battle)
         {
             GameControl.control.currentEntranceGateway = null;
             GameControl.control.areaEntrance = GameControl.control.savedStatue;
