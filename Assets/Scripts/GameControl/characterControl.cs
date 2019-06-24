@@ -499,7 +499,6 @@ public class characterControl : OverworldObject {
                 
                 else if (GameControl.control.currentCharacter == HeroCharacter.JOULIETTE)
                 {
-                    //print("ZAP");
                     var hits = Physics2D.OverlapCircleAll(transform.position, zapRadius);
                     foreach (var h in hits)
                     {

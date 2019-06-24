@@ -120,14 +120,20 @@ public class GameControl : MonoBehaviour {
     }
     
     public void WaitAFrameAndSetCharacterState(characterControl.CharacterState newState)
-    {
+    {        
         StartCoroutine(IESetCharacterState(newState));
     }
 
     IEnumerator IESetCharacterState(characterControl.CharacterState newState)
     {
         yield return null; // waits one frame to let GetButtonDown finish, then set state (mainly for coming out of menu/dialogue)
-        currentCharacterState = newState;
+        
+        // In certain circumstances, when we pop out of a menu, a new one is opened
+        // ex: shopkeepers, all menus are popped and then a new one opens
+        // this all occurs during the one frame that we wait,
+        // so before we set the state, make sure there are no menus open first
+        if (UIManager.list_currentMenus.Count == 0)
+            currentCharacterState = newState;
     }
 
     // states for checking if the player is in a menu/talking

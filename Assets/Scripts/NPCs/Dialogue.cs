@@ -175,9 +175,6 @@ public class Dialogue : MonoBehaviour {
             for(int j = 0; j < responses.Length; j++)
             {
                 var newResponse = new Response();
-
-                // responses[j] = text[number, function]
-
                 var bracketIndex = responses[j].IndexOf('[');
                 var actualResponse = responses[j].Substring(0, bracketIndex);
                 newResponse.playerResponse = actualResponse;
@@ -186,7 +183,6 @@ public class Dialogue : MonoBehaviour {
 
                 string numOfLinesStr = "";
                 string functionStr = "";
-                print("comma index: " + commaIndex);
                 if (commaIndex >= 0)
                 {
                     numOfLinesStr = responses[j].Substring(bracketIndex, commaIndex);
@@ -198,10 +194,6 @@ public class Dialogue : MonoBehaviour {
                 // otherwise, it's text for a function
                 else
                     functionStr = responses[j].Substring(bracketIndex);
-                // numOfLinesStr = [number,
-                // functionStr = , function]
-                print("lines str: " + numOfLinesStr);
-                print("function str: " + functionStr);
 
                 // get the numeric values from numOfLines
                 // Regex -- Regular Expression
@@ -211,7 +203,6 @@ public class Dialogue : MonoBehaviour {
                 // parse string to int
                 int numOfLines;
                 int.TryParse(resultStr, out numOfLines);
-                print("num of lines: " + numOfLines);
                 
                 // create a new conversation that will be printed if this response it chosen
                 // search through the current text file, except instead of starting at the top and going till the end,
@@ -292,9 +283,6 @@ public class Dialogue : MonoBehaviour {
     
     void NextConversation(Conversation nextConvo)
     {
-        print("next conversation");
-        //if (conversationIterator <= 0) return;
-        //responseMenu.OnStartNextConversation -= NextConversation;
         currentConversation = nextConvo;
         conversationIterator = 0;        
         PrintConversation();

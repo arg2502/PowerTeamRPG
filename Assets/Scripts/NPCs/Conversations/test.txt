@@ -1,8 +1,8 @@
 name	emotion	dialogue	responses
 		These are some words that I'm speaking.	
-		And these are some more words.	
+		And these are some <i>more</i> words.	
 	HAPPY	Funny that's how life be, right?	Yeah[2,TestFunction]_What?[1]_No[1]
 	HAPPY	This guy gets it.	
 	HAPPY	Well, I'm off.	
 		Nevermind.	
-		Well fuck you then.	
+		Well <b><i><size=100>fuck you</size></i></b> then.	

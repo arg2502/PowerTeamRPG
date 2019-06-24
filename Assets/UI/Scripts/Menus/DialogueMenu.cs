@@ -16,7 +16,7 @@
         public RectMask2D textMask;
 
         string dialogueStr; // the full string that dialogueText will print out
-        float typingSpeed = 0.01f;
+        float typingSpeed = 0.02f;
         Action nextDialogue; // function that occurs when Continue button is pressed, set in Dialogue.cs
 
         // testing out event triggers
@@ -126,11 +126,70 @@
         {
             readyForNextDialogue = false;
             dialogueText.text = "";
+            string transparentTagStart = "<color=#00000000>";
+            string transparentColorTagEnd = "</color>";
+            bool insideRichText = false;
+            int insideTagLayer = 0; // layers of tags -- ex: <b><color=white>words wrodwewtyty</color></b> --would be 2 layers of tags
             for(int i = 0; i < dialogueStr.Length; i++)
             {
-                dialogueText.text += dialogueStr[i];
-                CheckIfTextOutOfBounds();
-                yield return new WaitForSeconds(typingSpeed);
+                // check for any rich text tags, we don't wanna place the transparent color tag within that   
+                if (dialogueStr[i] == '<')
+                {
+                    insideRichText = true;
+                    if (dialogueStr[i + 1] != '/')
+                        insideTagLayer++;
+                    continue;
+                }
+                else if (dialogueStr[i] == '>')
+                {
+                    insideRichText = false;
+                    continue;
+                }
+                else if (dialogueStr[i] == '/')
+                {
+                    insideTagLayer--;
+                    if (insideTagLayer < 0) insideTagLayer = 0;
+                    continue;
+                }
+               
+                if (!insideRichText)
+                {
+                    dialogueText.text += dialogueStr[i];
+
+                    if (insideTagLayer == 0)
+                        dialogueText.text = 
+                            dialogueStr.Substring(0, i) +
+                            transparentTagStart + 
+                            dialogueStr.Substring(i) + 
+                            transparentColorTagEnd;
+                    else
+                    {
+                        // find where the tag ends
+                        int indexOfEndTagStart = dialogueStr.IndexOf('<', i);
+                        int indexOfEndTagEnd = indexOfEndTagStart;
+                        int tempStart = indexOfEndTagStart;
+                        
+                        for(int j = 0; j < insideTagLayer; j++)
+                        {
+                            indexOfEndTagEnd = dialogueStr.IndexOf('>', tempStart + 1);
+                            tempStart = indexOfEndTagEnd;                            
+                        }
+
+                        var lengthUntilEndTagStart = indexOfEndTagStart - i;
+                        var lengthOfTag = indexOfEndTagEnd - indexOfEndTagStart;
+                        dialogueText.text = 
+                            dialogueStr.Substring(0, i)                           // currently visible
+                            + transparentTagStart                                                // start transparent
+                            + dialogueStr.Substring(i, lengthUntilEndTagStart)                   // hidden string until end tag
+                            + transparentColorTagEnd                                                  // close transparent tag
+                            + dialogueStr.Substring(i + lengthUntilEndTagStart, lengthOfTag + 1) // skip closing tag
+                            + transparentTagStart                                                // open transparent again
+                            + dialogueStr.Substring(indexOfEndTagEnd + 1)                        // rest of string
+                            + transparentColorTagEnd;                                                 // close transparent tag
+                    }
+                    //CheckIfTextOutOfBounds();
+                    yield return new WaitForSeconds(typingSpeed);
+                }
             }
             EndTyping();
         }
@@ -152,7 +211,7 @@
         {
             StopAllCoroutines();
             dialogueText.text = dialogueStr;
-            CheckIfTextOutOfBounds();
+            //CheckIfTextOutOfBounds();
             ReadyForNextDialogue = true; // invokes event
         }
     }

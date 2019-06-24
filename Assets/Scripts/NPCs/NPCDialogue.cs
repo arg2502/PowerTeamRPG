@@ -74,7 +74,9 @@ public class NPCDialogue : MonoBehaviour {
         //else if (GetComponentInParent<StationaryNPCControl>())
         //	GetComponentInParent<StationaryNPCControl>().BackToNormal();
 
-        GetComponentInParent<NPCObject>().BackToNormal();
+        // return to normal controls, except when we are still in menus, most likely because shopkeeper
+        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Menu)
+            GetComponentInParent<NPCObject>().BackToNormal();
     }
 
     void TestFunction()
