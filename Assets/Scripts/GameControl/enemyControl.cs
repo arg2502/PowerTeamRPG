@@ -142,6 +142,14 @@ public class enemyControl : MovableOverworldObject {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+        {
+            anim.speed = 0;
+            return;
+        }
+        else if (anim.speed == 0)
+            anim.speed = 1;
+
             for (int i = 0; i < raycastHits.Count; i++)
             {
                 if (raycastHits[i].collider != null)

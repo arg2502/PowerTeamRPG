@@ -41,7 +41,16 @@ public class StationaryNPCControl : NPCObject {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (anim != null)
+        {
+            if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+            {
+                anim.speed = 0;
+                return;
+            }
+            else if (anim.speed == 0)
+                anim.speed = 1;
+        }
 	}
 
 	public void FaceCharacter(Vector2 directionToFace)

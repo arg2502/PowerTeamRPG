@@ -246,6 +246,14 @@ public class NPCPathwalkControl : NPCObject {
 	
 	// Update is called once per frame
 	void Update () {
+        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+        {
+            anim.speed = 0;
+            return;
+        }
+        else if (anim.speed == 0)
+            anim.speed = 1;
+
 		if (walkingState == State.walking) {
 
 			//every x amount of seconds, re-check the direction we should head
