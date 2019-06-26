@@ -69,14 +69,8 @@ public class NPCDialogue : MonoBehaviour {
         // at the start of the conversation is called in characterControl, but that's because that 
         // function needs a characterControl variable
         // plus this location kinda makes sense...
-        //      if (GetComponentInParent<NPCPathwalkControl>())
-        //          GetComponentInParent<NPCPathwalkControl>().BackToNormal();
-        //else if (GetComponentInParent<StationaryNPCControl>())
-        //	GetComponentInParent<StationaryNPCControl>().BackToNormal();
 
-        // return to normal controls, except when we are still in menus, most likely because shopkeeper
-        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Menu)
-            GetComponentInParent<NPCObject>().BackToNormal();
+        GetComponentInParent<NPCObject>().BackToNormal();
     }
 
     void TestFunction()
