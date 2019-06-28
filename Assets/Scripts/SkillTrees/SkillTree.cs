@@ -68,7 +68,7 @@ public class SkillTree {
     protected DenigenData hero;
 
     // previous button object to keep track of which button to set back to normal
-    ButtonSkillTree prevButton;
+    //ButtonSkillTree prevButton;
 
     // see who else needs to level up
     protected bool levelUp = false;
@@ -197,79 +197,79 @@ public class SkillTree {
 
 
     //}
-    void CheckForTechniques(Technique t, ButtonSkillTree b)
-    {
-        for (int i = 0; i < hero.skillsList.Count; i++)
-        {
-            if (t.Name == hero.skillsList[i].Name)
-            {
-                b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                t.Active = true;
-                break;
-            }
-        }
-        // if we still haven't found the technique, check spells
-        if (b.state != MyButton.MyButtonTextureState.normal)
-        {
-            for (int i = 0; i < hero.spellsList.Count; i++)
-            {
-                if (t.Name == hero.spellsList[i].Name)
-                {
-                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                    t.Active = true;
-                    break;
-                }
-            }
-        }
-        // still no luck? check passives
-        if (b.state != MyButton.MyButtonTextureState.normal)
-        {
-            for (int i = 0; i < hero.passiveList.Count; i++)
-            {
-                if (t.Name == hero.passiveList[i].Name)
-                {
-                    b.state = ButtonSkillTree.MyButtonTextureState.normal;
-                    t.Active = true;
-                    break;
-                }
-            }
-        }
-    }
-    void NewTree()
-    {
-        ButtonSkillTree b;
-        for (int col = 0; col < maxCols; col++)
-        {
-            for (int row = 0; row < maxRows; row++)
-            {
-                b = button2DArray[col, row].GetComponent<ButtonSkillTree>();
-                // default buttons are inactive
-                b.state = ButtonSkillTree.MyButtonTextureState.inactive;
-                if (b.labelMesh.text != "Done") { b.labelMesh.text = ""; }
-                b.GetComponent<SpriteRenderer>().enabled = false;
+    //void CheckForTechniques(Technique t, ButtonSkillTree b)
+    //{
+    //    for (int i = 0; i < hero.skillsList.Count; i++)
+    //    {
+    //        if (t.Name == hero.skillsList[i].Name)
+    //        {
+    //            b.state = ButtonSkillTree.MyButtonTextureState.normal;
+    //            t.Active = true;
+    //            break;
+    //        }
+    //    }
+    //    // if we still haven't found the technique, check spells
+    //    if (b.state != MyButton.MyButtonTextureState.normal)
+    //    {
+    //        for (int i = 0; i < hero.spellsList.Count; i++)
+    //        {
+    //            if (t.Name == hero.spellsList[i].Name)
+    //            {
+    //                b.state = ButtonSkillTree.MyButtonTextureState.normal;
+    //                t.Active = true;
+    //                break;
+    //            }
+    //        }
+    //    }
+    //    // still no luck? check passives
+    //    if (b.state != MyButton.MyButtonTextureState.normal)
+    //    {
+    //        for (int i = 0; i < hero.passiveList.Count; i++)
+    //        {
+    //            if (t.Name == hero.passiveList[i].Name)
+    //            {
+    //                b.state = ButtonSkillTree.MyButtonTextureState.normal;
+    //                t.Active = true;
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
+    //void NewTree()
+    //{
+    //    ButtonSkillTree b;
+    //    for (int col = 0; col < maxCols; col++)
+    //    {
+    //        for (int row = 0; row < maxRows; row++)
+    //        {
+    //            b = button2DArray[col, row].GetComponent<ButtonSkillTree>();
+    //            // default buttons are inactive
+    //            b.state = ButtonSkillTree.MyButtonTextureState.inactive;
+    //            if (b.labelMesh.text != "Done") { b.labelMesh.text = ""; }
+    //            b.GetComponent<SpriteRenderer>().enabled = false;
 
-            }
-        }
-        foreach (Technique t in currentTree.listOfContent)
-        {
-            b = button2DArray[t.ColPos, t.RowPos].GetComponent<ButtonSkillTree>();
-            b.GetComponent<SpriteRenderer>().enabled = true;
-            b.labelMesh.text = t.Name;
+    //        }
+    //    }
+    //    foreach (Technique t in currentTree.listOfContent)
+    //    {
+    //        b = button2DArray[t.ColPos, t.RowPos].GetComponent<ButtonSkillTree>();
+    //        b.GetComponent<SpriteRenderer>().enabled = true;
+    //        b.labelMesh.text = t.Name;
 
-            // link technique to buttons & vice versa
-            t.Button = b;
-            b.Technique = t;
+    //        // link technique to buttons & vice versa
+    //        t.Button = b;
+    //        b.Technique = t;
 
-            // setup next list
-            //if (t.Button.ListNextButton == null)
-            // { t.Button.ListNextButton = new List<ButtonSkillTree>(); }
+    //        // setup next list
+    //        //if (t.Button.ListNextButton == null)
+    //        // { t.Button.ListNextButton = new List<ButtonSkillTree>(); }
 
 
 
-            // check if the denigen has already learned the technique
-            CheckForTechniques(t, b);
-        }
-    }
+    //        // check if the denigen has already learned the technique
+    //        CheckForTechniques(t, b);
+    //    }
+    //}
     
     public void EndScene()
     {

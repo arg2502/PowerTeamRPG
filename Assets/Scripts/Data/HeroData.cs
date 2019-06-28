@@ -16,16 +16,16 @@ public class HeroData : DenigenData {
     /// </summary>
     /// <param name="itemToCheck"></param>
     /// <returns></returns>
-    public bool EquipmentContainsItem(Item itemToCheck)
-    {
-        foreach (var itemObj in equipment)
-        {
-            if (itemObj.GetComponent<Item>() == itemToCheck)
-                return true;
-        }
+    //public bool EquipmentContainsItem(Item itemToCheck)
+    //{
+    //    foreach (var itemObj in equipment)
+    //    {
+    //        if (itemObj.GetComponent<Item>() == itemToCheck)
+    //            return true;
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
 
     public void AddExp(int expToAdd)

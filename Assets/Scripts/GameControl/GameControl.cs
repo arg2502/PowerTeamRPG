@@ -435,29 +435,29 @@ public class GameControl : MonoBehaviour {
 			temp.passiveList = heroList[i].passiveList;
 			temp.statusState = (SavableHeroData.Status)heroList[i].statusState;
 
-			if (heroList[i].weapon != null)
-			{
-				Item item = heroList[i].weapon.GetComponent<Item>();
-				ItemData id = new ItemData();
-				id.name = item.name;
-				id.quantity = item.quantity;
-				id.uses = item.uses;
-				temp.weapon = id;
-			}
+			//if (heroList[i].weapon != null)
+			//{
+			//	Item item = heroList[i].weapon.GetComponent<Item>();
+			//	ItemData id = new ItemData();
+			//	id.name = item.name;
+			//	id.quantity = item.quantity;
+			//	id.uses = item.uses;
+			//	temp.weapon = id;
+			//}
 
-			temp.equipment = new List<ItemData>();
-			for (int j = 0; j < heroList[i].equipment.Count; j++)
-			{
-				print("Index: " + j);
-				print("Saving item:" + heroList[i].equipment[j].name);
-				Item item = heroList[i].equipment[j].GetComponent<Item>();
-				ItemData id = new ItemData();
-				id.name = item.name;
-				id.quantity = item.quantity;
-				id.uses = item.uses;
-				temp.equipment.Add(id);
-				print("Saved Item data: " + temp.equipment[j].name);
-			}
+			//temp.equipment = new List<ItemData>();
+			//for (int j = 0; j < heroList[i].equipment.Count; j++)
+			//{
+			//	print("Index: " + j);
+			//	print("Saving item:" + heroList[i].equipment[j].name);
+			//	Item item = heroList[i].equipment[j].GetComponent<Item>();
+			//	ItemData id = new ItemData();
+			//	id.name = item.name;
+			//	id.quantity = item.quantity;
+			//	id.uses = item.uses;
+			//	temp.equipment.Add(id);
+			//	print("Saved Item data: " + temp.equipment[j].name);
+			//}
 
 			data.heroList.Add(temp);
 		}

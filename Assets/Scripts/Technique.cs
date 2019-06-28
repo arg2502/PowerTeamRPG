@@ -27,8 +27,8 @@ public class Technique {
     Sprite treeImage; // image to display on the button in the skill tree
     protected int cost; // number of skill points required to unlock
     bool active; // if true, the hero has this technique
-    [NonSerialized]
-    ButtonSkillTree button;
+    //[NonSerialized]
+    //ButtonSkillTree button;
     protected int damage;
     protected int critical;
     protected int accuracy;
@@ -46,7 +46,7 @@ public class Technique {
     public bool Active { get { return active; } set { active = value; } }
     public Sprite TreeImage { get { return treeImage; } set { treeImage = value; } }    
     public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
-    public ButtonSkillTree Button { get { return button; } set { button = value; } }
+    //public ButtonSkillTree Button { get { return button; } set { button = value; } }
     public int Damage { get { return damage; } }
     public int Critical { get { return critical; } }
     public int Accuaracy { get { return accuracy; } }    
