@@ -1120,7 +1120,7 @@ public class BattleManager : MonoBehaviour {
 
     void ShowDamage(Denigen target, int damage)
     {
-        GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+        GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/Effects/DamageEffect"), target.transform.position, Quaternion.identity);
         be.name = "DamageEffect";
         //be.GetComponent<Effect>().Start();
         be.GetComponent<SpriteRenderer>().sprite = damageIcon;
@@ -1137,7 +1137,7 @@ public class BattleManager : MonoBehaviour {
 
 	void ShowHealing(Denigen target, int heal, string statName)
 	{
-		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/HealEffect"), target.transform.position, Quaternion.identity);
 		be.name = "HealEffect";
 		if (statName == "HP") {
 			be.GetComponent<SpriteRenderer> ().sprite = healIcon;
@@ -1149,7 +1149,7 @@ public class BattleManager : MonoBehaviour {
 
 	void ShowStatBoost(Denigen target, int _boost, string _stat)
 	{
-		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/DamageEffect"), target.transform.position, Quaternion.identity);
 		be.name = "StatBoostEffect";
 		//be.GetComponent<SpriteRenderer>().sprite = healIcon;
 		if (_boost >= 0) {
@@ -1213,7 +1213,7 @@ public class BattleManager : MonoBehaviour {
             be = target.GetComponentInChildren<Effect>().gameObject;
         if (be == null)
         {
-            be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
+            be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/DamageEffect"), target.transform.position, Quaternion.identity);
             be.name = "StatusEffect";
             be.transform.SetParent(target.transform);
         }
@@ -1239,7 +1239,7 @@ public class BattleManager : MonoBehaviour {
             be = target.GetComponentInChildren<StrikeEffect>().gameObject;
         if (be == null)
         {
-            be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/StrikeEffect"), target.transform.position, Quaternion.identity);
+            be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/StrikeEffect"), target.transform.position, Quaternion.identity);
             be.name = "StrikeEffect";
             be.transform.SetParent(target.transform);
         }

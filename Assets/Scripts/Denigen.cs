@@ -753,7 +753,7 @@ public class Denigen : MonoBehaviour {
 
         if (this.statusIcon == null)
         {
-            statusIcon = GameObject.Instantiate(Resources.Load("Prefabs/StatusIcon")) as GameObject;
+            statusIcon = GameObject.Instantiate(Resources.Load("Prefabs/Effects/StatusIcon")) as GameObject;
             statusIcon.transform.SetParent(this.transform);
 
             var pos = transform.position;
