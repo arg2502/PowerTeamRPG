@@ -5,7 +5,6 @@ using System.Collections;
 public class StatsCard : MonoBehaviour {
 
     public Image background;
-    Animator bgAnimator;
     public AnimationClip bgAnimation;
     Denigen currentDenigen;
 
@@ -51,11 +50,6 @@ public class StatsCard : MonoBehaviour {
             fullGroup.GetComponent<RectTransform>().GetWorldCorners(v);
             return v[3].x;
         }
-    }
-
-    void Awake()
-    {
-        bgAnimator = background.GetComponent<Animator>();
     }
 
     public void SetInitStats(Denigen denigen)

@@ -11,7 +11,7 @@ public class FloorSwitch : OverworldObject {
     private float totalWeight = 0f;
     private bool filled = false;
 
-    private void Start()
+    private new void Start()
     {
         base.Start();
 

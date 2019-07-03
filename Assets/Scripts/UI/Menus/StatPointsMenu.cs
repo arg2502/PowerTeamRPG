@@ -309,7 +309,7 @@
             uiManager.PopMenu();
         }
 
-        private void Update()
+        private new void Update()
         {
             base.Update();
 

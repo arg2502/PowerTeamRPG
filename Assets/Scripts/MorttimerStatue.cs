@@ -9,7 +9,6 @@ public class MorttimerStatue : NPCDialogue
     public bool flip = false;
     public bool side = false;
     float mult = 1.0f;
-    float distanceToSave = 2.5f;
     float distanceToSpawn = 1.5f;
     bool canPlayerMove;
     

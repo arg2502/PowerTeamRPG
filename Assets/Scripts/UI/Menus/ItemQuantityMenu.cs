@@ -103,7 +103,7 @@
             uiManager.PopMenu();
         }
 
-        private void Update()
+        private new void Update()
         {
             base.Update();
             quantity.text = quantityNum.ToString();

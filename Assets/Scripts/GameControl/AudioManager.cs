@@ -14,9 +14,7 @@ public class AudioManager : MonoBehaviour{
     AudioSource currentMusic = null;
 
     float fadeOutRate = 5f;
-    float fadeInRate = 1.5f;
-    bool fadingOut = false;
-    bool fadingIn = false;    
+    float fadeInRate = 1.5f; 
     
     public void Init () {
         // instantiating music source obj

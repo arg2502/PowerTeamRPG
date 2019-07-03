@@ -88,10 +88,9 @@
 			//get the info on the item we are using
 			if (item.type == "consumable") {
 				ScriptableConsumable _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableConsumable;
-				//Consumables are the only items that offer status changes
-				if (_item.statusChange != null) {
-					descriptionText.text += " " + _item.statusChange;
-				}
+                //Consumables are the only items that offer status changes
+                descriptionText.text += " " + _item.statusChange;
+				
 				//call the rest of the description text
 				GenerateStatDescription (currentHero, _item);
 			} else if (item.type == "weapon") {

@@ -341,8 +341,7 @@ public class roomControl : MonoBehaviour {
 
         GameControl.control.currentPosition = GameControl.control.areaEntrance;
         GameControl.control.sceneStartGateName = "";
-        
-        var camera = FindObjectOfType<CameraController>();
+
     }
 
     // when you leave and reenter a scene from battle, Gateway becomes null

@@ -24,7 +24,7 @@ public class ShopKeeperDialogue : NPCDialogue {
     
     public Dictionary<ScriptableItem, int> customItemPrices;
     
-    private void Start()
+    private new void Start()
     {
         base.Start();
 

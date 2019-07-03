@@ -10,7 +10,7 @@ public class MovableOverworldObject : OverworldObject {
     private float objectWeight;
     public float ObjectWeight { get { return objectWeight; } }
     
-    void Start()
+    new void Start()
     {		
         base.Start();
         GetComponent<SpriteRenderer>().enabled = isActivated; 

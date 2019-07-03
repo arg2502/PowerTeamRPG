@@ -11,7 +11,7 @@ public class Lock : OverworldObject {
 
     BoxCollider2D boxCollider2D;
 
-    private void Start()
+    private new void Start()
     {
         base.Start();
         boxCollider2D = GetComponent<BoxCollider2D>();

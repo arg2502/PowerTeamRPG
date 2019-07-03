@@ -155,15 +155,15 @@
 
         void OnUse()
         {
-            var useItem = PushUseItem(UseItemMenu.MenuState.Use);
+            PushUseItem(UseItemMenu.MenuState.Use);
         }
         void OnEquip()
         {
-            var useItem = PushUseItem(UseItemMenu.MenuState.Equip);
+            PushUseItem(UseItemMenu.MenuState.Equip);
         }
         void OnRemove()
         {
-            var useItem = PushUseItem(UseItemMenu.MenuState.Remove);
+            PushUseItem(UseItemMenu.MenuState.Remove);
         }
         void OnCancel()
         {

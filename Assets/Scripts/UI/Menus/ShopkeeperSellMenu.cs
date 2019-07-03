@@ -29,7 +29,6 @@
             }
         }
 
-        Rect screen = new Rect(0, 0, Screen.width, Screen.height);
         bool moving;
         float startTime = 0;
         Rect itemSlotsWorld;

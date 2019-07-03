@@ -118,7 +118,7 @@ public class Dialogue : MonoBehaviour {
                 newConversation.speakerEmotions.Add(speaker.neutralSpr);
             else
             {
-                switch (lines[1])
+                switch (lines[1].ToUpper())
                 {
                     case "HAPPY":
                         newConversation.speakerEmotions.Add(speaker.happySpr);

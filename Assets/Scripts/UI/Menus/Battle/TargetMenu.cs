@@ -12,8 +12,6 @@
 
         BattleManager battleManager;
 
-        ListSub listSub;
-
         Button currentButton;
         Button prevButton;
         int currentIndex = -1;
@@ -77,9 +75,7 @@
         public override void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
-            base.Init();
-            
-            listSub = uiManager.FindMenu(uiDatabase.ListSub) as ListSub;
+            base.Init();            
         }
 
         public override void SetButtonNavigation()

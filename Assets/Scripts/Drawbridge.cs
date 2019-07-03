@@ -5,12 +5,11 @@ using System.Collections.Generic;
 public class Drawbridge : OverworldObject {
 
     float height = 500.0f;
-	float difference = 125.0f;
     float initialPos;
     public List<GameObject> colliders;
 	public bool isActive;
 
-    void Start()
+    new void Start()
     {
         base.Start();
         sr.sortingOrder = (int)-transform.position.y - 2000;

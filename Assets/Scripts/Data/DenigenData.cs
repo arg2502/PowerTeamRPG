@@ -50,13 +50,13 @@ public class DenigenData : ScriptableObject
         level = 1;
         hp = (int)(baseTotal * hpPer);
         pm = (int)(baseTotal * pmPer);
-        atk = atk = (int)(baseTotal * atkPer);
-        def = def = (int)(baseTotal * defPer);
-        mgkAtk = mgkAtk = (int)(baseTotal * mgkAtkPer);
-        mgkDef = mgkDef = (int)(baseTotal * mgkDefPer);
-        luck = luck = (int)(baseTotal * luckPer);
-        evasion = evasion = (int)(baseTotal * evasionPer);
-        spd = spd = (int)(baseTotal * spdPer);
+        atk = (int)(baseTotal * atkPer);
+        def = (int)(baseTotal * defPer);
+        mgkAtk = (int)(baseTotal * mgkAtkPer);
+        mgkDef = (int)(baseTotal * mgkDefPer);
+        luck = (int)(baseTotal * luckPer);
+        evasion = (int)(baseTotal * evasionPer);
+        spd = (int)(baseTotal * spdPer);
         hpMax = hp;
         pmMax = pm;
 

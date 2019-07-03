@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScriptableArmor : ScriptableItem {
 
 	//Armor can be one of 4 types
-	public enum Type { head, chest, gloves, boots };
+	public new enum Type { head, chest, gloves, boots };
 	
 	//Armor can affect any stats other than hp or pm
 	//Also passives, whenever we get there

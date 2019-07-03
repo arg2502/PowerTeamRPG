@@ -66,7 +66,7 @@ public class characterControl : OverworldObject {
     public List<RuntimeAnimatorController> heroAnimators;
 
     // Use this for initialization
-    void Start () {
+    new void Start () {
 
         myCamera = FindObjectOfType<CameraController>();
         anim = GetComponent<Animator>();

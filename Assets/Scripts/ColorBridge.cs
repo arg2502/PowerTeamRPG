@@ -10,11 +10,8 @@ public class ColorBridge : OverworldObject {
     float rotationDegrees2 = 90.0f;
 	Transform player;
 	Transform bridgeTransform;
-	float width = 240.0f;
-	float height = 332.0f;
-	roomControl room;
 
-    void Start()
+    new void Start()
     {
         base.Start();
 		bridgeTransform = gameObject.transform.Find ("Bridge").transform;
@@ -22,8 +19,6 @@ public class ColorBridge : OverworldObject {
 		bridgeTransform.GetComponent<SpriteRenderer> ().sortingOrder = sr.sortingOrder - 1;
         isMoving = false;
 		player = GameObject.FindObjectOfType<characterControl>().transform;
-
-		room = GameObject.FindObjectOfType<roomControl> ();
     }
 	void Update(){
 		bridgeTransform = gameObject.transform.Find ("Bridge").transform;

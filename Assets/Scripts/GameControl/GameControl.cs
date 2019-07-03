@@ -88,9 +88,6 @@ public class GameControl : MonoBehaviour {
     public bool isAnimating = false;
     public bool isDying = false;
 
-    // variable to access skill tree functions
-    SkillTree skillTreeAccessor = new SkillTree();
-
     // var for keeping track of gateways between scenes
     public string sceneStartGateName;
     public void AssignEntrance(string gatewayName)
@@ -734,7 +731,7 @@ class PlayerData
 	public string currentScene; // the place where the currently is (outside of battle)
 	public string savedScene; // the room where the player last saved
 	public bool taggedStatue;
-	public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
+	public float posX, posY; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
 	public List<SavableHeroData> heroList = new List<SavableHeroData>() { };
 	public List<RoomControlData> rooms = new List<RoomControlData>() { }; // stores all of the data for areas the player has been to, like block positions, etc.
 

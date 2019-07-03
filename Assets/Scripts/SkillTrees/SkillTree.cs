@@ -12,9 +12,6 @@ public class SkillTree {
     // 2D array of button layout
     // COLUMN MAJOR (i = column number, j = row number)
     public GameObject[,] button2DArray;
-    int maxRows = 10;
-    int maxCols = 10;
-
 
     // button states
     // inactive = player does not have the skill, but has the possibility to acquire it

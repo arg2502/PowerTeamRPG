@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScriptableWeapon : ScriptableItem {
 
 	//Weapons can be one of 3 types
-	public enum Type { augment, bookmark, beads };
+	public new enum Type { augment, bookmark, beads };
 
 	//Weapons can affect any stats other than hp or pm
 	//Also passives, whenever we get there

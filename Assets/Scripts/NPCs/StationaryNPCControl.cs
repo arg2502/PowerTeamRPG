@@ -25,7 +25,7 @@ public class StationaryNPCControl : NPCObject {
 	private BoxCollider2D boxCollider; // Variable to reference our collider
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
 
 		//Find the NPC's animator
 		anim = GetComponent<Animator>();

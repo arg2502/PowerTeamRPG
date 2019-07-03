@@ -18,7 +18,7 @@ public class Hole : OverworldObject {
     Animator anim;
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
         base.Start();
         anim = GetComponent<Animator>();
         sr.sortingOrder = -9799;

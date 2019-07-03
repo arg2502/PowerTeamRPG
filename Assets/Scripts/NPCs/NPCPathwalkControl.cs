@@ -52,7 +52,7 @@ public class NPCPathwalkControl : NPCObject {
 	private RaycastHit2D hit; //checks for collisions
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
 		//Find the NPC's animator
 		anim = GetComponent<Animator>();
 

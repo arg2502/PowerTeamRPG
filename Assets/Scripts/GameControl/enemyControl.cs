@@ -48,7 +48,7 @@ public class enemyControl : MovableOverworldObject {
     float bottomHitFloat = 0.035f;
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
 		canMove = true;
         anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer> ();
@@ -100,7 +100,6 @@ public class enemyControl : MovableOverworldObject {
 				}
 				foreach (RaycastHit2D rh in raycastHits) {
 					if (rh.collider != null) {
-						OverworldObject owo = rh.collider.GetComponent<OverworldObject> ();
 						int loopCounter = 0; // keep track of the number of loops
 						while ((raycastHits [0].collider != null
 						                     || raycastHits [1].collider != null) 

@@ -27,7 +27,7 @@ public class Switch : OverworldObject {
 	float maxTime = 1.66f;
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
         base.Start();
         player = GameObject.FindObjectOfType<characterControl>().transform;
 	}
@@ -103,8 +103,6 @@ public class Switch : OverworldObject {
         }
         // check for bridges still moving
         
-        int allClear = 0;
-
         if (switchType == SwitchType.colorSwitch)
         {		
 			// timer to start movement again
