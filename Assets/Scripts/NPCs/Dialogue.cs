@@ -65,15 +65,9 @@ public class Dialogue : MonoBehaviour {
 
     public void StartDialogue(TextAsset textAsset)
     {
-        // if this is our first time talking to an NPC,
-        // OR the text they have to say is different from the last time we've talked,
-        // set the current text asset and decipher dialogue
-        //if (currentTextAsset == null || currentTextAsset != textAsset)
-        //{
-            currentTextAsset = textAsset;
-            currentConversation = DecipherConversation(currentTextAsset.text);
-        //}
-
+        currentTextAsset = textAsset;
+        currentConversation = DecipherConversation(currentTextAsset.text);
+     
         // push the dialogue menu
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
         dialogueMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueMenu).GetComponent<UI.DialogueMenu>();
@@ -240,23 +234,13 @@ public class Dialogue : MonoBehaviour {
         // if the iterator is greater than the amount of dialogue that needs to be said,
         if (conversationIterator >= currentConversation.dialogueConversation.Count)
         {
-            //// check to see if there are any responses to give
-            //if (currentConversation.IsThereResponse())
-            //{
-            //    GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu);
-            //}
+            conversationIterator = 0;
+            speaker.EndDialogue(currentConversation);
 
-            //// End the conversation if there is no options for responses
-            //else
-            //{
-                conversationIterator = 0;
-                speaker.EndDialogue(currentConversation);
+            // pop dialogue menu
+            GameControl.UIManager.PopMenu();
 
-                // pop dialogue menu
-                GameControl.UIManager.PopMenu();
-
-                return;
-            //}
+            return;
         }
         currentSpeakerName = currentConversation.GetSpeakerName(conversationIterator);
         currentSpeakerSprite = currentConversation.GetSpeakerEmotion(conversationIterator);

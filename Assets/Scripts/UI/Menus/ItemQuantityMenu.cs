@@ -119,13 +119,11 @@
                 {
                     quantityNum++;
                 }
-                //UpdateArrowStates();
             }
             else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0)
             {
                 if (quantityNum > 1)
                     quantityNum--;
-                //UpdateArrowStates();
             }
 
         }

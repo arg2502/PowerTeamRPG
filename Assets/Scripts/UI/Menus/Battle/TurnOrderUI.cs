@@ -16,17 +16,14 @@ public class TurnOrderUI : MonoBehaviour {
         denigenPortrait.sprite = denigen.Portrait;
     }	
     
-    public void SetAsFirst()
+    public void SetAsLast()
     {
         gameObject.SetActive(true);
-        //gameObject.transform.SetAsFirstSibling();
         gameObject.transform.SetAsLastSibling();
     }
 
     public void Disable()
     {
-        //denigen = null;
-        //denigenPortrait.sprite = null;
         gameObject.SetActive(false);
     }
 

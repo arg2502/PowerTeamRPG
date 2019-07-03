@@ -23,7 +23,6 @@ public class HoleSwitch : MonoBehaviour {
 
 			// if all the holes are filled, unlock door
 			if (numOfFilledHoles >= connectedHoles.Count) {
-				//gameObject.SetActive(!gameObject.activeSelf);
 				gameObject.GetComponent<SpriteRenderer> ().enabled = !gameObject.GetComponent<SpriteRenderer> ().enabled;
 				gameObject.GetComponent<BoxCollider2D> ().enabled = !gameObject.GetComponent<BoxCollider2D> ().enabled;
 				isActivated = true;

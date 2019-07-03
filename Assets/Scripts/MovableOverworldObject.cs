@@ -32,7 +32,6 @@ public class MovableOverworldObject : OverworldObject {
 	void Update () {
 		if (isActivated && !isCarried) // this pertains to whether or not a switch has caused the object to appear
         {
-            //gameObject.SetActive(true);
             sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         }
 	}

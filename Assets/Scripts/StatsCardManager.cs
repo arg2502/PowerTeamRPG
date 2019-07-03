@@ -135,18 +135,7 @@ public class StatsCardManager : MonoBehaviour {
         pos.x = newPos;
         cardList[index].GetComponent<RectTransform>().position = pos;
     }
-
-    void TestOneHero()
-    {
-        // test everyone
-        for (int i = 0; i < HeroCards.Count; i++)
-        {
-            var pos = HeroCards[i].GetComponent<RectTransform>().position;
-            pos.x = HERO_CENTER;
-            HeroCards[i].GetComponent<RectTransform>().position = pos;
-        }
-    }
-
+    
     void OneHero()
     {
         var newPos = HERO_CENTER;
@@ -324,18 +313,6 @@ public class StatsCardManager : MonoBehaviour {
         var pos = first.GetComponent<RectTransform>().position;
         pos.x += distance;
         first.GetComponent<RectTransform>().position = pos;
-
-        //if (activeNum > 3)
-        //{
-        //    var secondHero = FindActiveCard(1, cards);
-        //    var pos2 = secondHero.GetComponent<RectTransform>().position;
-
-        //    // half the distance of first card
-        //    var half = distance / 2f;
-        //    pos2.x += half;
-
-        //    secondHero.GetComponent<RectTransform>().position = pos2;
-        //}
     }
 
     void CheckRightSide(List<StatsCard> cards, float rightBorder, int activeNum)
@@ -343,7 +320,6 @@ public class StatsCardManager : MonoBehaviour {
         // find last active hero
         StatsCard last = FindActiveCard(cards.Count - 1, cards, false);
 
-        // var distance = last.FarRight - rightBorder;
         var distance = rightBorder - last.FarRight;
 
         var pos = last.GetComponent<RectTransform>().position;

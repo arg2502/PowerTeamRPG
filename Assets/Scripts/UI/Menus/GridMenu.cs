@@ -31,11 +31,6 @@
                     navigation = buttonGrid[listIterator][buttonIterator].navigation;
                     navigation.mode = Navigation.Mode.Explicit;
 
-                    // TODO:
-                    // Add a case if you are going to allow horizontal movement or not
-                    // Ex: Inventory does allow, but puts you back to the top of the next list
-                    // But Skill Tree will not allow horizontal movement at all
-
                     SetHorizontalNavigation(buttonIterator, listIterator);
                     SetVerticalNavigation(buttonIterator, listIterator);                   
 

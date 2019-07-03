@@ -8,13 +8,6 @@ using System.IO;
 // This script will contain all of the base classes of passives
 [Serializable]
 public abstract class Passive : Technique {
-    //Attributes
-    //protected int returnNum; // every passive should return a number
-    //protected string name; // every passive should have a name
-    //protected string description; // every passive should let the player know what it does
-
-    //public string Name { get { return name; } }
-    //public string Description { get { return description; } }
     public Passive(string[] list)
         :base(list)
     {
@@ -83,9 +76,6 @@ public abstract class CalcDamagePassive : Passive {
         : base(list) { }
 
     public abstract float CalcDamage(Denigen attackingDen, float damage);
-
-    //public abstract int Use() { return 0; }
-    //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // Call this during the TakeDamage method
@@ -97,7 +87,6 @@ public abstract class TakeDamagePassive : Passive
     public TakeDamagePassive(string[] list)
         :base(list) { }
 
-    //public abstract int Use() { return 0; }
     public abstract float TakeDamage(Denigen attackingDen, Denigen other, float damage);
 }
 
@@ -108,8 +97,6 @@ public abstract class PerTurnPassive : Passive
 {
     public PerTurnPassive(string[] list)
         :base(list) { }
-    //public abstract int Use() { return 0; }
-    //public abstract void Use(Denigen attackingDen, Denigen other) { /*return 0;*/ }
 }
 
 // this passive just restores 1hp per turn

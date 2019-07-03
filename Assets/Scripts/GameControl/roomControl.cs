@@ -22,7 +22,6 @@ public class roomControl : MonoBehaviour {
 	public int maxEnemiesPerBattle;
 	public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
 	//public List<TreasureChest> treasureChests = new List<TreasureChest>();
-	//public List<DoorQuestion> doorsInRoom = new List<DoorQuestion>();
 	public List<Switch> switchesInRoom = new List<Switch> ();
 	public List<ColorBridge> colorBridgesInRoom = new List<ColorBridge>();
 	public List<Drawbridge> drawbridgesInRoom = new List<Drawbridge>();
@@ -52,10 +51,6 @@ public class roomControl : MonoBehaviour {
 		//{
 		//	treasureChests.Add(tc);
 		//}
-		//foreach(DoorQuestion dq in FindObjectsOfType<DoorQuestion>())
-		//{
-		//	doorsInRoom.Add(dq);
-		//}
 		foreach (Switch s in FindObjectsOfType<Switch>()) {
 			switchesInRoom.Add (s);
 		}
@@ -69,16 +64,7 @@ public class roomControl : MonoBehaviour {
 		foreach (enemyControl e in FindObjectsOfType<enemyControl>()) {
 			enemies.Add (e);
 		}
-
-        // find the room's limits
-        //roomLimits = new RoomLimits();
-        //var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
-        //roomLimits.minX = (int)tilemap.transform.position.x;
-        //roomLimits.minY = (int)tilemap.transform.position.y;
-        //roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
-        //roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
-
-
+        
         //create the appropriate amount of enemies
         if (!GameControl.control.isPaused)
 		{
@@ -86,26 +72,13 @@ public class roomControl : MonoBehaviour {
             for (int i = 0; i < numOfEnemies; i++)
             {
                 GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-                temp.name = "EnemyControl";
-                //temp.transform.position = new Vector2(Random.Range(-16.0f, 16.0f), Random.Range(-16.0f, 16.0f)); // hopefully we will have a better way of placing enemies
+                temp.name = "EnemyControl";                
                 temp.transform.position = new Vector2(Random.Range(roomLimits.minX, roomLimits.maxX), Random.Range(roomLimits.minY, roomLimits.maxY));
                 if (temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
                 if (temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
                 enemies.Add(temp.GetComponent<enemyControl>());
             }
         }
-		/*else if (GameControl.control.isPaused)
-        {
-            for (int i = 0; i < numOfEnemiesGameControl.control.enemyPos.Count; i++)
-            {
-                GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-                //temp.transform.position = new Vector2(GameControl.control.enemyPos[i].x, GameControl.control.enemyPos[i].y); // hopefully we will have a better way of placing enemies
-                
-                temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
-                temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
-                enemies.Add(temp.GetComponent<enemyControl>());
-            }
-        }*/
 
 		// Check if this room is already tracked by the game control obj - if not, make it so!
 		foreach (RoomControlData rc in GameControl.control.rooms)
@@ -123,9 +96,7 @@ public class roomControl : MonoBehaviour {
                             movables[i].transform.position = new Vector3(rc.blockData[j].position.x, rc.blockData[j].position.y, rc.blockData[j].position.z);
                             movables[i].isActivated = rc.blockData[j].isActivated;
                         }
-                    }
-					
-					//movables [i].gameObject.SetActive (movables [i].isActivated);
+                    }					
 				}
 				// sync open chests
 				//for (int i = 0; i < treasureChests.Count; i++)
@@ -138,17 +109,7 @@ public class roomControl : MonoBehaviour {
 				//		}
 				//	}
 				//}
-				// sync doors
-				//for (int i = 0; i < doorsInRoom.Count; i++)
-				//{
-				//	for (int j = 0; j < doorsInRoom.Count; j++)
-				//	{
-				//		if (doorsInRoom[i].name == rc.doorData[j].doorName)
-				//		{
-				//			doorsInRoom[i].gameObject.SetActive(rc.doorData[j].isLocked);
-				//		}
-				//	}
-				//}
+				
 				// sync switches
 				for (int i = 0; i < switchesInRoom.Count; i++) {
 					for (int j = 0; j < switchesInRoom.Count; j++) {
@@ -169,8 +130,7 @@ public class roomControl : MonoBehaviour {
 				for (int i = 0; i < drawbridgesInRoom.Count; i++) {
 					for (int j = 0; j < drawbridgesInRoom.Count; j++) {
 						if (drawbridgesInRoom [i].name == rc.drawbridgeData [j].bridgeName) {
-							drawbridgesInRoom [i].transform.position = new Vector3 (drawbridgesInRoom [i].transform.position.x, rc.drawbridgeData [j].positionY, drawbridgesInRoom [i].transform.position.z);
-							//drawbridgesInRoom [i].isActive = rc.drawbridgeData [j].isActive;
+							drawbridgesInRoom [i].transform.position = new Vector3 (drawbridgesInRoom [i].transform.position.x, rc.drawbridgeData [j].positionY, drawbridgesInRoom [i].transform.position.z);							
 						}
 					}
 				}
@@ -179,7 +139,6 @@ public class roomControl : MonoBehaviour {
 					for (int j = 0; j < enemies.Count; j++) {
 						if (enemies [i].name == rc.enemyData [j].enemyName) {
 
-							//enemies [i].CheckDistance (); // after state is saved, check the distance
 							enemies[i].transform.position = new Vector3(rc.enemyData[j].position.x,rc.enemyData[j].position.y, rc.enemyData[j].position.z);
 							enemies [i].beenBattled = rc.enemyData [j].battledState;
 
@@ -188,8 +147,6 @@ public class roomControl : MonoBehaviour {
 								enemies [i].UpdateDist ();
 								if (enemies [i].beenBattled 
 									&& enemies [i].dist < enemies [i].safeDistance + 1.5f) {
-                                    //enemies [i].GetComponent<SpriteRenderer> ().enabled = false;
-                                    //enemies [i].enabled = false;
                                     enemies[i].gameObject.SetActive(false);
 								} else {
 									enemies [i].GetComponent<SpriteRenderer> ().enabled = true;
@@ -244,13 +201,7 @@ public class roomControl : MonoBehaviour {
 		//	newRoom.chestData[i].isChestOpen = treasureChests[i].isOpen;
 		//	newRoom.chestData[i].chestName = treasureChests[i].name;
 		//}
-		//for(int i = 0; i < doorsInRoom.Count; i++)
-		//{
-		//	newRoom.doorData.Add(new DoorData());
-		//	newRoom.doorData[i].isLocked = doorsInRoom[i].gameObject.activeSelf;
-		//	newRoom.doorData[i].doorName = doorsInRoom[i].name;
-
-		//}
+		
 		for(int i = 0; i < switchesInRoom.Count; i++){
 			newRoom.switchData.Add (new SwitchData ());
 			newRoom.switchData [i].isActivated = switchesInRoom [i].isActivated;
@@ -265,7 +216,6 @@ public class roomControl : MonoBehaviour {
 			newRoom.drawbridgeData.Add (new DrawbridgeData ());
 			newRoom.drawbridgeData [i].bridgeName = drawbridgesInRoom [i].name;
 			newRoom.drawbridgeData [i].positionY = drawbridgesInRoom [i].transform.position.y;
-			//newRoom.drawbridgeData [i].isActive = drawbridgesInRoom [i].isActive;
 		}
 		for (int i = 0; i < enemies.Count; i++) {
 			newRoom.enemyData.Add (new EnemyControlData ());
@@ -277,7 +227,6 @@ public class roomControl : MonoBehaviour {
 		}
 
         newRoom.roomLimits = roomLimits;
-        //Debug.Log(GameControl.control.currentCharacterState);
 
         if (!roomWasLoaded)
             AssignCurrentPosition();
@@ -296,7 +245,6 @@ public class roomControl : MonoBehaviour {
     {
         roomWasLoaded = true;
 
-        //if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle) return;
         if (GameControl.control.isPaused) return;
 
         // find the room's limits
@@ -310,7 +258,6 @@ public class roomControl : MonoBehaviour {
             roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
         }
                 
-        //GameControl.control.currentCharacterState = characterControl.CharacterState.Transition;
         AssignCurrentPosition();
         
         // start music
@@ -322,9 +269,8 @@ public class roomControl : MonoBehaviour {
         // if string is null, then we did not enter through a gateway -- set to saved statue or an inspector set entrance
         if (string.IsNullOrEmpty(exitedGatewayName))
         {
-            if (GameControl.control.taggedStatue)// return entrance = GameControl.control.savedStatue;
+            if (GameControl.control.taggedStatue)
                 return null;
-            //else return entrance;
         }
 
 
@@ -338,8 +284,7 @@ public class roomControl : MonoBehaviour {
             // default send to the first gateway in the room's position
             else if (gatewaysInRoom.Count > 0) return gatewaysInRoom[0];
 
-            // if there are no gateways for some reason, set to default current position
-            //else return entrance = GameControl.control.currentPosition;
+            // if there are no gateways for some reason, set to default current position           
             else return null;
 
         }
@@ -359,7 +304,6 @@ public class roomControl : MonoBehaviour {
                 return gatewaysInRoom[0];
             }
             else
-                //return entrance = GameControl.control.currentPosition;
                 return null;
         }
         
@@ -378,13 +322,6 @@ public class roomControl : MonoBehaviour {
         //tell the gameControl object what it needs to know
         GameControl.control.currentRoom = this;
         
-        //// if player is coming back from battle, then there is no entrance
-        //if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle
-        //    || GameControl.control.currentCharacterState == characterControl.CharacterState.Defeat)
-        //{
-        //    return;
-        //}
-        
         var gatewayEntrance = AssignEntrance(GameControl.control.sceneStartGateName);
         if (gatewayEntrance != null)
         {
@@ -402,15 +339,10 @@ public class roomControl : MonoBehaviour {
             GameControl.control.areaEntrance = GameControl.control.currentPosition;
         }
 
-
-        //GameControl.control.characterControl.canMove = false;
         GameControl.control.currentPosition = GameControl.control.areaEntrance;
         GameControl.control.sceneStartGateName = "";
         
         var camera = FindObjectOfType<CameraController>();
-        //camera.StayWithinRoomAtStart();
-        //GameControl.control.characterControl.RoomTransition(gatewayEntrance.transform.position, gatewayEntrance.entrancePos);
-
     }
 
     // when you leave and reenter a scene from battle, Gateway becomes null

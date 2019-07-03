@@ -9,13 +9,11 @@ public class HiddenObject : OverworldObject {
 
 	public void Show()
     {
-        print("SHOW");
         GetComponent<SpriteRenderer>().color = showColor;
     }
 
     public void Hide()
     {
-        print("HIDE");
         GetComponent<SpriteRenderer>().color = hideColor;
     }
 }

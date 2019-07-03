@@ -43,23 +43,17 @@
             rootButton = AssignRootButton();
             base.TurnOnMenu();
 
-            //dimmer.gameObject.SetActive(false);
-            //battleManager.battleUI.transform.SetAsLastSibling(); // <- ugly line
-
             CheckForItems();
         }
 
         public override void Refocus()
         {
             base.Refocus();
-            //dimmer.gameObject.SetActive(false);
-            battleManager.ShowAllShortCardsExceptCurrent();
             CheckForItems();
         }
 
         void OnAttack()
         {
-            //dimmer.gameObject.SetActive(true);
             battleManager.SetMenuState(MenuState.STRIKE);
             uiManager.PushMenu(uiDatabase.AttackSub, this);
         }
@@ -71,8 +65,6 @@
         }
         void OnItems()
         {
-            //print("Whoa, there. This function isn't done yet, sonny.");
-            //dimmer.gameObject.SetActive(true);
             battleManager.SetMenuState(MenuState.ITEMS);
             uiManager.PushMenu(uiDatabase.ListSub, this);
         }
@@ -89,7 +81,6 @@
             // skip to Attack state
             else
             {
-                //print("...flee failed...");
                 uiManager.HideAllMenus();
                 battleManager.FleeFailed();
             }
@@ -111,18 +102,6 @@
 				return false;
 			else
 				return true;
-            
-            // next check, let's make sure we have some items that are available. If not, then as far as the menu's concerned, we don't have items            
-//            foreach(var obj in gameControl.consumables)
-//            {
-//                var item = obj.GetComponent<ConsumableItem>();
-//                if (item.Available)
-//                    return true;
-//            }
-//
-//            // if we've reached this point, then that means we have not been able to find an item that's available
-//            return false;
-
         }
     }
 }

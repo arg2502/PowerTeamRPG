@@ -54,7 +54,6 @@
         public override void Init()
         {
             battleManager = FindObjectOfType<BattleManager>();
-            //descriptionText = battleManager.DescriptionText;
             currentContainer = jethroSkillsContainers; // default -- for positioning only
             originalContainerPos = currentContainer.transform.localPosition;
             currentContainer = null;
@@ -72,12 +71,8 @@
             base.TurnOnMenu();
             listOfButtons = new List<Button>();
             FillList();
-            //if (currentContainer != lastContainer)
-            //{
             rootButton = AssignRootButton();
             currentContainer.transform.localPosition = originalContainerPos;
-            //lastContainer = currentContainer;
-            //}   
             UpdateButtonStatInfo();
             SetSelectedObjectToRoot();
             
@@ -108,10 +103,6 @@
         {
             base.Refocus();
             uiManager.ShowAllMenus();
-            battleManager.ShowAllShortCardsExceptCurrent();
-            //rootButton = currentObj.GetComponent<Button>();
-            //SetSelectedObjectToRoot();
-            //print("REFOCUS");
         }
 
         void FillList()
@@ -137,14 +128,12 @@
         void FillItems()
         {
             var containerButtons = currentContainer.GetComponentsInChildren<ListButton>();
-            //print("length: " + containerButtons.Length);
 
             // check if we've already created the list
             // check and see if we have the right number of buttons that we need -- if we used the last of an item in the last round, then we would have more buttons than we need
             // check if the quanity - inUse of any item is 0
             if (containerButtons.Length > 0
-                && containerButtons.Length == gameControl.consumables.Count
-                && AllItemsAboveZero())
+                && containerButtons.Length == gameControl.consumables.Count)
             {
 
                 // now we can add the buttons we have to our button list
@@ -176,19 +165,9 @@
         {
             var category = gameControl.consumables;
 
-            // search for any unavailable items (items where the remaining are chosen to be used up in battle by other heroes)
-//            for(int i = 0; i < category.Count; i++)
-//            {
-//                var item = category[i].GetComponent<ConsumableItem>();
-//                // if there are no more of this item available, skip it
-//                if (!item.Available)
-//                    category.RemoveAt(i);
-//            }
-
             for (int i = 0; i < category.Count; i++)
             {
 				var consumableItem = category[i];
-				//var consumableItem = category[i].GetComponent<ConsumableItem>();
 
                 var itemObj = Instantiate(slotPrefab);
                 itemObj.name = consumableItem.name + "_Button";
@@ -211,30 +190,12 @@
                 button.onClick.AddListener(() => OnSelect(itemName));
 
                 // set description
-                //button.GetComponent<Description>().SetDescription(consumableItem.description);
 				button.GetComponent<Description>().SetDescription(ItemDatabase.GetItemDescription(consumableItem.name));
             }
             SetButtonNavigation();
             AddListeners();
         }
-
-        bool AllItemsAboveZero()
-        {
-			//I think this method is no longer necessary, since we changed the battle flow to one
-			//command at a time instead of all heroes at once
-
-//            foreach(var itemObj in gameControl.consumables)
-//            {
-//                var item = itemObj.GetComponent<ConsumableItem>();
-//                if (!item.Available)
-//                {
-//                    print("IS THIS ABOVE ZERO YO?: " + item.name + " " + (item.quantity - item.inUse));
-//                    return false;
-//                }
-//            }
-            return true;
-        }
-
+        
         void FillTechniques()
         {
             var currentHero = battleManager.CurrentDenigen as Hero;
@@ -296,8 +257,7 @@
             }
             else
             {
-                List<Technique> category = new List<Technique>();// = currentHero.SpellsList;
-
+                List<Technique> category = new List<Technique>();
                 if(battleManager.menuState == MenuState.SKILLS)
                 {
                     foreach (var skill in currentHero.SkillsList)
@@ -312,7 +272,6 @@
                 for (int i = 0; i < category.Count; i++)
                 {
                     var item = Instantiate(slotPrefab);
-                    //item.name = category[i].Name + "_Button";
                     item.transform.SetParent(currentContainer.transform);
                     item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * -slotDistance);
                     item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
@@ -337,10 +296,7 @@
                     {
                         button.interactable = false;
                     }
-
-                    //var attack = category[i].Name;
-                    //button.onClick.AddListener(() => OnSelect(attack));
-
+                    
                     // set description
                     button.GetComponent<Description>().SetDescription(category[i].Description);
 
@@ -354,19 +310,6 @@
         {
             battleManager.DetermineTargetType(attack);
 
-            // if attack menu, check if we have enough PM for the technique
-            // if we do, proceed to targetMenu
-            // if not (and if the player has not turned off that menu (add that functionality later)), 
-            // show a notification prompt asking if the player REALLY wants to use the technique
-            //if (battleManager.menuState != MenuState.ITEMS
-            //    && !battleManager.CurrentHero.EnoughPm)
-            //{
-            //    OpenNotEnoughPMPrompt();
-            //}
-            //else
-            //{
-            //    OpenTarget();
-            //}
             OpenTarget();
         }        
 
@@ -385,12 +328,6 @@
         {
             uiManager.HideAllMenus();
             uiManager.PushMenu(uiDatabase.TargetMenu);
-        }
-
-        public void SetContainersToNull()
-        {
-            //currentContainer = null;
-            //lastContainer = null;
         }
 
         // SCOLLING METHODS
@@ -432,14 +369,8 @@
             var desiredPosition = desiredObj.transform.position;
 
             // horizontal movement
-            //if (objectCorners[0].x > itemSlotsWorld.xMax)
-            //{
-            //    desiredPosition = buttonGrid[outerListPosition - 1][0].transform.position;
-            //}
-            //else if (objectCorners[2].x < itemSlotsWorld.xMin)
-            //{
-                desiredPosition = listOfButtons[0].transform.position;
-            //}
+            desiredPosition = listOfButtons[0].transform.position;
+            
             float distance;
             Vector2 newPosition = Vector2.zero;
             if (desiredPosition.y != desiredObj.transform.position.y)
@@ -449,15 +380,12 @@
             }
 
             currentContainer.transform.position = newPosition;
-            //if (CheckIfOffScreen(desiredObj))
-            //    OutsideOfViewInstant(desiredObj);
         }
 
         void OutsideOfView(GameObject buttonObj, float lerpTime = -1f)
         {
             if (lerpTime < 0)
                 lerpTime = defaultLerpTime;
-            //Debug.Log("outside");
 
             // if we reach this point, that means we are off screen
             // bring it on screen
@@ -475,20 +403,17 @@
 
             // if below screen, set the button above it as the desired position
             Vector3 desiredPosition = buttonObj.transform.position;
-            // bool belowScreen = false;
 
             // vertical movement
             if (objectCorners[0].y < itemSlotsWorld.yMin)
             {
                 if (ourButtonListPosition <= 0) return;
                 desiredPosition = listOfButtons[ourButtonListPosition - 1].transform.position;
-                //belowScreen = true;
             }
             else if (objectCorners[2].y > itemSlotsWorld.yMax)
             {
                 if (ourButtonListPosition >= listOfButtons.Count - 1) return;
                 desiredPosition = listOfButtons[ourButtonListPosition + 1].transform.position;
-                // belowScreen = false;
             }
 
             // determine distance and new position based on difference in either x or y
@@ -518,24 +443,9 @@
 
             if (CheckIfOffScreen(EventSystem.current.currentSelectedGameObject))
                 OutsideOfView(EventSystem.current.currentSelectedGameObject);
-            else
-                CheckIfListOffScreen();
+           
         }
 
-        void CheckIfListOffScreen()
-        {
-            // if the first item in the list is off screen, then turn on the up scroll notifier
-            //if (CheckIfOffScreen(listOfButtons[0].gameObject))
-            //    upScroll.SetActive(true);
-            //else
-            //    upScroll.SetActive(false);
-
-            //// if the last item in the list is off screen, then turn on the down scroll notifier
-            //if (CheckIfOffScreen(listOfButtons[listOfButtons.Count - 1].gameObject))
-            //    downScroll.SetActive(true);
-            //else
-            //    downScroll.SetActive(false);
-        }
 
         void OnEnable()
         {
@@ -557,8 +467,6 @@
 
             currentObj = EventSystem.current.currentSelectedGameObject;
             rootButton = currentObj.GetComponentInChildren<Button>();
-            //print("ListSub: currentObj: " + currentObj);
-            //print("ListSub: rootButton: " + rootButton);
             UpdateButtonStatInfo();
 
             if (CheckIfOffScreen(currentObj))
@@ -587,8 +495,6 @@
             {
                 foreach (var item in gameControl.consumables)
                 {
-//                    if (string.Equals(rootButton.GetComponentInChildren<Text>().text, item.GetComponent<Item>().name))
-//                        SetItemStats(item.GetComponent<Item>() as ConsumableItem);
 					if (string.Equals(rootButton.GetComponentInChildren<Text>().text, item.name))
 						SetItemStats(ItemDatabase.GetItem("Consumable", item.name) as ScriptableConsumable);
                 }
@@ -612,28 +518,6 @@
             accuracyText.text = tech.Accuaracy.ToString();
             critText.text = tech.Critical.ToString();
         }
-//        void SetItemStats(ConsumableItem item)
-//        {
-//            // hide objects
-//            accuracyObj.SetActive(false);
-//            critObj.SetActive(false);
-//
-//            if (item.hpChange > 0)
-//            {
-//                _damageImage.sprite = hpIcon;
-//                damageText.text = item.hpChange.ToString();
-//            }
-//            else if (item.pmChange > 0)
-//            {
-//                _damageImage.sprite = pmIcon;
-//                damageText.text = item.pmChange.ToString();
-//            }
-//            else
-//            {
-//                _damageImage.sprite = reviveIcon;
-//                damageText.text = "";
-//            }            
-//        }
 
 		//THis method will need reworking to deal with items that affect more than one stat
 		void SetItemStats(ScriptableConsumable item)

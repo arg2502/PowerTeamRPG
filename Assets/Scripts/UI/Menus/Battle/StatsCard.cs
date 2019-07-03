@@ -39,7 +39,6 @@ public class StatsCard : MonoBehaviour {
         get
         {         
             Vector3[] v = new Vector3[4];
-            //background.rectTransform.GetWorldCorners(v);
             fullGroup.GetComponent<RectTransform>().GetWorldCorners(v);
             return v[0].x;
         }
@@ -49,7 +48,6 @@ public class StatsCard : MonoBehaviour {
         get
         {
             Vector3[] v = new Vector3[4];
-            //background.rectTransform.GetWorldCorners(v);
             fullGroup.GetComponent<RectTransform>().GetWorldCorners(v);
             return v[3].x;
         }
@@ -64,7 +62,6 @@ public class StatsCard : MonoBehaviour {
     {
         currentDenigen = denigen;
         UpdateStats();
-        JumpToShort();
     }
     
     public void UpdateStats()
@@ -86,7 +83,6 @@ public class StatsCard : MonoBehaviour {
 
             hpShort.text = currentDenigen.Hp.ToString();
             pmShort.text = currentDenigen.Pm.ToString();
-            //portrait.sprite = currentDenigen.Portrait;
             portraitShort.sprite = currentDenigen.Portrait;
         }
 
@@ -151,68 +147,9 @@ public class StatsCard : MonoBehaviour {
         }
         bar.fillAmount = desiredAmount;
     }
-
-    public void ShowFullCard()
-    {
-        //print("show full -- state: " + cardState);
-        //// only play the animation if the full group is not already active
-        //if (cardState == CardState.SHORT
-        //    || cardState == CardState.SHRINK)
-        //{
-        //    print("inside full group is not active");
-        //    StopAllCoroutines();
-        //    StartCoroutine(ToFull());
-        //}
-    }
-    IEnumerator ToFull()
-    {
-        shortGroup.SetActive(false);
-        bgAnimator.speed = 1f;
-        bgAnimator.Play("Grow", -1, 0);
-        cardState = CardState.GROW;
-        yield return new WaitForSeconds(0.2f); // CHANGE THIS
-        fullGroup.SetActive(true);
-        cardState = CardState.FULL;
-        shortGroup.SetActive(false); // double check
-    }
     
-    public void ShowShortCard()
-    {
-        //print("SHRINK: " + gameObject.name);
-        //// only play the animation if the short group is not already active
-        //if (cardState == CardState.FULL
-        //     || cardState == CardState.GROW)
-        //{
-        //    StopAllCoroutines();
-        //    StartCoroutine(ToShort());
-        //}
-    }
-    IEnumerator ToShort()
-    {
-        fullGroup.SetActive(false);
-        bgAnimator.speed = 1f;
-        bgAnimator.Play("Shrink", -1, 0);
-        cardState = CardState.SHRINK;
-        yield return new WaitForSeconds(0.2f); // CHANGE THIS
-        shortGroup.SetActive(true);
-        cardState = CardState.SHORT;
-        fullGroup.SetActive(false); // double check
-    }
-
-    public void JumpToShort()
-    {
-        //fullGroup.SetActive(false);
-        //shortGroup.SetActive(true);
-
-        //if (bgAnimator == null) return;
-
-        //bgAnimator.speed = 0;
-        //bgAnimator.Play("Shrink", -1, 1);
-    }
-
     public void SetBGSize(int numOfCards)
     {
-        //var delta = background.rectTransform.sizeDelta;
         var delta = fullGroup.GetComponent<RectTransform>().sizeDelta;
         if (numOfCards == 1)
             delta.x = 225;
@@ -225,7 +162,6 @@ public class StatsCard : MonoBehaviour {
         else if (numOfCards == 5)
             delta.x = 190;
 
-        //background.rectTransform.sizeDelta = delta;
         fullGroup.GetComponent<RectTransform>().sizeDelta = delta;
 
     }

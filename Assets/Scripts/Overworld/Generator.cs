@@ -12,7 +12,6 @@ public class Generator : OverworldObject {
 
 	public void ActivateGenerator()
     {
-        print("ACTIVATE");
         GetComponent<SpriteRenderer>().color = activeColor;
         timer = timeActive;
     }
@@ -33,7 +32,6 @@ public class Generator : OverworldObject {
 
     void DeActivateGenerator()
     {
-        print("DEACTIVATE");
         GetComponent<SpriteRenderer>().color = inactiveColor;
     }
 }

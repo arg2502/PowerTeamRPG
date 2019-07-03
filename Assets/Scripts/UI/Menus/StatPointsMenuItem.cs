@@ -28,13 +28,6 @@
             statValue.text = newStat.ToString();
         }
 
-        //// returns the new stat based off the current stat and the changes made to it
-        //// this should be called when confirming the changes
-        //public int GetHeroStatValue(int hero, int stat)
-        //{
-        //    return stat + statChanges[hero];
-        //}
-
         public void ChangeStat(int hero, int increment)
         {
             statChanges[hero] += increment;

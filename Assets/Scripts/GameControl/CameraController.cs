@@ -164,14 +164,12 @@ public class CameraController : MonoBehaviour {
         }
         else if (currentPosition.x - horizontalSize <= currentRoom.roomLimits.minX)
         {
-            //transform.Translate(new Vector3(horizontalSize, 0));
             currentX = currentRoom.roomLimits.minX + horizontalSize;
             transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
             outOfBoundsX = true;
         }
         else if (currentPosition.x + horizontalSize >= currentRoom.roomLimits.maxX)
         {
-            //transform.Translate(new Vector3(-horizontalSize, 0));
             currentX = currentRoom.roomLimits.maxX - horizontalSize;
             transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
             outOfBoundsX = true;
@@ -184,14 +182,12 @@ public class CameraController : MonoBehaviour {
         }
         else if (currentPosition.y + verticalSize >= currentRoom.roomLimits.minY)
         {
-            //transform.Translate(new Vector3(0, -verticalSize));
             currentY = currentRoom.roomLimits.minY - verticalSize;
             transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
             outOfBoundsY = true;
         }
         else if (currentPosition.y - verticalSize <= currentRoom.roomLimits.maxY)
         {
-            //transform.Translate(new Vector3(0, verticalSize));
             currentY = currentRoom.roomLimits.maxY + verticalSize;
             transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
             outOfBoundsY = true;
@@ -206,7 +202,6 @@ public class CameraController : MonoBehaviour {
             blackCanvas.color = clear;
             while (blackCanvas.color.a < 1)
             {
-                //blackCanvas.color = Color.Lerp(clear, black, 2f);
                 blackCanvas.color += black * (Time.deltaTime / timeToFade);
                 yield return null;
             }
@@ -217,12 +212,10 @@ public class CameraController : MonoBehaviour {
             blackCanvas.color = black;
             while (blackCanvas.color.a > 0)
             {
-                //blackCanvas.color = Color.Lerp(clear, black, 2f);
                 blackCanvas.color -= black * (Time.deltaTime / timeToFade);
                 yield return null;
             }
             blackCanvas.color = clear;
         }
-            //blackCanvas.color = Color.Lerp(black, clear, 2f);
     }
 }

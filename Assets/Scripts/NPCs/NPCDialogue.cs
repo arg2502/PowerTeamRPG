@@ -17,8 +17,6 @@ public class NPCDialogue : MonoBehaviour {
     public Sprite angrySpr;
 
     Dialogue dialogue;
-    //bool isTalking = false;
-    //public bool IsTalking { get { return isTalking; } }
 
     characterControl.CharacterState prevState;
 
@@ -35,10 +33,6 @@ public class NPCDialogue : MonoBehaviour {
     /// </summary>
     public void StartDialogue()
     {
-        //isTalking = true;        
-        //prevState = GameControl.control.currentCharacterState;
-        //GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
-
         // Start the actual Dialogue last, as this will determine whether we should end the dialogue as well
         // (Putting this line first caused issues where the dialogue would try to start again soon after
         // ending, but then the iterator would not be 0 yet and the conversation would end, BUT THEN 
@@ -53,14 +47,9 @@ public class NPCDialogue : MonoBehaviour {
         if (numOfTimesTalked < dialogueList.Count - 1)
             numOfTimesTalked++;
 
-        //isTalking = false;
-        //GameControl.control.SetCharacterState(prevState);
-        
         // call any functions that need to occur after the dialogue has ended here
-
         if(!string.IsNullOrEmpty(currentConversation.actionName))
         {
-            //GetComponentInParent<NPCObject>().PostDialogueInvoke(currentConversation.actionName);
             Invoke(currentConversation.actionName, 0f);
         }
 
@@ -71,10 +60,5 @@ public class NPCDialogue : MonoBehaviour {
         // plus this location kinda makes sense...
 
         GetComponentInParent<NPCObject>().BackToNormal();
-    }
-
-    void TestFunction()
-    {
-        print("TEST FUNCTION BABY");
     }
 }

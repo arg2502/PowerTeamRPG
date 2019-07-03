@@ -34,19 +34,15 @@
                 }
             }
         }
-        //public delegate void OnNextDialogueDelegate();
         public UnityEvent OnNextDialogue;
 
 
         float currentYBoundary;
         Vector3 origTextPos;
 
-        //bool isThereResponse = false;
-
         public override void TurnOnMenu()
         {
             RootButton = AssignRootButton();
-            //SetSelectedObjectToRoot();
             currentYBoundary = textMask.GetComponent<RectTransform>().sizeDelta.y;
             origTextPos = dialogueText.transform.localPosition;
             base.TurnOnMenu();
@@ -114,7 +110,6 @@
             speakerText.text = speaker;
             dialogueStr = dialogue;
             portraitImage.sprite = portrait;
-            //isThereResponse = isResponse;
             StartCoroutine(TypeDialogue());
         }
 
@@ -187,7 +182,6 @@
                             + dialogueStr.Substring(indexOfEndTagEnd + 1)                        // rest of string
                             + transparentColorTagEnd;                                                 // close transparent tag
                     }
-                    //CheckIfTextOutOfBounds();
                     yield return new WaitForSeconds(typingSpeed);
                 }
             }
@@ -211,7 +205,6 @@
         {
             StopAllCoroutines();
             dialogueText.text = dialogueStr;
-            //CheckIfTextOutOfBounds();
             ReadyForNextDialogue = true; // invokes event
         }
     }

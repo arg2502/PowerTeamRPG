@@ -43,7 +43,6 @@ public class DenigenData : ScriptableObject
     protected int baseTotal;
     protected float boostTotal;
 
-    //public DenigenData()
     void OnEnable()
     {
         // set base stats
@@ -72,8 +71,6 @@ public class DenigenData : ScriptableObject
 
 
         LevelUpOnAwake(startingLevel);
-
-        //Debug.Log("Inside Awake() -- my hp is " + hp);
     }
 
 
@@ -115,9 +112,7 @@ public class DenigenData : ScriptableObject
         else
         {
             expCurLevel = rollover;
-            //Debug.Log("Hero: " + denigenName + ", Cur Exp: " + expCurLevel);
         }
-        //expCurLevelMax = expToLvlUp + rollover;
     }
 
     

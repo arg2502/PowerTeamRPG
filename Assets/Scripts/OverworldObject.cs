@@ -34,7 +34,6 @@ public class OverworldObject : MonoBehaviour {
         foreach (OverworldObject o in GameObject.FindObjectsOfType<OverworldObject>())
         {
             o.canMove = !o.canMove;
-			//print (o.name);
         }
     }
     public virtual void Activate() {}

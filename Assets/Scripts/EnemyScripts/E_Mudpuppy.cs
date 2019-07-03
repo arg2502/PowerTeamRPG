@@ -29,7 +29,6 @@ public class E_Mudpuppy : Enemy {
         SingleAttack(bite);
     }
 
-    //IEnumerator Frenzy()
     void Frenzy()
     {
 		ChooseSelfTarget ();
@@ -40,10 +39,6 @@ public class E_Mudpuppy : Enemy {
         //AtkChange += (int)(Atk * 0.1f);
         calcDamageText.Add(name + " used frenzy!");
 
-        // play frenzy animation
-        //yield return StartCoroutine(PlayAnimation("Frenzy"));
-
-        //calcDamageText.Add("It's atk power has increased!");
     }
 
     public override Technique ChooseAttack()

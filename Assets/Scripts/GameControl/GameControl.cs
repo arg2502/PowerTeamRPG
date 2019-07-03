@@ -29,18 +29,11 @@ public class GameControl : MonoBehaviour {
 	public List<int> keysObtainedInDungeons = new List<int>();
 	public int numOfDungeons;
 	//items
-//	public List<GameObject> consumables;// = new List<ConsumableItem>() { };
-//	public List<GameObject> equipment;
-//	public List<GameObject> weapons;
-//	public List<GameObject> reusables;
-//    public bool itemAdded;
-	//----------new code------------------
 	public List<InventoryItem> consumables;
 	public List<InventoryItem> equipment;
 	public List<InventoryItem> weapons;
 	public List<InventoryItem> key;
 	public bool itemAdded;
-	//------------------------------------
     
     //room information
     public roomControl currentRoom; // keep track of the literal room object where the player currently is
@@ -63,10 +56,6 @@ public class GameControl : MonoBehaviour {
 
 	// things for saving the state of the pause menu - temporary, not to be written to a file
 	public bool isPaused;
-	public tempMenu pause;
-	public tempMenu teamSub;
-	public tempMenu heroSub;
-	public tempMenu inventSub;
 
 	// for temporarily saving the state of enemies when pausing and unpausing the game
 	public List<SerializableVector3> enemyPos = new List<SerializableVector3>();
@@ -109,9 +98,6 @@ public class GameControl : MonoBehaviour {
         sceneStartGateName = gatewayName;
     }
 
-    // room transition state --- to tell RoomControl how to handle positioning with loading the scene
-    //public enum RoomTransitionState { menu, gateway }
-    //public RoomTransitionState roomState;
     public characterControl.CharacterState currentCharacterState;
 
     public void SetCharacterState(characterControl.CharacterState newState)
@@ -137,8 +123,6 @@ public class GameControl : MonoBehaviour {
     }
 
     // states for checking if the player is in a menu/talking
-    //bool isInMenu;
-    //public bool IsInMenu { get { return IsInMenu; } set { isInMenu = value; } }
     characterControl.CharacterState prevState;
     public characterControl.CharacterState PrevState { get { return prevState; } set { prevState = value; } }
 
@@ -163,9 +147,6 @@ public class GameControl : MonoBehaviour {
 			control = this;
 
             InitHeroes();
-
-            //Debug.Log(heroList);
-
             UIManager = new UIManager();
             skillTreeManager = new SkillTreeManager();
             itemManager = new ItemManager();
@@ -182,27 +163,6 @@ public class GameControl : MonoBehaviour {
 				keysObtainedInDungeons.Add(0);
 			}
 
-
-
-
-            //Spell hellfire = new Spell();
-            //hellfire.Name = "HellFire";
-            //hellfire.Pm = 8;
-            //hellfire.Description = "An all-encompassing spell with considerable power and accuracy. \nCost 8pm Str 40, Crit 03, Acc 100";
-            //GameControl.control.heroList[1].spellsList.Add(hellfire);
-
-            //Spell splashflame = new Spell();
-            //splashflame.Name = "Splash Flame";
-            //splashflame.Pm = 3;
-            //splashflame.Description = "An explosive fireball that deals light damage to enemies adjacent to the target. \nCost 3pm Str 60, Crit 05, Acc 85";
-            //GameControl.control.heroList[1].spellsList.Add(splashflame);
-
-            //Spell testtarget = new Spell();
-            //testtarget.Name = "Test Target";
-            //testtarget.Pm = 0;
-            //testtarget.Description = "Targets a hero. \n Str 0, Crit 0, Acc 100";
-            //GameControl.control.heroList[1].spellsList.Add(testtarget);
-            
 			//Add Items to the inventory for testing
 			GameControl.control.AddItem("Lesser Restorative", "consumable", 3);
 			GameControl.control.AddItem("Restorative", "Consumable", 3);
@@ -215,32 +175,7 @@ public class GameControl : MonoBehaviour {
 			GameControl.control.AddItem("Strengthening Draught", "Consumable", 5);
 			GameControl.control.AddItem("Copper Tonic", "Consumable", 5);
 			GameControl.control.AddItem("Captain Power's BIG Booster", "Consumable", 5);
-			//test code for creating Cole -- based on level 2 stats
-			//We will have these stats stored in HeroData objs for consistency between rooms
-			//heroList.Add(new HeroData());
-			//heroList[1].name = "Cole";
-			//heroList[1].level = 2;
-			//heroList[1].exp = 0;
-			//heroList[1].levelUpPts = 0;
-			//heroList[1].techPts = 0;
-			//heroList[1].hp = 10;
-			//heroList[1].hpMax = 10;
-			//heroList[1].pm = 17;
-			//heroList[1].pmMax = 17;
-			//heroList[1].atk = 9;
-			//heroList[1].def = 6;
-			//heroList[1].mgkAtk = 18;
-			//heroList[1].mgkDef = 13;
-			//heroList[1].luck = 10;
-			//heroList[1].evasion = 8;
-			//heroList[1].spd = 9;
 
-			pause = new tempMenu();
-			teamSub = new tempMenu();
-			heroSub = new tempMenu();
-			inventSub = new tempMenu();
-
-            //Load();
 		}
 		else if (control != this)
 		{
@@ -319,54 +254,6 @@ public class GameControl : MonoBehaviour {
 
 		itemAdded = true;
 
-//		if (item.GetComponent<ReusableItem>() != null)
-//		{
-//			foreach (GameObject i in reusables)
-//			{
-//				if (i.GetComponent<ReusableItem>().name == item.GetComponent<ReusableItem>().name) { i.GetComponent<ReusableItem>().quantity++; Destroy(item); return; }
-//			}
-//
-//			// if this type of item is not already in the inventory, add it now
-//			reusables.Add(item);
-//			DontDestroyOnLoad(reusables[reusables.Count - 1]);
-//		}
-//		if (item.GetComponent<ConsumableItem>() != null)
-//		{
-//			foreach (GameObject i in consumables)
-//			{
-//				if (i.GetComponent<ConsumableItem>().name == item.GetComponent<ConsumableItem>().name) { i.GetComponent<ConsumableItem>().quantity++; Destroy(item); return; }
-//			}
-//
-//			// if this type of item is not already in the inventory, add it now
-//			consumables.Add(item);
-//			DontDestroyOnLoad(consumables[consumables.Count - 1]);
-//		}
-//		if (item.GetComponent<ArmorItem>() != null)
-//		{
-//			foreach (GameObject i in equipment)
-//			{
-//				if (i.GetComponent<ArmorItem>().name == item.GetComponent<ArmorItem>().name) { i.GetComponent<ArmorItem>().quantity++; Destroy(item); return; }
-//			}
-//
-//			// if this type of item is not already in the inventory, add it now
-//			equipment.Add(item);
-//			DontDestroyOnLoad(equipment[equipment.Count - 1]);
-//		}
-//		if (item.GetComponent<WeaponItem>() != null)
-//		{
-//			foreach (GameObject i in weapons)
-//			{
-//				if (i.GetComponent<WeaponItem>().name == item.GetComponent<WeaponItem>().name) { i.GetComponent<WeaponItem>().quantity++; Destroy(item); return; }
-//			}
-//
-//			// if this type of item is not already in the inventory, add it now
-//			weapons.Add(item);
-//			DontDestroyOnLoad(weapons[weapons.Count - 1]);
-//		}
-//
-//        // flag the inventory that an item was added and needs to be updated
-//        itemAdded = true;
-
 	}
 
     public void RemoveItem(InventoryItem _item, int _quantity = 1)
@@ -384,17 +271,6 @@ public class GameControl : MonoBehaviour {
 			weapons.Remove (_item);
 		else if (key.Contains (_item))
 			key.Remove (_item);
-//        if (item.GetComponent<ReusableItem>() != null)
-//            reusables.Remove(item);
-//
-//        if (item.GetComponent<ConsumableItem>() != null)
-//            consumables.Remove(item);
-//
-//        if (item.GetComponent<ArmorItem>() != null)
-//            equipment.Remove(item);
-//
-//        if (item.GetComponent<WeaponItem>() != null)
-//            weapons.Remove(item);
     }
 
 	//this will save our game data to an external, persistent file
@@ -404,8 +280,8 @@ public class GameControl : MonoBehaviour {
 		FileStream file = File.Create (Application.persistentDataPath + "/playerInfo.dat");
 
 		PlayerData data = new PlayerData();
-		//data.health = health;
-		//save all of the heroes
+		
+        //save all of the heroes
 		for (int i = 0; i < heroList.Count; i++)
 		{
 			SavableHeroData temp = new SavableHeroData();
@@ -435,44 +311,17 @@ public class GameControl : MonoBehaviour {
 			temp.passiveList = heroList[i].passiveList;
 			temp.statusState = (SavableHeroData.Status)heroList[i].statusState;
 
-			//if (heroList[i].weapon != null)
-			//{
-			//	Item item = heroList[i].weapon.GetComponent<Item>();
-			//	ItemData id = new ItemData();
-			//	id.name = item.name;
-			//	id.quantity = item.quantity;
-			//	id.uses = item.uses;
-			//	temp.weapon = id;
-			//}
-
-			//temp.equipment = new List<ItemData>();
-			//for (int j = 0; j < heroList[i].equipment.Count; j++)
-			//{
-			//	print("Index: " + j);
-			//	print("Saving item:" + heroList[i].equipment[j].name);
-			//	Item item = heroList[i].equipment[j].GetComponent<Item>();
-			//	ItemData id = new ItemData();
-			//	id.name = item.name;
-			//	id.quantity = item.quantity;
-			//	id.uses = item.uses;
-			//	temp.equipment.Add(id);
-			//	print("Saved Item data: " + temp.equipment[j].name);
-			//}
-
 			data.heroList.Add(temp);
 		}
 		//Save which scene the player is in
 		data.currentScene = currentScene;
 		data.totalGold = totalGold;
 		data.keysObtainedInDungeons = keysObtainedInDungeons;
-        //data.totalKeys = totalKeys;
-
-
+       
 
         // Save all of the player's inventory
         foreach (var i in consumables)
         {
-            //Item item = i.GetComponent<Item>();
             ItemData id = new ItemData();
             id.name = i.name;
             id.quantity = i.quantity;
@@ -481,7 +330,6 @@ public class GameControl : MonoBehaviour {
         }        
         foreach (var i in weapons)
         {
-            //Item item = i.GetComponent<Item>();
             ItemData id = new ItemData();
             id.name = i.name;
             id.quantity = i.quantity;
@@ -490,7 +338,6 @@ public class GameControl : MonoBehaviour {
         }
         foreach (var i in equipment)
         {
-            //Item item = i.GetComponent<Item>();
             ItemData id = new ItemData();
             id.name = i.name;
             id.quantity = i.quantity;
@@ -499,7 +346,6 @@ public class GameControl : MonoBehaviour {
         }
         foreach (var i in key)
         {
-            //Item item = i.GetComponent<Item>();
             ItemData id = new ItemData();
             id.name = i.name;
             id.quantity = i.quantity;
@@ -556,7 +402,6 @@ public class GameControl : MonoBehaviour {
 				}
 				for (int i = 0; i < rc.drawbridgesInRoom.Count; i++) {
 					rcd.drawbridgeData [i].bridgeName = rc.drawbridgesInRoom [i].name;
-					//rcd.drawbridgeData [i].isActive = rc.drawbridgesInRoom [i].isActive;
 					rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
 				}
 				for (int i = 0; i < rc.enemies.Count; i++) {
@@ -591,78 +436,7 @@ public class GameControl : MonoBehaviour {
 			enemyPos.Add(temp);
 		}
 	}
-
-	// save the menu for when you transition to an external portion of the menu
-	public void RecordPauseMenu()
-	{
-		//PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
-		//pause.isActive = tempPause.isActive;
-		//pause.isVisible = tempPause.isVisible;
-		//pause.selectedIndex = tempPause.SelectedIndex;
-		//pause.position = tempPause.transform.position;
-
-		//TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
-		//teamSub.isActive = tempTeamSub.isActive;
-		//teamSub.isVisible = tempTeamSub.isVisible;
-		//teamSub.selectedIndex = tempTeamSub.SelectedIndex;
-		//teamSub.position = tempTeamSub.transform.position;
-
-		//HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
-		//heroSub.isVisible = tempHeroSub.isVisible;
-		//heroSub.selectedIndex = tempHeroSub.SelectedIndex;
-		//heroSub.position = tempHeroSub.transform.position;
-
-		//InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
-		//inventSub.isVisible = tempInventSub.isVisible;
-		//inventSub.selectedIndex = tempInventSub.SelectedIndex;
-		//inventSub.position = tempInventSub.transform.position;
-	}
-
-	// called if the isPaused variable is set to true
-	public void RestorePauseMenu()
-	{
-		//PauseMenu tempPause = GameObject.FindObjectOfType<PauseMenu>();
-		//TeamSubMenu tempTeamSub = GameObject.FindObjectOfType<TeamSubMenu>();
-		//HeroSubMenu tempHeroSub = GameObject.FindObjectOfType<HeroSubMenu>();
-		//InventorySubMenu tempInventSub = GameObject.FindObjectOfType<InventorySubMenu>();
-
-		//if (pause.isVisible) 
-		//{
-		//	tempPause.isVisible = true;
-		//	tempPause.EnablePauseMenu();
-		//	tempPause.player.ToggleMovement();
-		//	tempPause.isActive = pause.isActive;
-		//	tempPause.SelectedIndex = pause.selectedIndex;
-		//	tempPause.HighlightButton();
-		//	tempPause.transform.position = pause.position;
-		//}
-		//if (teamSub.isVisible)
-		//{
-		//	tempTeamSub.isVisible = true;
-		//	tempTeamSub.EnableSubMenu();
-		//	tempTeamSub.isActive = teamSub.isActive;
-		//	tempTeamSub.SelectedIndex = teamSub.selectedIndex;
-		//	tempTeamSub.HighlightButton();
-		//	tempTeamSub.transform.position = teamSub.position;
-		//}
-		//if (heroSub.isVisible)
-		//{
-		//	tempHeroSub.isVisible = true;
-		//	tempHeroSub.EnableSubMenu();
-		//	tempHeroSub.SelectedIndex = heroSub.selectedIndex;
-		//	tempHeroSub.HighlightButton();
-		//	tempHeroSub.transform.position = heroSub.position;
-		//}
-		//if (inventSub.isVisible)
-		//{
-		//	tempInventSub.isVisible = true;
-		//	tempInventSub.EnableSubMenu();
-		//	tempInventSub.SelectedIndex = inventSub.selectedIndex;
-		//	tempInventSub.HighlightButton();
-		//	tempInventSub.transform.position = inventSub.position;
-		//}
-	}
-
+    
 	public void Load()
 	{
 		if (File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
@@ -676,20 +450,12 @@ public class GameControl : MonoBehaviour {
 
             //Make sure the item lists are cleared before adding more
             consumables.Clear();
-            //reusables.Clear();
             weapons.Clear();
             equipment.Clear();
             key.Clear();
-
-            //Find all items and destroy them
-            //Item[] items = FindObjectsOfType<Item>();
-            //foreach (Item i in items) { Destroy(i.gameObject); }
-
+            
             // Read in all consumable items
             foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
-
-            //Read in all reusable items
-//            foreach (ItemData id in data.reusables) { LoadReusableItem(id); }
 
             //read in all weapons
             foreach (ItemData id in data.weapons) { LoadWeaponItem(id); }
@@ -697,6 +463,7 @@ public class GameControl : MonoBehaviour {
             //read in all equipment
             foreach (ItemData id in data.equipment) { LoadArmorItem(id); }
 
+            // read in all key items
             foreach(ItemData id in data.key) { LoadKeyItem(id); }
 
             //load all of the heroes
@@ -744,35 +511,12 @@ public class GameControl : MonoBehaviour {
 				temp.spellsList = data.heroList[i].spellsList;
 				temp.passiveList = data.heroList[i].passiveList;
 				temp.statusState = (DenigenData.Status)data.heroList[i].statusState;
-                print("LOADED");
-
-//				if (data.heroList[i].weapon != null) 
-//				{ 
-//					foreach (GameObject w in weapons)
-//					{
-//						if (w.GetComponent<WeaponItem>().name == data.heroList[i].weapon.name) { temp.weapon = w; }
-//					} 
-//				}
-//				temp.equipment = new List<GameObject>();
-//				if (data.heroList[i].equipment.Count > 0) 
-//				{ 
-//					for (int j = 0; j < data.heroList[i].equipment.Count; j++)
-//					{
-//						foreach (GameObject e in equipment)
-//						{
-//							if (e.GetComponent<ArmorItem>().name == data.heroList[i].equipment[j].name) { temp.equipment.Add(e); }
-//						}
-//					} 
-//				}
-
+                
 				heroList.Add(temp);
 			}
 
             //put the player back where they were
-            //UnityEngine.SceneManagement.SceneManager.LoadScene(data.currentScene);
             LoadSceneAsync(data.currentScene);
-            // Put their position vector here if we choose
-            //currentPosition = new Vector2(data.posX, data.posY);
 
             taggedStatue = data.taggedStatue;
             if (taggedStatue)
@@ -821,162 +565,6 @@ public class GameControl : MonoBehaviour {
     {
         AddItem(id.name, "key", id.quantity);
     }
-//	public void LoadConsumableItem(ItemData id)
-//	{
-//		GameObject temp = null;
-//		switch (id.name)
-//		{
-//		case "Lesser Restorative":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserRestorative"));
-//                temp.name = "LesserRestorative";
-//			break;
-//		case "Restorative":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Restorative"));
-//                temp.name = "Restorative";
-//			break;
-//		case "Gratuitous Restorative":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousRestorative"));
-//                temp.name = "GratuitousRestorative";
-//			break;
-//		case "Terminal Restorative":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalRestorative"));
-//                temp.name = "TerminalRestorative";
-//			break;
-//		case "Lesser Elixir":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/LesserElixir"));
-//                temp.name = "LesserElixir";
-//			break;
-//		case "Elixir":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/Elixir"));
-//                temp.name = "Elixir";
-//			break;
-//		case "Gratuitous Elixir":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/GratuitousElixir"));
-//                temp.name = "GratuitousElixir";
-//			break;
-//		case "Terminal Elixir":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TerminalElixir"));
-//                temp.name = "TerminalElixir";
-//			break;
-//		default:
-//			print("Error: Incorrect item name - " + id.name);
-//			break;
-//		}
-//		GameControl.control.AddItem(temp);
-//		GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().quantity = id.quantity;
-//		GameControl.control.consumables[consumables.Count - 1].GetComponent<ConsumableItem>().uses = id.uses;
-//	}
-//
-//	public void LoadReusableItem(ItemData id)
-//	{
-//		GameObject temp = null;
-//		switch (id.name)
-//		{
-//		default:
-//			print("Error: Incorrect item name - " + id.name);
-//			break;
-//		}
-//		GameControl.control.AddItem(temp);
-//		GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().quantity = id.quantity;
-//		GameControl.control.reusables[reusables.Count - 1].GetComponent<ReusableItem>().uses = id.uses;
-//
-//	}
-//
-//	public void LoadArmorItem(ItemData id, DenigenData hd)
-//	{
-//		GameObject temp = null;
-//		switch (id.name)
-//		{
-//		case "Helmet of Fortitude":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/HelmetOfFortitude"));
-//                temp.name = "HelmetOfFortitude";
-//			break;
-//		case "Iron Armor":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronArmor"));
-//                temp.name = "IronArmor";
-//			break;
-//		case "Iron Helm":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/IronHelm"));
-//                temp.name = "IronHelm";
-//			break;
-//		case "Steel Armor":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelArmor"));
-//                temp.name = "SteelArmor";
-//			break;
-//		case "Steel Gauntlets":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelGauntlets"));
-//                temp.name = "SteelGauntlets";
-//			break;
-//		case "Steel Helm":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SteelHelm"));
-//                temp.name = "SteelHelm";
-//			break;
-//		default:
-//			print("Error: Incorrect item name - " + id.name);
-//			break;
-//		}
-//		if (hd == null)
-//		{
-//			GameControl.control.AddItem(temp);
-//			GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().quantity = id.quantity;
-//			GameControl.control.equipment[equipment.Count - 1].GetComponent<ArmorItem>().uses = id.uses;
-//
-//		}
-//		else { hd.equipment.Add(temp); DontDestroyOnLoad(temp); }
-//	}
-//
-//	public void LoadWeaponItem(ItemData id, DenigenData hd)
-//	{
-//		GameObject temp = null;
-//		switch (id.name)
-//		{
-//		case "Spare Sword":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/SpareSword"));
-//                temp.name = "SpareSword";
-//			break;
-//		case "Tome of Practical Spells":
-//			temp = (GameObject)Instantiate(Resources.Load("Prefabs/Items/TomeOfPractical"));
-//                temp.name = "TomeOfPractical";
-//			break;
-//		default:
-//			print("Error: Incorrect item name - " + id.name);
-//			break;
-//		}
-//		if (hd == null)
-//		{
-//			GameControl.control.AddItem(temp);
-//			GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().quantity = id.quantity;
-//			GameControl.control.weapons[weapons.Count - 1].GetComponent<WeaponItem>().uses = id.uses;
-//
-//		}
-//		else { hd.weapon = temp; DontDestroyOnLoad(temp); }
-//	}
-    void AssignHeroStats(DenigenData dataToSet, Hero hero)
-    {
-        //dataToSet.level = hero.Level;
-        //dataToSet.exp = hero.Exp;
-        //dataToSet.expToLvlUp = hero.ExpToLevelUp;
-        //dataToSet.levelUpPts = hero.LevelUpPts;
-        //dataToSet.techPts = hero.TechPts;
-        //dataToSet.hp = hero.hpChange;
-        //dataToSet.hpMax = hero.hpMaxChange;
-        //dataToSet.pm = hero.pmChange;
-        //dataToSet.pmMax = hero.pmMaxChange;
-        //dataToSet.atk = hero.Atk;
-        //dataToSet.def = hero.Def;
-        //dataToSet.mgkAtk = hero.MgkAtk;
-        //dataToSet.mgkDef = hero.MgkDef;
-        //dataToSet.luck = hero.Luck;
-        //dataToSet.evasion = hero.Evasion;
-        //dataToSet.spd = hero.Spd;
-        //dataToSet.skillsList = hero.SkillsList;
-        //dataToSet.spellsList = hero.SpellsList;
-        //dataToSet.passiveList = hero.PassivesList;
-        //// Passives are non serializable now because they inherit from something with a my button variable
-        ////heroList[0].passiveList.Add(new LightRegeneration());
-        //dataToSet.weapon = null;
-        //dataToSet.equipment = new List<GameObject>();
-    }
 
     /// <summary>
     /// This function is purely for testing purposes. 
@@ -992,96 +580,37 @@ public class GameControl : MonoBehaviour {
         SetHeroesToLiving();
     }
 
-//    void AddHero(HeroData data)
-//    {
-
-//        // because scriptable objects are assets, changes made during runtime remain
-//        // creating a copy resets the values, making it easier to test
-//#if UNITY_EDITOR
-//        data = Instantiate(data);
-//#endif
-
-//        heroList.Add(data);
-//    }
-
     void AddJethro()
     {
-        //test code for creating Jethro -- based on level 1 stats
-        //We will have these stats stored in HeroData objs for consistency between rooms
-
-        // since the hero stats are set in the Hero/Denigen classes, 
-        // the quickest solution is to create a hero object, save the data with hero data, then destroy the object
-        // same situation with the other heroes
-        //var jethroObj = (GameObject)Instantiate(Resources.Load("Prefabs/JethroPrefab"));
-        //var jethro = jethroObj.GetComponent<Jethro>();
-        //heroList.Add(new HeroData());
-        //heroList[0].denigenName = playerName;
-        //heroList[0].identity = 0;
-        //AssignHeroStats(heroList[0], jethro);
-        //Destroy(jethroObj);
-
         var jethro = Resources.Load<HeroData>("Data/Heroes/Start_Jethro");
-#if UNITY_EDITOR
+#if UNITY_EDITOR // test if this is needed
         jethro = Instantiate(jethro);
 #endif
-        heroList.Add(jethro);
-        //AddHero(jethro);
+        heroList.Add(jethro);        
         jethro.denigenName = playerName;
-        //jethro.Init();
-        
+                
         
     }
     void AddCole()
     {
-        //var coleObj = (GameObject)Instantiate(Resources.Load("Prefabs/ColePrefab"));
-        //var cole = coleObj.GetComponent<Cole>();
-        //heroList.Add(new HeroData());
-        //heroList[1].identity = 1;
-        //heroList[1].denigenName = "Cole";
-        //AssignHeroStats(heroList[1], cole);
-        //Destroy(coleObj);
-
         var cole = Resources.Load<HeroData>("Data/Heroes/Start_Cole");
-#if UNITY_EDITOR
+#if UNITY_EDITOR // test if this is needed
         cole = Instantiate(cole);
 #endif
         heroList.Add(cole);
-
-        // the below code would probably be found in the "Add Spell" functions
-        //skillTreeAccessor.ReadInfo("techniquesCole1.tsv");
-        //skillTreeAccessor.AddTechnique(heroList[1], new Spell(skillTreeAccessor.FindTechnique("candleshot")));
-        //skillTreeManager.AddColeStartingTechniques();
     }
     void AddEleanor()
     {
-        // test eleanor -----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
-        //var eleanorObj = (GameObject)Instantiate(Resources.Load("Prefabs/EleanorPrefab"));
-        //var eleanor = eleanorObj.GetComponent<Eleanor>();
-        //heroList.Add(new HeroData());
-        //heroList[2].identity = 2;
-        //heroList[2].denigenName = "Eleanor";
-        //AssignHeroStats(heroList[2], eleanor);
-        //Destroy(eleanorObj);
-
         var eleanor = Resources.Load<HeroData>("Data/Heroes/Start_Eleanor");
-#if UNITY_EDITOR
+#if UNITY_EDITOR // test if this is needed
         eleanor = Instantiate(eleanor);
 #endif
         heroList.Add(eleanor);
     }
     void AddJuliette()
     {
-        //// juliette test-----THESE VALUES ARE COMPLETELY RANDOM AND ARBITRARY --- PLEASE CHANGE/REEVALUATE
-        //var julietteObj = (GameObject)Instantiate(Resources.Load("Prefabs/JuliettePrefab"));
-        //var juliette = julietteObj.GetComponent<Juliette>();
-        //heroList.Add(new HeroData());
-        //heroList[3].identity = 3;
-        //heroList[3].denigenName = "Juliette";
-        //AssignHeroStats(heroList[3], juliette);
-        //Destroy(julietteObj);
-
         var jouliette = Resources.Load<HeroData>("Data/Heroes/Start_Jouliette");
-#if UNITY_EDITOR
+#if UNITY_EDITOR // test if this is needed
         jouliette = Instantiate(jouliette);
 #endif
         heroList.Add(jouliette);
@@ -1107,10 +636,8 @@ public class GameControl : MonoBehaviour {
 
     public void ReturnFromBattle()
     {
-        //currentCharacterState = characterControl.CharacterState.Normal;
         if (string.IsNullOrEmpty(currentScene))
-            currentScene = "testScene";
-        //SceneManager.LoadScene(currentScene);        
+            currentScene = "testScene";     
         if (!ReadyForNextScene)
             ReadyForNextScene = true;
         else
@@ -1156,7 +683,6 @@ public class GameControl : MonoBehaviour {
             currentOperation.allowSceneActivation = value;
             if(value == true)
             {
-                //print("current progress: " + currentOperation.progress);
                 if (currentOperation.progress < 0.9f)
                     UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
             }
@@ -1169,7 +695,6 @@ public class GameControl : MonoBehaviour {
 
     public void LoadSceneAsync(string _scene, bool waitToLoad = false)
     {
-        //print("loading called");
         StartCoroutine(LoadAsync(_scene, waitToLoad));
     }
 
@@ -1182,7 +707,6 @@ public class GameControl : MonoBehaviour {
             UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
         while (currentOperation.progress < 0.9f)
         {
-            //print("loading: " + currentOperation.progress);
             yield return null;
         }        
     }
@@ -1198,7 +722,6 @@ class PlayerData
 	//items -- add later
 	public string currentScene; // the place where the currently is (outside of battle)
 	public string savedScene; // the room where the player last saved
-	//public float statuePosX, statuePosY, statuePosZ; // the position of where the player last saved -- dungeon entrance as default
 	public bool taggedStatue;
 	public float posX, posY, posZ; //The exact position where the player was upon saving. This will probably be removed to avoid abuse and exploits
 	public List<SavableHeroData> heroList = new List<SavableHeroData>() { };
@@ -1206,48 +729,10 @@ class PlayerData
 
 	// All of the player's items
 	public List<ItemData> consumables = new List<ItemData>() { };
-	//public List<ItemData> reusables = new List<ItemData>() { };
 	public List<ItemData> equipment = new List<ItemData>() { };
 	public List<ItemData> weapons = new List<ItemData>() { };
     public List<ItemData> key = new List<ItemData>();
 }
-
-//this class should hold all of the stuff necessary for a hero object
-//[Serializable]
-//public class HeroData
-//{
-//	public int identity;
-//	public bool statBoost = false;
-//	public bool skillTree = false;
-//	public string name;
-//	public int level, exp, expToLvlUp, levelUpPts, techPts;
-//	public int hp, hpMax, pm, pmMax, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
-//	public List<Skill> skillsList;
-//	public List<Spell> spellsList;
-//	public List<Passive> passiveList;
-//	// status effect
-//	public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
-//	public Status statusState;
-//	// Need a creative way to store which items are equipped since items are non-serializable
-//	public GameObject weapon;
-//	public List<GameObject> equipment;
-
-//    /// <summary>
-//    /// Searches through the hero's equipment/armor and returns true if the hero already the item.
-//    /// </summary>
-//    /// <param name="itemToCheck"></param>
-//    /// <returns></returns>
-//    public bool EquipmentContainsItem(Item itemToCheck)
-//    {
-//        foreach(var itemObj in equipment)
-//        {
-//            if (itemObj.GetComponent<Item>() == itemToCheck)
-//                return true;
-//        }
-
-//        return false;
-//    }
-//}
 
 // this class exists to save the hero item
 [Serializable]
@@ -1346,13 +831,3 @@ public class EnemyControlData
 	public bool battledState;
 	public SerializableVector3 position = new SerializableVector3 ();
 }
-[Serializable]
-public class tempMenu
-{
-	public bool isVisible;
-	public bool isActive;
-	public int selectedIndex;
-	public bool isDisabled;
-	public Vector2 position;
-} 
-

@@ -52,18 +52,6 @@ public class ColorBridge : OverworldObject {
 				if (bridgeTransform.eulerAngles.z < rotationDegrees2 + 2.0f
 					&& bridgeTransform.eulerAngles.z > rotationDegrees2 - 2.0f)
                 {
-					// reactivate player
-					/*if (!player.GetComponent<characterControl> ().canMove) {
-						ToggleMovement ();
-						print ("toggle 1");
-					}*/
-
-					// reactivate enemies
-					/*foreach(enemyControl e in room.enemies)
-					{
-						if (!e.GetComponent<enemyControl> ().canMove)
-							ToggleMovement ();
-					}*/
 					bridgeTransform.rotation = Quaternion.Euler(0, 0, 90);
                     isMoving = false;
                 }
@@ -77,23 +65,14 @@ public class ColorBridge : OverworldObject {
             while (bridgeTransform.eulerAngles.z > rotationDegrees1)
             {
 				bridgeTransform.Rotate(Vector3.back, Time.deltaTime * 40.0f);
-                //print(transform.eulerAngles.z);
-
 
                 // to compensate for the error of shifting the block's rotation upon start
                 // set isMoving to false
                 if(bridgeTransform.eulerAngles.z > 358.0f 
                     || bridgeTransform.eulerAngles.z < 2.0f)
                 {
-					// reactivate player
-					/*if (!player.GetComponent<characterControl> ().canMove) {
-						ToggleMovement ();
-						print ("toggle 2");
-					}*/
-
                     bridgeTransform.rotation = Quaternion.Euler(0, 0, 0);
                     isMoving = false;
-
                 }
                 yield return new WaitForSeconds(0.01f);
             }

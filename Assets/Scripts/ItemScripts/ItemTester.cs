@@ -11,10 +11,5 @@ public class ItemTester : MonoBehaviour {
 			print("Got one: " + item.name + " At the price of: " + item.value + 
 			      "\n It restores " + item.statBoosts[0].boost + item.statBoosts[0].statName);
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	}	
 }

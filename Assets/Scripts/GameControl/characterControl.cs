@@ -31,13 +31,9 @@ public class characterControl : OverworldObject {
 
     public Vector2 speed;
     public Vector2 desiredSpeed;
-    //PauseMenu pm;
-	//public bool canMove;
 
 	public bool onRamp = false;
 	public bool isRampRight = false;
-
-    //public LayerMask movableMask;
 
     // Jethro -- Carrying
 	MovableOverworldObject carriedObject;
@@ -72,62 +68,25 @@ public class characterControl : OverworldObject {
     // Use this for initialization
     void Start () {
 
-        //pm = GetComponentInChildren<PauseMenu>();
         myCamera = FindObjectOfType<CameraController>();
         anim = GetComponent<Animator>();
         transform.position = GameControl.control.currentPosition; // this is just temporary, as the final version will have to be more nuanced
 		canMove = true;
         base.Start();
 
-		//new code -------------------------------------------------
 		boxCollider = GetComponent<BoxCollider2D> ();
         OnDesiredPos = new UnityEvent();
         characterSpeeds = new float[4] { jethroWalk, coleWalk, eleanorWalk, joulietteWalk };
         ChangeHero();
-		//end new code ---------------------------------------------
 
-        //canMove = false;
-        
-        // if the character is transitioning through a gateway, call EnterRoom
-        //if (GameControl.control.currentCharacterState == CharacterState.Transition)
-        //{
-            currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
-            if (currentGateway != null)// && !GameControl.control.taggedStatue)
-                EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
-            else
-                GameControl.control.currentCharacterState = CharacterState.Normal;
-        //}
-        //GameControl.control.currentCharacterState = CharacterState.Normal;
+        currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
+
+        if (currentGateway != null)
+            EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
+        else
+            GameControl.control.currentCharacterState = CharacterState.Normal;
     }
-
-    //void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    // for transition between areas
-    //    if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
-    //    {
-    //        currentGateway = other.GetComponent<Gateway>();
-    //        if (currentGateway.gatewayType == Gateway.Type.DOOR)
-    //        {
-    //            if (Input.GetButtonDown("Submit"))
-    //            {
-    //                StartCoroutine(myCamera.Fade());
-    //                ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
-    //            }
-    //            else return;
-    //        }
-
-    //        StartCoroutine(myCamera.Fade());
-    //        ExitRoom(currentGateway.transform.position, currentGateway.exitPos);            
-    //    }
-
-    //    // for NPC interaction
-    //    if(other.GetComponent<NPCDialogue>())
-    //    {
-    //        // When we enter a trigger area for an NPC that will speak, start checking for collisions
-    //        CheckInRangeNPC();
-    //    }
-    //}
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -144,20 +103,6 @@ public class characterControl : OverworldObject {
                 StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
             }
-            //if (currentGateway.gatewayType == Gateway.Type.DOOR)
-            //{
-            //    if (Input.GetButtonDown("Submit"))
-            //    {
-            //        StartCoroutine(myCamera.Fade());
-            //        ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
-            //    }
-            //    else return;
-            //}
-            //else
-            //{
-            //    StartCoroutine(myCamera.Fade());
-            //    ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
-            //}
         }
 
         if (other.GetComponent<NPCDialogue>())
@@ -166,7 +111,6 @@ public class characterControl : OverworldObject {
             // We want to constantly check in case we are in situations where there are multiple NPCs
             // We want to be able to turn and talk to that NPC without any problems
             CheckInRangeNPC();
-
         }
 
         if(other.GetComponent<Firewall>())
@@ -200,19 +144,17 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-        //if(Input.GetButtonDown("Submit")
-        //    && GameControl.control.currentCharacterState != CharacterState.Menu)
-        //{
-            // if the NPC has a pathwalk, set the NPC to stop and face the player
-            if (GameControl.control.CurrentNPCPathwalk)
-                GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
-			else if (GameControl.control.CurrentStationaryNPC)
-				GameControl.control.CurrentStationaryNPC.FaceCharacter(-(lastMovement));
+
+        // if the NPC has a pathwalk, set the NPC to stop and face the player
+        if (GameControl.control.CurrentNPCPathwalk)
+            GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
+        else if (GameControl.control.CurrentStationaryNPC)
+            GameControl.control.CurrentStationaryNPC.FaceCharacter(-(lastMovement));
 
         isMoving = false;
-            // begin the NPC's dialogue
-            GameControl.control.currentNPC.StartDialogue();
-        //}
+        // begin the NPC's dialogue
+        GameControl.control.currentNPC.StartDialogue();
+        
     }
 
     void ResetCurrentNPC(NPCDialogue newCurrent = null)
@@ -242,7 +184,6 @@ public class characterControl : OverworldObject {
         // Check if there is an NPC if front of us by casting a box based off of Jethro's lastMovement vector        
         var talkingVector = lastMovement * talkingDistance;
         var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);
-        //Debug.DrawLine(boxCollider.bounds.center, boxCollider.bounds.center + new Vector3(talkingVector.x, talkingVector.y));
         
         // If there was a collision with an NPC that we can talk to, then set that to the current NPC
         if(triggerHit.collider && triggerHit.collider.GetComponentInChildren<NPCDialogue>())
@@ -257,7 +198,6 @@ public class characterControl : OverworldObject {
     }
     // END NPC Talking interaction section ---------------------------
 
-    //new code ----------------------------------------------------
     //A method for determining movement, which also checks collisions
     public void Move(float move_x, float move_y){
 
@@ -273,9 +213,6 @@ public class characterControl : OverworldObject {
 		if (onRamp && isRampRight) { direction = new Vector2(direction.x, direction.y + direction.x);}
 		if (onRamp && !isRampRight) { direction = new Vector2(direction.x, direction.y - direction.x);}
 
-		//get the position of the boxcollider, adjusted for any offsets
-		//Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
-		//                                       (transform.position.y + boxCollider.offset.y));
 
         hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude), mask);
 
@@ -319,7 +256,6 @@ public class characterControl : OverworldObject {
 			lastMovement = new Vector2 (Input.GetAxisRaw ("Horizontal"), 0f);
 		}
 	}
-	//end new code -----------------------------------------------------
 	
 	// Update is called once per frame
     void Update()
@@ -336,7 +272,6 @@ public class characterControl : OverworldObject {
 
         sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
-        //desiredSpeed = Vector2.zero;
 
         if (GameControl.control.currentCharacterState == CharacterState.Transition && currentGateway?.gatewayType != Gateway.Type.DOOR)
         {
@@ -409,7 +344,6 @@ public class characterControl : OverworldObject {
         }
 
         // STATE == NORMAL
-		//if (canMove) {
         if(canMove && GameControl.control.currentCharacterState == CharacterState.Normal) { 
             isMoving = false;
 
@@ -614,10 +548,6 @@ public class characterControl : OverworldObject {
             else
                 xIncrementTransition = -1;
         }
-
-        // continuously call the Move function until we are at the entrance position       
-        //StartCoroutine(MoveToEntrance(entrancePos, xIncrementTransition, yIncrementTransition));
-
     }
 
 

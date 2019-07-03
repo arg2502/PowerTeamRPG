@@ -59,13 +59,9 @@
 
         public void SetHero(int heroIndex)
         {
-            // the hero to show first is stored inside TeamInfoSub where you selected the hero
-            //teamInfoSub = uiManager.FindMenu(uiDatabase.TeamInfoSub) as TeamInfoSub;
-
             // instantly move list to chosen hero
             MoveHeroList(heroIndex, true);
 
-            //currentHero = teamInfoSub.currentHero; // kinda redundant cause currentHero is set inside AssignTree, but oh whale
             currentHero = heroIndex;
             AssignTree(0, currentHero);
             SetSelectedObjectToRoot();
@@ -101,7 +97,6 @@
             currentTreeIndex = treeIndex;
             currentHero = hero;
             treeManager.SetHero(hero);
-            //Debug.Log(treeManager.currentSkillTree);
             currentTree = treeManager.currentSkillTree.listOfTrees[currentTreeIndex];
 
             RootButton = buttonGrid[currentTree.rootCol][currentTree.rootRow];
@@ -194,10 +189,8 @@
                         else
                         {
                             var nextPos = buttonGrid[t.ColPos][t.RowPos].transform.position;
-                            //Debug.DrawLine(button.transform.position, nextPos, Color.red, 10f);
                             var line = (GameObject)Instantiate(treeLineObj, button.transform.position, Quaternion.identity);
                             line.transform.SetParent(transform.Find("TreeGrid").GetChild(0));
-                            //line.GetComponent<LineRenderer>().SetPositions(new Vector3[] { button.transform.position, nextPos });
                             Vector3 differenceVector = nextPos - button.transform.position;
                             var imageRectTransform = line.GetComponent<Image>().rectTransform;
                             var lineWidth = 1f;
@@ -220,7 +213,6 @@
 
         void OnPurchaseTech(Technique tech, Button button)
         {
-            Debug.Log("Want to purchase: " + tech.Name);
             // if the technique is already active, there's nothing else to do
             if (tech.Active) return;
 
@@ -258,7 +250,6 @@
         void PurchaseTechnique()
         {
             treeManager.AddTechnique(gameControl.heroList[currentHero], techniqueToAdd);
-            print("you now have " + techniqueToAdd.Name);
             gameControl.heroList[currentHero].techPts -= techniqueToAdd.TechPointCost; // reduce points
             SetButtonState(buttonToChange, techniqueToAdd, true); // change button appearance
             SetHeroTechText();

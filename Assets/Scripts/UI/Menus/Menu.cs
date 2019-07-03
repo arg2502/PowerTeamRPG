@@ -127,8 +127,7 @@
         public Button RootButton { get { return rootButton; } set { rootButton = value; } }
         public void SetSelectedObjectToRoot()
         {
-            if(rootButton == null) { /*Debug.LogError("You forgot to set FirstButton.");*/ return; }
-            //if (rootButton.gameObject == EventSystem.current.currentSelectedGameObject) return;
+            if (rootButton == null) return;
             StartCoroutine(SetRoot());
         }
         IEnumerator SetRoot()
@@ -139,7 +138,6 @@
             rootButton.OnSelect(null); // to highlight button
 
         }
-        //public void AssignDescription(Button button)
         public void AssignDescription(BaseEventData bed = null)
         {
             GameObject button;
@@ -258,7 +256,6 @@
             {
                 if (!listOfButtons[i].interactable && listOfButtons.Count > 1)
                 {
-                    //Debug.Log(i + ": not interactable");
                     // if button is at top
                     if (i <= 0)
                     {
@@ -284,7 +281,6 @@
                     }
 
                     // if button is in middle of menu
-                    //if ((i - 1) >= 0 && (i + 1) <= listOfButtons.Count - 1)
                     else
                     {
                         // set navigation for button above
@@ -297,9 +293,7 @@
                         else navigation.selectOnRight = button;
 
                         listOfButtons[i - 1].navigation = navigation;
-                        //}
-                        //if((i + 1) <= listOfButtons.Count - 1 && (i-1) >= 0)
-                        //{
+
                         // set navigation for button below
                         navigation = listOfButtons[i + 1].navigation;
                         navigation.mode = Navigation.Mode.Explicit;

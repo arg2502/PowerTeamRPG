@@ -15,8 +15,6 @@
         public override void TurnOnMenu()
         {
             RootButton = AssignRootButton();
-            //SetSelectedObjectToRoot();
-            
             base.TurnOnMenu();
         }
         public override Button AssignRootButton()

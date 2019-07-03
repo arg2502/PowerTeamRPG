@@ -6,7 +6,7 @@ using System.IO;
 public class EleanorSkillTree : SkillTree
 {
 
-    // all possible skills for Jethro
+    // all possible skills for Eleanor
 
     // tree 1
     Spell purge;
@@ -47,7 +47,7 @@ public class EleanorSkillTree : SkillTree
     public EleanorSkillTree()
     {
 
-        // set hero to jethro
+        // set hero to eleanor
         hero = GameControl.control.heroList[2];
         whichContent = new List<string> { "Tree1", "Tree2" };
 

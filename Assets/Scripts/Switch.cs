@@ -15,7 +15,6 @@ public class Switch : OverworldObject {
 
     public List<GameObject> affectedObjs; // stores a list of objects to be effected by the switch
     // blocks will have an active bool, so they always exist, but the switch activates them
-    //public List<Vector2> objPositions; // stores the positions of newly created objects, such as blocks
     
     float distFromPlayer;
     Transform player;
@@ -43,7 +42,6 @@ public class Switch : OverworldObject {
             if (distFromPlayer < 100.0f)
             {
                 isActivated = true;
-                //sr.color = Color.green; // would change the sprite, but for now just change color
 
                 // perform the appropriate activation
                 if (switchType == SwitchType.createObj) 
@@ -89,7 +87,6 @@ public class Switch : OverworldObject {
                             if (!go.GetComponent<ColorBridge>().isMoving)
                             {
                                 go.GetComponent<ColorBridge>().Activate();
-                                //isActivated = false;
                             }
                         }
                     }
@@ -110,43 +107,18 @@ public class Switch : OverworldObject {
 
         if (switchType == SwitchType.colorSwitch)
         {		
-
-            /*foreach (GameObject go in affectedObjs)
-            {
-                if (go.GetComponent<ColorBridge>() != null)
-                {
-					// keep track of how many bridges have stopped moving
-					if (!go.GetComponent<ColorBridge> ().isMoving) {
-						allClear++;
-					} 
-
-                }
-            }*/
-
 			// timer to start movement again
 			if (isActivated) {
-				//print (timer);
 				if (timer < maxTime) {					
 					timer += Time.deltaTime;
 				} else {
 					timer = maxTime;
 					ToggleMovement ();
 					isActivated = false;
-					//print ("toggled");
 				}
 			} else {
 				timer = 0.0f;
 			}
-
-            // all bridges have stopped, set isActivated equal to false
-            /*if(allClear == affectedObjs.Count)
-            {
-                isActivated = false;
-            }
-			else
-			{
-				isActivated = true;
-            }*/
         }
 	}    
 }

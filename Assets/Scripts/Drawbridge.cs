@@ -15,14 +15,10 @@ public class Drawbridge : OverworldObject {
         base.Start();
         sr.sortingOrder = (int)-transform.position.y - 2000;
         initialPos = transform.position.y;
-
-		//if (isActive) {
-
     }
 	void Update()
 	{
 		if(transform.position.y != initialPos && !isActive){
-			print ("change position");
 			isActive = true;
 			transform.position = new Vector3 (transform.position.x, initialPos - height, transform.position.z);
 			foreach (GameObject go in colliders) {

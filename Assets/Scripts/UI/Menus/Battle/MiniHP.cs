@@ -73,15 +73,9 @@ public class MiniHP : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         TurnOff();
     }
-
-    //void Update()
-    //{
-    //    SetPosition();
-    //}
-
+    
     void SetPosition()
     {
-        //var pos = Camera.main.WorldToScreenPoint(currentDenigen.transform.position);
         var pos = currentDenigen.transform.position;
         pos.y = currentDenigen.spriteHolder.GetComponent<SpriteRenderer>().bounds.min.y * 1.25f;
         GetComponent<RectTransform>().position = pos;

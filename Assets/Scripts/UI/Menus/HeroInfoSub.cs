@@ -41,8 +41,6 @@
         public override void Refocus()
         {
             base.Refocus();
-
-
         }
 
         void SetParentDescriptions()

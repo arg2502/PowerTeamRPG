@@ -95,8 +95,6 @@
 
             if (battleManager.IsTargetEnemy)
             {
-                //foreach (var enemy in battleManager.enemyList)
-                //    currentTargets.Add(enemy);
                 for (int i = battleManager.enemyList.Count - 1; i >= 0; i--)
                 {
                     currentTargets.Add(battleManager.enemyList[i]);
@@ -112,10 +110,6 @@
             else
             {
                 // heroes are backwards for menu navigation purposes (index 0 is Jethro (bottom))
-                //for (int i = battleManager.heroList.Count - 1; i >= 0; i--)
-                //{
-                //    currentTargets.Add(battleManager.heroList[i]);
-                //}
                 // (from right to left)
                 // JOULIETTE -- JETHRO -- ELEANOR -- COLE (start with joules then go left)
                 
@@ -157,7 +151,6 @@
             for (int i = 0; i < targets.Count; i++)
             {
                 var pos = RectTransformUtility.WorldToScreenPoint(Camera.main, targets[i].transform.position);
-                //screenPos.Add(pos);
                 targetCursors[i].transform.position = pos;
             }
         }
@@ -209,23 +202,16 @@
                 // we should have like a find item function ---- TODO
                 foreach(var item in gameControl.consumables)
                 {
-                    //if (item.GetComponent<Item>().name == battleManager.CurrentDenigen.CurrentAttackName)
 					if (item.name == battleManager.CurrentDenigen.CurrentAttackName)
                     {
-                        //item.GetComponent<ConsumableItem>().inUse++;
                         battleManager.CurrentDenigen.UsingItem = true;
                     }
                 }
             }
 
-            HideCards();
             battleManager.TargetDenigen(targets);
 
             prevButton = null;
-
-            if (listSub != null)
-                listSub.SetContainersToNull();
-
 
         }
 
@@ -258,7 +244,6 @@
                     var itemForTheLiving = GameControl.itemManager.ItemForLiving(battleManager.CurrentDenigen.CurrentAttackName);
                     if (currentTargets[i].IsJustDead)
                     {
-                        print("index: " + i + ", forLiving: " + itemForTheLiving);
                         ToggleCursorActivation(i, !itemForTheLiving);
                     }
                     else
@@ -279,7 +264,6 @@
             // if we don't have any active, GTFO
             if (active <= 0)
             {
-                print("THERE'S NO ONE TO USE THAT ON, YOU STUPID BITCH");
                 uiManager.PopMenu();
             }
         }
@@ -300,7 +284,6 @@
                 if (button == targetCursors[i])
                     return i;
             }
-            //Debug.LogError("Could not find index");
             return -1;
         }
 
@@ -312,116 +295,14 @@
                 return currentTargets[currentIndex];
             else
                 return null;
-
-            //Debug.LogError("Could not find Denigen from button provided: " + button.name);
-            //return null;
-        }
-        void SwitchCards()
-        {
-            // if we targeting the heroes, hide their cards
-            if (!battleManager.IsTargetEnemy)
-            {
-                foreach (var hero in battleManager.heroList)
-                {
-                    hero.statsCard.ShowShortCard();
-                }
-            }
-
-            switch (battleManager.targetState)
-            {
-                case TargetType.ENEMY_SPLASH:
-                case TargetType.HERO_SPLASH:
-                    ShowSplashCards();
-                    break;
-                case TargetType.ENEMY_TEAM:
-                case TargetType.HERO_TEAM:
-                    ShowTeamCards();
-                    break;
-                default:
-                    ShowNormalCards();
-                    break;
-            }
-            
-        }
-
-        void SwitchTargetCursor()
-        {
-            Denigen denigen;
-            if (prevButton != null)
-            {
-                denigen = FindDenigenFromButton(prevButton);
-
-                if (denigen != null)
-                    battleManager.HighlightStarburstTurnOrder(denigen, false);
-            }
-            denigen = FindDenigenFromButton(currentButton);
-            if (denigen != null)
-                battleManager.HighlightStarburstTurnOrder(denigen, true);
         }
         
-        void ShowNormalCards()
-        {
-            Denigen denigen;
-            if (prevButton != null)
-            {
-                denigen = FindDenigenFromButton(prevButton);
-
-                if(denigen != null)
-                    denigen.statsCard.ShowShortCard();
-            }
-            denigen = FindDenigenFromButton(currentButton);
-            if (denigen != null)
-                denigen.statsCard.ShowFullCard();
-        }
-
-        void ShowSplashCards()
-        {
-            var low = currentIndex - 1;
-            var high = currentIndex + 1;
-
-            for(int i = 0; i < currentTargets.Count; i++)
-            {
-                // show the targets' cards if it's within the range (and make sure they're still alive)
-                if ((i >= low && i <= high) && !currentTargets[i].IsDead)
-                {
-                    currentTargets[i].statsCard.ShowFullCard();
-                }
-                else
-                {
-                    currentTargets[i].statsCard.ShowShortCard();
-                }
-            }
-        }
-
-        void ShowTeamCards()
-        {
-            foreach (var denigen in currentTargets)
-            {
-                // make sure they're still alive before showing their card
-                if (!denigen.IsDead)
-                    denigen.statsCard.ShowFullCard();
-            }
-        }
-
-        void HideCards()
-        {
-            //if (prevButton != null)
-            //    FindDenigenFromButton(prevButton).statsCard.ShowShortCard();
-            //FindDenigenFromButton(currentButton).statsCard.ShowShortCard();
-            foreach (var denigen in currentTargets)
-            {
-                if (denigen != battleManager.CurrentDenigen)
-                    denigen.statsCard.ShowShortCard();
-            }
-        }
-
         void CheckTargetState()
         {
             // find index of the button we are currently on
             currentIndex = FindIndexInButtonArray(currentButton);
             int low;
             int high;
-            //float alpha = 0.5f;
 
             switch (battleManager.targetState)
             {
@@ -490,7 +371,6 @@
 
             prevButton = null;
             currentButton = null;
-            HideCards();
             
             // turn off all turn order starburst
             battleManager.TurnOffAllHighlightStarburstTurnOrder();
@@ -505,13 +385,8 @@
             currentButton = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
             CheckTargetState();
             if (currentButton == prevButton) return;
-
-            SwitchCards();
-            SwitchTargetCursor();
-
+            
             prevButton = currentButton;
-
-
         }
     }
 }

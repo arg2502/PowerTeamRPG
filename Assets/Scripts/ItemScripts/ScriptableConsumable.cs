@@ -5,9 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Consumable Item", menuName = "Items/Consumable")]
 public class ScriptableConsumable : ScriptableItem {
 
-	//Consumable items usually have some sort of change to stats or status
-	//public string statusChange;
-
 	//Unlike equipment or armor, consumable items can have multiple types of targets
 	public enum TargetType
 	{

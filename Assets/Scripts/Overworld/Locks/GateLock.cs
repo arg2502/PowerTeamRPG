@@ -4,8 +4,4 @@ using UnityEngine;
 
 public class GateLock : Lock {
 
-    //protected override void PostToggle(bool newState)
-    //{
-    //    base.PostToggle(newState);
-    //}
 }

@@ -12,7 +12,6 @@ public class NPCPathwalkControl : NPCObject {
 	//set to public temporarily
 	public Waypoint[] waypoints; //stores all of the possible waypoints
 
-	//public Waypoint nextWaypoint; //the next point to navigate to
 	public Waypoint currentWaypoint; //the current target
 	public Waypoint prevWaypoint; //the waypoint we just came from
 
@@ -106,8 +105,6 @@ public class NPCPathwalkControl : NPCObject {
 			                         new Vector2 (0, direction.y), Mathf.Abs (direction.y));
 			if (hit.collider == null) { // if the collider is null, no collision
 				transform.Translate (0, direction.y, 0); // move in the y direction
-				//anim.SetFloat("vSpeed", direction.y);
-				//anim.SetFloat("hSpeed", direction.x);
 			}
 			else if (hit.collider.tag != "Player") { //if we hit something, set the walking state to avoid, except for the player
 				if(walkingState != State.avoiding){
@@ -119,11 +116,7 @@ public class NPCPathwalkControl : NPCObject {
 			else if (hit.collider.tag == "Player"){ // stop walking so the player can talk to you
 				isMoving = false;
 				direction = Vector2.zero;
-			}
-			
-			//stuff for the animator
-			//isMoving = true;
-			//lastMovement = new Vector2 (0f, move_y);
+			}			
 		}
 		
 		//cast a box to see if NPC will collide horizontally
@@ -133,7 +126,6 @@ public class NPCPathwalkControl : NPCObject {
 			                         new Vector2 (direction.x, 0), Mathf.Abs (direction.x));
 			if (hit.collider == null) { // if the collider is null, no collision
 				transform.Translate (direction.x, 0, 0);// move in the x direction
-				//anim.SetFloat("hSpeed", direction.x);
 			}
 			else if (hit.collider.tag != "Player") { //if we hit something, set the walking state to avoid, except for the player
 				if(walkingState != State.avoiding){
@@ -146,16 +138,11 @@ public class NPCPathwalkControl : NPCObject {
 				isMoving = false;
 				direction = Vector2.zero;
 			}
-			
-			//stuff for the animator
-			//isMoving = true;
-			//lastMovement = new Vector2 (move_x, move_y);
 		}
 
 		//stuff for the animator
 		anim.SetFloat("vSpeed", direction.y);
 		anim.SetFloat("hSpeed", direction.x);
-		//isMoving = true;
 		lastMovement = new Vector2 (move_x, move_y);
 	}
 
@@ -317,8 +304,6 @@ public class NPCPathwalkControl : NPCObject {
 		// set values for animator to determine movement/idle animations
 		if (canMove)
 		{
-			//anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
-			//anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
 			anim.SetBool("isMoving", isMoving);
 			anim.SetFloat("lastHSpeed", lastMovement.x);
 			anim.SetFloat("lastVSpeed", lastMovement.y);

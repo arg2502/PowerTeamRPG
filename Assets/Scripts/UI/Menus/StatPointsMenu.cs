@@ -8,8 +8,7 @@
 
     public class StatPointsMenu : Menu
     {
-        //public Button hpButton, pmButton, atkButton, defButton, mgkAtkButton, mgkDefButton, luckButton, evasionButton, speedButton;
-        //Text hpStat, pmStat, atkStat, defStat, mgkAtkStat, mgkDefStat, luckStat, evasionStat, speedStat;
+        
         public StatPointsMenuItem hp, pm, atk, def, mgkAtk, mgkDef, luck, evasion, spd;
         public Text pointsRemaining;
         int[] originalPoints = new int[4]; // The amount of points each hero had when opening the menu

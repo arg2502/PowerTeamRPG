@@ -70,16 +70,10 @@ public class AudioManager : MonoBehaviour{
 
     IEnumerator StartThenLoop(AudioClip startClip, AudioClip loopClip, bool fade = true)
     {
-        /*source_MUS.clip = startClip;
-        source_MUS.loop = false;
-        source_MUS.Play();*/
         var startSource = PlayMusic(startClip, false, fade);
 
         yield return new WaitUntil(() => startSource.time >= startClip.length || !startSource.isPlaying);
 
-        /*source_MUS.clip = loopClip;
-        source_MUS.loop = true;
-        source_MUS.Play();*/
         PlayMusic(loopClip, true, false);
     }
 
@@ -168,13 +162,7 @@ public class AudioManager : MonoBehaviour{
 
     IEnumerator FadeIn(AudioSource source, bool pause = false)
     {
-        //if (fadingOut) yield break;
-        //fadingIn = true;
-        // ADD SOMETHING TO THE FADING CHECK SO THAT ONLY RETURN IF THE SAME SOURCE WANTS TO FADE IN AND OUT AT THE SAME TIME
-
         source.volume = 0f;
-        //if (pause) source.UnPause();
-        //else source.Play();
         source.Play();
 
         while (source.volume < 1f)
@@ -184,15 +172,10 @@ public class AudioManager : MonoBehaviour{
         }
 
         source.volume = 1f;
-
-        //fadingIn = false;
     }
     
     IEnumerator FadeOut(AudioSource source, bool pause = false)
     {
-        //if (fadingIn) yield break;
-        //fadingOut = true;
-
         while(source.volume > 0f)
         {
             source.volume -= Time.deltaTime * fadeOutRate;
@@ -202,8 +185,6 @@ public class AudioManager : MonoBehaviour{
         source.volume = 0f;
         if (pause) source.Pause();
         else source.Stop();
-        
-        //fadingOut = false;
     }
         
     /// <summary>

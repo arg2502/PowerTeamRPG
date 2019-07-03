@@ -92,8 +92,6 @@ public class ItemManager {
 
     public bool ItemForLiving(string item)
     {
-//		return true;
-//		Debug.Log("Called ItemForLivingMethod for item named " + item);
 		ScriptableConsumable _item = ItemDatabase.GetItem("Consumable", item) as ScriptableConsumable;
 	
 		if (_item == null) {

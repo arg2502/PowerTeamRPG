@@ -20,7 +20,6 @@
         public Text skSpeaker;
         public Text skComment;
 
-        //ShopKeeperDialogue currentShopkeeper;
         public GameObject listParent;
         Vector3 origPosList;
         public GameObject itemPrefab;
@@ -56,19 +55,15 @@
             if (listOfButtons == null)
                 listOfButtons = new List<Button>();
 
-            //if (gameControl.CurrentShopkeeper == null)
-                //return;
-
             for (int i = 0; i < gameControl.CurrentShopkeeper.shopInventory.Count; i++)
             {
                 var item = Instantiate(itemPrefab);
-                item.name = gameControl.CurrentShopkeeper.shopInventory[i].name;// + "_Button";
+                item.name = gameControl.CurrentShopkeeper.shopInventory[i].name;
                 item.transform.SetParent(listParent.transform);
                 item.GetComponent<RectTransform>().localPosition = new Vector2(0, i * buttonDistance);
                 item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
 
                 var button = item.GetComponentInChildren<Button>();
-                //var itemInfo = ItemDatabase.GetItem(currentShopkeeper.shopInventory[i].type, item.name); //??
                 var itemInfo = ScriptableObject.Instantiate(gameControl.CurrentShopkeeper.shopInventory[i]);                
 
                 button.GetComponentInChildren<Text>().text = gameControl.CurrentShopkeeper.shopInventory[i].name;                
@@ -111,7 +106,6 @@
             base.Close();
 
             gameControl.CurrentShopkeeper.StartDialogue();
-            //currentShopkeeper = null;
         }
 
         public override void TurnOnMenu()
@@ -127,12 +121,6 @@
 
             base.TurnOnMenu();
         }
-
-        //public void FillSlots(ShopKeeperDialogue shopkeeper)
-        //{
-        //    currentShopkeeper = shopkeeper;
-        //    Refresh();
-        //}
 
         private void OnSelect()
         {
@@ -268,16 +256,6 @@
             var contentTransform = buttonObj.GetComponent<RectTransform>();
             contentTransform.GetWorldCorners(objectCorners);
 
-            //// if any corner of the object is on screen, break out of the method
-            //foreach (Vector3 corner in objectCorners)
-            //{
-            //    if (itemSlotsWorld.Contains(corner))
-            //        return false;
-            //}
-
-            //return true;
-
-            // WRONG -- It should be, if any corner is off screen, return true
             foreach(Vector3 corner in objectCorners)
             {
                 if (!itemSlotsWorld.Contains(corner))

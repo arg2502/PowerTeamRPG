@@ -31,7 +31,6 @@
 
         void SetCanvas()
         {
-            //canvas = GameObject.FindObjectOfType<Canvas>(); // this should probably be set in scene or another way. What if we can multiple canvases for some reason?
             var canvasObj = GameObject.FindGameObjectWithTag("MainCanvas");
             if (canvasObj == null)
                 Debug.LogError("Canvas not found. Did you add the 'MainCanvas' tag to the Canvas obj?");
@@ -81,7 +80,6 @@
             // freeze player if first menu
             if (GameControl.control.currentCharacterState != characterControl.CharacterState.Menu)
             {
-                //GameControl.control.IsInMenu = true;
                 GameControl.control.PrevState = GameControl.control.currentCharacterState;
                 if (GameControl.control.currentCharacterState != characterControl.CharacterState.Battle)
                     GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
@@ -105,11 +103,8 @@
                 && dictionary_existingMenus[menuToEnable] != null)
             {
                 menuObj = dictionary_existingMenus[menuToEnable];
-                //menuObj.GetComponent<Menu>().Init();
                 if (sub) AssignSubPosition(menuObj);
                 list_currentMenus.Add(menuObj);
-
-                //menuObj.GetComponent<Menu>().TurnOnMenu();
             }
             // if we don't already have one, create it
             else
@@ -121,17 +116,10 @@
                 menuObj.transform.localPosition = Vector3.zero;
                 if (sub) AssignSubPosition(menuObj);
 
-                // add to dictionary if not already there
-                // if key exists, assign the newly created menu to the dictionary
-                // a little hacky, but oh well...it fixes the issue of menus not existing when you return to the scene
-                //if (!dictionary_existingMenus.ContainsKey(menuToEnable))
-                    dictionary_existingMenus.Add(menuToEnable, menuObj);
-               // else
-                    //dictionary_existingMenus[menuToEnable] = menuObj;
 
+                dictionary_existingMenus.Add(menuToEnable, menuObj);
+               
                 list_currentMenus.Add(menuObj);
-
-                //menuObj.GetComponent<Menu>().Init();
             }
             // set this menu as the one in focus (currently on)
             menuInFocus = menuObj;
@@ -159,7 +147,6 @@
             menuInFocus = null;
             
             // set back to previous state
-            //GameControl.control.IsInMenu = false;
             GameControl.control.WaitAFrameAndSetCharacterState(GameControl.control.PrevState);
         }
 
@@ -170,17 +157,9 @@
         public void PushMenu(GameObject menuPrefab, Menu parentMenu = null)
         {
             if (parentMenu)
-            {
                 parentMenu.RootButton = EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.Button>();
-                //parentMenu.ToggleButtonState(false);
-                //EnableMenu(menuPrefab);
+                
                 ActivateMenu(menuPrefab);
-            }
-            else
-            {
-                //EnableMenu(menuPrefab);
-                ActivateMenu(menuPrefab);
-            }
         }
         public void PopMenu()
         {
@@ -204,7 +183,6 @@
                 menu = menuInFocus.GetComponent<Menu>();
                 menu.gameObject.SetActive(true);
                 menu.SetSelectedObjectToRoot();
-                //menu.ToggleButtonState(true);
                 menu.Refocus();
             }
             // otherwise, clear the stack
@@ -222,7 +200,6 @@
             var rootButtonPos = parentMenu.RootButton.transform.position;
             var buttonWidth = parentMenu.RootButton.GetComponent<RectTransform>().rect.width;
             menuObj.transform.position = new Vector3(rootButtonPos.x + buttonWidth, rootButtonPos.y);
-
         }
 
         public void PushConfirmationMenu(string messageText, Action yesAction, Action noAction = null)
@@ -233,7 +210,6 @@
             confirmMenu.yesAction = yesAction;
             confirmMenu.noAction = noAction;
             confirmMenu.Refresh(); // refresh listeners
-            //InitMenu(confirmMenu);
             confirmMenu.Init();
         }
 

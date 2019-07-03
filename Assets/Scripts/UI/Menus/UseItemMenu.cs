@@ -112,39 +112,6 @@
 				print("No item named " + item.name + " of type " + item.type + " exists.");
 			}
 
-//            // status
-//            descriptionText.text += "\n\nStatus: " + currentHero.statusState;
-//
-//            //if (!string.IsNullOrEmpty(item.statusChange))
-//            //    descriptionText.text += " " + item.statusChange;
-//            
-//            descriptionText.text += "\nHP: " + currentHero.hp + " / " + currentHero.hpMax;
-//            //CheckIfChange(currentHero.hp, currentHero.hpMax, item.hpChange, item.hpMaxChange);
-//            
-//            descriptionText.text += "\nPM: " + currentHero.pm + " / " + currentHero.pmMax;
-//            //CheckIfChange(currentHero.pm, currentHero.pmMax, item.pmChange, item.pmMaxChange);
-//
-//            descriptionText.text += "\nAtk: " + currentHero.atk;
-//            //CheckIfChange(currentHero.atk, item.atkChange);
-//
-//            descriptionText.text += "\nDef: " + currentHero.def;
-//            //CheckIfChange(currentHero.def, item.defChange);
-//
-//            descriptionText.text += "\nMgk Atk: " + currentHero.mgkAtk;
-//            //CheckIfChange(currentHero.mgkAtk, item.mgkAtkChange);
-//
-//            descriptionText.text += "\nMgk Def: " + currentHero.mgkDef;
-//            //CheckIfChange(currentHero.mgkDef, item.mgkDefChange);
-//
-//            descriptionText.text += "\nLuck: " + currentHero.luck;
-//            //CheckIfChange(currentHero.luck, item.luckChange);
-//
-//            descriptionText.text += "\nEvasion: " + currentHero.evasion;
-//            //CheckIfChange(currentHero.evasion, item.evadeChange);
-//
-//            descriptionText.text += "\nSpeed: " + currentHero.spd;
-//            //CheckIfChange(currentHero.spd, item.spdChange);
-
         }
 
 		void GenerateStatDescription(DenigenData currentHero, ScriptableItem _item){
@@ -164,7 +131,6 @@
 			}
 			
 			descriptionText.text += "\nAtk: " + currentHero.atk;
-			//CheckIfChange(currentHero.atk, item.atkChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "ATK"){
 					CheckIfChange(currentHero.atk, b.boost);
@@ -172,7 +138,6 @@
 			}
 			
 			descriptionText.text += "\nDef: " + currentHero.def;
-			//CheckIfChange(currentHero.def, item.defChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "DEF"){
 					CheckIfChange(currentHero.def, b.boost);
@@ -180,7 +145,6 @@
 			}
 			
 			descriptionText.text += "\nMgk Atk: " + currentHero.mgkAtk;
-			//CheckIfChange(currentHero.mgkAtk, item.mgkAtkChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "MGKATK"){
 					CheckIfChange(currentHero.mgkAtk, b.boost);
@@ -188,7 +152,6 @@
 			}
 			
 			descriptionText.text += "\nMgk Def: " + currentHero.mgkDef;
-			//CheckIfChange(currentHero.mgkDef, item.mgkDefChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "MGKDEF"){
 					CheckIfChange(currentHero.mgkDef, b.boost);
@@ -196,7 +159,6 @@
 			}
 			
 			descriptionText.text += "\nLuck: " + currentHero.luck;
-			//CheckIfChange(currentHero.luck, item.luckChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "LUCK"){
 					CheckIfChange(currentHero.luck, b.boost);
@@ -204,7 +166,6 @@
 			}
 			
 			descriptionText.text += "\nEvasion: " + currentHero.evasion;
-			//CheckIfChange(currentHero.evasion, item.evadeChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "EVASION"){
 					CheckIfChange(currentHero.evasion, b.boost);
@@ -212,7 +173,6 @@
 			}
 			
 			descriptionText.text += "\nSpeed: " + currentHero.spd;
-			//CheckIfChange(currentHero.spd, item.spdChange);
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "SPD"){
 					CheckIfChange(currentHero.spd, b.boost);
@@ -287,90 +247,7 @@
                 }
             }
         }
-
-        public void CheckIfHeroesAreElligible()
-        {
-            foreach (var hero in gameControl.heroList)
-            {
-//                if (menuState == MenuState.Equip)
-//                {
-//                    if (item.GetComponent<WeaponItem>()
-//                        && hero.weapon != null
-//                       && item == hero.weapon.GetComponent<WeaponItem>())
-//                        ToggleHero(hero, false);
-//
-//                    else if (item.GetComponent<ArmorItem>()
-//                        && hero.EquipmentContainsItem(item))
-//                        ToggleHero(hero, false);
-//
-//                    else
-//                        ToggleHero(hero, true);
-//                }
-//                else if (menuState == MenuState.Remove)
-//                {
-//                    if (item.GetComponent<WeaponItem>()
-//                        && hero.weapon != null
-//                       && item == hero.weapon.GetComponent<WeaponItem>())
-//                        ToggleHero(hero, true);
-//
-//                    else if (item.GetComponent<ArmorItem>()
-//                        && hero.EquipmentContainsItem(item))
-//                        ToggleHero(hero, true);
-//
-//                    else
-//                        ToggleHero(hero, false);
-//                }
-
-				//change this later to reflect the removal of gameobject type items
-				if (menuState == MenuState.Equip)
-				{
-//					if (item.type == "weapon"
-//					    && hero.weapon != null
-//					    && item == hero.weapon.GetComponent<WeaponItem>())
-//						ToggleHero(hero, false);
-//					
-//					else if (item.type == "armor"
-//					         && hero.EquipmentContainsItem(item))
-//						ToggleHero(hero, false);
-//					
-//					else
-//						ToggleHero(hero, true);
-				}
-				else if (menuState == MenuState.Remove)
-				{
-//					if (item.type == "weapon"
-//					    && hero.weapon != null
-//					    && item == hero.weapon.GetComponent<WeaponItem>())
-//						ToggleHero(hero, true);
-//					
-//					else if (item.type == "armor"
-//					         && hero.EquipmentContainsItem(item))
-//						ToggleHero(hero, true);
-//					
-//					else
-//						ToggleHero(hero, false);
-				}
-                
-            }
-        }
-        void ToggleHero(DenigenData hero, bool state)
-        {
-            if (hero == gameControl.heroList[0])
-                ToggleButton(jethro, state);
-            else if (hero == gameControl.heroList[1])
-                ToggleButton(cole, state);
-            else if (hero == gameControl.heroList[2])
-                ToggleButton(eleanor, state);
-            else if (hero == gameControl.heroList[3])
-                ToggleButton(juliette, state);
-            else
-                Debug.LogError("Hero: " + hero.denigenName + ", does not exist");
-        }
-        void ToggleButton(Button button, bool state)
-        {
-            button.interactable = state;
-        }
-
+               
         // button functions
         void OnJethro() { UseItem(gameControl.heroList[0]); }
         void OnCole() { UseItem(gameControl.heroList[1]); }
@@ -414,7 +291,6 @@
         public void Setup()
         {
             AssignTitleText();
-            CheckIfHeroesAreElligible();
             SetButtonNavigation();
             RootButton = AssignRootButton();
             SetSelectedObjectToRoot();

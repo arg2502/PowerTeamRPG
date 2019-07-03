@@ -71,8 +71,6 @@ public class enemyControl : MovableOverworldObject {
 		// set enabled state if you battled and close to it
 		// mainly for coming out of pause sub menus
 		if (beenBattled && dist <= safeDistance + 1.5f) {
-            //sr.enabled = false;
-            //enabled = false;
             gameObject.SetActive(false);
 		} 
 
@@ -82,8 +80,6 @@ public class enemyControl : MovableOverworldObject {
 			if (dist <= safeDistance + 1.5f) {
 				// if the enemy has been arbitrarily place, destroy it
 				if (beenPlaced) {
-                    //sr.enabled = false;
-                    //enabled = false;
                     gameObject.SetActive(false);
 				}
 				// if it's a random enemy, push it somewhere else
@@ -106,11 +102,11 @@ public class enemyControl : MovableOverworldObject {
 					if (rh.collider != null) {
 						OverworldObject owo = rh.collider.GetComponent<OverworldObject> ();
 						int loopCounter = 0; // keep track of the number of loops
-						while ((raycastHits [0].collider != null//owo.GetComponent<Collider2D>()
-						                     || raycastHits [1].collider != null)//owo.GetComponent<Collider2D>()) 
+						while ((raycastHits [0].collider != null
+						                     || raycastHits [1].collider != null) 
 						                     || (dist <= safeDistance + 1.5f)) {
 							transform.position = new Vector2 (Random.Range (-15.0f, 15.0f), Random.Range (-15.0f, 15.0f));
-							//print ("hit");
+						
 							dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
 							+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
 
@@ -286,10 +282,9 @@ public class enemyControl : MovableOverworldObject {
             //save the current room, to acheive persistency while paused
             GameControl.control.RecordRoom();
 
-            //GameControl.audioManager.StartMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
             GameControl.audioManager.PauseCurrentAndStartNewMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
 
-            //UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene"); // load the battle scene
+            // load the battle scene
             GameControl.control.LoadSceneAsync("BattleScene");
         }
     }

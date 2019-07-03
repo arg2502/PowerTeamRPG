@@ -22,7 +22,6 @@
         GameObject currentObj;
         int outerListPosition;
         int innerListPosition;
-        //internal Item chosenItem;
 		internal InventoryItem chosenItem;
         internal string currentDescription;
 
@@ -77,12 +76,7 @@
 
             // create grid with 4 lists --- for the 4 categories of the inventory
             buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
-
-//            FillList(gameControl.consumables, 0);
-//            FillList(gameControl.weapons, 1);
-//            FillList(gameControl.equipment, 2);
-//            FillList(gameControl.reusables, 3);
-
+            
 			FillList(gameControl.consumables, "Consumable", 0);
 			FillList(gameControl.weapons, "Weapon", 1);
 			FillList(gameControl.equipment, "Armor", 2);
@@ -92,35 +86,12 @@
             gameControl.itemAdded = false; // reset flag to false
         }
 
-        //void FillList(List<GameObject> category, int listPosition)
 		void FillList(List<InventoryItem> category, string _type, int listPosition)
         {
             for (int i = 0; i < category.Count; i++)
             {
-//                var item = Instantiate(itemPrefab);
-//                item.name = category[i].GetComponent<Item>().name + "_Button";
-//                item.transform.SetParent(itemSlotsContainer.transform);
-//                item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
-//                item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
-//
-//                var button = item.GetComponentInChildren<Button>();
-//                var itemInfo = category[i].GetComponent<Item>();
-//                button.GetComponentInChildren<Text>().text = itemInfo.name;
-//                buttonGrid[listPosition].Add(button);
-//
-//                // description
-//                item.GetComponentInChildren<Description>().description = "<b>" + itemInfo.name + "</b>\n\n" + itemInfo.description;
-//
-//                var itemSlot = item.GetComponent<ItemSlot>();
-//
-//                // set item to item slot so it's connected to the button
-//                itemSlot.SetItem(itemInfo);
-//
-//                // add listener
-//                button.onClick.AddListener(OnSelect);
-
 				var item = Instantiate(itemPrefab);
-                item.name = category[i].name;// + "_Button";
+                item.name = category[i].name;
 				item.transform.SetParent(itemSlotsContainer.transform);
 				item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
 				item.GetComponent<RectTransform>().localScale = Vector3.one; // reset scale to match with parent
@@ -149,7 +120,7 @@
 
         public override Button AssignRootButton()
         {
-            outerListPosition = (int)gameControl.whichInventoryEnum;//0; // TEMP
+            outerListPosition = (int)gameControl.whichInventoryEnum;
             ToggleTextChange();
 
             var buttonObj = buttonGrid[outerListPosition][innerListPosition];
@@ -162,7 +133,6 @@
 
             currentDescription = descriptionText.text;
 
-            //Debug.Log("Inventory menu: assign root: " + currentListPosition);
             return buttonGrid[outerListPosition][innerListPosition];
 
         }
@@ -227,17 +197,6 @@
             var contentTransform = buttonObj.GetComponent<RectTransform>();
             contentTransform.GetWorldCorners(objectCorners);
 
-
-            //// if any corner of the object is on screen, break out of the method
-            //foreach (Vector3 corner in objectCorners)
-            //{
-            //    if (itemSlotsWorld.Contains(corner))
-            //        return false;
-            //}
-
-            //return true;
-
-            // WRONG -- It should be, if any corner is off screen, return true
             foreach (Vector3 corner in objectCorners)
             {
                 if (!itemSlotsWorld.Contains(corner))
@@ -274,8 +233,6 @@
 
         void OutsideOfView(GameObject buttonObj)
         {
-            //Debug.Log("outside");
-
             // if we reach this point, that means we are off screen
             // bring it on screen
             // find the button
@@ -292,8 +249,7 @@
 
             // if below screen, set the button above it as the desired position
             Vector3 desiredPosition = buttonObj.transform.position;
-            // bool belowScreen = false;
-
+            
             // vertical movement
             if (objectCorners[0].y < itemSlotsWorld.yMin)
             {
@@ -413,7 +369,6 @@
         {
             // set description text if applicable
             // (invisible buttons do not have descriptions)
-
             var descriptionObj = currentObj.GetComponentInParent<Description>();
             if (descriptionObj != null)
                 descriptionText.text = descriptionObj.description;
@@ -430,19 +385,6 @@
 
             // open the ConfirmUse menu
             uiManager.PushMenu(uiDatabase.ConfirmUseMenu);
-
-            //var count = uiManager.list_currentMenus.Count;
-            //var confirmUse = uiManager.list_currentMenus[count - 1].GetComponent<ConfirmUseMenu>();
-            //confirmUse.item = chosenItem;
-            //confirmUse.descriptionText = descriptionText;
-            //uiManager.PushMenu(uiDatabase.UseItemMenu);
-
-            //// set the Item Use menu's item to the one chosen
-            //var count = uiManager.list_currentMenus.Count;
-            //var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
-            //useItem.item = chosenItem;
-            //useItem.descriptionText = descriptionText;
-            //useItem.icon.sprite = chosenItem.sprite;
         }
 
         void UpdateItemQuantity()
@@ -525,8 +467,7 @@
             SetDescription();
 
             if (CheckIfOffScreen(currentObj))
-                OutsideOfView(currentObj);
-            
+                OutsideOfView(currentObj);            
         }
     }
 }

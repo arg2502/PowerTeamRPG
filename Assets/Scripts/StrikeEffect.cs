@@ -11,8 +11,6 @@ public class StrikeEffect : MonoBehaviour {
 
     IEnumerator PlayClipAndDisable()
     {
-        //GetComponent<SpriteRenderer>().sortingOrder = -1100;
-
         var anim = GetComponent<Animator>();
         anim.Play("StrikeEffect", -1, 0f);
         var length = anim.GetCurrentAnimatorStateInfo(0).length;

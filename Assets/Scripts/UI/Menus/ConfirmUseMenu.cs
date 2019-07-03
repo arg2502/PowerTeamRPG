@@ -8,7 +8,6 @@
     public class ConfirmUseMenu : Menu
     {
         public Button topButton, middleButton, bottomButton;
-        //internal Item item;
 		internal InventoryItem item;
         InventoryMenu inventory;
         
@@ -17,10 +16,7 @@
             // assign inventory
             var list = uiManager.list_currentMenus;
             var count = list.Count;
-            //inventory = list[count - 2].GetComponent<InventoryMenu>();
-            //var menuObj = uiDatabase.InventoryMenu;
-            //var menu = menuObj.GetComponent<InventoryMenu>();
-            inventory = uiManager.FindMenu(uiDatabase.InventoryMenu) as InventoryMenu;//uiManager.dictionary_existingMenus[menu].GetComponent<InventoryMenu>();
+            inventory = uiManager.FindMenu(uiDatabase.InventoryMenu) as InventoryMenu;
 
             // assign variables from inventory
             this.descriptionText = inventory.descriptionText;
@@ -56,7 +52,6 @@
         }
         
         // class specific functions
-
         void AssignBasedOnCategory()
         {
             Debug.Log("which inventory: " + (int)gameControl.whichInventoryEnum);
@@ -67,7 +62,7 @@
                     AssignConsumables();
                     break;
 
-                    // weapons/augmentations
+                // weapons/augmentations
                 case 1:
                 case 2:
                     AssignWeaponOrEquipment();
@@ -186,7 +181,6 @@
             var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
             useItem.item = item;
             useItem.descriptionText = descriptionText;
-            //useItem.icon.sprite = item.sprite;
 			useItem.icon.sprite = ItemDatabase.GetItemSprite(item.name);
             useItem.itemName.text = item.name;
             useItem.menuState = menuState;
@@ -231,43 +225,5 @@
                 button.onClick.RemoveAllListeners();
             }
         }
-
-        /// <summary>
-        /// Search through heroes to see if every hero has a certain item equipped
-        /// </summary>
-        /// <param name="checkItem"></param>
-        /// <returns></returns>
-        //bool DoAllHeroesHaveItem(Item checkItem)
-        //{
-        //    var counter = 0;
-        //    foreach(var hero in gameControl.heroList)
-        //    {
-        //        if(hero.weapon != null && hero.weapon.GetComponent<Item>() == checkItem)
-        //        {
-        //            counter++;
-        //            continue;
-        //        }
-        //        else
-        //        {
-        //            var flag = false;
-        //            foreach(var equip in hero.equipment)
-        //            {
-        //                if(equip.GetComponent<Item>() == checkItem)
-        //                {
-        //                    counter++;
-        //                    flag = true;
-        //                    break;
-        //                }
-        //            }
-        //            if (flag) continue;
-        //        }
-        //    }
-
-        //    if (counter >= gameControl.heroList.Count)
-        //        return true;
-        //    else
-        //        return false;
-
-        //}
     }
 }

@@ -6,8 +6,6 @@ public class FloorSwitch : OverworldObject {
 
     public List<Lock> listOfLocks;
 
-    //public enum WeightNeeded { NORMAL, LIGHT, HEAVY, CUSTOM }
-    //public WeightNeeded weightNeeded;
     public float customWeightNeeded = 0f;
     private float objectWeightNeeded;
     private float totalWeight = 0f;

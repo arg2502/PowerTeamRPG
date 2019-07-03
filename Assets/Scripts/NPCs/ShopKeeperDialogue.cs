@@ -19,7 +19,6 @@ public class ShopKeeperDialogue : NPCDialogue {
     float defaultSpecialized = 0.9f;
     float defaultOthers = 0.6f;
     
-    //public bool useDefault;
     bool useDefault = true;
     bool useCustom;
     
@@ -73,8 +72,6 @@ public class ShopKeeperDialogue : NPCDialogue {
     public void Buy()
     {
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu);
-        //var buyMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu).GetComponent<UI.ShopkeeperBuyMenu>();
-        //buyMenu.FillSlots(this);
     }
 
     /// <summary>
@@ -83,8 +80,6 @@ public class ShopKeeperDialogue : NPCDialogue {
     public void Sell()
     {
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
-        //var sellMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu).GetComponent<UI.ShopkeeperSellMenu>();
-        //sellMenu.AssignShopkeeper(this);
     }
 
     public int GetItemPrice(InventoryItem item)

@@ -36,7 +36,6 @@ public class Denigen : MonoBehaviour {
 
     // store damage variables
     int calculatedDamage;
-    //Denigen attacker;
     public int CalculatedDamage { get { return calculatedDamage; } set { calculatedDamage = value; } }
 
     internal int healHP;
@@ -77,7 +76,6 @@ public class Denigen : MonoBehaviour {
     protected bool usingItem;
     public bool UsingItem { get { return usingItem; } set { usingItem = value; } }
 
-    //public Denigen Attacker { get { return attacker; } }
     public enum AttackType { NORMAL, MISS, CRIT, BLOCKED, DODGED, FAILED};
     public AttackType attackType;
 
@@ -85,8 +83,6 @@ public class Denigen : MonoBehaviour {
     public string AttackAnimation { get { return attackAnimation; } }
 
     // Changes to stats
-    //public int HpChange { get { return hpChange; } set { hpChange = value; } } // HP & PM shouldn't ever temporarily change
-    //public int PmChange { get { return pmChange; } set { pmChange = value; } }
     public int HpMaxChange { get { return hpMaxChange; } set { hpMaxChange = value; } }
     public int PmMaxChange { get { return pmMaxChange; } set { pmMaxChange = value; } }
     public int AtkChange { get { return atkChange; } set { atkChange = value; } }
@@ -130,10 +126,6 @@ public class Denigen : MonoBehaviour {
     public List<Spell> SpellsList { get { return data.spellsList; } }
         
     public Sprite Portrait { get { return data.portrait; } }
-
-    // status effect
-    //public enum Status { normal, bleeding, infected, cursed, blinded, petrified, dead, overkill };
-    //private Status statusState;// = Status.normal;
 
     public DenigenData.Status StatusState { get { return data.statusState; } set { data.statusState = value; } }
     public DenigenData.Status NewStatus;
@@ -193,8 +185,6 @@ public class Denigen : MonoBehaviour {
 
     // reference to UI text
     public MiniHP hpBar;
-    //public struct StatsText { public Text NAME, HP, PM; }
-    //public StatsText statsText;
 
     public StatsCard statsCard;
 
@@ -252,7 +242,6 @@ public class Denigen : MonoBehaviour {
 
         // always called at the end of specific denigens' Attack()s
         // Signals the end of their attack phase
-        //battleManager.NextAttack();
         StartCoroutine(battleManager.ShowAttack(this, targets));
         
     }
@@ -283,13 +272,11 @@ public class Denigen : MonoBehaviour {
             var halfAccuracy = accuracy * 0.5f;
             accuracy -= halfAccuracy;
         }
-        //print("accuracy: " + accuracy);
         // if attack misses, exit early
         float num = Random.Range(0.0f, 1.0f);
         if (num > accuracy)
         {
             calcDamageText.Add("The attack misses...");
-            print(name + " MISSES");
             attackType = AttackType.MISS;
             return 0.0f;
         }
@@ -297,14 +284,12 @@ public class Denigen : MonoBehaviour {
         // if its a magic attack, use magic variables
         if (isMagic)
         {
-            //atkStat = MgkAtk;
 			//add the stat change to make sure in-battle stat boosts are applied
 			atkStat = MgkAtk + mgkAtkChange;
         }
         // if not magic, use physical variables
         else
         {
-            //atkStat = Atk;
 			//add the stat change to make sure in-battle stat boosts are applied
 			atkStat = Atk + atkChange;
         }
@@ -317,7 +302,6 @@ public class Denigen : MonoBehaviour {
 
         // use luck to increase crit chance
 		//Add the luck change stat as well to make sure in-battle luck boosts are applied
-        //float chance = Mathf.Pow(Luck, 2.0f / 3.0f); // luck ^ 2/3
 		float chance = Mathf.Pow((Luck + luckChange), 2.0f / 3.0f); // luck ^ 2/3
         chance /= 100f; // make percentage
 
@@ -362,7 +346,6 @@ public class Denigen : MonoBehaviour {
         if (randomDodge <= chance)
         {
             calculatedDamage = 0;
-            print("DODGED");
             attackingDen.attackType = AttackType.DODGED;
             return;
         }
@@ -372,13 +355,11 @@ public class Denigen : MonoBehaviour {
         if (isMagic)
         {
 			//add the change stat to account for in-battle stat changes
-            //defStat = MgkDef;
 			defStat = MgkDef + mgkDefChange;
         }
         else
         {
 			//add the change stat to account for in-battle stat changes
-            //defStat = Def;
 			defStat = Def + defChange;
         }
 
@@ -393,7 +374,6 @@ public class Denigen : MonoBehaviour {
         {
             damage = damage / 2.0f;
             takeDamageText.Add(name + " blocks the attack!");
-            print(name + " blocks the attack!");
             attackingDen.attackType = AttackType.BLOCKED;
         }
 
@@ -455,20 +435,6 @@ public class Denigen : MonoBehaviour {
 	// Update is called once per frame
 	protected void Update () {
         spriteHolder.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
-
-        if (this.Hp <= 0 && !this.IsDead)
-            print(name + " IS DEAD");
-        //fade away if fallen
-        //if (statusState == Status.dead || statusState == Status.overkill)
-        //{
-        //    if (sr.color.a > 0 && !GameControl.control.isDying)
-        //        GameControl.control.isDying = true;
-
-        //    sr.color -= fade * Time.deltaTime;
-
-        //    if (sr.color.a <= 0 && GameControl.control.isDying)
-        //        GameControl.control.isDying = false;
-        //}
 	}
     
     public IEnumerator PlayAttackAnimation()
@@ -485,18 +451,11 @@ public class Denigen : MonoBehaviour {
 
         // set sprite back to original order
         GetComponentInChildren<SpriteRenderer>().sortingLayerName = originalSort;
-
-        //anim.Play("Idle", -1, 0f);
-
-        //yield return new WaitForSeconds(0.5f);
-        //yield return null;
     }
 
     public IEnumerator PlayBlockAnimation()
     {
-        //print("start block " + DenigenName + " : " + Time.time);
         yield return PlayAnimation("Block");
-        //print("after block: " + Time.time);
     }
 
     public IEnumerator PlayFlinchAnimation()
@@ -673,7 +632,6 @@ public class Denigen : MonoBehaviour {
         // not sure if these types of attack will have accuracy or not
         // could always be added later
         targets[0].calculatedDamage = 0;
-        //targets[0].SetStatus(status);
         targets[0].MarkAsStatusChanged(status);
     }
 
@@ -685,7 +643,6 @@ public class Denigen : MonoBehaviour {
             return;
         target.calculatedDamage = 0;
 		target.HealedStatusEffect = target.StatusState;
-        //target.SetStatus(DenigenData.Status.normal);
         target.MarkAsStatusChanged(DenigenData.Status.normal);
     }
     
@@ -737,8 +694,6 @@ public class Denigen : MonoBehaviour {
         }
 
         StatusState = newStatus;
-
-        //ShowIcon();
     }
 
     public void UpdateIcon()
@@ -791,15 +746,11 @@ public class Denigen : MonoBehaviour {
         // set stats back to normal
         if(StatusState == DenigenData.Status.blinded)
         {
-            print("evasion before: " + Evasion);
             blindedChange = 0;
-            print("evasion after: " + Evasion);
         }
         else if (StatusState == DenigenData.Status.petrified)
         {
-            print("evasion before: " + Evasion);
             petrifiedChange = 0;
-            print("evasion after: " + Evasion);
         }
     }    
     public void StartBleeding()
@@ -815,10 +766,8 @@ public class Denigen : MonoBehaviour {
             StartNormal();
 
             // drastically reduce evasiveness
-            print("evasion before: " + Evasion);
             var halfEvasion = Evasion * 0.5f;
             blindedChange -= (int)halfEvasion;
-            print("evasion after: " + Evasion);
         }
     }
 
@@ -830,10 +779,8 @@ public class Denigen : MonoBehaviour {
             StartNormal();
 
             // slightly reduce evasiveness
-            print("evasion before: " + Evasion);
             var partialEvasion = Evasion * 0.15f;
             petrifiedChange -= (int)partialEvasion;
-            print("evasion after: " + Evasion);
 
             // stop attack
             CurrentAttackName = "Petrified";
@@ -843,11 +790,9 @@ public class Denigen : MonoBehaviour {
 
     void IsBleeding()
     {
-        print("inside IsBleeding()");
         if (bleedTurn <= maxBleedTurn)
         {
             statusDamage = bleedDamage * bleedTurn;
-            print("reduce " + DenigenName + " HP by " + statusDamage);
             Hp -= statusDamage;
             bleedTurn++;
         }

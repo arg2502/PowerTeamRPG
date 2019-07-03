@@ -11,7 +11,6 @@ public class BattleManager : MonoBehaviour {
 
     public GameObject battlePlatform;
     public List<Denigen> denigenList = new List<Denigen>();
-    //List<Denigen> availableDenigens = new List<Denigen>();
     public List<Hero> heroList = new List<Hero>();
     public List<Enemy> enemyList = new List<Enemy>();
 
@@ -27,9 +26,7 @@ public class BattleManager : MonoBehaviour {
     List<Vector3> heroStartingPositions;
     List<Vector3> enemyStartingPositions;
 
-    StatsCardManager statsCardManager;    
-    //public List<StatsCard> heroStatsList;
-    //public List<StatsCard> enemyStatsList;
+    StatsCardManager statsCardManager;
 
     const int MAX_HEROES = 4;
     const int MAX_ENEMIES = 5;
@@ -75,7 +72,6 @@ public class BattleManager : MonoBehaviour {
 
     public TargetType targetState;
 
-    //public BattleUI battleUI;
     bool fleeFailed = false;
     string fleeFailedDenigen = "";
     public BattleCamera battleCamera;
@@ -118,43 +114,25 @@ public class BattleManager : MonoBehaviour {
         CreateBattleMenu();
         SortBySpeed();
         currentDenigen = 0;
-        //NextTurn();
         StartCoroutine(StartBattle());
-        //FindNextAlive();
-        //ChangeBattleState(BattleState.TARGET);
-        
-        //SortBySpeed();
-        //ShowCurrentFullCard();
-        //foreach(var d in denigenList)
-        //{
-        //    print(d.DenigenName + ": " + d.Hp);
-        //}
     }
 
     void CreateBattleMenu()
     {
         uiManager = GameControl.UIManager;
         var battleMenuObj = uiManager.uiDatabase.BattleMenu;
-        //uiManager.PushMenu(battleMenuObj);
         battleMenu = uiManager.FindMenu(battleMenuObj) as UI.BattleMenu;
     }
     void AddHeroes()
     {
         // set hero positions
-        heroStartingPositions = new List<Vector3>();// { jethroStart, coleStart, eleanorStart, joulietteStart };
+        heroStartingPositions = new List<Vector3>();
         foreach (var go in heroPositions)
         {
             heroStartingPositions.Add(go.transform.localPosition);
             go.GetComponent<SpriteRenderer>().enabled = false; // turn off placeholder renderer
         }
 
-        // create the heroes that we currently have in our party
-        //foreach (var hero in GameControl.control.heroList)
-        //{
-        //    CreateHero(hero.denigenName, hero.identity);
-        //}
-
-        
         // TEST ONLY CERTAIN HEROES
         for(int i = 0; i < 4; i++)
         {
@@ -179,10 +157,6 @@ public class BattleManager : MonoBehaviour {
 
         var pos = heroStartingPositions[index];
         pos.y = 0;
-        //pos.y = battlePlatform.transform.position.y;
-        //var halfHeight = hero.spriteHolder.GetComponent<SpriteRenderer>().sprite.bounds.extents.y;
-        //print("half: " + halfHeight);
-        //pos.y += halfHeight;
         hero.transform.position = pos;
 
         denigenList.Add(hero);
@@ -213,7 +187,6 @@ public class BattleManager : MonoBehaviour {
         // FOR TESTING -- Or for whatever reason the enemies list is empty
         if (GameControl.control.enemies.Count <= 0)
         {
-            //int numOfGoikkos = 3;
             for (int i = 0; i < TEST_numOfEnemies; i++)
             {
                 var random = Random.Range(0, TEST_listOfEnemies.Count);
@@ -293,7 +266,7 @@ public class BattleManager : MonoBehaviour {
     {
         foreach (var denigen in denigenList)
         {
-            var hpBar = GameObject.Instantiate(hpBarPrefab, denigen.transform);//FindObjectOfType<Canvas>().transform);            
+            var hpBar = GameObject.Instantiate(hpBarPrefab, denigen.transform);
             hpBar.GetComponent<MiniHP>().Init(denigen);
         }
     }
@@ -375,7 +348,7 @@ public class BattleManager : MonoBehaviour {
                     if (denigenList[i].IsDead)
                         turnOrder[j].Disable();
                     else
-                        turnOrder[j].SetAsFirst();
+                        turnOrder[j].SetAsLast();
 
                 }
 
@@ -413,14 +386,6 @@ public class BattleManager : MonoBehaviour {
             heroSlot.ArrowHighlight(highlight);
     }
 
-    public void HighlightStarburstTurnOrder(Denigen currentTarget, bool highlight)
-    {
-        //var targetSlot = GetTurnOrderUI(currentTarget);
-
-        //if (targetSlot != null)
-        //    targetSlot.StarburstHighlight(highlight);
-    }
-
     public void TurnOffAllHighlightStarburstTurnOrder()
     {
         foreach(var t in turnOrder)
@@ -428,19 +393,9 @@ public class BattleManager : MonoBehaviour {
             t.StarburstHighlight(false);
         }
     }
-
-    void PrintHeroes()
-    {
-        foreach(var denigen in denigenList)
-        {
-            print("object: " + denigen.name);
-            print("speed: " + denigen.Data.spd);
-        }
-    }
-    
+        
     void ShowBattleMenu()
     {
-        //DescriptionText.text = "";
         uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
     }
 
@@ -459,9 +414,6 @@ public class BattleManager : MonoBehaviour {
         // set the new battle state
         battleState = state;
         
-        // reset current denigen to traverse through list during attacks
-        //currentDenigen = FindNextLivingIndex(0);
-
         // determine what happens now in this new state
         switch(battleState)
         {
@@ -504,8 +456,6 @@ public class BattleManager : MonoBehaviour {
         // otherwise, we're ready to actually start targeting
         ShowBattleMenu();
         ToggleDescription(true);
-        //SortBySpeed();
-        ShowCurrentFullCard();
 
         // disable all other arrows
         foreach (var d in denigenList)
@@ -518,28 +468,8 @@ public class BattleManager : MonoBehaviour {
 
     void StartAttackPhase()
     {
-        //ToggleDescription(false);
         statsCardManager.HideCards();
-
-        // have enemies decide their attack
-        //foreach (var enemy in enemyList)
-        //{
-        //    // standby -- waiting to be set (something so that it's not null
-        //    enemy.CurrentAttackName = "Standby";
-        //    //enemy.CurrentAttackName = enemy.ChooseAttack().Name;
-
-        //    //// check if the enemy has enough PM. If not, use the default attack
-        //    //if (enemy.NotEnoughPM())
-        //    //    enemy.CurrentAttackName = enemy.defaultAttack.Name;
-        //}
-
-        // resort in case there have been speed changes
-        //SortBySpeed();
-
-        // make sure the first denigen to attack is alive
-        //FindNextAlive();
         AttackDenigen();
-
     }
     
     IEnumerator StartBattle()
@@ -552,7 +482,7 @@ public class BattleManager : MonoBehaviour {
 
     void FindNextAlive()
     {
-        while (CurrentDenigen.IsDead || IsFleeFailed())// || string.IsNullOrEmpty(denigenList[currentDenigen].CurrentAttackName))
+        while (CurrentDenigen.IsDead || IsFleeFailed())
         {
             currentDenigen++;
             if (currentDenigen >= denigenList.Count)
@@ -584,12 +514,9 @@ public class BattleManager : MonoBehaviour {
         if (IsBattleOver)
             return;
 
-        //fleeFailed = false;
         SortBySpeed();
         currentDenigen = 0;
-        //NextTurn();
         FindNextAlive();
-        //ChangeBattleState(BattleState.TARGET);
     }
 
     bool IsFleeFailed()
@@ -623,10 +550,7 @@ public class BattleManager : MonoBehaviour {
     public void KillOff(Denigen deadDenigen)
     {        
         deadDenigen.Die();        
-
         RemoveFromTurnOrder(deadDenigen);
-        //availableDenigens.Remove(deadDenigen);
-
         CheckTheDead(deadDenigen);
     }
 
@@ -682,12 +606,9 @@ public class BattleManager : MonoBehaviour {
 
     public void DetermineTargetType(string attackName)
     {
-        //Hero hero = heroList[currentDenigen];
         var hero = CurrentHero;
-        //Debug.LogError("before: " + hero);
         hero.CurrentAttackName = attackName;
         hero.DecideTypeOfTarget();
-        //Debug.LogError("after: " + hero);
         targetState = hero.currentTargetType;
     }
     public bool IsTargetEnemy
@@ -708,11 +629,9 @@ public class BattleManager : MonoBehaviour {
     public void TargetDenigen(List<Denigen> targets)
     {        
         CurrentHero.SelectTarget(targets);
-        //print(CurrentHero.name + "'s target is " + CurrentHero.Targets[0].name);
 
         // disable all menus
         uiManager.DisableAllMenus();
-        ShowCurrentShortCard();
 
         // hide old's starburst
         HighlightArrowTurnOrder(CurrentHero, false);
@@ -722,14 +641,6 @@ public class BattleManager : MonoBehaviour {
             NextAttack();
         else
             GoToAttackState();
-        // make sure that the next denigen in the list is living
-        //currentDenigen = FindNextLivingIndex(currentDenigen + 1);
-
-        //NextTurn();
-        //if (nextDenigen < heroList.Count)
-        //    NextTarget(nextDenigen);
-        //else
-        //    GoToAttackState();
     }
 
     /// <summary>
@@ -740,7 +651,7 @@ public class BattleManager : MonoBehaviour {
     int FindNextLivingIndex(int startingIndex)
     {
         var nextDenigen = startingIndex;
-        while (nextDenigen < /*heroList*/denigenList.Count && /*heroList*/denigenList[nextDenigen].IsDead)
+        while (nextDenigen < denigenList.Count && denigenList[nextDenigen].IsDead)
             nextDenigen++;
 
         return nextDenigen;
@@ -752,7 +663,6 @@ public class BattleManager : MonoBehaviour {
         HighlightArrowTurnOrder(CurrentHero, false);
         
         currentDenigen = newIndex;
-        ShowCurrentFullCard();
 
         // show new's starburst
         HighlightArrowTurnOrder(CurrentHero, true);
@@ -782,10 +692,8 @@ public class BattleManager : MonoBehaviour {
     {
         // if the battle is over, break the cycle        
         if (IsBattleOver)
-        {
-            //EndBattle();
             return;
-        }
+        
 
         // hide current denigen's turn order UI to show their turn is over
         RemoveFromTurnOrder(denigenList[currentDenigen]);
@@ -852,23 +760,14 @@ public class BattleManager : MonoBehaviour {
             var bufferTime = 0.25f;
 
             yield return new WaitForSeconds(bufferTime);
-            //if (attacker is Hero)
-                //Debug.Break();
-                //Time.timeScale = 0.5f;
-            //anim.Play(attacker.AttackAnimation);
             yield return attacker.PlayAttackAnimation();
-            //yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + bufferTime);
             Time.timeScale = 1f;
         }
         else
         {
             yield return new WaitForSeconds(1f);
         }
-
-        // hide attacker's stats card
-        //if (attacker is Hero)
-        //    ToggleDenigenStatCard(attacker, false);
-
+        
         // we don't need to show any target info if there are no targets
         if (targeted.Count <= 0)
         {
@@ -909,22 +808,18 @@ public class BattleManager : MonoBehaviour {
                 target.Hp += target.healHP;
                 target.LimitHP();                
                 healedStatName = "HP";
-				//ShowHealing(target, healedStatValue);
 				ShowHealing(target, healedStatValue, healedStatName);
             }
 
-            //else if(target.healPM != 0)
 			if(target.healPM != 0)
             {
                 healedStatValue = target.HealedByPMValue();
                 target.Pm += target.healPM;
                 target.LimitPM();
                 healedStatName = "PM";
-				//ShowHealing(target, healedStatValue);
 				ShowHealing(target, healedStatValue, healedStatName);
             }
 
-            //ShowHealing(target, healedStatValue);
             var message = "";
 
             if (!string.IsNullOrEmpty(healedStatName))
@@ -934,8 +829,6 @@ public class BattleManager : MonoBehaviour {
 				//Status healing items? or statboosting items
 				var _item = ItemDatabase.GetItem("Consumable", attacker.CurrentAttackName) as ScriptableConsumable;
 				if(_item != null){
-//					if (_item.statusChange != ScriptableConsumable.Status.normal
-//					    &&(DenigenData.Status)_item.statusChange == target.HealedStatusEffect) {
 					// Check if this item heals status ailments
 					if (_item.statusChange != ScriptableConsumable.Status.normal){
 						//status healing
@@ -944,9 +837,7 @@ public class BattleManager : MonoBehaviour {
 							message = target.DenigenName + "'s " + target.HealedStatusEffect + " condition is cured!";
 							target.HealedStatusEffect = DenigenData.Status.normal;
                             target.SetStatus(DenigenData.Status.normal);
-                            ShowStatusEffect(target);
-                            
-							//ShowHealing(target, healedStatValue);
+                            ShowStatusEffect(target);                            
 						} else {
 							//the item does not heal the status ailment of the target
 							message = "The " + _item.name + " has no effect...";
@@ -995,7 +886,6 @@ public class BattleManager : MonoBehaviour {
 
             // alter hp based off of damage
             target.Hp -= target.CalculatedDamage;
-            //print("target calc: " + target.CalculatedDamage);
 
             // if we're healing, check to make sure we're not going over maxHp
             if (target.Hp > target.HpMax)
@@ -1099,7 +989,6 @@ public class BattleManager : MonoBehaviour {
         target.hpBar.UpdateHP();
 
         // check for dead
-        //print(target.DenigenName + " HP: " + target.Hp);
         if (target.Hp <= 0)
         {
             // check for overkill
@@ -1110,7 +999,6 @@ public class BattleManager : MonoBehaviour {
                 target.SetStatus(DenigenData.Status.dead);
 
             target.Hp = 0;
-            print(target.DenigenName + " falls!");
             messagesToDisplay.Add(target.DenigenName + " falls!");
             KillOff(target);
         }
@@ -1122,18 +1010,9 @@ public class BattleManager : MonoBehaviour {
     {
         GameObject be = (GameObject)Instantiate(Resources.Load("Prefabs/Effects/DamageEffect"), target.transform.position, Quaternion.identity);
         be.name = "DamageEffect";
-        //be.GetComponent<Effect>().Start();
         be.GetComponent<SpriteRenderer>().sprite = damageIcon;
         be.GetComponent<Effect>().damage = damage.ToString();
     }
-
-//    void ShowHealing(Denigen target, int heal)
-//    {
-//        GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/DamageEffect"), target.transform.position, Quaternion.identity);
-//        be.name = "HealEffect";
-//        be.GetComponent<SpriteRenderer>().sprite = healIcon;
-//        be.GetComponent<Effect>().damage = heal.ToString();
-//    }
 
 	void ShowHealing(Denigen target, int heal, string statName)
 	{
@@ -1151,7 +1030,6 @@ public class BattleManager : MonoBehaviour {
 	{
 		GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/DamageEffect"), target.transform.position, Quaternion.identity);
 		be.name = "StatBoostEffect";
-		//be.GetComponent<SpriteRenderer>().sprite = healIcon;
 		if (_boost >= 0) {
 			switch (_stat) {
 			case "ATK":
@@ -1275,15 +1153,13 @@ public class BattleManager : MonoBehaviour {
     /// </summary>
     void ResetDenigen(Denigen denigen)
     {
-        //foreach(var denigen in denigenList)
-        //{
-            // reset blocking
-            if (denigen.IsBlocking)
-                denigen.IsBlocking = false;
+        // reset blocking
+        if (denigen.IsBlocking)
+            denigen.IsBlocking = false;
 
-            denigen.CurrentAttackName = ""; // reset attack
-            denigen.CalculatedDamage = 0; // reset damage taken
-        //}
+        denigen.CurrentAttackName = ""; // reset attack
+        denigen.CalculatedDamage = 0; // reset damage taken
+        
     }
 
     public bool CalcFlee()
@@ -1314,7 +1190,6 @@ public class BattleManager : MonoBehaviour {
 
     public void FleeFailed()
     {
-        ShowAllShortCards();
         StartCoroutine(ShowFleeFailed());
     }
     IEnumerator ShowFleeFailed()
@@ -1333,9 +1208,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(1f);
-        //GoToAttackState();
         currentDenigen++;
-        //NextTurn();
         FindNextAlive();
     }
 
@@ -1357,25 +1230,7 @@ public class BattleManager : MonoBehaviour {
         uiManager.PushMenu(uiManager.uiDatabase.VictoryMenu);
         var victoryMenu = uiManager.CurrentMenu.GetComponent<VictoryMenu>();
         victoryMenu.AddGold(winnings);
-        victoryMenu.LevelUp(exp);
-        
-        //// add gold earnings
-        //DescriptionText.text = "You gain " + winnings + " gold.";
-        //GameControl.control.AddGold(winnings);
-        //yield return new WaitForSeconds(2f);
-
-        //// add exp
-        //DescriptionText.text = "Your team members gain " + exp + " exp.";
-
-        //foreach (var h in heroList)
-        //{
-        //    if (!h.IsDead)
-        //        h.AddExp(exp);
-        //}
-
-        //yield return new WaitForSeconds(2f);
-
-        //GameControl.control.ReturnFromBattle();
+        victoryMenu.LevelUp(exp);        
     }
 
     IEnumerator FailBattle()
@@ -1399,66 +1254,7 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
         GameControl.control.ReturnFromBattle();
     }
-
-    // STATS CARDS
-    public void ShowCurrentFullCard()
-    {
-        ToggleDenigenStatCard(CurrentDenigen, true);
-        //var card = heroList[currentDenigen].statsCard;
-        //if(!card.gameObject.activeSelf)
-        //    card.gameObject.SetActive(true);
-        //card.ShowFullCard();
-    }
-    public void ShowCurrentShortCard()
-    {
-        ToggleDenigenStatCard(CurrentDenigen, false);
-        //var card = heroList[currentDenigen].statsCard;
-        //card.gameObject.SetActive(true);
-        //card.ShowShortCard();
-    }
-    void ToggleAllCards(bool showFull)
-    {
-        for (int i = 0; i < heroList.Count; i++)
-        {
-            //heroStatsList[i].gameObject.SetActive(show);
-            ToggleDenigenStatCard(heroList[i], showFull);
-        }
-        for(int i = 0; i < enemyList.Count; i++)
-        {
-            ToggleDenigenStatCard(enemyList[i], showFull);
-        }
-    }
-    void ToggleDenigenStatCard(Denigen denigen, bool show)
-    {        
-        if (show)
-            denigen.statsCard.ShowFullCard();
-        else
-            denigen.statsCard.ShowShortCard();
-    }
-
-    public void ShowAllShortCards()
-    {
-        ToggleAllCards(showFull : false);
-    }
-
-    public void ShowAllShortCardsExceptCurrent()
-    {
-        for (int i = 0; i < heroList.Count; i++)
-        {
-            if (i == currentDenigen)
-            {
-                ToggleDenigenStatCard(heroList[i], true);
-                continue;
-            }
-
-            ToggleDenigenStatCard(heroList[i], false);
-        }
-        for (int i = 0; i < enemyList.Count; i++)
-        {
-            ToggleDenigenStatCard(enemyList[i], false);
-        }
-    }
-
+    
     // menu states
     public void SetMenuState(MenuState state)
     {
