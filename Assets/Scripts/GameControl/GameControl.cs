@@ -711,6 +711,17 @@ public class GameControl : MonoBehaviour {
         }        
     }
 
+    public static bool AnimatorHasParameter(Animator runAnim, string parameter)
+    {
+        foreach(var p in runAnim.parameters)
+        {
+            if (p.name == parameter)
+                return true;
+        }
+
+        return false;
+    }
+
 }
 
 //this class is where all of our data will be sent in order to be saved

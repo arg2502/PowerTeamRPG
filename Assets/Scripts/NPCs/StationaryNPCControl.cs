@@ -74,24 +74,28 @@ public class StationaryNPCControl : NPCObject {
 
 		anim.SetBool ("canMove", canMove); //sets back to idle sprites
 
-		//Set the NPC to face the default direction
-		switch (defaultDirection) {
-		case Direction.up:
-			anim.SetFloat("lastHSpeed", 0.0f);
-			anim.SetFloat("lastVSpeed", 1.0f);
-			break;
-		case Direction.left:
-			anim.SetFloat("lastHSpeed", -1.0f);
-			anim.SetFloat("lastVSpeed", 0.0f);
-			break;
-		case Direction.right:
-			anim.SetFloat("lastHSpeed", 1.0f);
-			anim.SetFloat("lastVSpeed", 0.0f);
-			break;
-		default: //down
-			anim.SetFloat("lastHSpeed", 0.0f);
-			anim.SetFloat("lastVSpeed", -1.0f);
-			break;
-		}
+        //Set the NPC to face the default direction
+        if (GameControl.AnimatorHasParameter(anim, "lastHSpeed") && GameControl.AnimatorHasParameter(anim, "lastVSpeed"))
+        {
+            switch (defaultDirection)
+            {
+                case Direction.up:
+                    anim.SetFloat("lastHSpeed", 0.0f);
+                    anim.SetFloat("lastVSpeed", 1.0f);
+                    break;
+                case Direction.left:
+                    anim.SetFloat("lastHSpeed", -1.0f);
+                    anim.SetFloat("lastVSpeed", 0.0f);
+                    break;
+                case Direction.right:
+                    anim.SetFloat("lastHSpeed", 1.0f);
+                    anim.SetFloat("lastVSpeed", 0.0f);
+                    break;
+                default: //down
+                    anim.SetFloat("lastHSpeed", 0.0f);
+                    anim.SetFloat("lastVSpeed", -1.0f);
+                    break;
+            }
+        }
 	}
 }

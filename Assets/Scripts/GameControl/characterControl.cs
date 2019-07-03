@@ -462,7 +462,8 @@ public class characterControl : OverworldObject {
             anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
             anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
             anim.SetBool("isMoving", isMoving);
-			anim.SetFloat ("isCarry", System.Convert.ToSingle(isCarrying));
+			if(GameControl.control.currentCharacter == HeroCharacter.JETHRO)
+                anim.SetFloat ("isCarry", System.Convert.ToSingle(isCarrying));
             anim.SetFloat("lastHSpeed", lastMovement.x);
             anim.SetFloat("lastVSpeed", lastMovement.y);
         }
