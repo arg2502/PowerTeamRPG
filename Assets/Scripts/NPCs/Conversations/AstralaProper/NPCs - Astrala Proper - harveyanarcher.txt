@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+	HAPPY	Did you know Harvey used to be an Archer? Dead shot with a bow, he is!	

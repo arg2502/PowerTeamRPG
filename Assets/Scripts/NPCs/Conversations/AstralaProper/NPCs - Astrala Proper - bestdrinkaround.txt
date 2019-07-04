@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+	HAPPY	Harvey's tavern has the best drink around! Ain't no better place in all of Astrala!	

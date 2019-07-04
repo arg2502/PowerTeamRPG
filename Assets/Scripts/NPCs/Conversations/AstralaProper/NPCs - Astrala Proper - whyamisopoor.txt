@@ -1,0 +1,4 @@
+name	emotion	dialogue	responses
+	SAD	Why am I so poor!	
+	HAPPY	Oh, perhaps I'll commission the Mage's Guild to make me rich by magic!	
+	SAD	Ah, but if only I had the gold...	

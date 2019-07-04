@@ -1,0 +1,4 @@
+name	emotion	dialogue	responses
+		Sometimes I catch Harrow Mercenaries bringing people into the Mage's Guild late at night..	
+		But they never come back out!	
+		Hey, you didn't hear it from me..	

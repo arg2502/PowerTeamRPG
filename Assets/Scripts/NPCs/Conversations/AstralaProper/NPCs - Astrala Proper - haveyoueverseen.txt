@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+		Have you ever seen the Archmage Villem Jeanne?	
+		He may dance well, but he's nothing more than a smooth criminal if you ask me!	

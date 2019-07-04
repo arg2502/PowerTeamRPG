@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+		You're new around here. Be careful with the Harrow Trade.	

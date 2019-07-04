@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+	HAPPY	What kind of laws do you think the councilmen are making in the forum today?	
+	HAPPY	Taxes? A pay raise for themselves? The possibilities are thrilling.	

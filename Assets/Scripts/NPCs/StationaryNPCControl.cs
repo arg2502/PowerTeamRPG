@@ -22,6 +22,8 @@ public class StationaryNPCControl : NPCObject {
 
 	public Direction defaultDirection = Direction.down;
 
+    public bool isSitting;
+
 	private BoxCollider2D boxCollider; // Variable to reference our collider
 
 	// Use this for initialization
@@ -29,9 +31,12 @@ public class StationaryNPCControl : NPCObject {
 
 		//Find the NPC's animator
 		anim = GetComponent<Animator>();
-		
-		//Find the NPC's collider
-		boxCollider = GetComponent<BoxCollider2D> ();
+
+        if (anim != null)
+            anim.SetFloat("isSitting", System.Convert.ToSingle(isSitting));
+
+        //Find the NPC's collider
+        boxCollider = GetComponent<BoxCollider2D> ();
 
 		base.Start();
 
@@ -43,13 +48,15 @@ public class StationaryNPCControl : NPCObject {
 	void Update () {
         if (anim != null)
         {
-            if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
-            {
-                anim.speed = 0;
-                return;
-            }
-            else if (anim.speed == 0)
+            //if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+            //{
+            //    anim.speed = 0;
+            //    return;
+            //}
+            //else if (anim.speed == 0)
                 anim.speed = 1;
+
+           //anim.SetBool("isSitting", isSitting);
         }
 	}
 

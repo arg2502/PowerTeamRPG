@@ -1,0 +1,4 @@
+name	emotion	dialogue	responses
+		<i>Love shambles over the floorboards and into bed like a moth gone blind.</i>	
+		Eh?	
+	ANGRY	Well let's see you write better poetry!	
