@@ -22,6 +22,7 @@ public class GameControl : MonoBehaviour {
     public static SkillTreeManager skillTreeManager;
     public static ItemManager itemManager;
     public static AudioManager audioManager;
+    public static SpriteDatabase spriteDatabase;
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
@@ -149,6 +150,7 @@ public class GameControl : MonoBehaviour {
             itemManager = new ItemManager();
             audioManager = GetComponentInChildren<AudioManager>();
             audioManager.Init();
+            spriteDatabase = Resources.Load<SpriteDatabase>("Databases/SpriteDatabase");
             
 			totalGold = 0;
 			totalKeys = 0;

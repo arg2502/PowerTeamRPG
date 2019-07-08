@@ -105,8 +105,9 @@
         /// <param name="speaker"></param>
         /// <param name="dialogue"></param>
         /// <param name="portrait"></param>
-        public void SetText(string speaker, string dialogue, Sprite portrait)//, bool isResponse)
+        public void SetText(string speaker, string dialogue, Sprite portrait, float speed)//, bool isResponse)
         {
+            typingSpeed = speed;
             speakerText.text = speaker;
             dialogueStr = dialogue;
             portraitImage.sprite = portrait;
@@ -147,13 +148,31 @@
                     continue;
                 }
                
+                // check for any special characters ( "{" for speed )
+                // we want to wait the desired number of seconds as well as remove the special characters from the string
+                if(dialogueStr[i] == '{')
+                {
+                    // find end of tag
+                    int tagStart = i;
+                    int tagEnd = dialogueStr.IndexOf('}', i + 1);
+                    int strLength = (tagEnd - tagStart);
+                    string secondsStr = dialogueStr.Substring(tagStart + 1, strLength - 1);
+                    
+                    float secondsToWait;
+                    if (!float.TryParse(secondsStr, out secondsToWait))
+                        secondsToWait = 1;
+
+                    dialogueStr = dialogueStr.Remove(i, strLength + 1); // {#.##}
+                    yield return new WaitForSecondsRealtime(secondsToWait);
+                }
+
                 if (!insideRichText)
                 {
                     dialogueText.text += dialogueStr[i];
 
                     if (insideTagLayer == 0)
                         dialogueText.text = 
-                            dialogueStr.Substring(0, i) +
+                            dialogueStr.Substring(0, i+1) +
                             transparentTagStart + 
                             dialogueStr.Substring(i) + 
                             transparentColorTagEnd;

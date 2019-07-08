@@ -112,25 +112,40 @@ public class Dialogue : MonoBehaviour {
                 newConversation.speakerNames.Add(lines[0]);
 
             // Next, we had emotional response.
-            // TODO: come up with a way to know which character's sprite to add.
-            // FOR NOW: just add the NPC's image
+            //// TODO: come up with a way to know which character's sprite to add.
+            //// FOR NOW: just add the NPC's image
+            Sprite happySpr, neutralSpr, sadSpr, angrySpr;
+            if (lines[0] == speaker.npcName || string.IsNullOrEmpty(lines[0]))
+            {
+                happySpr = speaker.happySpr;
+                neutralSpr = speaker.neutralSpr;
+                sadSpr = speaker.sadSpr;
+                angrySpr = speaker.angrySpr;
+            }
+            else
+            {
+                happySpr = GetHappyHeroSprite(lines[0]);
+                neutralSpr = GetNeutralHeroSprite(lines[0]);
+                sadSpr = GetSadHeroSprite(lines[0]);
+                angrySpr = GetAngryHeroSprite(lines[0]);
+            }
             if (string.IsNullOrEmpty(lines[1]))
-                newConversation.speakerEmotions.Add(speaker.neutralSpr);
+                newConversation.speakerEmotions.Add(neutralSpr);
             else
             {
                 switch (lines[1].ToUpper())
                 {
                     case "HAPPY":
-                        newConversation.speakerEmotions.Add(speaker.happySpr);
+                        newConversation.speakerEmotions.Add(happySpr);
                         break;
                     case "NEUTRAL":
-                        newConversation.speakerEmotions.Add(speaker.neutralSpr);
+                        newConversation.speakerEmotions.Add(neutralSpr);
                         break;
 					case "SAD":
-						newConversation.speakerEmotions.Add(speaker.sadSpr);
+						newConversation.speakerEmotions.Add(sadSpr);
 						break;
 					case "ANGRY":
-						newConversation.speakerEmotions.Add(speaker.angrySpr);
+						newConversation.speakerEmotions.Add(angrySpr);
 						break;
                 }
             }
@@ -245,8 +260,9 @@ public class Dialogue : MonoBehaviour {
         currentSpeakerName = currentConversation.GetSpeakerName(conversationIterator);
         currentSpeakerSprite = currentConversation.GetSpeakerEmotion(conversationIterator);
         currentDialogueText = currentConversation.GetDialogueConversation(conversationIterator);
-        
-        dialogueMenu.SetText(currentSpeakerName, currentDialogueText, currentSpeakerSprite);
+        float speed = speaker.talkingSpeed;
+
+        dialogueMenu.SetText(currentSpeakerName, currentDialogueText, currentSpeakerSprite, speed);
 
         conversationIterator++;
 
@@ -271,4 +287,81 @@ public class Dialogue : MonoBehaviour {
         conversationIterator = 0;        
         PrintConversation();
     }
+
+    Sprite GetHeroSprite(string heroName, string emotion)
+    {       
+        if(heroName.ToUpper() == GameControl.control.playerName.ToUpper())
+        {
+            switch (emotion)
+            {
+                case "NEUTRAL":
+                    return GameControl.spriteDatabase.jethroNeutralPortrait;
+                case "HAPPY":                         
+                    return GameControl.spriteDatabase.jethroHappyPortrait;
+                case "SAD":                           
+                    return GameControl.spriteDatabase.jethroSadPortrait;
+                case "ANGRY":                         
+                    return GameControl.spriteDatabase.jethroAngryPortrait;
+                default:                              
+                    return GameControl.spriteDatabase.jethroNeutralPortrait;
+
+            }
+        }
+        else if (heroName.ToUpper() == "COLE")
+        {
+            switch (emotion)
+            {
+                case "NEUTRAL":
+                    return GameControl.spriteDatabase.coleNeutralPortrait;
+                case "HAPPY":
+                    return GameControl.spriteDatabase.coleHappyPortrait;
+                case "SAD":
+                    return GameControl.spriteDatabase.coleSadPortrait;
+                case "ANGRY":
+                    return GameControl.spriteDatabase.coleAngryPortrait;
+                default:
+                    return GameControl.spriteDatabase.coleNeutralPortrait;
+
+            }
+        }
+        else if (heroName.ToUpper() == "ELEANOR")
+        {
+            switch (emotion)
+            {
+                case "NEUTRAL":
+                    return GameControl.spriteDatabase.eleanorNeutralPortrait;
+                case "HAPPY":                         
+                    return GameControl.spriteDatabase.eleanorHappyPortrait;
+                case "SAD":                           
+                    return GameControl.spriteDatabase.eleanorSadPortrait;
+                case "ANGRY":                         
+                    return GameControl.spriteDatabase.eleanorAngryPortrait;
+                default:                              
+                    return GameControl.spriteDatabase.eleanorNeutralPortrait;
+
+            }
+        }
+        else
+        {
+            switch (emotion)
+            {
+                case "NEUTRAL":
+                    return GameControl.spriteDatabase.joulietteNeutralPortrait;
+                case "HAPPY":                         
+                    return GameControl.spriteDatabase.joulietteHappyPortrait;
+                case "SAD":                           
+                    return GameControl.spriteDatabase.joulietteSadPortrait;
+                case "ANGRY":                         
+                    return GameControl.spriteDatabase.joulietteAngryPortrait;
+                default:
+                    return GameControl.spriteDatabase.joulietteNeutralPortrait;
+
+            }
+        }
+    }
+
+    Sprite GetHappyHeroSprite(string heroName) { return GetHeroSprite(heroName, "HAPPY"); }
+    Sprite GetNeutralHeroSprite(string heroName) { return GetHeroSprite(heroName, "NEUTRAL"); }
+    Sprite GetSadHeroSprite(string heroName) { return GetHeroSprite(heroName, "SAD"); }
+    Sprite GetAngryHeroSprite(string heroName) { return GetHeroSprite(heroName, "ANGRY"); }
 }

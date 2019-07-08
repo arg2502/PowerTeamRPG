@@ -1,7 +1,7 @@
 name	emotion	dialogue	responses
 		These are some words that I'm speaking.	
 		And these are some <i>more</i> words.	
-	HAPPY	Funny that's how life be, right?	Yeah[2,TestFunction]_What?[1]_No[1]
+	HAPPY	Funny that's how life be,{0.5} right?	Yeah[2,TestFunction]_What?[1]_No[1]
 	HAPPY	This guy gets it.	
 	HAPPY	Well, I'm off.	
 		Nevermind.	

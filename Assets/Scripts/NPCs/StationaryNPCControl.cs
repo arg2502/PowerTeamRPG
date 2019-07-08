@@ -48,15 +48,14 @@ public class StationaryNPCControl : NPCObject {
 	void Update () {
         if (anim != null)
         {
-            //if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
-            //{
-            //    anim.speed = 0;
-            //    return;
-            //}
-            //else if (anim.speed == 0)
+            if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+            {
+                anim.speed = 0;
+                return;
+            }
+            else if (anim.speed == 0)
                 anim.speed = 1;
-
-           //anim.SetBool("isSitting", isSitting);
+                       
         }
 	}
 

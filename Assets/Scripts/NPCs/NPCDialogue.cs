@@ -15,6 +15,7 @@ public class NPCDialogue : MonoBehaviour {
     public Sprite happySpr;
     public Sprite sadSpr;
     public Sprite angrySpr;
+    public float talkingSpeed;
 
     Dialogue dialogue;
 
