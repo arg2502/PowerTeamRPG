@@ -7,7 +7,9 @@ public class NPCDialogue : MonoBehaviour {
     // each item in the list is a dialogue exchange you have with an NPC or object
     // if they only say one thing each time you talk, the list will have a count of 1.
     public List<TextAsset> dialogueList;
-
+    [TextArea]
+    public List<string> customDialogueList;
+    
     int numOfTimesTalked;
 
     public string npcName;
@@ -32,7 +34,7 @@ public class NPCDialogue : MonoBehaviour {
     /// <summary>
     /// Send the appropriate conversation over to the Dialogue class to handle
     /// </summary>
-    public void StartDialogue()
+    public virtual void StartDialogue()
     {
         // Start the actual Dialogue last, as this will determine whether we should end the dialogue as well
         // (Putting this line first caused issues where the dialogue would try to start again soon after
@@ -40,18 +42,21 @@ public class NPCDialogue : MonoBehaviour {
         // the character was set to Talking and was stuck forever. This way, if there is a false start,
         // the character is set to Talking first, and then the dialogues starts & ends
         // not really a fix, more like hiding the bug)
-        dialogue.StartDialogue(dialogueList[numOfTimesTalked]);
+        if (dialogueList.Count > 0)
+            dialogue.StartDialogueTextAsset(dialogueList[numOfTimesTalked]);
+        else
+            dialogue.StartDialogueCustom(customDialogueList[numOfTimesTalked]);
     }
 
     public void EndDialogue(Dialogue.Conversation currentConversation)
     {
-        if (numOfTimesTalked < dialogueList.Count - 1)
+        if (numOfTimesTalked < dialogueList.Count - 1 || numOfTimesTalked < customDialogueList.Count - 1)
             numOfTimesTalked++;
 
         // call any functions that need to occur after the dialogue has ended here
         if(!string.IsNullOrEmpty(currentConversation.actionName))
         {
-            Invoke(currentConversation.actionName, 0f);
+            Invoke(currentConversation.actionName, 0f);            
         }
 
         // At the end of the dialogue, set the NPC's walking method back to normal

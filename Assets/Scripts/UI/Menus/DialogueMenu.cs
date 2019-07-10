@@ -110,7 +110,13 @@
             typingSpeed = speed;
             speakerText.text = speaker;
             dialogueStr = dialogue;
-            portraitImage.sprite = portrait;
+            if (portrait != null)
+            {
+                portraitImage.gameObject.SetActive(true);
+                portraitImage.sprite = portrait;
+            }
+            else
+                portraitImage.gameObject.SetActive(false);
             StartCoroutine(TypeDialogue());
         }
 

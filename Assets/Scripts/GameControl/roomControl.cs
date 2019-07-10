@@ -21,7 +21,7 @@ public class roomControl : MonoBehaviour {
 	public int minEnemiesPerBattle;
 	public int maxEnemiesPerBattle;
 	public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
-	//public List<TreasureChest> treasureChests = new List<TreasureChest>();
+	public List<TreasureChest> treasureChests = new List<TreasureChest>();
 	public List<Switch> switchesInRoom = new List<Switch> ();
 	public List<ColorBridge> colorBridgesInRoom = new List<ColorBridge>();
 	public List<Drawbridge> drawbridgesInRoom = new List<Drawbridge>();
@@ -47,11 +47,11 @@ public class roomControl : MonoBehaviour {
 		{
 			movables.Add(m);
 		}
-		//foreach(TreasureChest tc in FindObjectsOfType<TreasureChest>())
-		//{
-		//	treasureChests.Add(tc);
-		//}
-		foreach (Switch s in FindObjectsOfType<Switch>()) {
+        foreach (TreasureChest tc in FindObjectsOfType<TreasureChest>())
+        {
+            treasureChests.Add(tc);
+        }
+        foreach (Switch s in FindObjectsOfType<Switch>()) {
 			switchesInRoom.Add (s);
 		}
 		foreach (ColorBridge sb in FindObjectsOfType<ColorBridge>()) {
@@ -98,20 +98,20 @@ public class roomControl : MonoBehaviour {
                         }
                     }					
 				}
-				// sync open chests
-				//for (int i = 0; i < treasureChests.Count; i++)
-				//{
-				//	for (int j = 0; j < treasureChests.Count; j++)
-				//	{
-				//		if (treasureChests[i].name == rc.chestData[j].chestName)
-				//		{
-				//			treasureChests[i].isOpen = rc.chestData[j].isChestOpen;
-				//		}
-				//	}
-				//}
-				
-				// sync switches
-				for (int i = 0; i < switchesInRoom.Count; i++) {
+                // sync open chests
+                for (int i = 0; i < treasureChests.Count; i++)
+                {
+                    for (int j = 0; j < treasureChests.Count; j++)
+                    {
+                        if (treasureChests[i].name == rc.chestData[j].chestName)
+                        {
+                            treasureChests[i].isOpen = rc.chestData[j].isChestOpen;
+                        }
+                    }
+                }
+
+                // sync switches
+                for (int i = 0; i < switchesInRoom.Count; i++) {
 					for (int j = 0; j < switchesInRoom.Count; j++) {
 						if (switchesInRoom [i].name == rc.switchData [j].switchName) {
 							switchesInRoom[i].isActivated = rc.switchData[j].isActivated;
@@ -195,14 +195,14 @@ public class roomControl : MonoBehaviour {
 			newRoom.blockData [i].position.z = movables [i].transform.position.z;
 
 		}
-		//for(int i = 0; i < treasureChests.Count; i++)
-		//{
-		//	newRoom.chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
-		//	newRoom.chestData[i].isChestOpen = treasureChests[i].isOpen;
-		//	newRoom.chestData[i].chestName = treasureChests[i].name;
-		//}
-		
-		for(int i = 0; i < switchesInRoom.Count; i++){
+        for (int i = 0; i < treasureChests.Count; i++)
+        {
+            newRoom.chestData.Add(new TreasureData());//isChestOpen.Add(tc.isOpen);
+            newRoom.chestData[i].isChestOpen = treasureChests[i].isOpen;
+            newRoom.chestData[i].chestName = treasureChests[i].name;
+        }
+
+        for (int i = 0; i < switchesInRoom.Count; i++){
 			newRoom.switchData.Add (new SwitchData ());
 			newRoom.switchData [i].isActivated = switchesInRoom [i].isActivated;
 			newRoom.switchData [i].switchName = switchesInRoom [i].name;

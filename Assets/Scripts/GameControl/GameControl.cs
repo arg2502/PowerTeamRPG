@@ -381,17 +381,17 @@ public class GameControl : MonoBehaviour {
 					rcd.blockData[i].position.y = rc.movables[i].transform.position.y;
 					rcd.blockData[i].position.z = rc.movables[i].transform.position.z;
 				}
-				//for(int i = 0; i < rc.treasureChests.Count; i++)
-				//{
-				//	rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
-				//	rcd.chestData[i].chestName = rc.treasureChests[i].name;
-				//}
-				//for (int i = 0; i < rc.doorsInRoom.Count; i++)
-				//{
-				//	rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
-				//	rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
-				//}
-				for (int i = 0; i < rc.switchesInRoom.Count; i++) {
+                for (int i = 0; i < rc.treasureChests.Count; i++)
+                {
+                    rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
+                    rcd.chestData[i].chestName = rc.treasureChests[i].name;
+                }
+                //for (int i = 0; i < rc.doorsInRoom.Count; i++)
+                //{
+                //	rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
+                //	rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
+                //}
+                for (int i = 0; i < rc.switchesInRoom.Count; i++) {
 					rcd.switchData [i].isActivated = rc.switchesInRoom [i].isActivated;
 					rcd.switchData [i].switchName = rc.switchesInRoom [i].name;
 				}

@@ -26,16 +26,23 @@ public class Dialogue : MonoBehaviour {
         public List<Sprite> speakerEmotions;
         public List<string> dialogueConversation;
         public List<Response> responses;
+        public System.Action action;
         public string actionName;
 
         public string GetSpeakerName(int increment)
         {
-            return speakerNames[increment];
+            if (speakerNames?.Count > 0)
+                return speakerNames[increment];
+            else
+                return "";
         }
 
         public Sprite GetSpeakerEmotion(int increment)
         {
-            return speakerEmotions[increment];
+            if (speakerEmotions?.Count > 0)
+                return speakerEmotions[increment];
+            else
+                return null;
         }
 
         public string GetDialogueConversation(int increment)
@@ -63,11 +70,21 @@ public class Dialogue : MonoBehaviour {
         speaker = GetComponent<NPCDialogue>();
     }
 
-    public void StartDialogue(TextAsset textAsset)
+    public void StartDialogueTextAsset(TextAsset textAsset)
     {
         currentTextAsset = textAsset;
-        currentConversation = DecipherConversation(currentTextAsset.text);
-     
+        currentConversation = DecipherConversation(textAsset.text);
+        StartDialogue();
+    }
+
+    public void StartDialogueCustom(string customDialogue)
+    {
+        currentConversation = DecipherCustomConversation(customDialogue);
+        StartDialogue();
+    }
+
+    void StartDialogue()
+    {
         // push the dialogue menu
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
         dialogueMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueMenu).GetComponent<UI.DialogueMenu>();
@@ -92,7 +109,7 @@ public class Dialogue : MonoBehaviour {
         // split whole doc into row
         // each row makes up a sentence or section of the dialogue
         // could be possible to have someone different speak on each row
-        var rows = currentTextAsset.text.Split('\n');
+        var rows = currentText.Split('\n');
 
         if (endAtRow < 0)
             endAtRow = rows.Length;
@@ -217,7 +234,7 @@ public class Dialogue : MonoBehaviour {
                 // search through the current text file, except instead of starting at the top and going till the end,
                 // start at the row in the text file where the response dialogue takes place,
                 // and end after the appropriate amount of lines listed (numOfLines)
-                newResponse.conversation = DecipherConversation(currentTextAsset.text, lineCounter, lineCounter + numOfLines);
+                newResponse.conversation = DecipherConversation(currentText, lineCounter, lineCounter + numOfLines);
                 
                 // set the conversation's action if we have one to set
                 if(!string.IsNullOrEmpty(functionStr))
@@ -243,7 +260,16 @@ public class Dialogue : MonoBehaviour {
 
         return newConversation;
     }
+    Conversation DecipherCustomConversation(string customConversation)
+    {
+        Conversation newConversation = new Conversation();
+        newConversation.dialogueConversation = new List<string>();
+        var lines = customConversation.Split('\n');
+        foreach (var l in lines)
+            newConversation.dialogueConversation.Add(l);
 
+        return newConversation;
+    }
     void PrintConversation()
     {
         // if the iterator is greater than the amount of dialogue that needs to be said,

@@ -152,9 +152,11 @@
                 OutsideOfViewInstant(currentObj);
             }
             
-            UpdateItemQuantity();
-
             base.TurnOnMenu();
+
+            //UpdateItemQuantity();
+            UpdateAllItemQuantity();
+
         }
         public override void Refocus()
         {
@@ -335,10 +337,10 @@
                 downScroll.SetActive(false);
         }
 
-        void OnEnable()
-        {
-            currentObj = EventSystem.current.currentSelectedGameObject;
-        }
+        //void OnEnable()
+        //{
+        //    currentObj = EventSystem.current.currentSelectedGameObject;
+        //}
 
         void ToggleTextChange()
         {
@@ -384,6 +386,19 @@
 
             // open the ConfirmUse menu
             uiManager.PushMenu(uiDatabase.ConfirmUseMenu);
+        }
+
+        void UpdateAllItemQuantity()
+        {
+            for(int i = 0; i < buttonGrid.Count; i++)
+            {
+                for(int j = 0; j < buttonGrid[i].Count; j++)
+                {
+                    var itemSlot = buttonGrid[i][j].GetComponentInParent<ItemSlot>();
+                    if (itemSlot == null) continue;
+                    itemSlot.UpdateQuantity();
+                }
+            }
         }
 
         void UpdateItemQuantity()
