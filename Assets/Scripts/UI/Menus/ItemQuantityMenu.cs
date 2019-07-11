@@ -103,6 +103,11 @@
             uiManager.PopMenu();
         }
 
+        int GetMaxAmount()
+        {
+            return gameControl.totalGold / priceValue;
+        }
+
         private new void Update()
         {
             base.Update();
@@ -114,16 +119,27 @@
             {
                 // if buying, only increase until we can't afford it
                 // if selling, only increase until we run out
-                if ((currentPurchaseState == PurchaseState.BUY && (quantityNum + 1) * priceValue <= gameControl.totalGold)
+                if ((currentPurchaseState == PurchaseState.BUY && quantityNum < GetMaxAmount())
                     || (currentPurchaseState == PurchaseState.SELL && quantityNum < itemToSell.quantity))
                 {
                     quantityNum++;
+                }
+                else
+                {
+                    quantityNum = 1;
                 }
             }
             else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0)
             {
                 if (quantityNum > 1)
                     quantityNum--;
+                else
+                {
+                    if (currentPurchaseState == PurchaseState.BUY)
+                        quantityNum = GetMaxAmount();
+                    else
+                        quantityNum = itemToSell.quantity;
+                }
             }
 
         }

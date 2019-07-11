@@ -229,8 +229,23 @@
         void EndTyping()
         {
             StopAllCoroutines();
+            // remove any special characters            
+            RemoveSpecialTags('{', '}');
+
             dialogueText.text = dialogueStr;
             ReadyForNextDialogue = true; // invokes event
+        }
+
+        void RemoveSpecialTags(char startChar, char endChar)
+        {
+            int startIndex = 0;
+            int endIndex = 0;
+            while (dialogueStr.IndexOf(startChar, startIndex) > -1)
+            {                
+                startIndex = dialogueStr.IndexOf(startChar, startIndex);
+                endIndex = dialogueStr.IndexOf(endChar, startIndex);
+                dialogueStr = dialogueStr.Remove(startIndex, (endIndex - startIndex) + 1);
+            }
         }
     }
 }
