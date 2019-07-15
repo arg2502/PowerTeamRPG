@@ -28,6 +28,7 @@ TextureImporter:
     21300042: NPC_Male_DriadaliSheetB_21
     21300044: NPC_Male_DriadaliSheetB_22
     21300046: NPC_Male_DriadaliSheetB_23
+    21300048: NPC_Male_DriadaliSheetB_24
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -431,6 +432,20 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 198
+        y: 0
+        width: 66
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_Male_DriadaliSheetB_24
+      rect:
+        serializedVersion: 2
+        x: 264
         y: 0
         width: 66
         height: 98

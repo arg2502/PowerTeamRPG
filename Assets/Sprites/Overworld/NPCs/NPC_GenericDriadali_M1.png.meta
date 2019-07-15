@@ -48,6 +48,7 @@ TextureImporter:
     21300082: NPC_GenericDriadali_M1_21
     21300084: NPC_GenericDriadali_M1_22
     21300086: NPC_GenericDriadali_M1_23
+    21300088: NPC_GenericDriadali_M1_24
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -128,10 +129,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 393
-        width: 64
-        height: 96
+        x: 0
+        y: 392
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,10 +143,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_1
       rect:
         serializedVersion: 2
-        x: 67
-        y: 393
-        width: 64
-        height: 96
+        x: 66
+        y: 392
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,10 +157,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_2
       rect:
         serializedVersion: 2
-        x: 133
-        y: 393
-        width: 64
-        height: 96
+        x: 132
+        y: 392
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -170,10 +171,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_3
       rect:
         serializedVersion: 2
-        x: 199
-        y: 393
-        width: 64
-        height: 96
+        x: 198
+        y: 392
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +185,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_4
       rect:
         serializedVersion: 2
-        x: 265
-        y: 393
-        width: 64
-        height: 96
+        x: 264
+        y: 392
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -198,10 +199,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_5
       rect:
         serializedVersion: 2
-        x: 1
-        y: 295
-        width: 64
-        height: 96
+        x: 0
+        y: 294
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -212,10 +213,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_6
       rect:
         serializedVersion: 2
-        x: 67
-        y: 295
-        width: 64
-        height: 96
+        x: 66
+        y: 294
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -226,10 +227,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_7
       rect:
         serializedVersion: 2
-        x: 133
-        y: 295
-        width: 64
-        height: 96
+        x: 132
+        y: 294
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,10 +241,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_8
       rect:
         serializedVersion: 2
-        x: 199
-        y: 295
-        width: 64
-        height: 96
+        x: 198
+        y: 294
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -254,10 +255,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_9
       rect:
         serializedVersion: 2
-        x: 265
-        y: 295
-        width: 64
-        height: 96
+        x: 264
+        y: 294
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,10 +269,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_10
       rect:
         serializedVersion: 2
-        x: 1
-        y: 197
-        width: 64
-        height: 96
+        x: 0
+        y: 196
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -282,10 +283,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_11
       rect:
         serializedVersion: 2
-        x: 67
-        y: 197
-        width: 64
-        height: 96
+        x: 66
+        y: 196
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -296,10 +297,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_12
       rect:
         serializedVersion: 2
-        x: 133
-        y: 197
-        width: 64
-        height: 96
+        x: 132
+        y: 196
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -310,10 +311,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_13
       rect:
         serializedVersion: 2
-        x: 199
-        y: 197
-        width: 64
-        height: 96
+        x: 198
+        y: 196
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -324,10 +325,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_14
       rect:
         serializedVersion: 2
-        x: 265
-        y: 197
-        width: 64
-        height: 96
+        x: 264
+        y: 196
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -338,10 +339,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_15
       rect:
         serializedVersion: 2
-        x: 1
-        y: 99
-        width: 64
-        height: 96
+        x: 0
+        y: 98
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -352,10 +353,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_16
       rect:
         serializedVersion: 2
-        x: 67
-        y: 99
-        width: 64
-        height: 96
+        x: 66
+        y: 98
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -366,10 +367,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_17
       rect:
         serializedVersion: 2
-        x: 133
-        y: 99
-        width: 64
-        height: 96
+        x: 132
+        y: 98
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -380,10 +381,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_18
       rect:
         serializedVersion: 2
-        x: 199
-        y: 99
-        width: 64
-        height: 96
+        x: 198
+        y: 98
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -394,10 +395,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_19
       rect:
         serializedVersion: 2
-        x: 265
-        y: 99
-        width: 64
-        height: 96
+        x: 264
+        y: 98
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -408,10 +409,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_20
       rect:
         serializedVersion: 2
-        x: 1
-        y: 1
-        width: 64
-        height: 96
+        x: 0
+        y: 0
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -422,10 +423,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_21
       rect:
         serializedVersion: 2
-        x: 67
-        y: 1
-        width: 64
-        height: 96
+        x: 66
+        y: 0
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -436,10 +437,10 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_22
       rect:
         serializedVersion: 2
-        x: 133
-        y: 1
-        width: 64
-        height: 96
+        x: 132
+        y: 0
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -450,10 +451,24 @@ TextureImporter:
       name: NPC_GenericDriadali_M1_23
       rect:
         serializedVersion: 2
-        x: 199
-        y: 1
-        width: 64
-        height: 96
+        x: 198
+        y: 0
+        width: 66
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: NPC_GenericDriadali_M1_24
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 0
+        width: 66
+        height: 98
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
