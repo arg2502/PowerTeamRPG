@@ -45,6 +45,11 @@ public class ItemDatabase {
 		_items.Clear ();
 	}
 
+    static public ScriptableItem GetItem(InventoryItem _item)
+    {
+        return GetItem(_item.type, _item.name);
+    }
+
 	static public ScriptableItem GetItem(string itemType, string id){
 		itemType = itemType.ToLower ();
 		ValidateDatabase (); //make sure database is populated before searching

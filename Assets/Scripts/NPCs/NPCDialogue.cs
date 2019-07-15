@@ -65,6 +65,7 @@ public class NPCDialogue : MonoBehaviour {
         // function needs a characterControl variable
         // plus this location kinda makes sense...
 
-        GetComponentInParent<NPCObject>().BackToNormal();
+        if (GetComponentInParent<NPCObject>())
+            GetComponentInParent<NPCObject>().BackToNormal();
     }
 }

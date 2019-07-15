@@ -9,7 +9,62 @@ public class ItemManager {
 
     }
 
-	public void ItemUse(Hero user, List<Denigen> targets)
+    public void ItemUse(DenigenData user, InventoryItem invItem)
+    {
+        var itemIsForLiving = ItemForLiving(invItem.name);
+        if (itemIsForLiving && user.IsDead)
+            return;
+
+        // just consumable for now
+        // eventually we'll need to divide them up based on Item type
+        // Or just call different functions initially based on item type
+        var item = ItemDatabase.GetItem(invItem) as ScriptableConsumable;
+
+        if (item != null)
+        {
+            for (int j = 0; j < GameControl.control.consumables.Count; j++)
+            {
+                if (item.name == GameControl.control.consumables[j].name)
+                {
+                    //Check if the item offers any status changes
+                    //Ignore if it's status change doesn't pertain to the target's status
+                    if (item.statusChange != ScriptableConsumable.Status.normal
+                        && (DenigenData.Status)item.statusChange == user.statusState)
+                    {
+                        // double check and make sure they're not dead before setting them back to normal
+                        if (user.IsDead)
+                            return;
+                        user.statusState = DenigenData.Status.normal;
+                    }
+                    //run through any stat boosts the item may offer
+                    foreach (Boosts b in item.statBoosts)
+                    {
+                        switch (b.statName)
+                        {
+                            case "HP":
+                                user.hp += b.boost;
+                                if (user.hp > user.hpMax) user.hp = user.hpMax;
+                                break;
+                            case "PM":
+                                user.pm += b.boost;
+                                if (user.pm > user.pmMax) user.pm = user.pmMax;
+                                break;
+                            default:
+                                Debug.Log("Error on item use by " + user.name + ": Attempted to boost stat named " + b.statName);
+                                break;
+                        }
+                    }
+                    GameControl.control.consumables[j].quantity--;
+                    if (GameControl.control.consumables[j].quantity <= 0)
+                    {
+                        GameControl.control.consumables.Remove(GameControl.control.consumables[j]);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+	public void BattleItemUse(Hero user, List<Denigen> targets)
 	{
 		// if the item is intended for living, but the target is dead, don't use the item -- skip the turn
 		var itemIsForLiving = ItemForLiving(user.CurrentAttackName);

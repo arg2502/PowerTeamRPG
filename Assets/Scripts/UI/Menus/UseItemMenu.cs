@@ -259,8 +259,7 @@
             switch (menuState)
             {
                 case MenuState.Use:
-                    //if (item.quantity > 0)
-                        //item.GetComponent<ConsumableItem>().Use(hero);
+                    GameControl.itemManager.ItemUse(hero, item);
                     break;
 
                 case MenuState.Equip:

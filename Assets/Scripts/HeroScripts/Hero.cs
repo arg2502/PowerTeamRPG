@@ -31,7 +31,7 @@ public class Hero : Denigen {
     // the method for handling item use
     public void ItemUse()
     {
-		GameControl.itemManager.ItemUse (this, targets);
+		GameControl.itemManager.BattleItemUse (this, targets);
     }
 
     public virtual void DecideTypeOfTarget()
