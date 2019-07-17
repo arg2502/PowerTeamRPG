@@ -273,10 +273,14 @@ public class GameControl : MonoBehaviour {
     }
 
 	//this will save our game data to an external, persistent file
-	public void Save()
+	public void Save(int index = 1) // 1 for test
 	{
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create (Application.persistentDataPath + "/playerInfo.dat");
+        currentScene = SceneManager.GetActiveScene().name;
+        RecordRoom();
+
+        BinaryFormatter bf = new BinaryFormatter();
+        print("path: " + Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat");
+		FileStream file = File.Create (Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat");
 
 		PlayerData data = new PlayerData();
 		
@@ -436,23 +440,23 @@ public class GameControl : MonoBehaviour {
 		}
 	}
     
-	public void Load()
+	public void Load(int index)
 	{
-		if (File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
-		{
-			BinaryFormatter bf = new BinaryFormatter();
-			FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
-			PlayerData data = (PlayerData)bf.Deserialize(file);
-			file.Close();
-			//clear any current data
-			heroList = new List<HeroData>() { };
+        if (File.Exists(Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
+            PlayerData data = (PlayerData)bf.Deserialize(file);
+            file.Close();
+            //clear any current data
+            heroList = new List<HeroData>() { };
 
             //Make sure the item lists are cleared before adding more
             consumables.Clear();
             weapons.Clear();
             equipment.Clear();
             key.Clear();
-            
+
             // Read in all consumable items
             foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
 
@@ -463,21 +467,21 @@ public class GameControl : MonoBehaviour {
             foreach (ItemData id in data.equipment) { LoadArmorItem(id); }
 
             // read in all key items
-            foreach(ItemData id in data.key) { LoadKeyItem(id); }
+            foreach (ItemData id in data.key) { LoadKeyItem(id); }
 
             //load all of the heroes
             for (int i = 0; i < data.heroList.Count; i++)
-			{
-				HeroData temp = new HeroData();
+            {
+                HeroData temp = new HeroData();
                 string loadPath = "";
-                switch(data.heroList[i].identity)
+                switch (data.heroList[i].identity)
                 {
                     case 0: loadPath = "Data/Heroes/Start_Jethro"; break;
                     case 1: loadPath = "Data/Heroes/Start_Cole"; break;
                     case 2: loadPath = "Data/Heroes/Start_Eleanor"; break;
                     case 3: loadPath = "Data/Heroes/Start_Jouliette"; break;
                 }
-                if(string.IsNullOrEmpty(loadPath))
+                if (string.IsNullOrEmpty(loadPath))
                 {
                     Debug.LogError("No hero found. Idenity not 0 - 4.");
                     return;
@@ -485,34 +489,34 @@ public class GameControl : MonoBehaviour {
                 temp = Resources.Load<HeroData>(loadPath);
                 temp = Instantiate(temp);
 
-				temp.identity = data.heroList[i].identity;
-				temp.statBoost = data.heroList[i].statBoost;
-				temp.skillTree = data.heroList[i].skillTree;
-				temp.denigenName = data.heroList[i].name;
-				temp.level = data.heroList[i].level;
-				temp.exp = data.heroList[i].exp;
-				temp.expToLvlUp = data.heroList[i].expToLvlUp;
+                temp.identity = data.heroList[i].identity;
+                temp.statBoost = data.heroList[i].statBoost;
+                temp.skillTree = data.heroList[i].skillTree;
+                temp.denigenName = data.heroList[i].name;
+                temp.level = data.heroList[i].level;
+                temp.exp = data.heroList[i].exp;
+                temp.expToLvlUp = data.heroList[i].expToLvlUp;
                 temp.expCurLevel = data.heroList[i].expCurLevel;
-				temp.levelUpPts = data.heroList[i].levelUpPts;
-				temp.techPts = data.heroList[i].techPts;
-				temp.hp = data.heroList[i].hp;
-				temp.hpMax = data.heroList[i].hpMax;
-				temp.pm = data.heroList[i].pm;
-				temp.pmMax = data.heroList[i].pmMax;
-				temp.atk = data.heroList[i].atk;
-				temp.def = data.heroList[i].def;
-				temp.mgkAtk = data.heroList[i].mgkAtk;
-				temp.mgkDef = data.heroList[i].mgkDef;
-				temp.luck = data.heroList[i].luck;
-				temp.evasion = data.heroList[i].evasion;
-				temp.spd = data.heroList[i].spd;
-				temp.skillsList = data.heroList[i].skillsList;
-				temp.spellsList = data.heroList[i].spellsList;
-				temp.passiveList = data.heroList[i].passiveList;
-				temp.statusState = (DenigenData.Status)data.heroList[i].statusState;
-                
-				heroList.Add(temp);
-			}
+                temp.levelUpPts = data.heroList[i].levelUpPts;
+                temp.techPts = data.heroList[i].techPts;
+                temp.hp = data.heroList[i].hp;
+                temp.hpMax = data.heroList[i].hpMax;
+                temp.pm = data.heroList[i].pm;
+                temp.pmMax = data.heroList[i].pmMax;
+                temp.atk = data.heroList[i].atk;
+                temp.def = data.heroList[i].def;
+                temp.mgkAtk = data.heroList[i].mgkAtk;
+                temp.mgkDef = data.heroList[i].mgkDef;
+                temp.luck = data.heroList[i].luck;
+                temp.evasion = data.heroList[i].evasion;
+                temp.spd = data.heroList[i].spd;
+                temp.skillsList = data.heroList[i].skillsList;
+                temp.spellsList = data.heroList[i].spellsList;
+                temp.passiveList = data.heroList[i].passiveList;
+                temp.statusState = (DenigenData.Status)data.heroList[i].statusState;
+
+                heroList.Add(temp);
+            }
 
             //put the player back where they were
             LoadSceneAsync(data.currentScene);
@@ -521,28 +525,29 @@ public class GameControl : MonoBehaviour {
             if (taggedStatue)
                 savedStatue = new Vector2(data.posX, data.posY);
 
-			totalGold = data.totalGold;
-			keysObtainedInDungeons = data.keysObtainedInDungeons;
-			// put all interactable item data back
-			rooms = data.rooms;
+            totalGold = data.totalGold;
+            keysObtainedInDungeons = data.keysObtainedInDungeons;
+            // put all interactable item data back
+            rooms = data.rooms;
 
-			// load keys
-			roomControl rc = GameObject.FindObjectOfType<roomControl>();
-			foreach(RoomControlData rcd in rooms)
-			{
-				if(rcd.dungeonID == rc.dungeonID)
-				{
-					if(rcd.dungeonID < 0)
-					{
-						totalKeys = 0;
-					}
-					else
-					{
-						totalKeys = keysObtainedInDungeons[rcd.dungeonID];
-					}
-				}
-			}
-		}
+            // load keys
+            roomControl rc = GameObject.FindObjectOfType<roomControl>();
+            foreach (RoomControlData rcd in rooms)
+            {
+                if (rcd.dungeonID == rc.dungeonID)
+                {
+                    if (rcd.dungeonID < 0)
+                    {
+                        totalKeys = 0;
+                    }
+                    else
+                    {
+                        totalKeys = keysObtainedInDungeons[rcd.dungeonID];
+                    }
+                }
+            }
+        }
+        else print("file not found");
 	}
 
     void LoadConsumableItem(ItemData id)

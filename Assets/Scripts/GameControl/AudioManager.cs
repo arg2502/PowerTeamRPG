@@ -48,7 +48,15 @@ public class AudioManager : MonoBehaviour{
             // FADE OUT CALL HERE
             // if the clip we want to play is already currently playing, just stop the source
             //// this is to avoid getting stuck in a constant loop of fading out and fading in
-            if (!fadeOut || currentMusic.clip == clip)
+            //if (!fadeOut || currentMusic.clip == clip)
+            //    currentMusic.Stop();
+
+            // change of plans, because what if we want two rooms to play the same music? (e.g. Tavern)
+            // we're not gonna restart the song, so just return instead
+            if (currentMusic.clip == clip)
+                return;
+
+            if (!fadeOut)
                 currentMusic.Stop();
             else
                 StartCoroutine(FadeOut(currentMusic, pause));

@@ -53,12 +53,14 @@
         void OnSave()
         {
             // save the game here
+            uiManager.PushMenu(uiDatabase.SaveMenu, this);
         }
 
         void OnLoad()
         {
             // load the game here
-            GameControl.control.Load();
+            //GameControl.control.Load();
+            uiManager.PushMenu(uiDatabase.LoadMenu, this);
         }
     }
 }

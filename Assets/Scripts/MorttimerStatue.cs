@@ -16,7 +16,7 @@ public class MorttimerStatue : NPCDialogue
     {
         if (flip) { mult = -1.0f; }
         // set the current scene variable
-        GameControl.control.currentScene = SceneManager.GetActiveScene().name;
+        ////GameControl.control.currentScene = SceneManager.GetActiveScene().name;
         // heal the heroes
         foreach (DenigenData hd in GameControl.control.heroList)
         {
@@ -38,7 +38,7 @@ public class MorttimerStatue : NPCDialogue
             GameControl.control.currentPosition = new Vector2(this.transform.position.x - (distanceToSpawn * mult), this.transform.position.y);
         }
 
-        GameControl.control.RecordRoom();
+        ////GameControl.control.RecordRoom();
 
         // Save the game
         GameControl.control.Save();

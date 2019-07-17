@@ -23,6 +23,8 @@
         public GameObject TeamInfoSub;
         public GameObject HeroInfoSub;
         public GameObject InventorySub;
+        public GameObject SaveMenu;
+        public GameObject LoadMenu;
 
         [Header("Inventory")]
         public GameObject InventoryMenu;
