@@ -160,4 +160,21 @@ public class ItemManager {
 			return true;
 		} 
     }
+
+    public bool IsBattleOnly(InventoryItem _item)
+    {
+        ScriptableConsumable item = ItemDatabase.GetItem("Consumable", _item.name ) as ScriptableConsumable;
+
+        foreach(var b in item.statBoosts)
+        {
+            switch(b.statName)
+            {
+                case "HP":
+                case "PM":
+                    continue;
+                default: return true;
+            }
+        }
+        return false;
+    }
 }

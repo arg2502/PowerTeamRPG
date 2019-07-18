@@ -384,8 +384,15 @@
             // save the item you wish to use/equip
             chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
 
-            // open the ConfirmUse menu
-            uiManager.PushMenu(uiDatabase.ConfirmUseMenu);
+            if(outerListPosition == 0 && GameControl.itemManager.IsBattleOnly(chosenItem))
+            {
+                uiManager.PushNotificationMenu("This item can only be used in battle.");
+            }
+            else
+            {
+                // open the ConfirmUse menu
+                uiManager.PushMenu(uiDatabase.ConfirmUseMenu);
+            }
         }
 
         void UpdateAllItemQuantity()
