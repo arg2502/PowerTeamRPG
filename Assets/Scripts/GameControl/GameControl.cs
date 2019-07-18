@@ -279,7 +279,6 @@ public class GameControl : MonoBehaviour {
         RecordRoom();
 
         BinaryFormatter bf = new BinaryFormatter();
-        print("path: " + Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat");
 		FileStream file = File.Create (Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat");
 
 		PlayerData data = new PlayerData();
@@ -442,10 +441,11 @@ public class GameControl : MonoBehaviour {
     
 	public void Load(int index)
 	{
-        if (File.Exists(Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat"))
+        string saveFile = Application.persistentDataPath + "/playerInfo" + index.ToString() + ".dat";
+        if (File.Exists(saveFile))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
+            FileStream file = File.Open(saveFile, FileMode.Open);
             PlayerData data = (PlayerData)bf.Deserialize(file);
             file.Close();
             //clear any current data
