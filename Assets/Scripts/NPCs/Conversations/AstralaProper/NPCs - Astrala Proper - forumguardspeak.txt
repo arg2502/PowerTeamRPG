@@ -1,0 +1,6 @@
+name	emotion	dialogue	responses
+		Hey, I can’t let you through, kid.	
+Jethro		What if I want to speak to my representative?	
+	HAPPY	Hahahaha! You can’t speak to your representative face to face!	
+		If you have something to say to your region’s councilman you should submit a written correspondence to the councilman’s office.	
+	HAPPY	That way you can be ignored properly.	
