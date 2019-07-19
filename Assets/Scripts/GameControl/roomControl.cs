@@ -15,11 +15,11 @@ public class roomControl : MonoBehaviour {
 	public int dungeonID = -1;
 	public int areaLevel; // the locked level of enemies in the area
 	public int numOfEnemies; //number of enemies walking around
-	public List<EnemyData> possibleEnemies;// Array of possible enemy types
+	//public List<EnemyData> possibleEnemies;// Array of possible enemy types
 	public List<enemyControl> enemies = new List<enemyControl>();
-	public GameObject enemyControlPrefab; // a generic enemy control object
-	public int minEnemiesPerBattle;
-	public int maxEnemiesPerBattle;
+	//public GameObject enemyControlPrefab; // a generic enemy control object
+	//public int minEnemiesPerBattle;
+	//public int maxEnemiesPerBattle;
 	public List<MovableOverworldObject> movables = new List<MovableOverworldObject>();
 	public List<TreasureChest> treasureChests = new List<TreasureChest>();
 	public List<Switch> switchesInRoom = new List<Switch> ();
@@ -65,20 +65,20 @@ public class roomControl : MonoBehaviour {
 			enemies.Add (e);
 		}
         
-        //create the appropriate amount of enemies
-        if (!GameControl.control.isPaused)
-		{
-            // TEMP COMMENTED
-            for (int i = 0; i < numOfEnemies; i++)
-            {
-                GameObject temp = GameObject.Instantiate(enemyControlPrefab);
-                temp.name = "EnemyControl";                
-                temp.transform.position = new Vector2(Random.Range(roomLimits.minX, roomLimits.maxX), Random.Range(roomLimits.minY, roomLimits.maxY));
-                if (temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
-                if (temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
-                enemies.Add(temp.GetComponent<enemyControl>());
-            }
-        }
+  //      //create the appropriate amount of enemies
+  //      if (!GameControl.control.isPaused)
+		//{
+  //          // TEMP COMMENTED
+  //          for (int i = 0; i < numOfEnemies; i++)
+  //          {
+  //              GameObject temp = GameObject.Instantiate(enemyControlPrefab);
+  //              temp.name = "EnemyControl";                
+  //              temp.transform.position = new Vector2(Random.Range(roomLimits.minX, roomLimits.maxX), Random.Range(roomLimits.minY, roomLimits.maxY));
+  //              if (temp.GetComponent<enemyControl>().minEnemies == 0) temp.GetComponent<enemyControl>().minEnemies = minEnemiesPerBattle;
+  //              if (temp.GetComponent<enemyControl>().maxEnemies == 0) temp.GetComponent<enemyControl>().maxEnemies = maxEnemiesPerBattle; // maybe this shouldn't be here
+  //              enemies.Add(temp.GetComponent<enemyControl>());
+  //          }
+  //      }
 
 		// Check if this room is already tracked by the game control obj - if not, make it so!
 		foreach (RoomControlData rc in GameControl.control.rooms)

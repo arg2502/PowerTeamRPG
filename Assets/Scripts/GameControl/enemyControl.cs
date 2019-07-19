@@ -17,6 +17,7 @@ public class enemyControl : MovableOverworldObject {
 
     public int maxEnemies = 0;
     public int minEnemies = 0;
+    List<EnemyData> possibleEnemyTypes;
 
     //These are useful for contolling the enemy's movement
     float waitTimer;
@@ -47,8 +48,15 @@ public class enemyControl : MovableOverworldObject {
     float topHitFloat = 0.07f;
     float bottomHitFloat = 0.035f;
 
-	// Use this for initialization
-	new void Start () {
+    public void Init(int min, int max, List<EnemyData> possibleTypes)
+    {
+        minEnemies = min;
+        maxEnemies = max;
+        possibleEnemyTypes = possibleTypes;
+    }
+
+    // Use this for initialization
+    new void Start () {
 		canMove = true;
         anim = GetComponent<Animator>();
 		sr = GetComponent<SpriteRenderer> ();
@@ -129,7 +137,9 @@ public class enemyControl : MovableOverworldObject {
         base.Start();
 
 	}
-	public void UpdateDist()
+
+
+    public void UpdateDist()
 	{
 		dist = Mathf.Abs(Mathf.Sqrt(((transform.position.x - currentPosition.x) * (transform.position.x - currentPosition.x))
 			+ ((transform.position.y - currentPosition.y) * (transform.position.y - currentPosition.y))));
@@ -270,7 +280,7 @@ public class enemyControl : MovableOverworldObject {
                 enemies = new List<EnemyData>();
                 for (int i = 0; i < numOfEnemies; i++)
                 {
-                    enemies.Add(rc.possibleEnemies[Random.Range(0, rc.possibleEnemies.Count)]);
+                    enemies.Add(possibleEnemyTypes[Random.Range(0, possibleEnemyTypes.Count)]);
                 }
             }
             // Recieve the battle info from the enemy, such as enemy types and # of enemies
