@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 20512f315c1805c4d936643b2e776213
-timeCreated: 1564000740
+guid: 5b3f569c8485448458a83e08989241b6
+timeCreated: 1563914338
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: smallBed_0
-    21300002: smallBed_1
+    21300000: churchCandle_0
+    21300002: churchCandle_1
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -60,7 +60,7 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 128
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -70,7 +70,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Standalone
-    maxTextureSize: 256
+    maxTextureSize: 128
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -83,13 +83,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: smallBed_0
+      name: churchCandle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 176
+        width: 40
+        height: 108
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -97,13 +97,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: smallBed_1
+      name: churchCandle_1
       rect:
         serializedVersion: 2
-        x: 96
+        x: 40
         y: 0
-        width: 96
-        height: 176
+        width: 40
+        height: 108
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

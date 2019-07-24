@@ -1,11 +1,12 @@
 fileFormatVersion: 2
-guid: 20512f315c1805c4d936643b2e776213
-timeCreated: 1564000740
+guid: ccf567c037727cc4a951ca3349a4dec2
+timeCreated: 1563917174
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: smallBed_0
-    21300002: smallBed_1
+    21300000: churchBasin_0
+    21300002: churchBasin_1
+    21300004: churchBasin_2
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -83,13 +84,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: smallBed_0
+      name: churchBasin_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 176
+        width: 72
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -97,13 +98,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: smallBed_1
+      name: churchBasin_1
       rect:
         serializedVersion: 2
-        x: 96
+        x: 72
         y: 0
-        width: 96
-        height: 176
+        width: 72
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: churchBasin_2
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 72
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
