@@ -8,7 +8,7 @@ public class MoveableShadow : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		sr = gameObject.GetComponent<SpriteRenderer>();
-		psr = gameObject.GetComponentInParent<SpriteRenderer>();
+		psr = transform.parent.GetComponent<SpriteRenderer>();
 
 		sr.sortingOrder = psr.sortingOrder - 1;
 	}
