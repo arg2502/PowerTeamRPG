@@ -1,0 +1,5 @@
+name	emotion	dialogue	responses
+		Textiles! Textiles for sale!	
+	HAPPY	Oh! You're back! Did you change your mind? Do want to buy some textiles?	
+Eleanor		No, thank you.	
+	SAD	Oh... figures...	

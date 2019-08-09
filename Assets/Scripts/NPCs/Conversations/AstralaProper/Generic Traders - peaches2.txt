@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+		Hmmm... it's been a while since I've seen my Clemnesse supplier. I hope he's alright.	
+		Say, you're an adventurer. If you're ever traveling south of here, maybe you can stop by Clemnesse and make sure everything's okay.	

@@ -1,17 +1,13 @@
 fileFormatVersion: 2
-guid: 32a202ca4d7197d458f45a8b948a7b5a
-timeCreated: 1563232246
+guid: dc5b876c1549f8b43b57a1ada15a70c1
+timeCreated: 1565387462
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: forumGuard_0
-    21300002: forumGuard_1
-    21300004: forumGuard_2
-    21300006: forumGuard_3
-    21300008: forumGuard_4
-    21300010: forumGuard_5
-    21300012: forumGuard_6
-    21300014: forumGuard_7
+    21300000: genericTrader2_Sheet_0
+    21300002: genericTrader2_Sheet_1
+    21300004: genericTrader2_Sheet_2
+    21300006: genericTrader2_Sheet_3
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -66,7 +62,7 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -76,7 +72,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -89,13 +85,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: forumGuard_0
+      name: genericTrader2_Sheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 102
-        width: 68
-        height: 102
+        y: 324
+        width: 300
+        height: 324
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -103,13 +99,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: forumGuard_1
+      name: genericTrader2_Sheet_1
       rect:
         serializedVersion: 2
-        x: 68
-        y: 102
-        width: 68
-        height: 102
+        x: 300
+        y: 324
+        width: 300
+        height: 324
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -117,41 +113,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: forumGuard_2
-      rect:
-        serializedVersion: 2
-        x: 136
-        y: 102
-        width: 68
-        height: 102
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: forumGuard_3
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 102
-        width: 68
-        height: 102
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: forumGuard_4
+      name: genericTrader2_Sheet_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 68
-        height: 102
+        width: 300
+        height: 324
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,41 +127,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: forumGuard_5
+      name: genericTrader2_Sheet_3
       rect:
         serializedVersion: 2
-        x: 68
+        x: 300
         y: 0
-        width: 68
-        height: 102
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: forumGuard_6
-      rect:
-        serializedVersion: 2
-        x: 136
-        y: 0
-        width: 68
-        height: 102
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: forumGuard_7
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 0
-        width: 68
-        height: 102
+        width: 300
+        height: 324
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

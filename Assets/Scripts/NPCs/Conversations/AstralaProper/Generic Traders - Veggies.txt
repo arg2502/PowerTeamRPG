@@ -1,0 +1,9 @@
+name	emotion	dialogue	responses
+	HAPPY	I've got lots of fruit and vegetables for sale, and I offer bulk discounts! Don't be shy.	How much health do they restore?[5]_No, thank you.[2]
+		Are you asking how much health recovery is offered by fruits and vegetables?	
+Cole		Ummm...{0.75} yes?	
+		They don't restore health. It's just food, not a potion, or whatever you magic weirdos are walking around swilling.	
+	HAPPY	But they do offer a whole host of nutritional benefits! So what do you say? Do you want to buy some veggies?	
+Cole		No, I think we'll pass.	
+	ANGRY	Damn window shoppers...	
+	HAPPY	Have a good day!	

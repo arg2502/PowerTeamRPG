@@ -1,0 +1,4 @@
+name	emotion	dialogue	responses
+	ANGRY	BUY MY FRUIT!	No.[1]_NO![1]
+	SAD	I came on too strong, didn't I?	
+	ANGRY	OKAY, BYE!	

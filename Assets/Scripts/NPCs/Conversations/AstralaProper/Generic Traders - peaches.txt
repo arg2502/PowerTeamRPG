@@ -1,0 +1,7 @@
+name	emotion	dialogue	responses
+	HAPPY	Greetings, fine sir! You look like the type who would enjoy some nice, fresh peaches!	
+Jethro		Do you know where I can find some?	
+	HAPPY	Of course I know where to find some! I'm selling them.	
+Jethro		But those peaches are neither nice nor fresh.	
+	SAD	*sigh*{0.75} I know, they're definitely not fresh... I was supposed to recieve a fresh basket of peaches from my supplier in Clemnesse, but he never came by...	
+Jethro		...	
