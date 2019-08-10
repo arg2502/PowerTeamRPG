@@ -211,7 +211,8 @@ public class Dialogue : MonoBehaviour {
                 string functionStr = "";
                 if (commaIndex >= 0)
                 {
-                    numOfLinesStr = responses[j].Substring(bracketIndex, commaIndex);
+                    var numLength = commaIndex - bracketIndex;
+                    numOfLinesStr = responses[j].Substring(bracketIndex, numLength);
                     functionStr = responses[j].Substring(commaIndex);
                 }
                 // if there's no comma, find out if it's a number, if it is, then set num of lines

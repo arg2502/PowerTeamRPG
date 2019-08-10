@@ -23,6 +23,15 @@ public class NPCDialogue : MonoBehaviour {
 
     characterControl.CharacterState prevState;
 
+    public List<QuestDialogue> questDialogues;
+    [System.Serializable]
+    public struct QuestDialogue
+    {
+        public string questID;
+        public TextAsset questDialogue;
+    }
+    
+
     // Use this for initialization
     protected void Start () {
         dialogue = GetComponent<Dialogue>();
@@ -42,7 +51,10 @@ public class NPCDialogue : MonoBehaviour {
         // the character was set to Talking and was stuck forever. This way, if there is a false start,
         // the character is set to Talking first, and then the dialogues starts & ends
         // not really a fix, more like hiding the bug)
-        if (dialogueList.Count > 0)
+        var questDialogue = ActiveQuest();
+        if (questDialogue != null)
+            dialogue.StartDialogueTextAsset(questDialogue);
+        else if (dialogueList.Count > 0)
             dialogue.StartDialogueTextAsset(dialogueList[numOfTimesTalked]);
         else
             dialogue.StartDialogueCustom(customDialogueList[numOfTimesTalked]);
@@ -56,7 +68,7 @@ public class NPCDialogue : MonoBehaviour {
         // call any functions that need to occur after the dialogue has ended here
         if(!string.IsNullOrEmpty(currentConversation.actionName))
         {
-            Invoke(currentConversation.actionName, 0f);            
+            GetComponentInParent<OverworldObject>().Invoke(currentConversation.actionName, 0f);            
         }
 
         // At the end of the dialogue, set the NPC's walking method back to normal
@@ -67,5 +79,19 @@ public class NPCDialogue : MonoBehaviour {
 
         if (GetComponentInParent<NPCObject>())
             GetComponentInParent<NPCObject>().BackToNormal();
+    }
+
+    TextAsset ActiveQuest()
+    {
+        // check if this NPC has anything to say about any currently active quests        
+        for(int i = 0; i < questDialogues.Count; i++)
+        {
+            if(GameControl.questTracker.ContainsKey(questDialogues[i].questID))
+            {
+                GetComponentInParent<OverworldObject>().CurrentQuestID = questDialogues[i].questID;
+                return questDialogues[i].questDialogue;
+            }
+        }
+        return null;
     }
 }

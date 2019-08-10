@@ -1,0 +1,4 @@
+Name	Emotion	Dialogue	Responses/Actions
+		Did you ask him yet?	
+Jethro		Yeah, and he says he'll stop	
+	HAPPY	Phew! That's a relief! Here's something for your trouble.	QuestTalk

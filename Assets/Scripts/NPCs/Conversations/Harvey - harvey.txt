@@ -1,0 +1,4 @@
+Name	Emotion	Dialogue	Responses/Actions
+	HAPPY	What can I do for ya?	Test Side Quest[2,StartTest]
+		Hey, can ya do me a favor actually?	
+		Go tell Torvald he's had enough to drink	

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class OverworldObject : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class OverworldObject : MonoBehaviour {
     public bool canMove = true;
     public Vector3 offset = new Vector3(256.0f, 0.0f, 0.0f); // offset for stuck enemies, default: right
 	public int sortingOffset; //mainly for multi-object prefabs
+    protected string currentQuestID;
+    public string CurrentQuestID { get { return currentQuestID; } set { currentQuestID = value; } }
 
     // weight variables -- used only as references throughout objects (movables/switches/etc.)
     public enum Weight { NORMAL, LIGHT, HEAVY, CUSTOM }
@@ -20,7 +23,7 @@ public class OverworldObject : MonoBehaviour {
     protected float LightWeight { get { return 1f; } }
     protected float NormalWeight { get { return 3f; } }
     protected float HeavyWeight { get { return 5f; } }
-
+    
 	// Use this for initialization
 	protected void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
@@ -39,4 +42,14 @@ public class OverworldObject : MonoBehaviour {
     public virtual void Activate() {}
 
 	public int SortingOrder { get { return this.sr.sortingOrder; } set { this.sr.sortingOrder = value; } }
+
+    /// <summary>
+    /// Function to be called after talking with an object that is required for a quest
+    /// Simply increments the number of people you needed to talk to
+    /// Call this function the the RESPONSES column of the conversation spreadsheet
+    /// </summary>
+    public void QuestTalk()
+    {
+        GameControl.questTracker.IncrementTalkToPeople(currentQuestID);
+    }
 }
