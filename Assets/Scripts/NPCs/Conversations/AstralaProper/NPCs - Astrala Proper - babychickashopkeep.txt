@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+		Did you know the Baby Chicka Shopkeeper in the Market Square is 45 years old?	
+	HAPPY	Whoever heard of a 45 year old <b>Baby</b> Chicka?!	

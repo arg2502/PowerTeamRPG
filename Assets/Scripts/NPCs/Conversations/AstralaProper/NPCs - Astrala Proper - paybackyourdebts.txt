@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+	HAPPY	The bank is always a good option if you're short on gold.	
+		But pay back your debts on time.{0.3}.{0.3}.{0.5}that debt collector is a dark character.	
