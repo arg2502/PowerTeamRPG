@@ -10,7 +10,7 @@ public class QuestData : ScriptableObject {
     [System.Serializable]
     public struct SubQuestData
     {
-        public string subQuestID;
+        //public string subQuestID;
         public int talkToPeopleNum;
         public int killEnemiesNum;
         [SerializeField]

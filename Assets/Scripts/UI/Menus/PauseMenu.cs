@@ -9,6 +9,7 @@
     public class PauseMenu : Menu
     {
         public Button exitMenuButton, teamInfoButton, inventoryButton, saveButton, loadButton;
+        public Text totalGold;
 
         public override void TurnOnMenu()
         {
@@ -16,6 +17,7 @@
 
             RootButton = AssignRootButton();
             SetSelectedObjectToRoot();
+            totalGold.text = gameControl.totalGold.ToString();
         }
 
         protected override void AddListeners()

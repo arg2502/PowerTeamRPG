@@ -24,6 +24,8 @@ public class NPCDialogue : MonoBehaviour {
     characterControl.CharacterState prevState;
 
     public List<QuestDialogue> questDialogues;
+    public List<QuestDialogue> completedQuestDialogues;
+
     [System.Serializable]
     public struct QuestDialogue
     {
@@ -51,7 +53,15 @@ public class NPCDialogue : MonoBehaviour {
         // the character was set to Talking and was stuck forever. This way, if there is a false start,
         // the character is set to Talking first, and then the dialogues starts & ends
         // not really a fix, more like hiding the bug)
+
+
+        // check if there is any dialogue for any active quests
         var questDialogue = ActiveQuest();
+
+        // if there are no active quest dialogues, check for any completed quests
+        if (questDialogue == null)
+            questDialogue = CompletedQuest();
+
         if (questDialogue != null)
             dialogue.StartDialogueTextAsset(questDialogue);
         else if (dialogueList.Count > 0)
@@ -86,10 +96,23 @@ public class NPCDialogue : MonoBehaviour {
         // check if this NPC has anything to say about any currently active quests        
         for(int i = 0; i < questDialogues.Count; i++)
         {
-            if(GameControl.questTracker.ContainsKey(questDialogues[i].questID))
+            if(GameControl.questTracker.ContainsActiveKey(questDialogues[i].questID))
             {
                 GetComponentInParent<OverworldObject>().CurrentQuestID = questDialogues[i].questID;
                 return questDialogues[i].questDialogue;
+            }
+        }
+        return null;
+    }
+
+    TextAsset CompletedQuest()
+    {
+        // check if this NPC has anything to say about any completed quests        
+        for (int i = 0; i < completedQuestDialogues.Count; i++)
+        {
+            if (GameControl.questTracker.ContainsCompletedKey(completedQuestDialogues[i].questID))
+            {
+                return completedQuestDialogues[i].questDialogue;
             }
         }
         return null;

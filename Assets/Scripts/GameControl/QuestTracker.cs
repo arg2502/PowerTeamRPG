@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class QuestTracker {
     public Dictionary<string, Quest> activeQuests;    
-    public Dictionary<string, Quest> finishedQuests;
+    public Dictionary<string, Quest> completedQuests;
 
     public QuestTracker()
     {
         activeQuests = new Dictionary<string, Quest>();
-        finishedQuests = new Dictionary<string, Quest>();
+        completedQuests = new Dictionary<string, Quest>();
     }
 
     public void AddNewQuest(string questID)
@@ -30,7 +30,7 @@ public class QuestTracker {
         return Regex.Match(subquestID, @"[^\d]+").Value;
     }
 
-    public bool ContainsKey(string subquestID)
+    public bool ContainsActiveKey(string subquestID)
     {
         // get the main quest ID from the subquestID, by only getting every character but the numbers
         var mainQuestID = GetCurrentQuestID(subquestID);
@@ -41,6 +41,11 @@ public class QuestTracker {
         var subQuestStr = mainQuestID + state;
 
         return subQuestStr == subquestID;
+    }
+
+    public bool ContainsCompletedKey(string questID)
+    {
+        return completedQuests.ContainsKey(questID);
     }
 
     public void IncrementTalkToPeople(string subquestID)
@@ -60,7 +65,7 @@ public class QuestTracker {
 
     public void CompleteQuest(string questID)
     {
-        finishedQuests.Add(questID, activeQuests[questID]);
+        completedQuests.Add(questID, activeQuests[questID]);
         activeQuests.Remove(questID);
     }
 }
