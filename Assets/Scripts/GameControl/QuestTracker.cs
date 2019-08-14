@@ -16,6 +16,7 @@ public class QuestTracker {
     public void AddNewQuest(string questID)
     {
         activeQuests.Add(questID, new Quest(questID));
+        GameControl.UIManager.ShowQuestStart(activeQuests[questID].data.questName);
     }
 
     public string GetCurrentSubQuestID(string questID)
