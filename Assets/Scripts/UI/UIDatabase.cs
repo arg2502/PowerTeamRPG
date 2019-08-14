@@ -17,6 +17,7 @@
         public GameObject ConfirmationMenu;
         public GameObject NotificationMenu;
         public GameObject LoadingScreen;
+        public GameObject ArbitersIcon;
 
         [Header("Pause Menu")]
         public GameObject PauseMenu;

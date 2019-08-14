@@ -62,7 +62,7 @@ public class Quest {
         currentTalkToPeople = 0;
         currentKillEnemies = 0;
         currentListItemToGet.Clear();
-
+        GameControl.UIManager.ShowArbitersIcon();
         if (currentState >= data.subQuestStates.Count)
         {
             // complete quest

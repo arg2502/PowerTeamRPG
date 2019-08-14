@@ -240,5 +240,10 @@
             list_currentMenus.Clear();
             dictionary_existingMenus.Clear();
         }
+
+        public void ShowArbitersIcon()
+        {
+            GameObject.Instantiate(uiDatabase.ArbitersIcon, canvas.transform);
+        }
     }
 }
