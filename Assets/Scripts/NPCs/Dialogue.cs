@@ -205,7 +205,7 @@ public class Dialogue : MonoBehaviour {
                 var actualResponse = responses[j].Substring(0, bracketIndex);
                 newResponse.playerResponse = actualResponse;
 
-                var commaIndex = responses[j].IndexOf(',');
+                var commaIndex = responses[j].IndexOf(',',bracketIndex);
 
                 string numOfLinesStr = "";
                 string functionStr = "";
