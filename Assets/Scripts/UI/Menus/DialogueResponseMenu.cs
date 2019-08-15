@@ -38,6 +38,10 @@
                 listOfButtons.Add(b);
             }
             templateButton.gameObject.SetActive(false);
+            for(int i = 0; i < listOfButtons.Count; i++)
+            {
+                listOfButtons[i].gameObject.SetActive(i < responses.Count);
+            }
         }
 
         protected override void AddListeners()
@@ -71,9 +75,10 @@
 
         public override void Close()
         {
-            foreach(var b in listOfButtons)
-                b.onClick.RemoveAllListeners();
-
+            for (int i = 0; i < listOfButtons.Count; i++)
+            {
+                listOfButtons[i].onClick.RemoveAllListeners();
+            }
             OnStartNextConversation.RemoveAllListeners();
 
 

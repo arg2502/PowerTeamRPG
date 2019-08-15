@@ -79,7 +79,7 @@
             foreach(Button button in listOfButtons)
             {
                 // Add an EventTrigger Component to the button here
-                button.gameObject.AddComponent<EventTrigger>();
+                //button.gameObject.AddComponent<EventTrigger>();
 
                 // These functions add specific triggers based on certain actions performed with the buttons
                 AddDescriptionEvent(button); // Changes the description text obj when the button is highlighted

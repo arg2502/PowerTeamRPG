@@ -1,0 +1,4 @@
+Name	Emotion	Dialogue	Responses/Actions
+		Thanks again for your help with Torvald.	
+	HAPPY	Anywho, what can I do for ya?	Nothing[1]
+		Alright, then. See ya.	

@@ -1,0 +1,8 @@
+name	emotion	dialogue	responses
+		Hey, it's the pipsqueaks. What's up?	What's with your armor?[4]_Nothing...[1]_Harvey says to stop drinking[1,QuestTalk]
+		What do you mean?	
+Cole		Why is your whole body covered with plate armor... except for your arms?	
+	HAPPY	What?! You mean you actually expect me to cover my arms?	
+		I spent my whole life sculpting these bad boys, from my deltoids to my extensors! No way I'm gonna hide them from the sun!	
+	SAD	Oh... okay, then.	
+		Then I'll gladly respect his wishes.{0.25} I'm done.	

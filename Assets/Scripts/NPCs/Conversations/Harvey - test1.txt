@@ -1,0 +1,4 @@
+Name	Emotion	Dialogue	Responses/Actions
+		Did you ask him yet?	Yes[1]_No[1]
+	ANGRY	Really? Then why is he still drinking?...	
+		Hey, no rush...{0.25}Just don't wan' him causin' no scene or nothin'	

@@ -240,5 +240,21 @@
             list_currentMenus.Clear();
             dictionary_existingMenus.Clear();
         }
+
+        public void ShowArbitersIcon()
+        {
+            GameObject.Instantiate(uiDatabase.ArbitersIcon, canvas.transform);
+        }
+        public void ShowQuestStart(string questName)
+        {
+            var questStart = GameObject.Instantiate(uiDatabase.QuestStartEnd, canvas.transform);
+            questStart.GetComponent<QuestStartEnd>().Init(true, questName);
+        }
+
+        public void ShowQuestEnd(string questName)
+        {
+            var questStart = GameObject.Instantiate(uiDatabase.QuestStartEnd, canvas.transform);
+            questStart.GetComponent<QuestStartEnd>().Init(false, questName);
+        }
     }
 }

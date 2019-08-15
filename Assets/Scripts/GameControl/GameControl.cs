@@ -23,6 +23,7 @@ public class GameControl : MonoBehaviour {
     public static ItemManager itemManager;
     public static AudioManager audioManager;
     public static SpriteDatabase spriteDatabase;
+    public static QuestTracker questTracker;
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
@@ -135,7 +136,7 @@ public class GameControl : MonoBehaviour {
 
     public AudioClip battleIntro;
     public AudioClip battleLoop;
-
+    
     //awake gets called before start
     void Awake () {
 		if (control == null)
@@ -151,7 +152,7 @@ public class GameControl : MonoBehaviour {
             audioManager = GetComponentInChildren<AudioManager>();
             audioManager.Init();
             spriteDatabase = Resources.Load<SpriteDatabase>("Databases/SpriteDatabase");
-            
+            questTracker = new QuestTracker();
 			totalGold = 0;
 			totalKeys = 0;
 
