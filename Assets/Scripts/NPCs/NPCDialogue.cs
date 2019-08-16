@@ -96,7 +96,8 @@ public class NPCDialogue : MonoBehaviour {
         // check if this NPC has anything to say about any currently active quests        
         for(int i = 0; i < questDialogues.Count; i++)
         {
-            if(GameControl.questTracker.ContainsActiveKey(questDialogues[i].questID))
+            if(GameControl.questTracker.ContainsActiveKey(questDialogues[i].questID)
+                && !GetComponentInParent<OverworldObject>().QuestAlreadyTalked.Contains(questDialogues[i].questID))
             {
                 GetComponentInParent<OverworldObject>().CurrentQuestID = questDialogues[i].questID;
                 return questDialogues[i].questDialogue;

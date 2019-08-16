@@ -11,6 +11,8 @@ public class OverworldObject : MonoBehaviour {
 	public int sortingOffset; //mainly for multi-object prefabs
     protected string currentQuestID;
     public string CurrentQuestID { get { return currentQuestID; } set { currentQuestID = value; } }
+    protected List<string> questAlreadyTalked;
+    public List<string> QuestAlreadyTalked { get { return questAlreadyTalked; } }
 
     // weight variables -- used only as references throughout objects (movables/switches/etc.)
     public enum Weight { NORMAL, LIGHT, HEAVY, CUSTOM }
@@ -28,6 +30,7 @@ public class OverworldObject : MonoBehaviour {
 	protected void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
 		sr.sortingOrder = (int)(-transform.position.y * 10.0f) + sortingOffset;
+        questAlreadyTalked = new List<string>();
 	}
 
     // move this to gameManager
@@ -51,5 +54,6 @@ public class OverworldObject : MonoBehaviour {
     public void QuestTalk()
     {
         GameControl.questTracker.IncrementTalkToPeople(currentQuestID);
+        questAlreadyTalked.Add(currentQuestID);
     }
 }
