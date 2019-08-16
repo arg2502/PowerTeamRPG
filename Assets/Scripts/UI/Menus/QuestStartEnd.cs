@@ -7,13 +7,13 @@ public class QuestStartEnd : MonoBehaviour {
 
     public Text startEnd;
     public Text questName;
-    Image image;
+    CanvasGroup canvasGroup;
     float fadingRate = 0.01f;
     float lifeCycleTime = 3f;
 
 	public void Init(bool startQuest, string newName)
     {
-        image = GetComponentInChildren<Image>();
+        canvasGroup = GetComponentInChildren<CanvasGroup>();
         startEnd.text = (startQuest ? "Quest Start" : "Quest Complete");
         questName.text = newName;
         StartCoroutine(LifeCycle());
@@ -21,24 +21,19 @@ public class QuestStartEnd : MonoBehaviour {
 
     IEnumerator LifeCycle()
     {
-        var startingColor = image.color;
-        startingColor.a = 0f;
-        image.color = startingColor;
+        canvasGroup.alpha = 0;
 
-        while (image.color.a < 1f)
+        while (canvasGroup.alpha < 1)
         {
-            var a = image.color.a + Time.deltaTime;
-            image.color = new Color(image.color.r, image.color.g, image.color.b, a);
+            canvasGroup.alpha += Time.deltaTime;            
             yield return new WaitForSeconds(fadingRate);
         }
-        startingColor.a = 1f;
-        image.color = startingColor;
+        canvasGroup.alpha = 1;
         yield return new WaitForSeconds(lifeCycleTime);
         
-        while (image.color.a > 0f)
+        while (canvasGroup.alpha > 0f)
         {
-            var a = image.color.a - Time.deltaTime;
-            image.color = new Color(image.color.r, image.color.g, image.color.b, a);
+            canvasGroup.alpha -= Time.deltaTime;
             yield return new WaitForSeconds(fadingRate);
         }
 
