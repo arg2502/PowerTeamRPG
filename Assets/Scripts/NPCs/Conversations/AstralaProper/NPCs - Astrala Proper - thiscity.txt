@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+		This city stood here long before the old kingdoms began uniting under the banner of Astrala. Back then it was just a trading post nestled between three major kingdoms.	

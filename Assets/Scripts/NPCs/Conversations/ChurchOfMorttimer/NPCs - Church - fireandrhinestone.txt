@@ -1,0 +1,5 @@
+name	emotion	dialogue	responses
+		Father McKenzie is a great preacher, but he's nothing compared to Father L. Ton.	
+	HAPPY	Father L. Ton had that 'fire and rhinestone' preaching style, which was much more my speed!	Don't you mean 'fire and <b>brimstone</b>?[1]_Sounds exciting.[1]
+	ANGRY	NO! I meant 'fire and <b>rhinestone</b>! Don't you think I know what I'm saying?!	
+		Oh, 'exciting' doesn't even <i>begin</i> to describe his surmons. They were...{0.6} <b>provacative</b>.{0.3}.{0.3}.{0.6} I mean, provoking! The surmons were thought-provoking!	

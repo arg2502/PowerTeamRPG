@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+		I've heard the owner of Harvey's Tavern is originally from a place in the far west, called the Sky Kingdom. It's a place populated almost exclusively by Chickas!	
+		Compared to the melting-pot of Astrala Proper, that place must be pretty boring, even with all of the Chickas' multi-colored feathers.	

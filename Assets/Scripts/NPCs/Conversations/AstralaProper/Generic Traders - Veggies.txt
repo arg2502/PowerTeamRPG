@@ -5,5 +5,5 @@ Cole		Ummm...{0.75} yes?
 		They don't restore health. It's just food, not a potion, or whatever you magic weirdos are walking around swilling.	
 	HAPPY	But they do offer a whole host of nutritional benefits! So what do you say? Do you want to buy some veggies?	
 Cole		No, I think we'll pass.	
-	ANGRY	Damn window shoppers...	
+	ANGRY	<size=24>Damn window shoppers...</size>	
 	HAPPY	Have a good day!	

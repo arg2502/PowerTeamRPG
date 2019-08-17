@@ -1,0 +1,8 @@
+name	emotion	dialogue	responses
+		Did you ever notice how many of these denigens seem to be aimlessly wandering the city?	Yes, I noticed that.[1]_No, I didn't notice.[1]_What about you?[4]
+	ANGRY	Isn't that so <b>annoying</b>? Like, why don't they do something <b>productive</b>?! 	
+	ANGRY	I see{0.3}.{0.3}.{0.3}. You must be one of them!	
+		What do you mean?	
+Cole		Aren't you just sort of wandering around aimlessly?	
+	ANGRY	Wha--{0.6} No. I am not wandering around aimlessly! I'm{0.3}.{0.3}.{0.3}.	
+	SAD	Actually, I can't quite remember what I'm doing. Maybe I am just aimlessly wandering.	
