@@ -257,12 +257,11 @@ public class characterControl : OverworldObject {
 		}
 	}
 	
-	// Update is called once per frame
-    void Update()
+    void UpdateNormal()
     {
-        if (Input.GetButtonDown("Pause") && GameControl.control.currentCharacterState == CharacterState.Normal)
+        if (Input.GetButtonDown("Pause"))
         {
-            GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);
+            GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);            
         }
 
         if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
@@ -270,42 +269,16 @@ public class characterControl : OverworldObject {
         else if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") < 0)
             DecreaseHero();
 
-        sr.sortingOrder = (int)(-transform.position.y * 10.0f);
-        speed = new Vector2(0f, 0f);
-
-        if (GameControl.control.currentCharacterState == CharacterState.Transition && currentGateway?.gatewayType != Gateway.Type.DOOR)
+        if (Input.GetButtonDown("Submit"))
         {
-            anim.SetBool("isMoving", true);
-            anim.SetFloat("vSpeed", yIncrementTransition);
-            anim.SetFloat("hSpeed", xIncrementTransition);
-
-            if (!MoveToRoomTransitionSpot(desiredPos, xIncrementTransition, yIncrementTransition))
-            {
-                var transitionSpeed = new Vector2(xIncrementTransition, yIncrementTransition);
-                transitionSpeed.Normalize();
-                transitionSpeed *= walkSpeed * Time.deltaTime;
-
-                transform.Translate(transitionSpeed);
-
-                return;
-            }
-            else
-            {
-                OnDesiredPos.Invoke();                
-            }
-
-        }
-        
-        if(Input.GetButtonDown("Submit"))
-        {
-            if(isInGateway && currentGateway?.gatewayType == Gateway.Type.DOOR)
+            if (isInGateway && currentGateway?.gatewayType == Gateway.Type.DOOR)
             {
                 StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
             }
-            
+
             // If we have an NPC to talk to, check if the player has pressed select to talk to them
-            if (GameControl.control.currentNPC && GameControl.control.currentCharacterState != CharacterState.Menu)
+            if (GameControl.control.currentNPC)
                 TalkToNPC();
 
             if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR
@@ -344,20 +317,16 @@ public class characterControl : OverworldObject {
         }
 
         // STATE == NORMAL
-        if(canMove && GameControl.control.currentCharacterState == CharacterState.Normal) { 
+        if (canMove)
+        {
             isMoving = false;
-
-			if (Input.GetButton("Run")) {
-				moveSpeed = runSpeed;
-			} else {
-				moveSpeed = walkSpeed;
-			}
+            moveSpeed = (Input.GetButton("Run") ? runSpeed : walkSpeed);
 
             //Check for input
-			if(Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
-			{
-				//call the move function
-				Move (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
+            if (Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
+            {
+                //call the move function
+                Move(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             }
 
             // special action
@@ -430,31 +399,92 @@ public class characterControl : OverworldObject {
                         }
                     }
                 }
-                
+
                 else if (GameControl.control.currentCharacter == HeroCharacter.JOULIETTE)
                 {
                     var hits = Physics2D.OverlapCircleAll(transform.position, zapRadius);
                     foreach (var h in hits)
                     {
-                        if(h.GetComponent<Generator>())
+                        if (h.GetComponent<Generator>())
                         {
                             h.GetComponent<Generator>().ActivateGenerator();
                         }
                     }
-                        
-                }
-            }            
 
-			//if we are carrying an object, move it to player's position
-			if(isCarrying)
-			{
-				//Move the object to the position above player's head
-				carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f/*+ 0.85f*/, transform.position.z);
-				//make sure the object is always rendered above the player
-				carriedObject.SortingOrder = sr.sortingOrder + 1;
-			}
-			
-		}
+                }
+            }
+
+            //if we are carrying an object, move it to player's position
+            if (isCarrying)
+            {
+                //Move the object to the position above player's head
+                carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f/*+ 0.85f*/, transform.position.z);
+                //make sure the object is always rendered above the player
+                carriedObject.SortingOrder = sr.sortingOrder + 1;
+            }
+
+        }
+    }
+    void UpdateMenu()
+    {
+        if (Input.GetButtonDown("Pause"))
+        {
+            if (GameControl.UIManager.list_currentMenus[0].GetComponent<UI.PauseMenu>() is UI.PauseMenu)
+                GameControl.UIManager.DisableAllMenus();
+        }
+    }
+    void UpdateTransition()
+    {
+        if(currentGateway?.gatewayType != Gateway.Type.DOOR)
+        {
+            anim.SetBool("isMoving", true);
+            anim.SetFloat("vSpeed", yIncrementTransition);
+            anim.SetFloat("hSpeed", xIncrementTransition);
+
+            if (!MoveToRoomTransitionSpot(desiredPos, xIncrementTransition, yIncrementTransition))
+            {
+                var transitionSpeed = new Vector2(xIncrementTransition, yIncrementTransition);
+                transitionSpeed.Normalize();
+                transitionSpeed *= walkSpeed * Time.deltaTime;
+
+                transform.Translate(transitionSpeed);
+
+                return;
+            }
+            else
+            {
+                OnDesiredPos.Invoke();
+            }
+        }
+    }
+    void UpdateBattle()
+    {
+
+    }
+    void UpdateDefeat()
+    {
+
+    }
+
+	// Update is called once per frame
+    void Update()
+    {
+        sr.sortingOrder = (int)(-transform.position.y * 10.0f);
+        speed = new Vector2(0f, 0f);
+
+        switch (GameControl.control.currentCharacterState)
+        {
+            case CharacterState.Normal:
+                UpdateNormal(); break;
+            case CharacterState.Menu:
+                UpdateMenu(); break;
+            case CharacterState.Transition:
+                UpdateTransition(); break;
+            case CharacterState.Battle:
+                UpdateBattle(); break;
+            case CharacterState.Defeat:
+                UpdateDefeat(); break;
+        }
 
         // set values for animator to determine movement/idle animations
         if (canMove)

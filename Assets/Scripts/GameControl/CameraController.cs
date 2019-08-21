@@ -78,8 +78,8 @@ public class CameraController : MonoBehaviour {
         else if (moveSpeed != origMoveSpeed)
             moveSpeed = origMoveSpeed;
 
-        transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
-        //transform.position = targetPos;
+        //transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        transform.position = targetPos;
     }
 
     float MidX { get { return (GameControl.control.currentRoom.roomLimits.minX + GameControl.control.currentRoom.roomLimits.maxX) / 2f; } }
