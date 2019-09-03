@@ -150,6 +150,12 @@
             GameControl.control.WaitAFrameAndSetCharacterState(GameControl.control.PrevState);
         }
 
+        public void PopAllMenus()
+        {
+            while (list_currentMenus.Count > 0)
+                PopMenu();
+        }
+
         /// <summary>
         ///  // for when we want to go to another menu, but simply deactivate/gray the other menu, not disable/turn invisible.
         ///  Ex: Pause Menu -> Sub Menus

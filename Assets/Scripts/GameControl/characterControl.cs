@@ -430,7 +430,7 @@ public class characterControl : OverworldObject {
         if (Input.GetButtonDown("Pause"))
         {
             if (GameControl.UIManager.list_currentMenus[0].GetComponent<UI.PauseMenu>() is UI.PauseMenu)
-                GameControl.UIManager.DisableAllMenus();
+                GameControl.UIManager.PopAllMenus();
         }
     }
     void UpdateTransition()
