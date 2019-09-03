@@ -256,5 +256,12 @@
             var questStart = GameObject.Instantiate(uiDatabase.QuestStartEnd, canvas.transform);
             questStart.GetComponent<QuestStartEnd>().Init(false, questName);
         }
+
+        public InteractionNotification ShowInteractionNotification(Transform transformToFollow, string newMessage)
+        {
+            var interNot = GameObject.Instantiate(uiDatabase.InteractionNotification);
+            interNot.GetComponent<InteractionNotification>().Init(transformToFollow, newMessage);
+            return interNot.GetComponent<InteractionNotification>();
+        }
     }
 }
