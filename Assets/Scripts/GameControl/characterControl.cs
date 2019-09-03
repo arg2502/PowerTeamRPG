@@ -160,22 +160,35 @@ public class characterControl : OverworldObject {
     void ResetCurrentNPC(NPCDialogue newCurrent = null)
     {
         // Set the previously current NPC back to normal
-        if (GameControl.control.currentNPC)
-            GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
+        //if (GameControl.control.currentNPC)
+        //{
+        //    //GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
+            
+        //}
+        if(GameControl.control.currentNPC != null && GameControl.control.currentNPC != newCurrent)
+        {
+            GameControl.control.currentNPC.GetComponentInParent<OverworldObject>().HideInteractionNotification();
+        }
 
         // set the new current NPC if one was passed in
-        if(newCurrent)
+        if (newCurrent)
         {
-            GameControl.control.currentNPC = newCurrent;
+            if (GameControl.control.currentNPC == null)
+            {
+                GameControl.control.currentNPC = newCurrent;
 
-            // Some sort of indicator to tell the player who they can talk to
-            // FOR NOW, we just changed the color
-            GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
+                // Some sort of indicator to tell the player who they can talk to
+                // FOR NOW, we just changed the color
+                //GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
+
+                GameControl.control.currentNPC.GetComponentInParent<OverworldObject>().InteractionNotification =
+                    GameControl.UIManager.ShowInteractionNotification(GameControl.control.currentNPC.transform, "Talk");
+            }
         }
         // if no NPC was passed in, then there's no one we can talk to
         else
         {
-            GameControl.control.currentNPC = null;
+            GameControl.control.currentNPC = null;            
         }
     }
 
@@ -472,6 +485,22 @@ public class characterControl : OverworldObject {
         sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
 
+        // set values for animator to determine movement/idle animations
+        if (canMove)
+        {
+            anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
+            anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
+            anim.SetBool("isMoving", isMoving);
+            if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
+                anim.SetFloat("isCarry", System.Convert.ToSingle(isCarrying));
+            anim.SetFloat("lastHSpeed", lastMovement.x);
+            anim.SetFloat("lastVSpeed", lastMovement.y);
+        }
+        else
+        {
+            anim.SetBool("isMoving", canMove);
+        }
+
         switch (GameControl.control.currentCharacterState)
         {
             case CharacterState.Normal:
@@ -486,21 +515,6 @@ public class characterControl : OverworldObject {
                 UpdateDefeat(); break;
         }
 
-        // set values for animator to determine movement/idle animations
-        if (canMove)
-        {
-            anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
-            anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
-            anim.SetBool("isMoving", isMoving);
-			if(GameControl.control.currentCharacter == HeroCharacter.JETHRO)
-                anim.SetFloat ("isCarry", System.Convert.ToSingle(isCarrying));
-            anim.SetFloat("lastHSpeed", lastMovement.x);
-            anim.SetFloat("lastVSpeed", lastMovement.y);
-        }
-        else
-        {
-            anim.SetBool("isMoving", canMove);
-        }
     }
     
     void EnterRoom(Vector2 startPos, Vector2 endPos)
