@@ -59,12 +59,24 @@ public class OverworldObject : MonoBehaviour {
 
     private InteractionNotification interactionNotification;
     public InteractionNotification InteractionNotification { get { return interactionNotification; } set { interactionNotification = value; } }
-    public void HideInteractionNotification()
+
+    public void ShowInteractionNotification(string message)
     {
-        if (interactionNotification != null)
+        if(interactionNotification == null)
         {
-            Destroy(interactionNotification.gameObject);
-            interactionNotification = null;
+            interactionNotification = GameControl.UIManager.ShowInteractionNotification(transform, message);
+        }
+        else
+        {
+            interactionNotification.GetComponent<Animator>().Play("FadeIn");
         }
     }
+    public void HideInteractionNotification()
+    {
+        //if (interactionNotification != null)
+        //{
+            interactionNotification.GetComponent<Animator>().Play("FadeOut");
+            //interactionNotification = null;
+        //}
+    }    
 }

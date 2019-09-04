@@ -65,6 +65,8 @@ public class characterControl : OverworldObject {
     public enum HeroCharacter { JETHRO, COLE, ELEANOR, JOULIETTE }
     public List<RuntimeAnimatorController> heroAnimators;
 
+    InteractionNotification gatewayNotification;
+
     // Use this for initialization
     new void Start () {
 
@@ -103,6 +105,16 @@ public class characterControl : OverworldObject {
                 StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
             }
+            else
+            {
+                if (gatewayNotification == null)
+                    gatewayNotification = GameControl.UIManager.ShowInteractionNotification(currentGateway.transform, "Enter");
+                else
+                {
+                    gatewayNotification.Init(currentGateway.transform, "Enter");
+                    gatewayNotification.GetComponent<Animator>().Play("FadeIn");
+                }
+            }
         }
 
         if (other.GetComponent<NPCDialogue>())
@@ -121,9 +133,11 @@ public class characterControl : OverworldObject {
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.GetComponent<Gateway>())
+        if (collision.GetComponent<Gateway>())
+        {
             isInGateway = false;
-
+            gatewayNotification.GetComponent<Animator>().Play("FadeOut");
+        }
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
         if (collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
         {
@@ -181,8 +195,7 @@ public class characterControl : OverworldObject {
                 // FOR NOW, we just changed the color
                 //GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
 
-                GameControl.control.currentNPC.GetComponentInParent<OverworldObject>().InteractionNotification =
-                    GameControl.UIManager.ShowInteractionNotification(GameControl.control.currentNPC.transform, "Talk");
+                GameControl.control.currentNPC.GetComponentInParent<OverworldObject>().ShowInteractionNotification("Talk");
             }
         }
         // if no NPC was passed in, then there's no one we can talk to

@@ -7,6 +7,7 @@ public class InteractionNotification : MonoBehaviour {
 
     Transform transformToFollow;
     Vector3 yPos;
+    float yOffset = 1f;
     public Image image;
     public Text message;
 
@@ -14,8 +15,9 @@ public class InteractionNotification : MonoBehaviour {
     {
         
         transformToFollow = newTransform;
-        var box = newTransform.GetComponent<BoxCollider2D>();
-        yPos = new Vector3(0, box.size.y/2f);
+        //var box = newTransform.GetComponent<BoxCollider2D>();
+        //yPos = new Vector3(0, box.size.y/2f);
+        yPos = new Vector3(0, yOffset);
         message.text = newText;
     }
     
