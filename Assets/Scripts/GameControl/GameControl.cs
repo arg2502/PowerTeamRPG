@@ -132,7 +132,7 @@ public class GameControl : MonoBehaviour {
     public NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
     public NPCPathwalkControl CurrentNPCPathwalk { get { return currentNPC.GetComponentInParent<NPCPathwalkControl>(); } }
 	public StationaryNPCControl CurrentStationaryNPC { get { return currentNPC.GetComponentInParent<StationaryNPCControl>(); } }
-    public ShopKeeperDialogue CurrentShopkeeper { get { return currentNPC.GetComponent<ShopKeeperDialogue>(); } }
+    public NPCShopKeeper CurrentShopkeeper { get { return currentNPC.GetComponentInParent<NPCShopKeeper>(); } }
 
     public AudioClip battleIntro;
     public AudioClip battleLoop;

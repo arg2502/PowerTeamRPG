@@ -136,7 +136,7 @@ public class characterControl : OverworldObject {
         if (collision.GetComponent<Gateway>())
         {
             isInGateway = false;
-            gatewayNotification.GetComponent<Animator>().Play("FadeOut");
+            gatewayNotification.GetComponent<Animator>()?.Play("FadeOut");
         }
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
         if (collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))

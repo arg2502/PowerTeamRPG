@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopKeeperDialogue : NPCDialogue {
+public class NPCShopKeeper : StationaryNPCControl {
 
     public TextAsset commentList;
     public List<ScriptableItem> shopInventory;    
@@ -24,6 +24,13 @@ public class ShopKeeperDialogue : NPCDialogue {
     
     public Dictionary<ScriptableItem, int> customItemPrices;
     
+    public string npcName { get { return GetComponentInChildren<NPCDialogue>().npcName; } }
+    public Sprite neutralSpr { get { return GetComponentInChildren<NPCDialogue>().neutralSpr; } }
+    public Sprite happySpr { get { return GetComponentInChildren<NPCDialogue>().happySpr; } }
+    public Sprite sadSpr { get { return GetComponentInChildren<NPCDialogue>().sadSpr; } }
+    public Sprite angrySpr { get { return GetComponentInChildren<NPCDialogue>().angrySpr; } }
+
+
     private new void Start()
     {
         base.Start();
@@ -104,5 +111,10 @@ public class ShopKeeperDialogue : NPCDialogue {
             return (int)(Mathf.Ceil(s_item.value * miscPer));
         else
             return -1;
+    }
+
+    public void StartDialogue()
+    {
+        GetComponentInChildren<NPCDialogue>().StartDialogue();
     }
 }

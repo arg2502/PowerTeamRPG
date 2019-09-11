@@ -26,7 +26,7 @@
         enum PurchaseState { BUY, SELL }
         PurchaseState currentPurchaseState;
 
-        ShopKeeperDialogue currentShopkeeper;
+        NPCShopKeeper currentShopkeeper;
 
         protected override void AddButtons()
         {
@@ -84,7 +84,7 @@
             Refresh();
         }
 
-        public void SetShopkeeper(ShopKeeperDialogue skd)
+        public void SetShopkeeper(NPCShopKeeper skd)
         {
             currentShopkeeper = skd;
         }
