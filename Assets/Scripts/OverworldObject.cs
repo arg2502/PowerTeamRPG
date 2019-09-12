@@ -60,7 +60,7 @@ public class OverworldObject : MonoBehaviour {
     private InteractionNotification interactionNotification;
     public InteractionNotification InteractionNotification { get { return interactionNotification; } set { interactionNotification = value; } }
 
-    public void ShowInteractionNotification(string message)
+    public virtual void ShowInteractionNotification(string message)
     {
         if(interactionNotification == null)
         {

@@ -96,5 +96,10 @@ public class TreasureChest : NPCObject
             GameControl.control.AddItem(chestItems[i].item, chestItems[i].quantity);
         }
     }
-    
+
+    public override void ShowInteractionNotification(string message)
+    {
+        message = "Open";
+        base.ShowInteractionNotification(message);
+    }
 }

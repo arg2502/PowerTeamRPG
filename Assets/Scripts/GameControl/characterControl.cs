@@ -57,7 +57,7 @@ public class characterControl : OverworldObject {
     Vector2 desiredPos;
     UnityEvent OnDesiredPos;
     Gateway currentGateway;
-    bool isInGateway;
+    bool canEnterDoor;
     CameraController myCamera;
 
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
@@ -98,7 +98,6 @@ public class characterControl : OverworldObject {
         // for transition between areas
         if (other.GetComponent<Gateway>() && GameControl.control.currentCharacterState == CharacterState.Normal)
         {
-            isInGateway = true;
             currentGateway = other.GetComponent<Gateway>();
             if(currentGateway.gatewayType != Gateway.Type.DOOR) // handle door transition in update
             {
@@ -107,12 +106,22 @@ public class characterControl : OverworldObject {
             }
             else
             {
-                if (gatewayNotification == null)
-                    gatewayNotification = GameControl.UIManager.ShowInteractionNotification(currentGateway.transform, "Enter");
-                else
+                // get direction
+                if (IsFacingDoor())
                 {
-                    gatewayNotification.Init(currentGateway.transform, "Enter");
-                    gatewayNotification.GetComponent<Animator>().Play("FadeIn");
+                    canEnterDoor = true;
+                    if (gatewayNotification == null)
+                        gatewayNotification = GameControl.UIManager.ShowInteractionNotification(currentGateway.transform, "Enter");
+                    else
+                    {
+                        gatewayNotification.Init(currentGateway.transform, "Enter");
+                        gatewayNotification.GetComponent<Animator>().Play("FadeIn");
+                    }
+                }   
+                else if (canEnterDoor && !IsFacingDoor())
+                {
+                    canEnterDoor = false;
+                    gatewayNotification?.GetComponent<Animator>()?.Play("FadeOut");
                 }
             }
         }
@@ -129,14 +138,19 @@ public class characterControl : OverworldObject {
         {
             canCarry = false;
         }
+
+        if(other.tag == "Movable")
+        {
+            print("MOVABLE");
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.GetComponent<Gateway>())
         {
-            isInGateway = false;
-            gatewayNotification.GetComponent<Animator>()?.Play("FadeOut");
+            canEnterDoor = false;
+            gatewayNotification?.GetComponent<Animator>()?.Play("FadeOut");
         }
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
         if (collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
@@ -297,7 +311,7 @@ public class characterControl : OverworldObject {
 
         if (Input.GetButtonDown("Submit"))
         {
-            if (isInGateway && currentGateway?.gatewayType == Gateway.Type.DOOR)
+            if (canEnterDoor && currentGateway?.gatewayType == Gateway.Type.DOOR)
             {
                 StartCoroutine(myCamera.Fade());
                 ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
@@ -675,5 +689,13 @@ public class characterControl : OverworldObject {
     {
         GetComponent<Animator>().runtimeAnimatorController = heroAnimators[GameControl.control.currentCharacterInt];
         walkSpeed = characterSpeeds[GameControl.control.currentCharacterInt];
+    }
+
+    bool IsFacingDoor()
+    {
+        return (lastMovement.y > 0 && currentGateway.direction == Gateway.Direction.North)
+                    || (lastMovement.y < 0 && currentGateway.direction == Gateway.Direction.South)
+                    || (lastMovement.x > 0 && currentGateway.direction == Gateway.Direction.West)
+                    || (lastMovement.x < 0 && currentGateway.direction == Gateway.Direction.East);
     }
 }

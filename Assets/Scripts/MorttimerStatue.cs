@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MorttimerStatue : NPCDialogue
+public class MorttimerStatue : StationaryNPCControl
 {
     //Used to change the statue's orientation
     public bool flip = false;
@@ -44,5 +44,12 @@ public class MorttimerStatue : NPCDialogue
         GameControl.control.Save();
 
     }
-    
+
+    public override void ShowInteractionNotification(string message)
+    {
+        message = "Pray";
+
+        base.ShowInteractionNotification(message);
+    }
+
 }
