@@ -39,6 +39,7 @@ public class characterControl : OverworldObject {
 	MovableOverworldObject carriedObject;
 	bool isCarrying = false;
     bool canCarry = true;
+    MovableOverworldObject readyForPickup;
 
     // Eleanor -- Hidden
     List<HiddenObject> hiddenObjFound;
@@ -139,9 +140,39 @@ public class characterControl : OverworldObject {
             canCarry = false;
         }
 
-        if(other.tag == "Movable")
+        if (other.transform.parent.tag == "Movable")
         {
-            print("MOVABLE");
+            if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
+            {
+                //If the player is not carrying an object, check for one
+                if (!isCarrying && canCarry)
+                {
+                    //create a box cast specifically for picking up objects, as per Alec's request
+                    Vector2 direction = lastMovement;
+                    direction.Normalize();
+                    direction *= moveSpeed * Time.deltaTime;
+                    hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
+
+                    if (hit.collider != null && hit.collider.tag == "Movable")
+                    {
+                        if (readyForPickup == null)
+                        {
+                            readyForPickup = hit.transform.GetComponent<MovableOverworldObject>();
+                            readyForPickup.ShowInteractionNotification("Pick Up");
+                        }
+                    }
+                    else
+                    {
+                        readyForPickup?.HideInteractionNotification();
+                        readyForPickup = null;
+                    }
+                }
+            }
+            else
+            {
+                readyForPickup?.HideInteractionNotification();
+                readyForPickup = null;
+            }
         }
     }
 
@@ -379,19 +410,22 @@ public class characterControl : OverworldObject {
                     if (!isCarrying && canCarry)
                     {
                         //create a box cast specifically for picking up objects, as per Alec's request
-                        Vector2 direction = lastMovement;
-                        direction.Normalize();
-                        direction *= moveSpeed * Time.deltaTime;
-                        hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
+                        //Vector2 direction = lastMovement;
+                        //direction.Normalize();
+                        //direction *= moveSpeed * Time.deltaTime;
+                        //hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
 
-                        if (hit.collider != null && hit.collider.tag == "Movable")
+                        //if (hit.collider != null && hit.collider.tag == "Movable")
+                        if(readyForPickup != null)
                         {
                             //if it hits one, move the object to the position above Jethro's head and set iscarried to true
                             isCarrying = true;
                             //disable the object's collider, so it doesn't hinder movement
-                            hit.collider.enabled = false;
+                            readyForPickup.GetComponent<Collider2D>().enabled = false;
+                            readyForPickup.HideInteractionNotification();
                             //set carried object to the object we are picking up
-                            carriedObject = hit.collider.GetComponent<MovableOverworldObject>();
+                            carriedObject = readyForPickup;
+                            readyForPickup = null;
                             carriedObject.isCarried = true; // set the object's isCarried to true
                                                             //Move the object to the position above player's head
                             carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
