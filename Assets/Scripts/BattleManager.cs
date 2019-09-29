@@ -100,10 +100,14 @@ public class BattleManager : MonoBehaviour {
     public AudioClip sfx_miss;
     public AudioClip sfx_menuNav;
     public AudioClip sfx_menuSelect;
+
+    Denigen currentAttacker;
+    List<Denigen> currentTargeted;
     
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
     public List<string> TEST_listOfEnemies;
+    public InteractiveAttack TEST_ia;
 
 	void Start ()
     {
@@ -707,8 +711,11 @@ public class BattleManager : MonoBehaviour {
             EndAttackPhase();
     }
 
-    public IEnumerator ShowAttack(Denigen attacker, List<Denigen> targeted)
+    public IEnumerator InitAttack(Denigen attacker, List<Denigen> targeted)
     {
+        currentAttacker = attacker;
+        currentTargeted = targeted;
+
         // first check if we have failed a flee. If we have, then skip all heroes
         if (IsFleeFailed())
         {
@@ -716,88 +723,119 @@ public class BattleManager : MonoBehaviour {
             yield break;
         }
 
-        if (attacker.IsBlocking)
+        if (currentAttacker.IsBlocking)
         {
             NextAttack();
             yield break;
         }
 
         // show attack
-        DescriptionText.text = attacker.DenigenName + " uses " + attacker.CurrentAttackName;
-        battleCamera.MoveTo(attacker.transform.position);
-        battleCamera.ZoomAttack();
+        DescriptionText.text = currentAttacker.DenigenName + " uses " + currentAttacker.CurrentAttackName;
+        //battleCamera.MoveTo(attacker.transform.position);
+        //battleCamera.ZoomAttack();
 
         // reduce power magic points at the moment of attack
-        attacker.PayPowerMagic();
+        currentAttacker.PayPowerMagic();
 
 
-        if (attacker.attackType == Denigen.AttackType.FAILED)
+        if (currentAttacker.attackType == Denigen.AttackType.FAILED)
         {   
             // if we failed we need to clear any attack values
             // Otherwise, they'll just take effect next time
-            foreach(var t in targeted)
+            foreach(var t in currentTargeted)
             {
                 t.ClearTargetedValues();
             }
 
             yield return new WaitForSeconds(1f);
-            DescriptionText.text = "But " + attacker.DenigenName + " does not have enough PM to perform the technique.\n";
+            DescriptionText.text = "But " + currentAttacker.DenigenName + " does not have enough PM to perform the technique.\n";
             yield return new WaitForSeconds(1.5f);
             NextAttack();
             yield break;
         }
-        
+
 
         // Update UI
-        attacker.statsCard.UpdateStats();
-        
-        
+        currentAttacker.statsCard.UpdateStats();
 
-        var anim = attacker.spriteHolder.GetComponent<Animator>();
-        if (anim != null && !string.IsNullOrEmpty(attacker.AttackAnimation))
+
+        // Somewhere in here is where the interaction with attack will go
+        // there will be a bool function probably like IsAttackInteractive() or some shit
+        // if true, start coroutine for that specific interaction
+        // Instead of redoing the calc damage in the denigen to add if successful,
+        // we're going to affect the damage by percentage depending on how well they did
+        // ex: if they did poorly, calculatedDamage * 0.5f
+        //      if they did good, '' * 1f
+        //      if perfect, '' * 1.5f
+        // etc.
+
+        if (currentAttacker is Hero)
+            BeginInteraction(currentAttacker.CurrentAttackName);
+        else
+            StartCoroutine(ShowAttack());
+    }
+    public void ReturnFromInteraction(int newDamage)
+    {
+        foreach(var t in currentTargeted)
+        {
+            t.CalculatedDamage = newDamage;
+        }
+        StartCoroutine(ShowAttack());
+    }
+    IEnumerator ShowAttack(bool immediately = false)
+    {
+        var anim = currentAttacker.spriteHolder.GetComponent<Animator>();
+        if (anim != null && !string.IsNullOrEmpty(currentAttacker.AttackAnimation))
         {
             // time before and after the animation to give some time to watch the transitions to and from Idle
             var bufferTime = 0.25f;
 
-            yield return new WaitForSeconds(bufferTime);
-            yield return attacker.PlayAttackAnimation();
+            if (immediately)
+            {
+                currentAttacker.PlayAttackAnimation();
+            }
+            else
+            {
+                yield return new WaitForSeconds(bufferTime);
+                yield return currentAttacker.PlayAttackAnimation();
+            }
             Time.timeScale = 1f;
         }
-        else
-        {
-            yield return new WaitForSeconds(1f);
-        }
-        
+        //else
+        //{
+        //    yield return new WaitForSeconds(1f);
+        //}
+
         // we don't need to show any target info if there are no targets
-        if (targeted.Count <= 0)
+        if (currentTargeted.Count <= 0)
         {
             NextAttack();
             yield break;
         }
-        
+
         // show targets being affected by attack/item
-        battleCamera.BackToStart();
-        battleCamera.ZoomTarget();
+        //battleCamera.BackToStart();
+        //battleCamera.ZoomTarget();
 
         // wait for camera to get back
-        yield return new WaitForSeconds(0.25f);
+        //yield return new WaitForSeconds(0.25f);
 
 
         // check if the attacker is using an item to determine which function to perform
-        if (attacker.UsingItem)
-            yield return UseChosenItem(attacker, targeted);
+        if (currentAttacker.UsingItem)
+            yield return UseChosenItem();
         else
-            yield return PerformAttack(attacker, targeted);
+            yield return PerformAttack();
 
-        
+
         NextAttack();
     }
-
-    IEnumerator UseChosenItem(Denigen attacker, List<Denigen> targeted)
+    
+    IEnumerator UseChosenItem()
     {
         // show damage
         var messagesToDisplay = new List<string>();
-        foreach (var target in targeted)
+        foreach (var target in currentTargeted)
         {            
             var healedStatName = "";
             var healedStatValue = 0;
@@ -827,7 +865,7 @@ public class BattleManager : MonoBehaviour {
 			else 
 			{
 				//Status healing items? or statboosting items
-				var _item = ItemDatabase.GetItem("Consumable", attacker.CurrentAttackName) as ScriptableConsumable;
+				var _item = ItemDatabase.GetItem("Consumable", currentAttacker.CurrentAttackName) as ScriptableConsumable;
 				if(_item != null){
 					// Check if this item heals status ailments
 					if (_item.statusChange != ScriptableConsumable.Status.normal){
@@ -871,15 +909,15 @@ public class BattleManager : MonoBehaviour {
 
         DisplayMultiMessage(messagesToDisplay);
         yield return new WaitForSeconds(1f);
-        attacker.UsingItem = false;
+        currentAttacker.UsingItem = false;
     }
 
-    IEnumerator PerformAttack(Denigen attacker, List<Denigen> targeted)
+    IEnumerator PerformAttack()
     {
         // show damage
         messagesToDisplay = new List<string>();
 
-        foreach (var target in targeted)
+        foreach (var target in currentTargeted)
         {
             // if the target has died between targeting and now, ignore him
             if (target.IsDead) continue;
@@ -892,12 +930,12 @@ public class BattleManager : MonoBehaviour {
                 target.Hp = target.HpMax;
 
             // if the attack only changes status effects, we can't block it
-            if (attacker.attackType == Denigen.AttackType.BLOCKED && target.StatusChanged && target.CalculatedDamage <= 0)
-                attacker.attackType = Denigen.AttackType.NORMAL;
+            if (currentAttacker.attackType == Denigen.AttackType.BLOCKED && target.StatusChanged && target.CalculatedDamage <= 0)
+                currentAttacker.attackType = Denigen.AttackType.NORMAL;
 
             //Now record appropriate text
             var message = "";
-            switch (attacker.attackType)
+            switch (currentAttacker.attackType)
             {
                 case Denigen.AttackType.NORMAL:
                     message = "";
@@ -911,13 +949,13 @@ public class BattleManager : MonoBehaviour {
                     PlayBlock();
                     break;
                 case Denigen.AttackType.CRIT:
-                    message = attacker.DenigenName + " hit a weak spot!\n";
+                    message = currentAttacker.DenigenName + " hit a weak spot!\n";
                     target.Flinch();
                     PlayHit();
                     ShowStrikeEffect(target);
                     break;
                 case Denigen.AttackType.MISS:
-                    message = attacker.DenigenName + " missed\n";
+                    message = currentAttacker.DenigenName + " missed\n";
                     PlayMiss();
                     break;
                 case Denigen.AttackType.DODGED:
@@ -943,7 +981,7 @@ public class BattleManager : MonoBehaviour {
             messagesToDisplay.Add(message);
 
             // if the attacker misses, there's no damage to take
-            if (attacker.attackType != Denigen.AttackType.MISS)
+            if (currentAttacker.attackType != Denigen.AttackType.MISS)
             {
                 TakeDamage(target);
             }
@@ -1287,6 +1325,14 @@ public class BattleManager : MonoBehaviour {
     public void PlayMenuSelect()
     {
         GameControl.audioManager.PlaySFX(sfx_menuSelect, randomPitch: false);
+    }
+
+    void BeginInteraction(string attackName)
+    {
+        //print("begin interaction");
+        //StartCoroutine(ShowAttack());
+        var test = GameObject.Instantiate(TEST_ia, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+        test.GetComponent<InteractiveAttack>().Init(currentTargeted[0].CalculatedDamage);
     }
 
 }

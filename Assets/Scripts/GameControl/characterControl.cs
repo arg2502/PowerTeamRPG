@@ -140,7 +140,7 @@ public class characterControl : OverworldObject {
             canCarry = false;
         }
 
-        if (other.transform.parent.tag == "Movable")
+        if (other.transform.parent?.tag == "Movable")
         {
             if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
             {

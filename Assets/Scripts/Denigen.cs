@@ -242,7 +242,7 @@ public class Denigen : MonoBehaviour {
 
         // always called at the end of specific denigens' Attack()s
         // Signals the end of their attack phase
-        StartCoroutine(battleManager.ShowAttack(this, targets));
+        StartCoroutine(battleManager.InitAttack(this, targets));
         
     }
 
