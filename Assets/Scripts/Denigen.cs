@@ -437,7 +437,7 @@ public class Denigen : MonoBehaviour {
         spriteHolder.GetComponent<SpriteRenderer>().sortingOrder = (int)-transform.position.y;
 	}
     
-    public IEnumerator PlayAttackAnimation()
+    public IEnumerator PlayAttackAnimation(float playSpeed = 1f)
     {
         // save denigen's sorting order
         var sr = GetComponentInChildren<SpriteRenderer>();
@@ -447,7 +447,7 @@ public class Denigen : MonoBehaviour {
         GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Attack";
 
         // play attack animation
-        yield return PlayAnimation(attackAnimation);
+        yield return PlayAnimation(attackAnimation, playSpeed);
 
         // set sprite back to original order
         GetComponentInChildren<SpriteRenderer>().sortingLayerName = originalSort;
@@ -463,11 +463,14 @@ public class Denigen : MonoBehaviour {
         yield return PlayAnimation("Flinch");
     }
 
-    IEnumerator PlayAnimation(string animationToPlay)
+    IEnumerator PlayAnimation(string animationToPlay, float speed = 1f)
     {
         var anim = spriteHolder.GetComponent<Animator>();
+        if (speed == 0) speed = 0.01f;
+        anim.speed = speed;
         anim.Play(animationToPlay, -1, 0f);
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorClipInfo(0).Length + 0.25f);
+        yield return new WaitForSeconds((anim.GetCurrentAnimatorClipInfo(0).Length / anim.speed) + 0.25f);
+        anim.speed = 1f;
     }
 
     public bool IsDead

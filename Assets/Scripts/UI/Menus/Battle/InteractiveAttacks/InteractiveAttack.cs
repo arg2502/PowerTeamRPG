@@ -7,14 +7,14 @@ public class InteractiveAttack : MonoBehaviour {
     public enum Quality { MISS, POOR, OKAY, GOOD, GREAT, PERFECT }
     protected Quality quality;
     float damage;
-    BattleManager battleManager;
+    protected BattleManager battleManager;
 
     public void Init(float originalDamage)
     {
         damage = originalDamage;
         battleManager = FindObjectOfType<BattleManager>();
     }
-    protected void Attack(Quality q)
+    protected void Attack(Quality q, bool immediately = false)
     {
         float percentage;
         switch(q)
@@ -28,7 +28,7 @@ public class InteractiveAttack : MonoBehaviour {
         }
 
         damage *= percentage;
-        battleManager.ReturnFromInteraction((int)damage);
+        battleManager.ReturnFromInteraction((int)damage, immediately);
     }
 
 	// Update is called once per frame

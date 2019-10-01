@@ -774,13 +774,13 @@ public class BattleManager : MonoBehaviour {
         else
             StartCoroutine(ShowAttack());
     }
-    public void ReturnFromInteraction(int newDamage)
+    public void ReturnFromInteraction(int newDamage, bool immediately = false)
     {
         foreach(var t in currentTargeted)
         {
             t.CalculatedDamage = newDamage;
         }
-        StartCoroutine(ShowAttack());
+        StartCoroutine(ShowAttack(immediately));
     }
     IEnumerator ShowAttack(bool immediately = false)
     {
@@ -792,7 +792,7 @@ public class BattleManager : MonoBehaviour {
 
             if (immediately)
             {
-                currentAttacker.PlayAttackAnimation();
+                StartCoroutine(currentAttacker.PlayAttackAnimation(2f));
             }
             else
             {
@@ -827,8 +827,8 @@ public class BattleManager : MonoBehaviour {
         else
             yield return PerformAttack();
 
-
-        NextAttack();
+        if (!immediately)
+            NextAttack();
     }
     
     IEnumerator UseChosenItem()
