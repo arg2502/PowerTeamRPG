@@ -1,0 +1,8 @@
+name	emotion	dialogue	responses
+		In every depiction of Morttimer He's blocking His face with his hands. What do you think His face looks like?	Like a Driadali![1]_Like a cool Dragon![1]_Like a Human![4]
+		That would be kinda boring... good thing His face is covered. The mystery is more fun.	
+	HAPPY	Yeah, and His face is like, made out of <b>LAVA</b> or fire or something, and he covers it because its too hot...	
+		What is a 'Human'? What does it look like?	
+Jouliette	HAPPY	It's like a Driadali, but it's ears don't come to a point. They're not real, but they're hideous, just like you...{0.5} but with different ears!	
+	SAD	What?	
+Jethro		Just ignore her. She's making shit up again.	

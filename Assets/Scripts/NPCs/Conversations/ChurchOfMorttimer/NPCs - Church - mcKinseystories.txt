@@ -1,0 +1,15 @@
+name	emotion	dialogue	responses
+		Father McKinsey is a legend amongst the Mortterian Clergy. He is one of the youngest denigens ever to ascend to the title of Father. He has many miraculous deeds on record.	
+		I've witnessed a few of them myself. I can tell you about them, if you're interested...	Mass Exorcism[11]_Nevermind[1]
+	HAPPY	Oh! The story of Father McKinsey's first mass exorcism?! That's a <b>good one</b>. Where to begin....	
+		One day, a number of years ago, everyone in Astrala Proper awoke to find that their Socks had been possessed by moderately malign spirits.	
+	SAD	The spirits turned all woolen socks to cotton, and all cotton socks to wool...	
+	SAD	This was quite upsetting to sock wearing folk, as I'm <b>sure</b> you can imagine.	
+		Father McKinsey,{0.5} then referred to as <b>Brother</b> McKinsey{0.5}, ordered all socks be thrown into a pile in the middle of the Market Square.	
+		Once all of the socks in town had been amassed in the center of market, Father McKinsey got to work...	
+	ANGRY	Repeatedly, he screamed, 'DARN YOU, DARN YOU ALL!!!'	
+		He did this whilst doing the Chasse all the way around the mountain of socks.	
+		All at once, the socks were struck by the Power of <b>Morttimer</b> and they <b>burst</b> into flames!	
+	SAD	When the holy fire died down, we knew that our socks were no longer possessed{0.5}.{0.5}.{0.5}.{0.5} because the socks had been completely reduced to ash.	
+	HAPPY	It was a <b>wonderful day</b>!	
+	SAD	Oh, well... If you ever wish to hear stories of Father McKinsey, you know where to find me.	

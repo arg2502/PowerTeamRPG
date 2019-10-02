@@ -1,0 +1,4 @@
+name	emotion	dialogue	responses
+		The Forest of Sumware is to the West and the Skybound Mountains are to the South.	
+	ANGRY	The <b>East</b>?{0.9} What are you,{0.5} <b>daft</b>?	
+	ANGRY	To the East is the Ocean, you <b>buffoon</b>!	

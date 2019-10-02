@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+	HAPPY	My lover used to slather me in balsamic vinaigrette and put me between two loaves of bread.	
+	SAD	I haven't been happy since!	

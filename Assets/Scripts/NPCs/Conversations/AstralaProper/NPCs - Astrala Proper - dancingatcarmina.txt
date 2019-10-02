@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+	HAPPY	I just love dancing at Carmina Burana’s!	
+		The Nuns give such excellent{0.3}.{0.3}.{0.3}.{0.6} prayer services!	

@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+	SAD	<size=18>Oh my gosh, I think they heard me... please go away...</size>	

@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+	ANGRY	Begone, street-walker! Stop following me!	

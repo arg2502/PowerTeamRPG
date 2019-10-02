@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+		Once I ate a sandwich from a sandy wench by the bay.	
+	ANGRY	Turns out she was an enchantress. Now I am cursed with tomatoes and lettuce that magically appear under my clothes!	
