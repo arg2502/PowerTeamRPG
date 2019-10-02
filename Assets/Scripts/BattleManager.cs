@@ -1332,7 +1332,7 @@ public class BattleManager : MonoBehaviour {
         //print("begin interaction");
         //StartCoroutine(ShowAttack());
         var test = GameObject.Instantiate(TEST_ia, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-        test.GetComponent<InteractiveAttack>().Init(currentTargeted[0].CalculatedDamage);
+        test.GetComponent<IASlider>().Init(currentTargeted[0].CalculatedDamage, 3);
     }
 
 }

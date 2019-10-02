@@ -9,7 +9,7 @@ public class InteractiveAttack : MonoBehaviour {
     float damage;
     protected BattleManager battleManager;
 
-    public void Init(float originalDamage)
+    protected void Init(float originalDamage)
     {
         damage = originalDamage;
         battleManager = FindObjectOfType<BattleManager>();
