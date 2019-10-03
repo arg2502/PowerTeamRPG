@@ -727,6 +727,34 @@ public class GameControl : MonoBehaviour {
         return false;
     }
 
+    public void ShakeCamera(float shakeMagnitude = 0.05f, float shakeTime = 0.3f)
+    {
+        var camera = Camera.main;
+        StartCoroutine(StartCameraShaking(camera, shakeMagnitude, shakeTime));
+    }
+
+    IEnumerator StartCameraShaking(Camera camera, float shakeMagnitude, float shakeTime)
+    {
+        var initialPos = camera.transform.position;
+        float timer = 0.0f;
+        float cameraShakingOffsetX;
+        float cameraShakingOffsetY;
+        
+        while(timer < shakeTime)
+        {
+            cameraShakingOffsetX = UnityEngine.Random.value * shakeMagnitude * 2 - shakeMagnitude;
+            cameraShakingOffsetY = UnityEngine.Random.value * shakeMagnitude * 2 - shakeMagnitude;
+            Vector3 intermediatePos = camera.transform.position;
+            intermediatePos.x += cameraShakingOffsetX;
+            intermediatePos.y += cameraShakingOffsetY;
+            camera.transform.position = intermediatePos;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        camera.transform.position = initialPos;
+    }
+
 }
 
 //this class is where all of our data will be sent in order to be saved

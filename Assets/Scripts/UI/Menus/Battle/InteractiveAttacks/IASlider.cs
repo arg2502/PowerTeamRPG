@@ -64,7 +64,7 @@ public class IASlider : InteractiveAttack {
         float fractionOfJourney = distCovered / journeyLength;
         slider.transform.localPosition = Vector2.Lerp(startTrack, endTrack, fractionOfJourney);
 
-        if(Input.GetButtonDown("Submit"))
+        if(Input.GetButtonDown("Submit") && currentTarget < targets.Count)
         {
             var dist = GetDistance(targets[currentTarget]);
             var textObj = targets[currentTarget].GetComponentInChildren<Text>();

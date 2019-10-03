@@ -9,6 +9,8 @@ public class Jethro : Hero {
 		// attacks specific to the character
 		switch (CurrentAttackName) {
 			case "Helmsplitter":
+            case "Trinity Slice":
+            case "Arc Slash":
                 StartAttack(CurrentAttackName);
 				break;
 		}

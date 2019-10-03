@@ -103,11 +103,12 @@ public class BattleManager : MonoBehaviour {
 
     Denigen currentAttacker;
     List<Denigen> currentTargeted;
-    
+    [Header("Interactive Attacks")]
+    public InteractiveAttack ia_slider;
+
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
     public List<string> TEST_listOfEnemies;
-    public InteractiveAttack TEST_ia;
 
 	void Start ()
     {
@@ -940,6 +941,7 @@ public class BattleManager : MonoBehaviour {
                 case Denigen.AttackType.NORMAL:
                     message = "";
                     target.Flinch();
+                    GameControl.control.ShakeCamera();
                     PlayHit();
                     ShowStrikeEffect(target);
                     break;
@@ -951,6 +953,7 @@ public class BattleManager : MonoBehaviour {
                 case Denigen.AttackType.CRIT:
                     message = currentAttacker.DenigenName + " hit a weak spot!\n";
                     target.Flinch();
+                    GameControl.control.ShakeCamera(0.1f);
                     PlayHit();
                     ShowStrikeEffect(target);
                     break;
@@ -1329,10 +1332,24 @@ public class BattleManager : MonoBehaviour {
 
     void BeginInteraction(string attackName)
     {
-        //print("begin interaction");
-        //StartCoroutine(ShowAttack());
-        var test = GameObject.Instantiate(TEST_ia, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-        test.GetComponent<IASlider>().Init(currentTargeted[0].CalculatedDamage, 3);
+        InteractiveAttack ia;
+        switch(attackName)
+        {            
+            case "Helmsplitter":
+            case "Arc Slash": // temp
+                ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+                ia.GetComponent<IASlider>().Init(currentTargeted[0].CalculatedDamage);
+                break;
+            case "Trinity Slice":
+                ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+                ia.GetComponent<IASlider>().Init(currentTargeted[0].CalculatedDamage, 3);
+                break;
+            default:
+                StartCoroutine(ShowAttack());
+                break;
+
+        }
+        
     }
 
 }
