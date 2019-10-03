@@ -1,0 +1,43 @@
+﻿# Tiled2Unity generated file. Do not modify by hand.
+# Wavefront file for 'CatacombEntrance_mesh_0007.obj'
+
+# Vertices (Count = 16)
+v -10 -3 0
+v -11 -3 0
+v -11 -2 0
+v -10 -2 0
+v -1 -3 0
+v -2 -3 0
+v -2 -2 0
+v -1 -2 0
+v -10 -4 0
+v -11 -4 0
+v -11 -3 0
+v -10 -3 0
+v -1 -4 0
+v -2 -4 0
+v -2 -3 0
+v -1 -3 0
+
+# Texture cooridinates (Count = 8)
+vt 0.1641414 0.5025252
+vt 0.002525253 0.5025252
+vt 0.002525253 0.6641414
+vt 0.1641414 0.6641414
+vt 0.1641414 0.3358586
+vt 0.002525253 0.3358586
+vt 0.002525253 0.4974747
+vt 0.1641414 0.4974747
+
+# Normal
+vn 0 0 -1
+
+# Mesh description
+g CatacombEntrance_mesh_0007
+
+# Faces
+f 1/1/1 2/2/1 3/3/1 4/4/1
+f 5/2/1 6/1/1 7/4/1 8/3/1
+f 9/5/1 10/6/1 11/7/1 12/8/1
+f 13/6/1 14/5/1 15/8/1 16/7/1
+

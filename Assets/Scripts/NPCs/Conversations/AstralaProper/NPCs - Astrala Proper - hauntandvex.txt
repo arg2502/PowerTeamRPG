@@ -1,2 +1,2 @@
-name	emotion	dialogue	responses
-	SAD	I know they protect the innocent, but the gray walls of the arbiter’s guild haunt and vex me.	
+﻿name	emotion	dialogue	responses
+	SAD	I know the Arbiters protect the innocent, but the gray walls of the Arbiters' Guild haunt and vex me.	
