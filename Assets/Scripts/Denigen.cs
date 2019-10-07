@@ -672,8 +672,42 @@ public class Denigen : MonoBehaviour {
             // ex: dmg = 0.1; MgkDef = 10; result: Change = -1; new MgkDef = 9;
             // next: dmg = 0.1; MgkDef = 9; result: Change = -0.9; new MgkDef = 8.1 (round to 8)
             target.StatChanged = stat;
-            target.statChangeInt = -(int)(damage / 100f * target.MgkDef);
-            target.MgkDefChange += target.statChangeInt;
+            StatEffectChange(target, damage);
+        }
+    }
+
+    void StatEffectChange(Denigen d, float damage)
+    {
+        switch (d.StatChanged)
+        {
+            case "ATK":                
+                d.statChangeInt = -(int)(damage / 100f * d.Atk);
+                d.AtkChange += d.statChangeInt;
+                break;
+            case "DEF":
+                d.statChangeInt = -(int)(damage / 100f * d.Def);
+                d.DefChange += d.statChangeInt;
+                break;
+            case "MGKATK":
+                d.statChangeInt = -(int)(damage / 100f * d.MgkAtk);
+                d.MgkAtkChange += d.statChangeInt;
+                break;
+            case "MGKDEF":
+                d.statChangeInt = -(int)(damage / 100f * d.MgkDef);
+                d.MgkDefChange += d.statChangeInt;
+                break;
+            case "EVASION":
+                d.statChangeInt = -(int)(damage / 100f * d.Evasion);
+                d.EvasionChange += d.statChangeInt;
+                break;
+            case "LUCK":
+                d.statChangeInt = -(int)(damage / 100f * d.Luck);
+                d.LuckChange += d.statChangeInt;
+                break;
+            case "SPD":
+                d.statChangeInt = -(int)(damage / 100f * d.Spd);
+                d.SpdChange += d.statChangeInt;
+                break;
         }
     }
 
