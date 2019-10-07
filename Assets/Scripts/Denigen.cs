@@ -197,6 +197,8 @@ public class Denigen : MonoBehaviour {
     int bleedDamage = 2; // NOT FINAL
     int infectionDamage = 2; // NOT FINAL
 
+    private bool canMissOrDodge;
+    public bool CanMissOrDodge { get { return canMissOrDodge; } set { canMissOrDodge = value; } }
 
     // Use this for initialization
 	protected void Awake () {
@@ -272,13 +274,17 @@ public class Denigen : MonoBehaviour {
             var halfAccuracy = accuracy * 0.5f;
             accuracy -= halfAccuracy;
         }
-        // if attack misses, exit early
-        float num = Random.Range(0.0f, 1.0f);
-        if (num > accuracy)
+        float num;
+        if (canMissOrDodge)
         {
-            calcDamageText.Add("The attack misses...");
-            attackType = AttackType.MISS;
-            return 0.0f;
+            // if attack misses, exit early
+            num = Random.Range(0.0f, 1.0f);
+            if (num > accuracy)
+            {
+                calcDamageText.Add("The attack misses...");
+                attackType = AttackType.MISS;
+                return 0.0f;
+            }
         }
         int atkStat;
         // if its a magic attack, use magic variables
@@ -337,17 +343,19 @@ public class Denigen : MonoBehaviour {
     //Made public to allow other denigens to deal damage
     public void TakeDamage(Denigen attackingDen, float damage, bool isMagic)
     {
-        // attempt to dodge the attack
-        var randomDodge = Random.value;
-		//add the evasion change stat to account for in-battle stat changes
-        //float chance = Mathf.Pow(Evasion, 2.0f / 3.0f);
-		float chance = Mathf.Pow((Evasion + evasionChange), 2.0f / 3.0f);
-        chance /= 100f;
-        if (randomDodge <= chance)
+        if (canMissOrDodge)
         {
-            calculatedDamage = 0;
-            attackingDen.attackType = AttackType.DODGED;
-            return;
+            // attempt to dodge the attack
+            var randomDodge = Random.value;
+            //add the evasion change stat to account for in-battle stat changes
+            float chance = Mathf.Pow((Evasion + evasionChange), 2.0f / 3.0f);
+            chance /= 100f;
+            if (randomDodge <= chance)
+            {
+                calculatedDamage = 0;
+                attackingDen.attackType = AttackType.DODGED;
+                return;
+            }
         }
 
         // use stat based on if magic or physical
@@ -649,6 +657,26 @@ public class Denigen : MonoBehaviour {
         target.MarkAsStatusChanged(DenigenData.Status.normal);
     }
     
+    // TODO: incorporate percentage into parameters
+    protected void StatEffect(string stat, float percentage = 0f)
+    {
+        var tech = GameControl.skillTreeManager.FindTechnique(Data, CurrentAttackName);
+
+        foreach (var target in targets)
+        {
+            var damage = (percentage == 0f) ? tech.Damage : percentage;
+            
+            //target.CalculatedDamage = 0;
+
+            // set the magic defense change to a percentage of current MgkDef based off of damage
+            // ex: dmg = 0.1; MgkDef = 10; result: Change = -1; new MgkDef = 9;
+            // next: dmg = 0.1; MgkDef = 9; result: Change = -0.9; new MgkDef = 8.1 (round to 8)
+            target.StatChanged = stat;
+            target.statChangeInt = -(int)(damage / 100f * target.MgkDef);
+            target.MgkDefChange += target.statChangeInt;
+        }
+    }
+
     protected void DazeTarget()
     {
         targets[0].calculatedDamage = 0;

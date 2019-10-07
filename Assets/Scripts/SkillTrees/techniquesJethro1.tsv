@@ -1,7 +1,7 @@
 Key	Name	Description	Cost	Power Magic	Damage	Crit Chance	Accuracy	Column Pos	Row Pos	Level	Target Type
 helmsplitter	Helmsplitter	A powerful sword strike from above.	1	2	75	3	90	2	0		1
 trinitySlice	Trinity Slice	Rapidly slash an opponent three times.	1	6	40	5	80	1	0		1
-arcSlash	Arc Slash	A wide swing striking a row of opponents.	2	9	50	5	100	0	0		2
+arcSlash	Arc Slash	A wide swing striking a row of opponents.	2	9	50	5	100	0	0		3
 siegeBreaker	Siege Breaker	Boosts all damage output at lower health. +5% at <50% hp, +10 at <25%, +15% at <12.5%.	1	0	0	0	100	1	1		0
 frostEdge	Frost Edge	Increase chance of critical hit by 15% for 2 turns.	1	7	0	0	100	1	2		7
 mordstreich	Mordstreich	Jump into the air for a deadly sword thrust.	1	15	75	60	60	0	2		1

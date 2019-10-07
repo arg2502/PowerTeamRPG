@@ -17,9 +17,12 @@ public class IASlider : InteractiveAttack {
     Vector2 endTrack;
     float perfectRange, greatRange, goodRange, okayRange, poorRange;
     int currentTarget = 0;
+    Denigen currentAttacker;
 
-    public void Init(float damage, int numOfAttacks = 1) {
+    public void Init(Denigen attacker, float damage, int numOfAttacks = 1) {
         base.Init(damage);
+
+        currentAttacker = attacker;
 
         var startTrackX = slider.transform.localPosition.x;
         var endTrackX = Mathf.Abs(startTrackX);
@@ -55,11 +58,17 @@ public class IASlider : InteractiveAttack {
         {
             var newTarget = Instantiate(targetPrefab, track.transform);
             newTarget.transform.localPosition = new Vector2(xPosList[i], 0f);
+
+            // determine size of target based on accuracy of the attack
+            float acc = currentAttacker.CurrentAttack.Accuaracy;
+            newTarget.GetComponent<RectTransform>().sizeDelta *= acc/100f;
             targets.Add(newTarget);
         }
     }
 	// Update is called once per frame
-	new void Update () {
+	new void Update () {        
+        // if dazed
+        //speed += Random.Range(-50, 50);
         float distCovered = (Time.time - startTime) * speed;
         float fractionOfJourney = distCovered / journeyLength;
         slider.transform.localPosition = Vector2.Lerp(startTrack, endTrack, fractionOfJourney);

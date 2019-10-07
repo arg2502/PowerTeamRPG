@@ -759,26 +759,17 @@ public class BattleManager : MonoBehaviour {
         // Update UI
         currentAttacker.statsCard.UpdateStats();
 
-
-        // Somewhere in here is where the interaction with attack will go
-        // there will be a bool function probably like IsAttackInteractive() or some shit
-        // if true, start coroutine for that specific interaction
-        // Instead of redoing the calc damage in the denigen to add if successful,
-        // we're going to affect the damage by percentage depending on how well they did
-        // ex: if they did poorly, calculatedDamage * 0.5f
-        //      if they did good, '' * 1f
-        //      if perfect, '' * 1.5f
-        // etc.
-
         if (currentAttacker is Hero)
-            BeginInteraction(currentAttacker.CurrentAttackName);
+            BeginInteraction();
         else
             StartCoroutine(ShowAttack());
     }
     public void ReturnFromInteraction(int newDamage, bool immediately = false)
     {
+        currentAttacker.CanMissOrDodge = false;
         foreach(var t in currentTargeted)
         {
+            t.CanMissOrDodge = false;
             t.CalculatedDamage = newDamage;
         }
         StartCoroutine(ShowAttack(immediately));
@@ -1045,6 +1036,7 @@ public class BattleManager : MonoBehaviour {
         }
 
         target.statsCard.UpdateStats();
+        target.CalculatedDamage = 0;
     }
 
     void ShowDamage(Denigen target, int damage)
@@ -1330,19 +1322,24 @@ public class BattleManager : MonoBehaviour {
         GameControl.audioManager.PlaySFX(sfx_menuSelect, randomPitch: false);
     }
 
-    void BeginInteraction(string attackName)
+    void BeginInteraction()
     {
+        currentAttacker.CanMissOrDodge = true;
+        foreach (var t in currentTargeted)
+            t.CanMissOrDodge = true;
+
         InteractiveAttack ia;
-        switch(attackName)
+        switch(currentAttacker.CurrentAttackName)
         {            
             case "Helmsplitter":
             case "Arc Slash": // temp
+            case "Riser": // temp
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IASlider>().Init(currentTargeted[0].CalculatedDamage);
+                ia.GetComponent<IASlider>().Init(currentAttacker, currentTargeted[0].CalculatedDamage);
                 break;
             case "Trinity Slice":
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IASlider>().Init(currentTargeted[0].CalculatedDamage, 3);
+                ia.GetComponent<IASlider>().Init(currentAttacker, currentTargeted[0].CalculatedDamage, 3);
                 break;
             default:
                 StartCoroutine(ShowAttack());
