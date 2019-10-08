@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InteractiveAttack : MonoBehaviour {
 
@@ -48,8 +49,28 @@ public class InteractiveAttack : MonoBehaviour {
         battleManager.ReturnFromInteraction((int)damage, immediately);
     }
 
-	// Update is called once per frame
-	protected void Update () {
+    protected void SetAttack(GameObject target, Quality quality, bool immediately = false)
+    {
+        var textObj = target.GetComponentInChildren<Text>(true);
+        textObj.gameObject.SetActive(true);
+        string text;
+        switch (quality)
+        {
+            case Quality.PERFECT: text = "PERFECT"; break;
+            case Quality.GREAT: text = "GREAT"; break;
+            case Quality.GOOD: text = "GOOD"; break;
+            case Quality.OKAY: text = "OKAY"; break;
+            case Quality.POOR: text = "POOR"; break;
+            case Quality.MISS: text = "MISS"; break;
+            default: text = ""; break;
+        }
+        textObj.text = text;
+        //currentTarget++;
+        Attack(quality, immediately);
+    }
+
+    // Update is called once per frame
+    protected void Update () {
 		
 	}
 }

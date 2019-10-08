@@ -71,11 +71,12 @@ public class IASlider : InteractiveAttack {
             var dist = GetDistance(targets[currentTarget]);
             var textObj = targets[currentTarget].GetComponentInChildren<Text>();
             
-            if (dist <= perfectRange) { SetAttack(targets[currentTarget], Quality.PERFECT); }
-            else if (dist <= greatRange) { SetAttack(targets[currentTarget], Quality.GREAT); }
-            else if (dist <= goodRange) { SetAttack(targets[currentTarget], Quality.GOOD); }
-            else if (dist <= okayRange) { SetAttack(targets[currentTarget], Quality.OKAY); }
-            else if (dist <= poorRange) { SetAttack(targets[currentTarget], Quality.POOR); }
+            if (dist <= perfectRange) { SetAttack(targets[currentTarget], Quality.PERFECT, true); currentTarget++; }
+            else if (dist <= greatRange) { SetAttack(targets[currentTarget], Quality.GREAT, true); currentTarget++; }
+            else if (dist <= goodRange) { SetAttack(targets[currentTarget], Quality.GOOD, true); currentTarget++; }
+            else if (dist <= okayRange) { SetAttack(targets[currentTarget], Quality.OKAY, true); currentTarget++; }
+            else if (dist <= poorRange) { SetAttack(targets[currentTarget], Quality.POOR, true); currentTarget++; }
+
         }
 
         // past the target
@@ -99,23 +100,5 @@ public class IASlider : InteractiveAttack {
         return Mathf.Abs(slider.transform.localPosition.x - target.transform.localPosition.x);
     }
 
-    void SetAttack(GameObject target, Quality quality)
-    {
-        var textObj = target.GetComponentInChildren<Text>(true);
-        textObj.gameObject.SetActive(true);
-        string text;
-        switch (quality)
-        {
-            case Quality.PERFECT: text = "PERFECT"; break;
-            case Quality.GREAT: text = "GREAT"; break;
-            case Quality.GOOD: text = "GOOD"; break;
-            case Quality.OKAY: text = "OKAY"; break;
-            case Quality.POOR: text = "POOR"; break;
-            case Quality.MISS: text = "MISS"; break;
-            default: text = ""; break;
-        }
-        textObj.text = text;
-        currentTarget++;
-        Attack(quality, true);
-    }
+    
 }

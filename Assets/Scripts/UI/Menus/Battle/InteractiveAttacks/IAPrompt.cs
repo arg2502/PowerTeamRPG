@@ -11,6 +11,10 @@ public class IAPrompt : InteractiveAttack {
     public GameObject promptPrefab;
     List<GameObject> promptObjs;
 
+    float timer = 0.0f;
+    float timeLimit = 5.0f;
+    public UnityEngine.UI.Text timerText;
+
 	public void Init(float damage, int promptCount = 3)
     {
         base.Init(damage);
@@ -35,13 +39,17 @@ public class IAPrompt : InteractiveAttack {
 
             promptObjs.Add(obj);
         }
+        timerText.text = timer.ToString();
     }
 
     private new void Update()
     {
-        if(currentButton < currentButtonPrompts.Count)
+        if(currentButton < currentButtonPrompts.Count
+            && timer < timeLimit)
         {
-            if(Input.GetButtonDown(currentButtonPrompts[currentButton]))
+            timer += Time.deltaTime;
+            timerText.text = timer.ToString();
+            if (Input.GetButtonDown(currentButtonPrompts[currentButton]))
             {
                 promptObjs[currentButton].SetActive(false);
                 currentButton++;
@@ -49,7 +57,22 @@ public class IAPrompt : InteractiveAttack {
         }
         else
         {
-            Attack(Quality.PERFECT);
+            print(timer);
+            Quality quality;
+            if (timer < timeLimit / 5f)
+                quality = Quality.PERFECT;
+            else if (timer < timeLimit * 2f / 5f)
+                quality = Quality.GREAT;
+            else if (timer < timeLimit * 3f / 5f)
+                quality = Quality.GOOD;
+            else if (timer < timeLimit * 4f / 5f)
+                quality = Quality.OKAY;
+            else if (timer < timeLimit)
+                quality = Quality.POOR;
+            else
+                quality = Quality.MISS;
+
+            SetAttack(parentRectTransform, quality);
             Destroy(gameObject);
         }
     }

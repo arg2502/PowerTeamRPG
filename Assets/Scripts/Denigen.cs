@@ -363,12 +363,12 @@ public class Denigen : MonoBehaviour {
         if (isMagic)
         {
 			//add the change stat to account for in-battle stat changes
-			defStat = MgkDef + mgkDefChange;
+			defStat = MgkDef;
         }
         else
         {
 			//add the change stat to account for in-battle stat changes
-			defStat = Def + defChange;
+			defStat = Def;
         }
 
         // reduce damage by half the defensive stat
