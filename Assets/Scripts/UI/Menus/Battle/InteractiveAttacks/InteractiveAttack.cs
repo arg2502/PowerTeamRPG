@@ -8,12 +8,29 @@ public class InteractiveAttack : MonoBehaviour {
     protected Quality quality;
     float damage;
     protected BattleManager battleManager;
+    protected List<float> xPosList;
+    public GameObject parentRectTransform;
 
     protected void Init(float originalDamage)
     {
         damage = originalDamage;
         battleManager = FindObjectOfType<BattleManager>();
+
+        
     }
+
+    protected void CreatePositionsOnLine(int num)
+    {
+        xPosList = new List<float>();
+        var rect = parentRectTransform.GetComponent<RectTransform>().rect;
+        switch (num)
+        {
+            case 1: xPosList = new List<float>() { 0f }; break;
+            case 2: xPosList = new List<float>() { -rect.width / 6f, rect.width / 6f }; break;
+            case 3: xPosList = new List<float>() { -rect.width / 4f, 0f, rect.width / 4f }; break;
+        }
+    }
+
     protected void Attack(Quality q, bool immediately = false)
     {
         float percentage;

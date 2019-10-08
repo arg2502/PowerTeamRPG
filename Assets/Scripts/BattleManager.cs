@@ -105,6 +105,7 @@ public class BattleManager : MonoBehaviour {
     List<Denigen> currentTargeted;
     [Header("Interactive Attacks")]
     public InteractiveAttack ia_slider;
+    public InteractiveAttack ia_prompt;
 
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
@@ -1340,6 +1341,14 @@ public class BattleManager : MonoBehaviour {
             case "Trinity Slice":
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
                 ia.GetComponent<IASlider>().Init(currentAttacker, currentTargeted[0].CalculatedDamage, 3);
+                break;
+            case "Pivot Kick":
+                ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+                ia.GetComponent<IAPrompt>().Init(currentTargeted[0].CalculatedDamage);
+                break;
+            case "Scorpio Jolt":
+                ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+                ia.GetComponent<IAPrompt>().Init(currentTargeted[0].CalculatedDamage, 2);
                 break;
             default:
                 StartCoroutine(ShowAttack());

@@ -21,6 +21,7 @@ public class IASlider : InteractiveAttack {
 
     public void Init(Denigen attacker, float damage, int numOfAttacks = 1) {
         base.Init(damage);
+        CreatePositionsOnLine(numOfAttacks);
 
         currentAttacker = attacker;
 
@@ -44,15 +45,7 @@ public class IASlider : InteractiveAttack {
 
 	}
 	void CreateTargets(int numOfAttacks)
-    {
-        List<float> xPosList = new List<float>();
-        var trackRect = track.GetComponent<RectTransform>().rect;
-        switch (numOfAttacks)
-        {
-            case 1: xPosList = new List<float>() { 0f }; break;
-            case 2: xPosList = new List<float>() { -trackRect.width / 6f, trackRect.width / 6f }; break;
-            case 3: xPosList = new List<float>() { -trackRect.width / 4f, 0f, trackRect.width / 4f }; break;
-        }
+    {        
         targets = new List<GameObject>();
         for (int i = 0; i < numOfAttacks; i++)
         {
