@@ -15,7 +15,7 @@ public class IAPrompt : InteractiveAttack {
     float timeLimit = 5.0f;
     public UnityEngine.UI.Text timerText;
 
-	public void Init(float damage, int promptCount = 3)
+	public void Init(List<float> damage, int promptCount = 3)
     {
         base.Init(damage);
         CreatePositionsOnLine(promptCount);

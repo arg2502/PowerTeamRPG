@@ -7,17 +7,15 @@ public class InteractiveAttack : MonoBehaviour {
 
     public enum Quality { MISS, POOR, OKAY, GOOD, GREAT, PERFECT }
     protected Quality quality;
-    float damage;
+    List<float> damage;
     protected BattleManager battleManager;
     protected List<float> xPosList;
     public GameObject parentRectTransform;
 
-    protected void Init(float originalDamage)
+    protected void Init(List<float> originalDamage)
     {
         damage = originalDamage;
-        battleManager = FindObjectOfType<BattleManager>();
-
-        
+        battleManager = FindObjectOfType<BattleManager>();        
     }
 
     protected void CreatePositionsOnLine(int num)
@@ -44,9 +42,9 @@ public class InteractiveAttack : MonoBehaviour {
             case Quality.POOR: percentage = .5f; break;
             default: percentage = 1f; break;
         }
-
-        damage *= percentage;
-        battleManager.ReturnFromInteraction((int)damage, immediately);
+        for (int i = 0; i < damage.Count; i++)
+            damage[i] *= percentage;
+        battleManager.ReturnFromInteraction(damage, immediately);
     }
 
     protected void SetAttack(GameObject target, Quality quality, bool immediately = false)

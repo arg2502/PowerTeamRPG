@@ -765,13 +765,13 @@ public class BattleManager : MonoBehaviour {
         else
             StartCoroutine(ShowAttack());
     }
-    public void ReturnFromInteraction(int newDamage, bool immediately = false)
+    public void ReturnFromInteraction(List<float> newDamage, bool immediately = false)
     {
         currentAttacker.CanMissOrDodge = false;
-        foreach(var t in currentTargeted)
+        for(int i = 0; i < currentTargeted.Count; i++)
         {
-            t.CanMissOrDodge = false;
-            t.CalculatedDamage = newDamage;
+            currentTargeted[i].CanMissOrDodge = false;
+            currentTargeted[i].CalculatedDamage = (int)newDamage[i];
         }
         StartCoroutine(ShowAttack(immediately));
     }
@@ -1325,10 +1325,13 @@ public class BattleManager : MonoBehaviour {
 
     void BeginInteraction()
     {
+        List<float> originalDamage = new List<float>();
         currentAttacker.CanMissOrDodge = true;
         foreach (var t in currentTargeted)
+        {
             t.CanMissOrDodge = true;
-
+            originalDamage.Add(t.CalculatedDamage);
+        }
         InteractiveAttack ia;
         switch(currentAttacker.CurrentAttackName)
         {            
@@ -1336,19 +1339,19 @@ public class BattleManager : MonoBehaviour {
             case "Arc Slash": // temp
             case "Riser": // temp
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IASlider>().Init(currentAttacker, currentTargeted[0].CalculatedDamage);
+                ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage);
                 break;
             case "Trinity Slice":
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IASlider>().Init(currentAttacker, currentTargeted[0].CalculatedDamage, 3);
+                ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage, 3);
                 break;
             case "Pivot Kick":
                 ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IAPrompt>().Init(currentTargeted[0].CalculatedDamage);
+                ia.GetComponent<IAPrompt>().Init(originalDamage);
                 break;
             case "Scorpio Jolt":
                 ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IAPrompt>().Init(currentTargeted[0].CalculatedDamage, 2);
+                ia.GetComponent<IAPrompt>().Init(originalDamage, 2);
                 break;
             default:
                 StartCoroutine(ShowAttack());

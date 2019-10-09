@@ -19,7 +19,7 @@ public class IASlider : InteractiveAttack {
     int currentTarget = 0;
     Denigen currentAttacker;
 
-    public void Init(Denigen attacker, float damage, int numOfAttacks = 1) {
+    public void Init(Denigen attacker, List<float> damage, int numOfAttacks = 1) {
         base.Init(damage);
         CreatePositionsOnLine(numOfAttacks);
 
