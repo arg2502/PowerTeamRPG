@@ -269,5 +269,10 @@
             interNot.GetComponent<InteractionNotification>().Init(transformToFollow, newMessage);
             return interNot.GetComponent<InteractionNotification>();
         }
+
+        public GameObject ShowQualityUI(Transform transformParent)
+        {
+            return GameObject.Instantiate(uiDatabase.QualityUI, transformParent);
+        }
     }
 }

@@ -20,6 +20,7 @@
         public GameObject ArbitersIcon;
         public GameObject QuestStartEnd;
         public GameObject InteractionNotification;
+        public GameObject QualityUI;
 
         [Header("Pause Menu")]
         public GameObject PauseMenu;
@@ -46,5 +47,6 @@
         public GameObject ListSub;
         public GameObject TargetMenu;
         public GameObject VictoryMenu;
+        
     }
 }

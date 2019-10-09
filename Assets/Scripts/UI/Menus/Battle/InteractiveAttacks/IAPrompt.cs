@@ -72,7 +72,7 @@ public class IAPrompt : InteractiveAttack {
             else
                 quality = Quality.MISS;
 
-            SetAttack(parentRectTransform, quality);
+            SetAttack(GameObject.FindGameObjectWithTag("MainCanvas"), quality);
             Destroy(gameObject);
         }
     }
