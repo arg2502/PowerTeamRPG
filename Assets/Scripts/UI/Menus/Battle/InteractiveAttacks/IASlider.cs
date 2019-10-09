@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class IASlider : InteractiveAttack {
 
-    public GameObject track;
+    //public GameObject track;
     public GameObject slider;
     public List<GameObject> targets;
     public GameObject targetPrefab;
@@ -49,12 +49,13 @@ public class IASlider : InteractiveAttack {
         targets = new List<GameObject>();
         for (int i = 0; i < numOfAttacks; i++)
         {
-            var newTarget = Instantiate(targetPrefab, track.transform);
-            newTarget.transform.localPosition = new Vector2(xPosList[i], 0f);
-
+            var newTarget = Instantiate(targetPrefab, parentRectTransform.transform);
+            
             // determine size of target based on accuracy of the attack
             float acc = currentAttacker.CurrentAttack.Accuaracy;
             newTarget.GetComponent<RectTransform>().sizeDelta *= acc/100f;
+
+            newTarget.GetComponent<RectTransform>().localPosition = new Vector2(xPosList[i], 0f);
             targets.Add(newTarget);
         }
     }
