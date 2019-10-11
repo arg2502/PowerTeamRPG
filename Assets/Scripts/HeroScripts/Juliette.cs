@@ -7,12 +7,11 @@ public class Juliette : Hero {
     {
         switch(CurrentAttackName)
         {
-            case "Pivot Kick":
-            case "Scorpio Jolt":
-                StartAttack(CurrentAttackName);
-                break;
             case "Taunt":
                 Taunt();
+                break;
+            default:
+                StartAttack(CurrentAttackName);
                 break;
         }
         base.Attack();

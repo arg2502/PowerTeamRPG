@@ -308,7 +308,7 @@ public class Denigen : MonoBehaviour {
 
         // use luck to increase crit chance
 		//Add the luck change stat as well to make sure in-battle luck boosts are applied
-		float chance = Mathf.Pow((Luck + luckChange), 2.0f / 3.0f); // luck ^ 2/3
+		float chance = Mathf.Pow(Luck, 2.0f / 3.0f); // luck ^ 2/3
         chance /= 100f; // make percentage
 
         // add chance to crit to increase the probability of num being the smaller one
@@ -664,7 +664,7 @@ public class Denigen : MonoBehaviour {
 
         foreach (var target in targets)
         {
-            var damage = (percentage == 0f) ? tech.Damage : percentage;
+            var damage = (percentage == 0f) ? -tech.Damage : percentage;
             
             //target.CalculatedDamage = 0;
 
@@ -681,32 +681,59 @@ public class Denigen : MonoBehaviour {
         switch (d.StatChanged)
         {
             case "ATK":                
-                d.statChangeInt = -(int)(damage / 100f * d.Atk);
+                d.statChangeInt = (int)(damage / 100f * d.Atk);
                 d.AtkChange += d.statChangeInt;
                 break;
             case "DEF":
-                d.statChangeInt = -(int)(damage / 100f * d.Def);
+                d.statChangeInt = (int)(damage / 100f * d.Def);
                 d.DefChange += d.statChangeInt;
                 break;
             case "MGKATK":
-                d.statChangeInt = -(int)(damage / 100f * d.MgkAtk);
+                d.statChangeInt = (int)(damage / 100f * d.MgkAtk);
                 d.MgkAtkChange += d.statChangeInt;
                 break;
             case "MGKDEF":
-                d.statChangeInt = -(int)(damage / 100f * d.MgkDef);
+                d.statChangeInt = (int)(damage / 100f * d.MgkDef);
                 d.MgkDefChange += d.statChangeInt;
                 break;
             case "EVASION":
-                d.statChangeInt = -(int)(damage / 100f * d.Evasion);
+                d.statChangeInt = (int)(damage / 100f * d.Evasion);
                 d.EvasionChange += d.statChangeInt;
                 break;
             case "LUCK":
-                d.statChangeInt = -(int)(damage / 100f * d.Luck);
+                d.statChangeInt = (int)(damage / 100f * d.Luck);
                 d.LuckChange += d.statChangeInt;
                 break;
             case "SPD":
-                d.statChangeInt = -(int)(damage / 100f * d.Spd);
+                d.statChangeInt = (int)(damage / 100f * d.Spd);
                 d.SpdChange += d.statChangeInt;
+                break;
+        }
+    }
+    public void RemoveStatEffectChange(Denigen d, string stat, int amt)
+    {
+        switch (stat)
+        {
+            case "ATK":
+                d.AtkChange -= amt;
+                break;
+            case "DEF":
+                d.DefChange -= amt;
+                break;
+            case "MGKATK":
+                d.MgkAtkChange -= amt;
+                break;
+            case "MGKDEF":
+                d.MgkDefChange -= amt;
+                break;
+            case "EVASION":
+                d.EvasionChange -= amt;
+                break;
+            case "LUCK":
+                d.LuckChange -= amt;
+                break;
+            case "SPD":
+                d.SpdChange -= amt;
                 break;
         }
     }
@@ -881,4 +908,10 @@ public class Denigen : MonoBehaviour {
         if (StatusChanged)
             NewStatus = StatusState;
     }
+
+    public virtual void CheckForResetStats()
+    {
+
+    }
+         
 }

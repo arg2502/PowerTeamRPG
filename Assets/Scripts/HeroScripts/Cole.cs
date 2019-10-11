@@ -9,16 +9,11 @@ public class Cole : Hero {
         // attacks specific to the character
         switch (CurrentAttackName)
         {
-            case "Candleshot":
-            case "Fireball":
-            case "Grand Fireball":
-            case "Firewall":
-            case "Splash Flame":
-            case "Hellfire":
-                StartAttack(CurrentAttackName);
-                break;
             case "Anathema":
                 Anathema();
+                break;
+            default:
+                StartAttack(CurrentAttackName);
                 break;
         }
 

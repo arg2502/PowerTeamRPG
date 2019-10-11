@@ -1193,6 +1193,7 @@ public class BattleManager : MonoBehaviour {
 
         denigen.CurrentAttackName = ""; // reset attack
         denigen.CalculatedDamage = 0; // reset damage taken
+        denigen.CheckForResetStats();
         
     }
 
@@ -1338,6 +1339,7 @@ public class BattleManager : MonoBehaviour {
             case "Helmsplitter":
             case "Arc Slash": // temp
             case "Riser": // temp
+            case "Mordstreich": // temp
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
                 ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage);
                 break;

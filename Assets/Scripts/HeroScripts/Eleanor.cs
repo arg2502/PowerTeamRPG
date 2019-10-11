@@ -10,15 +10,14 @@ public class Eleanor : Hero {
             case "Purge":
                 Purge();
                 break;
-            case "Morttimer's Tears":
-            case "Gaze of Morttimer":
-                StartAttack(CurrentAttackName);
-                break;
             case "Antiheal":
                 Antiheal();
                 break;
             case "Weep":
                 Weep();
+                break;
+            default:
+                StartAttack(CurrentAttackName);
                 break;
         }
 

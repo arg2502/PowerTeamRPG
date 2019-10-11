@@ -184,7 +184,7 @@ public class JethroSkillTree : SkillTree {
         listOfTrees.Add(basic);
         listOfTrees.Add(magic);
 
-        startingTechs = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, riser };
+        startingTechs = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, riser, mordstreich, siegeBreaker, frostEdge };
 	}
     
 }
