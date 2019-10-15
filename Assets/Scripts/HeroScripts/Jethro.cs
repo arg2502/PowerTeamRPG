@@ -28,6 +28,9 @@ public class Jethro : Hero {
             case "Frost Edge":
                 FrostEdge();
                 break;
+            case "Strike":
+            case "Block":
+                break;
             default:
                 StartAttack(CurrentAttackName);
                 break;

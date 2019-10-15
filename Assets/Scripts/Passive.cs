@@ -161,13 +161,15 @@ public class SiegeBreaker : CalcDamagePassive
 [Serializable]
 public class Duelist : CalcDamagePassive
 {
-    public Duelist(string[] list)
+    int lvl;
+    public Duelist(string[] list, int _lvl)
         :base(list)
     {
         // the level will be passed in and all calculations can be based on that
         // Duelist I : level = 1
         // Duelist II : level = 2
         // Duelist III : level = 3
+        lvl = _lvl;
     }
 
     public override void Start()
@@ -180,7 +182,16 @@ public class Duelist : CalcDamagePassive
     }
     public override float CalcDamage(Denigen attackingDen, float damage)
     {
-        return 0;
+        var totalDuelists = attackingDen.PassivesList.FindAll((p) => p.Name.Contains("Duelist"));
+        if (totalDuelists.Count > lvl) { Debug.Log(totalDuelists.Count); return 0f; }
+
+        float additionalDamage = 0f;
+        float additionalPercentage = 0.05f * lvl;
+
+        if (attackingDen.CurrentAttack is Skill)
+            additionalDamage = damage * additionalPercentage;
+        Debug.Log("additional: " + additionalDamage);
+        return additionalDamage;
     }
 }
 [Serializable]

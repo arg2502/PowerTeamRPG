@@ -12,6 +12,9 @@ public class Cole : Hero {
             case "Anathema":
                 Anathema();
                 break;
+            case "Strike":
+            case "Block":
+                break;
             default:
                 StartAttack(CurrentAttackName);
                 break;

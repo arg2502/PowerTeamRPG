@@ -10,6 +10,9 @@ public class Juliette : Hero {
             case "Taunt":
                 Taunt();
                 break;
+            case "Strike":
+            case "Block":
+                break;
             default:
                 StartAttack(CurrentAttackName);
                 break;

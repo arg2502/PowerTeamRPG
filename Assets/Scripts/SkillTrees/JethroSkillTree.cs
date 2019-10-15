@@ -62,9 +62,9 @@ public class JethroSkillTree : SkillTree {
         frostEdge = new Spell(FindTechnique("frostEdge"));
         mordstreich = new Skill(FindTechnique("mordstreich"));
         riser = new Skill(FindTechnique("riser"));
-        duelistI = new Duelist(FindTechnique("duelist1"));
-        duelistII = new Duelist(FindTechnique("duelist2"));
-        duelistIII = new Duelist(FindTechnique("duelist3"));
+        duelistI = new Duelist(FindTechnique("duelist1"), 1);
+        duelistII = new Duelist(FindTechnique("duelist2"), 2);
+        duelistIII = new Duelist(FindTechnique("duelist3"), 3);
         rally = new Skill(FindTechnique("rally"));
         goldSoul = new Skill(FindTechnique("goldSoul"));
 
@@ -184,7 +184,8 @@ public class JethroSkillTree : SkillTree {
         listOfTrees.Add(basic);
         listOfTrees.Add(magic);
 
-        startingTechs = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, riser, mordstreich, siegeBreaker, frostEdge };
+        startingTechs = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, riser, mordstreich, siegeBreaker, frostEdge
+                                                ,duelistI,duelistII,duelistIII};
 	}
     
 }
