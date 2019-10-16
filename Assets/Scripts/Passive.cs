@@ -8,6 +8,7 @@ using System.IO;
 // This script will contain all of the base classes of passives
 [Serializable]
 public abstract class Passive : Technique {
+    public Passive() { }
     public Passive(string[] list)
         :base(list)
     {
@@ -84,6 +85,7 @@ public abstract class CalcDamagePassive : Passive {
 [Serializable]
 public abstract class TakeDamagePassive : Passive
 {
+    public TakeDamagePassive() { }
     public TakeDamagePassive(string[] list)
         :base(list) { }
 
@@ -183,14 +185,13 @@ public class Duelist : CalcDamagePassive
     public override float CalcDamage(Denigen attackingDen, float damage)
     {
         var totalDuelists = attackingDen.PassivesList.FindAll((p) => p.Name.Contains("Duelist"));
-        if (totalDuelists.Count > lvl) { Debug.Log(totalDuelists.Count); return 0f; }
+        if (totalDuelists.Count > lvl) { return 0f; }
 
         float additionalDamage = 0f;
         float additionalPercentage = 0.05f * lvl;
 
         if (attackingDen.CurrentAttack is Skill)
             additionalDamage = damage * additionalPercentage;
-        Debug.Log("additional: " + additionalDamage);
         return additionalDamage;
     }
 }
@@ -373,6 +374,30 @@ public class Untouchable : TakeDamagePassive
     public override float TakeDamage(Denigen attackingDen, Denigen other, float damage)
     {
         throw new NotImplementedException();
+    }
+
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+[Serializable]
+public class IceArmorPassive : TakeDamagePassive
+{
+    public IceArmorPassive()        
+    {
+        name = "Ice Armor Passive";
+    }
+
+    public override float TakeDamage(Denigen attackingDen, Denigen other, float damage)
+    {
+        // decrease attack by 3/4
+        var additional = damage * 3f / 4f;
+        return -additional;
     }
 
     public override void Start()

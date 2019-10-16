@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SkillTreeManager {
     
@@ -16,7 +17,11 @@ public class SkillTreeManager {
 
     public TechniqueImageDatabase imageDatabase;
 
-    System.Collections.Generic.List<HeroData> heroList; // reference to GameControl's list
+    List<HeroData> heroList; // reference to GameControl's list
+
+
+    Passive iceArmorPassive;
+    List<Technique> tempTechniques;
 
 	// Use this for initialization
 	public SkillTreeManager () {
@@ -28,6 +33,7 @@ public class SkillTreeManager {
         enemySkillTree = new EnemySkillTree();
         imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
         heroList = GameControl.control.heroList;
+        AddTempTechniques();
         AddStartingTechniques();
     }
 
@@ -48,6 +54,10 @@ public class SkillTreeManager {
                 currentSkillTree = jouliette;
                 break;
         }
+    }
+    public void AddTechnique(DenigenData hero, string techName)
+    {
+        AddTechnique(hero, FindTechnique(hero, techName));
     }
 
     public void AddTechnique(DenigenData hero, Technique tech)
@@ -70,6 +80,38 @@ public class SkillTreeManager {
             Debug.Log("Technique not added.");
             return;
         }
+    }
+
+    public void RemoveTechnique(DenigenData hero, string techName)
+    {
+        RemoveTechnique(hero, FindTechnique(hero, techName));
+    }
+
+    public void RemoveTechnique(DenigenData hero, Technique tech)
+    {
+        // check what kind of technique
+        if (tech is Skill)
+        {
+            hero.skillsList.Remove((Skill)tech);
+        }
+        else if (tech is Spell)
+        {
+            hero.spellsList.Remove((Spell)tech);
+        }
+        else if (tech is Passive)
+        {
+            hero.passiveList.Remove((Passive)tech);
+        }
+        else
+        {
+            Debug.Log("Technique could not be removed -- not a Skill, Spell, or Passive");
+            return;
+        }
+    }
+
+    public Technique FindTempTechnique(string techName)
+    {
+        return tempTechniques.Find(t => t.Name == techName);
     }
 
     public bool HasTechnique(DenigenData hero, Technique tech)
@@ -109,6 +151,13 @@ public class SkillTreeManager {
             return false;
     }
 
+    void AddTempTechniques()
+    {
+        iceArmorPassive = new IceArmorPassive();
+
+        tempTechniques = new List<Technique>() { iceArmorPassive };
+    }
+
     void AddStartingTechniques()
     {
         AddJethroStartingTechniques();
@@ -143,8 +192,15 @@ public class SkillTreeManager {
 
     public Technique FindTechnique(DenigenData data, string techName)
     {
+        // try checking the general temp techniques list
+        foreach (var tech in tempTechniques)
+        {
+            if (string.Compare(techName, tech.Name) == 0)
+                return tech;
+        }
+
         // check skills list first
-        foreach(var tech in data.skillsList)
+        foreach (var tech in data.skillsList)
         {
             if (string.Compare(techName, tech.Name) == 0)
                 return tech;
@@ -163,6 +219,7 @@ public class SkillTreeManager {
             if (string.Compare(techName, tech.Name) == 0)
                 return tech;
         }
+
 
         // at this point, we don't have the technique we're looking for, return null
         return null;

@@ -6,6 +6,7 @@ public class Jethro : Hero {
 
     int frostEdgeCounter = 0;
     int frostEdgeDelta = 0;
+    int iceArmorCounter = 0;
 
     public override void CheckForResetStats()
     {
@@ -15,6 +16,13 @@ public class Jethro : Hero {
             frostEdgeCounter--;
             if (frostEdgeCounter <= 0)
                 ReverseFrostEdge();
+        }
+        Debug.Log("passive list count: " + PassivesList.Count);
+        if (iceArmorCounter > 0)
+        {
+            iceArmorCounter--;
+            if (iceArmorCounter <= 0)
+                ReverseIceArmor();
         }
     }
 
@@ -28,10 +36,23 @@ public class Jethro : Hero {
             case "Frost Edge":
                 FrostEdge();
                 break;
-            case "Strike":
-            case "Block":
+            case "Rally":
+                Rally();
                 break;
-            default:
+            case "Gold Soul":
+                GoldSoul();
+                break;
+            case "Frost":
+                Frost();
+                break;
+            case "Ice Armor":
+                IceArmor();
+                break;
+            case "Helmsplitter":
+            case "Trinity Slice":
+            case "Arc Slash":
+            case "Siege Breaker":
+            case "Mordstreich":
                 StartAttack(CurrentAttackName);
                 break;
 		}
@@ -59,12 +80,47 @@ public class Jethro : Hero {
         var newLuckChange = LuckChange;
         frostEdgeDelta = newLuckChange - originalLuckChange;
         frostEdgeCounter = 2;
-        print("luck change: " + LuckChange);
+        //print("luck change: " + LuckChange);
     }
     void ReverseFrostEdge()
     {
         RemoveStatEffectChange(this, "LUCK", frostEdgeDelta);
         frostEdgeDelta = 0;
-        print("remove change: " + LuckChange);
+        //print("remove change: " + LuckChange);
+    }
+
+    void Rally()
+    {
+        StatEffect("ATK", 20f);
+    }
+
+    void GoldSoul()
+    {
+        var percentage = 10f;
+        StatEffect("ATK", percentage);
+        StatEffect("DEF", percentage);
+        StatEffect("MGKATK", percentage);
+        StatEffect("MGKDEF", percentage);
+        StatEffect("EVASION", percentage);
+        StatEffect("LUCK", percentage);
+        StatEffect("SPD", percentage);
+    }
+
+    void Frost()
+    {
+        StartAttack(CurrentAttackName);
+        StatEffect("SPD", -50f);
+    }
+
+    void IceArmor()
+    {
+        GameControl.skillTreeManager.AddTechnique(data, "Ice Armor Passive");
+        //PassivesList.Add(GameControl.skillTreeManager.FindTechnique(data, "Ice Armor Passive") as Passive);
+        iceArmorCounter = 2;
+    }
+    void ReverseIceArmor()
+    {
+        GameControl.skillTreeManager.RemoveTechnique(data, "Ice Armor Passive");
+        //PassivesList.Remove(GameControl.skillTreeManager.FindTechnique(data, "Ice Armor Passive") as Passive);
     }
 }

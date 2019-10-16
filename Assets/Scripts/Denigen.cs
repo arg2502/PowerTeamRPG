@@ -391,7 +391,9 @@ public class Denigen : MonoBehaviour {
             if (passive is TakeDamagePassive)
             {
                 var temp = passive as TakeDamagePassive;
+                print("original damage: " + damage);
                 damage += temp.TakeDamage(attackingDen, this, damage);
+                print("new damage: " + damage);
             }
         }
         

@@ -10,10 +10,8 @@ public class Juliette : Hero {
             case "Taunt":
                 Taunt();
                 break;
-            case "Strike":
-            case "Block":
-                break;
-            default:
+            case "Pivot Kick":
+            case "Scorpio Jolt":
                 StartAttack(CurrentAttackName);
                 break;
         }

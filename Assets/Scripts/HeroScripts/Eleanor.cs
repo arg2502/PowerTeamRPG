@@ -16,12 +16,6 @@ public class Eleanor : Hero {
             case "Weep":
                 Weep();
                 break;
-            case "Strike":
-            case "Block":
-                break;
-            default:
-                StartAttack(CurrentAttackName);
-                break;
         }
 
         base.Attack();
