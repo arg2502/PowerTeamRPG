@@ -248,13 +248,15 @@ public class Unbreakable: TakeDamagePassive
 [Serializable]
 public class Magician : CalcDamagePassive
 {
-    public Magician(string[] list)
+    int lvl;
+    public Magician(string[] list, int _lvl)
         : base(list)
     {
         // the level will be passed in and all calculations can be based on that
-        // Duelist I : level = 1
-        // Duelist II : level = 2
-        // Duelist III : level = 3
+        // Magician I : level = 1
+        // Magician II : level = 2
+        // Magician III : level = 3
+        lvl = _lvl;
     }
 
     public override void Start()
@@ -268,7 +270,16 @@ public class Magician : CalcDamagePassive
 
     public override float CalcDamage(Denigen attackingDen, float damage)
     {
-        return 0;
+        var totalDuelists = attackingDen.PassivesList.FindAll((p) => p.Name.Contains("Magician"));
+        if (totalDuelists.Count > lvl) { Debug.Log("Magician exists: " + lvl); return 0f; }
+
+        float additionalDamage = 0f;
+        float additionalPercentage = 0.05f * lvl;
+        Debug.Log("Magician original dmg: " + damage);
+        if (attackingDen.CurrentAttack is Spell)
+            additionalDamage = damage * additionalPercentage;
+        Debug.Log("Magician new dmg: " + additionalDamage);
+        return additionalDamage;
     }
 
 }
@@ -397,6 +408,31 @@ public class IceArmorPassive : TakeDamagePassive
     {
         // decrease attack by 3/4
         var additional = damage * 3f / 4f;
+        return -additional;
+    }
+
+    public override void Start()
+    {
+
+    }
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+
+    }
+}
+
+[Serializable]
+public class IceBarrierPassive : TakeDamagePassive
+{
+    public IceBarrierPassive()
+    {
+        name = "Ice Barrier Passive";
+    }
+
+    public override float TakeDamage(Denigen attackingDen, Denigen other, float damage)
+    {
+        // decrease attack by half
+        var additional = damage / 2f;
         return -additional;
     }
 

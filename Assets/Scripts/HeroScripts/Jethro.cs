@@ -7,6 +7,8 @@ public class Jethro : Hero {
     int frostEdgeCounter = 0;
     int frostEdgeDelta = 0;
     int iceArmorCounter = 0;
+    int iceBarrierCounter = 0;
+    List<Denigen> iceBarrierTargets;
 
     public override void CheckForResetStats()
     {
@@ -17,12 +19,19 @@ public class Jethro : Hero {
             if (frostEdgeCounter <= 0)
                 ReverseFrostEdge();
         }
-        Debug.Log("passive list count: " + PassivesList.Count);
+        //Debug.Log("passive list count: " + PassivesList.Count);
         if (iceArmorCounter > 0)
         {
             iceArmorCounter--;
             if (iceArmorCounter <= 0)
                 ReverseIceArmor();
+        }
+
+        if(iceBarrierCounter > 0)
+        {
+            iceBarrierCounter--;
+            if (iceBarrierCounter <= 0)
+                ReverseIceBarrier();
         }
     }
 
@@ -47,6 +56,9 @@ public class Jethro : Hero {
                 break;
             case "Ice Armor":
                 IceArmor();
+                break;
+            case "Ice Barrier":
+                IceBarrier();
                 break;
             case "Helmsplitter":
             case "Trinity Slice":
@@ -122,5 +134,24 @@ public class Jethro : Hero {
     {
         GameControl.skillTreeManager.RemoveTechnique(data, "Ice Armor Passive");
         //PassivesList.Remove(GameControl.skillTreeManager.FindTechnique(data, "Ice Armor Passive") as Passive);
+    }
+
+    void IceBarrier()
+    {
+        iceBarrierTargets = new List<Denigen>();
+        for(int i = 0; i < targets.Count; i++)
+        {
+            iceBarrierTargets.Add(targets[i]);
+            GameControl.skillTreeManager.AddTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive");
+        }
+        iceBarrierCounter = 2;
+    }
+    void ReverseIceBarrier()
+    {
+        for(int i = 0; i < iceBarrierTargets.Count; i++)
+        {
+            GameControl.skillTreeManager.RemoveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive");
+        }
+        iceBarrierTargets.Clear();
     }
 }

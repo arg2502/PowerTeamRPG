@@ -123,9 +123,9 @@ public class JethroSkillTree : SkillTree {
         resilience = new Resilience(FindTechnique("resilience"));
         coldShoulder = new Spell(FindTechnique("coldShoulder"));
         unbreakable = new Unbreakable(FindTechnique("unbreakable"));
-        magicianI = new Magician(FindTechnique("magician1"));
-        magicianII = new Magician(FindTechnique("magician2"));
-        magicianIII = new Magician(FindTechnique("magician3"));
+        magicianI = new Magician(FindTechnique("magician1"), 1);
+        magicianII = new Magician(FindTechnique("magician2"), 2);
+        magicianIII = new Magician(FindTechnique("magician3"), 3);
         iceSpear = new Spell(FindTechnique("iceSpear"));
         frostBite = new Spell(FindTechnique("frostBite"));
         diamondPeak = new Spell(FindTechnique("diamondPeak"));
@@ -185,7 +185,7 @@ public class JethroSkillTree : SkillTree {
         listOfTrees.Add(magic);
 
         startingTechs = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, riser, mordstreich, siegeBreaker, frostEdge
-                                                ,duelistI,duelistII,duelistIII, rally, goldSoul, frost, iceArmor};
+                                                ,duelistI,duelistII,duelistIII, rally, goldSoul, frost, iceArmor, iceBarrier, magicianI, magicianII, magicianIII};
 	}
     
 }
