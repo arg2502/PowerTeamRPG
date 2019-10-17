@@ -60,11 +60,18 @@ public class Jethro : Hero {
             case "Ice Barrier":
                 IceBarrier();
                 break;
+            case "Frost Bite":
+                FrostBite();
+                break;
+            case "Diamond Peak":
+                DiamondPeak();
+                break;
             case "Helmsplitter":
             case "Trinity Slice":
             case "Arc Slash":
             case "Siege Breaker":
             case "Mordstreich":
+            case "Ice Spear":
                 StartAttack(CurrentAttackName);
                 break;
 		}
@@ -120,8 +127,8 @@ public class Jethro : Hero {
 
     void Frost()
     {
-        StartAttack(CurrentAttackName);
         StatEffect("SPD", -50f);
+        StartAttack(CurrentAttackName);        
     }
 
     void IceArmor()
@@ -153,5 +160,21 @@ public class Jethro : Hero {
             GameControl.skillTreeManager.RemoveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive");
         }
         iceBarrierTargets.Clear();
+    }
+
+    void FrostBite()
+    {
+        // 60% chance of petrifying target
+        var value = Random.value;
+        if (value < 0.6f)
+            SingleStatusAttack(DenigenData.Status.petrified);
+
+        StartAttack(CurrentAttackName);
+    }
+
+    void DiamondPeak()
+    {
+        TeamStatusAttack(DenigenData.Status.bleeding);
+        StartAttack(CurrentAttackName);
     }
 }

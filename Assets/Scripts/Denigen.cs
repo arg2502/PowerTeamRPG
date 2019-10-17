@@ -648,6 +648,15 @@ public class Denigen : MonoBehaviour {
         targets[0].MarkAsStatusChanged(status);
     }
 
+    protected void TeamStatusAttack(DenigenData.Status status)
+    {
+        for(int i = 0; i < targets.Count; i++)
+        {
+            targets[i].calculatedDamage = 0;
+            targets[i].MarkAsStatusChanged(status);
+        }
+    }
+
     protected void SingleStatusCure()
     {
         // double check and make sure they're not dead before setting them back to normal
