@@ -228,9 +228,9 @@ public class Unbreakable: TakeDamagePassive
 
         // if it's a crit and it's going to kill Jethro, make sure it leaves him with 1hp
         if(attackingDen.attackType == Denigen.AttackType.CRIT
-            && damage >= thisDen.Hp)
+            && damage >= thisDen.Hp && thisDen.Hp > 1)
         {
-            additionDamage = -(thisDen.Hp - 1);
+            additionDamage = -(damage - (thisDen.Hp - 1));
         }
 
         return additionDamage;
