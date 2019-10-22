@@ -9,6 +9,8 @@ public class Jethro : Hero {
     int iceArmorCounter = 0;
     int iceBarrierCounter = 0;
     List<Denigen> iceBarrierTargets;
+    int fogCounter = 0;
+    List<Denigen> fogTargets;
 
     public override void CheckForResetStats()
     {
@@ -33,6 +35,13 @@ public class Jethro : Hero {
             if (iceBarrierCounter <= 0)
                 ReverseIceBarrier();
         }
+
+        if(fogCounter > 0)
+        {
+            fogCounter--;
+            if (fogCounter <= 0)
+                ReverseFog();
+        }
     }
 
     public override void Attack ()
@@ -50,6 +59,9 @@ public class Jethro : Hero {
                 break;
             case "Gold Soul":
                 GoldSoul();
+                break;
+            case "Fog":
+                Fog();
                 break;
             case "Frost":
                 Frost();
@@ -123,6 +135,26 @@ public class Jethro : Hero {
         StatEffect("EVASION", percentage);
         StatEffect("LUCK", percentage);
         StatEffect("SPD", percentage);
+    }
+
+    void Fog()
+    {
+        StatEffect("ACC", -10f);
+        fogTargets = new List<Denigen>();
+        for (int i = 0; i < targets.Count; i++)
+        {
+            fogTargets.Add(targets[i]);
+            GameControl.skillTreeManager.AddTechnique(targets[i].Data, "Fog Passive");
+        }
+        fogCounter = 5;
+    }
+    void ReverseFog()
+    {
+        for (int i = 0; i < fogTargets.Count; i++)
+        {
+            GameControl.skillTreeManager.RemoveTechnique(fogTargets[i].Data, "Fog Passive");
+        }
+        fogTargets.Clear();
     }
 
     void Frost()

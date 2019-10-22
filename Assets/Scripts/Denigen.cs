@@ -112,6 +112,9 @@ public class Denigen : MonoBehaviour {
     public int Evasion { get { return data.evasion + evasionChange + petrifiedChange + blindedChange; } }
     public int Spd { get { return data.spd + spdChange; } }
 
+    // pseudo stats
+    public float Accuracy = 1f; // mainly used for attacks that affect the accuracy of the entire denigen
+
     // leveling stats
     public int Level { get { return data.level; } set { data.level = value; } }
     public int Stars { get { return data.stars; } }
@@ -537,7 +540,7 @@ public class Denigen : MonoBehaviour {
     /// <param name="isMagic"></param>
     protected void SingleAttack(float power, float crit, float accuracy, bool isMagic)
     {
-        var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
+        var damage = CalcDamage(power / 100f, crit / 100f, accuracy * Accuracy / 100f, isMagic);
         targets[0].TakeDamage(this, damage, isMagic);
     }
     protected void SingleAttack(Technique tech)
@@ -562,7 +565,7 @@ public class Denigen : MonoBehaviour {
     /// <param name="splashDivider">Default 2f -- sets attack for splash damage half as strong as the original attack</param>
     protected void SplashAttack(float power, float crit, float accuracy, bool isMagic, float splashDivider = 2.0f)
     {
-        var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
+        var damage = CalcDamage(power / 100f, crit / 100f, accuracy * Accuracy/ 100f, isMagic);
 
         //full damage to the main target
         targets[0].TakeDamage(this, damage, isMagic);
@@ -593,7 +596,7 @@ public class Denigen : MonoBehaviour {
     /// <param name="isMagic"></param>
     protected void TeamAttack(float power, float crit, float accuracy, bool isMagic)
     {
-        var damage = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic);
+        var damage = CalcDamage(power / 100f, crit / 100f, accuracy * Accuracy/ 100f, isMagic);
         for (int i = 0; i < targets.Count; i++)
         {
             targets[i].TakeDamage(this, damage, true);
@@ -611,7 +614,7 @@ public class Denigen : MonoBehaviour {
 
     protected void SingleHeal(float power, float crit, float accuracy)
     {
-        var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic: true);
+        var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy * Accuracy / 100f, isMagic: true);
         targets[0].Heal(healEffect);
     }
     protected void SingleHeal(Technique tech)
@@ -625,7 +628,7 @@ public class Denigen : MonoBehaviour {
 
     protected void TeamHeal(float power, float crit, float accuracy)
     {
-        var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy / 100f, isMagic: true);
+        var healEffect = CalcDamage(power / 100f, crit / 100f, accuracy * Accuracy / 100f, isMagic: true);
         for (int i = 0; i < targets.Count; i++)
         {
             targets[i].Heal(healEffect);
@@ -719,6 +722,10 @@ public class Denigen : MonoBehaviour {
                 d.statChangeInt = (int)(damage / 100f * d.Spd);
                 d.SpdChange += d.statChangeInt;
                 break;
+            case "ACC":
+                d.statChangeInt = (int)(damage / 100f * d.Accuracy);
+                d.Accuracy += d.statChangeInt;
+                break;
         }
     }
     public void RemoveStatEffectChange(Denigen d, string stat, int amt)
@@ -745,6 +752,9 @@ public class Denigen : MonoBehaviour {
                 break;
             case "SPD":
                 d.SpdChange -= amt;
+                break;
+            case "ACC":
+                d.Accuracy -= amt;
                 break;
         }
     }

@@ -97,8 +97,12 @@ public abstract class TakeDamagePassive : Passive
 [Serializable]
 public abstract class PerTurnPassive : Passive
 {
+    public PerTurnPassive() { }
     public PerTurnPassive(string[] list)
         :base(list) { }
+
+    //public override abstract void Use(Denigen attackingDen, Denigen other = null);
+    public abstract int PerTurn(Denigen thisDenigen);
 }
 
 // this passive just restores 1hp per turn
@@ -116,13 +120,20 @@ public class LightRegeneration : PerTurnPassive {
 
     public override void Use(Denigen attackingDen, Denigen other)
     {
-        if (attackingDen.Hp < attackingDen.HpMax)
-        {
-            attackingDen.Hp += 1;
-            GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/HealEffect"), attackingDen.transform.position, Quaternion.identity);
-            be.name = "HealEffect";
-            be.GetComponent<Effect>().damage = 1 + "hp";
-        }
+        
+    }
+
+    public override int PerTurn(Denigen thisDenigen)
+    {
+        return (thisDenigen.Hp < thisDenigen.HpMax) ? 1 : 0;
+
+        //if (thisDenigen.Hp < thisDenigen.HpMax)
+        //{
+            //thisDenigen.Hp += 1;
+            //GameObject be = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/Effects/HealEffect"), thisDenigen.transform.position, Quaternion.identity);
+            //be.name = "HealEffect";
+            //be.GetComponent<Effect>().damage = 1 + "hp";
+        //}
         
     }
 }
@@ -212,6 +223,10 @@ public class Resilience : PerTurnPassive
     {
 
     }
+    public override int PerTurn(Denigen thisDenigen)
+    {
+        return 0;
+    }
 }
 [Serializable]
 public class Unbreakable: TakeDamagePassive
@@ -296,6 +311,10 @@ public class Caster : PerTurnPassive
     public override void Use(Denigen attackingDen, Denigen other)
     {
 
+    }
+    public override int PerTurn(Denigen thisDenigen)
+    {
+        return 0;
     }
 }
 [Serializable]
@@ -443,5 +462,31 @@ public class IceBarrierPassive : TakeDamagePassive
     public override void Use(Denigen attackingDen, Denigen other)
     {
 
+    }
+}
+
+[Serializable]
+public class FogPassive : PerTurnPassive
+{
+    public FogPassive()
+    {
+        name = "Fog Passive";
+    }
+
+    public override void Start()
+    {
+        
+    }
+
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+        
+    }
+
+    public override int PerTurn(Denigen thisDenigen)
+    {
+        var fogDamage = (thisDenigen.HpMax / 8f);
+        if (fogDamage < 1) fogDamage = 1;
+        return (int)fogDamage;
     }
 }

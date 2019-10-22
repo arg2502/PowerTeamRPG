@@ -512,7 +512,17 @@ public class BattleManager : MonoBehaviour {
             {
                 callback.Invoke();
                 d.CalculatedDamage = d.StatusDamage;
-                TakeDamage(d);
+                OutOfCycleDamage(d);
+            }
+
+            foreach(Passive passive in d.PassivesList)
+            {
+                if (passive is PerTurnPassive)
+                {
+                    var temp = passive as PerTurnPassive;
+                    d.CalculatedDamage = temp.PerTurn(d);
+                    OutOfCycleDamage(d);
+                }
             }
         }
 
@@ -915,12 +925,8 @@ public class BattleManager : MonoBehaviour {
             // if the target has died between targeting and now, ignore him
             if (target.IsDead) continue;
 
-            // alter hp based off of damage
-            target.Hp -= target.CalculatedDamage;
-
-            // if we're healing, check to make sure we're not going over maxHp
-            if (target.Hp > target.HpMax)
-                target.Hp = target.HpMax;
+            // the part where the HP is actually affected
+            TakeDamage(target);
 
             // if the attack only changes status effects, we can't block it
             if (currentAttacker.attackType == Denigen.AttackType.BLOCKED && target.StatusChanged && target.CalculatedDamage <= 0)
@@ -978,7 +984,7 @@ public class BattleManager : MonoBehaviour {
             // if the attacker misses, there's no damage to take
             if (currentAttacker.attackType != Denigen.AttackType.MISS)
             {
-                TakeDamage(target);
+                PostDamage(target);
             }
         }
 
@@ -987,6 +993,16 @@ public class BattleManager : MonoBehaviour {
     }
 
     void TakeDamage(Denigen target)
+    {
+        // alter hp based off of damage
+        target.Hp -= target.CalculatedDamage;
+
+        // if we're healing, check to make sure we're not going over maxHp
+        if (target.Hp > target.HpMax)
+            target.Hp = target.HpMax;
+    }
+
+    void PostDamage(Denigen target)
     {
         // the status effect is the status was changed
         // show the Damage effect if damage was done
@@ -1038,6 +1054,12 @@ public class BattleManager : MonoBehaviour {
 
         target.statsCard.UpdateStats();
         target.CalculatedDamage = 0;
+    }
+
+    void OutOfCycleDamage(Denigen target)
+    {
+        TakeDamage(target);
+        PostDamage(target);
     }
 
     void ShowDamage(Denigen target, int damage)

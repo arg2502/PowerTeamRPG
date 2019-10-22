@@ -186,7 +186,7 @@ public class JethroSkillTree : SkillTree {
 
         startingTechs = new List<Technique>() { helmsplitter, trinitySlice, arcSlash, riser, mordstreich, siegeBreaker, frostEdge
                                                 ,duelistI,duelistII,duelistIII, rally, goldSoul, frost, iceArmor, iceBarrier, magicianI, magicianII, magicianIII,
-                                                iceSpear, frostBite, diamondPeak, unbreakable};
+                                                iceSpear, frostBite, diamondPeak, unbreakable, fog};
 	}
     
 }

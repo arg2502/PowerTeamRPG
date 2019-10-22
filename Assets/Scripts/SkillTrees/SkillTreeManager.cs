@@ -22,6 +22,7 @@ public class SkillTreeManager {
 
     Passive iceArmorPassive;
     Passive iceBarrierPassive;
+    Passive fogPassive;
     List<Technique> tempTechniques;
 
 	// Use this for initialization
@@ -156,8 +157,9 @@ public class SkillTreeManager {
     {
         iceArmorPassive = new IceArmorPassive();
         iceBarrierPassive = new IceBarrierPassive();
+        fogPassive = new FogPassive();        
         
-        tempTechniques = new List<Technique>() { iceArmorPassive, iceBarrierPassive };
+        tempTechniques = new List<Technique>() { iceArmorPassive, iceBarrierPassive, fogPassive };
     }
 
     void AddStartingTechniques()
