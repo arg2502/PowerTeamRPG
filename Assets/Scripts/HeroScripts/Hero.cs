@@ -26,7 +26,7 @@ public class Hero : Denigen {
 
     public TargetType currentTargetType;
     
-    public bool EnoughPm(Technique tech) { return Pm >= tech.Pm; } 
+    public bool EnoughPm(Technique tech) { return Pm >= tech.GetPmCost(this); } 
 
     // the method for handling item use
     public void ItemUse()

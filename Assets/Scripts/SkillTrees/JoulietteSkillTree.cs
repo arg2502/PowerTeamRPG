@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class JulietteSkillTree : SkillTree
+public class JoulietteSkillTree : SkillTree
 {
 
     // all possible skills for Jethro
@@ -42,7 +42,7 @@ public class JulietteSkillTree : SkillTree
     // FILL TREES DOWN BELOW, THEN TEST
 
     // Use this for initialization
-    public JulietteSkillTree()
+    public JoulietteSkillTree()
     {
 
         // set hero to jethro
@@ -153,7 +153,7 @@ public class JulietteSkillTree : SkillTree
         listOfTrees.Add(tree1);
         listOfTrees.Add(tree2);
 
-        startingTechs = new List<Technique>() { pivotKick, scorpio, taunt };
+        startingTechs = new List<Technique>() { pivotKick, scorpio, taunt, headDash };
 
     }    
 }

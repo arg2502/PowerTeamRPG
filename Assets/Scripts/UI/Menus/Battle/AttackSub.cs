@@ -106,7 +106,7 @@
             var hero = battleManager.CurrentDenigen;
             for(int i = 0; i < techniqueList.Count; i++)
             {
-                if (hero.Pm >= techniqueList[i].Pm)
+                if (hero.Pm >= techniqueList[i].GetPmCost(hero))
                     return true;
             }
 

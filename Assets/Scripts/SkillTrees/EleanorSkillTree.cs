@@ -155,6 +155,6 @@ public class EleanorSkillTree : SkillTree
         listOfTrees.Add(tree2);
 
         // NOT FINAL
-        startingTechs = new List<Technique>() { purge, tears, weep };
+        startingTechs = new List<Technique>() { purge, tears, weep, staffStrike };
     }    
 }

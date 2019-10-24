@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Juliette : Hero {
+public class Jouliette : Hero {
 
     public override void Attack()
     {
@@ -12,6 +12,7 @@ public class Juliette : Hero {
                 break;
             case "Pivot Kick":
             case "Scorpio Jolt":
+            case "Head Dash":
                 StartAttack(CurrentAttackName);
                 break;
         }

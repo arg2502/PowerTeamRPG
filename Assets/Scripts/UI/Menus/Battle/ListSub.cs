@@ -318,7 +318,7 @@
             string message;
             var currentAttack = battleManager.CurrentDenigen.CurrentAttack;
             message = "You currently do not have enough power magic to use this technique:\n\n";
-            message += currentAttack.Name + ": " + currentAttack.Pm;
+            message += currentAttack.Name + ": " + currentAttack.GetPmCost(battleManager.CurrentDenigen);
             message += "\nPM: " + battleManager.CurrentDenigen.Pm;
             message += "\n\nAre you sure you want to try to use this technique?";
             uiManager.PushConfirmationMenu(message, OpenTarget);

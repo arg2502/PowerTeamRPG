@@ -11,7 +11,7 @@ public class SkillTreeManager {
     JethroSkillTree jethro;
     ColeSkillTree cole;
     EleanorSkillTree eleanor;
-    JulietteSkillTree jouliette;
+    JoulietteSkillTree jouliette;
 
     public EnemySkillTree enemySkillTree;
 
@@ -31,7 +31,7 @@ public class SkillTreeManager {
         jethro = new JethroSkillTree();
         cole = new ColeSkillTree();
         eleanor = new EleanorSkillTree();
-        jouliette = new JulietteSkillTree();
+        jouliette = new JoulietteSkillTree();
         enemySkillTree = new EnemySkillTree();
         imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
         heroList = GameControl.control.heroList;

@@ -92,7 +92,7 @@ public class Enemy : Denigen {
 
     public bool NotEnoughPM()
     {
-        return (Pm - CurrentAttack.Pm) < 0; // true if the current attack will take the enemy's PM below 0
+        return (Pm - CurrentAttack.GetPmCost(this)) < 0; // true if the current attack will take the enemy's PM below 0
     }
 
     public override void ChooseTarget()

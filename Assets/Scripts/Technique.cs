@@ -36,7 +36,14 @@ public class Technique {
 
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
-    public int Pm { get { return pm; } set { pm = value; } }
+    //public int Pm { get { return pm; } set { pm = value; } }
+    public int GetPmCost(Denigen attacker)
+    {
+        var cost = pm * attacker.GetPmMult();
+        if (attacker.StatusState == DenigenData.Status.cursed)
+            cost *= 2;
+        return (int)cost;
+    }
     public int ColPos { get { return colPos; } set { colPos = value; } }
     public int RowPos { get { return rowPos; } set { rowPos = value; } }
     public List<Technique> ListNextTechnique { get { return listNextTechnique; } set { listNextTechnique = value; } }    

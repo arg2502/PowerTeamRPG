@@ -114,6 +114,7 @@ public class Denigen : MonoBehaviour {
 
     // pseudo stats
     public float Accuracy = 1f; // mainly used for attacks that affect the accuracy of the entire denigen
+    public virtual float GetPmMult() { return 1f; }
 
     // leveling stats
     public int Level { get { return data.level; } set { data.level = value; } }
@@ -176,13 +177,9 @@ public class Denigen : MonoBehaviour {
         {
             currentAttackName = value;
             currentAttack = GameControl.skillTreeManager.FindTechnique(data, value);
-
-            if (currentAttack == null)
-                attackCost = 0;
-            else if (StatusState == DenigenData.Status.cursed)
-                attackCost = currentAttack.Pm * 2;
-            else
-                attackCost = currentAttack.Pm;
+                        
+            attackCost = (currentAttack == null) ? 0 : currentAttack.GetPmCost(this);
+            
         }
     }
 
