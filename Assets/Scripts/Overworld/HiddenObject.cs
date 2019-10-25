@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HiddenObject : OverworldObject {
 
-    Color showColor = Color.blue;
-    Color hideColor = Color.white;
+    [SerializeField] Color showColor = Color.blue;
+	[SerializeField] Color hideColor = Color.white;
 
 	public void Show()
     {
