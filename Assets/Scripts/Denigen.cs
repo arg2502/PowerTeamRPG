@@ -114,7 +114,7 @@ public class Denigen : MonoBehaviour {
 
     // pseudo stats
     public float Accuracy = 1f; // mainly used for attacks that affect the accuracy of the entire denigen
-    public virtual float GetPmMult() { return 1f; }
+    public virtual float GetPmMult(Technique t = null) { return 1f; }
 
     // leveling stats
     public int Level { get { return data.level; } set { data.level = value; } }

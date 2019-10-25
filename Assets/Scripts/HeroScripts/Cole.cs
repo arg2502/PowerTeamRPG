@@ -4,11 +4,15 @@ using System.Collections.Generic;
 
 public class Cole : Hero {
 
-    public override float GetPmMult()
+    public override float GetPmMult(Technique t = null)
     {
-        var percentage = 0.1f;
-        var totalCasters = PassivesList.FindAll((p) => p.Name.Contains("Caster"));
-        return 1f - (percentage * totalCasters.Count);
+        if (t != null & t is Spell)
+        {
+            var percentage = 0.1f;
+            var totalCasters = PassivesList.FindAll((p) => p.Name.Contains("Caster"));
+            return 1f - (percentage * totalCasters.Count);
+        }
+        else return 1f;
 
     }
     public override void Attack()
@@ -27,6 +31,9 @@ public class Cole : Hero {
                 break;
             case "Eclipse":
                 Eclipse();
+                break;
+            case "Hollow":
+                Hollow();
                 break;
             case "Candleshot":
             case "Fireball":
@@ -67,5 +74,23 @@ public class Cole : Hero {
     void Eclipse()
     {
         SingleStatusAttack(DenigenData.Status.blinded);
+    }
+
+    void Hollow()
+    {
+        // swap atk/mgkatk & def/mgkdef -- by setting the Change values
+        var origAtk = Atk;
+        var origMgkAtk = MgkAtk;
+        var atkDiff = Atk - MgkAtk;
+
+        AtkChange -= atkDiff;
+        MgkAtkChange += atkDiff;
+
+        var origDef = Def;
+        var origMgkDef = MgkDef;
+        var defDiff = Def - MgkDef;
+
+        DefChange -= defDiff;
+        MgkDefChange += defDiff;
     }
 }
