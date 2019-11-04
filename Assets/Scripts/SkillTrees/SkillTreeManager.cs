@@ -57,6 +57,13 @@ public class SkillTreeManager {
                 break;
         }
     }
+
+    public void AddPassiveTechnique(DenigenData hero, string techName, bool onlyOne)
+    {
+        if (!onlyOne || (FindTechnique(hero, techName) == null))
+            AddTechnique(hero, techName);
+    }
+
     public void AddTechnique(DenigenData hero, string techName)
     {
         AddTechnique(hero, FindTechnique(hero, techName));

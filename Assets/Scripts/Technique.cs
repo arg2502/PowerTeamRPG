@@ -53,7 +53,7 @@ public class Technique {
     public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
     public int Damage { get { return damage; } }
     public int Critical { get { return critical; } }
-    public int Accuaracy { get { return accuracy; } }    
+    public int Accuaracy { get { return accuracy; } set { accuracy = value; } }    
 
     public Technique() {}
     public Technique(string[] list, Sprite icon = null)

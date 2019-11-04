@@ -144,7 +144,7 @@ public class Jethro : Hero {
         for (int i = 0; i < targets.Count; i++)
         {
             fogTargets.Add(targets[i]);
-            GameControl.skillTreeManager.AddTechnique(targets[i].Data, "Fog Passive");
+            GameControl.skillTreeManager.AddPassiveTechnique(targets[i].Data, "Fog Passive", true);
         }
         fogCounter = 5;
     }
@@ -165,14 +165,12 @@ public class Jethro : Hero {
 
     void IceArmor()
     {
-        GameControl.skillTreeManager.AddTechnique(data, "Ice Armor Passive");
-        //PassivesList.Add(GameControl.skillTreeManager.FindTechnique(data, "Ice Armor Passive") as Passive);
+        GameControl.skillTreeManager.AddPassiveTechnique(data, "Ice Armor Passive", true);
         iceArmorCounter = 2;
     }
     void ReverseIceArmor()
     {
         GameControl.skillTreeManager.RemoveTechnique(data, "Ice Armor Passive");
-        //PassivesList.Remove(GameControl.skillTreeManager.FindTechnique(data, "Ice Armor Passive") as Passive);
     }
 
     void IceBarrier()
@@ -180,8 +178,8 @@ public class Jethro : Hero {
         iceBarrierTargets = new List<Denigen>();
         for(int i = 0; i < targets.Count; i++)
         {
-            iceBarrierTargets.Add(targets[i]);
-            GameControl.skillTreeManager.AddTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive");
+            iceBarrierTargets.Add(targets[i]);            
+            GameControl.skillTreeManager.AddPassiveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive", true);
         }
         iceBarrierCounter = 2;
     }

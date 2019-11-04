@@ -135,7 +135,7 @@ public class ColeSkillTree : SkillTree {
 
         // techniques that the character start out with
         startingTechs = new List<Technique>() { candleshot, anathema, fireball, grandFireball, splashFlame, firewall, hellfire
-         ,caster1, caster2, caster3, hollow}; 
+         ,caster1, caster2, caster3, hollow, study, resist, resiviction, reaperGaze}; 
 	
 	}
 	

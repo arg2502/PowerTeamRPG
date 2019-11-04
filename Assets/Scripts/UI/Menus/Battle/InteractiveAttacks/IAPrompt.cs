@@ -39,7 +39,7 @@ public class IAPrompt : InteractiveAttack {
 
             promptObjs.Add(obj);
         }
-        timerText.text = timer.ToString();
+        timerText.text = timer.ToString("0.00");
     }
 
     private new void Update()
@@ -48,7 +48,7 @@ public class IAPrompt : InteractiveAttack {
             && timer < timeLimit)
         {
             timer += Time.deltaTime;
-            timerText.text = timer.ToString();
+            timerText.text = timer.ToString("0.00");
             if (Input.GetButtonDown(currentButtonPrompts[currentButton]))
             {
                 promptObjs[currentButton].SetActive(false);

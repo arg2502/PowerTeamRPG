@@ -188,4 +188,5 @@ public class Hero : Denigen {
         var tempData = data as HeroData;
         tempData.AddExp(expToAdd);
     }
+
 }

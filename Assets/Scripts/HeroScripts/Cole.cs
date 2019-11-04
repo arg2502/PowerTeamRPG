@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Cole : Hero {
+    string prevAttackName;
+    List<string> studyAttacks = new List<string>();
+
+    Spell lastSpellUsed;
+    int resivictionTimesUsed = 0;
+    List<int> resivictionAcc = new List<int>() { 90, 50, 10 };
 
     public override float GetPmMult(Technique t = null)
     {
@@ -15,6 +21,24 @@ public class Cole : Hero {
         else return 1f;
 
     }
+
+    protected override void PreAttackCheck(Denigen attacker)
+    {
+        if(CurrentAttackName == "Resist Enchantment" && attacker.CurrentAttack is Spell)
+        {
+            attacker.attackType = AttackType.DODGED;
+            CalculatedDamage = 0;
+            print("Cole dodged the Spell attack due to Resist Enchantment");
+        }
+        if(studyAttacks.Contains(attacker.CurrentAttackName))
+        {
+            CalculatedDamage = (int)(CalculatedDamage * 0.25f);
+            print("Damage reduced by 75% due to Study's ability");
+        }
+        prevAttackName = attacker.CurrentAttackName;
+        base.PreAttackCheck(attacker);
+    }
+
     public override void Attack()
     {
         // attacks specific to the character
@@ -35,6 +59,18 @@ public class Cole : Hero {
             case "Hollow":
                 Hollow();
                 break;
+            case "Resist Enchantment":
+                ResistEnchantment();
+                break;
+            case "Study":
+                Study();
+                break;
+            case "Reaper Gaze":
+                ReaperGaze();
+                break;
+            case "Resiviction":
+                Resiviction();
+                break;
             case "Candleshot":
             case "Fireball":
             case "Grand Fireball":
@@ -45,6 +81,9 @@ public class Cole : Hero {
                 break;
         }
 
+        if (CurrentAttack is Spell)
+            lastSpellUsed = CurrentAttack as Spell;
+        
         // check parent function to take care of reducing pm
         // also check if the attack is a general hero attack (Strike, Block) or an item use
         base.Attack();
@@ -92,5 +131,53 @@ public class Cole : Hero {
 
         DefChange -= defDiff;
         MgkDefChange += defDiff;
+    }
+
+    void ResistEnchantment()
+    {
+        print("Cole is ready to resist the next spell.");
+    }
+
+    void Study()
+    {
+        if (studyAttacks == null)
+            studyAttacks = new List<string>();
+
+        if (studyAttacks.Contains(prevAttackName))
+            print("Technique was already recorded");
+        else
+            studyAttacks.Add(prevAttackName);
+    }
+
+    void ReaperGaze()
+    {
+        if(StatusState == DenigenData.Status.blinded)
+        {
+            print("Cannot be cast while blinded");
+            return;
+        }
+        if (targets[0].StatusState == DenigenData.Status.blinded)
+        {
+            print("Cannot be cast on the blinded");
+            return;
+        }
+
+        SingleStatusAttack(DenigenData.Status.petrified);
+    }
+
+    void Resiviction()
+    {
+        if(lastSpellUsed == null)
+        {
+            print("no last spell found");
+            return;
+        }
+        var tempSpell = lastSpellUsed;
+        var timesUsed = (resivictionTimesUsed > resivictionAcc.Count - 1) ? resivictionAcc.Count - 1 : resivictionTimesUsed;
+
+        tempSpell.Accuaracy = resivictionAcc[timesUsed];
+        CurrentAttackName = tempSpell.Name;
+        resivictionTimesUsed++;
+        Attack();
     }
 }

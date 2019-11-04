@@ -239,6 +239,10 @@ public class Denigen : MonoBehaviour {
                 break;
         }
 
+        for(int i = 0; i < targets.Count; i++)
+        {
+            targets[i].PreAttackCheck(this);
+        }
 
         // specific denigens will pick attack methods based off of user choice
 
@@ -247,6 +251,7 @@ public class Denigen : MonoBehaviour {
         StartCoroutine(battleManager.InitAttack(this, targets));
         
     }
+    protected virtual void PreAttackCheck(Denigen attacker) { }
 
     protected void Block()
     {
