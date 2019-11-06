@@ -165,7 +165,7 @@ public class Denigen : MonoBehaviour {
     private Technique currentAttack;
     public Technique CurrentAttack { get { return currentAttack; } } // ONLY GETTER -- the current attack should only be set when the attack name is set below
     private int attackCost;
-    public int AttackCost { get { return attackCost; } }
+	public int AttackCost { get { return attackCost; } set { attackCost = value; } }
     private string currentAttackName;
     public string CurrentAttackName
     {

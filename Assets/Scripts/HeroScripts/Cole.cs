@@ -8,11 +8,15 @@ public class Cole : Hero {
 
     Spell lastSpellUsed;
     int resivictionTimesUsed = 0;
-    List<int> resivictionAcc = new List<int>() { 90, 50, 10 };
+    List<float> resivictionAcc = new List<float>() { 0.9f, 0.5f, 0.1f };
 
     public override float GetPmMult(Technique t = null)
     {
-        if (t != null & t is Spell)
+		if (t == null)
+			return 1f;
+		if (t.Name == "Resiviction") 
+			return 0f;
+        if (t is Spell)
         {
             var percentage = 0.1f;
             var totalCasters = PassivesList.FindAll((p) => p.Name.Contains("Caster"));
@@ -38,6 +42,17 @@ public class Cole : Hero {
         prevAttackName = attacker.CurrentAttackName;
         base.PreAttackCheck(attacker);
     }
+
+	public override void DecideTypeOfTarget ()
+	{
+		if (CurrentAttackName == "Resiviction") 
+		{			
+			var tech = GameControl.skillTreeManager.FindTechnique(data, lastSpellUsed.Name);
+			currentTargetType = tech.targetType;
+			return;			
+		}
+		base.DecideTypeOfTarget ();
+	}
 
     public override void Attack()
     {
@@ -70,7 +85,7 @@ public class Cole : Hero {
                 break;
             case "Resiviction":
                 Resiviction();
-                break;
+				return;
             case "Candleshot":
             case "Fireball":
             case "Grand Fireball":
@@ -81,7 +96,7 @@ public class Cole : Hero {
                 break;
         }
 
-        if (CurrentAttack is Spell)
+		if (CurrentAttack is Spell && CurrentAttackName != "Resiviction")
             lastSpellUsed = CurrentAttack as Spell;
         
         // check parent function to take care of reducing pm
@@ -172,12 +187,16 @@ public class Cole : Hero {
             print("no last spell found");
             return;
         }
-        var tempSpell = lastSpellUsed;
+        
         var timesUsed = (resivictionTimesUsed > resivictionAcc.Count - 1) ? resivictionAcc.Count - 1 : resivictionTimesUsed;
 
-        tempSpell.Accuaracy = resivictionAcc[timesUsed];
-        CurrentAttackName = tempSpell.Name;
+		Accuracy = resivictionAcc [timesUsed];
+        CurrentAttackName = lastSpellUsed.Name;
+		AttackCost = 0;
         resivictionTimesUsed++;
         Attack();
+
+		Accuracy = 1f;
+
     }
 }
