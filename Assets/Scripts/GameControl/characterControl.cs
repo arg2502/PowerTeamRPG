@@ -543,6 +543,20 @@ public class characterControl : OverworldObject {
 	// Update is called once per frame
     void Update()
     {
+        switch (GameControl.control.currentCharacterState)
+        {
+            case CharacterState.Normal:
+                UpdateNormal(); break;
+            case CharacterState.Menu:
+                UpdateMenu(); break;
+            case CharacterState.Transition:
+                UpdateTransition(); break;
+            case CharacterState.Battle:
+                UpdateBattle(); break;
+            case CharacterState.Defeat:
+                UpdateDefeat(); break;
+        }
+
         sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
 
@@ -561,21 +575,6 @@ public class characterControl : OverworldObject {
         {
             anim.SetBool("isMoving", canMove);
         }
-
-        switch (GameControl.control.currentCharacterState)
-        {
-            case CharacterState.Normal:
-                UpdateNormal(); break;
-            case CharacterState.Menu:
-                UpdateMenu(); break;
-            case CharacterState.Transition:
-                UpdateTransition(); break;
-            case CharacterState.Battle:
-                UpdateBattle(); break;
-            case CharacterState.Defeat:
-                UpdateDefeat(); break;
-        }
-
     }
     
     void EnterRoom(Vector2 startPos, Vector2 endPos)
