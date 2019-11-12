@@ -89,6 +89,9 @@ public class Cole : Hero {
             case "Bonecrush":
                 Bonecrush();
                 break;
+			case "Bucket Splash":
+				BucketSplash ();
+				break;
             case "Candleshot":
             case "Fireball":
             case "Grand Fireball":
@@ -210,4 +213,20 @@ public class Cole : Hero {
             GameControl.skillTreeManager.AddPassiveTechnique(targets[i].Data, "Bonecrush Passive", true);
         }
     }
+
+	void BucketSplash()
+	{
+		for (int i = 0; i < targets.Count; i++) 
+		{
+			GameControl.skillTreeManager.AddPassiveTechnique (targets [i].Data, "BucketSplash Passive", true);
+		}
+	}
+
+	void FlaskSplash()
+	{
+		for (int i = 0; i < targets.Count; i++) 
+		{
+			GameControl.skillTreeManager.AddPassiveTechnique (targets [i].Data, "FlaskSplash Passive", true);
+		}
+	}
 }

@@ -113,4 +113,33 @@ public class Technique {
         if (icon != null)
             treeImage = icon;
     }
+
+	protected bool IsTechniqueIce(string techName){
+		switch (techName) {
+			case "Frost Edge":
+			case "Fog":
+			case "Frost":
+			case "Frost Bite":
+			case "Ice Spear":
+			case "Diamond Peak":
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	protected bool IsTechniqueFire(string techName){
+		switch (techName) {
+			case "Candleshot":
+			case "Fireball":
+			case "Grand Fireball":
+			case "Splash Flame":
+			case "Firewall":
+			case "Hellfire":
+			case "Cole Fusion":
+				return true;
+			default:
+				return false;
+		}
+	}
 }

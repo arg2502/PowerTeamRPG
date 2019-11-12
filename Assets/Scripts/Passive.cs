@@ -524,3 +524,56 @@ public class BonecrushPassive : TakeDamagePassive
         return additional;
     }
 }
+[Serializable]
+public class BucketSplashPassive : TakeDamagePassive
+{
+	public BucketSplashPassive()
+	{
+		name = "BucketSplash Passive";
+	}
+	public override void Start ()
+	{
+		
+	}
+	public override void Use (Denigen attackingDen, Denigen other)
+	{
+		
+	}
+	public override float TakeDamage (Denigen attackingDen, Denigen other, float damage)
+	{
+		float additional = 0f;
+		if (IsTechniqueIce (attackingDen.CurrentAttackName)) 
+		{
+			additional = damage * 0.5f;
+		}
+
+		return additional;
+	}
+}
+
+[Serializable]
+public class FlaskSplashPassive : TakeDamagePassive
+{
+	public FlaskSplashPassive()
+	{
+		name = "FlaskSplash Passive";
+	}
+	public override void Start ()
+	{
+
+	}
+	public override void Use (Denigen attackingDen, Denigen other)
+	{
+
+	}
+	public override float TakeDamage (Denigen attackingDen, Denigen other, float damage)
+	{
+		float additional = 0f;
+		if (IsTechniqueFire (attackingDen.CurrentAttackName)) 
+		{
+			additional = damage * 0.5f;
+		}
+
+		return additional;
+	}
+}
