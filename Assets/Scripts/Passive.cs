@@ -490,3 +490,37 @@ public class FogPassive : PerTurnPassive
         return (int)fogDamage;
     }
 }
+
+[Serializable]
+public class BonecrushPassive : TakeDamagePassive
+{
+    public BonecrushPassive()
+    {
+        name = "Bonecrush Passive";
+    }
+
+    public override void Start()
+    {
+        
+    }
+
+    public override void Use(Denigen attackingDen, Denigen other)
+    {
+        
+    }
+
+    public override float TakeDamage(Denigen attackingDen, Denigen other, float damage)
+    {
+        // 50% chance of crit
+        float additional = 0f;
+        var val = UnityEngine.Random.value;
+        if (val <= 0.5f)
+        {
+            additional = damage * 0.5f;
+            attackingDen.attackType = Denigen.AttackType.CRIT;
+            var battleManager = GameObject.FindObjectOfType<BattleManager>();
+            battleManager.afterAttack.AddListener(() => { GameControl.skillTreeManager.RemoveTechnique(other.Data, "Bonecrush Passive"); });
+        }
+        return additional;
+    }
+}

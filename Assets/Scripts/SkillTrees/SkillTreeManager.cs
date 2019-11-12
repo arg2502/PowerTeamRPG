@@ -23,6 +23,7 @@ public class SkillTreeManager {
     Passive iceArmorPassive;
     Passive iceBarrierPassive;
     Passive fogPassive;
+    Passive bonecrushPassive;
     List<Technique> tempTechniques;
 
 	// Use this for initialization
@@ -61,7 +62,7 @@ public class SkillTreeManager {
     public void AddPassiveTechnique(DenigenData hero, string techName, bool onlyOne)
     {
         if (!onlyOne || (FindTechnique(hero, techName) == null))
-            AddTechnique(hero, techName);
+            AddTechnique(hero, FindTempTechnique(techName));
     }
 
     public void AddTechnique(DenigenData hero, string techName)
@@ -164,9 +165,10 @@ public class SkillTreeManager {
     {
         iceArmorPassive = new IceArmorPassive();
         iceBarrierPassive = new IceBarrierPassive();
-        fogPassive = new FogPassive();        
+        fogPassive = new FogPassive();
+        bonecrushPassive = new BonecrushPassive();
         
-        tempTechniques = new List<Technique>() { iceArmorPassive, iceBarrierPassive, fogPassive };
+        tempTechniques = new List<Technique>() { iceArmorPassive, iceBarrierPassive, fogPassive, bonecrushPassive };
     }
 
     void AddStartingTechniques()
@@ -203,12 +205,12 @@ public class SkillTreeManager {
 
     public Technique FindTechnique(DenigenData data, string techName)
     {
-        // try checking the general temp techniques list
-        foreach (var tech in tempTechniques)
-        {
-            if (string.Compare(techName, tech.Name) == 0)
-                return tech;
-        }
+        //// try checking the general temp techniques list
+        //foreach (var tech in tempTechniques)
+        //{
+        //    if (string.Compare(techName, tech.Name) == 0)
+        //        return tech;
+        //}
 
         // check skills list first
         foreach (var tech in data.skillsList)

@@ -86,6 +86,9 @@ public class Cole : Hero {
             case "Resiviction":
                 Resiviction();
 				return;
+            case "Bonecrush":
+                Bonecrush();
+                break;
             case "Candleshot":
             case "Fireball":
             case "Grand Fireball":
@@ -198,5 +201,13 @@ public class Cole : Hero {
 
 		Accuracy = 1f;
 
+    }
+
+    void Bonecrush()
+    {
+        for (int i = 0; i < targets.Count; i++)
+        {
+            GameControl.skillTreeManager.AddPassiveTechnique(targets[i].Data, "Bonecrush Passive", true);
+        }
     }
 }

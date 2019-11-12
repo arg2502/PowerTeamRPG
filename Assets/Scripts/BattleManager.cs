@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UI;
+using UnityEngine.Events;
 
 // Not a static var in GameControl, because we do not need a BattleManager at all times
 public class BattleManager : MonoBehaviour {
@@ -103,6 +104,9 @@ public class BattleManager : MonoBehaviour {
 
     Denigen currentAttacker;
     List<Denigen> currentTargeted;
+
+    public UnityEvent afterAttack;
+
     [Header("Interactive Attacks")]
     public InteractiveAttack ia_slider;
     public InteractiveAttack ia_prompt;
@@ -120,6 +124,7 @@ public class BattleManager : MonoBehaviour {
         CreateBattleMenu();
         SortBySpeed();
         currentDenigen = 0;
+        afterAttack = new UnityEvent();
         StartCoroutine(StartBattle());
     }
 
@@ -706,6 +711,13 @@ public class BattleManager : MonoBehaviour {
     
     public void NextAttack()
     {
+        // perform any after attack events
+        if (afterAttack != null)
+        {
+            afterAttack.Invoke();
+            afterAttack.RemoveAllListeners();
+        }
+
         // if the battle is over, break the cycle        
         if (IsBattleOver)
             return;
