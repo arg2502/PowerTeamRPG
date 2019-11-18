@@ -978,17 +978,25 @@ public class BattleManager : MonoBehaviour {
 
             if (target.WasJustHealed){
 				//healing
-                message += target.DenigenName + " is healed by " + target.CalculatedDamage;
-			}else if (target.StatChanged != null){
+                message += target.DenigenName + " is healed by " + target.CalculatedDamage + "\n";
+			}
+            if (target.StatChanged != null)
+            {
 				//stat changes
 				if(target.statChangeInt >= 0){
-                	message += target.DenigenName + "'s " + target.StatChanged + " increases by " + target.statChangeInt;
+                	message += target.DenigenName + "'s " + target.StatChanged + " increases by " + target.statChangeInt + "\n";
 				}else{
-					message += target.DenigenName + "'s " + target.StatChanged + " decreases by " + target.statChangeInt;
-				}
-			}else{
+					message += target.DenigenName + "'s " + target.StatChanged + " decreases by " + target.statChangeInt + "\n";
+				}                
+			}
+            if (target.StatusChanged)
+            {
+                message += target.DenigenName + " is " + target.NewStatus + "\n";
+            }
+            if (target.CalculatedDamage != 0)
+            {
 				//damage
-				message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!";
+				message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!\n";
 			}
 
             messagesToDisplay.Add(message);
