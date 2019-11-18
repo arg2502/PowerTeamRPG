@@ -107,6 +107,8 @@ public class BattleManager : MonoBehaviour {
 
     public UnityEvent afterAttack;
 
+	bool descriptionIsGrow = false;
+
     [Header("Interactive Attacks")]
     public InteractiveAttack ia_slider;
     public InteractiveAttack ia_prompt;
@@ -456,6 +458,11 @@ public class BattleManager : MonoBehaviour {
     void StartTargetPhase()
     {
         statsCardManager.ShowCards();
+		//DescriptionText.transform.parent.GetComponent<Animator> ().speed = -1f;
+		if (descriptionIsGrow) {
+			DescriptionText.transform.parent.GetComponent<Animator> ().Play ("Shrink", -1, 0f);
+			descriptionIsGrow = !descriptionIsGrow;
+		}
         battleCamera.BackToStart();
         battleCamera.ZoomTarget();
         ResetDenigen(CurrentHero);
@@ -480,6 +487,11 @@ public class BattleManager : MonoBehaviour {
     void StartAttackPhase()
     {
         statsCardManager.HideCards();
+		//DescriptionText.transform.parent.GetComponent<Animator> ().speed = 1f;
+		if (!descriptionIsGrow) {
+			DescriptionText.transform.parent.GetComponent<Animator> ().Play ("Grow", -1, 0f);
+			descriptionIsGrow = !descriptionIsGrow;
+		}
         AttackDenigen();
     }
     
