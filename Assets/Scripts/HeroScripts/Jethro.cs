@@ -78,6 +78,9 @@ public class Jethro : Hero {
             case "Diamond Peak":
                 DiamondPeak();
                 break;
+			case "Resilience":
+				Resilience ();
+				break;
             case "Helmsplitter":
             case "Trinity Slice":
             case "Arc Slash":
@@ -207,4 +210,10 @@ public class Jethro : Hero {
         TeamStatusAttack(DenigenData.Status.bleeding);
         StartAttack(CurrentAttackName);
     }
+
+	void Resilience()
+	{
+		bleedTurn += 2;
+		petrifiedTurn += 2;
+	}
 }

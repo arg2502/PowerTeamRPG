@@ -192,10 +192,12 @@ public class Denigen : MonoBehaviour {
     GameObject statusIcon;
     int statusDamage;
     public int StatusDamage { get { return statusDamage; } }
-    int bleedTurn;
+    protected int bleedTurn;
     int maxBleedTurn = 3; // NOT FINAL
     int bleedDamage = 2; // NOT FINAL
     int infectionDamage = 2; // NOT FINAL
+	protected int petrifiedTurn;
+	int maxPetrifiedTurn = 3;
 
     private bool canMissOrDodge;
     public bool CanMissOrDodge { get { return canMissOrDodge; } set { canMissOrDodge = value; } }
@@ -776,6 +778,8 @@ public class Denigen : MonoBehaviour {
                 return IsBleeding;
             case DenigenData.Status.infected:
                 return IsInfected;
+			case DenigenData.Status.petrified:
+				return IsPetrified;
             default:
                 return null;
         }
@@ -899,6 +903,7 @@ public class Denigen : MonoBehaviour {
 
             // stop attack
             CurrentAttackName = "Petrified";
+			petrifiedTurn = 1;
         }
     }
 
@@ -917,6 +922,16 @@ public class Denigen : MonoBehaviour {
             StartNormal();
         }
     }
+
+	void IsPetrified()
+	{
+		if (petrifiedTurn <= maxPetrifiedTurn) {
+			petrifiedTurn++;
+		} else {
+			petrifiedTurn = 0;
+			StartNormal ();
+		}
+	}
 
     void IsInfected()
     {

@@ -577,3 +577,56 @@ public class FlaskSplashPassive : TakeDamagePassive
 		return additional;
 	}
 }
+
+[Serializable]
+public class ColdShoulderPassive : TakeDamagePassive
+{
+	public ColdShoulderPassive()
+	{
+		name = "ColdShoulder Passive";
+	}
+	public override void Start ()
+	{
+
+	}
+	public override void Use (Denigen attackingDen, Denigen other)
+	{
+
+	}
+	public override float TakeDamage (Denigen attackingDen, Denigen other, float damage)
+	{
+		float additional = damage * 0.05f;
+		return -additional;
+	}
+}
+
+[Serializable]
+public class SlowBurnPassive : PerTurnPassive
+{
+	int numOfTurns = 0;
+	int maxNumOfTurns = 15;
+	public SlowBurnPassive()
+	{
+		name = "SlowBurn Passive";
+		numOfTurns = 0;
+	}
+
+	public override void Start()
+	{
+
+	}
+
+	public override void Use(Denigen attackingDen, Denigen other)
+	{
+
+	}
+
+	public override int PerTurn(Denigen thisDenigen)
+	{
+		if (numOfTurns < maxNumOfTurns) {
+			thisDenigen.Accuracy += (thisDenigen.Accuracy * 0.05f);
+			numOfTurns++;
+		}
+		return 0;
+	}
+}

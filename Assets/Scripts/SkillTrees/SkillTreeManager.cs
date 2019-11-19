@@ -26,6 +26,8 @@ public class SkillTreeManager {
     Passive bonecrushPassive;
 	Passive bucketSplashPassive;
 	Passive flaskSplashPassive;
+	Passive coldShoulderPassive;
+	Passive slowBurnPassive;
     List<Technique> tempTechniques;
 
 	// Use this for initialization
@@ -171,8 +173,11 @@ public class SkillTreeManager {
         bonecrushPassive = new BonecrushPassive();
 		bucketSplashPassive = new BucketSplashPassive ();
 		flaskSplashPassive = new FlaskSplashPassive ();
+		coldShoulderPassive = new ColdShoulderPassive ();
+		slowBurnPassive = new SlowBurnPassive ();
 
-		tempTechniques = new List<Technique>() { iceArmorPassive, iceBarrierPassive, fogPassive, bonecrushPassive, bucketSplashPassive, flaskSplashPassive };
+		tempTechniques = new List<Technique>() { iceArmorPassive, iceBarrierPassive, fogPassive, bonecrushPassive, bucketSplashPassive, flaskSplashPassive,
+			coldShoulderPassive, slowBurnPassive};
     }
 
     void AddStartingTechniques()
