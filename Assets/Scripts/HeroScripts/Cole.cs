@@ -92,6 +92,9 @@ public class Cole : Hero {
 			case "Bucket Splash":
 				BucketSplash ();
 				break;
+			case "Cole Fusion":
+				ColeFusion ();
+				break;
             case "Candleshot":
             case "Fireball":
             case "Grand Fireball":
@@ -227,6 +230,20 @@ public class Cole : Hero {
 		for (int i = 0; i < targets.Count; i++) 
 		{
 			GameControl.skillTreeManager.AddPassiveTechnique (targets [i].Data, "FlaskSplash Passive", true);
+		}
+	}
+
+	void ColeFusion()
+	{
+		// high chance of blinding
+		var rand = Random.value;
+		if (rand <= 0.75f)
+			SingleStatusAttack (DenigenData.Status.blinded);
+
+		var amt = Pm;
+		AttackCost = amt;
+		for (int i = 0; i < targets.Count; i++) {
+			targets [i].CalculatedDamage = amt;
 		}
 	}
 }
