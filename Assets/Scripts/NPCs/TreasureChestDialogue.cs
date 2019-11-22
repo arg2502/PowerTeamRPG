@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreasureChestDialogue : NPCDialogue {
 
-	public override void StartDialogue()
+	public override void StartDialogue(TextAsset ta = null)
     {
         base.StartDialogue();
 

@@ -45,7 +45,7 @@ public class NPCDialogue : MonoBehaviour {
     /// <summary>
     /// Send the appropriate conversation over to the Dialogue class to handle
     /// </summary>
-    public virtual void StartDialogue()
+    public virtual void StartDialogue(TextAsset ta = null)
     {
         // Start the actual Dialogue last, as this will determine whether we should end the dialogue as well
         // (Putting this line first caused issues where the dialogue would try to start again soon after
@@ -55,19 +55,28 @@ public class NPCDialogue : MonoBehaviour {
         // not really a fix, more like hiding the bug)
 
 
-        // check if there is any dialogue for any active quests
-        var questDialogue = ActiveQuest();
-
-        // if there are no active quest dialogues, check for any completed quests
-        if (questDialogue == null)
-            questDialogue = CompletedQuest();
-
-        if (questDialogue != null)
-            dialogue.StartDialogueTextAsset(questDialogue);
-        else if (dialogueList.Count > 0)
-            dialogue.StartDialogueTextAsset(dialogueList[numOfTimesTalked]);
+        // forcing a passed in text asset
+        // 11/21/19 -- adding this now for beggar. No idea if this will break, but hey..let's see what happens
+        if (ta != null)
+        {
+            dialogue.StartDialogueTextAsset(ta);
+        }
         else
-            dialogue.StartDialogueCustom(customDialogueList[numOfTimesTalked]);
+        {
+            // check if there is any dialogue for any active quests
+            var questDialogue = ActiveQuest();
+
+            // if there are no active quest dialogues, check for any completed quests
+            if (questDialogue == null)
+                questDialogue = CompletedQuest();
+
+            if (questDialogue != null)
+                dialogue.StartDialogueTextAsset(questDialogue);
+            else if (dialogueList.Count > 0)
+                dialogue.StartDialogueTextAsset(dialogueList[numOfTimesTalked]);
+            else
+                dialogue.StartDialogueCustom(customDialogueList[numOfTimesTalked]);
+        }
     }
 
     public void EndDialogue(Dialogue.Conversation currentConversation)

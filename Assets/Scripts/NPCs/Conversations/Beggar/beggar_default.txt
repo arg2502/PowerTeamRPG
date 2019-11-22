@@ -1,0 +1,2 @@
+Name	Emotion	Dialogue	Responses/Actions
+		Spare some gold for a poor blind denigen?	ShowBeggarMenu

@@ -1,0 +1,5 @@
+Name	Emotion	Dialogue	Responses/Actions
+		Thirty years of bread and wine, helps a man grow old and blind...	
+Jethro		What?	
+		What?	
+	HAPPY	Have a good day!	

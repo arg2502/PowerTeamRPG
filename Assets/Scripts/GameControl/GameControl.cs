@@ -136,6 +136,8 @@ public class GameControl : MonoBehaviour {
 
     public AudioClip battleIntro;
     public AudioClip battleLoop;
+
+    public List<int> knownBeggarDialogues;
     
     //awake gets called before start
     void Awake () {

@@ -227,6 +227,14 @@
             notificationMenu.Init();
         }
 
+        public void PushBeggarMenu(NPCBeggar beggar)
+        {
+            EnableMenu(uiDatabase.BeggarMenu);
+            var beggarMenu = list_currentMenus[list_currentMenus.Count - 1].GetComponent<BeggarMenu>();
+            beggarMenu.beggar = beggar;
+            beggarMenu.Init();
+        }
+
         public void HideAllMenus()
         {
             // turn off all menus
@@ -274,5 +282,7 @@
         {
             return GameObject.Instantiate(uiDatabase.QualityUI, transformParent);
         }
+
+        
     }
 }

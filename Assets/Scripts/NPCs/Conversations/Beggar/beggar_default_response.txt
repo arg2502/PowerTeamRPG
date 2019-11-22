@@ -1,0 +1,2 @@
+Name	Emotion	Dialogue	Responses/Actions
+	HAPPY	Morttimer's sight be on you, my friend!	
