@@ -1001,17 +1001,18 @@ public class BattleManager : MonoBehaviour {
 					message += target.DenigenName + "'s " + target.StatChanged + " decreases by " + target.statChangeInt + "\n";
 				}                
 			}
-            if (target.StatusChanged)
-            {
-                message += target.DenigenName + " is " + target.NewStatus + "\n";
-            }
+            //if (target.StatusChanged)
+            //{
+            //    message += target.DenigenName + " is " + target.NewStatus + "\n";
+            //}
             if (target.CalculatedDamage != 0)
             {
 				//damage
 				message += target.DenigenName + " takes " + target.CalculatedDamage + " damage!\n";
 			}
 
-            messagesToDisplay.Add(message);
+            if (message != "")
+                messagesToDisplay.Add(message);
 
             // if the attacker misses, there's no damage to take
             if (currentAttacker.attackType != Denigen.AttackType.MISS)
