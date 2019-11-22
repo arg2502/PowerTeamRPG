@@ -1413,6 +1413,7 @@ public class BattleManager : MonoBehaviour {
                 break;
 			case "Candleshot":
 				ia = Instantiate (ia_charge, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
+                ia.gameObject.SetActive(true);
 				ia.GetComponent<IACharge> ().Init (currentAttacker, originalDamage);
 				break;
             default:

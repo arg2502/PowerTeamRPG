@@ -44,7 +44,6 @@
         {            
             gameControl.totalGold -= quantityNum;
             beggar.SetGold(quantityNum);
-//            uiManager.PopMenu();
         }
 
         private new void Update()

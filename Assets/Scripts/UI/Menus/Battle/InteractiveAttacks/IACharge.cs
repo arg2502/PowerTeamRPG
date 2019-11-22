@@ -5,29 +5,33 @@ using UnityEngine.UI;
 
 public class IACharge : InteractiveAttack {
 
-	Slider slider;
+	public Slider slider;
 	Denigen currentAttacker;
 
 	float decayRate = 0.5f;
 	float increaseRate = 0.1f;
 
 	float timer = 0.0f;
-	float timeLimit = 5.0f;
+	float timeLimit = 3.0f;
 	public Text timerText;
 
-	public void Init(Denigen attacker, List<float> damage){
-		print ("iacharge init");
+	public void Init(Denigen attacker, List<float> damage)
+    {		
 		base.Init (damage);
 		currentAttacker = attacker;
-		slider = GetComponentInChildren<Slider> ();
-		timerText.text = timer.ToString("0.00");
+        timerText.text = GetTimerText();
 	}
 
-	// Update is called once per frame
+    string GetTimerText()
+    {
+        return (timeLimit - timer).ToString("0.00");
+    }
+
 	new void Update () {
-		//print ("update -- timer: " + timer);
-		if (timer <= timeLimit) {
+		if (timer <= timeLimit)
+        {
 			timer += Time.deltaTime;
+            timerText.text = GetTimerText();
 			slider.value -= decayRate * Time.deltaTime * (100f / currentAttacker.CurrentAttack.Accuaracy);
 
 			if (Input.GetButtonDown ("Submit"))

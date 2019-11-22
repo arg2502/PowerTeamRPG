@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class IAPrompt : InteractiveAttack {
 
-    //List<string> buttonPromptOptions;
 	List<Vector2> currentButtonPrompts;
     int currentButton = 0;
 
@@ -19,15 +18,11 @@ public class IAPrompt : InteractiveAttack {
     {
         base.Init(damage);
         CreatePositionsOnLine(promptCount);
+		currentButtonPrompts = new List<Vector2>();        
 
-        //buttonPromptOptions = new List<string>() { "Submit", "Cancel", "Pause" };
-		currentButtonPrompts = new List<Vector2>();
-        //int random;
 		int horOrVer, negOrPos;
         for(int i = 0; i < promptCount; i++)
         {
-            //random = Random.Range(0, buttonPromptOptions.Count);
-            //currentButtonPrompts.Add(buttonPromptOptions[random]);
 			horOrVer = Random.Range (0, 2);
 			negOrPos = Random.Range (0, 2);
 			if (negOrPos == 0)
@@ -59,11 +54,16 @@ public class IAPrompt : InteractiveAttack {
 				else
 					objText = "^";
 			}
-			obj.GetComponentInChildren<UnityEngine.UI.Text> ().text = objText; //currentButtonPrompts[i];
+			obj.GetComponentInChildren<UnityEngine.UI.Text> ().text = objText;
 
             promptObjs.Add(obj);
         }
-        timerText.text = timer.ToString("0.00");
+        timerText.text = GetTimerText();
+    }
+
+    string GetTimerText()
+    {
+        return (timeLimit - timer).ToString("0.00");
     }
 
     private new void Update()
@@ -72,8 +72,7 @@ public class IAPrompt : InteractiveAttack {
             && timer < timeLimit)
         {
             timer += Time.deltaTime;
-            timerText.text = timer.ToString("0.00");
-            //if (Input.GetButtonDown(currentButtonPrompts[currentButton]))
+            timerText.text = GetTimerText();
 			if(Input.GetAxisRaw("Horizontal") == currentButtonPrompts[currentButton].x 
 				&& Input.GetAxisRaw("Vertical") == currentButtonPrompts[currentButton].y
 				&& (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical")))
