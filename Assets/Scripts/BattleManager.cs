@@ -112,6 +112,7 @@ public class BattleManager : MonoBehaviour {
     [Header("Interactive Attacks")]
     public InteractiveAttack ia_slider;
     public InteractiveAttack ia_prompt;
+	public InteractiveAttack ia_charge;
 
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
@@ -1409,6 +1410,10 @@ public class BattleManager : MonoBehaviour {
                 ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
                 ia.GetComponent<IAPrompt>().Init(originalDamage, 2);
                 break;
+			case "Candleshot":
+				ia = Instantiate (ia_charge, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
+				ia.GetComponent<IACharge> ().Init (currentAttacker, originalDamage);
+				break;
             default:
                 StartCoroutine(ShowAttack());
                 break;
