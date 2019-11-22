@@ -14,6 +14,7 @@ public class InteractiveAttack : MonoBehaviour {
 
     protected void Init(List<float> originalDamage)
     {
+		print ("ia init");
         damage = originalDamage;
         battleManager = FindObjectOfType<BattleManager>();        
     }
