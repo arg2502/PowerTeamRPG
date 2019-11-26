@@ -1,0 +1,15 @@
+Name	Emotion	Dialogue	Responses/Actions
+		What news would you like to hear?	The King's Visit[7]_A Mysterious Buyer[6]
+		The King of Knorvica is set to visit Astrala Proper for a historic meeting with the Astralan chancellors.	
+		High Chancellor Jericho is hopeful that these talks will lead to the Knorvican Kingdom finally uniting with the Confederation of Astrala.	
+		But many think his optimism is unfounded.	
+		Perhaps centuries of tensions between border disputes, opposing ideals, and hostilities from both sides can be resolved in one closed door meeting.	
+		Then again, maybe not.	
+		Coming up: Is it possible to carry a Morttimer's Statue around with you to use at any time?	
+		The answer is no. But come back later to see me try anyway.	
+		Traders throughout Astrala Proper were baffled today when a denigen attempted to pay for her goods.{0.25}.{0.25}.{0.25}with fragments of paper.	
+		"This is the currency of the future!" she declared to a blacksmith who was really regretting asking about the paper and just wanted to get on with her day.	
+		"They may not be worth anything now, but one day the whole realm will be using 'teckits'!" she declared again, this time to a bank Shenanigan too polite to not engage in conversation.	
+		Shortly after this statement, eye witnesses report seeing a male driadali dressed all in white appear from thin air, shout "Not this shit again, Denisse." and drag the denigen by the scruff out of the bank before vanishing.	
+		Bank officials have announced they will be donating any leftover 'teckits' to the Artisan's Guild for their "fun crafts or whatever it is they do. We don't really care."	
+		This report has been brought to you by the Mage's Guild.{0.25}.{0.25}Magic:{0.5} Where else are you gonna go?	
