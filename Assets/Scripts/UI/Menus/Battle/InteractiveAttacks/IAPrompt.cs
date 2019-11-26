@@ -80,25 +80,25 @@ public class IAPrompt : InteractiveAttack {
                 promptObjs[currentButton].SetActive(false);
                 currentButton++;
             }
+
+			if (timer < timeLimit / 5f)
+				quality = Quality.PERFECT;
+			else if (timer < timeLimit * 2f / 5f)
+				quality = Quality.GREAT;
+			else if (timer < timeLimit * 3f / 5f)
+				quality = Quality.GOOD;
+			else if (timer < timeLimit * 4f / 5f)
+				quality = Quality.OKAY;
+			else if (timer < timeLimit)
+				quality = Quality.POOR;
+			else
+				quality = Quality.MISS;			
+
+			SetQualityColor ();
         }
         else
-        {
-            print(timer);
-            Quality quality;
-            if (timer < timeLimit / 5f)
-                quality = Quality.PERFECT;
-            else if (timer < timeLimit * 2f / 5f)
-                quality = Quality.GREAT;
-            else if (timer < timeLimit * 3f / 5f)
-                quality = Quality.GOOD;
-            else if (timer < timeLimit * 4f / 5f)
-                quality = Quality.OKAY;
-            else if (timer < timeLimit)
-                quality = Quality.POOR;
-            else
-                quality = Quality.MISS;
-
-            SetAttack(GameObject.FindGameObjectWithTag("MainCanvas"), quality);
+        {            
+            SetAttack(GameObject.FindGameObjectWithTag("MainCanvas"));
             Destroy(gameObject);
         }
     }

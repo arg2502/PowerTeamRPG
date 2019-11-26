@@ -36,10 +36,7 @@ public class IACharge : InteractiveAttack {
 
 			if (Input.GetButtonDown ("Submit"))
 				slider.value += increaseRate;
-		}
-		else
-		{
-			Quality quality;
+
 			if (slider.value >= 0.9f)
 				quality = Quality.PERFECT;
 			else if (slider.value >= 0.75f)
@@ -53,7 +50,11 @@ public class IACharge : InteractiveAttack {
 			else
 				quality = Quality.MISS;
 
-			SetAttack(GameObject.FindGameObjectWithTag("MainCanvas"), quality);
+			SetQualityColor ();
+		}
+		else
+		{
+			SetAttack(GameObject.FindGameObjectWithTag("MainCanvas"));
 			Destroy(gameObject);
 		}
 	}

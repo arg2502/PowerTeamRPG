@@ -11,6 +11,7 @@ public class InteractiveAttack : MonoBehaviour {
     protected BattleManager battleManager;
     protected List<float> xPosList;
     public GameObject parentRectTransform;
+	public Image qualityIndicator;
 
     protected void Init(List<float> originalDamage)
     {
@@ -30,10 +31,10 @@ public class InteractiveAttack : MonoBehaviour {
         }
     }
 
-    protected void Attack(Quality q, bool immediately = false)
+    protected void Attack(bool immediately = false)
     {
         float percentage;
-        switch(q)
+        switch(quality)
         {
             case Quality.PERFECT: percentage = 1.5f; break;
             case Quality.GREAT: percentage = 1.25f; break;
@@ -47,7 +48,7 @@ public class InteractiveAttack : MonoBehaviour {
         battleManager.ReturnFromInteraction(damage, immediately);
     }
 
-    protected void SetAttack(GameObject target, Quality quality, bool immediately = false)
+    protected void SetAttack(GameObject target, bool immediately = false)
     {
         //var textObj = target.GetComponentInChildren<Text>(true);
         var textObj = GameControl.UIManager.ShowQualityUI(target.transform).GetComponent<Text>();
@@ -65,11 +66,38 @@ public class InteractiveAttack : MonoBehaviour {
         }
         textObj.text = text;
         //currentTarget++;
-        Attack(quality, immediately);
+        Attack(immediately);
     }
 
     // Update is called once per frame
     protected void Update () {
 		
+	}
+
+	protected void SetQualityColor(){
+		Color color = Color.white;
+		switch (quality) {
+		case Quality.PERFECT:
+			color = Color.green;
+			break;
+		case Quality.GREAT:
+			color = Color.blue;
+			break;
+		case Quality.GOOD:
+			color = Color.yellow;
+			break;
+		case Quality.OKAY:
+			color = Color.magenta;
+			break;
+		case Quality.POOR:
+			color = Color.red;
+			break;
+		case Quality.MISS:
+			color = Color.black;
+			break;
+		}
+
+		if (qualityIndicator != null)
+			qualityIndicator.color = color;
 	}
 }

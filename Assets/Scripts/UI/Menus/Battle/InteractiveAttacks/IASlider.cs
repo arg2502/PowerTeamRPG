@@ -72,11 +72,11 @@ public class IASlider : InteractiveAttack {
             var dist = GetDistance(targets[currentTarget]);
             var textObj = targets[currentTarget].GetComponentInChildren<Text>();
             
-            if (dist <= perfectRange) { SetAttack(targets[currentTarget], Quality.PERFECT, true); currentTarget++; }
-            else if (dist <= greatRange) { SetAttack(targets[currentTarget], Quality.GREAT, true); currentTarget++; }
-            else if (dist <= goodRange) { SetAttack(targets[currentTarget], Quality.GOOD, true); currentTarget++; }
-            else if (dist <= okayRange) { SetAttack(targets[currentTarget], Quality.OKAY, true); currentTarget++; }
-            else if (dist <= poorRange) { SetAttack(targets[currentTarget], Quality.POOR, true); currentTarget++; }
+			if (dist <= perfectRange) { quality = Quality.PERFECT; SetAttack(targets[currentTarget], true); currentTarget++; }
+			else if (dist <= greatRange) { quality = Quality.GREAT; SetAttack(targets[currentTarget], true); currentTarget++; }
+			else if (dist <= goodRange) { quality = Quality.GOOD; SetAttack(targets[currentTarget], true); currentTarget++; }
+			else if (dist <= okayRange) { quality = Quality.OKAY; SetAttack(targets[currentTarget], true); currentTarget++; }
+			else if (dist <= poorRange) { quality = Quality.POOR; SetAttack(targets[currentTarget], true); currentTarget++; }
 
         }
 

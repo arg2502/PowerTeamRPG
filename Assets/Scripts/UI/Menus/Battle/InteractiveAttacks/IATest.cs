@@ -8,7 +8,8 @@ public class IATest : InteractiveAttack {
     {
         if(Input.GetButtonDown("Submit"))
         {
-            Attack(Quality.PERFECT);
+			quality = Quality.PERFECT;
+            Attack();
             Destroy(gameObject);
         }
 
