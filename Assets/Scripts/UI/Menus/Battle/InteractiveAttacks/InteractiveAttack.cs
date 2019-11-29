@@ -41,6 +41,7 @@ public class InteractiveAttack : MonoBehaviour {
             case Quality.GOOD: percentage = 1f; break;
             case Quality.OKAY: percentage = .75f; break;
             case Quality.POOR: percentage = .5f; break;
+			case Quality.MISS: percentage = 0f;	break;
             default: percentage = 1f; break;
         }
         for (int i = 0; i < damage.Count; i++)

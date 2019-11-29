@@ -113,6 +113,7 @@ public class BattleManager : MonoBehaviour {
     public InteractiveAttack ia_slider;
     public InteractiveAttack ia_prompt;
 	public InteractiveAttack ia_charge;
+	public InteractiveAttack ia_riser;
 
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
@@ -1393,8 +1394,7 @@ public class BattleManager : MonoBehaviour {
         switch(currentAttacker.CurrentAttackName)
         {            
             case "Helmsplitter":
-            case "Arc Slash": // temp
-            case "Riser": // temp
+            case "Arc Slash": // temp            
             case "Mordstreich": // temp
                 ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
                 ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage);
@@ -1415,6 +1415,11 @@ public class BattleManager : MonoBehaviour {
 				ia = Instantiate (ia_charge, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
                 ia.gameObject.SetActive(true);
 				ia.GetComponent<IACharge> ().Init (currentAttacker, originalDamage);
+				break;
+			case "Riser":
+				ia = Instantiate (ia_riser, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
+				ia.gameObject.SetActive (true);	
+				ia.GetComponent<IARiser> ().Init (originalDamage);
 				break;
             default:
                 StartCoroutine(ShowAttack());
