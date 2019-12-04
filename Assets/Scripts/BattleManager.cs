@@ -114,6 +114,7 @@ public class BattleManager : MonoBehaviour {
     public InteractiveAttack ia_prompt;
 	public InteractiveAttack ia_charge;
 	public InteractiveAttack ia_riser;
+    public InteractiveAttack ia_trace;
 
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
@@ -1421,6 +1422,11 @@ public class BattleManager : MonoBehaviour {
 				ia.gameObject.SetActive (true);	
 				ia.GetComponent<IARiser> ().Init (originalDamage);
 				break;
+            case "Fireball":
+                ia = Instantiate(ia_trace, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+                ia.gameObject.SetActive(true);
+                ia.GetComponent<IATrace>().Init(originalDamage);
+                break;
             default:
                 StartCoroutine(ShowAttack());
                 break;
