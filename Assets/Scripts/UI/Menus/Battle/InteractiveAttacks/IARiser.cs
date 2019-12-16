@@ -44,18 +44,24 @@ public class IARiser : InteractiveAttack {
 		targetHit = true;
 		var targetBox = targetSlider.GetComponentInChildren<BoxCollider2D> ();
 		var swordBox = swordSlider.GetComponentInChildren<BoxCollider2D> ();
-		var dist = targetBox.bounds.center.y - swordBox.bounds.center.y;
-		print ("dist: " + dist);
+		var dist = Mathf.Abs(targetBox.bounds.center.y - swordBox.bounds.max.y);
+        //print("target center y: " + targetBox.bounds.center.y);
+        //print("sword center y: " + swordBox.bounds.center.y);
+        //print ("dist: " + dist);
+        var perfectSize = targetBox.bounds.size.y / 10f;
+        var greatSize = targetBox.bounds.size.y / 8f;
+        var goodSize = targetBox.bounds.size.y / 5f;
+        var okaySize = targetBox.bounds.size.y / 2f;
 
-		if (dist <= 2f)
+		if (dist <= perfectSize)
 			quality = Quality.PERFECT;
-		else if (dist <= 7f)
-			quality = Quality.GREAT;
-		else if (dist <= 15f)
-			quality = Quality.GOOD;
-		else if (dist <= 25f)
-			quality = Quality.OKAY;
-		else
+        else if (dist <= greatSize)
+            quality = Quality.GREAT;
+        else if (dist <= goodSize)
+            quality = Quality.GOOD;
+        else if (dist <= okaySize)
+            quality = Quality.OKAY;
+        else
 			quality = Quality.POOR;
 
 		SetAttack(GameObject.FindGameObjectWithTag("MainCanvas"));

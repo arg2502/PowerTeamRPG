@@ -58,6 +58,7 @@ public class IASlider : InteractiveAttack {
             newTarget.GetComponent<RectTransform>().localPosition = new Vector2(xPosList[i], 0f);
             targets.Add(newTarget);
         }
+        slider.transform.SetAsLastSibling();
     }
 	// Update is called once per frame
 	new void Update () {        
