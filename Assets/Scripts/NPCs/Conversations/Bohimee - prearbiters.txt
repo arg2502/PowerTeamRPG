@@ -1,0 +1,10 @@
+Name	Emotion	Dialogue	Responses/Actions
+	HAPPY	Ah, welcome back, friends!	
+		What brings you to the Arbiters' Guild today?	
+	HAPPY	Is it for a wonderful tour of our fine establishment?	
+Jethro		...	
+	HAPPY	...	
+Cole		A tour would be nice I sup-	
+	SAD	Unfortunately, only Guild members are allowed entry past the Lobby.	
+	HAPPY	If you manage to become Arbiters though, you'd be welcome to visit all of the grounds.	
+		But not today.	

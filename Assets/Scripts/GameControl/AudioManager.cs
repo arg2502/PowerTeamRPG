@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour{
 
@@ -12,6 +13,10 @@ public class AudioManager : MonoBehaviour{
     List<AudioSource> source_SFX;
     
     AudioSource currentMusic = null;
+
+    public AudioMixerSnapshot normalRoom;
+    public AudioMixerSnapshot sideRoom; // low pass filter
+    float snapShotTransitionTime = 0.5f;
 
     float fadeOutRate = 5f;
     float fadeInRate = 1.5f; 
@@ -27,9 +32,25 @@ public class AudioManager : MonoBehaviour{
         source_SFX = new List<AudioSource>();
         foreach (var a in sfxList)
             source_SFX.Add(a);
-        
     }
 
+    void SnapshotRoomTransition()
+    {
+        StartCoroutine(SnapshotTransition(GameControl.control.currentRoom.roomType));
+    }
+
+    IEnumerator SnapshotTransition(roomControl.RoomType roomType)
+    {
+        yield return null;
+        if (roomType == roomControl.RoomType.NORMAL)
+        {
+            normalRoom.TransitionTo(snapShotTransitionTime);
+        }
+        else if(roomType == roomControl.RoomType.SIDE)
+        {
+            sideRoom.TransitionTo(snapShotTransitionTime);
+        }        
+    }
     public void StartMusic(AudioClip mainClip) { private_StartMusic(mainClip, null, true, true, false); }
     public void StartMusic(AudioClip introClip, AudioClip loopClip) { private_StartMusic(introClip, loopClip, true, true, false); }
     public void StartMusic(AudioClip mainClip, bool fadeOut) { private_StartMusic(mainClip, null, fadeOut, true, false); }
@@ -51,10 +72,15 @@ public class AudioManager : MonoBehaviour{
             //if (!fadeOut || currentMusic.clip == clip)
             //    currentMusic.Stop();
 
+
+
             // change of plans, because what if we want two rooms to play the same music? (e.g. Tavern)
             // we're not gonna restart the song, so just return instead
             if (currentMusic.clip == clip)
+            {
+                SnapshotRoomTransition();
                 return;
+            }
 
             if (!fadeOut)
                 currentMusic.Stop();
@@ -85,8 +111,9 @@ public class AudioManager : MonoBehaviour{
 
     AudioSource PlayMusic(AudioClip clip, bool isLooped = true, bool fade = true, bool pause = false)
     {
+        SnapshotRoomTransition();
         var curMus = PlaySound(source_MUS, clip, isLooped, false, fade);
-        currentMusic = curMus;
+        currentMusic = curMus;        
         return currentMusic;
     }
 
@@ -184,7 +211,7 @@ public class AudioManager : MonoBehaviour{
     {
         while(source.volume > 0f)
         {
-            source.volume -= Time.deltaTime * fadeOutRate;
+            source.volume -= Time.deltaTime * fadeOutRate;            
             yield return null;
         }
 

@@ -38,6 +38,8 @@ public class roomControl : MonoBehaviour {
     [Header("Sound Bank")]
     public AudioClip music_start;
     public AudioClip music_loop;
+    public enum RoomType { NORMAL, SIDE }
+    public RoomType roomType;
 
 	// Use this for initialization
 	void Start () {
@@ -259,7 +261,7 @@ public class roomControl : MonoBehaviour {
         }
                 
         AssignCurrentPosition();
-        
+
         // start music
         GameControl.audioManager.StartMusic(music_loop);
     }

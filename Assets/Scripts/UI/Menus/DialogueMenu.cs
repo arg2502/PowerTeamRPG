@@ -234,6 +234,11 @@
 
             dialogueText.text = dialogueStr;
             ReadyForNextDialogue = true; // invokes event
+
+            // if last character in dialogueStr is '-' that means the speaker was interrupted
+            // we want to continue immediately
+            if (dialogueStr[dialogueStr.Length - 1] == '-')
+                Continue();
         }
 
         void RemoveSpecialTags(char startChar, char endChar)
