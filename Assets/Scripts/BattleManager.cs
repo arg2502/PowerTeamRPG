@@ -1425,7 +1425,7 @@ public class BattleManager : MonoBehaviour {
             case "Fireball":
                 ia = Instantiate(ia_trace, GameObject.FindGameObjectWithTag("MainCanvas").transform);
                 ia.gameObject.SetActive(true);
-                ia.GetComponent<IATrace>().Init(originalDamage);
+                ia.GetComponent<IATrace>().Init(originalDamage, 4);
                 break;
             default:
                 StartCoroutine(ShowAttack());
