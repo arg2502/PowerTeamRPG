@@ -676,9 +676,12 @@ public class GameControl : MonoBehaviour {
         SceneManager.LoadScene(currentScene);
     }
 
-    public void AddGold(int gold)
+    public void AddGold(int gold, bool showNotification = false)
     {
         totalGold += gold;
+
+        if (showNotification)
+            UIManager.PushNotificationMenu("You got " + gold + " gold!");
     }
 
     AsyncOperation currentOperation;

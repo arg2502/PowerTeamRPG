@@ -235,6 +235,14 @@
             beggarMenu.Init();
         }
 
+        public void PushThirstyManMenu(NPCThirstyMan thirstyMan)
+        {
+            EnableMenu(uiDatabase.ConsumablesOnlyMenu);
+            var thirstyManMenu = list_currentMenus[list_currentMenus.Count - 1].GetComponent<ConsumablesOnlyMenu>();
+            thirstyManMenu.thirstyMan = thirstyMan;
+            thirstyManMenu.Init();
+        }
+
         public void HideAllMenus()
         {
             // turn off all menus

@@ -1,0 +1,11 @@
+Name	Emotion	Dialogue	Responses/Actions
+	ANGRY	*cough* *cough*{0.2} Is this even safe to drink?	
+Jethro		That bleach salesman didn't seem too concerned.	
+	ANGRY	Bleach?!{0.2} I.{0.2}.{0.2}.{0.2}I{0.2}.{0.2}.{0.2}.{0.2}.	
+	SAD	...	
+Eleanor		I don't think that stuff was safe to drink.	
+Cole	HAPPY	Nonsense! That salesman claimed it worked miracles. He wouldn't lie about a claim like that!	
+	SAD	...	
+Cole	HAPPY	See?{0.3} It was so good that it put him straight to sleep!	
+		But he still didn't pay us..	
+Jethro		I'll take a look.	PayMaximum

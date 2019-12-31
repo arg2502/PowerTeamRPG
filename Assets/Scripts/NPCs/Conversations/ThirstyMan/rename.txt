@@ -1,0 +1,1 @@
+for /R %x in (*.tsv) do ren "%x" *.txt

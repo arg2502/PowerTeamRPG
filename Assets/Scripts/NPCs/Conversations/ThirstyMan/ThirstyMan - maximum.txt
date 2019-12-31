@@ -1,0 +1,3 @@
+Name	Emotion	Dialogue	Responses/Actions
+	HAPPY	Marvelous!{0.4} This is just what I needed!	
+	HAPPY	You have my highest gratitude.{0.4} I pray this is enough to compensate.	PayMaximum

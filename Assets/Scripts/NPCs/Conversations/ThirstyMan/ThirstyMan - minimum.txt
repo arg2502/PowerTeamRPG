@@ -1,0 +1,3 @@
+Name	Emotion	Dialogue	Responses/Actions
+	ANGRY	Really?{0.2} Well I did say anything...	
+		Your payment as promised. Thank you.	PayMinimum

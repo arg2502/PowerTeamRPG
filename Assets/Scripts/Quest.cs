@@ -103,8 +103,7 @@ public class Quest {
     {
         if (RewardGold > 0)
         {
-            GameControl.control.AddGold(RewardGold);
-            GameControl.UIManager.PushNotificationMenu("You got " + RewardGold.ToString() + " gold.");
+            GameControl.control.AddGold(RewardGold, true);
         }
         foreach (var item in RewardItems)
         {

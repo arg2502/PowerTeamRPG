@@ -13,6 +13,7 @@
         public GameObject ShopkeeperSellMenu;
         public GameObject ItemQuantityMenu;
         public GameObject BeggarMenu;
+        public GameObject ConsumablesOnlyMenu;
 
         [Header("Misc.")]
         public GameObject ConfirmationMenu;

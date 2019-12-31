@@ -240,7 +240,10 @@ public class characterControl : OverworldObject {
                 // FOR NOW, we just changed the color
                 //GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
 
-                GameControl.control.currentNPC.GetComponentInParent<OverworldObject>().ShowInteractionNotification("Talk");
+                var overworldObj = GameControl.control.currentNPC.GetComponentInParent<OverworldObject>();
+                if (overworldObj == null)
+                    Debug.LogError("Overworld Object not found in parent of Dialogue object. Please make sure some sort of Overworld object is attached");
+                overworldObj.ShowInteractionNotification("Talk");
             }
         }
         // if no NPC was passed in, then there's no one we can talk to
@@ -540,7 +543,26 @@ public class characterControl : OverworldObject {
 
     }
 
-	// Update is called once per frame
+    void SetAnimations()
+    {
+        // set values for animator to determine movement/idle animations
+        if (canMove)
+        {
+            anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
+            anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
+            anim.SetBool("isMoving", isMoving);
+            if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
+                anim.SetFloat("isCarry", System.Convert.ToSingle(isCarrying));
+            anim.SetFloat("lastHSpeed", lastMovement.x);
+            anim.SetFloat("lastVSpeed", lastMovement.y);
+        }
+        else
+        {
+            anim.SetBool("isMoving", canMove);
+        }
+    }
+
+    // Update is called once per frame
     void Update()
     {
         switch (GameControl.control.currentCharacterState)
@@ -560,21 +582,8 @@ public class characterControl : OverworldObject {
         sr.sortingOrder = (int)(-transform.position.y * 10.0f);
         speed = new Vector2(0f, 0f);
 
-        // set values for animator to determine movement/idle animations
-        if (canMove)
-        {
-            anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
-            anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
-            anim.SetBool("isMoving", isMoving);
-            if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
-                anim.SetFloat("isCarry", System.Convert.ToSingle(isCarrying));
-            anim.SetFloat("lastHSpeed", lastMovement.x);
-            anim.SetFloat("lastVSpeed", lastMovement.y);
-        }
-        else
-        {
-            anim.SetBool("isMoving", canMove);
-        }
+        if (GameControl.control.currentCharacterState != CharacterState.Transition)
+            SetAnimations();
     }
     
     void EnterRoom(Vector2 startPos, Vector2 endPos)
