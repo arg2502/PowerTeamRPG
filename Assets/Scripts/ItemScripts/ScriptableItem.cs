@@ -9,6 +9,7 @@ public class ScriptableItem : ScriptableObject {
 
 	//Variables universal to all items
 	public Sprite sprite;
+    [TextArea]
 	public string description;
 	public int value;
 	public Boosts[] statBoosts;
