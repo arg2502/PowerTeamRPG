@@ -177,6 +177,7 @@ public class GameControl : MonoBehaviour {
 			GameControl.control.AddItem("Strengthening Draught", "Consumable", 5);
 			GameControl.control.AddItem("Copper Tonic", "Consumable", 5);
 			GameControl.control.AddItem("Captain Power's BIG Booster", "Consumable", 5);
+            GameControl.control.AddItem("Bleach", "Consumable", 1);
 
 		}
 		else if (control != this)

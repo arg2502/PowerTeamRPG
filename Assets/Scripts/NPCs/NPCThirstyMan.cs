@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class NPCThirstyMan : StationaryNPCControl
 {
+    public enum ThirstyState { THIRSTY, SATISFIED, DEAD }
     public enum ItemState { MIN, MOD, MAX, BLEACH}
+    ThirstyState thirstyState;
     ItemState currentItemState;
     public List<ThirstyManResponse> thirstyManResponses;
 
@@ -55,6 +57,7 @@ public class NPCThirstyMan : StationaryNPCControl
                 currentItemState = ItemState.MAX;
         }
 
+        GameControl.control.RemoveItem(item);
         var dialogue = thirstyManResponses.Find((r) => r.itemState == currentItemState).dialogue;
         GameControl.UIManager.PopMenu();
         GetComponentInChildren<NPCDialogue>().StartDialogue(dialogue);

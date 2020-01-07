@@ -7,5 +7,5 @@ Eleanor		I don't think that stuff was safe to drink.
 Cole	HAPPY	Nonsense! That salesman claimed it worked miracles. He wouldn't lie about a claim like that!	
 	SAD	...	
 Cole	HAPPY	See?{0.3} It was so good that it put him straight to sleep!	
-		But he still didn't pay us..	
+Cole		But he still didn't pay us..	
 Jethro		I'll take a look.	PayBleach
