@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+	HAPPY	Wow!{0.3} What a visually thrilling event occurring over there!	

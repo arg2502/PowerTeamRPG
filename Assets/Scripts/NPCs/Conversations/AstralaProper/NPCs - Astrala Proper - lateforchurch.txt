@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+	SAD	Oh, I'm running late for the Church service..	
+	SAD	Now I can't leave ten minutes early like I normally do...	

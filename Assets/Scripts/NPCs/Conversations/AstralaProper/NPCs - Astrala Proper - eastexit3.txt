@@ -1,0 +1,4 @@
+name	emotion	dialogue	responses
+	HAPPY	This is unbelievable! Do you see what's happening?	
+		What's that?{0.3} You want me to move so you can see?	
+	HAPPY	But then <b>I</b> won't be able to see!	

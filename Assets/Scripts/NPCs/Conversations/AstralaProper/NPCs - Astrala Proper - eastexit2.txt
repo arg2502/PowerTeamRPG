@@ -1,0 +1,2 @@
+name	emotion	dialogue	responses
+	HAPPY	This is so neat! I feel bad for anyone who isn't able to see what's happening over there right now.	
