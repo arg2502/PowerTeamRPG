@@ -17,6 +17,7 @@ public class Eleanor : Hero {
                 Weep();
                 break;
             case "Staff Strike":
+            case "Morttimer's Tears":
                 StartAttack(CurrentAttackName);
                 break;
         }
