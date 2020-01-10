@@ -6,12 +6,17 @@ using UnityEngine;
 public class QuestData : ScriptableObject {
     public string questID;
     public string questName;
+    [TextArea]
+    public string description;
     public List<SubQuestData> subQuestStates;
-    
+    public QuestType questType;
+
     [System.Serializable]
     public struct SubQuestData
     {
         //public string subQuestID;
+        [TextArea]
+        public string description;
         public int talkToPeopleNum;
         public int killEnemiesNum;
         [SerializeField]
@@ -22,3 +27,5 @@ public class QuestData : ScriptableObject {
     }
 
 }
+
+public enum QuestType { MAIN, SIDE, MISC }

@@ -402,7 +402,12 @@
 
         bool CanItBeDrunk(InventoryItem _item)
         {
-            return true;
+            if (thirstyMan.minItems.Find((i) => i.name == _item.name)
+                || thirstyMan.modItems.Find((i) => i.name == _item.name)
+                || thirstyMan.maxItems.Find((i) => i.name == _item.name)
+                || thirstyMan.bleachItems.Find((i) => i.name == _item.name))
+                return true;
+            else return false;
         }
 
         void GiveItem()

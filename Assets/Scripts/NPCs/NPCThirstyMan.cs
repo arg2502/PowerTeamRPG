@@ -10,14 +10,20 @@ public class NPCThirstyMan : StationaryNPCControl
     ItemState currentItemState;
     public List<ThirstyManResponse> thirstyManResponses;
 
+    public List<ScriptableConsumable> minItems;
+    public List<ScriptableConsumable> modItems;
+    public List<ScriptableConsumable> maxItems;
+    public List<ScriptableConsumable> bleachItems;
+
     const int MIN_GOLD = 50;
     const int MOD_GOLD = 250;
     const int MAX_GOLD = 1000;
     const int BLEACH_GOLD = 5000;
-
+    
     public void OpenConsumables()
     {
         GameControl.UIManager.PushThirstyManMenu(this);
+        GameControl.questTracker.AddNewQuest("thirstyMan");
     }
 
     public void PayMinimum()
@@ -42,25 +48,34 @@ public class NPCThirstyMan : StationaryNPCControl
 	
     public void DrinkItem(InventoryItem item)
     {
-        if (item.name.ToLower().Contains("bleach"))
-        {
+        if (bleachItems.Find((i) => i.name == item.name))
             currentItemState = ItemState.BLEACH;
+        else if (maxItems.Find((i) => i.name == item.name))
+            currentItemState = ItemState.MAX;
+        else if (modItems.Find((i) => i.name == item.name))
+            currentItemState = ItemState.MOD;
+        else if (minItems.Find((i) => i.name == item.name))
+            currentItemState = ItemState.MIN;
+
+        if (currentItemState != ItemState.BLEACH)
+        {
+            thirstyState = ThirstyState.SATISFIED;
+            var anim = GetComponent<Animator>();
+            anim.SetBool("isSatisfied", true);
         }
         else
         {
-            var scriptableItem = ItemDatabase.GetItem(item);
-            if (scriptableItem.value <= 100)
-                currentItemState = ItemState.MIN;
-            else if (scriptableItem.value > 100 && scriptableItem.value < 300)
-                currentItemState = ItemState.MOD;
-            else if (scriptableItem.value > 300)
-                currentItemState = ItemState.MAX;
+            thirstyState = ThirstyState.DEAD;
+
         }
 
+        GameControl.questTracker.CompleteQuest("thirstyMan");
         GameControl.control.RemoveItem(item);
         var dialogue = thirstyManResponses.Find((r) => r.itemState == currentItemState).dialogue;
         GameControl.UIManager.PopMenu();
+
         GetComponentInChildren<NPCDialogue>().StartDialogue(dialogue);
+        
     }
 }
 
