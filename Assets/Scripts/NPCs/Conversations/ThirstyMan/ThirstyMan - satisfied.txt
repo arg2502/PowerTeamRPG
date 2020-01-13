@@ -1,0 +1,3 @@
+Name	Emotion	Dialogue	Responses/Actions
+	HAPPY	I'm feeling much better now!	
+		I really need to learn the importance of hydrating before sauntering down back streets...	

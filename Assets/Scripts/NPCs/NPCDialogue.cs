@@ -23,6 +23,8 @@ public class NPCDialogue : MonoBehaviour {
 
     characterControl.CharacterState prevState;
 
+    public bool canTalk = true;
+
     public List<QuestDialogue> questDialogues;
     public List<QuestDialogue> completedQuestDialogues;
 

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class NPCThirstyMan : StationaryNPCControl
 {
-    public enum ThirstyState { THIRSTY, SATISFIED, DEAD }
+    //public enum ThirstyState { THIRSTY, SATISFIED, DEAD }
     public enum ItemState { MIN, MOD, MAX, BLEACH}
-    ThirstyState thirstyState;
+    //ThirstyState thirstyState;
     ItemState currentItemState;
     public List<ThirstyManResponse> thirstyManResponses;
 
@@ -19,7 +19,15 @@ public class NPCThirstyMan : StationaryNPCControl
     const int MOD_GOLD = 250;
     const int MAX_GOLD = 1000;
     const int BLEACH_GOLD = 5000;
-    
+
+    private void Start()
+    {
+        base.Start();
+        // destroy if we've already finished the Thirsty Man quest
+        if (GameControl.questTracker.completedQuests.ContainsKey("thirstyMan"))
+            Destroy(gameObject);
+    }
+
     public void OpenConsumables()
     {
         GameControl.UIManager.PushThirstyManMenu(this);
@@ -59,14 +67,14 @@ public class NPCThirstyMan : StationaryNPCControl
 
         if (currentItemState != ItemState.BLEACH)
         {
-            thirstyState = ThirstyState.SATISFIED;
+            //thirstyState = ThirstyState.SATISFIED;
             var anim = GetComponent<Animator>();
             anim.SetBool("isSatisfied", true);
         }
         else
         {
-            thirstyState = ThirstyState.DEAD;
-
+            //thirstyState = ThirstyState.DEAD;
+            GetComponentInChildren<NPCDialogue>().canTalk = false;
         }
 
         GameControl.questTracker.CompleteQuest("thirstyMan");

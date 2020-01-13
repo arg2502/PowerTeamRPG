@@ -260,9 +260,11 @@ public class characterControl : OverworldObject {
         var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);
         
         // If there was a collision with an NPC that we can talk to, then set that to the current NPC
-        if(triggerHit.collider && triggerHit.collider.GetComponentInChildren<NPCDialogue>())
+        if(triggerHit.collider)
         {
-            ResetCurrentNPC(triggerHit.collider.GetComponentInChildren<NPCDialogue>());
+            var npcDialogue = triggerHit.collider.GetComponentInChildren<NPCDialogue>();
+            if (npcDialogue != null && npcDialogue.canTalk)
+                ResetCurrentNPC(npcDialogue);
         }
         // otherwise, there's no one in front of us, so we shouldn't be able to talk to anyone
         else
