@@ -13,7 +13,8 @@
         public Text dialogueText;
         public Image portraitImage;
         public Button continueButton; // invisible
-        public RectMask2D textMask;
+        public GameObject continueNotification;
+        public RectMask2D textMask;        
 
         string dialogueStr; // the full string that dialogueText will print out
         float typingSpeed = 0.02f;
@@ -27,6 +28,7 @@
             set
             {
                 readyForNextDialogue = value;
+                continueNotification.SetActive(value);
 
                 if(readyForNextDialogue && OnNextDialogue != null)
                 {
@@ -126,7 +128,7 @@
         /// <returns></returns>
         IEnumerator TypeDialogue()
         {
-            readyForNextDialogue = false;
+            ReadyForNextDialogue = false;
             dialogueText.text = "";
             string transparentTagStart = "<color=#00000000>";
             string transparentColorTagEnd = "</color>";
