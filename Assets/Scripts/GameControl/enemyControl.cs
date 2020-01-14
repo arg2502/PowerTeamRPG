@@ -109,35 +109,19 @@ public class enemyControl : MovableOverworldObject {
 			// if enemy is stuck in wall, push them out
 			// only for randomly placed enemies
 			if (!beenPlaced) {
-				for (int i = 0; i < 2; i++) {
-					raycastHits.Add (Physics2D.Raycast (transform.position, directions [i], distance, mask));
-				}
-				foreach (RaycastHit2D rh in raycastHits) {
-					if (rh.collider != null) {
-						int loopCounter = 0; // keep track of the number of loops
-						while ((raycastHits [0].collider != null
-						                     || raycastHits [1].collider != null) 
-						                     || (dist <= safeDistance + 1.5f)) {
+                int loopCounter = 0;
+                while (IsCollision())
+                {
+                    transform.position = GetComponentInParent<EnemySpawner>().GetNewPosition();
+                    loopCounter++;
 
-                            var parent = GetComponentInParent<EnemySpawner>();
-                            transform.position = new Vector3(Random.Range(parent.SpawnXMin, parent.SpawnXMax), Random.Range(parent.SpawnYMin, parent.SpawnYMax));
-
-                            dist = Mathf.Abs (Mathf.Sqrt (((transform.position.x - player.position.x) * (transform.position.x - player.position.x))
-							+ ((transform.position.y - player.position.y) * (transform.position.y - player.position.y))));
-
-							raycastHits = new List<RaycastHit2D> ();
-							for (int i = 0; i < 2; i++) {
-								raycastHits.Add (Physics2D.Raycast (transform.position, directions [i], distance, mask));
-							}
-							loopCounter++;
-							// if looping excedes a number, just quit
-							if (loopCounter >= 50) {
-								Destroy (this.gameObject);
-							}
-						}
-					}
-				}
-			}
+                    if(loopCounter >= 50)
+                    {
+                        Destroy(this.gameObject);
+                        break;
+                    }
+                }
+            }
         }
 
         numOfEnemies = Random.Range(minEnemies, maxEnemies + 1);
@@ -250,13 +234,19 @@ public class enemyControl : MovableOverworldObject {
         }
 	}
 
-    void CheckCollision()
+    bool IsCollision(int direction = -1)
     {
+        var _speed = (direction < 0) ? speed : directions[direction];
         RaycastHit2D topHit = Physics2D.Raycast(new Vector3(transform.position.x + sideHitFloat, transform.position.y + topHitFloat, transform.position.z), speed, 0.5f, mask);
         RaycastHit2D bottomHit = Physics2D.Raycast(new Vector3(transform.position.x - sideHitFloat, transform.position.y - bottomHitFloat, transform.position.z), speed, 0.5f, mask);
-                
-        if((topHit.collider != null && !topHit.collider.GetComponent<characterControl>())
-            || bottomHit.collider != null && !bottomHit.collider.GetComponent<characterControl>())
+
+        return (topHit.collider != null && !topHit.collider.GetComponent<characterControl>())
+            || (bottomHit.collider != null && !bottomHit.collider.GetComponent<characterControl>());
+    }
+
+    void CheckCollision()
+    {           
+        if(IsCollision())
         {
             CoolDown();
         }
@@ -303,8 +293,6 @@ public class enemyControl : MovableOverworldObject {
     {
         state = State.coolDown;
         timer = 0.0f;
-        //int prevDir = dir;
-        //while (dir == prevDir) { dir = Random.Range(0, 4); }
         dir = GetSpawnerDirection();
         speed = directions[dir] * coolDownSpeed * Time.deltaTime;
     }
@@ -331,19 +319,17 @@ public class enemyControl : MovableOverworldObject {
         var spawner = GetComponentInParent<EnemySpawner>();
         if(spawner == null)
         {
-            int random = Random.Range(0, 4);
-            return random;
+            return GetRandomDirection();
         }
         else
         {
-            if (transform.position.x < spawner.GetComponent<BoxCollider2D>().bounds.max.x) return 0;
-            else if (transform.position.x > spawner.GetComponent<BoxCollider2D>().bounds.min.x) return 1;
-            else if (transform.position.y < spawner.GetComponent<BoxCollider2D>().bounds.max.y) return 2;
-            else if (transform.position.y > spawner.GetComponent<BoxCollider2D>().bounds.min.y) return 3;
+            if (transform.position.x < spawner.GetComponent<BoxCollider2D>().bounds.max.x && !IsCollision(0)) return 0;
+            else if (transform.position.x > spawner.GetComponent<BoxCollider2D>().bounds.min.x && !IsCollision(1)) return 1;
+            else if (transform.position.y < spawner.GetComponent<BoxCollider2D>().bounds.max.y && !IsCollision(2)) return 2;
+            else if (transform.position.y > spawner.GetComponent<BoxCollider2D>().bounds.min.y && !IsCollision(3)) return 3;
             else
             {
-                int random = Random.Range(0, 4);
-                return random;
+                return GetRandomDirection();
             }
         }
     }

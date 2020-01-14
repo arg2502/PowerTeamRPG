@@ -25,14 +25,19 @@ public class EnemySpawner : MonoBehaviour {
 
         for (int i = 0; i < numOfEnemies; i++)
         {
-            var randomX = Random.Range(spawnXMin, spawnXMax);
-            var randomY = Random.Range(spawnYMin, spawnYMax);
-
             var enemy = Instantiate(enemyPrefab, transform);
-            enemy.transform.position = new Vector2(randomX, randomY);
+            enemy.transform.position = GetNewPosition();
             enemy.GetComponent<enemyControl>().Init(minPossibleBattleEnemies, maxPossibleBattleEnemies, possibleEnemies);
         }
 
 	}
+
+    public Vector2 GetNewPosition()
+    {
+        var randomX = Random.Range(spawnXMin, spawnXMax);
+        var randomY = Random.Range(spawnYMin, spawnYMax);
+
+        return new Vector2(randomX, randomY);
+    }
 	
 }
