@@ -436,7 +436,7 @@
 
             // check if consumable & zero
             if (itemSlot.item.type == "consumable"
-                && itemSlot.item.quantity - itemSlot.item.uses <= 0)
+                && itemSlot.item.Remaining <= 0)
             {
                 // remove item button from grid and delete
                 // but first save the index position

@@ -8,12 +8,12 @@ public class NPCShopKeeper : StationaryNPCControl {
     public List<ScriptableItem> shopInventory;    
 
     [System.Serializable]
-    public enum ShopKeeperType { CONSUMABLE, WEAPON, ARMOR, MISC }
+    public enum ShopKeeperType { CONSUMABLE, ARMOR, AUGMENT, MISC }
     public ShopKeeperType currentType;
 
     public float consumablePer;
-    public float weaponPer;
     public float armorPer;
+    public float augmentPer;
     public float miscPer;
 
     float defaultSpecialized = 0.9f;
@@ -46,29 +46,29 @@ public class NPCShopKeeper : StationaryNPCControl {
         if (currentType == ShopKeeperType.CONSUMABLE)
         {
             consumablePer = defaultSpecialized;
-            weaponPer = defaultOthers;
             armorPer = defaultOthers;
-            miscPer = defaultOthers;
-        }
-        else if (currentType == ShopKeeperType.WEAPON)
-        {
-            consumablePer = defaultOthers;
-            weaponPer = defaultSpecialized;
-            armorPer = defaultOthers;
+            augmentPer = defaultOthers;
             miscPer = defaultOthers;
         }
         else if (currentType == ShopKeeperType.ARMOR)
         {
             consumablePer = defaultOthers;
-            weaponPer = defaultOthers;
             armorPer = defaultSpecialized;
+            augmentPer = defaultOthers;
+            miscPer = defaultOthers;
+        }
+        else if (currentType == ShopKeeperType.AUGMENT)
+        {
+            consumablePer = defaultOthers;
+            armorPer = defaultOthers;
+            augmentPer = defaultSpecialized;
             miscPer = defaultOthers;
         }
         else
         {
             consumablePer = defaultOthers;
-            weaponPer = defaultOthers;
             armorPer = defaultOthers;
+            augmentPer = defaultOthers;
             miscPer = defaultSpecialized;
         }
     }
@@ -103,10 +103,10 @@ public class NPCShopKeeper : StationaryNPCControl {
         // depending on the type of item, return based on the percentage
         if (s_item is ScriptableConsumable)
             return (int)(Mathf.Ceil(s_item.value * consumablePer));
-        else if (s_item is ScriptableWeapon)
-            return (int)(Mathf.Ceil(s_item.value * weaponPer));
         else if (s_item is ScriptableArmor)
             return (int)(Mathf.Ceil(s_item.value * armorPer));
+        else if (s_item is ScriptableAugment)
+            return (int)(Mathf.Ceil(s_item.value * augmentPer));
         else if (s_item is ScriptableKey)
             return (int)(Mathf.Ceil(s_item.value * miscPer));
         else

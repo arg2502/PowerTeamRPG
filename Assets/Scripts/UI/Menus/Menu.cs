@@ -249,7 +249,7 @@
                 return false;
         }
 
-        void CheckForInactiveButtons(bool horizontal = false)
+        protected void CheckForInactiveButtons(bool horizontal = false)
         {
             // check for any inactive buttons
             for (int i = 0; i < listOfButtons.Count; i++)

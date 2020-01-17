@@ -59,8 +59,8 @@ public class ItemDatabase {
 				if(itemType == "consumable"){
 					return ScriptableObject.Instantiate(item) as ScriptableConsumable;
 				}
-				else if(itemType == "weapon"){
-					return ScriptableObject.Instantiate(item) as ScriptableWeapon;
+				else if(itemType == "augment"){
+					return ScriptableObject.Instantiate(item) as ScriptableAugment;
 				}
 				else if(itemType == "armor"){
 					return ScriptableObject.Instantiate(item) as ScriptableArmor;

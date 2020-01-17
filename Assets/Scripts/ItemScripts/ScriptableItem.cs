@@ -25,8 +25,8 @@ public class ScriptableItem : ScriptableObject {
                 return "consumable";
             else if (this is ScriptableArmor)
                 return "armor";
-            else if (this is ScriptableWeapon)
-                return "weapon";
+            else if (this is ScriptableAugment)
+                return "augment";
             else
                 return "key";
         }

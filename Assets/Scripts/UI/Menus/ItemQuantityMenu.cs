@@ -120,7 +120,7 @@
                 // if buying, only increase until we can't afford it
                 // if selling, only increase until we run out
                 if ((currentPurchaseState == PurchaseState.BUY && quantityNum < GetMaxAmount())
-                    || (currentPurchaseState == PurchaseState.SELL && quantityNum < itemToSell.quantity))
+                    || (currentPurchaseState == PurchaseState.SELL && quantityNum < itemToSell.Remaining))
                 {
                     quantityNum++;
                 }

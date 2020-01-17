@@ -86,10 +86,10 @@
             // create grid with 4 lists --- for the 4 categories of the inventory
             buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
 
-            FillList(gameControl.consumables, "Consumable", 0);
-            FillList(gameControl.weapons, "Weapon", 1);
-            FillList(gameControl.equipment, "Armor", 2);
-            FillList(gameControl.key, "Key", 3);
+            FillList(gameControl.consumables, "consumable", 0);
+            FillList(gameControl.armor, "armor", 1);
+            FillList(gameControl.augments, "augment", 2);
+            FillList(gameControl.key, "key", 3);
 
             SetButtonNavigation(); // reset button navigation
             gameControl.itemAdded = false; // reset flag to false
@@ -153,6 +153,7 @@
                 Debug.Log("item has been added -- update");
                 AddButtons();
             }
+           
 
             innerListPosition = 0;
             rootButton = AssignRootButton();
@@ -394,12 +395,15 @@
 
         void OnSelect()
         {
-            // save the item you wish to use/equip
-
-            uiManager.PushMenu(uiDatabase.ItemQuantityMenu);
-            var quantityMenu = uiManager.FindMenu(uiDatabase.ItemQuantityMenu).GetComponent<ItemQuantityMenu>();
-            quantityMenu.SetShopkeeper(gameControl.CurrentShopkeeper);
-            quantityMenu.SetItem(chosenItem);
+            if (chosenItem.quantity > 0 && chosenItem.Remaining <= 0)
+                uiManager.PushNotificationMenu("You cannot sell an item that is currently equipped.");
+            else
+            {
+                uiManager.PushMenu(uiDatabase.ItemQuantityMenu);
+                var quantityMenu = uiManager.FindMenu(uiDatabase.ItemQuantityMenu).GetComponent<ItemQuantityMenu>();
+                quantityMenu.SetShopkeeper(gameControl.CurrentShopkeeper);
+                quantityMenu.SetItem(chosenItem);
+            }
         }
 
         void UpdateItemQuantity()
@@ -409,8 +413,9 @@
             itemSlot.UpdateQuantity();
 
             // check if consumable & zero
-            if (itemSlot.item.type == "consumable"
-                && itemSlot.item.quantity - itemSlot.item.uses <= 0)
+            //if (itemSlot.item.type == "consumable"
+            //    && itemSlot.item.quantity - itemSlot.item.uses <= 0)
+            if(itemSlot.item.quantity <= 0)
             {
                 // remove item button from grid and delete
                 // but first save the index position
@@ -442,7 +447,7 @@
                 {
                     EventSystem.current.SetSelectedGameObject(buttonGrid[outerListPosition][buttonGrid[outerListPosition].Count - 1].gameObject);
                 }
-            }
+            }            
         }
 
         new void Update()

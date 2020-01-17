@@ -17,8 +17,9 @@ public class DenigenData : ScriptableObject
     public Sprite portrait;
 
     // Need a creative way to store which items are equipped since items are non-serializable
-    public GameObject weapon;
-    public List<GameObject> equipment;
+    public List<InventoryItem> augments;
+    public int maxAugmentsAmt = 1;
+    public List<InventoryItem> armor;
 
     internal bool statBoost = false;
     internal bool skillTree = false;
@@ -66,9 +67,9 @@ public class DenigenData : ScriptableObject
         passiveList = new List<Passive>();
 
         // there may be some equipment passed in through inspector -- if not, then create a new list
-        if (equipment == null || (equipment != null && equipment.Count > 0))
-            equipment = new List<GameObject>();
 
+        augments = new List<InventoryItem>();
+        armor = new List<InventoryItem>();
 
         LevelUpOnAwake(startingLevel);
     }

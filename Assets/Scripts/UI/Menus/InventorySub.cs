@@ -42,7 +42,7 @@
         {
             // open inventory with focus on weapons
             RootButton = weaponsButton;
-            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Weapons;
+            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Armor;
             uiManager.PushMenu(uiDatabase.InventoryMenu);
         }
 
@@ -50,7 +50,7 @@
         {
             // open inventory with focus on equipment
             RootButton = equipmentButton;
-            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Equipment;
+            GameControl.control.whichInventoryEnum = GameControl.WhichInventory.Augments;
             uiManager.PushMenu(uiDatabase.InventoryMenu);        
         }
 

@@ -13,12 +13,16 @@ public class ItemSlot : MonoBehaviour {
 	{
 		item = _item;
 		icon.sprite = ItemDatabase.GetItemSprite(item.name);
-		quantity.text = "X " + (item.quantity - item.uses);
+        //quantity.text = "X " + (item.quantity - item.uses);
+        UpdateQuantity();
 	}
     
 	public void UpdateQuantity()
 	{
-		quantity.text = "X " + (item.quantity - item.uses);
+        if (item.type == "consumable" || item.type == "key")
+            quantity.text = "X " + item.Remaining;
+        else
+            quantity.text = item.Remaining + " / " + item.quantity;
 	}
 
     public void SetItem(ScriptableItem _s_item)

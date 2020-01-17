@@ -32,8 +32,8 @@ public class GameControl : MonoBehaviour {
 	public int numOfDungeons;
 	//items
 	public List<InventoryItem> consumables;
-	public List<InventoryItem> equipment;
-	public List<InventoryItem> weapons;
+	public List<InventoryItem> augments;
+	public List<InventoryItem> armor;
 	public List<InventoryItem> key;
 	public bool itemAdded;
     
@@ -64,7 +64,7 @@ public class GameControl : MonoBehaviour {
 
 	// for telling the pause menu which list of items to use
 	//internal string whichInventory;    
-    public enum WhichInventory { Consumables, Weapons, Equipment, KeyItems }
+    public enum WhichInventory { Consumables, Armor, Augments, KeyItems }
     internal WhichInventory whichInventoryEnum;
     public string CurrentInventory
     {
@@ -72,10 +72,10 @@ public class GameControl : MonoBehaviour {
         {
             if (whichInventoryEnum == WhichInventory.Consumables)
                 return "consumable";
-            else if (whichInventoryEnum == WhichInventory.Weapons)
-                return "weapon";
-            else if (whichInventoryEnum == WhichInventory.Equipment)
+            else if (whichInventoryEnum == WhichInventory.Armor)
                 return "armor";
+            else if (whichInventoryEnum == WhichInventory.Augments)
+                return "augment";
             else
                 return "key";
         }
@@ -166,20 +166,22 @@ public class GameControl : MonoBehaviour {
 			}
 
 			//Add Items to the inventory for testing
-			GameControl.control.AddItem("Lesser Restorative", "consumable", 3);
-			GameControl.control.AddItem("Restorative", "Consumable", 3);
-			GameControl.control.AddItem("Lesser Elixir", "consumable", 3);
-			GameControl.control.AddItem("Elixir", "Consumable", 2);
-			GameControl.control.AddItem("Elixir", "Consumable", 2);
-			GameControl.control.AddItem("Purple Prince", "consumable", 1);
-			GameControl.control.AddItem("Huge Ass Heals", "Consumable", 2);
-			GameControl.control.AddItem("Tincture", "Consumable", 5);
-			GameControl.control.AddItem("Strengthening Draught", "Consumable", 5);
-			GameControl.control.AddItem("Copper Tonic", "Consumable", 5);
-			GameControl.control.AddItem("Captain Power's BIG Booster", "Consumable", 5);
-            GameControl.control.AddItem("Bleach", "Consumable", 1);
+			AddItem("Lesser Restorative", "consumable", 3);
+			AddItem("Restorative", "Consumable", 3);
+			AddItem("Lesser Elixir", "consumable", 3);
+			AddItem("Elixir", "Consumable", 2);
+			AddItem("Elixir", "Consumable", 2);
+			AddItem("Purple Prince", "consumable", 1);
+			AddItem("Huge Ass Heals", "Consumable", 2);
+			AddItem("Tincture", "Consumable", 5);
+			AddItem("Strengthening Draught", "Consumable", 5);
+			AddItem("Copper Tonic", "Consumable", 5);
+			AddItem("Captain Power's BIG Booster", "Consumable", 5);
+            AddItem("Bleach", "Consumable", 1);
+            AddItem("Blazing Stone", "Augment", 1);
+            AddItem("Plat'num Gem", "Augment", 1);
 
-		}
+        }
 		else if (control != this)
 		{
 			//If a gameControl already exists, we don't want 2 of them
@@ -213,23 +215,9 @@ public class GameControl : MonoBehaviour {
 			consumables.Add(new InventoryItem(_name, _quantity, _type));
 		}
 
-		else if (_type == "weapon") 
-		{
-			foreach(InventoryItem i in weapons)
-			{
-				//If the item is found, simply increase the quantity and exit the method
-				if(i.name == _name){
-					i.quantity += _quantity;
-					return;}
-			}
-			
-			//If the item is not found, add it to the inventory
-			weapons.Add(new InventoryItem(_name, _quantity, _type));
-		}
-
 		else if (_type == "armor") 
 		{
-			foreach(InventoryItem i in equipment)
+			foreach(InventoryItem i in armor)
 			{
 				//If the item is found, simply increase the quantity and exit the method
 				if(i.name == _name){
@@ -238,10 +226,24 @@ public class GameControl : MonoBehaviour {
 			}
 			
 			//If the item is not found, add it to the inventory
-			equipment.Add(new InventoryItem(_name, _quantity, _type));
+			armor.Add(new InventoryItem(_name, _quantity, _type));
 		}
 
-		if (_type == "key") 
+		else if (_type == "augment") 
+		{
+			foreach(InventoryItem i in augments)
+			{
+				//If the item is found, simply increase the quantity and exit the method
+				if(i.name == _name){
+					i.quantity += _quantity;
+					return;}
+			}
+			
+			//If the item is not found, add it to the inventory
+			augments.Add(new InventoryItem(_name, _quantity, _type));
+		}
+
+		else if (_type == "key") 
 		{
 			foreach(InventoryItem i in key)
 			{
@@ -268,10 +270,10 @@ public class GameControl : MonoBehaviour {
         
 		if (consumables.Contains (_item))
             consumables.Remove(_item);
-		else if (equipment.Contains (_item))
-			equipment.Remove (_item);
-		else if (weapons.Contains (_item))
-			weapons.Remove (_item);
+		else if (augments.Contains (_item))
+			augments.Remove (_item);
+		else if (armor.Contains (_item))
+			armor.Remove (_item);
 		else if (key.Contains (_item))
 			key.Remove (_item);
     }
@@ -334,7 +336,7 @@ public class GameControl : MonoBehaviour {
             id.uses = i.uses;
             data.consumables.Add(id);
         }        
-        foreach (var i in weapons)
+        foreach (var i in armor)
         {
             ItemData id = new ItemData();
             id.name = i.name;
@@ -342,7 +344,7 @@ public class GameControl : MonoBehaviour {
             id.uses = i.uses;
             data.weapons.Add(id);
         }
-        foreach (var i in equipment)
+        foreach (var i in augments)
         {
             ItemData id = new ItemData();
             id.name = i.name;
@@ -457,8 +459,8 @@ public class GameControl : MonoBehaviour {
 
             //Make sure the item lists are cleared before adding more
             consumables.Clear();
-            weapons.Clear();
-            equipment.Clear();
+            armor.Clear();
+            augments.Clear();
             key.Clear();
 
             // Read in all consumable items

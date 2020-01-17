@@ -61,12 +61,14 @@
             jethro.onClick.AddListener(OnJethro);
             cole.onClick.AddListener(OnCole);
             eleanor.onClick.AddListener(OnEleanor);
-            juliette.onClick.AddListener(OnJuliette);
+            juliette.onClick.AddListener(OnJouliette);
         }
         public override void TurnOnMenu()
         {
             base.TurnOnMenu();
+
         }
+
         void SetDescription()
         {
             if (currentObj == jethro.gameObject)
@@ -93,8 +95,8 @@
 				
 				//call the rest of the description text
 				GenerateStatDescription (currentHero, _item);
-			} else if (item.type == "weapon") {
-				ScriptableWeapon _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableWeapon;
+			} else if (item.type == "augment") {
+				ScriptableAugment _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableAugment;
 				//generate most of the description text
 				GenerateStatDescription (currentHero, _item);
 				//generate weapon specific text -- ADD LATER
@@ -248,10 +250,43 @@
         }
                
         // button functions
-        void OnJethro() { UseItem(gameControl.heroList[0]); }
-        void OnCole() { UseItem(gameControl.heroList[1]); }
-        void OnEleanor() { UseItem(gameControl.heroList[2]); }
-        void OnJuliette() { UseItem(gameControl.heroList[3]); }
+        void OnJethro() { CheckIfCanUseItem(gameControl.heroList[0]); }
+        void OnCole() { CheckIfCanUseItem(gameControl.heroList[1]); }
+        void OnEleanor() { CheckIfCanUseItem(gameControl.heroList[2]); }
+        void OnJouliette() { CheckIfCanUseItem(gameControl.heroList[3]); }
+
+        void CheckIfCanUseItem(DenigenData hero)
+        {
+            if(menuState == MenuState.Use || menuState == MenuState.Remove)
+            {
+                UseItem(hero);                
+            }
+            else
+            {
+                if(item.type == "augment")
+                {
+                    if (hero.augments.Count >= hero.maxAugmentsAmt)
+                    {
+                        string message = "Remove " + hero.augments[0].name + " from " + hero.denigenName + " and equip " + item.name + "?";
+                        uiManager.PushConfirmationMenu(message, () => ReplaceItem(hero));
+                    }
+                    else
+                        UseItem(hero);
+                }
+            }
+
+
+        }
+
+        void ReplaceItem(DenigenData hero)
+        {
+            if(item.type == "augment")
+            {
+                var itemToRemove = hero.augments[hero.maxAugmentsAmt - 1];
+                GameControl.itemManager.RemoveItem(hero, itemToRemove);
+                UseItem(hero);
+            }
+        }
 
         void UseItem(DenigenData hero)
         {
@@ -263,17 +298,11 @@
                     break;
 
                 case MenuState.Equip:
-                    //if (item.GetComponent<WeaponItem>())
-                    //    item.GetComponent<WeaponItem>().Use(hero);
-                    //else if (item.GetComponent<ArmorItem>())
-                    //    item.GetComponent<ArmorItem>().Use(hero);
+                    GameControl.itemManager.EquipItem(hero, item);
                     break;
 
                 case MenuState.Remove:
-                    //if (item.GetComponent<WeaponItem>())
-                    //    item.GetComponent<WeaponItem>().Remove(hero);
-                    //else if (item.GetComponent<ArmorItem>())
-                    //    item.GetComponent<ArmorItem>().Remove(hero);
+                    GameControl.itemManager.RemoveItem(hero, item);
                     break;
             }
             Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);            
@@ -288,6 +317,19 @@
         /// </summary>
         public void Setup()
         {
+            jethro.interactable = true;
+            cole.interactable = true;
+            eleanor.interactable = true;
+            juliette.interactable = true;
+
+            if (menuState == MenuState.Remove)
+            {
+                if (!gameControl.heroList[0].augments.Contains(item)) jethro.interactable = false;
+                if (gameControl.heroList.Count > 1 && !gameControl.heroList[1].augments.Contains(item)) cole.interactable = false;
+                if (gameControl.heroList.Count > 2 && !gameControl.heroList[2].augments.Contains(item)) eleanor.interactable = false;
+                if (gameControl.heroList.Count > 3 && !gameControl.heroList[3].augments.Contains(item)) juliette.interactable = false;
+            }
+
             AssignTitleText();
             SetButtonNavigation();
             RootButton = AssignRootButton();

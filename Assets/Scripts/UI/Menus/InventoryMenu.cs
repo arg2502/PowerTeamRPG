@@ -33,7 +33,7 @@
         [Serializable]
         public struct WhichInventoryToggles
         {
-            public Toggle consumables, weapons, equipment, keyItems;
+            public Toggle consumables, armor, augments, keyItems;
         }
 
         public WhichInventoryToggles InventoryToggles;
@@ -76,10 +76,10 @@
             // create grid with 4 lists --- for the 4 categories of the inventory
             buttonGrid = new List<List<Button>>() { new List<Button>(), new List<Button>(), new List<Button>(), new List<Button>() };
             
-			FillList(gameControl.consumables, "Consumable", 0);
-			FillList(gameControl.weapons, "Weapon", 1);
-			FillList(gameControl.equipment, "Armor", 2);
-			FillList(gameControl.key, "Key", 3);
+			FillList(gameControl.consumables, "consumable", 0);
+			FillList(gameControl.armor, "armor", 1);
+			FillList(gameControl.augments, "augment", 2);
+			FillList(gameControl.key, "key", 3);
 
             SetButtonNavigation(); // reset button navigation
             gameControl.itemAdded = false; // reset flag to false
@@ -345,8 +345,8 @@
         void ToggleTextChange()
         {
             InventoryToggles.consumables.isOn = false;
-            InventoryToggles.weapons.isOn = false;
-            InventoryToggles.equipment.isOn = false;
+            InventoryToggles.armor.isOn = false;
+            InventoryToggles.augments.isOn = false;
             InventoryToggles.keyItems.isOn = false;
 
             switch (outerListPosition)
@@ -355,10 +355,10 @@
                     InventoryToggles.consumables.isOn = true;
                     break;
                 case 1:
-                    InventoryToggles.weapons.isOn = true;
+                    InventoryToggles.armor.isOn = true;
                     break;
                 case 2:
-                    InventoryToggles.equipment.isOn = true;
+                    InventoryToggles.augments.isOn = true;
                     break;
                 case 3:
                     InventoryToggles.keyItems.isOn = true;
@@ -413,10 +413,13 @@
             var itemSlot = currentObj.GetComponentInParent<ItemSlot>();
             if (itemSlot == null) return;
             itemSlot.UpdateQuantity();
+
+            for (int j = 0; j < buttonGrid[outerListPosition].Count; j++)
+                buttonGrid[outerListPosition][j].GetComponentInParent<ItemSlot>().UpdateQuantity();
             
             // check if consumable & zero
             if(itemSlot.item.type == "consumable"
-                && itemSlot.item.quantity - itemSlot.item.uses <= 0)
+                && itemSlot.item.Remaining <= 0)
             {
                 // remove item button from grid and delete
                 // but first save the index position

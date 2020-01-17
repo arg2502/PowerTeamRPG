@@ -10,6 +10,7 @@ public class InventoryItem {
 	public string name;
 	public int quantity = 1;
 	public int uses;
+    public int Remaining { get { return quantity - uses; } }
 	public string type;
 
 	public InventoryItem(string _name, int _quantity, string _type)
