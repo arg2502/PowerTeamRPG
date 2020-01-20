@@ -97,9 +97,13 @@
 				GenerateStatDescription (currentHero, _item);
 			} else if (item.type == "augment") {
 				ScriptableAugment _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableAugment;
-				//generate most of the description text
-				GenerateStatDescription (currentHero, _item);
+                //generate most of the description text
+                var itemToReplace = (currentHero.augments.Count > 0) ? ItemDatabase.GetItem(currentHero.augments[0].type, currentHero.augments[0].name) : null; // FOR NOW ONLY ONE AUGMENT ALLOWED -- WILL HAVE TO BE CHANGED IF MORE THAN ONE AUGMENT IS ALLOWED
+				GenerateStatDescription (currentHero, _item, itemToReplace);
 				//generate weapon specific text -- ADD LATER
+
+
+
 			} else if (item.type == "armor") {
 				ScriptableArmor _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableArmor;
 				//generate most of the description text
@@ -115,72 +119,109 @@
 
         }
 
-		void GenerateStatDescription(DenigenData currentHero, ScriptableItem _item){
+		void GenerateStatDescription(DenigenData currentHero, ScriptableItem _item, ScriptableItem itemToReplace = null){
 
-			descriptionText.text += "\nHP: " + currentHero.hp + " / " + currentHero.hpMax;
+            int boost = 0;
+            descriptionText.text += "\nHP: " + currentHero.hp + " / " + currentHero.hpMax;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "HP");
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "HP"){
-					CheckIfChange(currentHero.hp, currentHero.hpMax, b.boost);
+                    boost += b.boost;					
 				}
 			}
-			
+            CheckIfChange(currentHero.hp, currentHero.hpMax, boost);
+
+            boost = 0;
 			descriptionText.text += "\nPM: " + currentHero.pm + " / " + currentHero.pmMax;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "PM");
 			foreach (Boosts b in _item.statBoosts) {
 				if(b.statName == "PM"){
-					CheckIfChange(currentHero.pm, currentHero.pmMax, b.boost);
+                    boost += b.boost;
 				}
-			}
-			
-			descriptionText.text += "\nAtk: " + currentHero.atk;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "ATK"){
-					CheckIfChange(currentHero.atk, b.boost);
-				}
-			}
-			
-			descriptionText.text += "\nDef: " + currentHero.def;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "DEF"){
-					CheckIfChange(currentHero.def, b.boost);
-				}
-			}
-			
-			descriptionText.text += "\nMgk Atk: " + currentHero.mgkAtk;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "MGKATK"){
-					CheckIfChange(currentHero.mgkAtk, b.boost);
-				}
-			}
-			
-			descriptionText.text += "\nMgk Def: " + currentHero.mgkDef;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "MGKDEF"){
-					CheckIfChange(currentHero.mgkDef, b.boost);
-				}
-			}
-			
-			descriptionText.text += "\nLuck: " + currentHero.luck;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "LUCK"){
-					CheckIfChange(currentHero.luck, b.boost);
-				}
-			}
-			
-			descriptionText.text += "\nEvasion: " + currentHero.evasion;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "EVASION"){
-					CheckIfChange(currentHero.evasion, b.boost);
-				}
-			}
-			
-			descriptionText.text += "\nSpeed: " + currentHero.spd;
-			foreach (Boosts b in _item.statBoosts) {
-				if(b.statName == "SPD"){
-					CheckIfChange(currentHero.spd, b.boost);
-				}
-			}
+            }
+            CheckIfChange(currentHero.pm, currentHero.pmMax, boost);
 
-		}
+            boost = 0;
+			descriptionText.text += "\nAtk: " + currentHero.atk;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "ATK");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "ATK"){
+                    boost += b.boost;
+				}
+            }
+            CheckIfChange(currentHero.atk, boost);
+
+            boost = 0;
+			descriptionText.text += "\nDef: " + currentHero.def;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "DEF");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "DEF"){
+                    boost += b.boost;
+				}
+            }
+            CheckIfChange(currentHero.def, boost);
+
+            boost = 0;
+			descriptionText.text += "\nMgk Atk: " + currentHero.mgkAtk;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "MGKATK");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "MGKATK"){
+                    boost += b.boost;
+				}
+            }
+            CheckIfChange(currentHero.mgkAtk, boost);
+
+            boost = 0;
+			descriptionText.text += "\nMgk Def: " + currentHero.mgkDef;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "MGKDEF");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "MGKDEF"){
+                    boost += b.boost;
+				}
+            }
+            CheckIfChange(currentHero.mgkDef, boost);
+
+            boost = 0;
+			descriptionText.text += "\nLuck: " + currentHero.luck;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "LUCK");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "LUCK"){
+                    boost += b.boost;
+				}
+			}
+            CheckIfChange(currentHero.luck, boost);
+
+            boost = 0;
+			descriptionText.text += "\nEvasion: " + currentHero.evasion;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "EVASION");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "EVASION"){
+                    boost += b.boost;
+				}
+            }
+            CheckIfChange(currentHero.evasion, boost);
+
+            boost = 0;
+			descriptionText.text += "\nSpeed: " + currentHero.spd;
+            if (itemToReplace != null) boost -= GetReplaceLoss(itemToReplace.statBoosts, "SPD");
+            foreach (Boosts b in _item.statBoosts) {
+				if(b.statName == "SPD"){
+                    boost += b.boost;
+				}
+            }
+            CheckIfChange(currentHero.spd, boost);
+
+        }
+
+        int GetReplaceLoss(Boosts[] boosts, string statName)
+        {
+            foreach (Boosts b in boosts)
+            {
+                if (b.statName == statName)
+                    return b.boost;                
+            }
+            return 0;
+        }
 
         void CheckIfChange(int herostat, int change)
         {
