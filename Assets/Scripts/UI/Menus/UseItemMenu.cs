@@ -8,7 +8,7 @@
 
     public class UseItemMenu : Menu
     {
-        public Button jethro, cole, eleanor, juliette;
+        public Button jethro, cole, eleanor, jouliette;
         internal InventoryItem item;
         public Image icon;
         public Text itemName;
@@ -41,7 +41,7 @@
         {
             base.AddButtons();
 
-            listOfButtons = new List<Button>() { jethro, cole, eleanor, juliette };
+            listOfButtons = new List<Button>() { jethro, cole, eleanor, jouliette };
         }
         public override Button AssignRootButton()
         {
@@ -52,7 +52,7 @@
             else if (eleanor.interactable)
                 return eleanor;
             else
-                return juliette;
+                return jouliette;
         }
         protected override void AddListeners()
         {
@@ -61,7 +61,7 @@
             jethro.onClick.AddListener(OnJethro);
             cole.onClick.AddListener(OnCole);
             eleanor.onClick.AddListener(OnEleanor);
-            juliette.onClick.AddListener(OnJouliette);
+            jouliette.onClick.AddListener(OnJouliette);
         }
         public override void TurnOnMenu()
         {
@@ -77,7 +77,7 @@
                 StatChangeDescription(gameControl.heroList[1]);
             else if (currentObj == eleanor.gameObject)
                 StatChangeDescription(gameControl.heroList[2]);
-            else if (currentObj == juliette.gameObject)
+            else if (currentObj == jouliette.gameObject)
                 StatChangeDescription(gameControl.heroList[3]);
         }
 
@@ -314,6 +314,10 @@
                     else
                         UseItem(hero);
                 }
+                else if (item.type == "armor")
+                {
+                    UseItem(hero);
+                }
             }
 
 
@@ -361,14 +365,14 @@
             jethro.interactable = true;
             cole.interactable = true;
             eleanor.interactable = true;
-            juliette.interactable = true;
+            jouliette.interactable = true;
 
             if (menuState == MenuState.Remove)
             {
-                if (!gameControl.heroList[0].augments.Contains(item)) jethro.interactable = false;
+                if (!gameControl.heroList[0].augments.Contains(item) || !gameControl.heroList[0].armor.Contains(item)) jethro.interactable = false;
                 if (gameControl.heroList.Count > 1 && !gameControl.heroList[1].augments.Contains(item)) cole.interactable = false;
                 if (gameControl.heroList.Count > 2 && !gameControl.heroList[2].augments.Contains(item)) eleanor.interactable = false;
-                if (gameControl.heroList.Count > 3 && !gameControl.heroList[3].augments.Contains(item)) juliette.interactable = false;
+                if (gameControl.heroList.Count > 3 && !gameControl.heroList[3].augments.Contains(item)) jouliette.interactable = false;
             }
 
             AssignTitleText();

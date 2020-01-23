@@ -180,6 +180,7 @@ public class GameControl : MonoBehaviour {
             AddItem("Bleach", "Consumable", 1);
             AddItem("Blazing Stone", "Augment", 1);
             AddItem("Plat'num Gem", "Augment", 1);
+            AddItem("Helmet of Fortitude", "Armor", 3);
 
         }
 		else if (control != this)
