@@ -1,17 +1,14 @@
 fileFormatVersion: 2
-guid: ee6cb7502b413c84596e89d436371d6c
-timeCreated: 1579561802
+guid: cd5b73ae35b48914d9455c4b9e2159a9
+timeCreated: 1580070480
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: niceTombstones_0
-    21300002: niceTombstones_1
-    21300004: niceTombstones_2
-    21300006: niceTombstones_3
-    21300008: niceTombstones_4
-    21300010: niceTombstones_5
-    21300012: niceTombstones_6
-    21300014: niceTombstones_7
+    21300000: northFountainEffect_0
+    21300002: northFountainEffect_1
+    21300004: northFountainEffect_2
+    21300006: northFountainEffect_3
+    21300008: northFountainEffect_4
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -66,7 +63,7 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -76,7 +73,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Standalone
-    maxTextureSize: 512
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -89,69 +86,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: niceTombstones_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 96
-        width: 68
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: niceTombstones_1
-      rect:
-        serializedVersion: 2
-        x: 68
-        y: 96
-        width: 68
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: niceTombstones_2
-      rect:
-        serializedVersion: 2
-        x: 136
-        y: 96
-        width: 68
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: niceTombstones_3
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 96
-        width: 68
-        height: 96
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: niceTombstones_4
+      name: northFountainEffect_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 68
-        height: 96
+        width: 320
+        height: 436
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,13 +100,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: niceTombstones_5
+      name: northFountainEffect_1
       rect:
         serializedVersion: 2
-        x: 68
+        x: 320
         y: 0
-        width: 68
-        height: 96
+        width: 320
+        height: 436
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,13 +114,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: niceTombstones_6
+      name: northFountainEffect_2
       rect:
         serializedVersion: 2
-        x: 136
+        x: 640
         y: 0
-        width: 68
-        height: 96
+        width: 320
+        height: 436
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,13 +128,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: niceTombstones_7
+      name: northFountainEffect_3
       rect:
         serializedVersion: 2
-        x: 204
+        x: 960
         y: 0
-        width: 68
-        height: 96
+        width: 320
+        height: 436
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: northFountainEffect_4
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 320
+        height: 436
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
