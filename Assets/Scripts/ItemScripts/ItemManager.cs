@@ -221,24 +221,49 @@ public class ItemManager {
 
     public void RemoveItem(DenigenData user, InventoryItem invItem)
     {
-        var item = ItemDatabase.GetItem(invItem) as ScriptableAugment;
-
-        if (item != null)
+        if (invItem.type == "augment")
         {
-            for (int i = 0; i < GameControl.control.augments.Count; i++)
-            {
-                if (GameControl.control.augments[i].name == item.name)
-                {
-                    foreach (Boosts b in item.statBoosts)
-                    {
-                        BoostUser(user, b, false);
-                    }
+            var item = ItemDatabase.GetItem(invItem) as ScriptableAugment;
 
-                    GameControl.control.augments[i].uses--;
-                    user.augments.Remove(invItem);
+            if (item != null)
+            {
+                for (int i = 0; i < GameControl.control.augments.Count; i++)
+                {
+                    if (GameControl.control.augments[i].name == item.name)
+                    {
+                        foreach (Boosts b in item.statBoosts)
+                        {
+                            BoostUser(user, b, false);
+                        }
+
+                        GameControl.control.augments[i].uses--;
+                        user.augments.Remove(invItem);
+                    }
                 }
             }
         }
+        else if (invItem.type == "armor")
+        {
+            var item = ItemDatabase.GetItem(invItem) as ScriptableArmor;
+
+            if (item != null)
+            {
+                for(int i = 0; i < GameControl.control.armor.Count; i++)
+                {
+                    if(GameControl.control.armor[i].name == item.name)
+                    {
+                        foreach(Boosts b in item.statBoosts)
+                        {
+                            BoostUser(user, b, false);
+                        }
+
+                        GameControl.control.armor[i].uses--;
+                        user.armor.Remove(invItem);
+                    }
+                }
+            }
+        }
+
     }
 
     void BoostUser(DenigenData user, Boosts b, bool equip = true)

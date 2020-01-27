@@ -16,7 +16,7 @@
         GameObject currentObj;
 
         public enum MenuState { Use, Equip, Remove };
-        public MenuState menuState;
+        //public MenuState menuState;
 
         public override void Init()
         {
@@ -24,19 +24,63 @@
         }
         public void AssignTitleText()
         {
-            switch (menuState)
+            titleText.text = "";
+            //switch (menuState)
+            //{
+            //    case MenuState.Use:
+            //        titleText.text = "Use on...";
+            //        break;
+            //    case MenuState.Equip:
+            //        titleText.text = "Equip to...";
+            //        break;
+            //    case MenuState.Remove:
+            //        titleText.text = "Remove from...";
+            //        break;
+            //}
+        }
+
+        DenigenData CurrentHero
+        {
+            get
             {
-                case MenuState.Use:
-                    titleText.text = "Use on...";
-                    break;
-                case MenuState.Equip:
-                    titleText.text = "Equip to...";
-                    break;
-                case MenuState.Remove:
-                    titleText.text = "Remove from...";
-                    break;
+                if (currentObj == jethro.gameObject)
+                    return gameControl.heroList[0];
+                else if (currentObj == cole.gameObject)
+                    return gameControl.heroList[1];
+                else if (currentObj == eleanor.gameObject)
+                    return gameControl.heroList[2];
+                else
+                    return gameControl.heroList[3];
             }
         }
+
+        MenuState CurrentState
+        {
+            get
+            {
+                if (item.type == "consumable")
+                    return MenuState.Use;
+                else
+                {
+                    if (item.type == "augment")
+                    {
+                        if (CurrentHero.augments.Contains(item))
+                            return MenuState.Remove;
+                        else
+                            return MenuState.Equip;
+
+                    }
+                    else
+                    {
+                        if (CurrentHero.armor.Contains(item))
+                            return MenuState.Remove;
+                        else
+                            return MenuState.Equip;
+                    }
+                }
+            }
+        }
+
         protected override void AddButtons()
         {
             base.AddButtons();
@@ -71,14 +115,8 @@
 
         void SetDescription()
         {
-            if (currentObj == jethro.gameObject)
-                StatChangeDescription(gameControl.heroList[0]);
-            else if (currentObj == cole.gameObject)
-                StatChangeDescription(gameControl.heroList[1]);
-            else if (currentObj == eleanor.gameObject)
-                StatChangeDescription(gameControl.heroList[2]);
-            else if (currentObj == jouliette.gameObject)
-                StatChangeDescription(gameControl.heroList[3]);
+            StatChangeDescription(CurrentHero);
+            
         }
 
         void StatChangeDescription(DenigenData currentHero)
@@ -98,7 +136,7 @@
 			} else if (item.type == "augment") {
 				ScriptableAugment _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableAugment;
                 //generate most of the description text
-                var itemToReplace = (currentHero.augments.Count > 0) ? ItemDatabase.GetItem(currentHero.augments[0].type, currentHero.augments[0].name) : null; // FOR NOW ONLY ONE AUGMENT ALLOWED -- WILL HAVE TO BE CHANGED IF MORE THAN ONE AUGMENT IS ALLOWED
+                var itemToReplace = (currentHero.augments.Count > 0 && CurrentState == MenuState.Equip) ? ItemDatabase.GetItem(currentHero.augments[0].type, currentHero.augments[0].name) : null; // FOR NOW ONLY ONE AUGMENT ALLOWED -- WILL HAVE TO BE CHANGED IF MORE THAN ONE AUGMENT IS ALLOWED
 				GenerateStatDescription (currentHero, _item, itemToReplace);
 				//generate weapon specific text -- ADD LATER
 
@@ -225,7 +263,7 @@
 
         void CheckIfChange(int herostat, int change)
         {
-            if (menuState == MenuState.Remove)
+            if (CurrentState == MenuState.Remove)
                 change *= -1;
 
             if (change != 0)
@@ -298,7 +336,7 @@
 
         void CheckIfCanUseItem(DenigenData hero)
         {
-            if(menuState == MenuState.Use || menuState == MenuState.Remove)
+            if(CurrentState == MenuState.Use || CurrentState == MenuState.Remove)
             {
                 UseItem(hero);                
             }
@@ -336,7 +374,7 @@
         void UseItem(DenigenData hero)
         {
             Debug.Log("Before use -- quantity: " + item.quantity + ", uses: " + item.uses);
-            switch (menuState)
+            switch (CurrentState)
             {
                 case MenuState.Use:
                     GameControl.itemManager.ItemUse(hero, item);
@@ -350,10 +388,11 @@
                     GameControl.itemManager.RemoveItem(hero, item);
                     break;
             }
-            Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);            
-            uiManager.PopMenu();
-            uiManager.PopMenu();
-            currentObj = null; // for resetting the description text when we return to this menu
+            Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);
+            //uiManager.PopMenu();
+            //uiManager.PopMenu();
+            SetDescription();
+            //currentObj = null; // for resetting the description text when we return to this menu
         }
 
         /// <summary>
@@ -362,18 +401,18 @@
         /// </summary>
         public void Setup()
         {
-            jethro.interactable = true;
-            cole.interactable = true;
-            eleanor.interactable = true;
-            jouliette.interactable = true;
+            //jethro.interactable = true;
+            //cole.interactable = true;
+            //eleanor.interactable = true;
+            //jouliette.interactable = true;
 
-            if (menuState == MenuState.Remove)
-            {
-                if (!gameControl.heroList[0].augments.Contains(item) || !gameControl.heroList[0].armor.Contains(item)) jethro.interactable = false;
-                if (gameControl.heroList.Count > 1 && !gameControl.heroList[1].augments.Contains(item)) cole.interactable = false;
-                if (gameControl.heroList.Count > 2 && !gameControl.heroList[2].augments.Contains(item)) eleanor.interactable = false;
-                if (gameControl.heroList.Count > 3 && !gameControl.heroList[3].augments.Contains(item)) jouliette.interactable = false;
-            }
+            //if (menuState == MenuState.Remove)
+            //{
+            //    if (!gameControl.heroList[0].augments.Contains(item) || !gameControl.heroList[0].armor.Contains(item)) jethro.interactable = false;
+            //    if (gameControl.heroList.Count > 1 && !gameControl.heroList[1].augments.Contains(item)) cole.interactable = false;
+            //    if (gameControl.heroList.Count > 2 && !gameControl.heroList[2].augments.Contains(item)) eleanor.interactable = false;
+            //    if (gameControl.heroList.Count > 3 && !gameControl.heroList[3].augments.Contains(item)) jouliette.interactable = false;
+            //}
 
             AssignTitleText();
             SetButtonNavigation();

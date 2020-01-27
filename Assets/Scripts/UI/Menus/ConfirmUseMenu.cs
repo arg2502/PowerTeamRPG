@@ -176,17 +176,18 @@
             // open the ConfirmUse menu
             uiManager.PushMenu(uiDatabase.UseItemMenu);
 
-            // set the Item Use menu's item to the one chosen
-            var count = uiManager.list_currentMenus.Count;
-            var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
-            useItem.item = item;
-            useItem.descriptionText = descriptionText;
-			useItem.icon.sprite = ItemDatabase.GetItemSprite(item.name);
-            useItem.itemName.text = item.name;
-            useItem.menuState = menuState;
-            useItem.Setup();     
+            //         // set the Item Use menu's item to the one chosen
+            //         var count = uiManager.list_currentMenus.Count;
+            //         var useItem = uiManager.list_currentMenus[count - 1].GetComponent<UseItemMenu>();
+            //         useItem.item = item;
+            //         useItem.descriptionText = descriptionText;
+            //useItem.icon.sprite = ItemDatabase.GetItemSprite(item.name);
+            //         useItem.itemName.text = item.name;
+            //         useItem.menuState = menuState;
+            //         useItem.Setup();     
 
-            return useItem;
+            //return useItem;
+            return null;
         }
 
         /// <summary>
