@@ -22,6 +22,10 @@ public class characterControl : OverworldObject {
     float moveSpeed = 0;
     float walkSpeed;// = 6f;
     float runSpeed { get { return walkSpeed * 1.5f; } }//9f;
+    float acc = 0f;
+    float vel = 0f;
+    float maxAcc = 2f;
+    float maxVel = 25f;
 
     float jethroWalk = 6f;
     float coleWalk = 6f;
@@ -396,7 +400,37 @@ public class characterControl : OverworldObject {
         if (canMove)
         {
             isMoving = false;
-            moveSpeed = (Input.GetButton("Run") ? runSpeed : walkSpeed);
+            moveSpeed = walkSpeed;
+            if (GameControl.control.currentCharacter != HeroCharacter.JOULIETTE)
+            {
+                if (Input.GetButton("Run"))
+                    moveSpeed = runSpeed;
+            }
+            else
+            {
+                if (Input.GetButton("Run"))
+                {
+                    if (acc < 0) acc = 0;
+                    acc += Time.deltaTime;
+                    if (acc >= maxAcc) acc = maxAcc;
+
+                    vel += acc;
+                    if (vel > maxVel) vel = maxVel;
+                    moveSpeed = vel;
+
+                }
+                else
+                {
+                    //if (acc > 0) acc = 0;
+                    //acc -= Time.deltaTime;
+                    //if (acc <= -maxAcc) acc = -maxAcc;
+                    //vel += acc;
+                    //if (vel <= walkSpeed) vel = walkSpeed;
+                    //moveSpeed = vel;
+                    if(acc != 0 || vel != 0) { acc = 0; vel = 0; }
+                    moveSpeed = walkSpeed;
+                }
+            }
 
             //Check for input
             if (Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
