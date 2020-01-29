@@ -399,6 +399,7 @@
                 useItem.descriptionText = descriptionText;
                 useItem.icon.sprite = ItemDatabase.GetItemSprite(chosenItem.name);
                 useItem.itemName.text = chosenItem.name;
+                useItem.inventory = this;
                 //useItem.menuState = menuState;
                 useItem.Setup();
             }
@@ -417,7 +418,7 @@
             }
         }
 
-        void UpdateItemQuantity()
+        public void UpdateItemQuantity()
         {
             var itemSlot = currentObj.GetComponentInParent<ItemSlot>();
             if (itemSlot == null) return;

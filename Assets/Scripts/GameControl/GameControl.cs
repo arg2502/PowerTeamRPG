@@ -49,8 +49,12 @@ public class GameControl : MonoBehaviour {
     public Gateway currentEntranceGateway;
 
 	public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
+    public HeroData Jethro { get { return (heroList.Count > 0) ? heroList[0] : null; } }
+    public HeroData Cole { get { return (heroList.Count > 1) ? heroList[1] : null; } }
+    public HeroData Eleanor { get { return (heroList.Count > 2) ? heroList[2] : null; } }
+    public HeroData Jouliette { get { return (heroList.Count > 3) ? heroList[3] : null; } }
 
-	public List<RoomControlData> rooms = new List<RoomControlData>() { }; // stores all of the data for areas the player has been to, like block positions, etc.
+    public List<RoomControlData> rooms = new List<RoomControlData>() { }; // stores all of the data for areas the player has been to, like block positions, etc.
 	// probably going to need a roomData class for long term saving of the abouve list
 	public int areaLevel; // mean level of enemies, determined by an enemyControl obj
 	public int numOfEnemies; // number of enemies in battle, determined by an enemyControl obj

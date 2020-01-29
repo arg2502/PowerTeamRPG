@@ -14,6 +14,8 @@
         public Text itemName;
         public Text titleText;
         GameObject currentObj;
+        public Image jethroE, coleE, eleanorE, joulietteE;
+        public InventoryMenu inventory;
 
         public enum MenuState { Use, Equip, Remove };
         //public MenuState menuState;
@@ -391,7 +393,9 @@
             Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);
             //uiManager.PopMenu();
             //uiManager.PopMenu();
+            inventory.UpdateItemQuantity();
             SetDescription();
+            SetEquippedIcon();
             //currentObj = null; // for resetting the description text when we return to this menu
         }
 
@@ -401,6 +405,7 @@
         /// </summary>
         public void Setup()
         {
+            SetEquippedIcon();
             //jethro.interactable = true;
             //cole.interactable = true;
             //eleanor.interactable = true;
@@ -418,6 +423,28 @@
             SetButtonNavigation();
             RootButton = AssignRootButton();
             SetSelectedObjectToRoot();
+        }
+
+        void SetEquippedIcon()
+        {
+            jethroE.gameObject.SetActive(IsEquipped(gameControl.Jethro));
+            coleE.gameObject.SetActive(IsEquipped(gameControl.Cole));
+            eleanorE.gameObject.SetActive(IsEquipped(gameControl.Eleanor));
+            joulietteE.gameObject.SetActive(IsEquipped(gameControl.Jouliette));
+        }
+
+        bool IsEquipped(DenigenData hero)
+        {
+            if (hero == null) return false;
+
+            if (item.type == "consumable")
+                return false;
+            else if (item.type == "augment")
+                return (hero.augments.Contains(item));
+            else if (item.type == "armor")
+                return (hero.armor.Contains(item));
+            else
+                return false;
         }
 
         new void Update()
