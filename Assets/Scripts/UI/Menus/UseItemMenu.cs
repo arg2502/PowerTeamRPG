@@ -128,32 +128,44 @@
 			descriptionText.text += "\n\nStatus: " + currentHero.statusState;
 
 			//get the info on the item we are using
-			if (item.type == "consumable") {
+			if (item.type == "consumable")
+            {
 				ScriptableConsumable _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableConsumable;
                 //Consumables are the only items that offer status changes
                 descriptionText.text += " " + _item.statusChange;
 				
 				//call the rest of the description text
 				GenerateStatDescription (currentHero, _item);
-			} else if (item.type == "augment") {
+			}
+            else if (item.type == "augment")
+            {
 				ScriptableAugment _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableAugment;
                 //generate most of the description text
                 var itemToReplace = (currentHero.augments.Count > 0 && CurrentState == MenuState.Equip) ? ItemDatabase.GetItem(currentHero.augments[0].type, currentHero.augments[0].name) : null; // FOR NOW ONLY ONE AUGMENT ALLOWED -- WILL HAVE TO BE CHANGED IF MORE THAN ONE AUGMENT IS ALLOWED
-				GenerateStatDescription (currentHero, _item, itemToReplace);
-				//generate weapon specific text -- ADD LATER
-
-
-
-			} else if (item.type == "armor") {
+                GenerateStatDescription(currentHero, _item, itemToReplace);
+			}
+            else if (item.type == "armor")
+            {
 				ScriptableArmor _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableArmor;
-				//generate most of the description text
-				GenerateStatDescription (currentHero, _item);
+                //generate most of the description text
+                ScriptableItem itemToReplace = null;
+                if (CurrentState == MenuState.Equip)
+                {
+                    var invItem = currentHero.armor.Find((i) => i.subtype == _item.GetSubType());
+                    if (invItem != null)
+                        itemToReplace = ItemDatabase.GetItem(invItem);
+                }
+				GenerateStatDescription (currentHero, _item, itemToReplace);
 				//generate Armor specific text -- ADD LATER
-			} else if (item.type == "key") {
+			}
+            else if (item.type == "key")
+            {
 				//This is probably going to be very different from the other 3 types of item
 				ScriptableKey _item = ItemDatabase.GetItem (item.type, item.name) as ScriptableKey;
 				//generate key specifit text -- ADD LATER
-			} else {
+			}
+            else
+            {
 				print("No item named " + item.name + " of type " + item.type + " exists.");
 			}
 
@@ -356,7 +368,14 @@
                 }
                 else if (item.type == "armor")
                 {
-                    UseItem(hero);
+                    var itemToReplace = hero.armor.Find((i) => i.subtype == item.subtype);
+                    if (itemToReplace != null)
+                    {
+                        string message = "Remove " + itemToReplace.name + " from " + hero.denigenName + " and equip " + item.name + "?";
+                        uiManager.PushConfirmationMenu(message, () => ReplaceItem(hero));
+                    }
+                    else
+                        UseItem(hero);
                 }
             }
 
@@ -368,6 +387,12 @@
             if(item.type == "augment")
             {
                 var itemToRemove = hero.augments[hero.maxAugmentsAmt - 1];
+                GameControl.itemManager.RemoveItem(hero, itemToRemove);
+                UseItem(hero);
+            }
+            else if(item.type == "armor")
+            {
+                var itemToRemove = hero.armor.Find((i) => i.subtype == item.subtype);
                 GameControl.itemManager.RemoveItem(hero, itemToRemove);
                 UseItem(hero);
             }
@@ -450,11 +475,11 @@
         new void Update()
         {
             base.Update();
-
+                        
             if (currentObj == EventSystem.current.currentSelectedGameObject) return;
 
             currentObj = EventSystem.current.currentSelectedGameObject;
-                        
+            if (this.gameObject != uiManager.menuInFocus) return;
             SetDescription();            
 
         }

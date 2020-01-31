@@ -272,42 +272,49 @@ public class ItemManager {
         switch (b.statName)
         {
             case "HP":
-                user.hpMax += boost;
+                user.hpMax = AddBoost(user.hpMax, boost);             
                 break;
             case "PM":
-                user.pmMax += boost;
+                user.pmMax = AddBoost(user.pmMax, boost);
                 break;
             case "ATK":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.atk += boost;
+                user.atk = AddBoost(user.atk, boost);
                 break;
             case "DEF":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.def += boost;
+                user.def = AddBoost(user.def, boost);
                 break;
             case "MGKATK":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.mgkAtk += boost;
+                user.mgkAtk = AddBoost(user.mgkAtk, boost);
                 break;
             case "MGKDEF":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.mgkDef += boost;
+                user.mgkDef = AddBoost(user.mgkDef, boost);
                 break;
             case "LUCK":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.luck += boost;
+                user.luck = AddBoost(user.luck, boost);
                 break;
             case "EVASION":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.evasion += boost;
+                user.evasion = AddBoost(user.evasion, boost);
                 break;
             case "SPD":
                 Debug.Log("Target's " + b.statName + " is boosted by " + boost);
-                user.spd += boost;
+                user.spd = AddBoost(user.spd, boost);
                 break;
             default:
                 Debug.Log("Error on item use by " + user.name + ": Attempted to boost stat named " + b.statName);
                 break;
         }
     }
+
+    int AddBoost(int stat, int boost)
+    {
+        return (stat + boost < 0) ? 0 : stat + boost;
+    }
+
+
 }

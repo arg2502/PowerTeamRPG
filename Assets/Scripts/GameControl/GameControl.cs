@@ -182,9 +182,21 @@ public class GameControl : MonoBehaviour {
 			AddItem("Copper Tonic", "Consumable", 5);
 			AddItem("Captain Power's BIG Booster", "Consumable", 5);
             AddItem("Bleach", "Consumable", 1);
-            AddItem("Blazing Stone", "Augment", 1);
-            AddItem("Plat'num Gem", "Augment", 1);
-            AddItem("Helmet of Fortitude", "Armor", 3);
+            AddItem("Blazing Stone", "Augment", 1, "enchant");
+            AddItem("Plat'num Gem", "Augment", 1, "enchant");
+            AddItem("Helmet of Fortitude", "Armor", 3, "head");
+            AddItem("Iron Helm", "Armor", 1, "head");
+            AddItem("Steel Helm", "Armor", 1, "head");
+            AddItem("Waxen Headdress", "Armor", 1, "head");
+            AddItem("Baggy Robes", "Armor", 1, "chest");
+            AddItem("Iron Armor", "Armor", 1, "chest");
+            AddItem("Steel Armor", "Armor", 1, "chest");
+            AddItem("Morttimer's Robes", "Armor", 1, "chest");
+            AddItem("Big Boot", "Armor", 1, "boots");
+            AddItem("Bigger Boot", "Armor", 1, "boots");
+
+
+
 
         }
 		else if (control != this)
@@ -196,10 +208,10 @@ public class GameControl : MonoBehaviour {
    
     public void AddItem(ScriptableItem _item, int _quantity)
     {
-        AddItem(_item.name, _item.Type, _quantity);
+        AddItem(_item.name, _item.Type, _quantity, _item.GetSubType());
     }
 
-    public void AddItem(string _name, string _type, int _quantity)
+    public void AddItem(string _name, string _type, int _quantity, string _subtype = "")
 	{
 		//make all letters in type lowercase to avoid input errors
 		_type = _type.ToLower ();
@@ -231,7 +243,7 @@ public class GameControl : MonoBehaviour {
 			}
 			
 			//If the item is not found, add it to the inventory
-			armor.Add(new InventoryItem(_name, _quantity, _type));
+			armor.Add(new InventoryItem(_name, _quantity, _type, _subtype));
 		}
 
 		else if (_type == "augment") 
@@ -245,7 +257,7 @@ public class GameControl : MonoBehaviour {
 			}
 			
 			//If the item is not found, add it to the inventory
-			augments.Add(new InventoryItem(_name, _quantity, _type));
+			augments.Add(new InventoryItem(_name, _quantity, _type, _subtype));
 		}
 
 		else if (_type == "key") 

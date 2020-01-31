@@ -31,4 +31,6 @@ public class ScriptableItem : ScriptableObject {
                 return "key";
         }
     }
+
+    public virtual string GetSubType() { return ""; }
 }

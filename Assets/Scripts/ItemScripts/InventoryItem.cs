@@ -12,12 +12,14 @@ public class InventoryItem {
 	public int uses;
     public int Remaining { get { return quantity - uses; } }
 	public string type;
+    public string subtype;
 
-	public InventoryItem(string _name, int _quantity, string _type)
+	public InventoryItem(string _name, int _quantity, string _type, string _subtype = "")
 	{
 		name = _name;
 		quantity = _quantity;
 		type = _type;
+        subtype = _subtype;
 	}
 
 }

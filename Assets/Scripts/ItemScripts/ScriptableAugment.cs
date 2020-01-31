@@ -6,9 +6,20 @@ using UnityEngine;
 public class ScriptableAugment : ScriptableItem {
 
 	//Weapons can be one of 3 types
-    public new enum Type { enchant, grimark, chapletti };
-    public Type type;
+    public new enum SubType { enchant, grimark, chapletti };
+    public SubType subtype;
 
-	//Weapons can affect any stats other than hp or pm
-	//Also passives, whenever we get there
+    public override string GetSubType()
+    {
+        if (subtype == SubType.enchant)
+            return "enchant";
+        else if (subtype == SubType.grimark)
+            return "grimark";
+        else
+            return "chapletti";
+
+    }
+
+    //Weapons can affect any stats other than hp or pm
+    //Also passives, whenever we get there
 }
