@@ -31,7 +31,7 @@ public class roomControl : MonoBehaviour {
     [System.Serializable]
     public struct RoomLimits
     {
-        public int minX, minY, maxX, maxY; // ints because the tilemap's position and size should always be whole numbers (??? right ???)
+        public float minX, minY, maxX, maxY; // ints because the tilemap's position and size should always be whole numbers (??? right ???)
     }
     bool roomWasLoaded;
 
@@ -254,8 +254,8 @@ public class roomControl : MonoBehaviour {
         var tilemap = FindObjectOfType<Tiled2Unity.TiledMap>();
         if (tilemap != null)
         {
-            roomLimits.minX = (int)tilemap.transform.position.x;
-            roomLimits.minY = (int)tilemap.transform.position.y;
+            roomLimits.minX = tilemap.transform.position.x;
+            roomLimits.minY = tilemap.transform.position.y;
             roomLimits.maxX = roomLimits.minX + tilemap.NumTilesWide;
             roomLimits.maxY = roomLimits.minY - tilemap.NumTilesHigh;
         }
