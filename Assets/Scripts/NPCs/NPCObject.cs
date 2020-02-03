@@ -9,5 +9,5 @@ public class NPCObject : MovableOverworldObject
         Invoke(functionName, 0f);
     }
     
-    public virtual void BackToNormal() { }	
+    public virtual void BackToNormal() { ShowInteractionNotification();  }	
 }

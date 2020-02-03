@@ -361,6 +361,7 @@ public class NPCPathwalkControl : NPCObject {
     }
     public override void BackToNormal()
     {
+        base.BackToNormal();
         canMove = true;
         walkingState = prevState;
     }

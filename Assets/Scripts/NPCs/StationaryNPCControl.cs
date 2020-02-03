@@ -41,7 +41,7 @@ public class StationaryNPCControl : NPCObject {
 		base.Start();
 
 		//Call backtoNormal to make NPC face it's default direction and idle
-		BackToNormal ();
+		SetDefaultAnimation();
 	}
 	
 	// Update is called once per frame
@@ -74,11 +74,17 @@ public class StationaryNPCControl : NPCObject {
 	}
 	public override void BackToNormal()
 	{
-		canMove = true;
-		currentState = State.idle;
+        base.BackToNormal();
+        SetDefaultAnimation();
+	}
+
+    void SetDefaultAnimation()
+    {
+        canMove = true;
+        currentState = State.idle;
         if (!anim) return;
 
-		anim.SetBool ("canMove", canMove); //sets back to idle sprites
+        anim.SetBool("canMove", canMove); //sets back to idle sprites
 
         //Set the NPC to face the default direction
         if (GameControl.AnimatorHasParameter(anim, "lastHSpeed") && GameControl.AnimatorHasParameter(anim, "lastVSpeed"))
@@ -103,5 +109,5 @@ public class StationaryNPCControl : NPCObject {
                     break;
             }
         }
-	}
+    }
 }

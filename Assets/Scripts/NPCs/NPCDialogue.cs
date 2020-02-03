@@ -56,6 +56,8 @@ public class NPCDialogue : MonoBehaviour {
         // the character is set to Talking first, and then the dialogues starts & ends
         // not really a fix, more like hiding the bug)
 
+        if (GetComponentInParent<OverworldObject>())
+            GetComponentInParent<OverworldObject>().HideInteractionNotification();
 
         // forcing a passed in text asset
         // 11/21/19 -- adding this now for beggar. No idea if this will break, but hey..let's see what happens

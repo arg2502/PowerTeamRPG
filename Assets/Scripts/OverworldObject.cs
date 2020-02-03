@@ -13,6 +13,7 @@ public class OverworldObject : MonoBehaviour {
     public string CurrentQuestID { get { return currentQuestID; } set { currentQuestID = value; } }
     protected List<string> questAlreadyTalked;
     public List<string> QuestAlreadyTalked { get { return questAlreadyTalked; } }
+    string interactionMessage = "";
 
     // weight variables -- used only as references throughout objects (movables/switches/etc.)
     public enum Weight { NORMAL, LIGHT, HEAVY, CUSTOM }
@@ -60,8 +61,13 @@ public class OverworldObject : MonoBehaviour {
     private InteractionNotification interactionNotification;
     public InteractionNotification InteractionNotification { get { return interactionNotification; } set { interactionNotification = value; } }
 
-    public virtual void ShowInteractionNotification(string message)
+    public virtual void ShowInteractionNotification(string message = "")
     {
+        if (GetComponentInChildren<NPCDialogue>() != null && !GetComponentInChildren<NPCDialogue>().canTalk) return;
+
+        if (!string.IsNullOrEmpty(message))
+            interactionMessage = message;
+
         if(interactionNotification == null)
         {
             interactionNotification = GameControl.UIManager.ShowInteractionNotification(transform, message);
