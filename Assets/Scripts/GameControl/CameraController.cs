@@ -18,7 +18,10 @@ public class CameraController : MonoBehaviour {
 
     float currentX, currentY;
 
-    public Image blackCanvas;
+    //public Image blackCanvas;
+	public RawImage blackCanvas;
+	public Material transitionMaterialPrefab;
+	public Texture transitionEffect;
     Color black;
     Color clear;
     float timeToFade;
@@ -43,11 +46,12 @@ public class CameraController : MonoBehaviour {
         StayWithinRoomAtStart();
         
                 
-        black = new Color(0, 0, 0, 1);
-        clear = new Color(0, 0, 0, 0);
-        timeToFade = 0.5f;
-        blackCanvas.color = black;
-        StartCoroutine(Fade());
+        //black = new Color(0, 0, 0, 1);
+        //clear = new Color(0, 0, 0, 0);
+        //timeToFade = 0.5f;
+        //blackCanvas.color = black;
+		blackCanvas.material = new Material (transitionMaterialPrefab);
+        StartCoroutine(Fade(true));
     }
 
 	// Update is called once per frame
@@ -195,27 +199,37 @@ public class CameraController : MonoBehaviour {
 
     }
 
-    public IEnumerator Fade()
+    public IEnumerator Fade(bool show)
     {
-        if (blackCanvas.color.a < 1)
-        {
-            blackCanvas.color = clear;
-            while (blackCanvas.color.a < 1)
-            {
-                blackCanvas.color += black * (Time.deltaTime / timeToFade);
-                yield return null;
-            }
-            blackCanvas.color = black;
-        }
-        else
-        {
-            blackCanvas.color = black;
-            while (blackCanvas.color.a > 0)
-            {
-                blackCanvas.color -= black * (Time.deltaTime / timeToFade);
-                yield return null;
-            }
-            blackCanvas.color = clear;
-        }
+		float targVal = show ? 1 : 0;
+		float curVal = show ? 0 : 1;
+		//float curVal = blackCanvas.material.GetFloat ("_Cutoff");
+		blackCanvas.material.SetTexture ("_AlphaTex", transitionEffect);
+        //if (blackCanvas.color.a < 1f)
+        //{
+            //blackCanvas.color = clear;
+            //while (blackCanvas.color.a < 1)
+            //{
+            //    blackCanvas.color += black * (Time.deltaTime / timeToFade);
+            //    yield return null;
+            //}
+            //blackCanvas.color = black;
+        //}
+        //else
+        //{
+            //blackCanvas.color = black;
+            //while (blackCanvas.color.a > 0)
+            //{
+            //    blackCanvas.color -= black * (Time.deltaTime / timeToFade);
+            //    yield return null;
+            //}
+            //blackCanvas.color = clear;
+        //}
+
+		while (curVal != targVal) {
+			curVal = Mathf.MoveTowards(curVal, targVal, /*speed*/1f * Time.deltaTime);
+			blackCanvas.material.SetFloat("_Cutoff", curVal);
+			yield return null;
+		}
     }
 }

@@ -106,7 +106,7 @@ public class characterControl : OverworldObject {
             currentGateway = other.GetComponent<Gateway>();
             if(currentGateway.gatewayType != Gateway.Type.DOOR) // handle door transition in update
             {
-                StartCoroutine(myCamera.Fade());
+                StartCoroutine(myCamera.Fade(false));
                 ExitRoom(currentGateway.transform.position, currentGateway.exitPos);
             }
             else
@@ -353,7 +353,7 @@ public class characterControl : OverworldObject {
         {
             if (canEnterDoor && currentGateway?.gatewayType == Gateway.Type.DOOR)
             {
-                StartCoroutine(myCamera.Fade());
+                StartCoroutine(myCamera.Fade(false));
                 ExitRoom(currentGateway.transform.position, currentGateway.transform.position); // don't move
             }
 
