@@ -213,7 +213,7 @@
                     // formula for converting easily understandable typingSpeed [0 - 50] to seconds to wait
                     // y = -m + 50
                     var waitTime = (-1 * typingSpeed) + 100;
-                    waitTime /= 400;
+                    waitTime /= 1000;
                     yield return new WaitForSeconds(waitTime);
                 }
             }
