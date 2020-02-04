@@ -17,7 +17,7 @@
         public RectMask2D textMask;        
 
         string dialogueStr; // the full string that dialogueText will print out
-        float typingSpeed = 0.02f;
+        float typingSpeed = 2f;
         Action nextDialogue; // function that occurs when Continue button is pressed, set in Dialogue.cs
 
         // testing out event triggers
@@ -209,7 +209,12 @@
                             + dialogueStr.Substring(indexOfEndTagEnd + 1)                        // rest of string
                             + transparentColorTagEnd;                                                 // close transparent tag
                     }
-                    yield return new WaitForSeconds(typingSpeed);
+
+                    // formula for converting easily understandable typingSpeed [0 - 50] to seconds to wait
+                    // y = -m + 50
+                    var waitTime = (-1 * typingSpeed) + 100;
+                    waitTime /= 400;
+                    yield return new WaitForSeconds(waitTime);
                 }
             }
             EndTyping();
