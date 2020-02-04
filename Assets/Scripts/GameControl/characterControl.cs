@@ -236,14 +236,11 @@ public class characterControl : OverworldObject {
         // set the new current NPC if one was passed in
         if (newCurrent)
         {
-            if (GameControl.control.currentNPC == null)
+            if (GameControl.control.currentNPC != newCurrent)
             {
                 GameControl.control.currentNPC = newCurrent;
 
                 // Some sort of indicator to tell the player who they can talk to
-                // FOR NOW, we just changed the color
-                //GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.yellow;
-
                 var overworldObj = GameControl.control.currentNPC.GetComponentInParent<OverworldObject>();
                 if (overworldObj == null)
                     Debug.LogError("Overworld Object not found in parent of Dialogue object. Please make sure some sort of Overworld object is attached");
