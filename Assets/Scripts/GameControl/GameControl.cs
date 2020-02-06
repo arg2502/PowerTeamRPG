@@ -142,6 +142,11 @@ public class GameControl : MonoBehaviour {
     public AudioClip battleLoop;
 
     public List<int> knownBeggarDialogues;
+
+    public float jethroTalkingSpeed;
+    public float coleTalkingSpeed;
+    public float eleanorTalkingSpeed;
+    public float joulietteTalkingSpeed;
     
     //awake gets called before start
     void Awake () {

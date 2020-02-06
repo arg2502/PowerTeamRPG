@@ -70,6 +70,7 @@ public class NPCThirstyMan : StationaryNPCControl
             //thirstyState = ThirstyState.SATISFIED;
             var anim = GetComponent<Animator>();
             anim.SetBool("isSatisfied", true);
+            TalkingSpeed += 20f;
         }
         else
         {

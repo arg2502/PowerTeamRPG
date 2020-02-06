@@ -14,6 +14,17 @@ public class OverworldObject : MonoBehaviour {
     protected List<string> questAlreadyTalked;
     public List<string> QuestAlreadyTalked { get { return questAlreadyTalked; } }
     string interactionMessage = "";
+    public float TalkingSpeed
+    {
+        get
+        {
+            return GetComponentInChildren<NPCDialogue>().talkingSpeed;
+        }
+        set
+        {
+            GetComponentInChildren<NPCDialogue>().talkingSpeed = value;
+        }
+    }
 
     // weight variables -- used only as references throughout objects (movables/switches/etc.)
     public enum Weight { NORMAL, LIGHT, HEAVY, CUSTOM }

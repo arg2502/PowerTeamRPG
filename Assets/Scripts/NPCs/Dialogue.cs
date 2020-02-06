@@ -287,7 +287,7 @@ public class Dialogue : MonoBehaviour {
         currentSpeakerName = currentConversation.GetSpeakerName(conversationIterator);
         currentSpeakerSprite = currentConversation.GetSpeakerEmotion(conversationIterator);
         currentDialogueText = currentConversation.GetDialogueConversation(conversationIterator);
-        float speed = speaker.talkingSpeed;
+        float speed = GetTalkingSpeed(currentSpeakerName);
 
         dialogueMenu.SetText(currentSpeakerName, currentDialogueText, currentSpeakerSprite, speed);
 
@@ -313,6 +313,20 @@ public class Dialogue : MonoBehaviour {
         currentConversation = nextConvo;
         conversationIterator = 0;        
         PrintConversation();
+    }
+
+    float GetTalkingSpeed(string _name)
+    {
+        if (string.Equals(_name, GameControl.control.playerName))
+            return GameControl.control.jethroTalkingSpeed;
+        else if (string.Equals(_name, "Cole"))
+            return GameControl.control.coleTalkingSpeed;
+        else if (string.Equals(_name, "Eleanor"))
+            return GameControl.control.eleanorTalkingSpeed;
+        else if (string.Equals(_name, "Jouliette"))
+            return GameControl.control.joulietteTalkingSpeed;
+        else
+            return speaker.talkingSpeed;
     }
 
     Sprite GetHeroSprite(string heroName, string emotion)
