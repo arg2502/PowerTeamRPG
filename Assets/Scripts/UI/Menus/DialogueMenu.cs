@@ -19,6 +19,7 @@
         string dialogueStr; // the full string that dialogueText will print out
         float typingSpeed = 2f;
         Action nextDialogue; // function that occurs when Continue button is pressed, set in Dialogue.cs
+        Dictionary<int, float> dialogueWait;
 
         // testing out event triggers
         bool readyForNextDialogue = true;
@@ -119,6 +120,8 @@
             }
             else
                 portraitImage.gameObject.SetActive(false);
+
+            RecordSpecialTags();
             StartCoroutine(TypeDialogue());
         }
 
@@ -155,24 +158,9 @@
                     if (insideTagLayer < 0) insideTagLayer = 0;
                     continue;
                 }
-               
-                // check for any special characters ( "{" for speed )
-                // we want to wait the desired number of seconds as well as remove the special characters from the string
-                if(dialogueStr[i] == '{')
-                {
-                    // find end of tag
-                    int tagStart = i;
-                    int tagEnd = dialogueStr.IndexOf('}', i + 1);
-                    int strLength = (tagEnd - tagStart);
-                    string secondsStr = dialogueStr.Substring(tagStart + 1, strLength - 1);
-                    
-                    float secondsToWait;
-                    if (!float.TryParse(secondsStr, out secondsToWait))
-                        secondsToWait = 1;
-
-                    dialogueStr = dialogueStr.Remove(i, strLength + 1); // {#.##}
-                    yield return new WaitForSecondsRealtime(secondsToWait);
-                }
+                
+                if (dialogueWait.ContainsKey(i))
+                    yield return new WaitForSecondsRealtime(dialogueWait[i]);
 
                 if (!insideRichText)
                 {
@@ -246,6 +234,28 @@
             // we want to continue immediately
             if (dialogueStr[dialogueStr.Length - 1] == '-')
                 Continue();
+        }
+
+        void RecordSpecialTags()
+        {
+            dialogueWait = new Dictionary<int, float>();
+            int startIndex = 0;
+            int endIndex = 0;
+            while (dialogueStr.IndexOf('{', startIndex) > -1)
+            {
+                startIndex = dialogueStr.IndexOf('{', startIndex);
+                endIndex = dialogueStr.IndexOf('}', startIndex+1);
+
+                int strLength = (endIndex - startIndex);
+                string secondsStr = dialogueStr.Substring(startIndex + 1, strLength - 1);
+
+                float secondsToWait;
+                if (!float.TryParse(secondsStr, out secondsToWait))
+                    secondsToWait = 1;
+                dialogueWait.Add(startIndex, secondsToWait);
+
+                dialogueStr = dialogueStr.Remove(startIndex, (endIndex - startIndex) + 1);
+            }
         }
 
         void RemoveSpecialTags(char startChar, char endChar)
