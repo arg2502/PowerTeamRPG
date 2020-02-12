@@ -89,6 +89,13 @@ public class NPCShopKeeper : StationaryNPCControl {
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
     }
 
+    public void Talk()
+    {
+        GameControl.UIManager.PushNotificationMenu(
+            "This should open up a menu with dialogue options...but not yet"
+            );
+    }
+
     public int GetItemPrice(InventoryItem item)
     {
         // find the scriptable object based on the inventory item
