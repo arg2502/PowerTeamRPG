@@ -563,6 +563,7 @@ public class characterControl : OverworldObject {
             }
             else
             {
+                transform.position = desiredPos;
                 OnDesiredPos.Invoke();
             }
         }
@@ -720,8 +721,8 @@ public class characterControl : OverworldObject {
             position = transform.position.y;
             finalPos = endPos.y;
         }
-
-        if((int)position != (int)finalPos)        
+        
+        if(Mathf.Abs(position - finalPos) > 0.1)        
             return false;
 
         return true;

@@ -156,47 +156,39 @@ public class CameraController : MonoBehaviour {
         if (GameControl.control.currentEntranceGateway == null) return;
 
         Vector3 entrance = GameControl.control.currentEntranceGateway.entrancePos;
-
-        transform.position = new Vector3(entrance.x, entrance.y, transform.position.z);
-        Vector3 currentPosition = new Vector3(GameControl.control.currentPosition.x, GameControl.control.currentPosition.y, transform.position.z);
         var currentRoom = GameControl.control.currentRoom;
 
         if(RoomTooSmallX())
         {
-            currentX = MidX;
-            transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
+            entrance.x = MidX;            
         }
-        else if (currentPosition.x - horizontalSize <= currentRoom.roomLimits.minX)
+        else if (entrance.x - horizontalSize <= currentRoom.roomLimits.minX)
         {
-            currentX = currentRoom.roomLimits.minX + horizontalSize;
-            transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
+            entrance.x = currentRoom.roomLimits.minX + horizontalSize;
             outOfBoundsX = true;
         }
-        else if (currentPosition.x + horizontalSize >= currentRoom.roomLimits.maxX)
+        else if (entrance.x + horizontalSize >= currentRoom.roomLimits.maxX)
         {
-            currentX = currentRoom.roomLimits.maxX - horizontalSize;
-            transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
+            entrance.x = currentRoom.roomLimits.maxX - horizontalSize;
             outOfBoundsX = true;
         }
 
         if(RoomTooSmallY())
         {
-            currentY = MidY;
-            transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+            entrance.y = MidY;
         }
-        else if (currentPosition.y + verticalSize >= currentRoom.roomLimits.minY)
+        else if (entrance.y + verticalSize >= currentRoom.roomLimits.minY)
         {
-            currentY = currentRoom.roomLimits.minY - verticalSize;
-            transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+            entrance.y = currentRoom.roomLimits.minY - verticalSize;
             outOfBoundsY = true;
         }
-        else if (currentPosition.y - verticalSize <= currentRoom.roomLimits.maxY)
+        else if (entrance.y - verticalSize <= currentRoom.roomLimits.maxY)
         {
-            currentY = currentRoom.roomLimits.maxY + verticalSize;
-            transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+            entrance.y = currentRoom.roomLimits.maxY + verticalSize;
             outOfBoundsY = true;
         }
 
+        transform.position = new Vector3(entrance.x, entrance.y, transform.position.z);
     }
 
     public IEnumerator Fade(bool show)
