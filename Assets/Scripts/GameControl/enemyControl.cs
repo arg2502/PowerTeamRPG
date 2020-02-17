@@ -258,7 +258,7 @@ public class enemyControl : MovableOverworldObject {
 
     void CheckForBattle()
     {
-        if (dist <= 0.25f && GameControl.control.currentCharacterState == characterControl.CharacterState.Normal)
+        if (!beenBattled && dist <= 0.25f && GameControl.control.currentCharacterState == characterControl.CharacterState.Normal)
         {
             GameControl.control.currentCharacterState = characterControl.CharacterState.Battle;
             GameControl.control.currentPosition = player.position; //record the player's position before entering battle
