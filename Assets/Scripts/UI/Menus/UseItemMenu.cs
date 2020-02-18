@@ -416,6 +416,7 @@
                     break;
             }
             Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);
+            CheckIfOutOfUses();
             //uiManager.PopMenu();
             //uiManager.PopMenu();
             inventory.UpdateItemQuantity();
@@ -458,6 +459,14 @@
             joulietteE.gameObject.SetActive(IsEquipped(gameControl.Jouliette));
         }
 
+        void SetInteractable(bool itemAvailable)
+        {
+            jethro.interactable = itemAvailable ? itemAvailable : IsEquipped(gameControl.Jethro);
+            cole.interactable = itemAvailable ? itemAvailable : IsEquipped(gameControl.Cole);
+            eleanor.interactable = itemAvailable ? itemAvailable : IsEquipped(gameControl.Eleanor);
+            jouliette.interactable = itemAvailable ? itemAvailable : IsEquipped(gameControl.Jouliette);
+        }
+
         bool IsEquipped(DenigenData hero)
         {
             if (hero == null) return false;
@@ -470,6 +479,15 @@
                 return (hero.armor.Contains(item));
             else
                 return false;
+        }
+
+        void CheckIfOutOfUses()
+        {
+            if (item.quantity <= 0) return;
+            bool itemAvailable = (item.uses < item.quantity);
+            SetInteractable(itemAvailable);
+            SetButtonNavigation();
+            
         }
 
         new void Update()

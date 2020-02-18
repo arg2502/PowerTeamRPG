@@ -291,6 +291,11 @@
             return GameObject.Instantiate(uiDatabase.QualityUI, transformParent);
         }
 
+        public void SetToTop(Menu topMenu)
+        {
+            while (CurrentMenu != topMenu)
+                PopMenu();
+        }
         
     }
 }

@@ -431,6 +431,9 @@
             if(itemSlot.item.type == "consumable"
                 && itemSlot.item.Remaining <= 0)
             {
+                // set this menu to be the top menu
+                uiManager.SetToTop(this);
+
                 // remove item button from grid and delete
                 // but first save the index position
                 var index = buttonGrid[outerListPosition].IndexOf(currentObj.GetComponent<Button>());//Find(currentObj.GetComponent<Button>())
@@ -446,11 +449,12 @@
 
                 // move any buttons below up
                 //item.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * listPosition, i * -buttonDistance);
-                if (index < buttonGrid[outerListPosition].Count)
+                if (index < buttonGrid[outerListPosition].Count && index >= 0)
                 {
-                    for(int i = index; i < buttonGrid[outerListPosition].Count; i++)
-                        buttonGrid[outerListPosition][i].transform.parent.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * outerListPosition, i * -buttonDistance);
-
+                    for (int i = index; i < buttonGrid[outerListPosition].Count; i++)
+                    {
+                        buttonGrid[outerListPosition][i].transform.parent.GetComponent<RectTransform>().localPosition = new Vector2(listDistance * outerListPosition, i * -buttonDistance);                        
+                    }
                     // reset navigation
                     SetButtonNavigation();
                     rootButton = buttonGrid[outerListPosition][index];
