@@ -313,12 +313,12 @@
         {
             base.Update();
 
-            if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
+            if (Input.GetButtonDown("SubMenuNav") && Input.GetAxisRaw("SubMenuNav") > 0)
             {
                 IncreaseHero();
                 UpdateArrowStates();
             }
-            else if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") < 0)
+            else if (Input.GetButtonDown("SubMenuNav") && Input.GetAxisRaw("SubMenuNav") < 0)
             {
                 DecreaseHero();
                 UpdateArrowStates();

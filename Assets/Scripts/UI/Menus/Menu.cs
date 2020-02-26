@@ -17,6 +17,7 @@
         protected Animator animator;
         protected float animationSpeed = 1.75f;
         public Text descriptionText;
+        public bool inCarousel = false;
 
         /// <summary>
         /// When first instantiating a menu
@@ -243,6 +244,7 @@
                 || this.gameObject.GetComponent<StatPointsMenu>()
                 || this.gameObject.GetComponent<DialogueMenu>()
                 || this.gameObject.GetComponent<DialogueResponseMenu>()
+                || this.inCarousel
                 )
                 return true;
             else

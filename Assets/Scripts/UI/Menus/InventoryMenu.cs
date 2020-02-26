@@ -11,6 +11,7 @@
     {
         public GameObject itemSlotsContainer;
         Vector3 origPosSlotsContainer;
+        float origY;
         public GameObject itemPrefab;
         public GameObject invisiblePrefab;        
         public GameObject upScroll, downScroll;
@@ -41,12 +42,14 @@
         public override void Init()
         {
             base.Init();
-            origPosSlotsContainer = itemSlotsContainer.transform.position;
+            origPosSlotsContainer = itemSlotsContainer.transform.localPosition;
+            origY = itemSlotsContainer.transform.position.y;
+            //origPosSlotsContainer = new Vector3(itemSlotsContainer.transform.localPosition.x, itemSlotsContainer.transform.position.y);
             CheckIfListOffScreen();
         }
         public override void Close()
         {
-            itemSlotsContainer.transform.position = origPosSlotsContainer;
+            itemSlotsContainer.transform.localPosition = origPosSlotsContainer;
             base.Close();
         }
         protected override void SetHorizontalNavigation(int buttonIterator, int listIterator)
@@ -151,7 +154,7 @@
             {
                 OutsideOfViewInstant(currentObj);
             }
-            
+
             base.TurnOnMenu();
 
             //UpdateItemQuantity();
@@ -219,6 +222,7 @@
             {
                 desiredPosition = buttonGrid[outerListPosition + 1][0].transform.position;
             }
+            //else return;
             float distance;
             Vector2 newPosition = Vector2.zero;
             if (desiredPosition.x != desiredObj.transform.position.x)
@@ -285,7 +289,7 @@
             if (desiredPosition.x != buttonObj.transform.position.x)
             {
                 distance = desiredPosition.x - buttonObj.transform.position.x;
-                newPosition = new Vector2(itemSlotsContainer.transform.position.x + distance, origPosSlotsContainer.y);
+                newPosition = new Vector2(itemSlotsContainer.transform.position.x + distance, origY);
                 lerpTime = lerpTimeHorizontal;
             }
             else
@@ -432,7 +436,7 @@
                 && itemSlot.item.Remaining <= 0)
             {
                 // set this menu to be the top menu
-                uiManager.SetToTop(this);
+                uiManager.PopUntil(this);
 
                 // remove item button from grid and delete
                 // but first save the index position

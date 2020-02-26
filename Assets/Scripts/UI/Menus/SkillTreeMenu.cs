@@ -15,7 +15,7 @@
         public List<GameObject> rowParentList;
         SkillTreeManager treeManager;
         SkillTree.MyTree currentTree;
-        public int currentHero;
+        public int currentHero = 0;
         int currentTreeIndex;
         public List<Button> treeOptionsList;
         public GameObject treeLineObj;
@@ -53,8 +53,9 @@
         public override void TurnOnMenu()
         {
             base.TurnOnMenu();
-
             treeManager = GameControl.skillTreeManager;
+
+            SetHero(currentHero);
         }
 
         public void SetHero(int heroIndex)
@@ -552,9 +553,9 @@
             UpdateText();
             
 
-            if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
+            if (Input.GetButtonDown("SubMenuNav") && Input.GetAxisRaw("SubMenuNav") > 0)
                 IncreaseHero();
-            else if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") < 0)
+            else if (Input.GetButtonDown("SubMenuNav") && Input.GetAxisRaw("SubMenuNav") < 0)
                 DecreaseHero();            
         }
     }

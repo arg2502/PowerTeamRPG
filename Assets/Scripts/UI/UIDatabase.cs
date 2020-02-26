@@ -25,6 +25,7 @@
         public GameObject QualityUI;
 
         [Header("Pause Menu")]
+        public GameObject PauseCarousel;
         public GameObject PauseMenu;
         public GameObject TeamInfoSub;
         public GameObject HeroInfoSub;

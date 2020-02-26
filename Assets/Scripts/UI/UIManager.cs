@@ -14,6 +14,7 @@
         public GameObject menuInFocus; // the menu the player is currently on
         Canvas canvas;
         public bool poppable;
+        PauseCarousel pCarousel;
 
         public UIManager()
         {
@@ -75,7 +76,7 @@
             }
         }
 
-        public void ActivateMenu(GameObject menuPrefab, bool sub = false)
+        public GameObject ActivateMenu(GameObject menuPrefab, bool sub = false)
         {
             // freeze player if first menu
             if (GameControl.control.currentCharacterState != characterControl.CharacterState.Menu)
@@ -87,6 +88,8 @@
 
             EnableMenu(menuPrefab, sub);
             InitMenu(menuPrefab.GetComponent<Menu>());
+
+            return menuInFocus;
         }
 
         /// <summary>
@@ -160,12 +163,12 @@
         ///  // for when we want to go to another menu, but simply deactivate/gray the other menu, not disable/turn invisible.
         ///  Ex: Pause Menu -> Sub Menus
         /// </summary>
-        public void PushMenu(GameObject menuPrefab, Menu parentMenu = null)
+        public GameObject PushMenu(GameObject menuPrefab, Menu parentMenu = null)
         {
             if (parentMenu)
                 parentMenu.RootButton = EventSystem.current.currentSelectedGameObject.GetComponent<UnityEngine.UI.Button>();
                 
-                ActivateMenu(menuPrefab);
+                return ActivateMenu(menuPrefab);
         }
         public void PopMenu()
         {
@@ -291,11 +294,33 @@
             return GameObject.Instantiate(uiDatabase.QualityUI, transformParent);
         }
 
-        public void SetToTop(Menu topMenu)
+        public void PopUntil(Menu topMenu)
         {
             while (CurrentMenu != topMenu)
                 PopMenu();
         }
         
+        public void SetToTop(GameObject menuObj)
+        {
+            list_currentMenus.Remove(menuObj);
+            list_currentMenus.Add(menuObj);
+            menuInFocus = list_currentMenus[list_currentMenus.Count - 1];
+        }
+
+        public void PushPauseCarousel()
+        {
+            if (pCarousel == null)
+            {
+                var pc = GameObject.Instantiate(uiDatabase.PauseCarousel);
+                pCarousel = pc.GetComponent<PauseCarousel>();
+            }
+            var list = new List<GameObject>()
+            {
+                uiDatabase.InventoryMenu,
+                uiDatabase.SkillTreeMenu
+            };
+            pCarousel.TurnOn(list);
+        }
+
     }
 }

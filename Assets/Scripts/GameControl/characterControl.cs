@@ -338,7 +338,8 @@ public class characterControl : OverworldObject {
     {
         if (Input.GetButtonDown("Pause"))
         {
-            GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);            
+            //GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);         
+            GameControl.UIManager.PushPauseCarousel();
         }
 
         if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
