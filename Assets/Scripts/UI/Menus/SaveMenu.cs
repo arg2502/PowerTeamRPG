@@ -48,7 +48,8 @@
             for (int i = 0; i < listOfButtons.Count; i++)
             {
                 var textObj = listOfButtons[i].GetComponentInChildren<Text>();
-                var filePath = Application.persistentDataPath + "/playerInfo" + (i + 1).ToString() + ".dat";
+                //var filePath = Application.persistentDataPath + "/playerInfo" + (i + 1).ToString() + ".dat";
+                var filePath = Path.Combine(Application.persistentDataPath, "/playerInfo", (i + 1).ToString(), ".dat");
                 if (File.Exists(filePath))
                 {
                     BinaryFormatter bf = new BinaryFormatter();

@@ -32,6 +32,7 @@
         public GameObject InventorySub;
         public GameObject SaveMenu;
         public GameObject LoadMenu;
+        public GameObject OptionsMenu;
 
         [Header("Inventory")]
         public GameObject InventoryMenu;

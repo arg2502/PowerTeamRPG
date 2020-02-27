@@ -317,7 +317,8 @@
             var list = new List<GameObject>()
             {
                 uiDatabase.InventoryMenu,
-                uiDatabase.SkillTreeMenu
+                uiDatabase.SkillTreeMenu,
+                uiDatabase.OptionsMenu                
             };
             pCarousel.TurnOn(list);
         }
