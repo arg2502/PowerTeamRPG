@@ -364,7 +364,8 @@ public class GameControl : MonoBehaviour {
             id.name = i.name;
             id.quantity = i.quantity;
             id.uses = i.uses;
-            data.weapons.Add(id);
+            id.subtype = i.subtype;
+            data.armor.Add(id);
         }
         foreach (var i in augments)
         {
@@ -372,7 +373,8 @@ public class GameControl : MonoBehaviour {
             id.name = i.name;
             id.quantity = i.quantity;
             id.uses = i.uses;
-            data.equipment.Add(id);
+            id.subtype = i.subtype;
+            data.augments.Add(id);
         }
         foreach (var i in key)
         {
@@ -489,10 +491,10 @@ public class GameControl : MonoBehaviour {
             foreach (ItemData id in data.consumables) { LoadConsumableItem(id); }
 
             //read in all weapons
-            foreach (ItemData id in data.weapons) { LoadWeaponItem(id); }
+            foreach (ItemData id in data.armor) { LoadArmorItem(id); }
 
             //read in all equipment
-            foreach (ItemData id in data.equipment) { LoadArmorItem(id); }
+            foreach (ItemData id in data.augments) { LoadAugmentItem(id); }
 
             // read in all key items
             foreach (ItemData id in data.key) { LoadKeyItem(id); }
@@ -580,17 +582,17 @@ public class GameControl : MonoBehaviour {
 
     void LoadConsumableItem(ItemData id)
     {
-        AddItem(id.name, "consumable", id.quantity);
+        AddItem(id.name, "Consumable", id.quantity);
     }
 
     void LoadArmorItem(ItemData id)
     {
-        AddItem(id.name, "armor", id.quantity);
+        AddItem(id.name, "Armor", id.quantity, id.subtype);
     }
 
-    void LoadWeaponItem(ItemData id)
+    void LoadAugmentItem(ItemData id)
     {
-        AddItem(id.name, "weapon", id.quantity);
+        AddItem(id.name, "Augment", id.quantity, id.subtype);
     }
 
     void LoadKeyItem(ItemData id)
@@ -803,8 +805,8 @@ class PlayerData
 
 	// All of the player's items
 	public List<ItemData> consumables = new List<ItemData>() { };
-	public List<ItemData> equipment = new List<ItemData>() { };
-	public List<ItemData> weapons = new List<ItemData>() { };
+	public List<ItemData> armor = new List<ItemData>() { };
+	public List<ItemData> augments = new List<ItemData>() { };
     public List<ItemData> key = new List<ItemData>();
 }
 
@@ -836,6 +838,7 @@ public class ItemData
 	public string name;
 	public int quantity;
 	public int uses;
+    public string subtype;
 }
 
 //this class will store all the stuff in a roomControl object that the player influences

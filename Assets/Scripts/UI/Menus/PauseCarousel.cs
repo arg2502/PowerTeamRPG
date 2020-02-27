@@ -8,7 +8,7 @@ public class PauseCarousel : MonoBehaviour {
     List<GameObject> menus;
     UIManager uiManager;
     int currentIndex = -1;
-    float xOffset = 500f;
+    float xOffset = Screen.width;
     float xCenter = float.NaN;
 
     public void TurnOn(List<GameObject> _menus)
@@ -22,8 +22,7 @@ public class PauseCarousel : MonoBehaviour {
             menus.Add(uiManager.PushMenu(_menus[i]));
             uiManager.CurrentMenu.inCarousel = true;
         }
-        if (float.IsNaN(xCenter))
-            xCenter = menus[0].transform.position.x;
+        
         if (currentIndex < 0)
         {
             currentIndex = menus.Count / 2;
@@ -36,6 +35,9 @@ public class PauseCarousel : MonoBehaviour {
 
     void TestPositionMenus()
     {
+        if (float.IsNaN(xCenter))
+            xCenter = menus[0].transform.position.x;
+
         for (int i = 0; i < menus.Count; i++)
         {
             float newX = xCenter + ((i - currentIndex) * xOffset);

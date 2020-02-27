@@ -48,8 +48,8 @@
             for (int i = 0; i < listOfButtons.Count; i++)
             {
                 var textObj = listOfButtons[i].GetComponentInChildren<Text>();
-                //var filePath = Application.persistentDataPath + "/playerInfo" + (i + 1).ToString() + ".dat";
-                var filePath = Path.Combine(Application.persistentDataPath, "/playerInfo", (i + 1).ToString(), ".dat");
+                var filePath = Application.persistentDataPath + "/playerInfo" + (i + 1).ToString() + ".dat";
+                //var filePath = Path.Combine(Application.persistentDataPath, "/playerInfo", (i + 1).ToString(), ".dat");
                 if (File.Exists(filePath))
                 {
                     BinaryFormatter bf = new BinaryFormatter();
@@ -68,7 +68,8 @@
 
         void OnSave(int index)
         {
-            var filePath = Application.persistentDataPath + "/playerInfo" + (index + 1).ToString() + ".dat";
+            var filePath = Application.persistentDataPath + "/playerInfo" + (index).ToString() + ".dat";
+            //var filePath = Path.Combine(Application.persistentDataPath, "/playerInfo", (index + 1).ToString(), ".dat");
             if (File.Exists(filePath))
             {
                 uiManager.PushConfirmationMenu("Are you sure you want to overwrite this save file?", ()=> { Save(index); });

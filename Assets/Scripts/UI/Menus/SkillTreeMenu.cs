@@ -183,12 +183,12 @@
                 {
                     foreach (var t in technique.ListNextTechnique)
                     {
-                        if (technique.treeLinesDictionary.ContainsKey(t))
-                        {
-                            technique.treeLinesDictionary[t].SetActive(true);
-                        }
-                        else
-                        {
+                        //if (technique.treeLinesDictionary.ContainsKey(t))
+                        //{
+                        //    technique.treeLinesDictionary[t].SetActive(true);
+                        //}
+                        //else
+                        //{
                             var nextPos = buttonGrid[t.ColPos][t.RowPos].transform.position;
                             var line = (GameObject)Instantiate(treeLineObj, button.transform.position, Quaternion.identity);
                             line.transform.SetParent(transform.Find("TreeGrid").GetChild(0));
@@ -201,9 +201,9 @@
                             float angle = Mathf.Atan2(differenceVector.y, differenceVector.x) * Mathf.Rad2Deg;
                             imageRectTransform.rotation = Quaternion.Euler(0, 0, angle);
 
-                            technique.treeLinesDictionary.Add(t, line);
+                            //technique.treeLinesDictionary.Add(t, line);
                             linesList.Add(line);
-                        }
+                        //}
                     }
                 }
             }
