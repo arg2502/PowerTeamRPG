@@ -91,7 +91,16 @@
             Refresh();
         }
 
-        
+        private void Update()
+        {
+            base.Update();
+
+            if(Input.GetButtonDown("Back"))
+            {
+                listOfButtons[listOfButtons.Count - 1].onClick.Invoke();
+            }
+        }
+
     }
 
     public class ConversationEvent : UnityEvent<Dialogue.Conversation> { }

@@ -32,6 +32,7 @@
             {
                 // temp -- real version will be lambda that passes in int for which file to load
                 var index = i + 1;
+                listOfButtons[i].onClick.RemoveAllListeners();
                 listOfButtons[i].onClick.AddListener(() => OnSave(index));
             }
         }
