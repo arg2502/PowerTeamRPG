@@ -50,7 +50,10 @@ public class Gateway : MonoBehaviour {
     {
         GameControl.control.AssignEntrance(gatewayName);
         GameControl.control.RecordRoom();
-        GameControl.control.ReadyForNextScene = true;
+        //GameControl.control.ReadyForNextScene = true;
+
+        // Start loading next scene
+        GameControl.control.LoadSceneAsync(sceneName);
     }
 
     public void SetPositions()

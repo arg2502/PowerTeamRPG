@@ -464,6 +464,7 @@ public class characterControl : OverworldObject {
                             carriedObject = readyForPickup;
                             readyForPickup = null;
                             carriedObject.isCarried = true; // set the object's isCarried to true
+                            carriedObject.HideInteractionNotification(true);
                                                             //Move the object to the position above player's head
                             carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
                             //make sure the object is always rendered above the player
@@ -600,6 +601,8 @@ public class characterControl : OverworldObject {
     // Update is called once per frame
     void Update()
     {
+        sr.sortingOrder = (int)(-transform.position.y * 10.0f);
+
         switch (GameControl.control.currentCharacterState)
         {
             case CharacterState.Normal:
@@ -614,7 +617,7 @@ public class characterControl : OverworldObject {
                 UpdateDefeat(); break;
         }
 
-        sr.sortingOrder = (int)(-transform.position.y * 10.0f);
+        
         speed = new Vector2(0f, 0f);
 
         if (GameControl.control.currentCharacterState != CharacterState.Transition)
@@ -637,9 +640,6 @@ public class characterControl : OverworldObject {
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
     {
-        // Start loading next scene
-        GameControl.control.LoadSceneAsync(currentGateway.sceneName, waitToLoad: true);
-
         FindIncrementTransitionValues(startPos, endPos);
 
         // determine the desiredPos value based on the increment transition values

@@ -14,6 +14,7 @@ public class OverworldObject : MonoBehaviour {
     protected List<string> questAlreadyTalked;
     public List<string> QuestAlreadyTalked { get { return questAlreadyTalked; } }
     string interactionMessage = "";
+    bool show = false;
     public float TalkingSpeed
     {
         get
@@ -85,15 +86,34 @@ public class OverworldObject : MonoBehaviour {
         }
         else
         {
+            show = true;
+            interactionNotification.gameObject.SetActive(show);
             interactionNotification.GetComponent<Animator>().Play("FadeIn");
         }
     }
-    public void HideInteractionNotification()
+    public void HideInteractionNotification(bool instant = false)
     {
         //if (interactionNotification != null)
         //{
-            interactionNotification.GetComponent<Animator>().Play("FadeOut");
-            //interactionNotification = null;
+
+        //interactionNotification = null;
         //}
+        show = false;
+        if (instant)
+        {
+            interactionNotification.gameObject.SetActive(show);
+        }
+        else
+        {
+            StartCoroutine(HideNotification());
+        }
     }    
+    IEnumerator HideNotification()
+    {
+        var anim = interactionNotification.GetComponent<Animator>();        
+        anim.Play("FadeOut");
+        var timeToWait = anim.GetCurrentAnimatorClipInfo(0).Length;
+        yield return new WaitForSeconds(timeToWait);
+        interactionNotification.gameObject.SetActive(show);
+    }
 }
