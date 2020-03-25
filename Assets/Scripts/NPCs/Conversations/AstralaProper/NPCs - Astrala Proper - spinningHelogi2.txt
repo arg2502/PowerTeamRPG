@@ -1,0 +1,3 @@
+name	emotion	dialogue	responses
+	HAPPY	Wanna see me do it again?	Why not?[Spin]_..No..[1]
+	SAD	Aww..{0.1}You're no fun..	

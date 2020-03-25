@@ -1,0 +1,7 @@
+Name	Emotion	Dialogue	Responses/Actions
+		It looks like a diary entry written in red ink.{0.2} Do you read it?	Yes[5]_No
+		<color=red><i>My sibling clearly has no shame.</i></color>	
+		<color=red><i>I simply invited them over to my side of the house to share in some Red Drink{0.2} (the clearly superior Drink)...</i></color>	
+		<color=red><i>And they start lecturing me,{0.3} drolling on about the health benefits of Green Drink{0.2} (the disgusting inferior rendition of Drink).</i></color>	
+		<color=red><i>I doubt they will ever see the error of their ways in their Green trend...</i></color>	
+		<color=red><i>Perhaps Mother will come and share some Red Drink with me...</i></color>	

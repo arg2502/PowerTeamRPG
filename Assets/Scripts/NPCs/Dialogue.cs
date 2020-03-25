@@ -202,6 +202,7 @@ public class Dialogue : MonoBehaviour {
             {
                 var newResponse = new Response();
                 var bracketIndex = responses[j].IndexOf('[');
+                if (bracketIndex < 0) bracketIndex = responses[j].Length - 1;
                 var actualResponse = responses[j].Substring(0, bracketIndex);
                 newResponse.playerResponse = actualResponse;
 

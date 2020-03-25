@@ -101,8 +101,8 @@ public class NPCDialogue : MonoBehaviour {
         // function needs a characterControl variable
         // plus this location kinda makes sense...
 
-        if (GetComponentInParent<NPCObject>())
-            GetComponentInParent<NPCObject>().BackToNormal();
+        if (GetComponentInParent<OverworldObject>())
+            GetComponentInParent<OverworldObject>().BackToNormal();
     }
 
     TextAsset ActiveQuest()

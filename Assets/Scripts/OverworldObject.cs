@@ -116,4 +116,11 @@ public class OverworldObject : MonoBehaviour {
         yield return new WaitForSeconds(timeToWait);
         interactionNotification.gameObject.SetActive(show);
     }
+
+    public virtual void PostDialogueInvoke(string functionName)
+    {
+        Invoke(functionName, 0f);
+    }
+
+    public virtual void BackToNormal() { ShowInteractionNotification(); }
 }

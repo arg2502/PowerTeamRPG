@@ -1,0 +1,7 @@
+Name	Emotion	Dialogue	Responses/Actions
+		It looks like a diary entry written in green ink.{0.2} Do you read it?	Yes[5]_No
+		<color=green><i>I believe my dearest sibling is beyond hope.</i></color>	
+		<color=green><i>Their attempts at persuading me to adopt their uncultured ways are exhausting.</i></color>	
+		<color=green><i>My only hope is that one day they will see the errors of their obsession with the color red.</i></color>	
+		<color=green><i>And that they discover the beauty and sophistication that comes with the color green..</i></color>	
+		<color=green><i>Perhaps I shall write to Mother on the matter.</i></color>	

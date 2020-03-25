@@ -244,7 +244,11 @@ public class characterControl : OverworldObject {
                 var overworldObj = GameControl.control.currentNPC.GetComponentInParent<OverworldObject>();
                 if (overworldObj == null)
                     Debug.LogError("Overworld Object not found in parent of Dialogue object. Please make sure some sort of Overworld object is attached");
-                overworldObj.ShowInteractionNotification("Talk");
+
+                string text = "Read";
+                if (overworldObj is NPCObject)
+                    text = "Talk";
+                overworldObj.ShowInteractionNotification(text);
             }
         }
         // if no NPC was passed in, then there's no one we can talk to

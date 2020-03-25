@@ -15,6 +15,7 @@ namespace UI
         public Image joulietteAnim;
         int dotCount = 0;
         string loadingStr = "Loading";
+        float secondsInitWait = 1.5f;
 
         public override void Init()
         {
@@ -25,12 +26,16 @@ namespace UI
         public override void TurnOnMenu()
         {            
             base.TurnOnMenu();
-            loadingText.text = loadingStr;
+            loadingText.text = "";
             StartCoroutine(AlternateText());
         }
 
         IEnumerator AlternateText()
         {
+            // wait X seconds to see if the load is short,
+            // if not, show some feedback
+            yield return new WaitForSeconds(secondsInitWait);
+
             while (true)
             {
                 if (dotCount > 2)
