@@ -1,0 +1,10 @@
+Name	Emotion	Dialogue	Responses/Actions
+Eleanor		That's unusual...	
+Jethro		What's unusual?	Pause
+Eleanor		At this time of day everyone should be out and about.{0.4} The whole town appears deserted.	
+Cole		Where would your brother be at this time?	
+Eleanor		If he's not outside, he must be inside.	
+Jethro		Obviously.	
+Eleanor		I mean to say,{0.4} he must be inside our house.	Pause
+Eleanor		This house right here.	
+Cole		Alright, let's check it out.	

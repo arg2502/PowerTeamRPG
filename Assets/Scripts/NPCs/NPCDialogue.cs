@@ -90,9 +90,9 @@ public class NPCDialogue : MonoBehaviour {
             numOfTimesTalked++;
 
         // call any functions that need to occur after the dialogue has ended here
-        if(!string.IsNullOrEmpty(currentConversation.actionName))
+        if(!string.IsNullOrEmpty(currentConversation.GetLastAction()))
         {
-            GetComponentInParent<OverworldObject>().Invoke(currentConversation.actionName, 0f);            
+            GetComponentInParent<OverworldObject>().Invoke(currentConversation.GetLastAction(), 0f);            
         }
 
         // At the end of the dialogue, set the NPC's walking method back to normal

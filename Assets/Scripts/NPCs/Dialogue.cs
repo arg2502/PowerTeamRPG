@@ -13,7 +13,7 @@ public class Dialogue : MonoBehaviour {
 
     TextAsset currentTextAsset;
 
-    int conversationIterator = 0;
+    protected int conversationIterator = 0;
 
     UI.DialogueMenu dialogueMenu;
 
@@ -27,7 +27,13 @@ public class Dialogue : MonoBehaviour {
         public List<string> dialogueConversation;
         public List<Response> responses;
         public System.Action action;
-        public string actionName;
+        public List<string> actionName;
+
+        public string GetLastAction()
+        {
+            print(actionName[actionName.Count - 1]);
+            return actionName[actionName.Count - 1];
+        }
 
         public string GetSpeakerName(int increment)
         {
@@ -55,7 +61,7 @@ public class Dialogue : MonoBehaviour {
             return responses != null && responses.Count > 0;
         }        
     }
-    Conversation currentConversation;
+    protected Conversation currentConversation;
 
     // Used when the player has to opportunity to make a choice in the dialogue
     // Stores what the player can say to respond, and the conversation that takes place after that response
@@ -83,7 +89,7 @@ public class Dialogue : MonoBehaviour {
         StartDialogue();
     }
 
-    void StartDialogue()
+    protected void StartDialogue()
     {
         // push the dialogue menu
         GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
@@ -105,6 +111,7 @@ public class Dialogue : MonoBehaviour {
         newConversation.speakerNames = new List<string>();
         newConversation.speakerEmotions = new List<Sprite>();
         newConversation.dialogueConversation = new List<string>();
+        newConversation.actionName = new List<string>();
 
         // split whole doc into row
         // each row makes up a sentence or section of the dialogue
@@ -132,7 +139,7 @@ public class Dialogue : MonoBehaviour {
             //// TODO: come up with a way to know which character's sprite to add.
             //// FOR NOW: just add the NPC's image
             Sprite happySpr, neutralSpr, sadSpr, angrySpr;
-            if (lines[0] == speaker.npcName || string.IsNullOrEmpty(lines[0]))
+            if (speaker != null && (lines[0] == speaker.npcName || string.IsNullOrEmpty(lines[0])))
             {
                 happySpr = speaker.happySpr;
                 neutralSpr = speaker.neutralSpr;
@@ -184,7 +191,7 @@ public class Dialogue : MonoBehaviour {
             if(!lines[3].Contains("["))
             {
                 var newAction = Regex.Match(lines[3], @"\w+").Value;
-                newConversation.actionName = newAction;
+                newConversation.actionName.Add(newAction);
                 continue;
             }
 
@@ -245,7 +252,7 @@ public class Dialogue : MonoBehaviour {
                     // Regex -- Regular Expression
                     // \w+ should return any alphanumeric values found within the string
                     var newAction = Regex.Match(functionStr, @"\w+").Value;
-                    newResponse.conversation.actionName = newAction;
+                    newResponse.conversation.actionName.Add(newAction);
 
                 }
 
@@ -272,13 +279,13 @@ public class Dialogue : MonoBehaviour {
 
         return newConversation;
     }
-    void PrintConversation()
+    protected virtual void PrintConversation()
     {
         // if the iterator is greater than the amount of dialogue that needs to be said,
         if (conversationIterator >= currentConversation.dialogueConversation.Count)
         {
             conversationIterator = 0;
-            speaker.EndDialogue(currentConversation);
+            speaker?.EndDialogue(currentConversation);
 
             // pop dialogue menu
             GameControl.UIManager.PopMenu();
@@ -326,8 +333,13 @@ public class Dialogue : MonoBehaviour {
             return GameControl.control.eleanorTalkingSpeed;
         else if (string.Equals(_name, "Jouliette"))
             return GameControl.control.joulietteTalkingSpeed;
-        else
+        else if (speaker != null)
             return speaker.talkingSpeed;
+        else
+        {
+            Debug.LogError("Could not find hero talking speed or speaker talking speed!");
+            return 0;
+        }
     }
 
     Sprite GetHeroSprite(string heroName, string emotion)
