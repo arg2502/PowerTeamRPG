@@ -72,6 +72,8 @@
 
         public override void Close()
         {
+            ReadyForNextDialogue = false;
+            continueButton.onClick.RemoveAllListeners();
             dialogueText.transform.localPosition = origTextPos;
             base.Close();
         }

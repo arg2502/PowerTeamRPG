@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class CutsceneManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public List<QuestCutscene> questCutscenes;
+
+    private void OnEnable()
+    {
+        GameControl.control.cutsceneManager = this;        
+    }
+
+    public void PlayCutscene(string subquestID)
+    {
+        // find the cutscene that matches with the quest that's passed in            
+        var qc = questCutscenes.Find(q => string.Equals(q.subquestID, subquestID));
+        qc.cutscene.Play();     
+    }
+
+    [System.Serializable]
+    public class QuestCutscene
+    {
+        public string subquestID;
+        public Cutscene cutscene;
+    }
 }

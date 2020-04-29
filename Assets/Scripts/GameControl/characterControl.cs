@@ -13,7 +13,8 @@ public class characterControl : OverworldObject {
         Normal,
         Battle,
         Defeat,
-        Menu
+        Menu,
+        Cutscene
     }
 
 	private BoxCollider2D boxCollider; // Variable to reference our collider
@@ -89,7 +90,13 @@ public class characterControl : OverworldObject {
 
         currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
-        if (currentGateway != null)
+        if (GameControl.control.CheckForCutscenes())
+        {
+            ToggleSpriteRenderers(false);
+            GameControl.control.currentCharacterState = CharacterState.Cutscene;
+            GameControl.control.PlayCutscene();
+        }
+        else if (currentGateway != null)
             EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
         else
             GameControl.control.currentCharacterState = CharacterState.Normal;
@@ -600,6 +607,12 @@ public class characterControl : OverworldObject {
         {
             anim.SetBool("isMoving", canMove);
         }
+    }
+
+    void ToggleSpriteRenderers(bool show)
+    {
+        foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
+            sr.enabled = show;
     }
 
     // Update is called once per frame

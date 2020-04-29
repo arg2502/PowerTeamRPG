@@ -11,13 +11,14 @@ public class QuestTracker {
     {
         activeQuests = new Dictionary<string, Quest>();
         completedQuests = new Dictionary<string, Quest>();
+        //AddNewQuest("solomvale", skipShow: true);
     }
 
-    public void AddNewQuest(string questID)
+    public void AddNewQuest(string questID, bool skipShow = false)
     {
         if (!activeQuests.ContainsKey(questID))
             activeQuests.Add(questID, new Quest(questID));
-        if (activeQuests[questID].data.questType != QuestType.MISC)
+        if (!skipShow && activeQuests[questID].data.questType != QuestType.MISC)
             GameControl.UIManager.ShowQuestStart(activeQuests[questID].data.questName);
     }
 

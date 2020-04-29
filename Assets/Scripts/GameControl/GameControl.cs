@@ -47,8 +47,10 @@ public class GameControl : MonoBehaviour {
 	public Vector2 currentPosition; // the exact spot the player is in a room before a battle
 	public Vector2 areaEntrance; // where the player will be kicked back to if they die
     public Gateway currentEntranceGateway;
+    public CutsceneManager cutsceneManager;
+    private string cutsceneQuestID;
 
-	public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
+    public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
     public HeroData Jethro { get { return (heroList.Count > 0) ? heroList[0] : null; } }
     public HeroData Cole { get { return (heroList.Count > 1) ? heroList[1] : null; } }
     public HeroData Eleanor { get { return (heroList.Count > 2) ? heroList[2] : null; } }
@@ -785,6 +787,30 @@ public class GameControl : MonoBehaviour {
         }
 
         camera.transform.position = initialPos;
+    }
+
+    public bool CheckForCutscenes()
+    {
+        if (cutsceneManager == null) return false;
+
+        for(int i = 0; i < cutsceneManager.questCutscenes.Count; i++)
+        {
+            for(int j = 0; j < questTracker.activeQuests.Count; j++)
+            {
+                var id = cutsceneManager.questCutscenes[i].subquestID;
+                if (questTracker.ContainsActiveKey(id))
+                {
+                    cutsceneQuestID = id;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void PlayCutscene()
+    {
+        cutsceneManager.PlayCutscene(cutsceneQuestID);
     }
 
 }

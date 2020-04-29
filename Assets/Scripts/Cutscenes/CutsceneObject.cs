@@ -15,6 +15,6 @@ public class CutsceneObject : OverworldObject {
     public void Dialogue()
     {
         cutscene?.Pause();
-    }
+    }    
 
 }

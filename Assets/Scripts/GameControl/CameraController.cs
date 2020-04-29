@@ -5,6 +5,7 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
     public GameObject followTarget;
+    GameObject prevTarget;
     Vector3 targetPos;
     public float moveSpeed, origMoveSpeed;
     Camera myCamera;
@@ -25,6 +26,7 @@ public class CameraController : MonoBehaviour {
     Color black;
     Color clear;
     float timeToFade;
+    public bool lerp = false;
 
     // jump immediately to player position at beginning
     void Start()
@@ -63,7 +65,8 @@ public class CameraController : MonoBehaviour {
 
     void FollowTarget()
     {
-        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+        if (!(GameControl.control.currentCharacterState == characterControl.CharacterState.Normal 
+            || GameControl.control.currentCharacterState == characterControl.CharacterState.Cutscene))
             return;
 
         if (RoomTooSmallX())
@@ -82,8 +85,10 @@ public class CameraController : MonoBehaviour {
         else if (moveSpeed != origMoveSpeed)
             moveSpeed = origMoveSpeed;
 
-        //transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
-        transform.position = targetPos;
+        if (lerp)
+            transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        else
+            transform.position = targetPos;
     }
 
     float MidX { get { return (GameControl.control.currentRoom.roomLimits.minX + GameControl.control.currentRoom.roomLimits.maxX) / 2f; } }
@@ -223,5 +228,24 @@ public class CameraController : MonoBehaviour {
 			blackCanvas.material.SetFloat("_Cutoff", curVal);
 			yield return null;
 		}
+    }
+
+    public void SwitchTarget(GameObject newTarget)
+    {
+        prevTarget = followTarget; // store previous target
+
+        followTarget = newTarget;
+    }
+
+    public void SwitchBack()
+    {
+        var curTarget = followTarget;
+        followTarget = prevTarget;
+        prevTarget = curTarget;
+    }
+
+    public void SetLerp(bool isLerp)
+    {
+        lerp = isLerp;
     }
 }

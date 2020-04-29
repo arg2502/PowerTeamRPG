@@ -31,6 +31,7 @@ public class Dialogue : MonoBehaviour {
 
         public string GetLastAction()
         {
+            if (actionName == null || actionName.Count <= 0) return null;
             print(actionName[actionName.Count - 1]);
             return actionName[actionName.Count - 1];
         }

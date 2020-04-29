@@ -264,6 +264,13 @@ public class roomControl : MonoBehaviour {
 
         // start music
         GameControl.audioManager.StartMusic(music_loop);
+
+        // get cutscene manager -- if there is one
+        var cm = FindObjectOfType<CutsceneManager>();
+        if (cm != null)
+            GameControl.control.cutsceneManager = cm;
+        else
+            GameControl.control.cutsceneManager = null;
     }
 
     public Gateway AssignEntrance(string exitedGatewayName)
