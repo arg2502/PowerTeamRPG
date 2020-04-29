@@ -19,6 +19,7 @@ public class Gateway : MonoBehaviour {
     float normalDist = 5.0f;
     float doorDist = 0.5f;
     float transitionDist;
+    public float TransitionDist { get { return transitionDist; } }
 
     public enum Direction
     {

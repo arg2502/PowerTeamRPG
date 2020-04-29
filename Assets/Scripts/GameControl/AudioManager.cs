@@ -89,6 +89,12 @@ public class AudioManager : MonoBehaviour{
 
         }
 
+        if (clip == null)
+        {
+            currentMusic = null;
+            return;
+        }
+
         // if clip2 is not null then that means we have an intro clip as well
         if (clip2 != null)
         {

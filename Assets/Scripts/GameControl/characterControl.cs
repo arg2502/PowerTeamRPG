@@ -59,7 +59,7 @@ public class characterControl : OverworldObject {
     Vector2 lastMovement;
 
     // for room transition
-    float xIncrementTransition = 0, yIncrementTransition = 0;
+    float xIncrementTransition = 0, yIncrementTransition = 0;    
     Vector2 desiredPos;
     UnityEvent OnDesiredPos;
     Gateway currentGateway;
@@ -739,9 +739,18 @@ public class characterControl : OverworldObject {
             position = transform.position.y;
             finalPos = endPos.y;
         }
-        
-        if(Mathf.Abs(position - finalPos) > 0.1)        
-            return false;
+
+        var dist = Mathf.Abs(position - finalPos);
+        if (currentGateway != null)
+        {
+            if (dist > 0.1f && dist < currentGateway.TransitionDist * 2f) // fail safe (not the best) -- if we get too far from where we should we need to stop eventually
+                return false;
+        }
+        else
+        {
+            if (dist > 0.1f)
+                return false;
+        }
 
         return true;
     }
