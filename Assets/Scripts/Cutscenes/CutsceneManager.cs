@@ -18,10 +18,14 @@ public class CutsceneManager : MonoBehaviour {
         qc.cutscene.Play();     
     }
 
-    [System.Serializable]
-    public class QuestCutscene
-    {
-        public string subquestID;
-        public Cutscene cutscene;
-    }
+    
+}
+[System.Serializable]
+public class QuestCutscene
+{
+    public string subquestID;
+    public Cutscene cutscene;
+    public TriggerType triggerType;
+
+    public enum TriggerType { ROOM_ENTER, ON_TRIGGER }
 }

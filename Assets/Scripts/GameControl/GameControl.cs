@@ -789,7 +789,7 @@ public class GameControl : MonoBehaviour {
         camera.transform.position = initialPos;
     }
 
-    public bool CheckForCutscenes()
+    public bool CheckForEnterRoomCutscenes()
     {
         if (cutsceneManager == null) return false;
 
@@ -798,7 +798,7 @@ public class GameControl : MonoBehaviour {
             for(int j = 0; j < questTracker.activeQuests.Count; j++)
             {
                 var id = cutsceneManager.questCutscenes[i].subquestID;
-                if (questTracker.ContainsActiveKey(id))
+                if (questTracker.ContainsActiveKey(id) && cutsceneManager.questCutscenes[i].triggerType == QuestCutscene.TriggerType.ROOM_ENTER)
                 {
                     cutsceneQuestID = id;
                     return true;

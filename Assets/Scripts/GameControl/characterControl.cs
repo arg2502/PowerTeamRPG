@@ -72,7 +72,7 @@ public class characterControl : OverworldObject {
     public List<RuntimeAnimatorController> heroAnimators;
 
     InteractionNotification gatewayNotification;
-
+    
     // Use this for initialization
     new void Start () {
 
@@ -89,12 +89,12 @@ public class characterControl : OverworldObject {
 
 
         currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
-
-        if (GameControl.control.CheckForCutscenes())
+        
+        if (GameControl.control.CheckForEnterRoomCutscenes())
         {
             ToggleSpriteRenderers(false);
             GameControl.control.currentCharacterState = CharacterState.Cutscene;
-            GameControl.control.PlayCutscene();
+            GameControl.control.PlayCutscene();         
         }
         else if (currentGateway != null)
             EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
