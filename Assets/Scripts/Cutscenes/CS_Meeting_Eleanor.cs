@@ -11,7 +11,8 @@ public class CS_Meeting_Eleanor : Cutscene {
     {
         cam = FindObjectOfType<CameraController>();
         cam.SwitchTarget(cs_camera);
-
+        cam.SetLerp(true);
+        cam.SetSpeed(10);
         base.Play();
     }
 
@@ -20,6 +21,7 @@ public class CS_Meeting_Eleanor : Cutscene {
         base.Stop();
         cam.SetLerp(false);
         cam.SwitchBack();
+        cam.SetSpeedBack();
         GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
     }
 }

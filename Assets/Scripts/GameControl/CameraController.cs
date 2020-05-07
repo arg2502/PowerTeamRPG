@@ -248,4 +248,14 @@ public class CameraController : MonoBehaviour {
     {
         lerp = isLerp;
     }
+
+    public void SetSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
+
+    public void SetSpeedBack()
+    {
+        moveSpeed = origMoveSpeed;
+    }
 }
