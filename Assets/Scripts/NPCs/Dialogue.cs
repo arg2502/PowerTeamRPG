@@ -324,7 +324,7 @@ public class Dialogue : MonoBehaviour {
         PrintConversation();
     }
 
-    float GetTalkingSpeed(string _name)
+    protected virtual float GetTalkingSpeed(string _name)
     {
         if (string.Equals(_name, GameControl.control.playerName))
             return GameControl.control.jethroTalkingSpeed;
@@ -343,21 +343,22 @@ public class Dialogue : MonoBehaviour {
         }
     }
 
-    Sprite GetHeroSprite(string heroName, string emotion)
-    {       
-        if(heroName.ToUpper() == GameControl.control.playerName.ToUpper())
+    protected virtual Sprite GetHeroSprite(string heroName, string emotion)
+    {
+        if (heroName.ToUpper() == GameControl.control.playerName.ToUpper())
         {
             switch (emotion)
             {
                 case "NEUTRAL":
                     return GameControl.spriteDatabase.jethroNeutralPortrait;
-                case "HAPPY":                         
+                case "HAPPY":
                     return GameControl.spriteDatabase.jethroHappyPortrait;
-                case "SAD":                           
+                case "SAD":
                     return GameControl.spriteDatabase.jethroSadPortrait;
-                case "ANGRY":                         
+                case "ANGRY":
                     return GameControl.spriteDatabase.jethroAngryPortrait;
-                default:                              
+                default:
+                    Debug.LogError("Could not find emotion -- returning neutral as default");
                     return GameControl.spriteDatabase.jethroNeutralPortrait;
 
             }
@@ -375,6 +376,7 @@ public class Dialogue : MonoBehaviour {
                 case "ANGRY":
                     return GameControl.spriteDatabase.coleAngryPortrait;
                 default:
+                    Debug.LogError("Could not find emotion -- returning neutral as default");
                     return GameControl.spriteDatabase.coleNeutralPortrait;
 
             }
@@ -385,33 +387,40 @@ public class Dialogue : MonoBehaviour {
             {
                 case "NEUTRAL":
                     return GameControl.spriteDatabase.eleanorNeutralPortrait;
-                case "HAPPY":                         
+                case "HAPPY":
                     return GameControl.spriteDatabase.eleanorHappyPortrait;
-                case "SAD":                           
+                case "SAD":
                     return GameControl.spriteDatabase.eleanorSadPortrait;
-                case "ANGRY":                         
+                case "ANGRY":
                     return GameControl.spriteDatabase.eleanorAngryPortrait;
-                default:                              
+                default:
+                    Debug.LogError("Could not find emotion -- returning neutral as default");
                     return GameControl.spriteDatabase.eleanorNeutralPortrait;
 
             }
         }
-        else
+        else if (heroName.ToUpper() == "JOULIETTE")
         {
             switch (emotion)
             {
                 case "NEUTRAL":
                     return GameControl.spriteDatabase.joulietteNeutralPortrait;
-                case "HAPPY":                         
+                case "HAPPY":
                     return GameControl.spriteDatabase.joulietteHappyPortrait;
-                case "SAD":                           
+                case "SAD":
                     return GameControl.spriteDatabase.joulietteSadPortrait;
-                case "ANGRY":                         
+                case "ANGRY":
                     return GameControl.spriteDatabase.joulietteAngryPortrait;
                 default:
+                    Debug.LogError("Could not find emotion -- returning neutral as default");
                     return GameControl.spriteDatabase.joulietteNeutralPortrait;
 
             }
+        }
+        else
+        {
+            Debug.LogError("Could not find hero talking speed or speaker portrait!");
+            return null;
         }
     }
 

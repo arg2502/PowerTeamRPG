@@ -48,7 +48,7 @@ public class GameControl : MonoBehaviour {
 	public Vector2 areaEntrance; // where the player will be kicked back to if they die
     public Gateway currentEntranceGateway;
     public CutsceneManager cutsceneManager;
-    private string cutsceneQuestID;
+    //private string cutsceneQuestID;
 
     public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
     public HeroData Jethro { get { return (heroList.Count > 0) ? heroList[0] : null; } }
@@ -789,28 +789,30 @@ public class GameControl : MonoBehaviour {
         camera.transform.position = initialPos;
     }
 
-    public bool CheckForEnterRoomCutscenes()
+    public QuestCutscene CheckForEnterRoomCutscenes()
     {
-        if (cutsceneManager == null) return false;
+        if (cutsceneManager == null) return null;
 
         for(int i = 0; i < cutsceneManager.questCutscenes.Count; i++)
         {
             for(int j = 0; j < questTracker.activeQuests.Count; j++)
             {
-                var id = cutsceneManager.questCutscenes[i].subquestID;
-                if (questTracker.ContainsActiveKey(id) && cutsceneManager.questCutscenes[i].triggerType == QuestCutscene.TriggerType.ROOM_ENTER)
+                var qc = cutsceneManager.questCutscenes[i];
+                if (questTracker.ContainsActiveKey(qc.subquestID)
+                    && (qc.cutscene.triggerType == Cutscene.TriggerType.ROOM_ENTER || qc.cutscene.triggerType == Cutscene.TriggerType.AFTER_ENTRANCE)) 
                 {
-                    cutsceneQuestID = id;
-                    return true;
+                    //cutsceneQuestID = id;
+                    return cutsceneManager.questCutscenes[i];
                 }
             }
         }
-        return false;
+        return null;
     }
 
-    public void PlayCutscene()
+    public void PlayCutscene(QuestCutscene qc)
     {
-        cutsceneManager.PlayCutscene(cutsceneQuestID);
+        //var cutsceneQuestID = cutscene.subquestID;
+        cutsceneManager.PlayCutscene(qc);
     }
 
 }

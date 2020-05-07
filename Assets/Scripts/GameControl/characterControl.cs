@@ -72,7 +72,9 @@ public class characterControl : OverworldObject {
     public List<RuntimeAnimatorController> heroAnimators;
 
     InteractionNotification gatewayNotification;
-    
+
+    QuestCutscene currentCutscene;
+
     // Use this for initialization
     new void Start () {
 
@@ -89,12 +91,20 @@ public class characterControl : OverworldObject {
 
 
         currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
-        
-        if (GameControl.control.CheckForEnterRoomCutscenes())
+        currentCutscene = GameControl.control.CheckForEnterRoomCutscenes();
+
+        if (currentCutscene != null)
         {
-            ToggleSpriteRenderers(false);
-            GameControl.control.currentCharacterState = CharacterState.Cutscene;
-            GameControl.control.PlayCutscene();         
+            if (currentCutscene.cutscene.triggerType == Cutscene.TriggerType.ROOM_ENTER)
+            {
+                ToggleSpriteRenderers(false);
+                GameControl.control.currentCharacterState = CharacterState.Cutscene;
+                GameControl.control.PlayCutscene(currentCutscene);
+            }
+            else if (currentCutscene.cutscene.triggerType == Cutscene.TriggerType.AFTER_ENTRANCE)
+            {
+                EnterRoom(currentGateway.transform.position, currentGateway.entrancePos, true);
+            }
         }
         else if (currentGateway != null)
             EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
@@ -641,18 +651,32 @@ public class characterControl : OverworldObject {
             SetAnimations();
     }
     
-    void EnterRoom(Vector2 startPos, Vector2 endPos)
+    void EnterRoom(Vector2 startPos, Vector2 endPos, bool playCutsceneAfter = false)
     {
         FindIncrementTransitionValues(startPos, endPos);
         desiredPos = endPos;
 
-        if (currentGateway.gatewayType != Gateway.Type.DOOR)
-            OnDesiredPos.AddListener(FinishEntrance);
+        if(playCutsceneAfter)
+        {
+            if (currentGateway.gatewayType != Gateway.Type.DOOR)
+                OnDesiredPos.AddListener(FinishEntranceThenCutscene);
+            else
+            {
+                transform.position = currentGateway.entrancePos;
+                Invoke("FinishEntranceThenCutscene", 0.5f);
+            }
+        }
         else
         {
-            transform.position = currentGateway.entrancePos;
-            Invoke("FinishEntrance", 0.5f);
+            if (currentGateway.gatewayType != Gateway.Type.DOOR)
+                OnDesiredPos.AddListener(FinishEntrance);
+            else
+            {
+                transform.position = currentGateway.entrancePos;
+                Invoke("FinishEntrance", 0.5f);
+            }
         }
+        
         GameControl.control.currentCharacterState = CharacterState.Transition;        
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
@@ -760,6 +784,13 @@ public class characterControl : OverworldObject {
         lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
         GameControl.control.currentCharacterState = CharacterState.Normal;
         OnDesiredPos.RemoveAllListeners();
+    }
+    void FinishEntranceThenCutscene()
+    {
+        lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
+        GameControl.control.currentCharacterState = CharacterState.Cutscene;
+        OnDesiredPos.RemoveAllListeners();
+        GameControl.control.PlayCutscene(currentCutscene);
     }
     void FinishExit()
     {

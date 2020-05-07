@@ -8,6 +8,9 @@ public class Cutscene : MonoBehaviour {
     CutsceneDialogue cutsceneDialogue;
     PlayableDirector director;
     public PlayableAsset timelineAsset;
+    public TriggerType triggerType;
+
+    public enum TriggerType { ROOM_ENTER, AFTER_ENTRANCE, ON_TRIGGER }
 
     private void Start()
     {
@@ -38,7 +41,7 @@ public class Cutscene : MonoBehaviour {
     public virtual void Stop()
     {
         director.Stop();
-        // for now, set back to normal
+        // for now, set back to normal        
         //GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
     }
 }

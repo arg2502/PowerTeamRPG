@@ -1,0 +1,9 @@
+Name	Emotion	Dialogue	Responses/Actions
+Father McKinsey	SAD	I am sorry, Eleanor, but I have not had a single denigen come to the church in response to your proposal.	
+Eleanor		And you're certain no letters have come for me recently? {0.2}Have you talked to the Postmaster? Perhaps he's misplaced them...	
+Father McKinsey		Do not despair, Lady Eleanor. {0.1}To despair is to doubt the hope that Morttimer instills in us all.	
+Eleanor		Sorry, father. It's just...	
+Eleanor	SAD	I'm worried about my brother.	
+Father McKinsey		Remember that all hardships are part of Morttimer's greater plan.	
+Father McKinsey		This is a time when He will be pushing you down a new path.	
+Father McKinsey	HAPPY	Pray for the vision to see His signs.	

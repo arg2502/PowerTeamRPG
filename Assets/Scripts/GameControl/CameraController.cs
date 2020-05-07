@@ -80,10 +80,10 @@ public class CameraController : MonoBehaviour {
 
         targetPos = new Vector3(currentX, currentY, transform.position.z);
 
-        if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
-            moveSpeed = 100;
-        else if (moveSpeed != origMoveSpeed)
-            moveSpeed = origMoveSpeed;
+        //if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)
+        //    moveSpeed = 100;
+        //else if (moveSpeed != origMoveSpeed)
+        //    moveSpeed = origMoveSpeed;
 
         if (lerp)
             transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);

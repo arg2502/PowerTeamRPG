@@ -43,9 +43,14 @@ public class StationaryNPCControl : NPCObject {
 		//Call backtoNormal to make NPC face it's default direction and idle
 		SetDefaultAnimation();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void OnEnable()
+    {
+        SetDefaultAnimation();
+    }
+
+    // Update is called once per frame
+    void Update () {
         if (anim != null)
         {
             if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)

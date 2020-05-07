@@ -11,7 +11,7 @@ public class QuestTracker {
     {
         activeQuests = new Dictionary<string, Quest>();
         completedQuests = new Dictionary<string, Quest>();
-        //AddNewQuest("solomvale", skipShow: true);
+        AddNewQuest("solomvale", skipShow: true);
     }
 
     public void AddNewQuest(string questID, bool skipShow = false)
