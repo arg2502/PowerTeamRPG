@@ -39,7 +39,11 @@ public class Dialogue : MonoBehaviour {
         public string GetSpeakerName(int increment)
         {
             if (speakerNames?.Count > 0)
+            {
+                if (string.Equals(speakerNames[increment].ToUpper(), "NOTIFICATION"))
+                    return "";
                 return speakerNames[increment];
+            }
             else
                 return "";
         }
@@ -285,11 +289,11 @@ public class Dialogue : MonoBehaviour {
         // if the iterator is greater than the amount of dialogue that needs to be said,
         if (conversationIterator >= currentConversation.dialogueConversation.Count)
         {
-            conversationIterator = 0;
-            speaker?.EndDialogue(currentConversation);
-
             // pop dialogue menu
             GameControl.UIManager.PopMenu();
+
+            conversationIterator = 0;
+            speaker?.EndDialogue(currentConversation);
 
             return;
         }
@@ -326,26 +330,29 @@ public class Dialogue : MonoBehaviour {
 
     protected virtual float GetTalkingSpeed(string _name)
     {
-        if (string.Equals(_name, GameControl.control.playerName))
+        if (string.Equals(_name.ToUpper(), "NOTIFICATION"))
+            return 100f;
+        else if (string.Equals(_name.ToUpper(), GameControl.control.playerName.ToUpper()))
             return GameControl.control.jethroTalkingSpeed;
-        else if (string.Equals(_name, "Cole"))
+        else if (string.Equals(_name.ToUpper(), "COLE"))
             return GameControl.control.coleTalkingSpeed;
-        else if (string.Equals(_name, "Eleanor"))
+        else if (string.Equals(_name.ToUpper(), "ELEANOR"))
             return GameControl.control.eleanorTalkingSpeed;
-        else if (string.Equals(_name, "Jouliette"))
+        else if (string.Equals(_name.ToUpper(), "JOULIETTE"))
             return GameControl.control.joulietteTalkingSpeed;
         else if (speaker != null)
             return speaker.talkingSpeed;
         else
         {
             Debug.LogError("Could not find hero talking speed or speaker talking speed!");
-            return 0;
+            return 100;
         }
     }
 
     protected virtual Sprite GetHeroSprite(string heroName, string emotion)
     {
-        if (heroName.ToUpper() == GameControl.control.playerName.ToUpper())
+        if (heroName.ToUpper() == "NOTIFICATION") return null;
+        else if (heroName.ToUpper() == GameControl.control.playerName.ToUpper())
         {
             switch (emotion)
             {

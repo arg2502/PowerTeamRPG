@@ -247,7 +247,7 @@ public class characterControl : OverworldObject {
         //}
         if(GameControl.control.currentNPC != null && GameControl.control.currentNPC != newCurrent)
         {
-            GameControl.control.currentNPC.GetComponentInParent<OverworldObject>().HideInteractionNotification();
+            GameControl.control.currentNPC.GetComponentInParent<OverworldObject>()?.HideInteractionNotification();
         }
 
         // set the new current NPC if one was passed in

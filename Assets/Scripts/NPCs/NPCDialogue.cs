@@ -101,7 +101,7 @@ public class NPCDialogue : MonoBehaviour {
         // function needs a characterControl variable
         // plus this location kinda makes sense...
 
-        if (GetComponentInParent<OverworldObject>())
+        else if (GetComponentInParent<OverworldObject>())
             GetComponentInParent<OverworldObject>().BackToNormal();
     }
 
