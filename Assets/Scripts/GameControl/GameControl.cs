@@ -135,10 +135,10 @@ public class GameControl : MonoBehaviour {
     public int currentCharacterInt { get { return (int)currentCharacter; } }
 
     // Current NPC
-    public NPCDialogue currentNPC; // we can only talk to one NPC at a time, this variable will keep that one in focus
-    public NPCPathwalkControl CurrentNPCPathwalk { get { return currentNPC.GetComponentInParent<NPCPathwalkControl>(); } }
-	public StationaryNPCControl CurrentStationaryNPC { get { return currentNPC.GetComponentInParent<StationaryNPCControl>(); } }
-    public NPCShopKeeper CurrentShopkeeper { get { return currentNPC.GetComponentInParent<NPCShopKeeper>(); } }
+    public OverworldObject currentObj; // we can only talk to one NPC at a time, this variable will keep that one in focus
+    public NPCPathwalkControl CurrentNPCPathwalk { get { return currentObj.GetComponent<NPCPathwalkControl>(); } }
+	public StationaryNPCControl CurrentStationaryNPC { get { return currentObj.GetComponent<StationaryNPCControl>(); } }
+    public NPCShopKeeper CurrentShopkeeper { get { return currentObj.GetComponent<NPCShopKeeper>(); } }
 
     public AudioClip battleIntro;
     public AudioClip battleLoop;
@@ -149,7 +149,9 @@ public class GameControl : MonoBehaviour {
     public float coleTalkingSpeed;
     public float eleanorTalkingSpeed;
     public float joulietteTalkingSpeed;
-    
+
+    public List<RuntimeAnimatorController> heroAnimators;
+
     //awake gets called before start
     void Awake () {
 		if (control == null)
@@ -814,6 +816,21 @@ public class GameControl : MonoBehaviour {
         //var cutsceneQuestID = cutscene.subquestID;
         cutsceneManager.PlayCutscene(qc);
     }
+
+    public RuntimeAnimatorController GetHeroAnimator()
+    {
+        return heroAnimators[currentCharacterInt];
+    }
+
+    public void CreateNPCCole(NPCHero.DisperseDirection disperse, StationaryNPCControl.Direction dir)
+    {
+        var coleNPC = Instantiate(Resources.Load<NPCHero>("Prefabs/Overworld/NPCHero"), currentPosition, Quaternion.identity);
+        coleNPC.GetComponent<NPCHero>().SetCharacterControl();
+        coleNPC.GetComponent<NPCHero>().SetHeroAnim(heroAnimators[1]);
+        coleNPC.GetComponent<NPCHero>().DisperseFromPlayer(disperse);
+        coleNPC.GetComponent<NPCHero>().SetFacingDirection(dir);
+    }
+
 
 }
 

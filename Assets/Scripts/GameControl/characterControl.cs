@@ -68,8 +68,7 @@ public class characterControl : OverworldObject {
 
     float talkingDistance = 2f; // multiple of how far away to check if we can talk to something
 
-    public enum HeroCharacter { JETHRO, COLE, ELEANOR, JOULIETTE }
-    public List<RuntimeAnimatorController> heroAnimators;
+    public enum HeroCharacter { JETHRO, COLE, ELEANOR, JOULIETTE }    
 
     InteractionNotification gatewayNotification;
 
@@ -148,12 +147,12 @@ public class characterControl : OverworldObject {
             }
         }
 
-        if (other.GetComponent<NPCDialogue>())
+        if (other.GetComponent<NPCDialogue>() || other.GetComponent<InteractiveObject>())
         {
             // While within an NPC's trigger area, constantly check for NPCs
             // We want to constantly check in case we are in situations where there are multiple NPCs
             // We want to be able to turn and talk to that NPC without any problems
-            CheckInRangeNPC();
+            CheckInRangeObj();
         }
 
         if(other.GetComponent<Firewall>())
@@ -205,7 +204,8 @@ public class characterControl : OverworldObject {
             gatewayNotification?.GetComponent<Animator>()?.Play("FadeOut");
         }
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if (collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentNPC))
+        if ((collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentObj))
+            ||(collision.GetComponent<InteractiveObject>() && Equals(collision.GetComponent<InteractiveObject>(), GameControl.control.currentObj)))
         {
             ResetCurrentNPC();
         }
@@ -214,6 +214,7 @@ public class characterControl : OverworldObject {
         {
             canCarry = true;
         }
+
     }
 
     // NPC Talking interaction section -------------------------
@@ -232,50 +233,41 @@ public class characterControl : OverworldObject {
             GameControl.control.CurrentStationaryNPC.FaceCharacter(-(lastMovement));
 
         isMoving = false;
+
         // begin the NPC's dialogue
-        GameControl.control.currentNPC.StartDialogue();
+        GameControl.control.currentObj.GetComponentInChildren<NPCDialogue>().StartDialogue();
         
     }
 
-    void ResetCurrentNPC(NPCDialogue newCurrent = null)
+    void ResetCurrentNPC(OverworldObject newCurrent = null)
     {
-        // Set the previously current NPC back to normal
-        //if (GameControl.control.currentNPC)
-        //{
-        //    //GameControl.control.currentNPC.GetComponentInParent<SpriteRenderer>().color = Color.white; // FOR NOW, we just changed the color
-            
-        //}
-        if(GameControl.control.currentNPC != null && GameControl.control.currentNPC != newCurrent)
+        // Set the previously current NPC back to normal        
+        if(GameControl.control.currentObj != null && GameControl.control.currentObj != newCurrent)
         {
-            GameControl.control.currentNPC.GetComponentInParent<OverworldObject>()?.HideInteractionNotification();
+            GameControl.control.currentObj.GetComponentInParent<OverworldObject>()?.HideInteractionNotification();
         }
 
         // set the new current NPC if one was passed in
         if (newCurrent)
         {
-            if (GameControl.control.currentNPC != newCurrent)
+            if (GameControl.control.currentObj != newCurrent)
             {
-                GameControl.control.currentNPC = newCurrent;
-
-                // Some sort of indicator to tell the player who they can talk to
-                var overworldObj = GameControl.control.currentNPC.GetComponentInParent<OverworldObject>();
-                if (overworldObj == null)
-                    Debug.LogError("Overworld Object not found in parent of Dialogue object. Please make sure some sort of Overworld object is attached");
-
+                GameControl.control.currentObj = newCurrent;
+                               
                 string text = "Read";
-                if (overworldObj is NPCObject)
+                if (GameControl.control.currentObj is NPCObject)
                     text = "Talk";
-                overworldObj.ShowInteractionNotification(text);
+                GameControl.control.currentObj.ShowInteractionNotification(text);
             }
         }
         // if no NPC was passed in, then there's no one we can talk to
         else
         {
-            GameControl.control.currentNPC = null;            
+            GameControl.control.currentObj = null;            
         }
     }
 
-    void CheckInRangeNPC()
+    void CheckInRangeObj()
     {
         // Check if there is an NPC if front of us by casting a box based off of Jethro's lastMovement vector        
         var talkingVector = lastMovement * talkingDistance;
@@ -284,9 +276,18 @@ public class characterControl : OverworldObject {
         // If there was a collision with an NPC that we can talk to, then set that to the current NPC
         if(triggerHit.collider)
         {
-            var npcDialogue = triggerHit.collider.GetComponentInChildren<NPCDialogue>();
-            if (npcDialogue != null && npcDialogue.canTalk)
-                ResetCurrentNPC(npcDialogue);
+            if (triggerHit.collider.GetComponentInChildren<NPCDialogue>())
+            {
+                var npcDialogue = triggerHit.collider.GetComponentInChildren<NPCDialogue>();
+                if (npcDialogue != null && npcDialogue.canTalk)
+                    ResetCurrentNPC(npcDialogue.GetComponentInParent<OverworldObject>());
+            }
+            else if (triggerHit.collider.GetComponent<InteractiveObject>())
+            {
+                var io = triggerHit.collider.GetComponent<InteractiveObject>();
+                if (io != null)
+                    ResetCurrentNPC(io);
+            }
         }
         // otherwise, there's no one in front of us, so we shouldn't be able to talk to anyone
         else
@@ -377,8 +378,13 @@ public class characterControl : OverworldObject {
             }
 
             // If we have an NPC to talk to, check if the player has pressed select to talk to them
-            if (GameControl.control.currentNPC)
-                TalkToNPC();
+            if (GameControl.control.currentObj)
+            {
+                if (GameControl.control.currentObj.GetComponent<InteractiveObject>())
+                    GameControl.control.currentObj.GetComponent<InteractiveObject>().PerformAction();
+                else if (GameControl.control.currentObj.GetComponentInChildren<NPCDialogue>())
+                    TalkToNPC();
+            }
 
             if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR
                 && GameControl.control.currentCharacterState == CharacterState.Normal)
@@ -821,7 +827,7 @@ public class characterControl : OverworldObject {
 
     void ChangeHero()
     {
-        GetComponent<Animator>().runtimeAnimatorController = heroAnimators[GameControl.control.currentCharacterInt];
+        GetComponent<Animator>().runtimeAnimatorController = GameControl.control.GetHeroAnimator();// heroAnimators[GameControl.control.currentCharacterInt];
         walkSpeed = characterSpeeds[GameControl.control.currentCharacterInt];
     }
 
