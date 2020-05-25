@@ -313,7 +313,7 @@ public class NPCPathwalkControl : NPCObject {
 			anim.SetBool("isMoving", canMove);
 		}
 
-		sr.sortingOrder = (int)(-transform.position.y * 10.0f);
+		
 	
 	}
 

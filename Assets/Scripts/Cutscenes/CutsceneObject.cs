@@ -10,7 +10,7 @@ public class CutsceneObject : OverworldObject {
     //{
     //    base.Start();
     //    cutscene = GetComponentInParent<Cutscene>();
-    
+
     //}
     //public void Dialogue()
     //{

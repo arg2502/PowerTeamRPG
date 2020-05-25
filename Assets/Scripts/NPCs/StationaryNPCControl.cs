@@ -51,6 +51,7 @@ public class StationaryNPCControl : NPCObject {
 
     // Update is called once per frame
     void Update () {
+        base.Update();
         if (anim != null)
         {
             if (GameControl.control.currentCharacterState != characterControl.CharacterState.Normal)

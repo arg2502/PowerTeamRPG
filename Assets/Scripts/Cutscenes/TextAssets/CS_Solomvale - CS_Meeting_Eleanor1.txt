@@ -6,4 +6,60 @@ Eleanor		Sorry, father. It's just...
 Eleanor	SAD	I'm worried about my brother.	
 Father McKinsey		Remember that all hardships are part of Morttimer's greater plan.	
 Father McKinsey		This is a time when He will be pushing you down a new path.	
-Father McKinsey	HAPPY	Pray for the vision to see His signs.	
+Father McKinsey	HAPPY	Pray for the vision to see His signs.	Pause
+Jethro		Are you Lady Eleanor?	
+Eleanor		Indeed I am. And you are?	
+Jethro		I'm Jethro, and this is Cole.	
+Eleanor		I hesitate to ask, but to what do I owe the pleasure?	
+Cole		We heard you are in need of an escort to another town.	
+Eleanor	HAPPY	Oh, thank Morttimer, you're here to help me!{0.2} I was really beginning to worry that nobody would come.	
+Eleanor		You see, since the Church brought me to Astrala Proper, I’ve had a bit of a long distance relationship with my little brother, <b>Rigby</b>, who stayed at home.	
+Eleanor		We correspond by letter, but it’s been quite some time since I’ve heard from him. I fear something terrible has happened.	
+Jethro		If you’re so worried, why didn’t you just go to him?	
+Eleanor		I wanted to, believe me!	
+Eleanor	SAD	But, my only skills are in divine healing through Morttimer. 	
+Eleanor	SAD	I have no way of dealing with the wild monsters I may encounter on the road.	
+Eleanor		That's why I need a protective escort.	
+Cole		Where are you headed?	
+Eleanor		Oh, I need to get to Solomvale.	
+Cole	HAPPY	Solomvale?{0.3} That's just west of Astrala Proper.	
+Cole	HAPPY	It's no trouble to walk there and back within a day..	
+Cole		So why hasn't anyone else helped you yet?	
+Cole	HAPPY	It sounds like easy money.	
+Eleanor	SAD	That's just it...{0.3} I don't have any money to pay.	
+Eleanor		I work for the Church, and they pay me graciously with food and shelter.	
+Eleanor		It seems that the meager amount of gold I can offer doesn't pique the interest of hired swords.	
+Jethro		So no one else will help you?	
+Eleanor	SAD	That's the way it seems.	
+Cole	HAPPY	Don't worry.{0.2} We may be able to help you free of charge...	
+Cole	HAPPY	In exchange for your services.	
+Eleanor	HAPPY	Really?{0.2} What do you need me to do?	
+Cole	HAPPY	We are on a quest to remove the corrupt leader of the Mages' Guild from power.	
+Cole	ANGRY	Archmage Villem Jeanne is sacrificing innocent denigens for his twisted rituals.	
+Cole		I fear that if we don't stop him, no one will.	
+Eleanor	ANGRY	Why that's horrible!	
+Eleanor	SAD	But what could I do?{0.3} I'm not sure how you could reason with him.	
+Jethro		We have our own method of reasoning that should work.	
+Eleanor		This method.{0.1}.{0.1}.{0.1}does it involve.{0.1}.{0.1}.{0.1}	
+Eleanor		...sock puppets?	
+Cole	HAPPY	Not directly.	
+Jethro		More like swords.	
+Cole	HAPPY	More or less...	
+Eleanor		Ah.{0.2} You would need me to aid you in combat?	
+Cole	HAPPY	More or less...{0.2}but mostly more.	
+Eleanor	SAD	Oh, I'm not sure...	
+Cole	HAPPY	You won't have to actually fight, but we need a healer. And we've heard that you are quite skilled.	
+Eleanor		As a healer of the Church, I have renounced aggression in exchange for Morttimer's healing Power.	
+Eleanor		I generally do not aid in acts of violence...	
+Eleanor		...but.{0.2}.{0.2}.{0.2}I will strongly consider it...	
+Eleanor	SAD	...if I can see my brother in good health.	
+Notification		<b>Eleanor</b> has joined the team.	Pause
+Father McKinsey		Lady Eleanor,{0.2} you're departing? But services are about to begin. What has happened?	
+Eleanor		I'm sorry, Father,{0.2} but these men have agreed to take me to Solomvale.	
+Eleanor		I must see that Rigby is safe.	
+Father McKinsey		Then you need not explain any more to me.{0.2} I understand.	
+Father McKinsey		But, my children,{0.2} before you leave, let me impart to you some divine wisdom.	Pause
+Father McKinsey		The Grace of Morttimer can be found by praying to any statues such as these.	
+Father McKinsey		His Grace will heal your weary spirits,{0.2} and He will record any deeds you have done since your last prayer.	
+Father McKinsey		And if you should ever fall in combat, you may find yourself whole at the statue where you last prayed.	
+Father McKinsey	HAPPY	Now go,{0.2} and may Morttimer's eyes always be upon you.	

@@ -14,18 +14,18 @@ public class NPCHero : StationaryNPCControl {
         SetCharacterControl();
     }
 
-    public void MergeIntoPlayer()
+    public IEnumerator MergeIntoPlayer()
     {
-        if (GameControl.control.currentObj == GetComponentInChildren<NPCDialogue>())
-        {
-            GameControl.control.currentObj = null;
-            GetComponentInChildren<NPCDialogue>().canTalk = false;
-        }
+        //if (GameControl.control.currentObj == GetComponentInChildren<NPCDialogue>())
+        //{
+        //    GameControl.control.currentObj = null;
+        //    GetComponentInChildren<NPCDialogue>().canTalk = false;
+        //}
         GameControl.control.SetCharacterState(characterControl.CharacterState.Cutscene);
         var pos = charCon.transform.position;
-        StartCoroutine(Merge(pos));
+        yield return StartCoroutine(Merge(pos));
     }      
-
+        
     IEnumerator Merge(Vector3 finalPos)
     {
         var spd = 0.1f;

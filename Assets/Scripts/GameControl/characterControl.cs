@@ -94,14 +94,15 @@ public class characterControl : OverworldObject {
 
         if (currentCutscene != null)
         {
-            if (currentCutscene.cutscene.triggerType == Cutscene.TriggerType.ROOM_ENTER)
+            if (currentGateway == null || currentCutscene.cutscene.triggerType == Cutscene.TriggerType.ROOM_ENTER)
             {
                 ToggleSpriteRenderers(false);
                 GameControl.control.currentCharacterState = CharacterState.Cutscene;
                 GameControl.control.PlayCutscene(currentCutscene);
             }
             else if (currentCutscene.cutscene.triggerType == Cutscene.TriggerType.AFTER_ENTRANCE)
-            {
+            {                
+
                 EnterRoom(currentGateway.transform.position, currentGateway.entrancePos, true);
             }
         }

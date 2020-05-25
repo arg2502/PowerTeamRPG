@@ -123,4 +123,9 @@ public class OverworldObject : MonoBehaviour {
     }
 
     public virtual void BackToNormal() { ShowInteractionNotification(); }
+
+    protected void Update()
+    {
+        sr.sortingOrder = (int)(-transform.position.y * 10.0f);
+    }
 }
