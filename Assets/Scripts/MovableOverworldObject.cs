@@ -31,7 +31,7 @@ public class MovableOverworldObject : OverworldObject {
 	// Update is called once per frame
 	void Update ()
     {
-		if (isActivated && !isCarried) // this pertains to whether or not a switch has caused the object to appear
+		if (/*isActivated && */!isCarried) // this pertains to whether or not a switch has caused the object to appear
         {
             sr.sortingOrder = (int)(-transform.position.y * 10.0f);
             

@@ -6,6 +6,7 @@ TextureImporter:
   fileIDToRecycleName:
     21300000: smallBed_0
     21300002: smallBed_1
+    21300004: smallBed_2
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -101,6 +102,20 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
+        y: 0
+        width: 96
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: smallBed_2
+      rect:
+        serializedVersion: 2
+        x: 192
         y: 0
         width: 96
         height: 176

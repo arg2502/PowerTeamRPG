@@ -1,9 +1,13 @@
-﻿<Properties StartupItem="PowerTeamRPG.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ItemScripts\ItemTester.cs">
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\NPCs\NPCPathwalkControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\ItemScripts\ItemDatabase.cs" Line="71" Column="2" />
-      <File FileName="Assets\Scripts\ItemScripts\ItemTester.cs" Line="9" Column="104" />
+      <File FileName="Assets\Scripts\MovableOverworldObject.cs" Line="34" Column="26" />
+      <File FileName="Assets\Scripts\OverworldObject.cs" Line="129" Column="79" />
+      <File FileName="Assets\Scripts\Overworld\InteractiveObjects\IO_ShowHero.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Overworld\InteractiveObjects\IO_JailDoor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Overworld\HiddenRoomOverlay.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\NPCs\NPCPathwalkControl.cs" Line="316" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

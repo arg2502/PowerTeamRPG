@@ -313,7 +313,7 @@ public class NPCPathwalkControl : NPCObject {
 			anim.SetBool("isMoving", canMove);
 		}
 
-		
+		base.Update ();
 	
 	}
 
