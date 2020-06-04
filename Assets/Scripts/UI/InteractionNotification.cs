@@ -15,12 +15,15 @@ public class InteractionNotification : MonoBehaviour {
     {
         
         transformToFollow = newTransform;
-        //var box = newTransform.GetComponent<BoxCollider2D>();
-        //yPos = new Vector3(0, box.size.y/2f);
         yPos = new Vector3(0, yOffset);
-        message.text = newText;
+        SetText(newText);
     }
     
+    public void SetText(string messageText)
+    {
+        message.text = messageText;
+    }
+
     private void Update()
     {
         if (transformToFollow != null)
