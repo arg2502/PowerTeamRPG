@@ -88,6 +88,7 @@ public class OverworldObject : MonoBehaviour {
         {
             show = true;
             interactionNotification.gameObject.SetActive(show);
+            interactionNotification.SetText(message);
             interactionNotification.GetComponent<Animator>().Play("FadeIn");
         }
     }

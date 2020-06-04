@@ -43,13 +43,15 @@ public class IO_JailDoor : InteractiveObject {
 
 	public override void PerformAction(){
 		if (!isMoving) {
-			if(transform.position.x == openPosX){
-				notificationMessage = "Close"; // does not work?
-				moving = StartCoroutine (MoveDoor(openPosX, closePosX));
+			if(transform.position.x == openPosX){				
+                notificationMessage = "Open";
+                HideInteractionNotification();
+                moving = StartCoroutine (MoveDoor(openPosX, closePosX));
 			}
 			else if (transform.position.x == closePosX){
-				notificationMessage = "Open"; // does not work?
-				moving = StartCoroutine (MoveDoor(closePosX, openPosX));
+                notificationMessage = "Close";
+                HideInteractionNotification();
+                moving = StartCoroutine (MoveDoor(closePosX, openPosX));
 			}
 		}
 	}
