@@ -831,6 +831,25 @@ public class GameControl : MonoBehaviour {
         coleNPC.GetComponent<NPCHero>().SetFacingDirection(dir);
     }
 
+    public void GoToBattleScene(List<EnemyData> _enemies, int _numOfEnemies = -1)
+    {
+        currentCharacterState = characterControl.CharacterState.Battle;
+        currentPosition = FindObjectOfType<characterControl>().transform.position; //record the player's position before entering battle
+        currentScene = SceneManager.GetActiveScene().name; // record the current scene
+
+
+        // Recieve the battle info from the enemy, such as enemy types and # of enemies
+        numOfEnemies = (_numOfEnemies < 0) ? enemies.Count : _numOfEnemies;
+        enemies = _enemies;
+
+        //save the current room, to acheive persistency while paused
+        RecordRoom();
+
+        audioManager.PauseCurrentAndStartNewMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
+
+        // load the battle scene
+        LoadSceneAsync("BattleScene");
+    }
 
 }
 

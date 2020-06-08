@@ -116,6 +116,10 @@ public class BattleManager : MonoBehaviour {
 	public InteractiveAttack ia_riser;
     public InteractiveAttack ia_trace;
 
+    [Header("Background Images")]
+    public Sprite woodsBG;
+    public Sprite solomvaleBG;
+
     [Header("TEST VARS")]
     public int TEST_numOfEnemies;
     public List<string> TEST_listOfEnemies;

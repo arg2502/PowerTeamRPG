@@ -260,10 +260,6 @@ public class enemyControl : MovableOverworldObject {
     {
         if (!beenBattled && dist <= 0.25f && GameControl.control.currentCharacterState == characterControl.CharacterState.Normal)
         {
-            GameControl.control.currentCharacterState = characterControl.CharacterState.Battle;
-            GameControl.control.currentPosition = player.position; //record the player's position before entering battle
-            GameControl.control.currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name; // record the current scene
-
             // if the enemies are not preset, set then based on the Room Control obj here
             if (enemies.Count == 0)
             {
@@ -274,18 +270,11 @@ public class enemyControl : MovableOverworldObject {
                     enemies.Add(possibleEnemyTypes[Random.Range(0, possibleEnemyTypes.Count)]);
                 }
             }
-            // Recieve the battle info from the enemy, such as enemy types and # of enemies
-            GameControl.control.numOfEnemies = numOfEnemies;
-            GameControl.control.enemies = enemies;
 
             beenBattled = true;
-            //save the current room, to acheive persistency while paused
-            GameControl.control.RecordRoom();
 
-            GameControl.audioManager.PauseCurrentAndStartNewMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
-
-            // load the battle scene
-            GameControl.control.LoadSceneAsync("BattleScene");
+            GameControl.control.GoToBattleScene(enemies, numOfEnemies);
+            
         }
     }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+[RequireComponent(typeof(CutsceneDialogue))]
+[RequireComponent(typeof(Animator))] 
 public class Cutscene : MonoBehaviour {
 
     CutsceneDialogue cutsceneDialogue;

@@ -12,6 +12,7 @@ public class DenigenData : ScriptableObject
     public string denigenName;
 
     // stat percentages
+    //[Range(0.0f, 1.0f)]
     public float hpPer, pmPer, atkPer, defPer, mgkAtkPer, mgkDefPer, luckPer, evasionPer, spdPer;
 
     public Sprite portrait;

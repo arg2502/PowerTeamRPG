@@ -342,6 +342,7 @@ public class Denigen : MonoBehaviour {
             targets[i].TakeDamageText.Clear();
         }
 
+        print("calc damage: " + damage);
         // return final damage amount
         return damage;
 
@@ -403,7 +404,8 @@ public class Denigen : MonoBehaviour {
                 print("new damage: " + damage);
             }
         }
-        
+
+        print("take damage: " + damage);
         calculatedDamage = (int)damage;
     }
 

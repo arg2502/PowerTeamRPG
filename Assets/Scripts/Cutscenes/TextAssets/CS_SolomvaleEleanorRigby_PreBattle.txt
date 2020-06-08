@@ -1,0 +1,7 @@
+Name	Emotion	Dialogue	Responses/Actions
+Eleanor		Rigby's not in here either...	
+Cole		Something unsavory is happening here.	Pause
+Extremist		Quite the contrary! I'd say these events are positively delicious.	
+Extremist		Imagine the reward I'll get for bringing in three more marks.	Pause
+Cole		This fight is two against one. Are you sure you want to try this?	
+Extremist		I'm a clown, baby. I'm willing to try anything!	
