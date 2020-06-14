@@ -18,7 +18,6 @@ public class Cutscene : MonoBehaviour {
     {
         cutsceneDialogue = GetComponent<CutsceneDialogue>();
         director = GetComponentInParent<PlayableDirector>();
-        //Go();
     }
 
     public virtual void Play()
@@ -43,7 +42,5 @@ public class Cutscene : MonoBehaviour {
     public virtual void Stop()
     {
         director.Stop();
-        // for now, set back to normal        
-        //GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
     }
 }

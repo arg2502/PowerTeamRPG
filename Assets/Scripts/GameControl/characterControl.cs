@@ -74,6 +74,10 @@ public class characterControl : OverworldObject {
 
     QuestCutscene currentCutscene;
 
+    [Header("TEST")]
+    [SerializeField] bool isTest;
+    [SerializeField] Gateway debugStartGateway;
+
     // Use this for initialization
     new void Start () {
 
@@ -87,29 +91,32 @@ public class characterControl : OverworldObject {
         OnDesiredPos = new UnityEvent();
         characterSpeeds = new float[4] { jethroWalk, coleWalk, eleanorWalk, joulietteWalk };
         ChangeHero();
+                
+        currentGateway = GameControl.control.currentEntranceGateway ?? GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
 
+        if (isTest && currentGateway != null)
+            currentGateway = debugStartGateway;
 
-        currentGateway = GameControl.control.currentEntranceGateway ? GameControl.control.currentEntranceGateway : GameControl.control.currentRoom.FindCurrentGateway(GameControl.control.areaEntrance);
         currentCutscene = GameControl.control.CheckForEnterRoomCutscenes();
 
         if (currentCutscene != null)
         {
             if (currentGateway == null || currentCutscene.cutscene.triggerType == Cutscene.TriggerType.ROOM_ENTER)
             {
-                ToggleSpriteRenderers(false);
-                GameControl.control.currentCharacterState = CharacterState.Cutscene;
+                ToggleSpriteRenderers(false);                
+                GameControl.control.SetCharacterState(CharacterState.Cutscene);
                 GameControl.control.PlayCutscene(currentCutscene);
             }
-            else if (currentCutscene.cutscene.triggerType == Cutscene.TriggerType.AFTER_ENTRANCE)
-            {                
-
-                EnterRoom(currentGateway.transform.position, currentGateway.entrancePos, true);
+            else
+            {
+                var afterEntrance = currentCutscene.cutscene.triggerType == Cutscene.TriggerType.AFTER_ENTRANCE;
+                EnterRoom(currentGateway.transform.position, currentGateway.entrancePos, afterEntrance);
             }
         }
         else if (currentGateway != null)
             EnterRoom(currentGateway.transform.position, currentGateway.entrancePos);
         else
-            GameControl.control.currentCharacterState = CharacterState.Normal;
+            GameControl.control.SetCharacterState(CharacterState.Normal);
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -194,6 +201,12 @@ public class characterControl : OverworldObject {
                 readyForPickup?.HideInteractionNotification();
                 readyForPickup = null;
             }
+        }
+
+        if(other.GetComponent<CutsceneTrigger>())
+        {
+            GameControl.control.SetCharacterState(CharacterState.Cutscene);
+            other.GetComponent<CutsceneTrigger>().TriggerCutscene();
         }
     }
 
@@ -683,8 +696,8 @@ public class characterControl : OverworldObject {
                 Invoke("FinishEntrance", 0.5f);
             }
         }
-        
-        GameControl.control.currentCharacterState = CharacterState.Transition;        
+
+        GameControl.control.SetCharacterState(CharacterState.Transition);
     }
     void ExitRoom(Vector2 startPos, Vector2 endPos)
     {
@@ -713,7 +726,7 @@ public class characterControl : OverworldObject {
         else
             Invoke("FinishExit", 0.5f);
 
-        GameControl.control.currentCharacterState = CharacterState.Transition;        
+        GameControl.control.SetCharacterState(CharacterState.Transition);
     }
 
     public void FindIncrementTransitionValues(Vector2 startPos, Vector2 endPos)
@@ -789,13 +802,13 @@ public class characterControl : OverworldObject {
     void FinishEntrance()
     {
         lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
-        GameControl.control.currentCharacterState = CharacterState.Normal;
+        GameControl.control.SetCharacterState(CharacterState.Normal);
         OnDesiredPos.RemoveAllListeners();
     }
     void FinishEntranceThenCutscene()
     {
         lastMovement = new Vector2(xIncrementTransition, yIncrementTransition);
-        GameControl.control.currentCharacterState = CharacterState.Cutscene;
+        GameControl.control.SetCharacterState(CharacterState.Cutscene);
         OnDesiredPos.RemoveAllListeners();
         GameControl.control.PlayCutscene(currentCutscene);
     }

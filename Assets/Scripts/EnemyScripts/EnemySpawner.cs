@@ -15,8 +15,12 @@ public class EnemySpawner : MonoBehaviour {
     public float SpawnYMin { get { return spawnYMin; } }
     public float SpawnYMax { get { return spawnYMax; } }
 
-    // Use this for initialization
-    void Start () {
+    private void Start()
+    {
+        Spawn();
+    }
+
+    public void Spawn () {
         spawnArea = GetComponent<BoxCollider2D>();
         spawnXMin = spawnArea.bounds.min.x;
         spawnXMax = spawnArea.bounds.max.x;

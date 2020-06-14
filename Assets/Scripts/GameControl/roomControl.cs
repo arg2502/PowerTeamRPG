@@ -287,7 +287,7 @@ public class roomControl : MonoBehaviour {
         {
             if (GameControl.control.currentCharacterState == characterControl.CharacterState.Battle)
             {
-                GameControl.control.currentCharacterState = characterControl.CharacterState.Normal;
+                GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
                 return null;
             }
             // default send to the first gateway in the room's position

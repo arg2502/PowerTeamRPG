@@ -50,6 +50,9 @@ public class GameControl : MonoBehaviour {
     public CutsceneManager cutsceneManager;
     //private string cutsceneQuestID;
 
+
+    public characterControl Character { get { return FindObjectOfType<characterControl>(); } }
+
     public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
     public HeroData Jethro { get { return (heroList.Count > 0) ? heroList[0] : null; } }
     public HeroData Cole { get { return (heroList.Count > 1) ? heroList[1] : null; } }
@@ -103,10 +106,19 @@ public class GameControl : MonoBehaviour {
         sceneStartGateName = gatewayName;
     }
 
-    public characterControl.CharacterState currentCharacterState;
+    public characterControl.CharacterState currentCharacterState { get; private set; }
 
     public void SetCharacterState(characterControl.CharacterState newState)
     {
+        switch (newState)
+        {
+            case characterControl.CharacterState.Normal:
+                Character.canMove = true;
+                break;
+            case characterControl.CharacterState.Cutscene:
+                Character.canMove = false;
+                break;
+        }
         currentCharacterState = newState;
     }
     
@@ -811,10 +823,37 @@ public class GameControl : MonoBehaviour {
         return null;
     }
 
+    public List<string> CheckForTriggerCutscenes()
+    {
+        List<string> triggerCutscenes = new List<string>();
+
+        if (cutsceneManager == null) return triggerCutscenes;
+
+        for (int i = 0; i < cutsceneManager.questCutscenes.Count; i++)
+        {
+            for(int j = 0; j < questTracker.activeQuests.Count; j++)
+            {
+                var qc = cutsceneManager.questCutscenes[i];
+                if(questTracker.ContainsActiveKey(qc.subquestID)
+                    && qc.cutscene.triggerType == Cutscene.TriggerType.ON_TRIGGER)
+                {
+                    triggerCutscenes.Add(qc.subquestID);
+                }
+            }
+        }
+
+        return triggerCutscenes;
+    }
+
     public void PlayCutscene(QuestCutscene qc)
     {
         //var cutsceneQuestID = cutscene.subquestID;
         cutsceneManager.PlayCutscene(qc);
+    }
+
+    public void PlayCutscene(string subquestID)
+    {
+        cutsceneManager.PlayCutscene(subquestID);
     }
 
     public RuntimeAnimatorController GetHeroAnimator()

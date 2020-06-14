@@ -1,0 +1,5 @@
+Name	Emotion	Dialogue	Responses/Actions
+Eleanor		What's that over there?	Pause
+Jethro		Just a common monster, must have wandered away from the woods.	
+Cole		But it shouldn't be a match for us, now that we have you for healing.	
+Eleanor		Um...{0.2}about that...	
