@@ -57,6 +57,10 @@ public class characterControl : OverworldObject {
 
     bool isMoving;
     Vector2 lastMovement;
+    public void SetLastMovement(int _x, int _y)
+    {
+        lastMovement = new Vector2(_x, _y);
+    }
 
     // for room transition
     float xIncrementTransition = 0, yIncrementTransition = 0;    
@@ -639,7 +643,7 @@ public class characterControl : OverworldObject {
         }
     }
 
-    void ToggleSpriteRenderers(bool show)
+    public void ToggleSpriteRenderers(bool show)
     {
         foreach (var sr in GetComponentsInChildren<SpriteRenderer>())
             sr.enabled = show;

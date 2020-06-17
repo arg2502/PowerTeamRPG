@@ -10,8 +10,8 @@ public class CS_RoadToSolomvale_EnemyEncounter : Cutscene {
     public List<EnemyData> commonEnemy;
 
     public override void Play()
-    {        
-        cam = FindObjectOfType<CameraController>();
+    {
+        cam = GameControl.control.CameraController;
         cam.SwitchTarget(cs_camera);
         cam.SetSpeed(3);
         cam.SetLerp(true);
@@ -23,6 +23,7 @@ public class CS_RoadToSolomvale_EnemyEncounter : Cutscene {
     {
         base.Stop();
 
+        GameControl.questTracker.NextSubquest("solomvale");
         GameControl.control.GoToBattleScene(commonEnemy);
     }
 

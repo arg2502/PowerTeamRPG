@@ -81,8 +81,7 @@
             // freeze player if first menu
             if (GameControl.control.currentCharacterState != characterControl.CharacterState.Menu)
             {
-                GameControl.control.PrevState = GameControl.control.currentCharacterState;
-                if (GameControl.control.currentCharacterState != characterControl.CharacterState.Battle)
+                if (GameControl.control.currentCharacterState != characterControl.CharacterState.Battle) // I don't remember why we don't want MENU state while in battle, but for consistency, I'll make it the same when coming out of menus below
                     GameControl.control.SetCharacterState(characterControl.CharacterState.Menu);
             }
 
@@ -148,9 +147,10 @@
 
             // set focus to null
             menuInFocus = null;
-            
+
             // set back to previous state
-            GameControl.control.WaitAFrameAndSetCharacterState(GameControl.control.PrevState);
+            if (GameControl.control.currentCharacterState != characterControl.CharacterState.Battle)
+                GameControl.control.WaitAFrameAndSetCharacterState(GameControl.control.PrevState);
         }
 
         public void PopAllMenus()

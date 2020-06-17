@@ -67,6 +67,15 @@ public class QuestTracker {
         activeQuests[GetCurrentQuestID(subquestID)].AddItemToGet(newItem);
     }
 
+    /// <summary>
+    /// Manually increment a quest to the next goal. This should mainly be used for specific circumstances, like cutscenes
+    /// </summary>
+    /// <param name="subquestID"></param>
+    public void NextSubquest(string subquestID)
+    {
+        activeQuests[GetCurrentQuestID(subquestID)].CheckProgress();
+    }
+
     public void CompleteQuest(string questID)
     {
         completedQuests.Add(questID, activeQuests[questID]);

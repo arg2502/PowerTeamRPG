@@ -52,6 +52,7 @@ public class GameControl : MonoBehaviour {
 
 
     public characterControl Character { get { return FindObjectOfType<characterControl>(); } }
+    public CameraController CameraController { get { return FindObjectOfType<CameraController>(); } }
 
     public List<HeroData> heroList = new List<HeroData>() { }; // stores all of our hero's stats
     public HeroData Jethro { get { return (heroList.Count > 0) ? heroList[0] : null; } }
@@ -110,16 +111,25 @@ public class GameControl : MonoBehaviour {
 
     public void SetCharacterState(characterControl.CharacterState newState)
     {
+        print("CHANGING STATE -- FROM: " + currentCharacterState + "   TO: " + newState);
+        
+        PrevState = currentCharacterState;
         switch (newState)
         {
             case characterControl.CharacterState.Normal:
                 Character.canMove = true;
+                Character.ToggleSpriteRenderers(true); // for returning from cutscenes -- just in case
                 break;
             case characterControl.CharacterState.Cutscene:
                 Character.canMove = false;
                 break;
         }
         currentCharacterState = newState;
+    }
+
+    public void SetCharacterPositionToCurrent()
+    {
+        Character.transform.position = currentPosition;
     }
     
     public void WaitAFrameAndSetCharacterState(characterControl.CharacterState newState)
@@ -136,7 +146,7 @@ public class GameControl : MonoBehaviour {
         // this all occurs during the one frame that we wait,
         // so before we set the state, make sure there are no menus open first
         if (UIManager.list_currentMenus.Count == 0)
-            currentCharacterState = newState;
+            SetCharacterState(newState);
     }
 
     // states for checking if the player is in a menu/talking
@@ -708,12 +718,12 @@ public class GameControl : MonoBehaviour {
         if (taggedStatue)
         {
             currentPosition = savedStatue;
-            currentCharacterState = characterControl.CharacterState.Normal;
+            SetCharacterState(characterControl.CharacterState.Normal);
         }
         else
         {
             currentPosition = areaEntrance;
-            currentCharacterState = characterControl.CharacterState.Transition;
+            SetCharacterState(characterControl.CharacterState.Transition);
         }
 
         SceneManager.LoadScene(currentScene);
@@ -777,8 +787,8 @@ public class GameControl : MonoBehaviour {
 
     public void ShakeCamera(float shakeMagnitude = 0.05f, float shakeTime = 0.3f)
     {
-        var camera = Camera.main;
-        StartCoroutine(StartCameraShaking(camera, shakeMagnitude, shakeTime));
+        var cam = Camera.main;
+        StartCoroutine(StartCameraShaking(cam, shakeMagnitude, shakeTime));
     }
 
     IEnumerator StartCameraShaking(Camera camera, float shakeMagnitude, float shakeTime)
@@ -872,7 +882,7 @@ public class GameControl : MonoBehaviour {
 
     public void GoToBattleScene(List<EnemyData> _enemies, int _numOfEnemies = -1)
     {
-        currentCharacterState = characterControl.CharacterState.Battle;
+        SetCharacterState(characterControl.CharacterState.Battle);
         currentPosition = FindObjectOfType<characterControl>().transform.position; //record the player's position before entering battle
         currentScene = SceneManager.GetActiveScene().name; // record the current scene
 
@@ -881,10 +891,10 @@ public class GameControl : MonoBehaviour {
         numOfEnemies = (_numOfEnemies < 0) ? enemies.Count : _numOfEnemies;
         enemies = _enemies;
 
-        //save the current room, to acheive persistency while paused
+        //save the current room, to achieve persistency while paused
         RecordRoom();
 
-        audioManager.PauseCurrentAndStartNewMusic(GameControl.control.battleIntro, GameControl.control.battleLoop, true, false);
+        audioManager.PauseCurrentAndStartNewMusic(battleIntro, battleLoop, true, false);
 
         // load the battle scene
         LoadSceneAsync("BattleScene");

@@ -1320,6 +1320,7 @@ public class BattleManager : MonoBehaviour {
         {
             winnings += e.Gold;
             exp += e.ExpGiven;
+            e.OnVictory();
         }
 
         yield return new WaitForSeconds(2f);

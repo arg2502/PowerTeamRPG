@@ -194,4 +194,9 @@ public class Enemy : Denigen {
 
         targets.Add(highestHP);
     }
+
+    /// <summary>
+    /// Enemy specific function that occurs when the enemy is defeated. Ex: important quest related enemy that increments num of enemies to defeat.
+    /// </summary>
+    public virtual void OnVictory() { }
 }
