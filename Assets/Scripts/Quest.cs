@@ -13,6 +13,7 @@ public class Quest {
     public int CurrentState { get { return currentState; } }
     public int RequiredTalkToPeople { get { return data.subQuestStates[currentState].talkToPeopleNum; } }
     public int RequiredKillEnemies { get { return data.subQuestStates[currentState].killEnemiesNum; } }
+    public List<EnemyData> SpecificEnemyTypesToKill { get { return data.subQuestStates[currentState].specificEnemyTypesToKill; } }
 	public List<QuestItem> RequiredListItemToGet { get { return data.subQuestStates[currentState].listItemToGet; } }
     public int RewardGold { get { return data.subQuestStates[currentState].rewardGold; } }
     public List<QuestItem> RewardItems { get { return data.subQuestStates[currentState].rewardItems; } }

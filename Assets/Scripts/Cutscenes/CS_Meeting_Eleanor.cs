@@ -55,6 +55,7 @@ public class CS_Meeting_Eleanor : Cutscene {
         cs_father.gameObject.SetActive(false);
 
         GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
+        GameControl.questTracker.NextSubquest("solomvale");
     }
 
 }

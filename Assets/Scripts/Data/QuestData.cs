@@ -19,6 +19,7 @@ public class QuestData : ScriptableObject {
         public string description;
         public int talkToPeopleNum;
         public int killEnemiesNum;
+        public List<EnemyData> specificEnemyTypesToKill;
         [SerializeField]
         public List<QuestItem> listItemToGet;
         [Header("Rewards")]

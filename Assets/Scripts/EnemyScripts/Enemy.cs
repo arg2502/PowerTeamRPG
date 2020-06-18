@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Enemy : Denigen {
 
@@ -35,6 +36,8 @@ public class Enemy : Denigen {
 
     private bool taunted = false;
 
+    List<string> incrementQuests;
+
 	// Use this for initialization
 	public void Init () {
         //set the base stats for the enemy
@@ -42,6 +45,8 @@ public class Enemy : Denigen {
 
         // cast as EnemyData to get enemy-specific variables
         enemyData = data as EnemyData;
+
+        IncrementQuestsOnDeath();
 
         //get the areaLevel from the gameControl obj -- ADD LATER
         areaLevel = 3;
@@ -194,9 +199,35 @@ public class Enemy : Denigen {
 
         targets.Add(highestHP);
     }
+    
+    /// <summary>
+    /// Increments enemy kill count on current subquests assigned to enemy
+    /// </summary>
+    public void IncrementOnVictory()
+    {
+        foreach (var q in incrementQuests)
+            GameControl.questTracker.IncrementKillEnemies(q);
+    }
 
     /// <summary>
-    /// Enemy specific function that occurs when the enemy is defeated. Ex: important quest related enemy that increments num of enemies to defeat.
+    /// Determines if defeating this specific enemy will increment an enemy kill count for any current quests
     /// </summary>
-    public virtual void OnVictory() { }
+    void IncrementQuestsOnDeath()
+    {
+        incrementQuests = new List<string>();
+
+        foreach(var quest in GameControl.questTracker.activeQuests)
+        {
+            if(quest.Value.RequiredKillEnemies > 0)
+            {
+                // if there are no specific enemy types to kill, then we include all enemy types
+                // otherwise, see if this enemy appears in the specific list before deciding whether to increment
+                if(quest.Value.SpecificEnemyTypesToKill.Count <= 0 || quest.Value.SpecificEnemyTypesToKill.Find((e) => string.Equals(e.denigenName, enemyData.denigenName)))
+                {
+                    var subquestID = GameControl.questTracker.GetCurrentSubQuestID(quest.Key);                    
+                    incrementQuests.Add(subquestID);
+                }                    
+            }
+        }
+    }
 }

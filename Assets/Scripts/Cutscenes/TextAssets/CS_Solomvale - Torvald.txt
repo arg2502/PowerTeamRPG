@@ -1,0 +1,16 @@
+Name	Emotion	Dialogue	Responses/Actions
+Cole		Hello sir, we are looking to build a team for a quest, and we were wondering--	
+Torvald		Hold on,{0.2} let me guess.	
+Torvald	HAPPY	You pipsqueaks need some real muscle for your team, and you were hoping to hire the famous Torvald the Strong!	
+Jethro		No,{0.3} we already have muscle on the team.	
+Torvald	HAPPY	You?{0.3} Surely you're joking.{0.3} Now,{0.1} let's discuss price...	
+Cole		We're not joking.	
+Torvald		Oh, well.{0.1}.{0.1}.{0.1} that's a bit awkward.	
+Cole		We were actually hoping you'd know of a healer who's looking for work.	
+Torvald		Normally, I'd charge for this kind of information, but I can tell you really need the help.	
+Torvald		I've heard through the grapevine that Lady Eleanor, renowned healer of the Church of Morttimer, is looking for an escort to another town.	
+Torvald		Perhaps you could work out a deal with her.	
+Cole	HAPPY	Wonderful! Is she at the Church now?	
+Torvald		I should think so. Today's services are about to begin.	
+Cole		Thanks for the tip.{0.1} Come on, Jethro.	
+Torvald		Good luck, pipsqueaks. You're gonna need it.	QuestTalk

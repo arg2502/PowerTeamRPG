@@ -23,7 +23,7 @@ public class CS_RoadToSolomvale_EnemyEncounter : Cutscene {
     {
         base.Stop();
 
-        GameControl.questTracker.NextSubquest("solomvale");
+        //GameControl.questTracker.NextSubquest("solomvale"); // temp
         GameControl.control.GoToBattleScene(commonEnemy);
     }
 
