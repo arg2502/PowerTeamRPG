@@ -1,11 +1,15 @@
 ﻿# Tiled2Unity generated file. Do not modify by hand.
 # Wavefront file for 'SolomvaleEleanorRigby_mesh_0007.obj'
 
-# Vertices (Count = 8)
+# Vertices (Count = 12)
 v -10 -1 0
 v -11 -1 0
 v -11 0 0
 v -10 0 0
+v -11 -4 0
+v -12 -4 0
+v -12 -3 0
+v -11 -3 0
 v 0 -11 0
 v -1 -11 0
 v -1 -10 0
@@ -26,4 +30,5 @@ g SolomvaleEleanorRigby_mesh_0007
 # Faces
 f 1/1/1 2/2/1 3/3/1 4/4/1
 f 5/1/1 6/2/1 7/3/1 8/4/1
+f 9/1/1 10/2/1 11/3/1 12/4/1
 
