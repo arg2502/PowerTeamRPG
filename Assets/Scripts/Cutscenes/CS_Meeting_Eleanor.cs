@@ -25,37 +25,17 @@ public class CS_Meeting_Eleanor : Cutscene {
     {
         base.Stop();
 
-        StartCoroutine(CS_Stop());
-    }
-
-    IEnumerator CS_Stop()
-    {
         cam.SwitchBack();
-        cam.SetSpeedBack();        
+        cam.SetSpeedBack();
 
-        if (GameControl.control.currentCharacterInt == 0)
-        {
-            FindObjectOfType<characterControl>().transform.position = cs_jethro.transform.position;
-            cs_jethro.gameObject.SetActive(false);
-            StartCoroutine(cs_cole.MergeIntoPlayer());
-        }
-        else if (GameControl.control.currentCharacterInt == 1)
-        {
-            FindObjectOfType<characterControl>().transform.position = cs_cole.transform.position;
-            cs_cole.gameObject.SetActive(false);
-            StartCoroutine(cs_jethro.MergeIntoPlayer());
-        }
-        
-        yield return StartCoroutine(cs_eleanor.MergeIntoPlayer());       
-        
+        StartCoroutine(MergePlayers());
+
         cam.SetLerp(false);
 
         real_father.transform.position = cs_father.transform.position;
         real_father.gameObject.SetActive(true);
         cs_father.gameObject.SetActive(false);
 
-        GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
         GameControl.questTracker.NextSubquest("solomvale");
     }
-
 }

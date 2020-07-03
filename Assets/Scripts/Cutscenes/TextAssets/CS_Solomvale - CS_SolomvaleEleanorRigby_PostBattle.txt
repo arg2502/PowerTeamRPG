@@ -1,0 +1,45 @@
+Name	Emotion	Dialogue	Responses/Actions
+Extremist		Whew, that was worse than I expected...	
+Cole		Enough clowning around!	
+Jethro		Did you really go for a pun at a time like this?	
+Extremist		My thoughts exactly. I mean,{0.2} puns--	
+Eleanor		Can we get back to business, please?	
+Jethro		Here's the deal, clown; you get serious and tell us what we need to know,{0.2} or we get back to beating you.	
+Extremist		Whoa, slow down!	
+Extremist		I'll tell you whatever you want to know.{0.2} Just ask before you start hitting again!	
+Eleanor		What is going on in this town?	
+Extremist		This small town of Solomvale is the first step of a grand movement.	
+Extremist		The children of the North have been downtrodden for too long,{0.2} but now it is our time to rise up!	
+Extremist		Our brotherhood has rounded up all citizens of Solomvale for elimination, driadali included.	
+Cole		You've rounded them up? Where are they being held?	
+Extremist		The prisoners have all been locked in the jailhouse, where our grand leader, Darklown, is preparing them for the cleansing.	
+Cole		Darklown?	
+Jethro		Great, more clowns.	
+Eleanor		Where do we find the key to the jailhouse?	
+Extremist		I don't know where it is. One of my brothers has it, and they're all occupying the other houses in town.	
+Extremist		And if you thought I was bad, you won't stand a chance against them.{0.2} Any one of my brothers could squash you all!	
+Jethro		Alright, that's enough out of you.	Pause
+Jethro		What is with this clown?	
+Cole		And you yelled at me for making puns...	
+Jethro		I'm not making jokes.	
+Jethro		Clown just happens to have a double meaning here.	
+Cole		That is the <i>literal</i> definition of a pun!	
+Eleanor		Can we focus, please?	
+Cole		Alright, so what do we know?	
+Cole		An extremist group has ransacked the town and kidnapped every denigen within it.	
+Cole		We can only assume that your brother was taken, as well.	
+Jethro		This guy called himself a Child of the North.{0.2} I thought you said that was an insult.	
+Cole		For the majority of driadali, it <i>is</i> an insult.	
+Cole		But some zealots wear that label proudly.{0.2} These people follow the political stylings of Knorvica and its twisted king.	
+Jethro		Meaning what, exactly?	
+Cole		The Kingdom of Knorvica is populated entirely by Draeds, and they still adhere to the laws of the Old Kings.	
+Cole		By these laws, the Driadali are obligated, in order to ensure their survival, to wipe all other species from the continent, leaving the draeds alone to rule forever.	
+Jethro		But then why would they take the driadali villagers, as well? Their own people?	
+Cole		Probably the same reason this clown attacked me.{0.2} Just being with you two...{0.2} socializing with the "lesser beings".	
+Eleanor		Nevermind the reasoning right now. It looks like everyone in town will be in a lot of trouble if we don't help them.	
+Jethro		We?{0.2} I thought you didn't want to get your hands dirty.	
+Eleanor		I've been thinking about what Cole said earlier, about inaction.{0.2} I see what you meant.	
+Eleanor		If I don't help you two, there's no way you'll be able to save the citizens of Solomvale.	
+Eleanor		If they die because I refuse to fight, their blood is on my hands.	
+Eleanor		So let's get to work.	
+Notification		Eleanor joins the team...{0.2}for real, this time	

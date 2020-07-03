@@ -12,5 +12,9 @@ public class CS_SolomvaleEleanorRigby_PostBattle : Cutscene {
     public override void Stop()
     {
         base.Stop();
-    }
+
+        StartCoroutine(MergePlayers());
+
+        GameControl.questTracker.NextSubquest("solomvale");
+    }    
 }

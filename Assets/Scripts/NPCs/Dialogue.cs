@@ -278,9 +278,10 @@ public class Dialogue : MonoBehaviour {
     {
         Conversation newConversation = new Conversation();
         newConversation.dialogueConversation = new List<string>();
-        var lines = customConversation.Split('\n');
-        foreach (var l in lines)
-            newConversation.dialogueConversation.Add(l);
+        //var lines = customConversation.Split('\n');
+        //foreach (var l in lines)
+        //  newConversation.dialogueConversation.Add(l);
+        newConversation.dialogueConversation.Add(customConversation);
 
         return newConversation;
     }
