@@ -7,6 +7,7 @@ public class NPCHero : StationaryNPCControl {
     characterControl charCon;
     public enum DisperseDirection { NONE, UP, DOWN, LEFT, RIGHT }
     float disperseDist = 1f;
+    float mergeSpd = 0.05f;
 
     private void Start()
     {
@@ -28,8 +29,7 @@ public class NPCHero : StationaryNPCControl {
         
     IEnumerator Merge(Vector3 finalPos)
     {
-        var spd = 0.1f;
-        var vec = (finalPos - transform.position) * spd;
+        var vec = (finalPos - transform.position) * mergeSpd;
         while(true)
         {
             transform.Translate(vec);

@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class CS_RoadToSolomvale_PostEncounter : Cutscene {
 
-    public GameObject cs_jethro;
-    public GameObject cs_camera;
-    CameraController cam;    
-
     public override void Play()
-    {
-        cam = GameControl.control.CameraController;
+    {        
         cam.SwitchTarget(cs_camera);        
 
         base.Play();
@@ -29,14 +24,12 @@ public class CS_RoadToSolomvale_PostEncounter : Cutscene {
         GameControl.control.currentPosition = cs_jethro.transform.position;
         GameControl.control.SetCharacterPositionToCurrent();
         GameControl.control.Character.SetLastMovement(-1, 0);
-        cs_jethro.SetActive(false);
+        cs_jethro.gameObject.SetActive(false);
         GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
         cam.SetLerp(true);
         cam.SwitchBack();
         yield return new WaitForSeconds(1); // wait a sec before setting lerp off
         cam.SetLerp(false);
-
-        
     }
 
 }

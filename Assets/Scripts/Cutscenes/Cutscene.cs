@@ -15,11 +15,14 @@ public class Cutscene : MonoBehaviour {
     public enum TriggerType { ROOM_ENTER, AFTER_ENTRANCE, ON_TRIGGER }
 
     public NPCHero cs_jethro, cs_cole, cs_eleanor, cs_jouliette;
+    public GameObject cs_camera;
+    protected CameraController cam;
 
     private void Start()
     {
         cutsceneDialogue = GetComponent<CutsceneDialogue>();
         director = GetComponentInParent<PlayableDirector>();
+        cam = FindObjectOfType<CameraController>();
     }
 
     public virtual void Play()
@@ -48,6 +51,9 @@ public class Cutscene : MonoBehaviour {
 
     protected IEnumerator MergePlayers()
     {
+        cam.SetLerp(true);
+        cam.SetSpeed(4f);
+
         if (GameControl.control.currentCharacterInt == 0)
         {
             FindObjectOfType<characterControl>().transform.position = cs_jethro.transform.position;
@@ -69,12 +75,17 @@ public class Cutscene : MonoBehaviour {
             cs_jouliette.gameObject.SetActive(false);
         }
 
+        FindObjectOfType<characterControl>().ToggleSpriteRenderers(true);
+
         if (cs_jethro != null && cs_jethro.gameObject.activeSelf) StartCoroutine(cs_jethro.MergeIntoPlayer());
         if(cs_cole != null && cs_cole.gameObject.activeSelf) StartCoroutine(cs_cole.MergeIntoPlayer());
         if(cs_eleanor != null && cs_eleanor.gameObject.activeSelf) StartCoroutine(cs_eleanor.MergeIntoPlayer());
         if(cs_jouliette != null && cs_jouliette.gameObject.activeSelf) StartCoroutine(cs_jouliette.MergeIntoPlayer());
 
         yield return new WaitWhile(AnyCSHeroesAreActive);
+
+        cam.SetSpeedBack();
+        cam.SetLerp(false);
 
         GameControl.control.SetCharacterState(characterControl.CharacterState.Normal);
         
