@@ -124,6 +124,29 @@ public class OverworldObject : MonoBehaviour {
     }
 
     public virtual void BackToNormal() { ShowInteractionNotification(); }
+    
+    /// <summary>
+    /// Called through dialogue response
+    /// </summary>
+    public void Buy()
+    {
+        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu);
+    }
+
+    /// <summary>
+    /// Called through dialogue response
+    /// </summary>
+    public void Sell()
+    {
+        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
+    }
+
+    public void Talk()
+    {
+        GameControl.UIManager.PushNotificationMenu(
+            "This should open up a menu with dialogue options...but not yet"
+            );
+    }
 
     protected void Update()
     {

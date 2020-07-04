@@ -211,7 +211,7 @@ public class NPCPathwalkControl : NPCObject {
 
 		int index = 0;
 
-		if (prevWaypoint == null) { // if this is the first waypoint, there is no prevWaypoint
+		if (prevWaypoint == null || currentWaypoint.adjacentPoints.Count <= 1) { // if this is the first waypoint, there is no prevWaypoint
 			//pick any valid index
 			index = Random.Range (0, currentWaypoint.adjacentPoints.Count);
 		} 
@@ -334,13 +334,15 @@ public class NPCPathwalkControl : NPCObject {
     /// </summary>
     IEnumerator StartCountdown()
     {
-        //check if our target time has been met
-        while (waypointTimer < waypointTargetTime)
-        {
-            waypointTimer += Time.deltaTime; //increase time within trigger
-            yield return null; // required for coroutine -- wait one frame, then repeat loop
-        }        
-        
+        ////check if our target time has been met
+        //while (waypointTimer < waypointTargetTime)
+        //{
+        //    waypointTimer += Time.deltaTime; //increase time within trigger
+        //    yield return null; // required for coroutine -- wait one frame, then repeat loop
+        //}        
+
+        yield return new WaitForSecondsRealtime(waypointTargetTime);
+
         //if the target time is met, pick a new waypoint to travel to
         ChooseNextWaypoint();
 

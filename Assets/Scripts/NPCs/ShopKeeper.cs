@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCShopKeeper : StationaryNPCControl {
+public class ShopKeeper : MonoBehaviour {
 
     public TextAsset commentList;
     public List<ScriptableItem> shopInventory;    
@@ -31,10 +31,8 @@ public class NPCShopKeeper : StationaryNPCControl {
     public Sprite angrySpr { get { return GetComponentInChildren<NPCDialogue>().angrySpr; } }
 
 
-    private new void Start()
+    private void Start()
     {
-        base.Start();
-
         if(useDefault)
         {
             SetDefault();
@@ -72,29 +70,7 @@ public class NPCShopKeeper : StationaryNPCControl {
             miscPer = defaultSpecialized;
         }
     }
-
-    /// <summary>
-    /// Called through dialogue response
-    /// </summary>
-    public void Buy()
-    {
-        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu);
-    }
-
-    /// <summary>
-    /// Called through dialogue response
-    /// </summary>
-    public void Sell()
-    {
-        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
-    }
-
-    public void Talk()
-    {
-        GameControl.UIManager.PushNotificationMenu(
-            "This should open up a menu with dialogue options...but not yet"
-            );
-    }
+        
 
     public int GetItemPrice(InventoryItem item)
     {

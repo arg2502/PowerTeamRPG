@@ -160,7 +160,7 @@ public class GameControl : MonoBehaviour {
     public OverworldObject currentObj; // we can only talk to one NPC at a time, this variable will keep that one in focus
     public NPCPathwalkControl CurrentNPCPathwalk { get { return currentObj.GetComponent<NPCPathwalkControl>(); } }
 	public StationaryNPCControl CurrentStationaryNPC { get { return currentObj.GetComponent<StationaryNPCControl>(); } }
-    public NPCShopKeeper CurrentShopkeeper { get { return currentObj.GetComponent<NPCShopKeeper>(); } }
+    public ShopKeeper CurrentShopkeeper { get { return currentObj.GetComponent<ShopKeeper>(); } }
 
     public AudioClip battleIntro;
     public AudioClip battleLoop;
