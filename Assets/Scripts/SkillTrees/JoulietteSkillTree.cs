@@ -50,7 +50,7 @@ public class JoulietteSkillTree : SkillTree
         whichContent = new List<string> { "Tree1", "Tree2" };
 
         // read in info
-        ReadInfo("techniquesJouliette1.tsv");
+        ReadInfo("techniquesJouliette1");
 
         // create all techniques
         pivotKick = new Skill(FindTechnique("pivotKick"));
@@ -88,7 +88,7 @@ public class JoulietteSkillTree : SkillTree
         doubleDash.Prerequisites = new List<Technique>() { armorRush };
 
         // read in info for next tree
-        ReadInfo("techniquesJouliette2.tsv");
+        ReadInfo("techniquesJouliette2");
 
         // TREE 2 STATS        
         taunt = new Skill(FindTechnique("taunt"));

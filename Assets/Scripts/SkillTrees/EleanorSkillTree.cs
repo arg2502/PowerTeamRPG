@@ -52,7 +52,7 @@ public class EleanorSkillTree : SkillTree
         whichContent = new List<string> { "Tree1", "Tree2" };
 
         // read in info
-        ReadInfo("techniquesEleanor1.tsv");
+        ReadInfo("techniquesEleanor1");
 
         // create all techniques
         purge = new Spell(FindTechnique("purge"));
@@ -101,7 +101,7 @@ public class EleanorSkillTree : SkillTree
         salvation.Prerequisites = new List<Technique>() { disciple3, ressurection3, eyesOfDarkness };
 
         // read in info for next tree
-        ReadInfo("techniquesEleanor2.tsv");
+        ReadInfo("techniquesEleanor2");
 
         // TREE 2 STATS        
         weep = new Spell(FindTechnique("weep"));

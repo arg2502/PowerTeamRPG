@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-public class SkillTree {
+public class SkillTree : MonoBehaviour {
 
    
     // true if player is sorting through skill tree
@@ -17,10 +17,7 @@ public class SkillTree {
     // inactive = player does not have the skill, but has the possibility to acquire it
     // disabled = skill is locked off to player/has to unlock an earlier skill to make it inactive
 
-    public SkillTree()
-    {
-
-    }
+    public SkillTree() { }
 
     // individual tree
     // for switching between trees on the fly
@@ -43,23 +40,9 @@ public class SkillTree {
     }
 
     // which skilltree to show
-    protected List<string> whichContent;
-    GameObject[] whichButton;
-    int whichTree;
-    public List<MyTree> listOfTrees;
-    MyTree currentTree;
-    MyTree prevTree; // to keep track of which buttons to turn on and off while switching
-
-    // 2 ints to keep track of where you are in the button2DArray
-    int columnIndex;
-    int rowIndex;
-
-    // keep track of the last place you were --- mainly for going to DONE and back
-    int prevCol;
-    int prevRow;
-
-    // access to camera 
-    protected GameObject camera;
+    protected List<string> whichContent;    
+    
+    public List<MyTree> listOfTrees; 
 
     // denigen obj to access specific techniques
     protected DenigenData hero;
@@ -72,7 +55,8 @@ public class SkillTree {
     protected GameObject remainingPts;
 
     protected List<string[]> listOfTechniques;
-    protected StreamReader readIn;
+    
+    protected TextAsset readIn;
     
     public List<Technique> startingTechs;
 
@@ -102,33 +86,20 @@ public class SkillTree {
         // read in info
         listOfTechniques = new List<string[]>();
 
-        readIn = new StreamReader("./Assets/Scripts/SkillTrees/" + path);
-
-        string line = readIn.ReadLine();
+        readIn = Resources.Load<TextAsset>("SkillTrees/" + path);
+        
+        string[] lines = readIn.text.Split('\n');
 
         // skip first line (contains "Key, Title, etc...")
-        line = readIn.ReadLine();
+        if (lines.Length <= 1) return;
 
-        while (line != null)
-        {
-            listOfTechniques.Add(line.Split('\t')); // makes each line a string array and adds to list
-            line = readIn.ReadLine();
-        }
+        for (int i = 1; i < lines.Length; i++)
+            listOfTechniques.Add(lines[i].Split('\t'));// makes each line a string array and adds to list
     }
 
     public string[] FindTechnique(string key)
     {
-        // find the correct row
-        //int row = 0;
-        for (int i = 0; i < listOfTechniques.Count; i++)
-        {
-            if (listOfTechniques[i][0] == key)
-            {
-                //row = i;
-                return listOfTechniques[i];
-            }
-        }
-        return null;        
+        return listOfTechniques.Find((technique) => technique[0] == key);
     }
     
 }

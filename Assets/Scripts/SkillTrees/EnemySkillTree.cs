@@ -18,7 +18,7 @@ public class EnemySkillTree : SkillTree {
 
     public EnemySkillTree()
     {
-        ReadInfo("techniquesEnemies.tsv");
+        ReadInfo("techniquesEnemies");
 
         whip = new Skill(FindTechnique("whip"));
         poison = new Spell(FindTechnique("poison"));

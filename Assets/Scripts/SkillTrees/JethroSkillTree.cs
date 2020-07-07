@@ -52,7 +52,7 @@ public class JethroSkillTree : SkillTree {
         whichContent = new List<string> { "Basic", "Magic" };
 
         // read in info
-        ReadInfo("techniquesJethro1.tsv");
+        ReadInfo("techniquesJethro1");
 
         // create all techniques
         helmsplitter = new Skill(FindTechnique("helmsplitter"));
@@ -113,7 +113,7 @@ public class JethroSkillTree : SkillTree {
 
 
         // read in info for next tree
-        ReadInfo("techniquesJethro2.tsv");
+        ReadInfo("techniquesJethro2");
 
         // TREE 2 STATS        
         fog = new Spell(FindTechnique("fog"));

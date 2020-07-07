@@ -1398,39 +1398,40 @@ public class BattleManager : MonoBehaviour {
         InteractiveAttack ia;
         switch(currentAttacker.CurrentAttackName)
         {            
-            case "Helmsplitter":
-            case "Arc Slash": // temp            
-            case "Mordstreich": // temp
-                ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage);
-                break;
-            case "Trinity Slice":
-                ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage, 3);
-                break;
-            case "Pivot Kick":
-                ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IAPrompt>().Init(originalDamage);
-                break;
-            case "Scorpio Jolt":
-                ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.GetComponent<IAPrompt>().Init(originalDamage, 2);
-                break;
-			case "Candleshot":
-				ia = Instantiate (ia_charge, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
-                ia.gameObject.SetActive(true);
-				ia.GetComponent<IACharge> ().Init (currentAttacker, originalDamage);
-				break;
-			case "Riser":
-				ia = Instantiate (ia_riser, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
-				ia.gameObject.SetActive (true);	
-				ia.GetComponent<IARiser> ().Init (originalDamage);
-				break;
-            case "Fireball":
-                ia = Instantiate(ia_trace, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-                ia.gameObject.SetActive(true);
-                ia.GetComponent<IATrace>().Init(originalDamage, 4);
-                break;
+            // SKIP FOR NOW
+   //         case "Helmsplitter":
+   //         case "Arc Slash": // temp            
+   //         case "Mordstreich": // temp
+   //             ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+   //             ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage);
+   //             break;
+   //         case "Trinity Slice":
+   //             ia = Instantiate(ia_slider, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+   //             ia.GetComponent<IASlider>().Init(currentAttacker, originalDamage, 3);
+   //             break;
+   //         case "Pivot Kick":
+   //             ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+   //             ia.GetComponent<IAPrompt>().Init(originalDamage);
+   //             break;
+   //         case "Scorpio Jolt":
+   //             ia = Instantiate(ia_prompt, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+   //             ia.GetComponent<IAPrompt>().Init(originalDamage, 2);
+   //             break;
+			//case "Candleshot":
+			//	ia = Instantiate (ia_charge, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
+   //             ia.gameObject.SetActive(true);
+			//	ia.GetComponent<IACharge> ().Init (currentAttacker, originalDamage);
+			//	break;
+			//case "Riser":
+			//	ia = Instantiate (ia_riser, GameObject.FindGameObjectWithTag ("MainCanvas").transform);
+			//	ia.gameObject.SetActive (true);	
+			//	ia.GetComponent<IARiser> ().Init (originalDamage);
+			//	break;
+   //         case "Fireball":
+   //             ia = Instantiate(ia_trace, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+   //             ia.gameObject.SetActive(true);
+   //             ia.GetComponent<IATrace>().Init(originalDamage, 4);
+   //             break;
             default:
                 StartCoroutine(ShowAttack());
                 break;

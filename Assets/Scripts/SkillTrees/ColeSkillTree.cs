@@ -42,7 +42,7 @@ public class ColeSkillTree : SkillTree {
         whichContent = new List<string>() { "Tree1", "Tree2" };
 
         // read in technique info
-        ReadInfo("techniquesCole1.tsv");
+        ReadInfo("techniquesCole1");
 
         // create techniques
         candleshot = new Spell(FindTechnique("candleshot"));
@@ -81,7 +81,7 @@ public class ColeSkillTree : SkillTree {
         coleFusion.Prerequisites = new List<Technique>() { slowBurn, caster3, hellfire };
 
         // tree 2
-        ReadInfo("techniquesCole2.tsv");
+        ReadInfo("techniquesCole2");
 
         anathema = new Spell(FindTechnique("anathema"));
         bucket = new Skill(FindTechnique("bucketSplash"));
