@@ -185,6 +185,7 @@ public class GameControl : MonoBehaviour {
             InitHeroes();
             UIManager = new UIManager();
             skillTreeManager = new SkillTreeManager();
+            skillTreeManager.Init();
             itemManager = new ItemManager();
             audioManager = GetComponentInChildren<AudioManager>();
             audioManager.Init();

@@ -35,7 +35,8 @@ public class ColeSkillTree : SkillTree {
     MyTree basic2;
     
 	// Use this for initialization
-	public ColeSkillTree () {
+    
+	public ColeSkillTree() {
         // set hero to Cole
         hero = GameControl.control.heroList[1];
 
@@ -44,19 +45,19 @@ public class ColeSkillTree : SkillTree {
         // read in technique info
         ReadInfo("techniquesCole1");
 
-        // create techniques
-        candleshot = new Spell(FindTechnique("candleshot"));
-        fireball = new Spell(FindTechnique("fireball"));
-        caster1 = new Caster(FindTechnique("caster1"));
-        cauterize = new Spell(FindTechnique("cauterize"));
-        slowBurn = new Spell(FindTechnique("slowBurn"));
-        grandFireball = new Spell(FindTechnique("grandFireball"));
-        caster2 = new Caster(FindTechnique("caster2"));
-        splashFlame = new Spell(FindTechnique("splashFlame"));
-        caster3 = new Caster(FindTechnique("caster3"));
-        firewall = new Spell(FindTechnique("firewall"));
-        hellfire = new Spell(FindTechnique("hellfire"));
-        coleFusion = new Spell(FindTechnique("coleFusion"));
+        // create techniques        
+        candleshot = new Spell(FindTechnique("candleshot"), imageDatabase.candleshot);
+        fireball = new Spell(FindTechnique("fireball"), imageDatabase.fireball);
+        caster1 = new Caster(FindTechnique("caster1"), imageDatabase.caster1);
+        cauterize = new Spell(FindTechnique("cauterize"), imageDatabase.cauterize);
+        slowBurn = new Spell(FindTechnique("slowBurn"), imageDatabase.slowBurn);
+        grandFireball = new Spell(FindTechnique("grandFireball"), imageDatabase.grandFireball);
+        caster2 = new Caster(FindTechnique("caster2"), imageDatabase.caster2);
+        splashFlame = new Spell(FindTechnique("splashFlame"), imageDatabase.splashFlame);
+        caster3 = new Caster(FindTechnique("caster3"), imageDatabase.caster3);
+        firewall = new Spell(FindTechnique("firewall"), imageDatabase.firewall);
+        hellfire = new Spell(FindTechnique("hellfire"), imageDatabase.hellfire);
+        coleFusion = new Spell(FindTechnique("coleFusion"), imageDatabase.coleFusion);
 
         // next
         candleshot.ListNextTechnique = new List<Technique>() { fireball };
@@ -83,16 +84,16 @@ public class ColeSkillTree : SkillTree {
         // tree 2
         ReadInfo("techniquesCole2");
 
-        anathema = new Spell(FindTechnique("anathema"));
-        bucket = new Skill(FindTechnique("bucketSplash"));
-        twilight = new Spell(FindTechnique("twilightCascade"));
-        hollow = new Spell(FindTechnique("hollow"));
-        resist = new Spell(FindTechnique("resistEnchantment"));
-        study = new Spell(FindTechnique("study"));
-        resiviction = new Spell(FindTechnique("resiviction"));
-        eclipse = new Spell(FindTechnique("eclipse"));
-        bonecrush = new Spell(FindTechnique("bonecrush"));
-        reaperGaze = new Spell(FindTechnique("reaperGaze"));
+        anathema = new Spell(FindTechnique("anathema"), imageDatabase.anathema);
+        bucket = new Skill(FindTechnique("bucketSplash"), imageDatabase.bucket);
+        twilight = new Spell(FindTechnique("twilightCascade"), imageDatabase.twilight);
+        hollow = new Spell(FindTechnique("hollow"), imageDatabase.hollow);
+        resist = new Spell(FindTechnique("resistEnchantment"), imageDatabase.resist);
+        study = new Spell(FindTechnique("study"), imageDatabase.study);
+        resiviction = new Spell(FindTechnique("resiviction"), imageDatabase.resiviction);
+        eclipse = new Spell(FindTechnique("eclipse"), imageDatabase.eclipse);
+        bonecrush = new Spell(FindTechnique("bonecrush"), imageDatabase.bonecrush);
+        reaperGaze = new Spell(FindTechnique("reaperGaze"), imageDatabase.reaperGaze);
 
         // next
         anathema.ListNextTechnique = new List<Technique>() { bucket, twilight };

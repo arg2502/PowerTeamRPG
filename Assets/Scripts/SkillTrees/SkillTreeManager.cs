@@ -31,17 +31,29 @@ public class SkillTreeManager {
     List<Technique> tempTechniques;
 
 	// Use this for initialization
-	public SkillTreeManager () {
-        
+    public SkillTreeManager()
+    {
+
+    }
+
+	public void Init () {
+
+        imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
+
+        CreateTrees();     
+
+        heroList = GameControl.control.heroList;
+        AddTempTechniques();
+        AddStartingTechniques();
+    }
+
+    void CreateTrees()
+    {
         jethro = new JethroSkillTree();
         cole = new ColeSkillTree();
         eleanor = new EleanorSkillTree();
         jouliette = new JoulietteSkillTree();
         enemySkillTree = new EnemySkillTree();
-        imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
-        heroList = GameControl.control.heroList;
-        AddTempTechniques();
-        AddStartingTechniques();
     }
 
     public void SetHero(int heroIndex)

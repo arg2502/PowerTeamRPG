@@ -17,7 +17,12 @@ public class SkillTree : MonoBehaviour {
     // inactive = player does not have the skill, but has the possibility to acquire it
     // disabled = skill is locked off to player/has to unlock an earlier skill to make it inactive
 
-    public SkillTree() { }
+
+    protected TechniqueImageDatabase imageDatabase;
+    public SkillTree()
+    {
+        imageDatabase = GameControl.skillTreeManager.imageDatabase;
+    }
 
     // individual tree
     // for switching between trees on the fly

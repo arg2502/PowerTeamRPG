@@ -9,55 +9,55 @@ using System.IO;
 [Serializable]
 public abstract class Passive : Technique {
     public Passive() { }
-    public Passive(string[] list)
-        :base(list)
+    public Passive(string[] list, Sprite icon = null)
+        :base(list, icon)
     {
-        for (int i = 1; i < list.Length; i++)
-        {
-            switch (i)
-            {
-                case 1:
-                    name = list[i];
-                    break;
+        //for (int i = 1; i < list.Length; i++)
+        //{
+        //    switch (i)
+        //    {
+        //        case 1:
+        //            name = list[i];
+        //            break;
 
-                case 2:
-                    description = list[i];
-                    break;
+        //        case 2:
+        //            description = list[i];
+        //            break;
 
-                case 3:
-                    int.TryParse(list[i], out cost);
-                    break;
+        //        case 3:
+        //            int.TryParse(list[i], out cost);
+        //            break;
 
-                case 4:
-                    int.TryParse(list[i], out pm);
-                    break;
+        //        case 4:
+        //            int.TryParse(list[i], out pm);
+        //            break;
 
-                case 5:
-                    int.TryParse(list[i], out damage);
-                    break;
+        //        case 5:
+        //            int.TryParse(list[i], out damage);
+        //            break;
 
-                case 6:
-                    int.TryParse(list[i], out critical);
-                    break;
+        //        case 6:
+        //            int.TryParse(list[i], out critical);
+        //            break;
 
-                case 7:
-                    int.TryParse(list[i], out accuracy);
-                    break;
+        //        case 7:
+        //            int.TryParse(list[i], out accuracy);
+        //            break;
 
-                case 8:
-                    int.TryParse(list[i], out colPos);
-                    break;
+        //        case 8:
+        //            int.TryParse(list[i], out colPos);
+        //            break;
 
-                case 9:
-                    int.TryParse(list[i], out rowPos);
-                    break;
+        //        case 9:
+        //            int.TryParse(list[i], out rowPos);
+        //            break;
 
-                case 10:
-                    int.TryParse(list[i], out level);
-                    break;
+        //        case 10:
+        //            int.TryParse(list[i], out level);
+        //            break;
 
-            }
-        }
+        //    }
+        //}
     }
     
     public abstract void Start();
@@ -73,8 +73,8 @@ public abstract class Passive : Technique {
 [Serializable]
 public abstract class CalcDamagePassive : Passive {
 
-    public CalcDamagePassive(string[] list)
-        : base(list) { }
+    public CalcDamagePassive(string[] list, Sprite icon = null)
+        : base(list, icon) { }
 
     public abstract float CalcDamage(Denigen attackingDen, float damage);
 }
@@ -86,8 +86,8 @@ public abstract class CalcDamagePassive : Passive {
 public abstract class TakeDamagePassive : Passive
 {
     public TakeDamagePassive() { }
-    public TakeDamagePassive(string[] list)
-        :base(list) { }
+    public TakeDamagePassive(string[] list, Sprite icon = null)
+        :base(list, icon) { }
 
     public abstract float TakeDamage(Denigen attackingDen, Denigen other, float damage);
 }
@@ -98,8 +98,8 @@ public abstract class TakeDamagePassive : Passive
 public abstract class PerTurnPassive : Passive
 {
     public PerTurnPassive() { }
-    public PerTurnPassive(string[] list)
-        :base(list) { }
+    public PerTurnPassive(string[] list, Sprite icon = null)
+        :base(list, icon) { }
 
     //public override abstract void Use(Denigen attackingDen, Denigen other = null);
     public abstract int PerTurn(Denigen thisDenigen);
@@ -109,8 +109,8 @@ public abstract class PerTurnPassive : Passive
 [Serializable]
 public class LightRegeneration : PerTurnPassive {
 
-    public LightRegeneration(string[] list)
-        :base(list) { }
+    public LightRegeneration(string[] list, Sprite icon = null)
+        :base(list, icon) { }
 
     public override void Start()
     {
@@ -140,8 +140,8 @@ public class LightRegeneration : PerTurnPassive {
 [Serializable]
 public class SiegeBreaker : CalcDamagePassive
 {
-    public SiegeBreaker(string[] list)
-        :base(list) { }
+    public SiegeBreaker(string[] list, Sprite icon = null)
+        :base(list, icon) { }
 
     public override void Start()
     {
@@ -175,8 +175,8 @@ public class SiegeBreaker : CalcDamagePassive
 public class Duelist : CalcDamagePassive
 {
     int lvl;
-    public Duelist(string[] list, int _lvl)
-        :base(list)
+    public Duelist(string[] list, int _lvl, Sprite icon = null)
+        :base(list, icon)
     {
         // the level will be passed in and all calculations can be based on that
         // Duelist I : level = 1
@@ -209,8 +209,8 @@ public class Duelist : CalcDamagePassive
 [Serializable]
 public class Resilience : PerTurnPassive
 {
-    public Resilience(string[] list)
-        :base(list)
+    public Resilience(string[] list, Sprite icon = null)
+        :base(list, icon)
     {
 
     }
@@ -231,8 +231,8 @@ public class Resilience : PerTurnPassive
 [Serializable]
 public class Unbreakable: TakeDamagePassive
 {
-    public Unbreakable(string[] list)
-        :base(list)
+    public Unbreakable(string[] list, Sprite icon = null)
+        :base(list, icon)
     {
 
     }
@@ -264,8 +264,8 @@ public class Unbreakable: TakeDamagePassive
 public class Magician : CalcDamagePassive
 {
     int lvl;
-    public Magician(string[] list, int _lvl)
-        : base(list)
+    public Magician(string[] list, int _lvl, Sprite icon = null)
+        : base(list, icon)
     {
         // the level will be passed in and all calculations can be based on that
         // Magician I : level = 1
@@ -301,8 +301,8 @@ public class Magician : CalcDamagePassive
 [Serializable]
 public class Caster : PerTurnPassive
 {
-    public Caster(string[] list)
-        :base(list)
+    public Caster(string[] list, Sprite icon = null)
+        :base(list, icon)
     { }
     public override void Start()
     {
@@ -320,8 +320,8 @@ public class Caster : PerTurnPassive
 [Serializable]
 public class Karmaic : CalcDamagePassive
 {
-    public Karmaic(string[] list)
-        : base(list)
+    public Karmaic(string[] list, Sprite icon = null)
+        : base(list, icon)
     { }
     public override void Start()
     {
@@ -340,8 +340,8 @@ public class Karmaic : CalcDamagePassive
 [Serializable]
 public class Disciple : CalcDamagePassive
 {
-    public Disciple(string[] list)
-        : base(list)
+    public Disciple(string[] list, Sprite icon = null)
+        : base(list, icon)
     { }
     public override void Start()
     {
@@ -359,8 +359,8 @@ public class Disciple : CalcDamagePassive
 [Serializable]
 public class Conductor : CalcDamagePassive
 {
-    public Conductor(string[] list)
-        : base(list)
+    public Conductor(string[] list, Sprite icon = null)
+        : base(list, icon)
     { }
     public override void Start()
     {
@@ -378,8 +378,8 @@ public class Conductor : CalcDamagePassive
 [Serializable]
 public class Rushdown : CalcDamagePassive
 {
-    public Rushdown(string[] list)
-        : base(list)
+    public Rushdown(string[] list, Sprite icon = null)
+        : base(list, icon)
     { }
     public override void Start()
     {
@@ -397,7 +397,7 @@ public class Rushdown : CalcDamagePassive
 [Serializable]
 public class Untouchable : TakeDamagePassive
 {
-    public Untouchable(string[] list)
+    public Untouchable(string[] list, Sprite icon = null)
         : base(list)
     { }
 

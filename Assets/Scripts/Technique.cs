@@ -14,6 +14,7 @@ public class Technique {
     // well as comminicating to the battle menu how much PM a tech takes
 
     // Attributes
+    protected string key;
     protected string name;
     protected string description;
     protected int pm;
@@ -35,6 +36,7 @@ public class Technique {
     //[NonSerialized]
     //public Dictionary<Technique, GameObject> treeLinesDictionary = new Dictionary<Technique, GameObject>();
 
+    public string Key { get { return key; } }
     public string Name { get { return name; } set { name = value; } }
     public string Description { get { return description; } set { description = value; } }
     //public int Pm { get { return pm; } set { pm = value; } }
@@ -54,62 +56,33 @@ public class Technique {
     public List<Technique> Prerequisites { get { return prerequisites; } set { prerequisites = value; } }
     public int Damage { get { return damage; } }
     public int Critical { get { return critical; } }
-    public int Accuaracy { get { return accuracy; } set { accuracy = value; } }    
+    public int Accuaracy { get { return accuracy; } set { accuracy = value; } }
+
+    const int LIST_SIZE = 12;
 
     public Technique() {}
     public Technique(string[] list, Sprite icon = null)
     {
-        for (int i = 1; i < list.Length; i++)
+        if (list.Length < LIST_SIZE)
         {
-            switch (i)
-            {
-                case 1:
-                    name = list[i];
-                    break;
-
-                case 2:
-                    description = list[i];
-                    break;
-
-                case 3:
-                    int.TryParse(list[i], out cost);
-                    break;
-
-                case 4:
-                    int.TryParse(list[i], out pm);
-                    break;
-
-                case 5:
-                    int.TryParse(list[i], out damage);
-                    break;
-
-                case 6:
-                    int.TryParse(list[i], out critical);
-                    break;
-
-                case 7:
-                    int.TryParse(list[i], out accuracy);
-                    break;
-
-                case 8:
-                    int.TryParse(list[i], out colPos);
-                    break;
-
-                case 9:
-                    int.TryParse(list[i], out rowPos);
-                    break;
-
-                case 10:
-                    int.TryParse(list[i], out level);
-                    break;
-
-                case 11:
-                    int targetInt;
-                    int.TryParse(list[i], out targetInt);
-                    targetType = (TargetType)targetInt;
-                    break;
-            }
+            Debug.LogError("TECHNIQUE STATS IS TOO SMALL");
+            return;
         }
+
+        key = list[0];
+        name = list[1];
+        description = list[2];
+        int.TryParse(list[3], out cost);
+        int.TryParse(list[4], out pm);
+        int.TryParse(list[5], out damage);
+        int.TryParse(list[6], out critical);
+        int.TryParse(list[7], out accuracy);
+        int.TryParse(list[8], out colPos);
+        int.TryParse(list[9], out rowPos);
+        int.TryParse(list[10], out level);
+        int targetInt;
+        int.TryParse(list[11], out targetInt);
+        targetType = (TargetType)targetInt;
 
         if (icon != null)
             treeImage = icon;

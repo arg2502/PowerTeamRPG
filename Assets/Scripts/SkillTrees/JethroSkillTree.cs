@@ -55,18 +55,18 @@ public class JethroSkillTree : SkillTree {
         ReadInfo("techniquesJethro1");
 
         // create all techniques
-        helmsplitter = new Skill(FindTechnique("helmsplitter"));
-        trinitySlice = new Skill(FindTechnique("trinitySlice"));
-        arcSlash = new Skill(FindTechnique("arcSlash"));
-        siegeBreaker = new SiegeBreaker(FindTechnique("siegeBreaker"));
-        frostEdge = new Spell(FindTechnique("frostEdge"));
-        mordstreich = new Skill(FindTechnique("mordstreich"));
-        riser = new Skill(FindTechnique("riser"));
-        duelistI = new Duelist(FindTechnique("duelist1"), 1);
-        duelistII = new Duelist(FindTechnique("duelist2"), 2);
-        duelistIII = new Duelist(FindTechnique("duelist3"), 3);
-        rally = new Skill(FindTechnique("rally"));
-        goldSoul = new Skill(FindTechnique("goldSoul"));
+        helmsplitter = new Skill(FindTechnique("helmsplitter"), imageDatabase.helmsplitter);
+        trinitySlice = new Skill(FindTechnique("trinitySlice"), imageDatabase.trinitySlice);
+        arcSlash = new Skill(FindTechnique("arcSlash"), imageDatabase.arcSlash);
+        siegeBreaker = new SiegeBreaker(FindTechnique("siegeBreaker"), imageDatabase.siegeBreaker);
+        frostEdge = new Spell(FindTechnique("frostEdge"), imageDatabase.frostEdge);
+        mordstreich = new Skill(FindTechnique("mordstreich"), imageDatabase.mordstreich);
+        riser = new Skill(FindTechnique("riser"), imageDatabase.riser);
+        duelistI = new Duelist(FindTechnique("duelist1"), 1, imageDatabase.duelistI);
+        duelistII = new Duelist(FindTechnique("duelist2"), 2, imageDatabase.duelistII);
+        duelistIII = new Duelist(FindTechnique("duelist3"), 3, imageDatabase.duelistIII);
+        rally = new Skill(FindTechnique("rally"), imageDatabase.rally);
+        goldSoul = new Skill(FindTechnique("goldSoul"), imageDatabase.goldSoul);
 
         // set nexts to create branches
         helmsplitter.ListNextTechnique = new List<Technique>() { trinitySlice, duelistI };
@@ -78,57 +78,35 @@ public class JethroSkillTree : SkillTree {
         duelistII.ListNextTechnique = new List<Technique>() { duelistIII, goldSoul };
 
         // prerequisites
-        trinitySlice.Prerequisites = new List<Technique>();
-        trinitySlice.Prerequisites.Add(helmsplitter);
-
-        arcSlash.Prerequisites = new List<Technique>();
-        arcSlash.Prerequisites.Add(trinitySlice);
-
-        siegeBreaker.Prerequisites = new List<Technique>();
-        siegeBreaker.Prerequisites.Add(trinitySlice);
-
-        frostEdge.Prerequisites = new List<Technique>();
-        frostEdge.Prerequisites.Add(siegeBreaker);
-
-        mordstreich.Prerequisites = new List<Technique>();
-        mordstreich.Prerequisites.Add(frostEdge);
-
-        riser.Prerequisites = new List<Technique>();
-        riser.Prerequisites.Add(frostEdge);
-
-        duelistI.Prerequisites = new List<Technique>();
-        duelistI.Prerequisites.Add(helmsplitter);
-
-        rally.Prerequisites = new List<Technique>();
-        rally.Prerequisites.Add(duelistI);
-
-        duelistII.Prerequisites = new List<Technique>();
-        duelistII.Prerequisites.Add(rally);
-
-        duelistIII.Prerequisites = new List<Technique>();
-        duelistIII.Prerequisites.Add(duelistII);
-
-        goldSoul.Prerequisites = new List<Technique>();
-        goldSoul.Prerequisites.Add(duelistII);
-
+        trinitySlice.Prerequisites = new List<Technique>() { helmsplitter };
+        arcSlash.Prerequisites = new List<Technique>() { trinitySlice };
+        siegeBreaker.Prerequisites = new List<Technique>() { trinitySlice };
+        frostEdge.Prerequisites = new List<Technique>() { siegeBreaker };
+        mordstreich.Prerequisites = new List<Technique>() { frostEdge };
+        riser.Prerequisites = new List<Technique>() { frostEdge };
+        duelistI.Prerequisites = new List<Technique>() { helmsplitter };
+        rally.Prerequisites = new List<Technique>() { duelistI };
+        duelistII.Prerequisites = new List<Technique>() { rally };
+        duelistIII.Prerequisites = new List<Technique>() { duelistII };
+        goldSoul.Prerequisites = new List<Technique>() { duelistII };
 
         // read in info for next tree
         ReadInfo("techniquesJethro2");
 
         // TREE 2 STATS        
-        fog = new Spell(FindTechnique("fog"));
-        frost = new Spell(FindTechnique("frost"));
-        iceArmor = new Spell(FindTechnique("iceArmor"));
-        iceBarrier = new Spell(FindTechnique("iceBarrier"));
-        resilience = new Resilience(FindTechnique("resilience"));
-        coldShoulder = new Spell(FindTechnique("coldShoulder"));
-        unbreakable = new Unbreakable(FindTechnique("unbreakable"));
-        magicianI = new Magician(FindTechnique("magician1"), 1);
-        magicianII = new Magician(FindTechnique("magician2"), 2);
-        magicianIII = new Magician(FindTechnique("magician3"), 3);
-        iceSpear = new Spell(FindTechnique("iceSpear"));
-        frostBite = new Spell(FindTechnique("frostBite"));
-        diamondPeak = new Spell(FindTechnique("diamondPeak"));
+        fog = new Spell(FindTechnique("fog"), imageDatabase.fog);
+        frost = new Spell(FindTechnique("frost"), imageDatabase.frost);
+        iceArmor = new Spell(FindTechnique("iceArmor"), imageDatabase.iceArmor);
+        iceBarrier = new Spell(FindTechnique("iceBarrier"), imageDatabase.iceBarrier);
+        resilience = new Resilience(FindTechnique("resilience"), imageDatabase.resilience);
+        coldShoulder = new Spell(FindTechnique("coldShoulder"), imageDatabase.coldShoulder);
+        unbreakable = new Unbreakable(FindTechnique("unbreakable"), imageDatabase.unbreakable);
+        magicianI = new Magician(FindTechnique("magician1"), 1, imageDatabase.magicianI);
+        magicianII = new Magician(FindTechnique("magician2"), 2, imageDatabase.magicianII);
+        magicianIII = new Magician(FindTechnique("magician3"), 3, imageDatabase.magicianIII);
+        iceSpear = new Spell(FindTechnique("iceSpear"), imageDatabase.iceSpear);
+        frostBite = new Spell(FindTechnique("frostBite"), imageDatabase.frostBite);
+        diamondPeak = new Spell(FindTechnique("diamondPeak"), imageDatabase.diamondPeak);
 
 
         // set nexts to create branches
