@@ -6,5 +6,7 @@ public class EnemyData : DenigenData {
 
     public int expMultiplier;
     public int goldMultiplier;
+
+    public string battleMusicKey;
     
 }

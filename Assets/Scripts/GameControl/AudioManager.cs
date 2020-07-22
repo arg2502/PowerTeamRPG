@@ -19,9 +19,14 @@ public class AudioManager : MonoBehaviour{
     float snapShotTransitionTime = 0.5f;
 
     float fadeOutRate = 5f;
-    float fadeInRate = 1.5f; 
+    float fadeInRate = 1.5f;
+
+    public AudioDatabase audioDatabase;
     
     public void Init () {
+
+        audioDatabase = Resources.Load<AudioDatabase>("Databases/AudioDatabase");
+
         // instantiating music source obj
         var musList = mus_obj.GetComponentsInChildren<AudioSource>();
         source_MUS = new List<AudioSource>();
@@ -37,6 +42,11 @@ public class AudioManager : MonoBehaviour{
     void SnapshotRoomTransition()
     {
         StartCoroutine(SnapshotTransition(GameControl.control.currentRoom.roomType));
+    }
+
+    void SnapshotBattleTransition()
+    {
+        StartCoroutine(SnapshotTransition(roomControl.RoomType.NORMAL));
     }
 
     IEnumerator SnapshotTransition(roomControl.RoomType roomType)
@@ -244,5 +254,29 @@ public class AudioManager : MonoBehaviour{
 
         // if the clip was not found, then return false
         return false;
+    }
+
+    public void StartBattleMusic(EnemyData enemy)
+    {
+        // Take key from enemy passed in and play that music
+        AudioItem songs = audioDatabase.battleMusic.Find(m => m.key == enemy.battleMusicKey);
+
+        if(songs == null)
+        {
+            Debug.LogError("Songs not found -- defaulting to first available song");
+            if(audioDatabase.battleMusic.Count <= 0)
+            {
+                Debug.Log("Yo something went wrong -- no battle music found at all");
+                return;
+            }
+            songs = audioDatabase.battleMusic[0];
+        }
+
+        if (songs.clips.Count == 1)
+            StartMusic(songs.clips[0], true, false);
+        else if (songs.clips.Count == 2)
+            StartMusic(songs.clips[0], songs.clips[1], true, false);
+
+        SnapshotBattleTransition();
     }
 }

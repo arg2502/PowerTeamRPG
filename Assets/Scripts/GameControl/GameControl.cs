@@ -891,11 +891,17 @@ public class GameControl : MonoBehaviour {
         // Recieve the battle info from the enemy, such as enemy types and # of enemies
         numOfEnemies = (_numOfEnemies < 0) ? enemies.Count : _numOfEnemies;
         enemies = _enemies;
+        if (enemies.Count <= 0)
+        {
+            Debug.LogError("No enemies in list -- yo something went wrong here");
+            return;
+        }
 
         //save the current room, to achieve persistency while paused
         RecordRoom();
 
-        audioManager.PauseCurrentAndStartNewMusic(battleIntro, battleLoop, true, false);
+        //audioManager.PauseCurrentAndStartNewMusic(battleIntro, battleLoop, true, false);
+        audioManager.StartBattleMusic(enemies[0]);
 
         // load the battle scene
         LoadSceneAsync("BattleScene");
