@@ -5,3 +5,4 @@ bite	Bite			0	80	15	95				1
 frenzy	Frenzy			1	0	0	100				7
 stomp	Stomp			0	75	25	90				1
 heal	Heal			4	15	0	100				7
+slapstick	Slapstick			0	70	10	100				1

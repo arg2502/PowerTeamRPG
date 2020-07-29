@@ -16,6 +16,9 @@ public class EnemySkillTree : SkillTree {
     public Skill stomp;
     public Spell heal;
 
+    // CLOWNS
+    public Skill slapstick;
+
     public EnemySkillTree()
     {
         ReadInfo("techniquesEnemies");
@@ -26,5 +29,6 @@ public class EnemySkillTree : SkillTree {
         frenzy = new Skill(FindTechnique("frenzy"));
         stomp = new Skill(FindTechnique("stomp"));
         heal = new Spell(FindTechnique("heal"));
+        slapstick = new Skill(FindTechnique("slapstick"));
     }
 }
