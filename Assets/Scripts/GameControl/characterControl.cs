@@ -159,7 +159,7 @@ public class characterControl : OverworldObject {
             }
         }
 
-        if (other.GetComponent<NPCDialogue>() || other.GetComponent<InteractiveObject>())
+        if ((other.GetComponent<NPCDialogue>() || other.GetComponent<InteractiveObject>()) && !isCarrying)
         {
             // While within an NPC's trigger area, constantly check for NPCs
             // We want to constantly check in case we are in situations where there are multiple NPCs
@@ -187,11 +187,15 @@ public class characterControl : OverworldObject {
 
                     if (hit.collider != null && hit.collider.tag == "Movable")
                     {
-                        if (readyForPickup == null)
+                        if(readyForPickup != null && readyForPickup != hit.transform.GetComponent<MovableOverworldObject>())
                         {
-                            readyForPickup = hit.transform.GetComponent<MovableOverworldObject>();
-                            readyForPickup.ShowInteractionNotification("Pick Up");
+                            readyForPickup.HideInteractionNotification();
+                            readyForPickup = null;
                         }
+                        
+                        readyForPickup = hit.transform.GetComponent<MovableOverworldObject>();
+                        readyForPickup.ShowInteractionNotification("Pick Up");
+                        
                     }
                     else
                     {
@@ -289,10 +293,10 @@ public class characterControl : OverworldObject {
     {
         // Check if there is an NPC if front of us by casting a box based off of Jethro's lastMovement vector        
         var talkingVector = lastMovement * talkingDistance;
-        var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);
-        
+        var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);        
+
         // If there was a collision with an NPC that we can talk to, then set that to the current NPC
-        if(triggerHit.collider)
+        if (triggerHit.collider)
         {
             if (triggerHit.collider.GetComponentInChildren<NPCDialogue>())
             {
@@ -446,7 +450,7 @@ public class characterControl : OverworldObject {
             moveSpeed = walkSpeed;
             if (GameControl.control.currentCharacter != HeroCharacter.JOULIETTE)
             {
-                if (Input.GetButton("Run"))
+                if (Input.GetButton("Run") && !isCarrying)
                     moveSpeed = runSpeed;
             }
             else

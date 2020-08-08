@@ -38,9 +38,11 @@ public class OverworldObject : MonoBehaviour {
     protected float LightWeight { get { return 1f; } }
     protected float NormalWeight { get { return 3f; } }
     protected float HeavyWeight { get { return 5f; } }
-    
-	// Use this for initialization
-	protected void Start () {
+
+    protected bool showNotificationAgain = true;
+
+    // Use this for initialization
+    protected void Start () {
         sr = gameObject.GetComponent<SpriteRenderer>();
 		sr.sortingOrder = (int)(-transform.position.y * 10.0f) + sortingOffset;
         questAlreadyTalked = new List<string>();
@@ -123,7 +125,7 @@ public class OverworldObject : MonoBehaviour {
         Invoke(functionName, 0f);
     }
 
-    public virtual void BackToNormal() { ShowInteractionNotification(); }
+    public virtual void BackToNormal() { if(showNotificationAgain) ShowInteractionNotification(); }
     
     /// <summary>
     /// Called through dialogue response

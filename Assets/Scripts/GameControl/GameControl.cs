@@ -111,7 +111,7 @@ public class GameControl : MonoBehaviour {
 
     public void SetCharacterState(characterControl.CharacterState newState)
     {
-        print("CHANGING STATE -- FROM: " + currentCharacterState + "   TO: " + newState);
+        //print("CHANGING STATE -- FROM: " + currentCharacterState + "   TO: " + newState);
         
         PrevState = currentCharacterState;
         switch (newState)

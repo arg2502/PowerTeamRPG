@@ -76,6 +76,8 @@ public class TreasureChest : NPCObject
                 case ChestType.KEY: OpenKey(); break;
                 case ChestType.ITEM: OpenItem(); break;
             }
+            dialogueComponent.gameObject.SetActive(false);
+            showNotificationAgain = false;
         }
     }
 
@@ -101,5 +103,5 @@ public class TreasureChest : NPCObject
     {
         message = "Open";
         base.ShowInteractionNotification(message);
-    }
+    }    
 }
