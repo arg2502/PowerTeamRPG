@@ -696,13 +696,8 @@ public class GameControl : MonoBehaviour {
     }
 
     public void ReturnFromBattle()
-    {
-        if (string.IsNullOrEmpty(currentScene))
-            currentScene = "testScene";     
-        if (!ReadyForNextScene)
-            ReadyForNextScene = true;
-        else
-            GameControl.control.LoadSceneAsync(currentScene);
+    {        
+        LoadSceneAsync(currentScene ?? "testScene");
     }
 
     public void LoadLastSavedStatue()
@@ -737,21 +732,7 @@ public class GameControl : MonoBehaviour {
         if (showNotification)
             UIManager.PushNotificationMenu("You got " + gold + " gold!");
     }
-
-    AsyncOperation currentOperation;
-    public bool ReadyForNextScene
-    {
-        get { return currentOperation.allowSceneActivation; }
-        set
-        {
-            currentOperation.allowSceneActivation = value;
-            if(value == true)
-            {
-                if (currentOperation.progress < 0.9f)
-                    UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
-            }
-        }
-    }
+        
     public void LoadScene(string _scene)
     {
         SceneManager.LoadScene(_scene);
@@ -764,15 +745,19 @@ public class GameControl : MonoBehaviour {
 
     IEnumerator LoadAsync(string _scene, bool waitToLoad = false)
     {
-        currentOperation = SceneManager.LoadSceneAsync(_scene);
-        if (waitToLoad)
-            ReadyForNextScene = false;
-        else
-            UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
-        while (currentOperation.progress < 0.9f)
+        string currentScene = SceneManager.GetActiveScene().name;
+        //AsyncOperation currentOperation = SceneManager.LoadSceneAsync(_scene, LoadSceneMode.Additive);
+        AsyncOperation currentOperation = SceneManager.LoadSceneAsync(_scene);
+
+        UIManager.PushMenu(UIManager.uiDatabase.LoadingScreen);
+
+        while (!currentOperation.isDone)
         {
             yield return null;
-        }        
+        }
+
+        print("current scene: " + currentScene);
+        //SceneManager.UnloadSceneAsync(currentScene);
     }
 
     public static bool AnimatorHasParameter(Animator runAnim, string parameter)
