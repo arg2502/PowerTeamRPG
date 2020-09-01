@@ -55,22 +55,22 @@ public class EleanorSkillTree : SkillTree
         ReadInfo("techniquesEleanor1");
 
         // create all techniques
-        purge = new Spell(FindTechnique("purge"));
-        karmaic = new Karmaic(FindTechnique("karmaic"));
-        tears = new Spell(FindTechnique("tears"));
-        peace = new Spell(FindTechnique("peace"));
-        gaze = new Spell(FindTechnique("gaze"));
-        sharedBlood = new Spell(FindTechnique("sharedBlood"));
-        disciple1 = new Disciple(FindTechnique("disciple1"));
-        disciple2 = new Disciple(FindTechnique("disciple2"));
-        disciple3 = new Disciple(FindTechnique("disciple3"));
-        blessing = new Spell(FindTechnique("blessing"));
-        ressurection1 = new Spell(FindTechnique("ressurection1"));
-        ressurection2 = new Spell(FindTechnique("ressurection2"));
-        ressurection3 = new Spell(FindTechnique("ressurection3"));
-        rejoice = new Spell(FindTechnique("rejoice"));
-        eyesOfDarkness = new Spell(FindTechnique("eyesOfDarkness"));
-        salvation = new Spell(FindTechnique("salvation"));
+        purge = new Spell(FindTechnique("purge"), imageDatabase.purge);
+        karmaic = new Karmaic(FindTechnique("karmaic"), imageDatabase.karmaic);
+        tears = new Spell(FindTechnique("tears"), imageDatabase.tears);
+        peace = new Spell(FindTechnique("peace"), imageDatabase.peace);
+        gaze = new Spell(FindTechnique("gaze"), imageDatabase.gaze);
+        sharedBlood = new Spell(FindTechnique("sharedBlood"), imageDatabase.sharedBlood);
+        disciple1 = new Disciple(FindTechnique("disciple1"), imageDatabase.disciple1);
+        disciple2 = new Disciple(FindTechnique("disciple2"), imageDatabase.disciple2);
+        disciple3 = new Disciple(FindTechnique("disciple3"), imageDatabase.disciple3);
+        blessing = new Spell(FindTechnique("blessing"), imageDatabase.blessing);
+        ressurection1 = new Spell(FindTechnique("ressurection1"), imageDatabase.ressurection1);
+        ressurection2 = new Spell(FindTechnique("ressurection2"), imageDatabase.ressurection2);
+        ressurection3 = new Spell(FindTechnique("ressurection3"), imageDatabase.ressurection3);
+        rejoice = new Spell(FindTechnique("rejoice"), imageDatabase.rejoice);
+        eyesOfDarkness = new Spell(FindTechnique("eyesOfDarkness"), imageDatabase.eyesOfDarkness);
+        salvation = new Spell(FindTechnique("salvation"), imageDatabase.salvation);
 
         // next
         purge.ListNextTechnique = new List<Technique>() { karmaic, tears };
@@ -104,14 +104,14 @@ public class EleanorSkillTree : SkillTree
         ReadInfo("techniquesEleanor2");
 
         // TREE 2 STATS        
-        weep = new Spell(FindTechnique("weep"));
-        drawBlood = new Spell(FindTechnique("drawBlood"));
-        borrowed = new Spell(FindTechnique("borrowed"));
-        antiheal = new Spell(FindTechnique("antiheal"));
-        distress = new Spell(FindTechnique("distress"));
-        passing = new Spell(FindTechnique("passing"));
-        staffStrike = new Skill(FindTechnique("staffStrike"));
-        staffSlam = new Skill(FindTechnique("staffSlam"));
+        weep = new Spell(FindTechnique("weep"), imageDatabase.weep);
+        drawBlood = new Spell(FindTechnique("drawBlood"), imageDatabase.drawBlood);
+        borrowed = new Spell(FindTechnique("borrowed"), imageDatabase.borrowed);
+        antiheal = new Spell(FindTechnique("antiheal"), imageDatabase.antiheal);
+        distress = new Spell(FindTechnique("distress"), imageDatabase.distress);
+        passing = new Spell(FindTechnique("passing"), imageDatabase.passing);
+        staffStrike = new Skill(FindTechnique("staffStrike"), imageDatabase.staffStrike);
+        staffSlam = new Skill(FindTechnique("staffSlam"), imageDatabase.staffSlam);
 
         // next
         weep.ListNextTechnique = new List<Technique>() { staffStrike, drawBlood };

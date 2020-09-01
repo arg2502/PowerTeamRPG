@@ -53,17 +53,17 @@ public class JoulietteSkillTree : SkillTree
         ReadInfo("techniquesJouliette1");
 
         // create all techniques
-        pivotKick = new Skill(FindTechnique("pivotKick"));
-        scorpio = new Spell(FindTechnique("scorpio"));
-        tempest = new Skill(FindTechnique("tempest"));
-        conduct = new Spell(FindTechnique("conduct"));
-        conductor = new Conductor(FindTechnique("conductor"));
-        climax = new Skill(FindTechnique("climax"));
-        drill = new Skill(FindTechnique("drill"));
-        doubleCut = new Skill(FindTechnique("doubleCut"));
-        headDash = new Skill(FindTechnique("headDash"));
-        armorRush = new Skill(FindTechnique("armorRush"));
-        doubleDash = new Spell(FindTechnique("doubleDash"));
+        pivotKick = new Skill(FindTechnique("pivotKick"), imageDatabase.pivotKick);
+        scorpio = new Spell(FindTechnique("scorpio"), imageDatabase.scorpio);
+        tempest = new Skill(FindTechnique("tempest"), imageDatabase.tempest);
+        conduct = new Spell(FindTechnique("conduct"), imageDatabase.conduct);
+        conductor = new Conductor(FindTechnique("conductor"), imageDatabase.conductor);
+        climax = new Skill(FindTechnique("climax"), imageDatabase.climax);
+        drill = new Skill(FindTechnique("drill"), imageDatabase.drill);
+        doubleCut = new Skill(FindTechnique("doubleCut"), imageDatabase.doubleCut);
+        headDash = new Skill(FindTechnique("headDash"), imageDatabase.headDash);
+        armorRush = new Skill(FindTechnique("armorRush"), imageDatabase.armorRush);
+        doubleDash = new Spell(FindTechnique("doubleDash"), imageDatabase.doubleDash);
 
         // next
         pivotKick.ListNextTechnique = new List<Technique>() { scorpio, climax, headDash };
@@ -91,18 +91,18 @@ public class JoulietteSkillTree : SkillTree
         ReadInfo("techniquesJouliette2");
 
         // TREE 2 STATS        
-        taunt = new Skill(FindTechnique("taunt"));
-        boast = new Skill(FindTechnique("boast"));
-        rushdown1 = new Rushdown(FindTechnique("rushdown1"));
-        rushdown2 = new Rushdown(FindTechnique("rushdown2"));
-        rushdown3 = new Rushdown(FindTechnique("rushdown3"));
-        heckle = new Skill(FindTechnique("heckle"));
-        untouchable = new Untouchable(FindTechnique("untouchable"));
-        misdirection = new Skill(FindTechnique("misdirection"));
-        flickerDodge = new Skill(FindTechnique("flickerDodge"));
-        flickerCounter = new Skill(FindTechnique("flickerCounter"));
-        polarize = new Skill(FindTechnique("polarize"));
-        flickerAssault = new Skill(FindTechnique("flickerAssault"));
+        taunt = new Skill(FindTechnique("taunt"), imageDatabase.taunt);
+        boast = new Skill(FindTechnique("boast"), imageDatabase.boast);
+        rushdown1 = new Rushdown(FindTechnique("rushdown1"), imageDatabase.rushdown1);
+        rushdown2 = new Rushdown(FindTechnique("rushdown2"), imageDatabase.rushdown2);
+        rushdown3 = new Rushdown(FindTechnique("rushdown3"), imageDatabase.rushdown3);
+        heckle = new Skill(FindTechnique("heckle"), imageDatabase.heckle);
+        untouchable = new Untouchable(FindTechnique("untouchable"), imageDatabase.untouchable);
+        misdirection = new Skill(FindTechnique("misdirection"), imageDatabase.misdirection);
+        flickerDodge = new Skill(FindTechnique("flickerDodge"), imageDatabase.flickerDodge);
+        flickerCounter = new Skill(FindTechnique("flickerCounter"), imageDatabase.flickerCounter);
+        polarize = new Skill(FindTechnique("polarize"), imageDatabase.polarize);
+        flickerAssault = new Skill(FindTechnique("flickerAssault"), imageDatabase.flickerAssault);
 
         // next
         taunt.ListNextTechnique = new List<Technique>() { boast };
