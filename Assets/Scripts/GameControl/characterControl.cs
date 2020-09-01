@@ -226,7 +226,7 @@ public class characterControl : OverworldObject {
             gatewayNotification?.GetComponent<Animator>()?.Play("FadeOut");
         }
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if ((collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponent<NPCDialogue>(), GameControl.control.currentObj))
+        if ((collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponentInParent<OverworldObject>(), GameControl.control.currentObj))
             ||(collision.GetComponent<InteractiveObject>() && Equals(collision.GetComponent<InteractiveObject>(), GameControl.control.currentObj)))
         {
             ResetCurrentNPC();
@@ -296,20 +296,16 @@ public class characterControl : OverworldObject {
         var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);        
 
         // If there was a collision with an NPC that we can talk to, then set that to the current NPC
-        if (triggerHit.collider)
+        if (triggerHit.collider && triggerHit.collider.GetComponentInChildren<NPCDialogue>())
         {
-            if (triggerHit.collider.GetComponentInChildren<NPCDialogue>())
-            {
-                var npcDialogue = triggerHit.collider.GetComponentInChildren<NPCDialogue>();
-                if (npcDialogue != null && npcDialogue.canTalk)
-                    ResetCurrentNPC(npcDialogue.GetComponentInParent<OverworldObject>());
-            }
-            else if (triggerHit.collider.GetComponent<InteractiveObject>())
-            {
-                var io = triggerHit.collider.GetComponent<InteractiveObject>();
-                if (io != null)
-                    ResetCurrentNPC(io);
-            }
+            var npcDialogue = triggerHit.collider.GetComponentInChildren<NPCDialogue>();
+            if (npcDialogue.canTalk)
+                ResetCurrentNPC(npcDialogue.GetComponentInParent<OverworldObject>());
+        }
+        // There might have also been a collision with an interactable object, set that instead
+        else if (triggerHit.collider && triggerHit.collider.GetComponent<InteractiveObject>())
+        {
+            ResetCurrentNPC(triggerHit.collider.GetComponent<InteractiveObject>());
         }
         // otherwise, there's no one in front of us, so we shouldn't be able to talk to anyone
         else
