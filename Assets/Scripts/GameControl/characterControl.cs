@@ -24,6 +24,7 @@ public class characterControl : OverworldObject {
     float walkSpeed;// = 6f;
     float runSpeed { get { return walkSpeed * 1.5f; } }//9f;
     float acc = 0f;
+    float accRate = 0.4f;
     float vel = 0f;
     float maxAcc = 2f;
     float maxVel = 25f;
@@ -49,6 +50,7 @@ public class characterControl : OverworldObject {
     // Eleanor -- Hidden
     List<HiddenObject> hiddenObjFound;
     float hiddenRadius = 20f;
+    bool isUsingSight = false;
 
     // Jouliette -- Zap
     float zapRadius = 3f;
@@ -77,6 +79,8 @@ public class characterControl : OverworldObject {
     InteractionNotification gatewayNotification;
 
     QuestCutscene currentCutscene;
+
+    public GameObject fireballObj;
 
     [Header("TEST")]
     [SerializeField] bool isTest;
@@ -159,7 +163,7 @@ public class characterControl : OverworldObject {
             }
         }
 
-        if ((other.GetComponent<NPCDialogue>() || other.GetComponent<InteractiveObject>()) && !isCarrying)
+        if ((other.GetComponent<NPCDialogue>() || other.GetComponent<InteractiveObject>()) && !isCarrying && !isUsingSight)
         {
             // While within an NPC's trigger area, constantly check for NPCs
             // We want to constantly check in case we are in situations where there are multiple NPCs
@@ -293,25 +297,27 @@ public class characterControl : OverworldObject {
     {
         // Check if there is an NPC if front of us by casting a box based off of Jethro's lastMovement vector        
         var talkingVector = lastMovement * talkingDistance;
-        var triggerHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);        
+        var triggerHit = Physics2D.BoxCastAll(boxCollider.bounds.center, boxCollider.size, 0, talkingVector, Mathf.Abs(talkingVector.magnitude), mask);
 
-        // If there was a collision with an NPC that we can talk to, then set that to the current NPC
-        if (triggerHit.collider && triggerHit.collider.GetComponentInChildren<NPCDialogue>())
+        foreach (var h in triggerHit)
         {
-            var npcDialogue = triggerHit.collider.GetComponentInChildren<NPCDialogue>();
-            if (npcDialogue.canTalk)
-                ResetCurrentNPC(npcDialogue.GetComponentInParent<OverworldObject>());
+            if(h.collider.GetComponentInChildren<NPCDialogue>())
+            {
+                var npcDialogue = h.collider.GetComponentInChildren<NPCDialogue>();
+                if (npcDialogue.canTalk)
+                {
+                    ResetCurrentNPC(npcDialogue.GetComponentInParent<OverworldObject>());
+                }
+                return;
+            }
+            else if(h.collider.GetComponent<InteractiveObject>())
+            {
+                ResetCurrentNPC(h.collider.GetComponent<InteractiveObject>());
+                return;
+            }   
         }
-        // There might have also been a collision with an interactable object, set that instead
-        else if (triggerHit.collider && triggerHit.collider.GetComponent<InteractiveObject>())
-        {
-            ResetCurrentNPC(triggerHit.collider.GetComponent<InteractiveObject>());
-        }
-        // otherwise, there's no one in front of us, so we shouldn't be able to talk to anyone
-        else
-        {
-            ResetCurrentNPC();
-        }
+
+        ResetCurrentNPC();       
     }
     // END NPC Talking interaction section ---------------------------
 
@@ -345,6 +351,8 @@ public class characterControl : OverworldObject {
                                    new Vector2 (direction.x, 0), Mathf.Abs (direction.x), mask);
 			if (horHit.collider == null){
 				transform.Translate(new Vector2 (direction.x, 0.0f));
+                acc = 0;
+                vel = 0;
 			}
 
 			var vertHit = Physics2D.BoxCast (boxCollider.bounds.center, boxCollider.size, 0,
@@ -352,7 +360,9 @@ public class characterControl : OverworldObject {
 
 			if (vertHit.collider == null){
 				transform.Translate(new Vector2 (0.0f, direction.y));
-			}
+                acc = 0;
+                vel = 0;
+            }
 		}
 		else {
 			//if the collider is null, no collision, just translate
@@ -377,8 +387,7 @@ public class characterControl : OverworldObject {
     void UpdateNormal()
     {
         if (Input.GetButtonDown("Pause"))
-        {
-            //GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.PauseMenu);         
+        {      
             GameControl.UIManager.PushPauseCarousel();
         }
 
@@ -404,178 +413,21 @@ public class characterControl : OverworldObject {
                     TalkToNPC();
             }
 
-            if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR
-                && GameControl.control.currentCharacterState == CharacterState.Normal)
-            {
-                if (canMove)
-                {
-                    hiddenObjFound = new List<HiddenObject>();
-
-                    // For now, I'll do a large overlap circle to detect any HiddenObjects
-                    // within camera view (not precise, but around there)
-                    // This is probably not the best way, but we'll see what happens
-                    var hits = Physics2D.OverlapCircleAll(transform.position, hiddenRadius);
-                    foreach (var h in hits)
-                    {
-                        if (h.GetComponent<HiddenObject>())
-                            hiddenObjFound.Add(h.GetComponent<HiddenObject>());
-                    }
-                    if (hiddenObjFound.Count > 0)
-                    {
-                        foreach (var obj in hiddenObjFound)
-                            obj.Show();
-                    }
-
-                    canMove = false;
-                }
-                else
-                {
-                    foreach (var obj in hiddenObjFound)
-                        obj.Hide();
-
-                    hiddenObjFound.Clear();
-                    canMove = true;
-                }
-            }
+            HandleCharacterAction();
+            
         }
 
         // STATE == NORMAL
         if (canMove)
         {
-            isMoving = false;
-            moveSpeed = walkSpeed;
-            if (GameControl.control.currentCharacter != HeroCharacter.JOULIETTE)
-            {
-                if (Input.GetButton("Run") && !isCarrying)
-                    moveSpeed = runSpeed;
-            }
-            else
-            {
-                if (Input.GetButton("Run"))
-                {
-                    if (acc < 0) acc = 0;
-                    acc += Time.deltaTime;
-                    if (acc >= maxAcc) acc = maxAcc;
-
-                    vel += acc;
-                    if (vel > maxVel) vel = maxVel;
-                    moveSpeed = vel;
-
-                }
-                else
-                {
-                    //if (acc > 0) acc = 0;
-                    //acc -= Time.deltaTime;
-                    //if (acc <= -maxAcc) acc = -maxAcc;
-                    //vel += acc;
-                    //if (vel <= walkSpeed) vel = walkSpeed;
-                    //moveSpeed = vel;
-                    if(acc != 0 || vel != 0) { acc = 0; vel = 0; }
-                    moveSpeed = walkSpeed;
-                }
-            }
-
-            //Check for input
-            if (Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
-            {
-                //call the move function
-                Move(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            }
-
-            // special action
-            if (Input.GetButtonDown("Submit"))
-            {
-                // If picking up or putting down an object
-                if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
-                {
-                    //If the player is not carrying an object, check for one
-                    if (!isCarrying && canCarry)
-                    {
-                        //create a box cast specifically for picking up objects, as per Alec's request
-                        //Vector2 direction = lastMovement;
-                        //direction.Normalize();
-                        //direction *= moveSpeed * Time.deltaTime;
-                        //hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
-
-                        //if (hit.collider != null && hit.collider.tag == "Movable")
-                        if(readyForPickup != null)
-                        {
-                            //if it hits one, move the object to the position above Jethro's head and set iscarried to true
-                            isCarrying = true;
-                            //disable the object's collider, so it doesn't hinder movement
-                            readyForPickup.GetComponent<Collider2D>().enabled = false;
-                            readyForPickup.HideInteractionNotification();
-                            //set carried object to the object we are picking up
-                            carriedObject = readyForPickup;
-                            readyForPickup = null;
-                            carriedObject.isCarried = true; // set the object's isCarried to true
-                            carriedObject.HideInteractionNotification(true);
-                                                            //Move the object to the position above player's head
-                            carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
-                            //make sure the object is always rendered above the player
-                            carriedObject.SortingOrder = sr.sortingOrder + 1;
-                        }
-                    }
-                    //if an object is already being carried, drop the object in the direction that jethro is facing
-                    else if (isCarrying)
-                    {
-                        //check that the area you are facing is open enough to drop the object
-                        //Start by calculating the adjusted position of player's feet (since we're placing object "on the ground")
-                        Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
-                                                               (transform.position.y + boxCollider.offset.y));
-                        //get the carried object's collider (to avoid calling Get component more than necessary
-                        BoxCollider2D carriedCollider = carriedObject.GetComponent<BoxCollider2D>();
-
-                        //cast the collider forward from the player's adjusted position
-                        hit = Physics2D.BoxCast(adjustedPosition, carriedCollider.size, 0,
-                                                 lastMovement, Mathf.Abs(carriedCollider.size.x), mask);
-
-                        //Put the object down if clear -- this part will prob have to be edited in the future
-                        //to allow for switches and holes, etc, that the object can be placed on top of
-                        if (hit.collider == null || hit.collider.GetComponentInChildren<Firewall>())
-                        {
-                            //calculate how much to translate the object
-                            int xMultiple = 0;
-                            int yMultiple = 0;
-                            //make the xMultiple either 1, 0, or -1, for directional purposes
-                            if (lastMovement.x != 0 && lastMovement.x < 0) { xMultiple = -1; }
-                            else if (lastMovement.x != 0 && lastMovement.x > 0) { xMultiple = 1; }
-                            //make the yMultiple either 1, 0, or -1, for directional purposes
-                            if (lastMovement.y != 0 && lastMovement.y < 0) { yMultiple = -1; }
-                            else if (lastMovement.y != 0 && lastMovement.y > 0) { yMultiple = 1; }
-
-                            //move the object to it's final resting place
-                            carriedObject.transform.position = new Vector3(((carriedCollider.size.x + carriedCollider.offset.x) * xMultiple) + adjustedPosition.x,
-                                                                           ((carriedCollider.size.y + carriedCollider.offset.y + Math.Abs(carriedCollider.offset.y)) * yMultiple) + transform.position.y);
-                            //reset the object's isCarried to false
-                            carriedObject.isCarried = false;
-                            //reset the object's collider to enabled
-                            carriedCollider.enabled = true;
-                            //reset the player's isCarrying to false
-                            isCarrying = false;
-                        }
-                    }
-                }
-
-                else if (GameControl.control.currentCharacter == HeroCharacter.JOULIETTE)
-                {
-                    var hits = Physics2D.OverlapCircleAll(transform.position, zapRadius);
-                    foreach (var h in hits)
-                    {
-                        if (h.GetComponent<Generator>())
-                        {
-                            h.GetComponent<Generator>().ActivateGenerator();
-                        }
-                    }
-
-                }
-            }
+            UpdateMovement();
 
             //if we are carrying an object, move it to player's position
             if (isCarrying)
             {
                 //Move the object to the position above player's head
                 carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 1.0f/*+ 0.85f*/, transform.position.z);
+
                 //make sure the object is always rendered above the player
                 carriedObject.SortingOrder = sr.sortingOrder + 1;
             }
@@ -855,5 +707,193 @@ public class characterControl : OverworldObject {
                     || (lastMovement.y < 0 && currentGateway.direction == Gateway.Direction.South)
                     || (lastMovement.x > 0 && currentGateway.direction == Gateway.Direction.West)
                     || (lastMovement.x < 0 && currentGateway.direction == Gateway.Direction.East);
+    }
+
+    void UpdateMovement()
+    {
+        isMoving = false;
+        moveSpeed = walkSpeed;
+        if (GameControl.control.currentCharacter != HeroCharacter.JOULIETTE)
+        {
+            if (Input.GetButton("Run") && !isCarrying)
+                moveSpeed = runSpeed;
+        }
+        else
+        {
+            if (Input.GetButton("Run"))
+            {
+                if (acc < 0) acc = 0;
+                acc += Time.deltaTime * accRate;
+                if (acc >= maxAcc) acc = maxAcc;
+
+                vel += acc;
+                if (vel > maxVel) vel = maxVel;
+                moveSpeed = vel;
+
+            }
+            else
+            {
+                if (acc != 0 || vel != 0) { acc = 0; vel = 0; }
+                moveSpeed = walkSpeed;
+            }
+        }
+
+        //Check for input
+        if (Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
+        {
+            //call the move function
+            Move(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+    }
+
+    void HandleCharacterAction()
+    {
+        if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
+        {
+            JethroBlockCarry();
+        }
+        else if (GameControl.control.currentCharacter == HeroCharacter.COLE)
+        {
+            ColeFire();
+        }
+        else if (GameControl.control.currentCharacter == HeroCharacter.ELEANOR)
+        {
+            EleanorSight();
+        }
+        else if (GameControl.control.currentCharacter == HeroCharacter.JOULIETTE)
+        {
+            JoulietteShock();
+        }
+    }
+
+    void JethroBlockCarry()
+    {
+        if (!canMove) return;
+
+        //If the player is not carrying an object, check for one
+        if (!isCarrying && canCarry)
+        {
+            //create a box cast specifically for picking up objects, as per Alec's request
+            //Vector2 direction = lastMovement;
+            //direction.Normalize();
+            //direction *= moveSpeed * Time.deltaTime;
+            //hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.size, 0, direction, Mathf.Abs(direction.magnitude) * 5.0f, mask);
+
+            //if (hit.collider != null && hit.collider.tag == "Movable")
+            if (readyForPickup != null)
+            {
+                //if it hits one, move the object to the position above Jethro's head and set iscarried to true
+                isCarrying = true;
+                //disable the object's collider, so it doesn't hinder movement
+                readyForPickup.GetComponent<Collider2D>().enabled = false;
+                readyForPickup.HideInteractionNotification();
+                //set carried object to the object we are picking up
+                carriedObject = readyForPickup;
+                readyForPickup = null;
+                carriedObject.isCarried = true; // set the object's isCarried to true
+                carriedObject.HideInteractionNotification(true);
+                //Move the object to the position above player's head
+                carriedObject.transform.position = new Vector3(transform.position.x, transform.position.y + 0.85f, transform.position.z);
+                //make sure the object is always rendered above the player
+                carriedObject.SortingOrder = sr.sortingOrder + 1;
+            }
+        }
+        //if an object is already being carried, drop the object in the direction that jethro is facing
+        else if (isCarrying)
+        {
+            //check that the area you are facing is open enough to drop the object
+            //Start by calculating the adjusted position of player's feet (since we're placing object "on the ground")
+            Vector2 adjustedPosition = new Vector2((transform.position.x + boxCollider.offset.x),
+                                                   (transform.position.y + boxCollider.offset.y));
+            //get the carried object's collider (to avoid calling Get component more than necessary
+            BoxCollider2D carriedCollider = carriedObject.GetComponent<BoxCollider2D>();
+
+            //cast the collider forward from the player's adjusted position
+            hit = Physics2D.BoxCast(adjustedPosition, carriedCollider.size, 0,
+                                     lastMovement, Mathf.Abs(carriedCollider.size.x), mask);
+
+            //Put the object down if clear -- this part will prob have to be edited in the future
+            //to allow for switches and holes, etc, that the object can be placed on top of
+            if (hit.collider == null || hit.collider.GetComponentInChildren<Firewall>())
+            {
+                //calculate how much to translate the object
+                int xMultiple = 0;
+                int yMultiple = 0;
+                //make the xMultiple either 1, 0, or -1, for directional purposes
+                if (lastMovement.x != 0 && lastMovement.x < 0) { xMultiple = -1; }
+                else if (lastMovement.x != 0 && lastMovement.x > 0) { xMultiple = 1; }
+                //make the yMultiple either 1, 0, or -1, for directional purposes
+                if (lastMovement.y != 0 && lastMovement.y < 0) { yMultiple = -1; }
+                else if (lastMovement.y != 0 && lastMovement.y > 0) { yMultiple = 1; }
+
+                //move the object to it's final resting place
+                carriedObject.transform.position = new Vector3(((carriedCollider.size.x + carriedCollider.offset.x) * xMultiple) + adjustedPosition.x,
+                                                               ((carriedCollider.size.y + carriedCollider.offset.y + Math.Abs(carriedCollider.offset.y)) * yMultiple) + transform.position.y);
+                //reset the object's isCarried to false
+                carriedObject.isCarried = false;
+                //reset the object's collider to enabled
+                carriedCollider.enabled = true;
+                //reset the player's isCarrying to false
+                isCarrying = false;
+            }
+        }
+    }
+
+    void ColeFire()
+    {
+        if (!canMove) return;
+
+        var fireball = Instantiate(fireballObj, transform.position, transform.rotation).GetComponent<OW_Fireball>();
+    }
+
+    void EleanorSight()
+    {
+        if (GameControl.control.currentCharacterState != CharacterState.Normal) return;
+
+        if (!isUsingSight)
+        {
+            isUsingSight = true;
+            hiddenObjFound = new List<HiddenObject>();
+
+            // For now, I'll do a large overlap circle to detect any HiddenObjects
+            // within camera view (not precise, but around there)
+            // This is probably not the best way, but we'll see what happens
+            var hits = Physics2D.OverlapCircleAll(transform.position, hiddenRadius);
+            foreach (var h in hits)
+            {
+                if (h.GetComponent<HiddenObject>())
+                    hiddenObjFound.Add(h.GetComponent<HiddenObject>());
+            }
+            if (hiddenObjFound.Count > 0)
+            {
+                foreach (var obj in hiddenObjFound)
+                    obj.Show();
+            }
+
+            canMove = false;
+        }
+        else
+        {
+            isUsingSight = false;
+            foreach (var obj in hiddenObjFound)
+                obj.Hide();
+
+            hiddenObjFound.Clear();
+            canMove = true;
+        }
+    }
+
+    void JoulietteShock()
+    {
+        if (!canMove) return;
+
+        var hits = Physics2D.OverlapCircleAll(transform.position, zapRadius);
+        foreach (var h in hits)
+        {
+            if (h.GetComponent<Generator>())
+            {
+                h.GetComponent<Generator>()?.ActivateGenerator();
+            }
+        }
     }
 }

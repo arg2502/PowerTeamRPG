@@ -152,6 +152,7 @@ public class OverworldObject : MonoBehaviour {
 
     protected void Update()
     {
+        if (sr == null) return;
         sr.sortingOrder = (int)(-transform.position.y * 10.0f) + sortingOffset;
     }
 }

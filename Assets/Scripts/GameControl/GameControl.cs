@@ -429,56 +429,62 @@ public class GameControl : MonoBehaviour {
 	{
 		//save the current room, to acheive persistency while paused
 		roomControl rc = GameObject.FindObjectOfType<roomControl>();
-		foreach (RoomControlData rcd in rooms)
+        RoomControlData rcd = rooms.Find(r => r.areaIDNumber == rc.areaIDNumber);
+		//foreach (RoomControlData rcd in rooms)
+		//{
+			//if (rcd.areaIDNumber == rc.areaIDNumber) // find the appropriate room
+			//{
+		for (int i = 0; i < rc.movables.Count; i++)// save the movable block positions
 		{
-			if (rcd.areaIDNumber == rc.areaIDNumber) // find the appropriate room
-			{
-				for (int i = 0; i < rc.movables.Count; i++)// save the movable block positions
-				{
-					rcd.blockData [i].blockName = rc.movables [i].name;
-					rcd.blockData [i].isActivated = rc.movables [i].isActivated;
-					rcd.blockData[i].position.x = rc.movables[i].transform.position.x;
-					rcd.blockData[i].position.y = rc.movables[i].transform.position.y;
-					rcd.blockData[i].position.z = rc.movables[i].transform.position.z;
-				}
-                for (int i = 0; i < rc.treasureChests.Count; i++)
-                {
-                    rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
-                    rcd.chestData[i].chestName = rc.treasureChests[i].name;
-                }
-                //for (int i = 0; i < rc.doorsInRoom.Count; i++)
-                //{
-                //	rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
-                //	rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
-                //}
-                for (int i = 0; i < rc.switchesInRoom.Count; i++) {
-					rcd.switchData [i].isActivated = rc.switchesInRoom [i].isActivated;
-					rcd.switchData [i].switchName = rc.switchesInRoom [i].name;
-				}
-				for (int i = 0; i < rc.colorBridgesInRoom.Count; i++) {
-					rcd.colorBridgeData [i].rotationZ = rc.colorBridgesInRoom [i].transform.Find("Bridge").transform.eulerAngles.z;
-					rcd.colorBridgeData [i].bridgeName = rc.colorBridgesInRoom [i].name;
-				}
-				for (int i = 0; i < rc.drawbridgesInRoom.Count; i++) {
-					rcd.drawbridgeData [i].bridgeName = rc.drawbridgesInRoom [i].name;
-					rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
-				}
-				for (int i = 0; i < rc.enemies.Count; i++) {
-					rcd.enemyData [i].enemyName = rc.enemies [i].name;
-					rcd.enemyData [i].battledState = rc.enemies [i].beenBattled;
-					rcd.enemyData [i].position.x = rc.enemies [i].transform.position.x;
-					rcd.enemyData [i].position.y = rc.enemies [i].transform.position.y;
-					rcd.enemyData [i].position.z = rc.enemies [i].transform.position.z;
-				}
-				// save which dungeon the player is in
-				// if >= 0, save the keys
-				rcd.dungeonID = rc.dungeonID;
-				if (rcd.dungeonID >= 0)
-				{
-					keysObtainedInDungeons[rcd.dungeonID] = totalKeys;
-				}
-			}
+			rcd.blockData [i].blockName = rc.movables [i].name;
+			rcd.blockData [i].isActivated = rc.movables [i].isActivated;
+			rcd.blockData[i].position.x = rc.movables[i].transform.position.x;
+			rcd.blockData[i].position.y = rc.movables[i].transform.position.y;
+			rcd.blockData[i].position.z = rc.movables[i].transform.position.z;
 		}
+        for (int i = 0; i < rc.treasureChests.Count; i++)
+        {
+            rcd.chestData[i].isChestOpen = rc.treasureChests[i].isOpen;
+            rcd.chestData[i].chestName = rc.treasureChests[i].name;
+        }
+        //for (int i = 0; i < rc.doorsInRoom.Count; i++)
+        //{
+        //	rcd.doorData[i].isLocked = rc.doorsInRoom[i].gameObject.activeSelf;
+        //	rcd.doorData[i].doorName = rc.doorsInRoom[i].name;
+        //}
+        for (int i = 0; i < rc.switchesInRoom.Count; i++) {
+			rcd.switchData [i].isActivated = rc.switchesInRoom [i].isActivated;
+			rcd.switchData [i].switchName = rc.switchesInRoom [i].name;
+		}
+		for (int i = 0; i < rc.colorBridgesInRoom.Count; i++) {
+			rcd.colorBridgeData [i].rotationZ = rc.colorBridgesInRoom [i].transform.Find("Bridge").transform.eulerAngles.z;
+			rcd.colorBridgeData [i].bridgeName = rc.colorBridgesInRoom [i].name;
+		}
+		for (int i = 0; i < rc.drawbridgesInRoom.Count; i++) {
+			rcd.drawbridgeData [i].bridgeName = rc.drawbridgesInRoom [i].name;
+			rcd.drawbridgeData [i].positionY = rc.drawbridgesInRoom [i].transform.position.y;
+		}
+		for (int i = 0; i < rc.enemies.Count; i++) {
+			rcd.enemyData [i].enemyName = rc.enemies [i].name;
+			rcd.enemyData [i].battledState = rc.enemies [i].beenBattled;
+			rcd.enemyData [i].position.x = rc.enemies [i].transform.position.x;
+			rcd.enemyData [i].position.y = rc.enemies [i].transform.position.y;
+			rcd.enemyData [i].position.z = rc.enemies [i].transform.position.z;
+		}
+        for(int i = 0; i < rc.hiddenObjectsInRoom.Count; i++)
+        {
+            rcd.hiddenObjects[i].hiddenName = rc.hiddenObjectsInRoom[i].name;
+            rcd.hiddenObjects[i].hasBeenSeen = rc.hiddenObjectsInRoom[i].hasBeenSeen;
+        }
+		// save which dungeon the player is in
+		// if >= 0, save the keys
+		rcd.dungeonID = rc.dungeonID;
+		if (rcd.dungeonID >= 0)
+		{
+			keysObtainedInDungeons[rcd.dungeonID] = totalKeys;
+		}
+			//}
+		//}
 	}
 
 	public void RecordEnemyPos()
@@ -961,6 +967,7 @@ public class RoomControlData
 	public List<ColorBridgeData> colorBridgeData = new List<ColorBridgeData>();
 	public List<DrawbridgeData> drawbridgeData = new List<DrawbridgeData>();
 	public List<EnemyControlData> enemyData = new List<EnemyControlData>();
+    public List<HiddenObjectData> hiddenObjects = new List<HiddenObjectData>();
     public roomControl.RoomLimits roomLimits = new roomControl.RoomLimits();
 }
 [Serializable]
@@ -1012,4 +1019,10 @@ public class EnemyControlData
 	public string enemyName;
 	public bool battledState;
 	public SerializableVector3 position = new SerializableVector3 ();
+}
+[Serializable]
+public class HiddenObjectData
+{
+    public string hiddenName;
+    public bool hasBeenSeen;
 }

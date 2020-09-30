@@ -1,0 +1,6 @@
+Name	Emotion	Dialogue	Responses/Actions
+		<i>I've got the jailhouse locked up tight.</i>,	
+		<i>Not only do you need the special key I've left in your care, but there is a secret passcode to unlock the inner chambers.</i>	
+		<i>Since you're all too stupid to remember anything, I've written down the passcode down for you all to read.</i>	
+		<i>But since I'm not stupid, I've divided the clues amongst you all.</i>.	
+		<i>Be sure to keep these clues somewhere secret so that I will not be disturbed during the <color=red>cleansing</color>.</i>	QuestTalk

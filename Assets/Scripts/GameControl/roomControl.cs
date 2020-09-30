@@ -25,6 +25,7 @@ public class roomControl : MonoBehaviour {
 	public List<Switch> switchesInRoom = new List<Switch> ();
 	public List<ColorBridge> colorBridgesInRoom = new List<ColorBridge>();
 	public List<Drawbridge> drawbridgesInRoom = new List<Drawbridge>();
+    public List<HiddenObject> hiddenObjectsInRoom = new List<HiddenObject>();
 
     // room size limits    
     public RoomLimits roomLimits;
@@ -66,7 +67,13 @@ public class roomControl : MonoBehaviour {
 		foreach (enemyControl e in FindObjectsOfType<enemyControl>()) {
 			enemies.Add (e);
 		}
-        
+        foreach(var h in FindObjectsOfType<HiddenObject>())
+        {
+            print("found it");
+            hiddenObjectsInRoom.Add(h);
+        }
+
+
   //      //create the appropriate amount of enemies
   //      if (!GameControl.control.isPaused)
 		//{
@@ -160,6 +167,17 @@ public class roomControl : MonoBehaviour {
 					}
 				}
 
+                for(int i = 0; i < hiddenObjectsInRoom.Count; i++)
+                {
+                    for(int j = 0; j < hiddenObjectsInRoom.Count; j++)
+                    {
+                        if(hiddenObjectsInRoom[i].name == rc.hiddenObjects[j].hiddenName)
+                        {
+                            hiddenObjectsInRoom[i].hasBeenSeen = rc.hiddenObjects[j].hasBeenSeen;
+                        }
+                    }
+                }
+
 
 				// set the amount of keys equal to the dungeon you are in
 				// if < 0 (-1), then you are not in a dungeon. Set keys to 0
@@ -227,6 +245,12 @@ public class roomControl : MonoBehaviour {
 			newRoom.enemyData [i].position.y = enemies [i].transform.position.y;
 			newRoom.enemyData [i].position.z = enemies [i].transform.position.z;
 		}
+        for(int i = 0; i < hiddenObjectsInRoom.Count; i++)
+        {
+            newRoom.hiddenObjects.Add(new HiddenObjectData());
+            newRoom.hiddenObjects[i].hiddenName = hiddenObjectsInRoom[i].name;
+            newRoom.hiddenObjects[i].hasBeenSeen = hiddenObjectsInRoom[i].hasBeenSeen;
+        }
 
         newRoom.roomLimits = roomLimits;
 
