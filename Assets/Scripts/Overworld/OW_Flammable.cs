@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class OW_Flammable : MonoBehaviour {
 
-	public void Ignite()
+	public virtual void Ignite()
     {
         print("ow");
     }

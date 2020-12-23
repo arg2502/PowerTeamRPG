@@ -113,6 +113,7 @@ public class OverworldObject : MonoBehaviour {
     }    
     IEnumerator HideNotification()
     {
+        if (interactionNotification == null) yield break;
         var anim = interactionNotification.GetComponent<Animator>();        
         anim.Play("FadeOut");
         var timeToWait = anim.GetCurrentAnimatorClipInfo(0).Length;

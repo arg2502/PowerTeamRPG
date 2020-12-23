@@ -1,0 +1,3 @@
+Name	Emotion	Dialogue	Responses/Actions
+Eleanor		Hmm...It looks like there's something behind this tapestry. But how are we supposed to get to it?	
+Cole	HAPPY	You leave this to me. I've got just the answer.	

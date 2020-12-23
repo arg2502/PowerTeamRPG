@@ -1,0 +1,15 @@
+Name	Emotion	Dialogue	Responses/Actions
+Jethro		Cole, you idiot...	
+Eleanor		What did you do that for?!	
+Cole		What? We needed to get the note behind the tapestry, and tapestries are flammable!	
+Jethro		So are notes...	
+Cole		...	
+Cole		I see the dilemma now.	
+Klown		I can't believe I got beat by you idiots.	
+Cole 	ANGRY	You be silent!	
+Jethro		Out with it. What was the clue from the note?	
+Klown		Sure whatever, the clue is..	
+Klown		<i>West is not first, nor is it second</i>	
+Jethro		Great...uh...thanks...	
+Cole	HAPPY	No harm done then!	
+Cole		Well except to him.	
