@@ -52,7 +52,7 @@ public class InteractiveAttack : MonoBehaviour {
     protected void SetAttack(GameObject target, bool immediately = false)
     {
         //var textObj = target.GetComponentInChildren<Text>(true);
-        var textObj = GameControl.UIManager.ShowQualityUI(target.transform).GetComponent<Text>();
+        var textObj = UIManager.ShowQualityUI(target.transform).GetComponent<Text>();
         textObj.gameObject.SetActive(true);
         string text;
         switch (quality)

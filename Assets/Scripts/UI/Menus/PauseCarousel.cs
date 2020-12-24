@@ -1,26 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UI;
 
 public class PauseCarousel : MonoBehaviour {
 
     List<GameObject> menus;
-    UIManager uiManager;
+    UIManager UIManager;
     int currentIndex = -1;
     float xOffset = Screen.width;
     float xCenter = float.NaN;
 
     public void TurnOn(List<GameObject> _menus)
     {
-        if(uiManager == null) uiManager = GameControl.UIManager;
+        if(UIManager == null) UIManager = UIManager;
         if (menus == null) menus = new List<GameObject>();
         
         
         for (int i = 0; i < _menus.Count; i++)
         {
-            menus.Add(uiManager.PushMenu(_menus[i]));
-            uiManager.CurrentMenu.inCarousel = true;
+            menus.Add(UIManager.PushMenu(_menus[i]));
+            UIManager.CurrentMenu.inCarousel = true;
         }
         
         if (currentIndex < 0)
@@ -47,7 +46,7 @@ public class PauseCarousel : MonoBehaviour {
 
     void FocusCurrentMenu()
     {
-        uiManager.SetToTop(menus[currentIndex]);
+        UIManager.SetToTop(menus[currentIndex]);
         menus[currentIndex].GetComponent<Menu>().SetSelectedObjectToRoot();
         menus[currentIndex].GetComponent<Menu>().Refocus();
         TestPositionMenus();
@@ -57,7 +56,7 @@ public class PauseCarousel : MonoBehaviour {
     {
         for (int i = 0; i < menus.Count; i++)
         {
-            if (menus[i] == uiManager.CurrentMenu.gameObject)
+            if (menus[i] == UIManager.CurrentMenu.gameObject)
                 return true;
         }
         return false;
@@ -84,7 +83,7 @@ public class PauseCarousel : MonoBehaviour {
             {
                 for(int i = 0; i < menus.Count; i++)
                 {
-                    uiManager.PopMenu();
+                    UIManager.PopMenu();
                 }
                 menus.Clear();
                 gameObject.SetActive(false);

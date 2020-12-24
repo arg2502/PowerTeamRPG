@@ -15,7 +15,7 @@ public class Dialogue : MonoBehaviour {
 
     protected int conversationIterator = 0;
 
-    UI.DialogueMenu dialogueMenu;
+    DialogueMenu dialogueMenu;
 
     // Keeps hold of everything the dialogue conversation needs:
     // names of whose speaker, sprite emotions, and the actual dialogue
@@ -97,8 +97,8 @@ public class Dialogue : MonoBehaviour {
     protected void StartDialogue()
     {
         // push the dialogue menu
-        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueMenu);
-        dialogueMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueMenu).GetComponent<UI.DialogueMenu>();
+        UIManager.PushMenu(UIManager.uiDatabase.DialogueMenu);
+        dialogueMenu = UIManager.FindMenu(UIManager.uiDatabase.DialogueMenu).GetComponent<DialogueMenu>();
         dialogueMenu.SetContinue(PrintConversation);
         dialogueMenu.OnNextDialogue.RemoveAllListeners();
         dialogueMenu.OnNextDialogue.AddListener(CheckForResponseMenu); // add event listener
@@ -291,7 +291,7 @@ public class Dialogue : MonoBehaviour {
         if (conversationIterator >= currentConversation.dialogueConversation.Count)
         {
             // pop dialogue menu
-            GameControl.UIManager.PopMenu();
+            UIManager.PopMenu();
 
             conversationIterator = 0;
             speaker?.EndDialogue(currentConversation);
@@ -315,8 +315,8 @@ public class Dialogue : MonoBehaviour {
         if (conversationIterator >= currentConversation.dialogueConversation.Count
             && currentConversation.IsThereResponse())
         {
-            GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu);
-            var responseMenu = GameControl.UIManager.FindMenu(GameControl.UIManager.uiDatabase.DialogueResponseMenu).GetComponent<UI.DialogueResponseMenu>();
+            UIManager.PushMenu(UIManager.uiDatabase.DialogueResponseMenu);
+            var responseMenu = UIManager.FindMenu(UIManager.uiDatabase.DialogueResponseMenu).GetComponent<DialogueResponseMenu>();
             responseMenu.SetResponses(currentConversation.responses);                
             responseMenu.OnStartNextConversation.AddListener(NextConversation);
         }

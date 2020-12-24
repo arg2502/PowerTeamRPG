@@ -19,7 +19,7 @@ public class QuestTracker {
         if (!activeQuests.ContainsKey(questID))
             activeQuests.Add(questID, new Quest(questID));
         if (!skipShow && activeQuests[questID].data.questType != QuestType.MISC)
-            GameControl.UIManager.ShowQuestStart(activeQuests[questID].data.questName);
+            UIManager.ShowQuestStart(activeQuests[questID].data.questName);
     }
 
     public string GetCurrentSubQuestID(string questID)

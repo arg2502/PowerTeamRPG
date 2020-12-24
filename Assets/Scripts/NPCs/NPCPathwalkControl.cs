@@ -350,7 +350,7 @@ public class NPCPathwalkControl : NPCObject {
         waypointTimer = 0.0f;
     }
 
-    public void FaceCharacter(Vector2 directionToFace)
+    public override void FaceCharacter(Vector2 directionToFace)
     {
         prevState = walkingState; // store what the current state is
         walkingState = State.talking; // set NPC to talking

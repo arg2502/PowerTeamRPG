@@ -65,7 +65,7 @@ public class StationaryNPCControl : NPCObject {
         }
 	}
 
-	public void FaceCharacter(Vector2 directionToFace)
+	public override void FaceCharacter(Vector2 directionToFace)
 	{
 		currentState = State.talking; // set NPC to talking
 		canMove = false; // Stop moving, to set to talking sprites

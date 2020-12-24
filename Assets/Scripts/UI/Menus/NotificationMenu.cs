@@ -1,42 +1,39 @@
-﻿namespace UI
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class NotificationMenu : Menu
 {
-    using UnityEngine;
-    using UnityEngine.UI;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
+    public Text messageText;
+    public Button okButton;
 
-    public class NotificationMenu : Menu
+    public override void TurnOnMenu()
     {
-        public Text messageText;
-        public Button okButton;
+        RootButton = AssignRootButton();
+        base.TurnOnMenu();
+    }
+    public override Button AssignRootButton()
+    {
+        return okButton;
+    }
 
-        public override void TurnOnMenu()
-        {
-            RootButton = AssignRootButton();
-            base.TurnOnMenu();
-        }
-        public override Button AssignRootButton()
-        {
-            return okButton;
-        }
+    protected override void AddButtons()
+    {
+        base.AddButtons();
+        listOfButtons = new List<Button>() { okButton };
+    }
+    protected override void AddListeners()
+    {
+        base.AddListeners();
 
-        protected override void AddButtons()
-        {
-            base.AddButtons();
-            listOfButtons = new List<Button>() { okButton };
-        }
-        protected override void AddListeners()
-        {
-            base.AddListeners();
+        okButton.onClick.RemoveAllListeners();
+        okButton.onClick.AddListener(CloseMenu);
+    }
 
-            okButton.onClick.RemoveAllListeners();
-            okButton.onClick.AddListener(CloseMenu);
-        }
-
-        void CloseMenu()
-        {
-            uiManager.PopMenu();
-        }
+    void CloseMenu()
+    {
+        UIManager.PopMenu();
     }
 }

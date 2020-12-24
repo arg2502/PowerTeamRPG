@@ -1,73 +1,70 @@
-﻿namespace UI
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class BeggarMenu : Menu
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.UI;
-    using UnityEngine.EventSystems;
+    public Text quantity;
+    public Image desArrow;
+    public Image ascArrow;
+    public Button button;
+    public NPCBeggar beggar;
 
-    public class BeggarMenu : Menu
+    int quantityNum;
+    protected override void AddButtons()
     {
-        public Text quantity;
-        public Image desArrow;
-        public Image ascArrow;
-        public Button button;
-        public NPCBeggar beggar;
+        base.AddButtons();
+        listOfButtons = new List<Button>() { button };
+    }
 
-        int quantityNum;
-        protected override void AddButtons()
+    protected override void AddListeners()
+    {
+        base.AddListeners();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(OnClick);
+    }
+
+    public override Button AssignRootButton()
+    {
+        return button;
+    }
+
+    public override void TurnOnMenu()
+    {
+        base.TurnOnMenu();
+
+        quantityNum = gameControl.totalGold > 0 ? 1 : 0;
+    }
+
+    void OnClick()
+    {            
+        gameControl.totalGold -= quantityNum;
+        beggar.SetGold(quantityNum);
+    }
+
+    private new void Update()
+    {
+        base.Update();
+        quantity.text = quantityNum.ToString();
+
+        if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
         {
-            base.AddButtons();
-            listOfButtons = new List<Button>() { button };
+            // if buying, only increase until we can't afford it
+            // if selling, only increase until we run out
+            if (quantityNum < gameControl.totalGold)
+                quantityNum++;
+            else
+                quantityNum = 1;
         }
-
-        protected override void AddListeners()
+        else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0)
         {
-            base.AddListeners();
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(OnClick);
+            if (quantityNum > 1)
+                quantityNum--;
+            else
+                quantityNum = gameControl.totalGold;
         }
 
-        public override Button AssignRootButton()
-        {
-            return button;
-        }
-
-        public override void TurnOnMenu()
-        {
-            base.TurnOnMenu();
-
-            quantityNum = gameControl.totalGold > 0 ? 1 : 0;
-        }
-
-        void OnClick()
-        {            
-            gameControl.totalGold -= quantityNum;
-            beggar.SetGold(quantityNum);
-        }
-
-        private new void Update()
-        {
-            base.Update();
-            quantity.text = quantityNum.ToString();
-
-            if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0)
-            {
-                // if buying, only increase until we can't afford it
-                // if selling, only increase until we run out
-                if (quantityNum < gameControl.totalGold)
-                    quantityNum++;
-                else
-                    quantityNum = 1;
-            }
-            else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0)
-            {
-                if (quantityNum > 1)
-                    quantityNum--;
-                else
-                    quantityNum = gameControl.totalGold;
-            }
-
-        }
     }
 }

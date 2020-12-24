@@ -1,21 +1,18 @@
-﻿namespace UI
+﻿using UnityEngine.EventSystems;
+
+class OnlyKeyBoardInputModule : StandaloneInputModule
 {
-    using UnityEngine.EventSystems;
-
-    class OnlyKeyBoardInputModule : StandaloneInputModule
+    public override void Process()
     {
-        public override void Process()
+        bool usedEvent = SendUpdateEventToSelectedObject();
+
+        if (eventSystem.sendNavigationEvents)
         {
-            bool usedEvent = SendUpdateEventToSelectedObject();
+            if (!usedEvent)
+                usedEvent |= SendMoveEventToSelectedObject();
 
-            if (eventSystem.sendNavigationEvents)
-            {
-                if (!usedEvent)
-                    usedEvent |= SendMoveEventToSelectedObject();
-
-                if (!usedEvent)
-                    SendSubmitEventToSelectedObject();
-            }
+            if (!usedEvent)
+                SendSubmitEventToSelectedObject();
         }
     }
 }

@@ -30,7 +30,7 @@ public class NPCThirstyMan : StationaryNPCControl
 
     public void OpenConsumables()
     {
-        GameControl.UIManager.PushThirstyManMenu(this);
+        UIManager.PushThirstyManMenu(this);
         GameControl.questTracker.AddNewQuest("thirstyMan");
     }
 
@@ -81,7 +81,7 @@ public class NPCThirstyMan : StationaryNPCControl
         GameControl.questTracker.CompleteQuest("thirstyMan");
         GameControl.control.RemoveItem(item);
         var dialogue = thirstyManResponses.Find((r) => r.itemState == currentItemState).dialogue;
-        GameControl.UIManager.PopMenu();
+        UIManager.PopMenu();
 
         GetComponentInChildren<NPCDialogue>().StartDialogue(dialogue);
         

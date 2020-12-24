@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class NPCObject : MovableOverworldObject
 {
-    
+    public virtual void FaceCharacter(Vector2 directionToFace) { }
 }

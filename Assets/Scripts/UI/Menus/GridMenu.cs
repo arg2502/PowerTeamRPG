@@ -1,59 +1,56 @@
-﻿namespace UI
+﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Collections;
+using System.Collections.Generic;
+
+public class GridMenu : Menu
 {
-    using UnityEngine;
-    using UnityEngine.UI;
-    using UnityEngine.EventSystems;
-    using System.Collections;
-    using System.Collections.Generic;
+    protected List<List<Button>> buttonGrid;
+    protected Navigation navigation;
 
-    public class GridMenu : Menu
+    protected override void AddListeners()
     {
-        protected List<List<Button>> buttonGrid;
-        protected Navigation navigation;
-
-        protected override void AddListeners()
+        base.AddListeners();
+        foreach(var list in buttonGrid)
         {
-            base.AddListeners();
-            foreach(var list in buttonGrid)
+            foreach(var b in list)
             {
-                foreach(var b in list)
-                {
-                    AddDescriptionEvent(b);
-                }
+                AddDescriptionEvent(b);
             }
         }
-        public override void SetButtonNavigation()
-        {
-            for (int listIterator = 0; listIterator < buttonGrid.Count; listIterator++)
-            {               
-                for (int buttonIterator = 0; buttonIterator < buttonGrid[listIterator].Count; buttonIterator++)
-                {
-                    navigation = buttonGrid[listIterator][buttonIterator].navigation;
-                    navigation.mode = Navigation.Mode.Explicit;
+    }
+    public override void SetButtonNavigation()
+    {
+        for (int listIterator = 0; listIterator < buttonGrid.Count; listIterator++)
+        {               
+            for (int buttonIterator = 0; buttonIterator < buttonGrid[listIterator].Count; buttonIterator++)
+            {
+                navigation = buttonGrid[listIterator][buttonIterator].navigation;
+                navigation.mode = Navigation.Mode.Explicit;
 
-                    SetHorizontalNavigation(buttonIterator, listIterator);
-                    SetVerticalNavigation(buttonIterator, listIterator);                   
+                SetHorizontalNavigation(buttonIterator, listIterator);
+                SetVerticalNavigation(buttonIterator, listIterator);                   
 
-                    buttonGrid[listIterator][buttonIterator].navigation = navigation;
-                }
+                buttonGrid[listIterator][buttonIterator].navigation = navigation;
             }
         }
+    }
 
-        protected virtual void SetHorizontalNavigation(int buttonIterator, int listIterator)
-        {
-            // setting horizontal movement between each list                    
-            if (listIterator > 0 && buttonGrid[listIterator - 1].Count > 0)
-                navigation.selectOnLeft = buttonGrid[listIterator - 1][buttonIterator];
-            if (listIterator < buttonGrid.Count - 1 && buttonGrid[listIterator + 1].Count > 0)
-                navigation.selectOnRight = buttonGrid[listIterator + 1][buttonIterator];            
-        }
-        protected virtual void SetVerticalNavigation(int buttonIterator, int listIterator)
-        {
-            // setting vertical movement within each list
-            if (buttonIterator > 0)
-                navigation.selectOnUp = buttonGrid[listIterator][buttonIterator - 1];
-            if (buttonIterator < buttonGrid[listIterator].Count - 1)
-                navigation.selectOnDown = buttonGrid[listIterator][buttonIterator + 1];
-        }
+    protected virtual void SetHorizontalNavigation(int buttonIterator, int listIterator)
+    {
+        // setting horizontal movement between each list                    
+        if (listIterator > 0 && buttonGrid[listIterator - 1].Count > 0)
+            navigation.selectOnLeft = buttonGrid[listIterator - 1][buttonIterator];
+        if (listIterator < buttonGrid.Count - 1 && buttonGrid[listIterator + 1].Count > 0)
+            navigation.selectOnRight = buttonGrid[listIterator + 1][buttonIterator];            
+    }
+    protected virtual void SetVerticalNavigation(int buttonIterator, int listIterator)
+    {
+        // setting vertical movement within each list
+        if (buttonIterator > 0)
+            navigation.selectOnUp = buttonGrid[listIterator][buttonIterator - 1];
+        if (buttonIterator < buttonGrid[listIterator].Count - 1)
+            navigation.selectOnDown = buttonGrid[listIterator][buttonIterator + 1];
     }
 }

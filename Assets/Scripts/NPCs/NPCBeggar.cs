@@ -10,7 +10,7 @@ public class NPCBeggar : StationaryNPCControl {
 
     public void ShowBeggarMenu()
     {
-        GameControl.UIManager.PushBeggarMenu(this);
+        UIManager.PushBeggarMenu(this);
     }
 
     public void SetGold(int gold)
@@ -32,7 +32,7 @@ public class NPCBeggar : StationaryNPCControl {
         if (beggarResponse == null)
             beggarResponse = defaultResponse;
 
-        GameControl.UIManager.PopMenu();
+        UIManager.PopMenu();
         GetComponentInChildren<NPCDialogue>().StartDialogue(beggarResponse);
     }
 

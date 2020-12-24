@@ -35,7 +35,7 @@ public class CutsceneDialogue : Dialogue {
             string.Equals(currentConversation.actionName[conversationIterator - 1].ToLower(), "pause")))
         {
             pausedOnIterator = conversationIterator - 1;
-            GameControl.UIManager.PopMenu();
+            UIManager.PopMenu();
             cutscene.Resume();
             return;
         }

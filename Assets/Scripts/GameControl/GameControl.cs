@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using UI;
 
 public class GameControl : MonoBehaviour {
 
@@ -18,7 +17,6 @@ public class GameControl : MonoBehaviour {
 	//the player's name (Jethro)
 	public string playerName = "Jethro";
 
-    public static UIManager UIManager;
     public static SkillTreeManager skillTreeManager;
     public static ItemManager itemManager;
     public static AudioManager audioManager;
@@ -156,12 +154,6 @@ public class GameControl : MonoBehaviour {
     public characterControl.HeroCharacter currentCharacter;
     public int currentCharacterInt { get { return (int)currentCharacter; } }
 
-    // Current NPC
-    public OverworldObject currentObj; // we can only talk to one NPC at a time, this variable will keep that one in focus
-    public NPCPathwalkControl CurrentNPCPathwalk { get { return currentObj.GetComponent<NPCPathwalkControl>(); } }
-	public StationaryNPCControl CurrentStationaryNPC { get { return currentObj.GetComponent<StationaryNPCControl>(); } }
-    public ShopKeeper CurrentShopkeeper { get { return currentObj.GetComponent<ShopKeeper>(); } }
-
     public AudioClip battleIntro;
     public AudioClip battleLoop;
 
@@ -183,7 +175,7 @@ public class GameControl : MonoBehaviour {
 			control = this;
 
             InitHeroes();
-            UIManager = new UIManager();
+            UIManager.Init();
             skillTreeManager = new SkillTreeManager();
             skillTreeManager.Init();
             itemManager = new ItemManager();

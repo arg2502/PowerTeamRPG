@@ -68,11 +68,11 @@ public class Quest {
         {
             // complete quest
             GameControl.questTracker.CompleteQuest(data.questID);
-            GameControl.UIManager.ShowQuestEnd(data.questName);
+            UIManager.ShowQuestEnd(data.questName);
         }
         else
         {
-            GameControl.UIManager.ShowArbitersIcon();
+            UIManager.ShowArbitersIcon();
         }
     }
 
@@ -110,9 +110,9 @@ public class Quest {
         {
             GameControl.control.AddItem(item.item, item.quantity);
             if (item.quantity == 1)
-                GameControl.UIManager.PushNotificationMenu("You got the " + item.item.name);
+                UIManager.PushNotificationMenu("You got the " + item.item.name);
             else
-                GameControl.UIManager.PushNotificationMenu("You got " + item.quantity + " " + item.item.name);
+                UIManager.PushNotificationMenu("You got " + item.quantity + " " + item.item.name);
         }
     }
 }

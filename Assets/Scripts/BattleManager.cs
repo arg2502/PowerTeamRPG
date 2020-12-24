@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UI;
 using UnityEngine.Events;
 
 // Not a static var in GameControl, because we do not need a BattleManager at all times
@@ -76,8 +75,8 @@ public class BattleManager : MonoBehaviour {
     bool fleeFailed = false;
     string fleeFailedDenigen = "";
     public BattleCamera battleCamera;
-    UIManager uiManager;
-    public UI.BattleMenu battleMenu;
+    UIManager UIManager;
+    public BattleMenu battleMenu;
     public Denigen CurrentDenigen { get { return denigenList[currentDenigen]; } }
     public Hero CurrentHero { get { return denigenList[currentDenigen] as Hero; } }
     public int CurrentIndex { get { return currentDenigen; } }
@@ -139,9 +138,8 @@ public class BattleManager : MonoBehaviour {
 
     void CreateBattleMenu()
     {
-        uiManager = GameControl.UIManager;
-        var battleMenuObj = uiManager.uiDatabase.BattleMenu;
-        battleMenu = uiManager.FindMenu(battleMenuObj) as UI.BattleMenu;
+        var battleMenuObj = UIManager.uiDatabase.BattleMenu;
+        battleMenu = UIManager.FindMenu(battleMenuObj) as BattleMenu;
     }
     void AddHeroes()
     {
@@ -416,7 +414,7 @@ public class BattleManager : MonoBehaviour {
         
     void ShowBattleMenu()
     {
-        uiManager.PushMenu(uiManager.uiDatabase.BattleMenu);
+        UIManager.PushMenu(UIManager.uiDatabase.BattleMenu);
     }
 
     void ToggleDescription(bool show)
@@ -671,7 +669,7 @@ public class BattleManager : MonoBehaviour {
         CurrentHero.SelectTarget(targets);
 
         // disable all menus
-        uiManager.DisableAllMenus();
+        UIManager.DisableAllMenus();
 
         // hide old's starburst
         HighlightArrowTurnOrder(CurrentHero, false);
@@ -1325,8 +1323,8 @@ public class BattleManager : MonoBehaviour {
 
         yield return new WaitForSeconds(2f);
 
-        uiManager.PushMenu(uiManager.uiDatabase.VictoryMenu);
-        var victoryMenu = uiManager.CurrentMenu.GetComponent<VictoryMenu>();
+        UIManager.PushMenu(UIManager.uiDatabase.VictoryMenu);
+        var victoryMenu = UIManager.CurrentMenu.GetComponent<VictoryMenu>();
         victoryMenu.AddGold(winnings);
         victoryMenu.LevelUp(exp);        
     }

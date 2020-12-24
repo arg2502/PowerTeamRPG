@@ -84,7 +84,7 @@ public class OverworldObject : MonoBehaviour {
 
         if(interactionNotification == null)
         {
-            interactionNotification = GameControl.UIManager.ShowInteractionNotification(transform, message);
+            interactionNotification = UIManager.ShowInteractionNotification(transform, message);
         }
         else
         {
@@ -133,7 +133,7 @@ public class OverworldObject : MonoBehaviour {
     /// </summary>
     public void Buy()
     {
-        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperBuyMenu);
+        UIManager.PushMenu(UIManager.uiDatabase.ShopkeeperBuyMenu);
     }
 
     /// <summary>
@@ -141,12 +141,12 @@ public class OverworldObject : MonoBehaviour {
     /// </summary>
     public void Sell()
     {
-        GameControl.UIManager.PushMenu(GameControl.UIManager.uiDatabase.ShopkeeperSellMenu);
+        UIManager.PushMenu(UIManager.uiDatabase.ShopkeeperSellMenu);
     }
 
     public void Talk()
     {
-        GameControl.UIManager.PushNotificationMenu(
+        UIManager.PushNotificationMenu(
             "This should open up a menu with dialogue options...but not yet"
             );
     }

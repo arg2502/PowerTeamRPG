@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UI;
 
 public class OptionsMenu : Menu {
 
@@ -39,12 +38,12 @@ public class OptionsMenu : Menu {
     void OnSave()
     {
         // save the game here
-        uiManager.PushMenu(uiDatabase.SaveMenu, this);
+        UIManager.PushMenu(uiDatabase.SaveMenu, this);
     }
 
     void OnLoad()
     {
         // load the game here
-        uiManager.PushMenu(uiDatabase.LoadMenu, this);
+        UIManager.PushMenu(uiDatabase.LoadMenu, this);
     }
 }

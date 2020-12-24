@@ -82,6 +82,11 @@ public class characterControl : OverworldObject {
 
     public GameObject fireballObj;
 
+    // Current NPC
+    private OverworldObject currentObj; // we can only talk to one NPC at a time, this variable will keep that one in focus
+    private NPCObject CurrentNPC { get { return currentObj?.GetComponent<NPCObject>(); } }    
+    public ShopKeeper CurrentShopkeeper { get { return currentObj?.GetComponent<ShopKeeper>(); } }
+
     [Header("TEST")]
     [SerializeField] bool isTest;
     [SerializeField] Gateway debugStartGateway;
@@ -148,7 +153,7 @@ public class characterControl : OverworldObject {
                 {
                     canEnterDoor = true;
                     if (gatewayNotification == null)
-                        gatewayNotification = GameControl.UIManager.ShowInteractionNotification(currentGateway.transform, "Enter");
+                        gatewayNotification = UIManager.ShowInteractionNotification(currentGateway.transform, "Enter");
                     else
                     {
                         gatewayNotification.Init(currentGateway.transform, "Enter");
@@ -230,8 +235,8 @@ public class characterControl : OverworldObject {
             gatewayNotification?.GetComponent<Animator>()?.Play("FadeOut");
         }
         // if we are no longer colliding with an NPC, & they were our currentNPC, set the current to null
-        if ((collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponentInParent<OverworldObject>(), GameControl.control.currentObj))
-            ||(collision.GetComponent<InteractiveObject>() && Equals(collision.GetComponent<InteractiveObject>(), GameControl.control.currentObj)))
+        if ((collision.GetComponent<NPCDialogue>() && Equals(collision.GetComponentInParent<OverworldObject>(), currentObj))
+            ||(collision.GetComponent<InteractiveObject>() && Equals(collision.GetComponent<InteractiveObject>(), currentObj)))
         {
             ResetCurrentNPC();
         }
@@ -251,45 +256,40 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-
-        // if the NPC has a pathwalk, set the NPC to stop and face the player
-        if (GameControl.control.CurrentNPCPathwalk)
-            GameControl.control.CurrentNPCPathwalk.FaceCharacter(-(lastMovement));
-        else if (GameControl.control.CurrentStationaryNPC)
-            GameControl.control.CurrentStationaryNPC.FaceCharacter(-(lastMovement));
-
+        CurrentNPC.FaceCharacter(-(lastMovement));
+        
         isMoving = false;
 
         // begin the NPC's dialogue
-        GameControl.control.currentObj.GetComponentInChildren<NPCDialogue>().StartDialogue();
+        currentObj.GetComponentInChildren<NPCDialogue>().StartDialogue();
         
     }
 
     void ResetCurrentNPC(OverworldObject newCurrent = null)
     {
         // Set the previously current NPC back to normal        
-        if(GameControl.control.currentObj != null && GameControl.control.currentObj != newCurrent)
+        if(currentObj != null && currentObj != newCurrent)
         {            
-            GameControl.control.currentObj.HideInteractionNotification();
+            currentObj.HideInteractionNotification();
         }
 
         // set the new current NPC if one was passed in
         if (newCurrent)
         {
-            if (GameControl.control.currentObj != newCurrent)
+            if (currentObj != newCurrent)
             {
-                GameControl.control.currentObj = newCurrent;
+                currentObj = newCurrent;
                                
                 string text = "Read";
-                if (GameControl.control.currentObj is NPCObject)
+                if (currentObj is NPCObject)
                     text = "Talk";
-                GameControl.control.currentObj.ShowInteractionNotification(text);
+                currentObj.ShowInteractionNotification(text);
             }
         }
         // if no NPC was passed in, then there's no one we can talk to
         else
         {
-            GameControl.control.currentObj = null;            
+            currentObj = null;            
         }
     }
 
@@ -388,7 +388,7 @@ public class characterControl : OverworldObject {
     {
         if (Input.GetButtonDown("Pause"))
         {      
-            GameControl.UIManager.PushPauseCarousel();
+            UIManager.PushPauseCarousel();
         }
 
         if (Input.GetButtonDown("MenuNav") && Input.GetAxisRaw("MenuNav") > 0)
@@ -405,15 +405,21 @@ public class characterControl : OverworldObject {
             }
 
             // If we have an NPC to talk to, check if the player has pressed select to talk to them
-            if (GameControl.control.currentObj)
+            else if (currentObj)
             {
-                if (GameControl.control.currentObj.GetComponent<InteractiveObject>())
-                    GameControl.control.currentObj.GetComponent<InteractiveObject>().PerformAction();
-                else if (GameControl.control.currentObj.GetComponentInChildren<NPCDialogue>())
+                if (currentObj.GetComponent<InteractiveObject>())
+                {
+                    currentObj.GetComponent<InteractiveObject>().PerformAction();
+                }
+                else if (currentObj.GetComponentInChildren<NPCDialogue>())
+                {
                     TalkToNPC();
+                }
             }
-
-            HandleCharacterAction();
+            else
+            {
+                HandleCharacterAction();
+            }
             
         }
 
@@ -438,8 +444,8 @@ public class characterControl : OverworldObject {
     {
         if (Input.GetButtonDown("Pause"))
         {
-            if (GameControl.UIManager.list_currentMenus[0].GetComponent<UI.PauseMenu>() is UI.PauseMenu)
-                GameControl.UIManager.PopAllMenus();
+            if (UIManager.list_currentMenus[0].GetComponent<PauseMenu>() is PauseMenu)
+                UIManager.PopAllMenus();
         }
     }
     void UpdateTransition()
@@ -484,8 +490,12 @@ public class characterControl : OverworldObject {
             anim.SetFloat("vSpeed", Input.GetAxisRaw("Vertical"));
             anim.SetFloat("hSpeed", Input.GetAxisRaw("Horizontal"));
             anim.SetBool("isMoving", isMoving);
+
             if (GameControl.control.currentCharacter == HeroCharacter.JETHRO)
+            {
                 anim.SetFloat("isCarry", System.Convert.ToSingle(isCarrying));
+            }
+
             anim.SetFloat("lastHSpeed", lastMovement.x);
             anim.SetFloat("lastVSpeed", lastMovement.y);
         }
@@ -578,9 +588,13 @@ public class characterControl : OverworldObject {
         desiredPos = newDesiredPos;
 
         if (currentGateway.gatewayType != Gateway.Type.DOOR)
+        {
             OnDesiredPos.AddListener(FinishExit);
+        }
         else
+        {
             Invoke("FinishExit", 0.5f);
+        }
 
         GameControl.control.SetCharacterState(CharacterState.Transition);
     }
@@ -598,10 +612,14 @@ public class characterControl : OverworldObject {
             // determine whether we're moving in positive or negative
             // if gate is less, than we're moving up
             if (startPos.y < endPos.y)
+            {
                 yIncrementTransition = 1;
+            }
             // otherwise, we're going down
             else
+            {
                 yIncrementTransition = -1;
+            }
         }
         // otherwise we need to move in x
         else
@@ -609,10 +627,14 @@ public class characterControl : OverworldObject {
             // determine whether we're moving in positive or negative
             // if gate is less, than we're moving right
             if (startPos.x < endPos.x)
+            {
                 xIncrementTransition = 1;
+            }
             // otherwise, we're going left
             else
+            {
                 xIncrementTransition = -1;
+            }
         }
     }
 
