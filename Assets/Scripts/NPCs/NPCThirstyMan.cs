@@ -24,14 +24,14 @@ public class NPCThirstyMan : StationaryNPCControl
     {
         base.Start();
         // destroy if we've already finished the Thirsty Man quest
-        if (GameControl.questTracker.completedQuests.ContainsKey("thirstyMan"))
+        if (QuestTracker.completedQuests.ContainsKey("thirstyMan"))
             Destroy(gameObject);
     }
 
     public void OpenConsumables()
     {
         UIManager.PushThirstyManMenu(this);
-        GameControl.questTracker.AddNewQuest("thirstyMan");
+        QuestTracker.AddNewQuest("thirstyMan");
     }
 
     public void PayMinimum()
@@ -78,7 +78,7 @@ public class NPCThirstyMan : StationaryNPCControl
             GetComponentInChildren<NPCDialogue>().canTalk = false;
         }
 
-        GameControl.questTracker.CompleteQuest("thirstyMan");
+        QuestTracker.CompleteQuest("thirstyMan");
         GameControl.control.RemoveItem(item);
         var dialogue = thirstyManResponses.Find((r) => r.itemState == currentItemState).dialogue;
         UIManager.PopMenu();

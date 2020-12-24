@@ -21,7 +21,7 @@ public class SkillTree : MonoBehaviour {
     protected TechniqueImageDatabase imageDatabase;
     public SkillTree()
     {
-        imageDatabase = GameControl.skillTreeManager.imageDatabase;
+        imageDatabase = SkillTreeManager.imageDatabase;
     }
 
     // individual tree

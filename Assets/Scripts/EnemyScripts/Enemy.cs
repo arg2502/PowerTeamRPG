@@ -65,7 +65,7 @@ public class Enemy : Denigen {
 
         Rename();
 
-        skillTree = GameControl.skillTreeManager.enemySkillTree;
+        skillTree = SkillTreeManager.enemySkillTree;
 
         AssignAttack();
 	}
@@ -206,7 +206,7 @@ public class Enemy : Denigen {
     public void IncrementOnVictory()
     {
         foreach (var q in incrementQuests)
-            GameControl.questTracker.IncrementKillEnemies(q);
+            QuestTracker.IncrementKillEnemies(q);
     }
 
     /// <summary>
@@ -216,7 +216,7 @@ public class Enemy : Denigen {
     {
         incrementQuests = new List<string>();
 
-        foreach(var quest in GameControl.questTracker.activeQuests)
+        foreach(var quest in QuestTracker.activeQuests)
         {
             if(quest.Value.RequiredKillEnemies > 0)
             {
@@ -224,7 +224,7 @@ public class Enemy : Denigen {
                 // otherwise, see if this enemy appears in the specific list before deciding whether to increment
                 if(quest.Value.SpecificEnemyTypesToKill.Count <= 0 || quest.Value.SpecificEnemyTypesToKill.Find((e) => string.Equals(e.denigenName, enemyData.denigenName)))
                 {
-                    var subquestID = GameControl.questTracker.GetCurrentSubQuestID(quest.Key);                    
+                    var subquestID = QuestTracker.GetCurrentSubQuestID(quest.Key);                    
                     incrementQuests.Add(subquestID);
                 }                    
             }

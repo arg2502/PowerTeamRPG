@@ -67,7 +67,7 @@ public class Quest {
         if (currentState >= data.subQuestStates.Count)
         {
             // complete quest
-            GameControl.questTracker.CompleteQuest(data.questID);
+            QuestTracker.CompleteQuest(data.questID);
             UIManager.ShowQuestEnd(data.questName);
         }
         else

@@ -519,7 +519,7 @@ public class BonecrushPassive : TakeDamagePassive
             additional = damage * 0.5f;
             attackingDen.attackType = Denigen.AttackType.CRIT;
             var battleManager = GameObject.FindObjectOfType<BattleManager>();
-            battleManager.afterAttack.AddListener(() => { GameControl.skillTreeManager.RemoveTechnique(other.Data, "Bonecrush Passive"); });
+            battleManager.afterAttack.AddListener(() => { SkillTreeManager.RemoveTechnique(other.Data, "Bonecrush Passive"); });
         }
         return additional;
     }

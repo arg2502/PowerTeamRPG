@@ -385,13 +385,13 @@ public class UseItemMenu : Menu
         if(item.type == "augment")
         {
             var itemToRemove = hero.augments[hero.maxAugmentsAmt - 1];
-            GameControl.itemManager.RemoveItem(hero, itemToRemove);
+            ItemManager.RemoveItem(hero, itemToRemove);
             UseItem(hero);
         }
         else if(item.type == "armor")
         {
             var itemToRemove = hero.armor.Find((i) => i.subtype == item.subtype);
-            GameControl.itemManager.RemoveItem(hero, itemToRemove);
+            ItemManager.RemoveItem(hero, itemToRemove);
             UseItem(hero);
         }
     }
@@ -402,15 +402,15 @@ public class UseItemMenu : Menu
         switch (CurrentState)
         {
             case MenuState.Use:
-                GameControl.itemManager.ItemUse(hero, item);
+                ItemManager.ItemUse(hero, item);
                 break;
 
             case MenuState.Equip:
-                GameControl.itemManager.EquipItem(hero, item);
+                ItemManager.EquipItem(hero, item);
                 break;
 
             case MenuState.Remove:
-                GameControl.itemManager.RemoveItem(hero, item);
+                ItemManager.RemoveItem(hero, item);
                 break;
         }
         Debug.Log("After use -- quantity: " + item.quantity + ", uses: " + item.uses);

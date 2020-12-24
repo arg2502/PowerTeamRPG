@@ -387,7 +387,7 @@ public class ConsumablesOnlyMenu : GridMenu
             UIManager.PushConfirmationMenu("Are you sure you want to give 1 " + chosenItem.name + "?", GiveItem);
         else
             UIManager.PushNotificationMenu("That is not a drinkable item!");
-        //if (outerListPosition == 0 && GameControl.itemManager.IsBattleOnly(chosenItem))
+        //if (outerListPosition == 0 && ItemManager.IsBattleOnly(chosenItem))
         //{
         //    UIManager.PushNotificationMenu("This item can only be used in battle.");
         //}

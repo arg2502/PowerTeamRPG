@@ -47,7 +47,7 @@ public class Cole : Hero {
 	{
 		if (CurrentAttackName == "Resiviction") 
 		{			
-			var tech = GameControl.skillTreeManager.FindTechnique(data, lastSpellUsed.Name);
+			var tech = SkillTreeManager.FindTechnique(data, lastSpellUsed.Name);
 			currentTargetType = tech.targetType;
 			return;			
 		}
@@ -213,7 +213,7 @@ public class Cole : Hero {
     {
         for (int i = 0; i < targets.Count; i++)
         {
-            GameControl.skillTreeManager.AddPassiveTechnique(targets[i].Data, "Bonecrush Passive", true);
+            SkillTreeManager.AddPassiveTechnique(targets[i].Data, "Bonecrush Passive", true);
         }
     }
 
@@ -221,7 +221,7 @@ public class Cole : Hero {
 	{
 		for (int i = 0; i < targets.Count; i++) 
 		{
-			GameControl.skillTreeManager.AddPassiveTechnique (targets [i].Data, "BucketSplash Passive", true);
+			SkillTreeManager.AddPassiveTechnique (targets [i].Data, "BucketSplash Passive", true);
 		}
 	}
 
@@ -229,7 +229,7 @@ public class Cole : Hero {
 	{
 		for (int i = 0; i < targets.Count; i++) 
 		{
-			GameControl.skillTreeManager.AddPassiveTechnique (targets [i].Data, "FlaskSplash Passive", true);
+			SkillTreeManager.AddPassiveTechnique (targets [i].Data, "FlaskSplash Passive", true);
 		}
 	}
 

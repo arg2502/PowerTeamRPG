@@ -68,7 +68,7 @@ public class OverworldObject : MonoBehaviour {
     /// </summary>
     public void QuestTalk()
     {
-        GameControl.questTracker.IncrementTalkToPeople(currentQuestID);
+        QuestTracker.IncrementTalkToPeople(currentQuestID);
         questAlreadyTalked.Add(currentQuestID);
     }
 

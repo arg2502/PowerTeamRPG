@@ -31,7 +31,7 @@ public class Hero : Denigen {
     // the method for handling item use
     public void ItemUse()
     {
-		GameControl.itemManager.BattleItemUse (this, targets);
+		ItemManager.BattleItemUse (this, targets);
     }
 
     public virtual void DecideTypeOfTarget()
@@ -39,7 +39,7 @@ public class Hero : Denigen {
         currentTargetType = TargetType.NULL;
 
         // Determine if it's a hero's specific technique first
-        var tech = GameControl.skillTreeManager.FindTechnique(data, CurrentAttackName);
+        var tech = SkillTreeManager.FindTechnique(data, CurrentAttackName);
         if (tech != null)
         {
             currentTargetType = tech.targetType;

@@ -147,7 +147,7 @@ public class Jethro : Hero {
         for (int i = 0; i < targets.Count; i++)
         {
             fogTargets.Add(targets[i]);
-            GameControl.skillTreeManager.AddPassiveTechnique(targets[i].Data, "Fog Passive", true);
+            SkillTreeManager.AddPassiveTechnique(targets[i].Data, "Fog Passive", true);
         }
         fogCounter = 5;
     }
@@ -155,7 +155,7 @@ public class Jethro : Hero {
     {
         for (int i = 0; i < fogTargets.Count; i++)
         {
-            GameControl.skillTreeManager.RemoveTechnique(fogTargets[i].Data, "Fog Passive");
+            SkillTreeManager.RemoveTechnique(fogTargets[i].Data, "Fog Passive");
         }
         fogTargets.Clear();
     }
@@ -168,12 +168,12 @@ public class Jethro : Hero {
 
     void IceArmor()
     {
-        GameControl.skillTreeManager.AddPassiveTechnique(data, "Ice Armor Passive", true);
+        SkillTreeManager.AddPassiveTechnique(data, "Ice Armor Passive", true);
         iceArmorCounter = 2;
     }
     void ReverseIceArmor()
     {
-        GameControl.skillTreeManager.RemoveTechnique(data, "Ice Armor Passive");
+        SkillTreeManager.RemoveTechnique(data, "Ice Armor Passive");
     }
 
     void IceBarrier()
@@ -182,7 +182,7 @@ public class Jethro : Hero {
         for(int i = 0; i < targets.Count; i++)
         {
             iceBarrierTargets.Add(targets[i]);            
-            GameControl.skillTreeManager.AddPassiveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive", true);
+            SkillTreeManager.AddPassiveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive", true);
         }
         iceBarrierCounter = 2;
     }
@@ -190,7 +190,7 @@ public class Jethro : Hero {
     {
         for(int i = 0; i < iceBarrierTargets.Count; i++)
         {
-            GameControl.skillTreeManager.RemoveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive");
+            SkillTreeManager.RemoveTechnique(iceBarrierTargets[i].Data, "Ice Barrier Passive");
         }
         iceBarrierTargets.Clear();
     }

@@ -6,6 +6,6 @@ public class NPCHarvey : StationaryNPCControl {
 
 	public void StartTest()
     {
-        GameControl.questTracker.AddNewQuest("test");
+        QuestTracker.AddNewQuest("test");
     }
 }

@@ -386,7 +386,7 @@ public class InventoryMenu : GridMenu
         // save the item you wish to use/equip
         chosenItem = EventSystem.current.currentSelectedGameObject.GetComponentInParent<ItemSlot>().item;
 
-        if(outerListPosition == 0 && GameControl.itemManager.IsBattleOnly(chosenItem))
+        if(outerListPosition == 0 && ItemManager.IsBattleOnly(chosenItem))
         {
             UIManager.PushNotificationMenu("This item can only be used in battle.");
         }

@@ -96,9 +96,6 @@ public class BattleMenu : Menu
     bool DoWeHaveItems()
     {
         // first check, if it's 0, we obviously don't have any items
-        if (gameControl.consumables.Count <= 0)
-			return false;
-		else
-			return true;
+        return (gameControl.consumables.Count > 0);
     }
 }

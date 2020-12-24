@@ -38,7 +38,7 @@ public class Eleanor : Hero {
     void Weep()
     {
         StatEffect("MGKDEF");
-   //     var tech = GameControl.skillTreeManager.FindTechnique(Data, CurrentAttackName);
+   //     var tech = SkillTreeManager.FindTechnique(Data, CurrentAttackName);
 
    //     foreach (var target in targets)
    //     {

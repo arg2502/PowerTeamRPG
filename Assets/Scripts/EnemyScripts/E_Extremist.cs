@@ -11,7 +11,7 @@ public class E_Extremist : Enemy {
     {
         slapstick = skillTree.slapstick;
 
-        GameControl.skillTreeManager.AddTechnique(Data, slapstick);
+        SkillTreeManager.AddTechnique(Data, slapstick);
         
         defaultAttack = slapstick;
     }

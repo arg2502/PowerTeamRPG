@@ -235,7 +235,7 @@ public class TargetMenu : Menu
                     continue;
                 }
                 // if dead, check if the item can be used on them
-                var itemForTheLiving = GameControl.itemManager.ItemForLiving(battleManager.CurrentDenigen.CurrentAttackName);
+                var itemForTheLiving = ItemManager.ItemForLiving(battleManager.CurrentDenigen.CurrentAttackName);
                 if (currentTargets[i].IsJustDead)
                 {
                     ToggleCursorActivation(i, !itemForTheLiving);

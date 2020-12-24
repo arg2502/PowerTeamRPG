@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemManager {
-
-    public ItemManager()
-    {
-
-    }
-
-    public void ItemUse(DenigenData user, InventoryItem invItem)
+    
+    public static void ItemUse(DenigenData user, InventoryItem invItem)
     {
         var itemIsForLiving = ItemForLiving(invItem.name);
         if (itemIsForLiving && user.IsDead)
@@ -64,7 +59,7 @@ public class ItemManager {
             }
         }
     }
-    public void BattleItemUse(Hero user, List<Denigen> targets)
+    public static void BattleItemUse(Hero user, List<Denigen> targets)
     {
         // if the item is intended for living, but the target is dead, don't use the item -- skip the turn
         var itemIsForLiving = ItemForLiving(user.CurrentAttackName);
@@ -145,7 +140,7 @@ public class ItemManager {
         }
     }
 
-    public bool ItemForLiving(string item)
+    public static bool ItemForLiving(string item)
     {
         ScriptableConsumable _item = ItemDatabase.GetItem("Consumable", item) as ScriptableConsumable;
 
@@ -161,7 +156,7 @@ public class ItemManager {
         }
     }
 
-    public bool IsBattleOnly(InventoryItem _item)
+    public static bool IsBattleOnly(InventoryItem _item)
     {
         ScriptableConsumable item = ItemDatabase.GetItem("Consumable", _item.name) as ScriptableConsumable;
 
@@ -178,7 +173,7 @@ public class ItemManager {
         return false;
     }
 
-    public void EquipItem(DenigenData user, InventoryItem invItem)
+    public static void EquipItem(DenigenData user, InventoryItem invItem)
     {
         ScriptableItem item = null;
         List<InventoryItem> itemList = null;
@@ -219,7 +214,7 @@ public class ItemManager {
         }
     }
 
-    public void RemoveItem(DenigenData user, InventoryItem invItem)
+    public static void RemoveItem(DenigenData user, InventoryItem invItem)
     {
         if (invItem.type == "augment")
         {
@@ -266,7 +261,7 @@ public class ItemManager {
 
     }
 
-    void BoostUser(DenigenData user, Boosts b, bool equip = true)
+    private static void BoostUser(DenigenData user, Boosts b, bool equip = true)
     {
         var boost = b.boost * ((equip) ? 1 : -1);
         switch (b.statName)
@@ -311,7 +306,7 @@ public class ItemManager {
         }
     }
 
-    int AddBoost(int stat, int boost)
+    private static int AddBoost(int stat, int boost)
     {
         return (stat + boost < 0) ? 0 : stat + boost;
     }

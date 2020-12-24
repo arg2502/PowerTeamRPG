@@ -16,12 +16,9 @@ public class GameControl : MonoBehaviour {
 
 	//the player's name (Jethro)
 	public string playerName = "Jethro";
-
-    public static SkillTreeManager skillTreeManager;
-    public static ItemManager itemManager;
+    
     public static AudioManager audioManager;
     public static SpriteDatabase spriteDatabase;
-    public static QuestTracker questTracker;
 
     //Info to be saved and used throughout the game
     public int totalGold; // the player's total gold
@@ -78,14 +75,10 @@ public class GameControl : MonoBehaviour {
     {
         get
         {
-            if (whichInventoryEnum == WhichInventory.Consumables)
-                return "consumable";
-            else if (whichInventoryEnum == WhichInventory.Armor)
-                return "armor";
-            else if (whichInventoryEnum == WhichInventory.Augments)
-                return "augment";
-            else
-                return "key";
+            if (whichInventoryEnum == WhichInventory.Consumables) return "consumable";
+            else if (whichInventoryEnum == WhichInventory.Armor) return "armor";
+            else if (whichInventoryEnum == WhichInventory.Augments) return "augment";
+            else return "key";
         }
     }
 
@@ -148,8 +141,7 @@ public class GameControl : MonoBehaviour {
     }
 
     // states for checking if the player is in a menu/talking
-    characterControl.CharacterState prevState;
-    public characterControl.CharacterState PrevState { get { return prevState; } set { prevState = value; } }
+    public characterControl.CharacterState PrevState { get; set; }
 
     public characterControl.HeroCharacter currentCharacter;
     public int currentCharacterInt { get { return (int)currentCharacter; } }
@@ -176,13 +168,11 @@ public class GameControl : MonoBehaviour {
 
             InitHeroes();
             UIManager.Init();
-            skillTreeManager = new SkillTreeManager();
-            skillTreeManager.Init();
-            itemManager = new ItemManager();
+            SkillTreeManager.Init();
             audioManager = GetComponentInChildren<AudioManager>();
             audioManager.Init();
             spriteDatabase = Resources.Load<SpriteDatabase>("Databases/SpriteDatabase");
-            questTracker = new QuestTracker();
+            QuestTracker.Init();
 			totalGold = 0;
 			totalKeys = 0;
 
@@ -218,10 +208,6 @@ public class GameControl : MonoBehaviour {
             AddItem("Morttimer's Robes", "Armor", 1, "chest");
             AddItem("Big Boot", "Armor", 1, "boots");
             AddItem("Bigger Boot", "Armor", 1, "boots");
-
-
-
-
         }
 		else if (control != this)
 		{
@@ -247,9 +233,11 @@ public class GameControl : MonoBehaviour {
 			foreach(InventoryItem i in consumables)
 			{
 				//If the item is found, simply increase the quantity and exit the method
-				if(i.name == _name){
+				if(i.name == _name)
+                {
 					i.quantity += _quantity;
-					return;}
+					return;
+                }
 			}
 
 			//If the item is not found, add it to the inventory
@@ -261,9 +249,11 @@ public class GameControl : MonoBehaviour {
 			foreach(InventoryItem i in armor)
 			{
 				//If the item is found, simply increase the quantity and exit the method
-				if(i.name == _name){
+				if(i.name == _name)
+                {
 					i.quantity += _quantity;
-					return;}
+					return;
+                }
 			}
 			
 			//If the item is not found, add it to the inventory
@@ -275,9 +265,11 @@ public class GameControl : MonoBehaviour {
 			foreach(InventoryItem i in augments)
 			{
 				//If the item is found, simply increase the quantity and exit the method
-				if(i.name == _name){
+				if(i.name == _name)
+                {
 					i.quantity += _quantity;
-					return;}
+					return;
+                }
 			}
 			
 			//If the item is not found, add it to the inventory
@@ -289,9 +281,11 @@ public class GameControl : MonoBehaviour {
 			foreach(InventoryItem i in key)
 			{
 				//If the item is found, simply increase the quantity and exit the method
-				if(i.name == _name){
+				if(i.name == _name)
+                {
 					i.quantity += _quantity;
-					return;}
+					return;
+                }
 			}
 			
 			//If the item is not found, add it to the inventory
@@ -308,15 +302,23 @@ public class GameControl : MonoBehaviour {
         _item.quantity -= _quantity;
         if (_item.quantity > 0)
             return;
-        
-		if (consumables.Contains (_item))
+
+        if (consumables.Contains(_item))
+        {
             consumables.Remove(_item);
-		else if (augments.Contains (_item))
-			augments.Remove (_item);
-		else if (armor.Contains (_item))
-			armor.Remove (_item);
-		else if (key.Contains (_item))
-			key.Remove (_item);
+        }
+        else if (augments.Contains(_item))
+        {
+            augments.Remove(_item);
+        }
+        else if (armor.Contains(_item))
+        {
+            armor.Remove(_item);
+        }
+        else if (key.Contains(_item))
+        {
+            key.Remove(_item);
+        }
     }
 
 	//this will save our game data to an external, persistent file
@@ -803,10 +805,10 @@ public class GameControl : MonoBehaviour {
 
         for(int i = 0; i < cutsceneManager.questCutscenes.Count; i++)
         {
-            for(int j = 0; j < questTracker.activeQuests.Count; j++)
+            for(int j = 0; j < QuestTracker.activeQuests.Count; j++)
             {
                 var qc = cutsceneManager.questCutscenes[i];
-                if (questTracker.ContainsActiveKey(qc.subquestID)
+                if (QuestTracker.ContainsActiveKey(qc.subquestID)
                     && (qc.cutscene.triggerType == Cutscene.TriggerType.ROOM_ENTER || qc.cutscene.triggerType == Cutscene.TriggerType.AFTER_ENTRANCE)) 
                 {
                     //cutsceneQuestID = id;
@@ -825,10 +827,10 @@ public class GameControl : MonoBehaviour {
 
         for (int i = 0; i < cutsceneManager.questCutscenes.Count; i++)
         {
-            for(int j = 0; j < questTracker.activeQuests.Count; j++)
+            for(int j = 0; j < QuestTracker.activeQuests.Count; j++)
             {
                 var qc = cutsceneManager.questCutscenes[i];
-                if(questTracker.ContainsActiveKey(qc.subquestID)
+                if(QuestTracker.ContainsActiveKey(qc.subquestID)
                     && qc.cutscene.triggerType == Cutscene.TriggerType.ON_TRIGGER)
                 {
                     triggerCutscenes.Add(qc.subquestID);

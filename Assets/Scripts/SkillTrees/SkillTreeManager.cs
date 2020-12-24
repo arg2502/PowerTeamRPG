@@ -6,37 +6,31 @@ public class SkillTreeManager {
     
     //HeroData hero;
     //bool skillTree;
-    internal SkillTree currentSkillTree;
+    public static SkillTree currentSkillTree;
 
-    JethroSkillTree jethro;
-    ColeSkillTree cole;
-    EleanorSkillTree eleanor;
-    JoulietteSkillTree jouliette;
+    private static JethroSkillTree jethro;
+    private static ColeSkillTree cole;
+    private static EleanorSkillTree eleanor;
+    private static JoulietteSkillTree jouliette;
 
-    public EnemySkillTree enemySkillTree;
+    public static EnemySkillTree enemySkillTree;
 
-    public TechniqueImageDatabase imageDatabase;
+    public static TechniqueImageDatabase imageDatabase;
 
-    List<HeroData> heroList; // reference to GameControl's list
+    private static List<HeroData> heroList; // reference to GameControl's list
 
 
-    Passive iceArmorPassive;
-    Passive iceBarrierPassive;
-    Passive fogPassive;
-    Passive bonecrushPassive;
-	Passive bucketSplashPassive;
-	Passive flaskSplashPassive;
-	Passive coldShoulderPassive;
-	Passive slowBurnPassive;
-    List<Technique> tempTechniques;
-
-	// Use this for initialization
-    public SkillTreeManager()
-    {
-
-    }
-
-	public void Init () {
+    private static Passive iceArmorPassive;
+    private static Passive iceBarrierPassive;
+    private static Passive fogPassive;
+    private static Passive bonecrushPassive;
+	private static Passive bucketSplashPassive;
+	private static Passive flaskSplashPassive;
+	private static Passive coldShoulderPassive;
+	private static Passive slowBurnPassive;
+    private static List<Technique> tempTechniques;
+    
+	public static void Init () {
 
         imageDatabase = Resources.Load<TechniqueImageDatabase>("Databases/TechniqueImages");
 
@@ -47,7 +41,7 @@ public class SkillTreeManager {
         AddStartingTechniques();
     }
 
-    void CreateTrees()
+    private static void CreateTrees()
     {
         jethro = new JethroSkillTree();
         cole = new ColeSkillTree();
@@ -56,7 +50,7 @@ public class SkillTreeManager {
         enemySkillTree = new EnemySkillTree();
     }
 
-    public void SetHero(int heroIndex)
+    public static void SetHero(int heroIndex)
     {
         switch(heroIndex)
         {
@@ -75,18 +69,18 @@ public class SkillTreeManager {
         }
     }
 
-    public void AddPassiveTechnique(DenigenData hero, string techName, bool onlyOne)
+    public static void AddPassiveTechnique(DenigenData hero, string techName, bool onlyOne)
     {
         if (!onlyOne || (FindTechnique(hero, techName) == null))
             AddTechnique(hero, FindTempTechnique(techName));
     }
 
-    public void AddTechnique(DenigenData hero, string techName)
+    public static void AddTechnique(DenigenData hero, string techName)
     {
         AddTechnique(hero, FindTechnique(hero, techName));
     }
 
-    public void AddTechnique(DenigenData hero, Technique tech)
+    public static void AddTechnique(DenigenData hero, Technique tech)
     {
         // check what kind of technique
         if (tech is Skill)
@@ -108,12 +102,12 @@ public class SkillTreeManager {
         }
     }
 
-    public void RemoveTechnique(DenigenData hero, string techName)
+    public static void RemoveTechnique(DenigenData hero, string techName)
     {
         RemoveTechnique(hero, FindTechnique(hero, techName));
     }
 
-    public void RemoveTechnique(DenigenData hero, Technique tech)
+    public static void RemoveTechnique(DenigenData hero, Technique tech)
     {
         // check what kind of technique
         if (tech is Skill)
@@ -135,12 +129,12 @@ public class SkillTreeManager {
         }
     }
 
-    public Technique FindTempTechnique(string techName)
+    public static Technique FindTempTechnique(string techName)
     {
         return tempTechniques.Find(t => t.Name == techName);
     }
 
-    public bool HasTechnique(DenigenData hero, Technique tech)
+    public static bool HasTechnique(DenigenData hero, Technique tech)
     {
         if (tech is Skill)
             return HasSkill(hero, tech as Skill);
@@ -155,21 +149,21 @@ public class SkillTreeManager {
         }
     }
 
-    bool HasSkill(DenigenData hero, Skill skill)
+    private static bool HasSkill(DenigenData hero, Skill skill)
     {
         if (hero.skillsList.Contains(skill))
             return true;
         else
             return false;
     }
-    bool HasSpell(DenigenData hero, Spell spell)
+    private static bool HasSpell(DenigenData hero, Spell spell)
     {
         if (hero.spellsList.Contains(spell))
             return true;
         else
             return false;
     }
-    bool HasPassive(DenigenData hero, Passive passive)
+    private static bool HasPassive(DenigenData hero, Passive passive)
     {
         if (hero.passiveList.Contains(passive))
             return true;
@@ -177,7 +171,7 @@ public class SkillTreeManager {
             return false;
     }
 
-    void AddTempTechniques()
+    private static void AddTempTechniques()
     {
         iceArmorPassive = new IceArmorPassive();
         iceBarrierPassive = new IceBarrierPassive();
@@ -192,7 +186,7 @@ public class SkillTreeManager {
 			coldShoulderPassive, slowBurnPassive};
     }
 
-    void AddStartingTechniques()
+    private static void AddStartingTechniques()
     {
         AddJethroStartingTechniques();
         if(heroList.Count > 1) AddColeStartingTechniques();
@@ -200,31 +194,31 @@ public class SkillTreeManager {
         if(heroList.Count > 3) AddJoulietteStartingTechniques();
     }
 
-    void AddJethroStartingTechniques()
+    private static void AddJethroStartingTechniques()
     {
         foreach (var tech in jethro.startingTechs)
             AddTechnique(GameControl.control.heroList[0], tech);
     }
 
-    void AddColeStartingTechniques()
+    private static void AddColeStartingTechniques()
     {
         foreach (var tech in cole.startingTechs)
             AddTechnique(GameControl.control.heroList[1], tech);
     }
 
-    void AddEleanorStartingTechniques()
+    private static void AddEleanorStartingTechniques()
     {
         foreach (var tech in eleanor.startingTechs)
             AddTechnique(GameControl.control.heroList[2], tech);
     }
 
-    void AddJoulietteStartingTechniques()
+    private static void AddJoulietteStartingTechniques()
     {
         foreach (var tech in jouliette.startingTechs)
             AddTechnique(GameControl.control.heroList[3], tech);
     }
 
-    public Technique FindTechnique(DenigenData data, string techName)
+    public static Technique FindTechnique(DenigenData data, string techName)
     {
         //// try checking the general temp techniques list
         //foreach (var tech in tempTechniques)

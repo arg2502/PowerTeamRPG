@@ -13,8 +13,8 @@ public class E_Goikko : Enemy {
         tongueWhip = skillTree.whip;
         poison = skillTree.poison;
 
-        GameControl.skillTreeManager.AddTechnique(Data, tongueWhip);
-        GameControl.skillTreeManager.AddTechnique(Data, poison);
+        SkillTreeManager.AddTechnique(Data, tongueWhip);
+        SkillTreeManager.AddTechnique(Data, poison);
 
         defaultAttack = tongueWhip;
 	}

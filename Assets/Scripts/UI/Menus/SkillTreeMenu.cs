@@ -11,7 +11,6 @@ public class SkillTreeMenu : GridMenu
     public Text prereqText;
     public Text heroTechText;
     public List<GameObject> rowParentList;
-    SkillTreeManager treeManager;
     SkillTree.MyTree currentTree;
     public int currentHero = 0;
     int currentTreeIndex;
@@ -51,7 +50,6 @@ public class SkillTreeMenu : GridMenu
     public override void TurnOnMenu()
     {
         base.TurnOnMenu();
-        treeManager = GameControl.skillTreeManager;
 
         SetHero(currentHero);
     }
@@ -95,8 +93,8 @@ public class SkillTreeMenu : GridMenu
     {
         currentTreeIndex = treeIndex;
         currentHero = hero;
-        treeManager.SetHero(hero);
-        currentTree = treeManager.currentSkillTree.listOfTrees[currentTreeIndex];
+        SkillTreeManager.SetHero(hero);
+        currentTree = SkillTreeManager.currentSkillTree.listOfTrees[currentTreeIndex];
 
         RootButton = buttonGrid[currentTree.rootCol][currentTree.rootRow];
         currentButton = RootButton;
@@ -149,11 +147,11 @@ public class SkillTreeMenu : GridMenu
             if (technique.TreeImage != null)
                 icon.sprite = technique.TreeImage;
             else
-                icon.sprite = treeManager.imageDatabase.defaultSprite;
+                icon.sprite = SkillTreeManager.imageDatabase.defaultSprite;
 
             // TECHNIQUE STATES
             // if we have the technique in our lists, mark it as Active & show appropriate sprites                                
-            if (treeManager.HasTechnique(gameControl.heroList[currentHero], technique))
+            if (SkillTreeManager.HasTechnique(gameControl.heroList[currentHero], technique))
             {
                 SetButtonState(button, technique, true);
             }
@@ -221,7 +219,7 @@ public class SkillTreeMenu : GridMenu
             var prereqCount = 0;
             foreach (var prereq in tech.Prerequisites)
             {
-                if (treeManager.HasTechnique(gameControl.heroList[currentHero], prereq))
+                if (SkillTreeManager.HasTechnique(gameControl.heroList[currentHero], prereq))
                     prereqCount++;
             }
             if (prereqCount < tech.Prerequisites.Count)
@@ -248,7 +246,7 @@ public class SkillTreeMenu : GridMenu
 
     void PurchaseTechnique()
     {
-        treeManager.AddTechnique(gameControl.heroList[currentHero], techniqueToAdd);
+        SkillTreeManager.AddTechnique(gameControl.heroList[currentHero], techniqueToAdd);
         gameControl.heroList[currentHero].techPts -= techniqueToAdd.TechPointCost; // reduce points
         SetButtonState(buttonToChange, techniqueToAdd, true); // change button appearance
         SetHeroTechText();

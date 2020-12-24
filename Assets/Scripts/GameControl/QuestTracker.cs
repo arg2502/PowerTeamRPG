@@ -4,17 +4,17 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class QuestTracker {
-    public Dictionary<string, Quest> activeQuests;    
-    public Dictionary<string, Quest> completedQuests;
+    public static Dictionary<string, Quest> activeQuests;    
+    public static Dictionary<string, Quest> completedQuests;
 
-    public QuestTracker()
+    public static void Init()
     {
         activeQuests = new Dictionary<string, Quest>();
         completedQuests = new Dictionary<string, Quest>();
         AddNewQuest("solomvale", skipShow: true);
     }
 
-    public void AddNewQuest(string questID, bool skipShow = false)
+    public static void AddNewQuest(string questID, bool skipShow = false)
     {
         if (!activeQuests.ContainsKey(questID))
             activeQuests.Add(questID, new Quest(questID));
@@ -22,19 +22,19 @@ public class QuestTracker {
             UIManager.ShowQuestStart(activeQuests[questID].data.questName);
     }
 
-    public string GetCurrentSubQuestID(string questID)
+    public static string GetCurrentSubQuestID(string questID)
     {
         var mainQuest = activeQuests[questID];
         var subQuestID = questID + (mainQuest.CurrentState+1).ToString();
         return subQuestID;
     }
 
-    public string GetCurrentQuestID(string subquestID)
+    public static string GetCurrentQuestID(string subquestID)
     {
         return Regex.Match(subquestID, @"[^\d]+").Value;
     }
 
-    public bool ContainsActiveKey(string subquestID)
+    public static bool ContainsActiveKey(string subquestID)
     {
         // get the main quest ID from the subquestID, by only getting every character but the numbers
         var mainQuestID = GetCurrentQuestID(subquestID);
@@ -47,22 +47,22 @@ public class QuestTracker {
         return subQuestStr == subquestID;
     }
 
-    public bool ContainsCompletedKey(string questID)
+    public static bool ContainsCompletedKey(string questID)
     {
         return completedQuests.ContainsKey(questID);
     }
 
-    public void IncrementTalkToPeople(string subquestID)
+    public static void IncrementTalkToPeople(string subquestID)
     {
         activeQuests[GetCurrentQuestID(subquestID)].IncrementTalkToPeople();
     }
 
-    public void IncrementKillEnemies(string subquestID)
+    public static void IncrementKillEnemies(string subquestID)
     {
         activeQuests[GetCurrentQuestID(subquestID)].IncrementKillEnemies();
     }
 
-    public void AddItemToGet(string subquestID, ScriptableItem newItem)
+    public static void AddItemToGet(string subquestID, ScriptableItem newItem)
     {
         activeQuests[GetCurrentQuestID(subquestID)].AddItemToGet(newItem);
     }
@@ -71,12 +71,12 @@ public class QuestTracker {
     /// Manually increment a quest to the next goal. This should mainly be used for specific circumstances, like cutscenes
     /// </summary>
     /// <param name="subquestID"></param>
-    public void NextSubquest(string subquestID)
+    public static void NextSubquest(string subquestID)
     {
         activeQuests[GetCurrentQuestID(subquestID)].CheckProgress();
     }
 
-    public void CompleteQuest(string questID)
+    public static void CompleteQuest(string questID)
     {
         completedQuests.Add(questID, activeQuests[questID]);
         activeQuests.Remove(questID);

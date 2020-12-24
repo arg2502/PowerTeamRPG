@@ -176,7 +176,7 @@ public class Denigen : MonoBehaviour {
         set
         {
             currentAttackName = value;
-            currentAttack = GameControl.skillTreeManager.FindTechnique(data, value);
+            currentAttack = SkillTreeManager.FindTechnique(data, value);
                         
             attackCost = (currentAttack == null) ? 0 : currentAttack.GetPmCost(this);
             
@@ -513,7 +513,7 @@ public class Denigen : MonoBehaviour {
     // ATTACK METHODS
     public void StartAttack(string techName)
     {
-        var tech = GameControl.skillTreeManager.FindTechnique(Data, techName);
+        var tech = SkillTreeManager.FindTechnique(Data, techName);
 
         switch(tech.targetType)
         {
@@ -680,7 +680,7 @@ public class Denigen : MonoBehaviour {
     // TODO: incorporate percentage into parameters
     protected void StatEffect(string stat, float percentage = 0f)
     {
-        var tech = GameControl.skillTreeManager.FindTechnique(Data, CurrentAttackName);
+        var tech = SkillTreeManager.FindTechnique(Data, CurrentAttackName);
 
         foreach (var target in targets)
         {
