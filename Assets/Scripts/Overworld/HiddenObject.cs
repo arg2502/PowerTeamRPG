@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class HiddenObject : OverworldObject {
 
-    [SerializeField] Color showColor = Color.blue;
-	[SerializeField] Color hideColor = Color.white;
+    [SerializeField] private Color showColor = Color.blue;
+	[SerializeField] private Color hideColor = Color.white;
 
     [System.Serializable]
     public enum HiddenType { COLOR, SPARKLE }
 
-    [SerializeField] HiddenType hiddenType;
-    [SerializeField] ParticleSystem sparkles;
+    [SerializeField] private HiddenType hiddenType;
+    [SerializeField] private ParticleSystem sparkles;
 
     [System.NonSerialized] public bool hasBeenSeen = false;
 
@@ -23,23 +23,20 @@ public class HiddenObject : OverworldObject {
     private new void Start()
     {
         base.Start();
-        UpdateDialogue();
+        ToggleDialogue();
     }
 
-    private void UpdateDialogue()
+    private void ToggleDialogue()
     {
         var dialogue = GetComponentInChildren<NPCDialogue>();
         if (dialogue == null) return;
-        print("dialogue is not null");
-        print("dialogue.cantalk: " + dialogue.canTalk);
-        dialogue.canTalk = hasBeenSeen;
-        print("dialogue.cantalk now: " + dialogue.canTalk);
+        dialogue.canTalk = hasBeenSeen;        
     }
 
     public void Show()
     {
         hasBeenSeen = true;
-        UpdateDialogue();
+        ToggleDialogue();
 
         switch(hiddenType)
         {

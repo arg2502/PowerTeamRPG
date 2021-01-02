@@ -133,18 +133,22 @@ public class Dialogue : MonoBehaviour {
             // split rows further by dividing them by 'tab' space, since TextAsset was originally a .tsv
             var lines = rows[i].Split('\t');
 
+            string currentSpeaker = lines[0].Trim();
+            string currentEmotion = lines[1].Trim().ToUpper();
+            string currentLine = lines[2].Trim();
+
             // the first column should be the name of the speaker
             // if blank, use the NPC's name
-            if (string.IsNullOrEmpty(lines[0]))
+            if (string.IsNullOrWhiteSpace(currentSpeaker))
                 newConversation.speakerNames.Add(speaker.npcName);
             else
-                newConversation.speakerNames.Add(lines[0]);
+                newConversation.speakerNames.Add(currentSpeaker);
 
             // Next, we had emotional response.
             //// TODO: come up with a way to know which character's sprite to add.
             //// FOR NOW: just add the NPC's image
             Sprite happySpr, neutralSpr, sadSpr, angrySpr;
-            if (speaker != null && (lines[0] == speaker.npcName || string.IsNullOrEmpty(lines[0])))
+            if (speaker != null && (string.Equals(currentSpeaker.ToLower(), speaker.npcName.ToLower()) || string.IsNullOrWhiteSpace(currentSpeaker)))
             {
                 happySpr = speaker.happySpr;
                 neutralSpr = speaker.neutralSpr;
@@ -153,16 +157,16 @@ public class Dialogue : MonoBehaviour {
             }
             else
             {
-                happySpr = GetHappyHeroSprite(lines[0]);
-                neutralSpr = GetNeutralHeroSprite(lines[0]);
-                sadSpr = GetSadHeroSprite(lines[0]);
-                angrySpr = GetAngryHeroSprite(lines[0]);
+                happySpr = GetHappyHeroSprite(currentSpeaker);
+                neutralSpr = GetNeutralHeroSprite(currentSpeaker);
+                sadSpr = GetSadHeroSprite(currentSpeaker);
+                angrySpr = GetAngryHeroSprite(currentSpeaker);
             }
-            if (string.IsNullOrEmpty(lines[1]))
+            if (string.IsNullOrWhiteSpace(currentEmotion))
                 newConversation.speakerEmotions.Add(neutralSpr);
             else
             {
-                switch (lines[1].ToUpper())
+                switch (currentEmotion)
                 {
                     case "HAPPY":
                         newConversation.speakerEmotions.Add(happySpr);
@@ -180,7 +184,7 @@ public class Dialogue : MonoBehaviour {
             }
 
             // Finally, adding the dialogue. This should never be null so no need to check
-            newConversation.dialogueConversation.Add(lines[2]);
+            newConversation.dialogueConversation.Add(currentLine);
 
             // Now we'll check if the dialogue line requires a response
             // If this column is empty, just ignore. We're done with this row

@@ -256,7 +256,7 @@ public class characterControl : OverworldObject {
         //  the NPC is not talking already
         //  and the character is not already talking
         // then begin talking to the NPC
-        CurrentNPC.FaceCharacter(-(lastMovement));
+        CurrentNPC?.FaceCharacter(-(lastMovement));
         
         isMoving = false;
 
